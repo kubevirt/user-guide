@@ -10,7 +10,7 @@ Virtual Machines are represented by objects of the `VM` kind. Because the kinds 
 
 A VM object is also called the _VM API_, as the object is used to define a virtual machine.
 
-Example of a VM object:
+Here is an example of a VM object:
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
