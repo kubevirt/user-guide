@@ -1,4 +1,4 @@
-## Creation and life-cycle
+## Creation
 
 With the installation of KubeVirt, new resource kinds are added to the Kubernetes API to managed Virtual Machines. These new kinds allow you to create new objects of that kind.
 
