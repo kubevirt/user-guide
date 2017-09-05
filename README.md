@@ -1,6 +1,3 @@
-# 
-
-# 
 
 # KubeVirt User-Guide
 

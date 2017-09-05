@@ -1,6 +1,8 @@
 ## Creation and life-cycle
 
-With the installation of KubeVirt, new resource kinds are added to the Kubernetes API to managed Virtual Machines. These new kinds all you to create new objects of that kind. Virtual Machines are represented by objects of the `VM` kind. Because the kinds are added to the Kubernete API, the stock Kubernetes client tools \(`kubectl`\) can be used to create, modify, and delete VM objects.
+With the installation of KubeVirt, new resource kinds are added to the Kubernetes API to managed Virtual Machines. These new kinds allow you to create new objects of that kind.
+
+Virtual Machines are represented by objects of the `VM` kind. Because the kinds are added to the Kubernete API, the stock Kubernetes client tools \(`kubectl`\) can be used to create, modify, and delete VM objects.
 
 ### VM API
 
