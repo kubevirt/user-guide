@@ -2,9 +2,8 @@
 
 * [Introduction](README.md)
 * [Installation](chapter1.md)
-* Virtual Machine
-   * [Creation](vm-creation.md)
-   * Life-Cycle
-   * Access
-   * Live-Migration
+* [Virtual Machine](virtual-machine.md)
+  * [Creation & Life-Cycle](vm-creation.md)
+  * [Access](access.md)
+  * [Live-Migration](live-migration.md)
 
