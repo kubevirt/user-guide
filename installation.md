@@ -53,7 +53,7 @@ Once Kubernetes is deployed, you will need to deploy the KubeVirt add-on. The ad
 > Note: So far we can only provide deployment files for minikube. Additional manifests will follow.
 
 ```bash
-$ kubectl create -f FIXME
+$ kubectl appl -f FIXME
 ```
 
 This command will deploy the most recent stable version of KubeVirt to your cluster.
@@ -70,3 +70,10 @@ Basic VM operations can be peformed with the stock `kubectl` utility. However, t
 
 The most recent version of the tool can be retrieved from the [official release page](https://github.com/kubevirt/kubevirt/releases).
 
+## Update
+
+Usually it is sufficient to re-apply the manifests for performing a roling update:
+
+```bash
+$ kubectl appl -f FIXME
+```
