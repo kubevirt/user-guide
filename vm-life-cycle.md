@@ -1,10 +1,14 @@
-## Life-cycle
+## Basic Life-cycle
 
 Every `VM` represents a single virtual machine _instance_.  
 In general, the management of VMs is kept similar to how `Pods` are managed: Every Vm that is defined in the cluster is expected to be running, just like pods.  
 Deleting a VM is equivalent to shutting it down, this is also equivalent to how pods behave.
 
 FIXME needs to be reworked.
+
+### Overview
+
+
 
 ### Launching a virtual machine
 
@@ -39,6 +43,8 @@ $ kubectl delete -f vm.yaml
 # OR
 $ kubectl delete vms testvm
 ```
+
+> Note: Stopping a VM implies that it will be deleted from the cluster. You will not be able to start this VM object again.
 
 
 
