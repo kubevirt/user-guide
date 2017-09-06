@@ -72,6 +72,8 @@ The most recent version of the tool can be retrieved from the [official release 
 
 ## Update
 
+> Note: Updates are not yet supported.
+
 Usually it is sufficient to re-apply the manifests for performing a roling update:
 
 ```bash
