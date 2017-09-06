@@ -8,7 +8,7 @@ Virtual Machines are represented by objects of the `VM` kind. Because the kinds 
 
 > Note: Currently there isno offline documentation of the VM API.
 
-A VM object is also called the _VM API_, as the object is used to define a virtual machine.
+A VM API is also called a VM object, because the object is used to define a virtual machine.
 
 Here is an example of a VM object:
 
