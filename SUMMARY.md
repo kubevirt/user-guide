@@ -8,4 +8,5 @@
   * [Access](access.md)
   * [Live-Migration](live-migration.md)
 * [Additional resources](additional-resources.md)
+* [Feature matrix](feature-matrix.md)
 
