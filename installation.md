@@ -10,6 +10,13 @@ A few requirements need to be met before you can begin:
 * kubectl client utility
 * git
 
+#### Minimum Requirements
+
+| Component | Minimum Version |
+| --- | --- |
+| Kubernetes | 1.7 |
+| KubeVirt | 0.0.3 |
+
 #### Virtualization support
 
 There are several distributions of Kubernetes, you need to decide on one and get it deployed.
