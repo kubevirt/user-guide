@@ -12,4 +12,6 @@ $ kubectl delete vms testvm
 
 The following pages describe how to use and discover the API, manage, and access virtual machines.
 
-> Note: KubeVirt does not come with a UI, it is only extending the Kuebrnetes API with virtualization functionality.
+### User Interface
+
+KubeVirt does not come with a UI, it is only extending the Kuebrnetes API with virtualization functionality.
