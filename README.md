@@ -8,7 +8,7 @@ KubeVirt is  Kubernetes add-on to run virtual machines \(VMs\) on a Kubernetes c
 
 
 **Read it at:**
-https://kubevirt.gitbooks.io/kubevirt-user-guide/content/
+https://kubevirt.gitbooks.io/kubevirt-user-guide/
 
 **Or download a .pdf, .epub, or .mobi from:**
 https://www.gitbook.com/book/kubevirt/kubevirt-user-guide/details
