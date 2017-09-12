@@ -26,10 +26,10 @@ Once you have specified the migration object, you can submit it to the cluster u
 $ kubectl create -f migration.yaml
 ```
 
-Until deleted by a user or the garbage collector, a Migration will stay in the
-cluster. To post a migration with the same name again, either delete the
-succeeded or failed Migration or make use of the `generateName` feature from
-Kubernetes.
+> **Note:** Until deleted by a user or the garbage collector, a Migration will stay in the
+> cluster. To post a migration with the same name again, either delete the
+> succeeded or failed Migration or make use of the `generateName` feature from
+> Kubernetes.
 
 ### Querying the live migration status
 
@@ -137,7 +137,7 @@ with the `nodeSelector` section of a VM, the migration will fail.
 
 Aborting a live migration is not yet supported.
 
-### Affiniti and Anti-Affiniti
+### Affinity and Anti-Affinity
 
-Recent version of Kubernetes support Node- and Pod- Affinity. This is not
+Recent version of Kubernetes support Node- and Pod-Affinity. This is not
 yet supported for VMs.
