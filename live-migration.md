@@ -39,7 +39,22 @@ The status of a migration can be retrieved by querying for the migration:
 $ kubectl get migrations testvm-migration
 ```
 
-### Influencing with Labels where a VM migrates
+### Aborting a live migration
+
+Aborting a live migration is not yet supported.
+
+
+## Fine tuning
+
+The previous paragraphs explained the basic flow for live migrating a VM.
+In this section we are looking at additional tuning parameters which influence
+the migration in certain areas.
+
+### Influencing where a VM migrates
+
+> **Note:** This section is about using the `nodeSelector` to select migration
+> destinations. Node- and Pod-Affinity as present in recent versions of Kubernetes
+> is not yet supported for VMs.
 
 The VM will always be scheduled to another node than where it is running on, or
 the migration fails. To further influence where VM migrates, a `nodeSelector`
@@ -132,12 +147,3 @@ therefore not influenced by the additional migration labels.
 Since the `nodeSelector` section is a hard requirement of  the VM, they can't
 be overwritten. In case the `nodeSelector` section of a Migration conflicts
 with the `nodeSelector` section of a VM, the migration will fail.
-
-### Aborting a live migration
-
-Aborting a live migration is not yet supported.
-
-### Affinity and Anti-Affinity
-
-Recent version of Kubernetes support Node- and Pod-Affinity. This is not
-yet supported for VMs.
