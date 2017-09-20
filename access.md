@@ -5,7 +5,7 @@ Once a virtual machine got started you are able to connect to the consoles it ex
 * Serial Console
 * Graphical Console
 
-> Note: You need to have `virtctl` [installed](installation.md) to gain access to the VM.
+> Note: You need to have `virtctl` [installed](installation.md) to gain access to the VirtualMachine.
 
 ### Accessing the serial console
 

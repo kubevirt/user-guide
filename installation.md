@@ -49,14 +49,14 @@ See the [developer getting started guide](https://github.com/kubevirt/kubevirt/b
 
 ### Client side `virtctl` deployment
 
-Basic VM operations can be peformed with the stock `kubectl` utility. However, the `virtctl` binary utility is required to use advanced features such as:
+Basic VirtualMachine operations can be peformed with the stock `kubectl` utility. However, the `virtctl` binary utility is required to use advanced features such as:
 
 * Serial and graphical console access
 
 Or to have convenience commands for:
 
-* Starting and stopping VMs
-* Live migrating VMs
+* Starting and stopping VirtualMachines
+* Live migrating VirtualMachines
 
 The most recent version of the tool can be retrieved from the [official release page](https://github.com/kubevirt/kubevirt/releases).
 
