@@ -6,17 +6,17 @@ With the installation of KubeVirt, new types are added to the Kubernetes API to 
 
 You can interact with the new resources \(via `kubectl`\) as you would with any other API resource.
 
-### VM API
+### VirtualMachine API
 
-> Note: Currently there is no offline documentation of the VM API.
+> Note: Currently there is no offline documentation of the VirtualMachine API.
 
-A VM API is also called a VM object, because the object is used to define a virtual machine.
+A VirtualMachine API is also called a VirtualMachine object, because the object is used to define a virtual machine.
 
-Here is an example of a VM object:
+Here is an example of a VirtualMachine object:
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VM
+kind: VirtualMachine
 metadata:
   name: testvm
 spec:
