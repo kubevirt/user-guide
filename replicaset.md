@@ -19,7 +19,7 @@ a `VirtualMachineSpec` in `spec.template.spec`. The specification of the virtual
 machine is equal to the specification of the virtual machine in the
 `VirtualMachine` workload.
 
-`spec.replicas` can be used to specify how much replicas are wanted. If not
+`spec.replicas` can be used to specify how many replicas are wanted. If not
 specified, the default value is 1. This value can be updated anytime. The
 controller will react to the changes.
 
@@ -33,23 +33,21 @@ selector and the template labels.
 
 ### When to use a VirtualMachineReplicaSet
 
-Whenever one wants many equal Virtual Machines and does not care about keeping
-any kind of state, after they were terminated, the VirtualMachineReplicaSet is
-the right choice.
+Whenever one wants many identical Virtual Machines and does not care about
+maintaining any disk state after they were terminated, the
+VirtualMachineReplicaSet is the right choice.
 
 #### Fast starting ephemeral Virtual Machines
 
-In this use-case one has small, fast booting Virtual Machines, and only minimal or
-no provisioning is done during the boot. With other words, the timespan
-between the creation of a new Virtual Machine and entering the ready state of a
-VirtualMachine is short.
+This use-case involves small fast booting Virtual Machines with little
+provisioning performed during initialization.
 
-Migrations are not important. Load balancing between nodes can be achieved by
-simply deleting managed VirtualMachines which are running on an overloaded
-Node. The `eviction` of such a VirtualMachine can happen by directly deleting
-the VirtualMachine instance (KubeVirt aware cluster load balancer) or by
-deleting the corresponding Pod where the Virtual Machine runs in (Only
-Kubernetes aware cluster load balancer).
+Migrations are not important. Redistributing Virtual Machine workloads between
+nodes can be achieved simply by deleting managed VirtualMachines which are
+running on an overloaded Node. The `eviction` of such a VirtualMachine can
+happen by directly deleting the VirtualMachine instance (KubeVirt aware
+workload redistribution) or by deleting the corresponding Pod where the Virtual
+Machine runs in (Only Kubernetes aware workload redistribution).
 
 #### Slow starting ephemeral Virtual Machines
 
@@ -59,9 +57,9 @@ timespan between the creation of a new Virtual Machine and entering the ready
 state of a VirtualMachine is long.
 
 One still does not care about the state, but since re-provisioning
-VirtualMachines is expensive, Migrations are important. Load balancing between
-nodes can be achieved by migrating VirtualMachines to different nodes. A
-cluster load balancer needs to be aware of KubeVirt and create Migrations,
+VirtualMachines is expensive, Migrations are important. Workload redistribution
+between nodes can be achieved by migrating VirtualMachines to different nodes.
+A workload redistributor  needs to be aware of KubeVirt and create Migrations,
 instead of `evicting` VirtualMachines by deletion.
 
 > **Note:** The simplest form of having a migratable ephemeral VirtualMachine,
