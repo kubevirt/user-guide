@@ -4,6 +4,10 @@ The Registry Disk feature provides the ability to store and distribute Virtual
 Machine disks in the container image registry. Registry Disks can be assigned
 to Virtual Machines in the disks section of the Virtual Machine spec.
 
+No network shared storage devices are utilized by Registry Disks. The disks are
+pulled from the container registry and reside on the local node hosting the
+Virtual Machines that consume the disks.
+
 ## When to use a Registry Disk
 
 Registry Disks are ephemeral storage devices that can be assigned to any number
@@ -24,7 +28,7 @@ incompatible with Registry Disks.
 
 Users push Virtual Machine disks into the container registry using a KubeVirt
 base designed to work with the Registry Disk feature. The latest base container
-image is  kubevirt.io/registry-disk-v1alpha.
+image is **kubevirt.io/registry-disk-v1alpha**.
 
 Using this base image, users can inject a Virtual Machine disk into a container
 image in a way that is consumable by the KubeVirt runtime. Disks placed into
