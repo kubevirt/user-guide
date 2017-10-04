@@ -63,7 +63,7 @@ A workload redistributor  needs to be aware of KubeVirt and create Migrations,
 instead of `evicting` VirtualMachines by deletion.
 
 > **Note:** The simplest form of having a migratable ephemeral VirtualMachine,
-> will be to use local storage based on `ContainerRegistryDisks` in combination
+> will be to use local storage based on `RegistryDisks` in combination
 > with a file based backing store. However, migratable backing store
 > support did not yet land in KubeVirt.
 
@@ -96,7 +96,7 @@ spec:
           video:
           - type: qxl
           disks:
-          - type: ContainerRegistryDisk:v1alpha
+          - type: RegistryDisk:v1alpha
             source:
               name: kubevirt/cirros-registry-disk-demo:devel
             target:
@@ -152,7 +152,7 @@ Spec:
               Name:	kubevirt/cirros-registry-disk-demo:devel
             Target:
               Dev:	vda
-            Type:	ContainerRegistryDisk:v1alpha
+            Type:	RegistryDisk:v1alpha
           Graphics:
             Listen:
               Type:
