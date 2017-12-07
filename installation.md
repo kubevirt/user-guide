@@ -90,14 +90,14 @@ Or to have convenience commands for:
 The most recent version of the tool can be retrieved from the [official release
 page](https://github.com/kubevirt/kubevirt/releases).
 
-### Spice proxy add-on
+## Spice proxy add-on
 
 Optional install the spice-proxy add-on, to allow connecting to the spice
 terminal from outside of the cluster with traditional spice clients like
 `remote-viewer`:
 
 ```bash
-$ RELEASE=v0.0.5
+$ RELEASE=v0.1.0
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/spice-proxy.yaml
 ```
 
@@ -139,10 +139,10 @@ EOF
 When fetching the spice connection details from the apiserver, it will now
 contain the spice proxy endpoint.
 
-### Deploying from Source
+## Deploying from Source
 
-See the [developer getting started
-guide](https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md)
+See the [Developer Getting Started
+Guide](https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md)
 to understand how to build and deploy Kubevirt from sources.
 
 ## Update
@@ -153,6 +153,6 @@ Usually it is sufficient to re-apply the manifests for performing a roling
 update:
 
 ```bash
-$ RELEASE=v0.0.5
+$ RELEASE=v0.1.0
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 ```
