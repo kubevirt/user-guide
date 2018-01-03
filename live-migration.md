@@ -111,16 +111,24 @@ Given a VirtualMachine
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 metadata:
-  name: testvm
+  name: testvm-ephemeral
 spec:
   nodeSelector:
     ram: fast
   domain:
+    resources:
+      requests:
+        memory: 64M
     devices:
-      graphics:
-      - type: spice
-      consoles:
-      - type: pty
+      disks:
+      - name: registrydisk
+        volumeName: registryvolume
+        disk:
+          dev: vda
+  volumes:
+    - name: registryvolume
+      registryDisk:
+        image: kubevirt/cirros-registry-disk-demo:latest
 ```
 
 and a Migration
