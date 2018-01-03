@@ -8,15 +8,15 @@ Kubernetes cluster is already installed.
 A few requirements need to be met before you can begin:
 
 * [Kubernets](https://kubernetes.io) cluster \([OpenShift](https://github.com/openshift/origin), Tectonic\)
-* kubectl client utility
-* git
+* `kubectl` client utility
+* `git`
 
 ### Minimum Requirements
 
 | Component | Minimum Version |
 | --- | --- |
 | Kubernetes | 1.7 |
-| KubeVirt | 0.0.3 |
+| KubeVirt | [v0.1.0](https://github.com/kubevirt/kubevirt/releases/v0.1.0) |
 
 ### Virtualization support
 
@@ -45,7 +45,7 @@ Once Kubernetes is deployed, you will need to deploy the KubeVirt add-on. The
 add-on is deployed to a cluster using the `kubectl` tool and manifest file:
 
 ```bash
-$ RELEASE=v0.0.5
+$ RELEASE=v0.1.0
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 ```
 
