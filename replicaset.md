@@ -71,45 +71,24 @@ instead of `evicting` VirtualMachines by deletion.
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachineReplicaSet
+kind: VirtualMachine
 metadata:
-  name: testreplicaset
+  name: testvm-ephemeral
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      myvm: "myvm"
-  template:
-    metadata:
-      name: test
-      labels:
-        myvm: "myvm"
-    spec:
-      domain:
-        devices:
-          graphics:
-          - type: spice
-          interfaces:
-          - type: network
-            source:
-              network: default
-          video:
-          - type: qxl
-          disks:
-          - type: RegistryDisk:v1alpha
-            source:
-              name: kubevirt/cirros-registry-disk-demo:devel
-            target:
-              dev: vda
-          consoles:
-          - type: pty
-        memory:
-          unit: MB
-          value: 64
-        os:
-          type:
-            os: hvm
-        type: qemu
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: registrydisk
+        volumeName: registryvolume
+        disk:
+          dev: vda
+  volumes:
+    - name: registryvolume
+      registryDisk:
+        image: kubevirt/cirros-registry-disk-demo:latest
 ```
 
 Saving this manifest into `testreplicaset.yaml` and submitting it to
@@ -119,68 +98,55 @@ Kubernetes will create three virtual machines based on the template.
 $ kubectl create -f testreplicaset.yaml
 virtualmachinereplicaset "testreplicaset" created
 $ kubectl describe vmrs testreplicaset
-Name:		testreplicaset
-Namespace:	default
-Labels:		<none>
-Annotations:	<none>
-API Version:	kubevirt.io/v1alpha1
-Kind:		VirtualMachineReplicaSet
+Name:         testreplicaset
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+API Version:  kubevirt.io/v1alpha1
+Kind:         VirtualMachineReplicaSet
 Metadata:
-  Creation Timestamp:	2017-09-28T07:47:03Z
-  Resource Version:	8252
-  Self Link:		/apis/kubevirt.io/v1alpha1/namespaces/default/virtualmachinereplicasets/testreplicaset
-  UID:			380ee4ce-a421-11e7-a464-52540097fa40
+  Cluster Name:        
+  Creation Timestamp:  2018-01-03T12:42:30Z
+  Generation:          0
+  Resource Version:    6380
+  Self Link:           /apis/kubevirt.io/v1alpha1/namespaces/default/virtualmachinereplicasets/testreplicaset
+  UID:                 903a9ea0-f083-11e7-9094-525400ee45b0
 Spec:
-  Replicas:	3
+  Replicas:  3
   Selector:
     Match Labels:
-      Myvm:	myvm
+      Myvm:  myvm
   Template:
     Metadata:
-      Creation Timestamp:	<nil>
+      Creation Timestamp:  <nil>
       Labels:
-        Myvm:	myvm
-      Name:	test
+        Myvm:  myvm
+      Name:    test
     Spec:
       Domain:
         Devices:
-          Consoles:
-            Type:	pty
           Disks:
-            Device:
-            Source:
-              Name:	kubevirt/cirros-registry-disk-demo:devel
-            Target:
-              Dev:	vda
-            Type:	RegistryDisk:v1alpha
-          Graphics:
-            Listen:
-              Type:
-            Type:	spice
-          Interfaces:
-            Source:
-              Network:	default
-            Type:	network
-          Video:
-            Type:	qxl
-        Memory:
-          Unit:		MB
-          Value:	64
-        Os:
-          Boot Order:	<nil>
-          Type:
-            Os:	hvm
-        Type:	qemu
+            Disk:
+              Dev:        vda
+            Name:         registrydisk
+            Volume Name:  registryvolume
+        Resources:
+          Requests:
+            Memory:  64M
+      Volumes:
+        Name:  registryvolume
+        Registry Disk:
+          Image:  kubevirt/cirros-registry-disk-demo:latest
 Status:
-  Conditions:		<nil>
-  Ready Replicas:	2
-  Replicas:		3
+  Conditions:      <nil>
+  Ready Replicas:  2
+  Replicas:        3
 Events:
-  FirstSeen	LastSeen	Count	From					SubObjectPath	Type		Reason			Message
-  ---------	--------	-----	----					-------------	--------	------			-------
-  28s		28s		1	virtualmachinereplicaset-controller			Normal		SuccessfulCreate	Created virtual machine: testgz00g
-  28s		28s		1	virtualmachinereplicaset-controller			Normal		SuccessfulCreate	Created virtual machine: test0dvfd
-  28s		28s		1	virtualmachinereplicaset-controller			Normal		SuccessfulCreate	Created virtual machine: testk9jj7
+  Type    Reason            Age   From                                 Message
+  ----    ------            ----  ----                                 -------
+  Normal  SuccessfulCreate  13s   virtualmachinereplicaset-controller  Created virtual machine: testh8998
+  Normal  SuccessfulCreate  13s   virtualmachinereplicaset-controller  Created virtual machine: testf474w
+  Normal  SuccessfulCreate  13s   virtualmachinereplicaset-controller  Created virtual machine: test5lvkd
 ```
 
 `Replicas` is `3` and `Ready Replicas` is `2`. This means that at the moment

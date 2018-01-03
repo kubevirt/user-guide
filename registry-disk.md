@@ -22,7 +22,7 @@ Registry Disks are not a good solution for any workload that requires persistent
 disks across Virtual Machine restarts, or workloads that require Virtual
 Machine live migration support. It is possible Registry Disks may gain live
 migration support in the future, but at the moment live migrations are
-incompatible with Registry Disks. 
+incompatible with Registry Disks.
 
 ## Registry Disk Workflow Example
 
@@ -38,7 +38,7 @@ image's size.
 
 Example: Inject a Virtual Machine disk into a container image.
 ```
-cat << END > Dockerfile 
+cat << END > Dockerfile
 FROM kubevirt.io/registry-disk-v1alpha
 ADD fedora25.qcow2 /disk
 END
@@ -59,23 +59,17 @@ apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
   domain:
+    resources:
+      requests:
+        memory: 64M
     devices:
       disks:
-      - type: RegistryDisk:v1alpha
-        source:
-          name: vmdisks/fedora25:latest
-        target:
+      - name: registrydisk
+        volumeName: registryvolume
+        disk:
           dev: vda
-      interfaces:
-      - source:
-          network: default
-        type: network
-    memory:
-      unit: MB
-      value: 1024
-    os:
-      type:
-        os: hvm
-    type: qemu
-
+  volumes:
+    - name: registryvolume
+      registryDisk:
+        image: vmdisks/fedora25:latest
 ```

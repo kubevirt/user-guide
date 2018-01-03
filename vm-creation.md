@@ -20,34 +20,21 @@ kind: VirtualMachine
 metadata:
   name: testvm
 spec:
+  terminationGracePeriodSeconds: 0
   domain:
+    resources:
+      requests:
+        memory: 64M
     devices:
-      graphics:
-      - type: spice
-      video:
-      - type: qxl
       disks:
-      - type: network
-        device: disk
-        driver:
-          name: qemu
-          type: raw
-          cache: none
-        source:
-          host:
-            name: iscsi-demo-target.default
-          protocol: iscsi
-          name: iqn.2017-01.io.kubevirt:sn.42/2
-      consoles:
-      - type: pty
-    memory:
-      unit: MB
-      value: 64
-    os:
-      type:
-        os: hvm
-    type: qemu
+      - name: mydisk
+        volumeName: myvolume
+        disk:
+          dev: vda
+  volumes:
+    - name: myvolume
+      iscsi:
+        iqn: iqn.2017-01.io.kubevirt:sn.42
+        lun: 2
+        targetPortal: iscsi-demo-target.kube-system.svc.cluster.local
 ```
-
-
-
