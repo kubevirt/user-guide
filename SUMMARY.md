@@ -8,7 +8,7 @@
     * [Creation](vm-creation.md)
     * [Life-cycle](vm-life-cycle.md)
     * [Access](access.md)
-    * [Ephemeral Registry Disks](registry-disk.md)
+    * [Disks and Volumes](disks-and-volumes.md)
     * [Startup Scripts](startup-scripts.md)
   * Controllers
     * [Live-Migration](live-migration.md)
