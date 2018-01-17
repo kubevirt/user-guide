@@ -10,6 +10,7 @@
     * [Access](access.md)
     * [Ephemeral Registry Disks](registry-disk.md)
     * [Startup Scripts](startup-scripts.md)
+    * [Virtualized Hardware Configuration](machine.md)
   * Controllers
     * [Live-Migration](live-migration.md)
     * [Virtual Machine Replica Set](replicaset.md)
