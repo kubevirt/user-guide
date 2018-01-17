@@ -11,6 +11,7 @@
     * [Disks and Volumes](disks-and-volumes.md)
     * [Startup Scripts](startup-scripts.md)
     * [Virtualized Hardware Configuration](machine.md)
+    * [Assigning VMs to Nodes](assign-vm-node.md)
   * Controllers
     * [Live-Migration](live-migration.md)
     * [Virtual Machine Replica Set](replicaset.md)
