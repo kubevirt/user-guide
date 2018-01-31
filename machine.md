@@ -7,7 +7,7 @@ to properly boot and reboot.
 ## SMBIOS Firmware
 
 In order to provide a consistent view on the virtualized hardware for the Guest
-OS, the SMBIOS UUID can be set to a constant value via `spec.firmware.uid`:
+OS, the SMBIOS UUID can be set to a constant value via `spec.firmware.uuid`:
 
 ```
 metadata:
@@ -16,7 +16,7 @@ spec:
   domain:
     firmware:
       # this sets the UUID
-      uid: 5d307ca9-b3ef-428c-8861-06e72d69f223
+      uuid: 5d307ca9-b3ef-428c-8861-06e72d69f223
     resources:
       requests:
         memory: 512M
