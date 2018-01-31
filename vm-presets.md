@@ -140,7 +140,7 @@ metadata:
   labels:
     flavor: windows-10
   annotations:
-    virtualmachinepreset.admission.kubevirt.io/virtualmachinepreset-allow-database: "resource version"
+    virtualmachinepreset.kubevirt.io/example-preset: kubevirt.io/v1alpha1
 spec:
   firmware:
     UUID: c8f99fc8-20f5-46c4-85e5-2b841c547cef
@@ -165,7 +165,7 @@ Here's an example with multiple volumes to demonstrate merging of devices.
 kind: VirtualMachinePreset
 version: v1alpha1
 metadata:
-  name: example-preset
+  name: windows-features
   selector:
     matchLabels:
       flavor: default-features
@@ -213,7 +213,7 @@ metadata:
   labels:
     flavor: windows-server2012r2
   annotations:
-    virtualmachinepreset.admission.kubevirt.io/virtualmachinepreset-allow-database: "resource version"
+    virtualmachinepreset.kubevirt.io/windows-features: kubevirt.io/v1alpha1
 spec:
   domain:
     disks:
