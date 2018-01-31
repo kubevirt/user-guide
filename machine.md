@@ -4,6 +4,41 @@ Finetuning different aspects of the hardware which are not device related
 (BIOS, mainboard, ...) is sometimes necessary to allow Guest Operating Systems
 to properly boot and reboot.
 
+## Machine Type
+
+QEMU is able to work with two different classes of chipsets for x86\_64, so
+called machine types. The x86\_64 chipsets are i440fx (also called pc) and q35.
+They are versioned based on qemu-system-$ARCH, following the format
+`pc-${machine_type}-${qemu_version}`, e.g. `pc-i440fx-2.10` and `pc-q35-2.10`.
+
+KubeVirt defaults to QEMU's newest q35 machine type. If a custom machine type is
+desired, it is configurable via following structure:
+
+```
+metadata:
+  name: myvm
+spec:
+  domain:
+    machine:
+      # This value indicates QEMU machine type.
+      type: pc-q35-2.10
+    resources:
+      requests:
+        memory: 512M
+    devices:
+      disks:
+      - name: myimage
+        volumeName: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimName: myclaim
+```
+
+Comparision of the machine types' internals can be found
+[at QEMU wiki](https://wiki.qemu.org/Features/Q35).
+
 ## BIOS/UEFI
 
 All virtual machines currently use BIOS for booting. UEFI/OVMF is not yet
