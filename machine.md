@@ -4,6 +4,11 @@ Finetuning different aspects of the hardware which are not device related
 (BIOS, mainboard, ...) is sometimes necessary to allow Guest Operating Systems
 to properly boot and reboot.
 
+## BIOS/UEFI
+
+All virtual machines currently use BIOS for booting. UEFI/OVMF is not yet
+supported.
+
 ## SMBIOS Firmware
 
 In order to provide a consistent view on the virtualized hardware for the Guest
