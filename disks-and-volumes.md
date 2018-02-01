@@ -19,7 +19,7 @@ A disk can be made accessible via four different types:
  * **lun**
 
 All possible configuration options are available in the
-[Disk API Reference](https://kubevirt-incubator.github.io/api-reference/master/definitions.html#_v1_disk).
+[Disk API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk).
 
 ### lun
 
@@ -151,7 +151,7 @@ Supported volume sources are
  * **registryDisk**
 
 All possible configuration options are available in the
-[Volume API Reference](https://kubevirt-incubator.github.io/api-reference/master/definitions.html#_v1_volume).
+[Volume API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume).
 
 ### cloudInitNoCloud
 
