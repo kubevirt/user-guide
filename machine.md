@@ -109,7 +109,7 @@ Sets the virtualized hardware clock inside the vm to a specific time. Available 
  * **utc**
  * **timezone**
 
-See the [Clock API Reference](https://kubevirt-incubator.github.io/api-reference/master/definitions.html#_v1_clock)
+See the [Clock API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_clock)
 for all possible configuration options.
 
 #### utc
@@ -204,7 +204,7 @@ spec:
 `hpet` is disabled,`pit` and `rtc` are configured to use a specific
 `tickPolicy`. Finally `hyperv` is made available too.
 
-See the [Timer API Reference](https://kubevirt-incubator.github.io/api-reference/master/definitions.html#_v1_timer)
+See the [Timer API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_timer)
 for all possible configuration options.
 
 **Note**: Timer can be part of a machine type. Thus it may be necessary to
@@ -253,5 +253,5 @@ spec:
         claimname: myclaim
 ```
 
-See the [Features API Reference](https://kubevirt-incubator.github.io/api-reference/master/definitions.html#_v1_features)
+See the [Features API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_features)
 for all available features and configuration options.
