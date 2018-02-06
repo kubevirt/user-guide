@@ -18,9 +18,12 @@ The following table lists the available resource types.
 | Resource Type | Available since | Required Kubernetes and kubectl Version |
 | --- | --- | --- |
 | Virtual Machine | v0.1.0 | 1.6 |
-| Migration | v0.1.0 | 1.6 |
+| ~Migration~ | ~v0.1.0~ | ~1.6~ |
 | Virtual Machine Presets | unreleased | |
 | Offline Virtual Machine | unreleased | |
+
+Migrations are temporarily removed and will be re-enabled soon. Track
+[#676](https://github.com/kubevirt/kubevirt/issues/676) to follow the progress.
 
 ### Virtual Machine API
 
