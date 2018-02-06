@@ -76,6 +76,26 @@ Or to have convenience commands for:
 The most recent version of the tool can be retrieved from the [official release
 page](https://github.com/kubevirt/kubevirt/releases).
 
+## Deploying on OpenShift
+Following [SCCs](https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html) need to be added prior `kubevirt.yaml` deployment:
+
+```
+oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-privileged
+oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-controller
+```
+
+**NOTE:** For Kubevirt **0.2.0**, following is required in addition to the SCCs above:
+ 
+```
+oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-infra
+```
+
+Once privileges are granted, the `kubevirt.yaml` can be deployed:
+
+```
+kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
+```
+
 ## Deploying from Source
 
 See the [Developer Getting Started
