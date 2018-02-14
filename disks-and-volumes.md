@@ -21,9 +21,9 @@ A disk can be made accessible via four different types:
 All possible configuration options are available in the
 [Disk API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk).
 
-All types but **floppy** allow you to specify the `Bus` attribute. The `Bus` attribute determine
+All types but **floppy** allow you to specify the `bus` attribute. The `bus` attribute determines
 how the disk will be presented to the Guest Operating System. **floppy** disks don't support
-the `Bus` attribute: they are always attached to the `fdc` bus.
+the `bus` attribute: they are always attached to the `fdc` bus.
 
 ### lun
 
@@ -61,6 +61,31 @@ A `disk` disk will expose the volume as an ordinary disk to the vm.
 
 A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a
 `disk` device to the vm:
+
+```
+metadata:
+  name: testvm-ephemeral
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        volumeName: mypvc
+        # This makes it a disk
+        disk: {}
+  volumes:
+    - name: mypvc
+      persistentVolumeClaim:
+        claimName: mypvc
+```
+
+You can set the disk `bus` type, overriding the defaults, which in turn depend
+on the chipset the VM is configured to use:
 
 ```
 metadata:
