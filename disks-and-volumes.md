@@ -21,6 +21,10 @@ A disk can be made accessible via four different types:
 All possible configuration options are available in the
 [Disk API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk).
 
+All types but **floppy** allow you to specify the `Bus` attribute. The `Bus` attribute determine
+how the disk will be presented to the Guest Operating System. **floppy** disks don't support
+the `Bus` attribute: they are always attached to the `fdc` bus.
+
 ### lun
 
 A `lun` disk will expose the volume as a LUN device to the vm. This allows the
@@ -73,7 +77,10 @@ spec:
       - name: mypvcdisk
         volumeName: mypvc
         # This makes it a disk
-        disk: {}
+        disk:
+          # This makes it exposed as /dev/vda, being the only and thus first
+          # disk attached to the VM
+          bus: virtio
   volumes:
     - name: mypvc
       persistentVolumeClaim:
@@ -135,6 +142,8 @@ spec:
         cdrom:
           # This makes the cdrom writeable
           readOnly: false
+          # This makes the cdrom be exposed as SATA device
+          bus: sata
   volumes:
     - name: mypvc
       persistentVolumeClaim:
