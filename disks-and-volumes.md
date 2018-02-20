@@ -180,7 +180,6 @@ spec:
 Supported volume sources are
 
  * **cloudInitNoCloud**
- * **iscsi**
  * **persistentVolumeClaim**
  * **registryDisk**
 
@@ -223,40 +222,17 @@ spec:
           name: testsecret
 ```
 
-### iscsi
-
-Allows connecting ISCSI block storage to a vm disk.
-
-A simple example which attaches an `iscsi` block storage as a `cdrom` may look
-like this:
-
-```
-metadata:
-  name: testvm-ephemeral
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
-spec:
-  domain:
-    resources:
-      requests:
-        memory: 64M
-    devices:
-      disks:
-      - name: myiscsidisk
-        volumeName: myiscsi
-        cdrom: {}
-  volumes:
-    - name: myiscsi
-      iscsi:
-        iqn: iqn.2017-01.io.kubevirt:sn.42
-        lun: 2
-        targetPortal: iscsi-demo-target.kube-system.svc.cluster.local
-```
-
 ### PersistentVolumeClaim
 
-Allows connecting a `PersistentVolumeClaim` to a vm disk. Currently only
-support `PersistentVolumes` which are backed by `iscsi` volumes.
+Allows connecting a `PersistentVolumeClaim` to a vm disk.
+
+These types of disks make sense to use when the VirtualMachine's disk needs to
+persist after a VirtualMachine terminates. This allows for the VirtualMachine's
+data to remain persistent between restarts.
+
+For KubeVirt to be able to consume the disk present on a PersistentVolume's
+filesystem, the disk must be named **disk.img** and be placed in the root path
+of the filesystem. Currently the disk is also required to be in raw format.  
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look
 like this:
@@ -282,6 +258,7 @@ spec:
         claimName: mypvc
 ```
 
+
 ### registryDisk
 
 The Registry Disk feature provides the ability to store and distribute Virtual
@@ -293,7 +270,7 @@ pulled from the container registry and reside on the local node hosting the
 Virtual Machines that consume the disks.
 
 #### When to use a registryDisk
-
+ 
 Registry Disks are ephemeral storage devices that can be assigned to any number
 of active Virtual Machines. This makes them an ideal tool for users who want
 to replicate a large number of Virtual Machine workloads that do not require
