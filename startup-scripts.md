@@ -10,14 +10,14 @@ allows an Ansible job running on a remote host to access and provision the
 Virtual Machine.
 
 Startup scripts are not limited to any specific use case though. They can be
-used to run any arbitrary script in a Virtual Machine on boot. 
- 
+used to run any arbitrary script in a Virtual Machine on boot.
+
 ### Cloud-init
 
 cloud-init is a widely adopted project used for early initialization of a
 Virtual Machine. Used by cloud providers such as AWS and GCP, cloud-init has
 established itself as the defacto method of providing startup scripts to
-Virtual Machines. 
+Virtual Machines.
 
 Cloud-init documentation can be found at the link below.
 [Cloud-init Documentation](https://cloudinit.readthedocs.io/en/latest/)
@@ -25,12 +25,12 @@ Cloud-init documentation can be found at the link below.
 KubeVirt supports cloud-init's "NoCloud" datasource which involves injecting
 startup scripts into a Virtual Machine instance though the use of an ephemeral
 disk. Virtual Machines with the cloud-init package installed will detect the
-ephemeral disk and execute custom userdata script at boot. 
+ephemeral disk and execute custom userdata script at boot.
 
 ### Sysprep
 
 Sysprep is an automation tool for Windows that automates Windows installation,
-setup, and in custom software provisioning as well. 
+setup, and in custom software provisioning as well.
 
 **Sysprep support is currently not implemented by KubeVirt.** However it is a
 feature the KubeVirt upstream community has shown interest in. As a result,
@@ -45,11 +45,61 @@ In order to assign a custom userdata script to a VirtualMachine using this
 method, users must define disk and volume for the NoCloud datasource in the
 VirtualMachine's spec.
 
-The volume portion of the spec is where the startup script is referenced. In
-the example below, a simple bash script is base64 encoded and stored in the
+### Cloud-init user-data as clear text
+
+In the example below, a ssh-key is stored in the cloudInitNoCloud
+Volume's userData field as clean text. There's a corresponding disks
+entry that references the cloud-init volume and assigns it to the Virtual
+Machine's device.
+
+```
+# Create a VM manifest with the startup script
+# a cloudInitNoCloud volume's userData field.
+
+cat << END > my-vm.yaml
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: myvm
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: registrydisk
+        volumeName: registryvolume
+        disk:
+          bus: virtio
+      - name: cloudinitdisk
+        volumeName: cloudinitvolume
+        disk:
+          bus: virtio
+  volumes:
+    - name: registryvolume
+      registryDisk:
+        image: kubevirt/cirros-registry-disk-demo:devel
+    - name: cloudinitvolume
+      cloudInitNoCloud:
+        userData: |
+          ssh-authorized-keys:
+            - ssh-rsa AAAAB3NzaK8L93bWxnyp test@test.com
+
+END
+
+# Post the Virtual Machine spec to KubeVirt.
+
+kubectl create -f my-vm.yaml
+```
+
+### Cloud-init user-data as base64 string
+
+In the example below, a simple bash script is base64 encoded and stored in the
 cloudInitNoCloud Volume's userDataBase64 field. There's a corresponding disks
 entry that references the cloud-init volume and assigns it to the Virtual
-Machine's 'vbd' device.
+Machine's device.
 
 *Users also have the option of storing the startup script in a Kubernetes secret
 and referencing the secret in the Virtual Machine's spec. Examples further down
@@ -82,11 +132,11 @@ spec:
       - name: registrydisk
         volumeName: registryvolume
         disk:
-          dev: vda
+          bus: virtio
       - name: cloudinitdisk
         volumeName: cloudinitvolume
         disk:
-          dev: vdb
+          bus: virtio
   volumes:
     - name: registryvolume
       registryDisk:
@@ -111,7 +161,7 @@ Multiple VirtualMachine spec's can reference the same kuberentes secret
 containing cloud-init userdata.
 
 Below is an example of how to create a kubernetes secret containing a startup
-script and reference that secret in the Virtual Machine's spec. 
+script and reference that secret in the Virtual Machine's spec.
 
 ```
 # Create a simple startup script
@@ -152,11 +202,11 @@ spec:
       - name: registrydisk
         volumeName: registryvolume
         disk:
-          dev: vda
+          bus: virtio
       - name: cloudinitdisk
         volumeName: cloudinitvolume
         disk:
-          dev: vdb
+          bus: virtio
   volumes:
     - name: registryvolume
       registryDisk:
@@ -301,5 +351,5 @@ debug.
 
 Example of connecting to console using virtctl
 ```
-virtctl console <name of vm> 
+virtctl console <name of vm>
 ```
