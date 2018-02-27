@@ -13,8 +13,9 @@ Usage
 
 KubeVirt uses Kubernetes `Labels` and `Selectors` to determine which
 `VirtualMachinePresets` apply to any given `VirtualMachine`, similarly to how
-`PodPresets` work in Kubernetes. The `VirtualMachine` is marked with an
-Annotation upon successful completion.
+`PodPresets` work in Kubernetes. If any setting from a `VirtualMachinePreset`
+is applied to a `VirtualMachine`, the `VirtualMachine` will be marked with an
+Annotation upon completion.
 
 Any domain structure can be listed in the `spec` of a `VirtualMachinePreset`.
 e.g. Clock, Features, Memory, CPU, or Devices such network interfaces.  All
@@ -134,48 +135,40 @@ resulting resource would look like this:
 
 
 ```yaml
-apiVersion: v1
-items:
-- apiVersion: kubevirt.io/v1alpha1
-  kind: VirtualMachine
-  metadata:
-    annotations:
-      presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-      virtualmachinepreset.kubevirt.io/example-preset: kubevirt.io/v1alpha1
-    labels:
-      kubevirt.io/flavor: windows-10
-    name: myvm
-    namespace: default
-    selfLink: /apis/kubevirt.io/v1alpha1/namespaces/default/virtualmachines/myvm
-  spec:
-    domain:
-      devices: {}
-      features:
-        acpi:
-          enabled: true
-        apic:
-          enabled: true
-        hyperv:
-          relaxed:
-            enabled: true
-          spinlocks:
-            enabled: true
-            spinlocks: 8191
-          vapic:
-            enabled: true
-      firmware:
-        uuid: c8f99fc8-20f5-46c4-85e5-2b841c547cef
-      machine:
-        type: q35
-      resources:
-        requests:
-          memory: 8Mi
-  status:
-    phase: Scheduling
-kind: List
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
 metadata:
-  resourceVersion: ""
-  selfLink: ""
+  annotations:
+    presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+    virtualmachinepreset.kubevirt.io/example-preset: kubevirt.io/v1alpha1
+  labels:
+    kubevirt.io/flavor: windows-10
+    kubevirt.io/nodeName: master
+  name: myvm
+  namespace: default
+spec:
+  domain:
+    devices: {}
+    features:
+      acpi:
+        enabled: true
+      apic:
+        enabled: true
+      hyperv:
+        relaxed:
+          enabled: true
+        spinlocks:
+          enabled: true
+          spinlocks: 8191
+        vapic:
+          enabled: true
+    firmware:
+      uuid: c8f99fc8-20f5-46c4-85e5-2b841c547cef
+    machine:
+      type: q35
+    resources:
+      requests:
+        memory: 8Mi
 ```
 
 Conflict Example
@@ -216,40 +209,25 @@ In this case the `VirtualMachine` Spec will remain unmodified. Use
 `kubectl get events` to show events.
 
 ```yaml
-apiVersion: v1
-items:
-- apiVersion: kubevirt.io/v1alpha1
-  kind: VirtualMachine
-  metadata:
-    annotations:
-      presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-    clusterName: ""
-    labels:
-      kubevirt.io/flavor: default-features
-    name: myvm
-    namespace: default
-    selfLink: /apis/kubevirt.io/v1alpha1/namespaces/default/virtualmachines/myvm
-  spec:
-    domain:
-      cpu:
-        cores: 6
-      devices: {}
-      features:
-        acpi:
-          enabled: true
-      firmware:
-        uuid: efaaa6e4-0002-44d6-9de1-5526b24615d1
-      machine:
-        type: q35
-      resources:
-        requests:
-          memory: 8Mi
-  status:
-    phase: Scheduling
-kind: List
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
 metadata:
-  resourceVersion: ""
-  selfLink: ""
+  annotations:
+    presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+  generation: 0
+  labels:
+    kubevirt.io/flavor: default-features
+  name: myvm
+  namespace: default
+spec:
+  domain:
+    cpu:
+      cores: 6
+    devices: {}
+    machine:
+      type: ""
+    resources: {}
+status: {}
 ```
 
 Calling `kubectl get events` would have a line like:
