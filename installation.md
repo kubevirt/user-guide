@@ -77,6 +77,11 @@ The most recent version of the tool can be retrieved from the [official release
 page](https://github.com/kubevirt/kubevirt/releases).
 
 ## Deploying on OpenShift
+
+There exist three ways on how to deploy KubeVirt on OpenShift.
+
+### Using command line interface
+
 Following [SCCs](https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html) need to be added prior `kubevirt.yaml` deployment:
 
 ```
@@ -85,7 +90,7 @@ oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubev
 ```
 
 **NOTE:** For Kubevirt **0.2.0**, following is required in addition to the SCCs above:
- 
+
 ```
 oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-infra
 ```
@@ -95,6 +100,18 @@ Once privileges are granted, the `kubevirt.yaml` can be deployed:
 ```
 kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 ```
+
+### From Service Catalog as an APB
+
+You can find KubeVirt in OpenShift Service Catalog and install it from there.
+In order to do that please follow the documentation of
+[KubeVirt APB repository](https://github.com/ansibleplaybookbundle/kubevirt-apb).
+
+### Using Ansible playbooks
+
+There is project [kubevirt-ansible](https://github.com/kubevirt/kubevirt-ansible)
+which provides a collection of playbooks to install KubeVirt and it's related
+components on top of OpenShift or Kubernetes clusters.
 
 ## Deploying from Source
 
