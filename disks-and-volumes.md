@@ -35,7 +35,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-lun
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -64,7 +64,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-disk
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -89,7 +89,7 @@ on the chipset the VM is configured to use:
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-disk
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -121,7 +121,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-floppy
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -151,7 +151,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-cdrom
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -196,7 +196,7 @@ may look like this:
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-cloudinitnocloud
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -239,7 +239,7 @@ like this:
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-pvc
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -357,7 +357,7 @@ docker push vmdisks/fedora25:latest
 Example: Attach the RegistryDisk as an ephemeral disk to a virtual machine.
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-registrydisk
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
