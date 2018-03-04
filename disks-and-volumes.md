@@ -21,6 +21,10 @@ A disk can be made accessible via four different types:
 All possible configuration options are available in the
 [Disk API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk).
 
+All types but **floppy** allow you to specify the `bus` attribute. The `bus` attribute determines
+how the disk will be presented to the Guest Operating System. **floppy** disks don't support
+the `bus` attribute: they are always attached to the `fdc` bus.
+
 ### lun
 
 A `lun` disk will expose the volume as a LUN device to the vm. This allows the
@@ -74,6 +78,34 @@ spec:
         volumeName: mypvc
         # This makes it a disk
         disk: {}
+  volumes:
+    - name: mypvc
+      persistentVolumeClaim:
+        claimName: mypvc
+```
+
+You can set the disk `bus` type, overriding the defaults, which in turn depend
+on the chipset the VM is configured to use:
+
+```
+metadata:
+  name: testvm-ephemeral
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        volumeName: mypvc
+        # This makes it a disk
+        disk:
+          # This makes it exposed as /dev/vda, being the only and thus first
+          # disk attached to the VM
+          bus: virtio
   volumes:
     - name: mypvc
       persistentVolumeClaim:
@@ -135,6 +167,8 @@ spec:
         cdrom:
           # This makes the cdrom writeable
           readOnly: false
+          # This makes the cdrom be exposed as SATA device
+          bus: sata
   volumes:
     - name: mypvc
       persistentVolumeClaim:
@@ -146,7 +180,6 @@ spec:
 Supported volume sources are
 
  * **cloudInitNoCloud**
- * **iscsi**
  * **persistentVolumeClaim**
  * **registryDisk**
 
@@ -189,40 +222,17 @@ spec:
           name: testsecret
 ```
 
-### iscsi
-
-Allows connecting ISCSI block storage to a vm disk.
-
-A simple example which attaches an `iscsi` block storage as a `cdrom` may look
-like this:
-
-```
-metadata:
-  name: testvm-ephemeral
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
-spec:
-  domain:
-    resources:
-      requests:
-        memory: 64M
-    devices:
-      disks:
-      - name: myiscsidisk
-        volumeName: myiscsi
-        cdrom: {}
-  volumes:
-    - name: myiscsi
-      iscsi:
-        iqn: iqn.2017-01.io.kubevirt:sn.42
-        lun: 2
-        targetPortal: iscsi-demo-target.kube-system.svc.cluster.local
-```
-
 ### PersistentVolumeClaim
 
-Allows connecting a `PersistentVolumeClaim` to a vm disk. Currently only
-support `PersistentVolumes` which are backed by `iscsi` volumes.
+Allows connecting a `PersistentVolumeClaim` to a vm disk.
+
+These types of disks make sense to use when the VirtualMachine's disk needs to
+persist after a VirtualMachine terminates. This allows for the VirtualMachine's
+data to remain persistent between restarts.
+
+For KubeVirt to be able to consume the disk present on a PersistentVolume's
+filesystem, the disk must be named **disk.img** and be placed in the root path
+of the filesystem. Currently the disk is also required to be in raw format.  
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look
 like this:
@@ -248,6 +258,7 @@ spec:
         claimName: mypvc
 ```
 
+
 ### registryDisk
 
 The Registry Disk feature provides the ability to store and distribute Virtual
@@ -259,7 +270,7 @@ pulled from the container registry and reside on the local node hosting the
 Virtual Machines that consume the disks.
 
 #### When to use a registryDisk
-
+ 
 Registry Disks are ephemeral storage devices that can be assigned to any number
 of active Virtual Machines. This makes them an ideal tool for users who want
 to replicate a large number of Virtual Machine workloads that do not require
