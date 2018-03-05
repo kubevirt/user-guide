@@ -11,6 +11,7 @@
     * [Access](access.md)
     * [Disks and Volumes](disks-and-volumes.md)
     * [Startup Scripts](startup-scripts.md)
+    * [Guest Operating System Information](guest-os-info.md)
     * [Virtualized Hardware Configuration](machine.md)
     * [Assigning VMs to Nodes](assign-vm-node.md)
   * [Controllers](workloads/controllers.md)
