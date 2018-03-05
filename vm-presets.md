@@ -106,7 +106,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      kubevirt.io/flavor: windows-10
+      kubevirt.io/os: win10
   domain:
     features:
       acpi: {}
@@ -123,7 +123,7 @@ version: v1
 metadata:
   name: myvm
   labels:
-    kubevirt.io/flavor: windows-10
+    kubevirt.io/os: win10
 spec:
   domain:
     firmware:
@@ -142,7 +142,7 @@ metadata:
     presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
     virtualmachinepreset.kubevirt.io/example-preset: kubevirt.io/v1alpha1
   labels:
-    kubevirt.io/flavor: windows-10
+    kubevirt.io/os: win10
     kubevirt.io/nodeName: master
   name: myvm
   namespace: default
