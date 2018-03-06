@@ -35,7 +35,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-lun
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -64,7 +64,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-disk
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -89,7 +89,7 @@ on the chipset the VM is configured to use:
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-disk
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -121,7 +121,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-floppy
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -151,7 +151,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-cdrom
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -196,7 +196,7 @@ may look like this:
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-cloudinitnocloud
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -239,7 +239,7 @@ like this:
 
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-pvc
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
@@ -256,6 +256,48 @@ spec:
     - name: mypvc
       persistentVolumeClaim:
         claimName: mypvc
+```
+
+### Ephemeral Volume
+
+An ephemeral volume is a local COW (copy on write) image that uses a network
+volume as a read-only backing store. With an ephemeral volume, the network
+backing store is never mutated. Instead all writes are stored on the ephemeral
+image which exists on local storage. KubeVirt dynamically generates the
+ephemeral images associated with a VM when the VM starts, and discards the
+ephemeral images when the VM stops.
+
+Ephemeral volumes are useful in any scenario where disk persistence is not
+desired. The COW image is discarded when VM reaches a final state (succeeded,
+failed).
+
+Currently, only `PersistentVolumeClaim` may be used as a backing store of the
+ephemeral volume.
+
+Up to date information on the supported backing stores can be found in the
+KubeVirt
+[API](http://www.kubevirt.io/api-reference/master/definitions.html#_v1_ephemeralvolumesource).
+
+```
+metadata:
+  name: testvm-ephemeral-pvc
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        volumeName: mypvc
+        lun: {}
+  volumes:
+    - name: mypvc
+      ephemeral:
+        persistentVolumeClaim:
+          claimName: mypvc
 ```
 
 
@@ -315,7 +357,7 @@ docker push vmdisks/fedora25:latest
 Example: Attach the RegistryDisk as an ephemeral disk to a virtual machine.
 ```
 metadata:
-  name: testvm-ephemeral
+  name: testvm-registrydisk
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 spec:
