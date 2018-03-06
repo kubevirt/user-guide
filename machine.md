@@ -252,6 +252,53 @@ spec:
       persistentVolumeClaim:
         claimname: myclaim
 ```
-
 See the [Features API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_features)
 for all available features and configuration options.
+
+## Resources Requests and Limits
+
+An optional `Resource` requests can be specified by the users to
+allow the scheduler to make a better decision in finding the most suitable Node
+to place the Virtual Machine on.
+
+```
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: myvm
+spec:
+  domain:
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "2"
+      limits:
+        memory: "2Gi"
+        cpu: "1"
+      disks:
+      - name: myimage
+        volumeName: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimname: myclaim
+```
+
+#### CPU
+Specifying CPU limits will determine the amount of `cpu shares` set on the
+control group the virual machine is running in, in other words, the amount of
+time Virtual Machine CPUs can execute on the assigned resources when there is a
+competition for CPU resources.
+
+For more information please refer to [How Pods with resource limits are run](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-limits-are-run)
+
+#### Memory Overhead
+Various virtual machine resources, such as a video adapter, IOThreads, and
+supplementary system software, consume additional memory from the Node, beyond
+the requested memory intended for the guest OS consumption. In order to provide
+a better estimate for the scheduler, this memory overhead will be calculated
+and added to the requested memory.
+
+Please see [How Pods with resource requests are scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled)
+for additional information on Resources Requests a Limits.
