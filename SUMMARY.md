@@ -7,6 +7,7 @@
 * [Workloads](workloads.md)
   * [Virtual Machines](workloads/virtual-machines.md)
     * [Creation](vm-creation.md)
+    * [Presets](vm-presets.md)
     * [Life-cycle](vm-life-cycle.md)
     * [Access](access.md)
     * [Disks and Volumes](disks-and-volumes.md)
