@@ -257,7 +257,7 @@ for all available features and configuration options.
 
 ## Resources Requests and Limits
 
-An optional `Resource` requests can be specified by the users to
+An optional resource request can be specified by the users to
 allow the scheduler to make a better decision in finding the most suitable Node
 to place the Virtual Machine on.
 
@@ -286,19 +286,19 @@ spec:
 ```
 
 #### CPU
-Specifying CPU limits will determine the amount of `cpu shares` set on the
-control group the virual machine is running in, in other words, the amount of
+Specifying CPU limits will determine the amount of cpu _shares_ set on the
+control group the Virtual Machine is running in, in other words, the amount of
 time Virtual Machine CPUs can execute on the assigned resources when there is a
 competition for CPU resources.
 
-For more information please refer to [How Pods with resource limits are run](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-limits-are-run)
+For more information please refer to [how Pods with resource limits are run](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-limits-are-run).
 
 #### Memory Overhead
-Various virtual machine resources, such as a video adapter, IOThreads, and
+Various Virtual Machine resources, such as a video adapter, IOThreads, and
 supplementary system software, consume additional memory from the Node, beyond
 the requested memory intended for the guest OS consumption. In order to provide
 a better estimate for the scheduler, this memory overhead will be calculated
 and added to the requested memory.
 
-Please see [How Pods with resource requests are scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled)
-for additional information on Resources Requests a Limits.
+Please see [how Pods with resource requests are scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled)
+for additional information on resources requests and limits.
