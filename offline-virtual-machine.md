@@ -10,14 +10,79 @@ VirtualMachine, that is created upon user request for virtual machine to start.
 
 ## When to use it
 
-Whenever you need to manipulate stopped virtual machine (changing/displaying
-configuration).
+Whenever you need to manipulate virtual machine (changing/displaying
+configuration) from within the Kubernetes cluster and do not want to loose
+it after it is stopped or deleted.
 
-## How to use it
+### Example
 
-The OfflineVirtualMachine is designed as a [Kubernetes CRD](https://kubernetes.io/docs/concepts/api-extension/custom-resources/).
-CRD implies that you can use the OfflineVirtualMachine as you would use any
-other Kubernetes object.
+The OfflineVirtualMachine is defined as any other Kubernetes object. Following
+is the example of OfflineVirtualMachine defined in minimal setup and
+cirros disk with cirros OS prepared.
+
+```yaml
+apiVersion: kubevirt.io/v1alpha1
+kind: OfflineVirtualMachine
+metadata:
+  name: my-vm
+spec:
+  running: false
+  selector:
+    template:
+      metadata:
+        labels:
+          anylabel: any_label
+    spec:
+      domain:
+        resources:
+          requests:
+            memory: 64M
+        devices:
+          disks:
+            - name: registrydisk
+              volumeName: registryvolume
+              disk:
+                bus: virtio
+            - name: cloudinitdisk
+              volumeName: cloudinitvolume
+              disk:
+                bus: virtio
+      volumes:
+        - name: registryvolume
+          registryDisk:
+            image: kubevirt/cirros-registry-disk-demo:devel
+```
+
+When setting the `spec.running = true` the VirtualMachine following VirtualMachine
+is created:
+
+```yaml
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: my-vm
+  labels:
+    anylabel: any_label
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+        - name: registrydisk
+          volumeName: registryvolume
+          disk:
+          bus: virtio
+        - name: cloudinitdisk
+          volumeName: cloudinitvolume
+          disk:
+            bus: virtio
+  volumes:
+    - name: registryvolume
+      registryDisk:
+        image: kubevirt/cirros-registry-disk-demo:devel
+```
 
 ### Commandline
 
@@ -26,49 +91,50 @@ you can use the kubectl command. The following are examples demonstrating how
 to do it.
 
 ```bash
-# Define an OfflineVirtualMachine:
+# Define an offline virtual machine:
 kubectl create -f myofflinevm.yaml
 
-# Start an OfflineVirtualMachine:
-kubectl patch offlinevirtualmachine myvm -p \
-    '{"spec":{"running" :"true"}}'
+# Start the virtual machine:
+kubectl patch offlinevirtualmachine myvm --type merge -p \
+    '{"spec":{"running" :true}}'
 
-# Look at OfflineVirtualMachine status and associated events:
+# Look at offline virtual machine status and associated events:
 kubectl describe offlinevirtualmachine myvm
 
-# Look at the now created VirtualMachine status and associated events:
+# Look at the now created virtual machine status and associated events:
 kubectl describe virtualmachine myvm
 
-# Stop an OfflineVirtualMachine:
-kubectl patch offlinevirtualmachine myvm -p \
-    '{"spec":{"running":"false"}}'
+# Stop the virtual machine:
+kubectl patch offlinevirtualmachine myvm --type merge -p \
+    '{"spec":{"running":false}}'
 
-# Implicit cascade delete (first deletes the vm and then the ovm)
+# Implicit cascade delete (first deletes the virtual machine and then the offline virtual machine)
 kubectl delete offlinevirtualmachine myvm
 
-# Explicit cascade delete (first deletes the vm and then the ovm)
+# Explicit cascade delete (first deletes the virtual machine and then the offline virtual machine)
 kubectl delete offlinevirtualmachine myvm --cascade=true
 
-# Orphan delete (The running vm is only detached, not deleted)
-# Recreating the ovm would lead to the adoption of the vm
+# Orphan delete (The running virtual machine is only detached, not deleted)
+# Recreating the offline virtual machine would lead to the adoption of the virtual machine
 kubectl delete offlinevirtualmachine myvm --cascade=false
 ```
 
-### REST API
+## How it works - Relationship between OfflineVirtualMachine and VirtualMachine
 
-Third party apps can utilize the Kubernetes REST API to manipulate the
+The OfflineVirtualMachine creates VirtualMachine once the `spec.running` is set
+to `true`. The newly created VirtualMachine occupies the same namespace as the
+mother OfflineVirtualMachine. It also has the same `metadata.name` as the
 OfflineVirtualMachine.
 
-The REST API copies the structure of the Kubernetes, so it can be accessed as
+When set `spec.running = true` the OfflineVirtualMachine will try to keep the
+VirtualMachine running. This means: If the VirtualMachine is turned off from
+within the guest or fails. It will recreate it and start it again. The only
+way to turn the VirtualMachine off is by setting `spec.running = false`.
 
-```text
-POST /apis/kubevirt.io/v1alpha1/namespaces/{namespace}/offlinevirtualmachine
-GET /apis/kubevirt.io/v1alpha1/namespaces/{namespace}/offlinevirtualmachine
-GET /apis/kubevirt.io/v1alpha1/namespaces/{namespace}/offlinevirtualmachine/{name}
-DELETE /apis/kubevirt.io/v1alpha1/namespaces/{namespace}/offlinevirtualmachine/{name}
-PUT /apis/kubevirt.io/v1alpha1/namespaces/{namespace}/offlinevirtualmachine/{name}
-PATCH /apis/kubevirt.io/v1alpha1/namespaces/{namespace}/offlinevirtualmachine/{name}
-```
-
-### The deletion of objects
-WIP
+The OfflineVirtualMachine uses the VirtualMachine spec in `spec.spec` to
+create new VirtualMachine. The principle is exactly the same as in the
+[Deployment controller in Kubernetes](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment).
+To summarize, the spec is applied only when new VirtualMachine is created.
+Also the `spec.spec` does not propagate to the already running VirtualMachine.
+To apply the changes, VirtualMachine first have to be stopped and then
+started again.
