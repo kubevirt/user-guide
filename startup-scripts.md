@@ -80,7 +80,7 @@ spec:
   volumes:
     - name: registryvolume
       registryDisk:
-        image: kubevirt/cirros-registry-disk-demo:devel
+        image: kubevirt/cirros-registry-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
         userData: |
@@ -140,7 +140,7 @@ spec:
   volumes:
     - name: registryvolume
       registryDisk:
-        image: kubevirt/cirros-registry-disk-demo:devel
+        image: kubevirt/cirros-registry-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
         userDataBase64: $(cat startup-script.sh | base64 -w0)
@@ -210,7 +210,7 @@ spec:
   volumes:
     - name: registryvolume
       registryDisk:
-        image: kubevirt/cirros-registry-disk-demo:devel
+        image: kubevirt/cirros-registry-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
         userDataSecretRef: my-vm-secret
@@ -268,7 +268,7 @@ spec:
   volumes:
     - name: registryvolume
       registryDisk:
-        image: kubevirt/fedora-atomic-registry-disk-demo:devel
+        image: kubevirt/fedora-atomic-registry-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
         userDataBase64: $(cat startup-script | base64 -w0)
@@ -328,7 +328,7 @@ spec:
   volumes:
     - name: registryvolume
       registryDisk:
-        image: kubevirt/fedora-atomic-registry-disk-demo:devel
+        image: kubevirt/fedora-atomic-registry-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
         userDataBase64: $(cat startup-script.sh | base64 -w0)
