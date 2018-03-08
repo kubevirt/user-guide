@@ -1,4 +1,4 @@
-Virtual Machine Presets
+What is a VirtualMachinePreset
 =============================
 
 `VirtualMachinePresets` are an extension to general `VirtualMachine`
@@ -8,7 +8,46 @@ will be applied to the existing spec for the `VirtualMachine`. This allows
 for re-use of common settings that should apply to multiple `VirtualMachines`.
 
 
-Usage
+Create a VirtualMachinePreset
+=============================
+
+You can describe a `VirtualMachinePreset` in a YAML file. For example the
+`vm-preset.yaml` file below desribes a `VirtualMachinePreset` that requests
+a `VirtualMachine` be created with a resource request for 64M of RAM.
+
+```yaml
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachinePreset
+metadata:
+  name: small-qemu
+spec:
+  selector:
+    matchLabels:
+      kubevirt.io/size: small
+  domain:
+    resources:
+      requests:
+        memory: 64M
+```
+
+ * Create a `VirtualMachinePreset` based on that YAML file:
+
+```
+kubectl create -f vmpreset.yaml
+```
+
+Required Fields
+------------------------
+
+As with most Kubernetes resources, a `VirtualMachinePreset` requires
+`apiVersion`, `kind` and `metadata` fields.
+
+Additionally `VirtualMachinePresets` also need a `spec` section. While not
+technically required to satisfy syntax, it is strongly recommended to include a
+`Selector` in the `spec` section, otherwise a `VirtualMachinePreset` will match
+all `VirtualMachines` in a namespace.
+
+VirtalMachine Selector
 ------------------------
 
 KubeVirt uses Kubernetes `Labels` and `Selectors` to determine which
@@ -18,7 +57,7 @@ is applied to a `VirtualMachine`, the `VirtualMachine` will be marked with an
 Annotation upon completion.
 
 Any domain structure can be listed in the `spec` of a `VirtualMachinePreset`.
-e.g. Clock, Features, Memory, CPU, or Devices such network interfaces.  All
+e.g. Clock, Features, Memory, CPU, or Devices such as network interfaces.  All
 elements of the `spec` section of a `VirtualMachinePreset` will be applied
 to the `VirtualMachine`.
 
@@ -27,6 +66,16 @@ the `VirtualMachine` will be marked with an annotation to indicate that it
 was applied. If a conflict occurs while a `VirtualMachinePreset` is being
 applied that portion of the `VirtualMachinePreset` will be skipped.
 
+Any valid `Label` can be matched against, but it is suggested that a general
+rule of thumb is to use os/shortname, e.g. `kubevirt.io/os: rhel7`.
+
+Updating a VirtualMachinePreset
+------------------------
+
+If a `VirtualMachinePreset` is modified, changes will *not* be applied to
+existing `VirtualMachines`. This applies to both the `Selector` indicating which
+`VirtualMachines` should be matched, and also the `Domain` section which lists
+the settings that should be applied to a `VirtalMachine`.
 
 Conflicts
 ------------------------
@@ -55,7 +104,7 @@ Events:
   2m          2m           1         myvm.1515bbb8d397f258                       VirtualMachine                                     Warning   Conflict                  virtualmachine-preset-controller   Unable to apply VirtualMachinePreset 'example-preset': spec.cpu: &{6} != &{4}
 ```
 
-Creation and Usage
+Usage
 ------------------------
 
 `VirtualMachinePresets` are namespaced resources, so should be created in the
@@ -73,7 +122,7 @@ metadata:
   name: example-preset
   selector:
     matchLabels:
-      kubevirt.io/flavor: foo
+      kubevirt.io/os: win10
   ...
 ```
 
@@ -87,9 +136,76 @@ version: v1
 metadata:
   name: myvm
   labels:
-    kubevirt.io/flavor: foo
+    kubevirt.io/os: win10
   ...
 ```
+
+Matching Multiple `VirtualMachines`
+------------------------
+
+The main use case for `VirtualMachinePresets` is to create re-usable settings
+that can be applied across various machines. Multiple methods are available to
+match the labels of a `VirtualMachine` using selectors.
+
+* matchLabels: Each `VirtualMachine` can use a specific label shared by all
+    instances.
+* matchExpressions: Logical operators for sets can be used to match multiple
+    labels.
+
+Using matchLabels, the label used in the `VirtualMachinePreset` must match one
+of the labels of the `VirtualMachine`:
+
+```yaml
+selector:
+  matchLabels:
+    kubevirt.io/memory: large
+```
+
+would match
+
+```yaml
+metadata:
+  labels:
+    kubevirt.io/memory: large
+    kubevirt.io/os: win10
+```
+
+or
+
+```yaml
+metadata:
+  labels:
+    kubevirt.io/memory: large
+    kubevirt.io/os: fedora27
+```
+
+
+Using matchExpressions allows for matching multiple labels of `VirtualMachines`
+without needed to explicity list a label.
+
+```yaml
+selector:
+  matchExpressions:
+    - {key: kubevirt.io/os, operator: In, values: [fedora27, fedora26]}
+```
+
+would match both:
+
+```yaml
+metadata:
+  labels:
+    kubevirt.io/os: fedora26
+```
+
+```yaml
+metadata:
+  labels:
+    kubevirt.io/os: fedora27
+```
+
+The Kubernetes [documentation](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
+has a detailed explanation. Examples are provided below.
+
 
 Examples
 =============================
@@ -232,3 +348,201 @@ status: {}
 
 Calling `kubectl get events` would have a line like:
 2m          2m           1         myvm.1515bbb8d397f258                       VirtualMachine                                     Warning   Conflict                  virtualmachine-preset-controller   Unable to apply VirtualMachinePreset 'example-preset': spec.cpu: &{6} != &{4}
+
+
+Matching Multiple VirtualMachines Using MatchLabels
+------------------------
+
+These `VirtualMachines` have multiple labels, one that is unique and one that is
+shared.
+
+Note: This example breaks from the convention of using os-shortname as a `Label`
+for demonstration purposes.
+
+```yaml
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachinePreset
+metadata:
+  name: twelve-cores
+spec:
+  selector:
+    matchLabels:
+      kubevirt.io/cpu: dodecacore
+  domain:
+    cpu:
+      cores: 12
+---
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: windows-10
+  labels:
+    kubevirt.io/os: win10
+    kubevirt.io/cpu: dodecacore
+spec:
+---
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: windows-7
+  labels:
+    kubevirt.io/os: win7
+    kubevirt.io/cpu: dodecacore
+spec:
+  terminationGracePeriodSeconds: 0
+```
+
+Adding this `VirtualMachinePreset` and these `VirtualMachines` will result in:
+
+```yaml
+apiVersion: v1
+items:
+- apiVersion: kubevirt.io/v1alpha1
+  kind: VirtualMachine
+  metadata:
+    annotations:
+      presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+      virtualmachinepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha1
+    labels:
+      kubevirt.io/cpu: dodecacore
+      kubevirt.io/os: win10
+    name: windows-10
+    namespace: default
+  spec:
+    domain:
+      cpu:
+        cores: 12
+      devices: {}
+      features:
+        acpi:
+          enabled: true
+      firmware:
+        uuid: 859badd3-6346-4410-9ba9-52fa9bc5b90d
+      machine:
+        type: q35
+      resources:
+        requests:
+          memory: 8Mi
+- apiVersion: kubevirt.io/v1alpha1
+  kind: VirtualMachine
+  metadata:
+    annotations:
+      presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+      virtualmachinepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha1
+    labels:
+      kubevirt.io/cpu: dodecacore
+      kubevirt.io/os: win7
+    name: windows-7
+    namespace: default
+  spec:
+    domain:
+      cpu:
+        cores: 12
+      devices: {}
+      features:
+        acpi:
+          enabled: true
+      firmware:
+        uuid: 36a106d3-6d6b-43ab-9a42-781e052dd03d
+      machine:
+        type: q35
+      resources:
+        requests:
+          memory: 8Mi
+    terminationGracePeriodSeconds: 0
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
+```
+
+Matching Multiple VirtualMachines Using MatchExpressions
+------------------------
+
+This `VirtualMachinePreset` has a matchExpression that will match two labels:
+`kubevirt.io/os: win10` and `kubevirt.io/os: win7`.
+
+```yaml
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachinePreset
+metadata:
+  name: windows-vms
+spec:
+  selector:
+    matchExpressions:
+      - {key: kubevirt.io/os, operator: In, values: [win10, win7]}
+  domain:
+    resources:
+      machine:
+        type: q35
+      requests:
+        memory: 128M
+---
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: smallvm
+  labels:
+    kubevirt.io/os: win10
+spec:
+  terminationGracePeriodSeconds: 60
+---
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: largevm
+  labels:
+    kubevirt.io/os: win7
+spec:
+  terminationGracePeriodSeconds: 120
+```
+
+Applying the preset to both VM's will result in:
+
+
+```yaml
+apiVersion: v1
+items:
+- apiVersion: kubevirt.io/v1alpha1
+  kind: VirtualMachine
+  metadata:
+    annotations:
+      presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+      virtualmachinepreset.kubevirt.io/windows-vms: kubevirt.io/v1alpha1
+    labels:
+      kubevirt.io/os: win7
+    name: largevm
+    namespace: default
+  spec:
+    domain:
+      devices: {}
+      machine:
+        type: ""
+      resources:
+        requests:
+          memory: 128M
+    terminationGracePeriodSeconds: 120
+- apiVersion: kubevirt.io/v1alpha1
+  kind: VirtualMachine
+  metadata:
+    annotations:
+      presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+      virtualmachinepreset.kubevirt.io/windows-vms: kubevirt.io/v1alpha1
+    labels:
+      kubevirt.io/os: win10
+    name: smallvm
+    namespace: default
+  spec:
+    domain:
+      devices: {}
+      machine:
+        type: ""
+      resources:
+        requests:
+          memory: 128M
+    terminationGracePeriodSeconds: 60
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
+```
