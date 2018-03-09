@@ -96,7 +96,7 @@ kubectl create -f myofflinevm.yaml
 
 # Start the virtual machine:
 kubectl patch offlinevirtualmachine myvm --type merge -p \
-    '{"spec":{"running" :true}}'
+    '{"spec":{"running":true}}'
 
 # Look at offline virtual machine status and associated events:
 kubectl describe offlinevirtualmachine myvm
