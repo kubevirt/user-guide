@@ -86,17 +86,16 @@ spec:
 
 ### Commandline
 
-Whenever you want to manipulate the OfflineVirtualMachine through the commandline
-you can use the kubectl command. The following are examples demonstrating how
-to do it.
+Whenever you want to manipulate the OfflineVirtualMachine through the
+commandline you can use the `kubectl` and `virtctl` commands. The following are
+examples demonstrating how to do it.
 
 ```bash
 # Define an offline virtual machine:
 kubectl create -f myofflinevm.yaml
 
 # Start the virtual machine:
-kubectl patch offlinevirtualmachine myvm --type merge -p \
-    '{"spec":{"running":true}}'
+virtctl start myvm
 
 # Look at offline virtual machine status and associated events:
 kubectl describe offlinevirtualmachine myvm
@@ -105,19 +104,33 @@ kubectl describe offlinevirtualmachine myvm
 kubectl describe virtualmachine myvm
 
 # Stop the virtual machine:
-kubectl patch offlinevirtualmachine myvm --type merge -p \
-    '{"spec":{"running":false}}'
+virtctl stop myvm
 
-# Implicit cascade delete (first deletes the virtual machine and then the offline virtual machine)
+# Implicit cascade delete (first deletes the virtual machine and then the
+# offline virtual machine)
 kubectl delete offlinevirtualmachine myvm
 
-# Explicit cascade delete (first deletes the virtual machine and then the offline virtual machine)
+# Explicit cascade delete (first deletes the virtual machine and then the
+# offline virtual machine)
 kubectl delete offlinevirtualmachine myvm --cascade=true
 
 # Orphan delete (The running virtual machine is only detached, not deleted)
-# Recreating the offline virtual machine would lead to the adoption of the virtual machine
+# Recreating the offline virtual machine would lead to the adoption of the
+# virtual machine
 kubectl delete offlinevirtualmachine myvm --cascade=false
 ```
+
+Note: `virtctl start` and `virtctl stop` are a shortcut to a more verbose
+variation of the `kubectl` command:
+
+```bash
+kubectl patch offlinevirtualmachine myvm --type merge -p \
+    '{"spec":{"running":true}}'
+
+kubectl patch offlinevirtualmachine myvm --type merge -p \
+    '{"spec":{"running":false}}'
+```
+
 
 ## How it works - Relationship between OfflineVirtualMachine and VirtualMachine
 
