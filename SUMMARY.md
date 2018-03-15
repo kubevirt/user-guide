@@ -9,6 +9,7 @@
     * [Creation](vm-creation.md)
     * [Presets](vm-presets.md)
     * [Life-cycle](vm-life-cycle.md)
+    * [Expose Service](service.md)
     * [Access](access.md)
     * [Disks and Volumes](disks-and-volumes.md)
     * [Startup Scripts](startup-scripts.md)
