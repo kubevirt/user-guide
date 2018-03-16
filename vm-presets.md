@@ -395,65 +395,44 @@ spec:
 Adding this `VirtualMachinePreset` and these `VirtualMachines` will result in:
 
 ```yaml
-apiVersion: v1
-items:
-- apiVersion: kubevirt.io/v1alpha1
-  kind: VirtualMachine
-  metadata:
-    annotations:
-      presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-      virtualmachinepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha1
-    labels:
-      kubevirt.io/cpu: dodecacore
-      kubevirt.io/os: win10
-    name: windows-10
-    namespace: default
-  spec:
-    domain:
-      cpu:
-        cores: 12
-      devices: {}
-      features:
-        acpi:
-          enabled: true
-      firmware:
-        uuid: 859badd3-6346-4410-9ba9-52fa9bc5b90d
-      machine:
-        type: q35
-      resources:
-        requests:
-          memory: 8Mi
-- apiVersion: kubevirt.io/v1alpha1
-  kind: VirtualMachine
-  metadata:
-    annotations:
-      presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-      virtualmachinepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha1
-    labels:
-      kubevirt.io/cpu: dodecacore
-      kubevirt.io/os: win7
-    name: windows-7
-    namespace: default
-  spec:
-    domain:
-      cpu:
-        cores: 12
-      devices: {}
-      features:
-        acpi:
-          enabled: true
-      firmware:
-        uuid: 36a106d3-6d6b-43ab-9a42-781e052dd03d
-      machine:
-        type: q35
-      resources:
-        requests:
-          memory: 8Mi
-    terminationGracePeriodSeconds: 0
-kind: List
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
 metadata:
-  resourceVersion: ""
-  selfLink: ""
+  annotations:
+    presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+    virtualmachinepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha1
+  labels:
+    kubevirt.io/cpu: dodecacore
+    kubevirt.io/os: win10
+  name: windows-10
+spec:
+  domain:
+    cpu:
+      cores: 12
+    devices: {}
+    resources:
+      requests:
+        memory: 4Gi
+---
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  annotations:
+    presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+    virtualmachinepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha1
+  labels:
+    kubevirt.io/cpu: dodecacore
+    kubevirt.io/os: win7
+  name: windows-7
+spec:
+  domain:
+    cpu:
+      cores: 12
+    devices: {}
+    resources:
+      requests:
+        memory: 4Gi
+  terminationGracePeriodSeconds: 0
 ```
 
 Matching Multiple VirtualMachines Using MatchExpressions
@@ -473,8 +452,6 @@ spec:
       - {key: kubevirt.io/os, operator: In, values: [win10, win7]}
   domain:
     resources:
-      machine:
-        type: q35
       requests:
         memory: 128M
 ---
@@ -512,12 +489,8 @@ items:
     labels:
       kubevirt.io/os: win7
     name: largevm
-    namespace: default
   spec:
     domain:
-      devices: {}
-      machine:
-        type: ""
       resources:
         requests:
           memory: 128M
@@ -531,18 +504,10 @@ items:
     labels:
       kubevirt.io/os: win10
     name: smallvm
-    namespace: default
   spec:
     domain:
-      devices: {}
-      machine:
-        type: ""
       resources:
         requests:
           memory: 128M
     terminationGracePeriodSeconds: 60
-kind: List
-metadata:
-  resourceVersion: ""
-  selfLink: ""
 ```
