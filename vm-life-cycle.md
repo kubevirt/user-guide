@@ -18,6 +18,21 @@ In order to start a VirtualMachine, you just need to create a `VirtualMachine` o
 $ kubectl create -f vm.yaml
 ```
 
+Alternatively, a Virtual Machine can be created and started from an OpenShift
+template using `oc` client (see [OpenShift Integration guide](see
+openshift-integration.md)):
+
+```bash
+$ oc process -f cluster/vm-template-fedora.yaml -p NAME=testvm CPU_CORES=2 | oc create -f -
+$ oc patch offlinevirtualmachine testvm --type merge -p '{"spec":{"running":true}}'
+```
+
+The example above shows how to launch an OfflineVirtualMachine (see [Offline
+Virtual Machine user guide](offline-virtual-machine.md)), from
+[cluster/vm-template-fedora.yaml](kubevirt/kubevirt/blob/master/cluster/vm-template-fedora.yaml)
+template, that is named `testvm` and it is restricted to 2 CPU cores.
+
+
 ### Listing virtual machines
 
 VirtualMachines can be listed by querying for VirtualMachine objects:

@@ -131,6 +131,17 @@ kubectl patch offlinevirtualmachine myvm --type merge -p \
     '{"spec":{"running":false}}'
 ```
 
+If you have deployed KubeVirt on top of OpenShift you would prefer to use `oc`
+command instead (see [OpenShift integration user guide](openshift-integration.md))
+
+```bash
+oc patch offlinevirtualmachine myvm --type merge -p \
+    '{"spec":{"running":true}}'
+
+oc patch offlinevirtualmachine myvm --type merge -p \
+    '{"spec":{"running":false}}'
+```
+
 
 ## How it works - Relationship between OfflineVirtualMachine and VirtualMachine
 
