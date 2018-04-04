@@ -233,8 +233,11 @@ persist after a VirtualMachine terminates. This allows for the VirtualMachine's
 data to remain persistent between restarts.
 
 For KubeVirt to be able to consume the disk present on a PersistentVolume's
-filesystem, the disk must be named **disk.img** and be placed in the root path
+filesystem, the disk must be named `disk.img` and be placed in the root path
 of the filesystem. Currently the disk is also required to be in raw format.  
+
+**Important:** The `disk.img` image file needs to be owned by the user-id `107`
+in order to avoid permission issues.
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look
 like this:
