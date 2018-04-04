@@ -8,7 +8,7 @@ Once the VirtualMachine is started, in order to connect to a VirtualMachine, you
 
 Expose the SSH port \(TCP port 22\) of a VirtualMachine running on KubeVirt. Here is an example of a NodePort service:
 
-```text
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
