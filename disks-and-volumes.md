@@ -180,8 +180,10 @@ spec:
 Supported volume sources are
 
  * **cloudInitNoCloud**
+ * **ephemeral**
  * **persistentVolumeClaim**
  * **registryDisk**
+ * **emptyDisk**
 
 All possible configuration options are available in the
 [Volume API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume).
@@ -222,7 +224,7 @@ spec:
           name: testsecret
 ```
 
-### PersistentVolumeClaim
+### persistentVolumeClaim
 
 Allows connecting a `PersistentVolumeClaim` to a vm disk.
 
@@ -231,8 +233,11 @@ persist after a VirtualMachine terminates. This allows for the VirtualMachine's
 data to remain persistent between restarts.
 
 For KubeVirt to be able to consume the disk present on a PersistentVolume's
-filesystem, the disk must be named **disk.img** and be placed in the root path
+filesystem, the disk must be named `disk.img` and be placed in the root path
 of the filesystem. Currently the disk is also required to be in raw format.  
+
+**Important:** The `disk.img` image file needs to be owned by the user-id `107`
+in order to avoid permission issues.
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look
 like this:
@@ -258,7 +263,7 @@ spec:
         claimName: mypvc
 ```
 
-### Ephemeral Volume
+### ephemeral
 
 An ephemeral volume is a local COW (copy on write) image that uses a network
 volume as a read-only backing store. With an ephemeral volume, the network
@@ -378,3 +383,51 @@ spec:
 
 Note that a `registryDisk` is file-based and can therefore not be attached as a
 `lun` device to the vm.
+
+### emptyDisk
+
+An `emptyDisk` works similar like an `emptyDir` in Kubernetes. An extra sparse
+`qcow2` disk will be allocated and it will live as long as the VirtualMachine.
+Thus it will survive guest side VirtualMachine reboots, but not a
+VirtualMachine recreation. The disk `capacity` needs to be specified.
+
+Example: Boot cirros with an extra `emptyDisk` with a size of `2GiB`:
+```
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: testvm-nocloud
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: registrydisk
+        volumeName: registryvolume
+        disk:
+          bus: virtio
+      - name: emptydisk
+        volumeName: emptydiskvolume
+        disk:
+          bus: virtio
+  volumes:
+    - name: registryvolume
+      registryDisk:
+        image: kubevirt/cirros-registry-disk-demo:latest
+    - name: emptydiskvolume
+      emptyDisk:
+        capacity: 2Gi
+```
+
+#### When to use an emptyDisk
+
+Ephemeral Virtual Machines very often come with read-only root images and
+limited tmpfs space. In many cases this is not enough to install application
+dependencies and provide enough disk space for the application data. While this
+data is not critical and we can loose it, it is still needed for the
+application to function properly during its lifetime. Here an `emptyDisk` can
+help. Such an empty disk is most of the time mounted somewhere in `/var/lib` or
+`/var/run`.
