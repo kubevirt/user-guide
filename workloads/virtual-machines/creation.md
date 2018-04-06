@@ -2,7 +2,7 @@
 
 ## API Overview
 
-With the installation of KubeVirt, new types are added to the Kubernetes API to managed Virtual Machines.
+With the installation of KubeVirt, new types are added to the Kubernetes API to manage Virtual Machines.
 
 You can interact with the new resources \(via `kubectl`\) as you would with any other API resource.
 

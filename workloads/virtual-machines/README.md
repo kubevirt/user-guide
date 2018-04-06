@@ -2,8 +2,8 @@
 
 The `VirtualMachine` type conceptionally has two parts:
 
-* Informations for making scheduling decisions
-* Informations about the virtual machine ABI
+* Information for making scheduling decisions
+* Information about the virtual machine ABI
 
 Every `VirtualMachine` object represents a single running virtual machine instance.
 

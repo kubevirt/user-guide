@@ -33,7 +33,7 @@ spec:
         claimName: mypvc
 ```
 
-Thus the scheduler will only shedule the vm to nodes which contain these labels in their metadata. It works exactly like the Pods `nodeSelector`. See the [Pod nodeSelector Documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) for more examples.
+Thus the scheduler will only schedule the vm to nodes which contain these labels in their metadata. It works exactly like the Pods `nodeSelector`. See the [Pod nodeSelector Documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) for more examples.
 
 ## Affinity and anti-affinity
 

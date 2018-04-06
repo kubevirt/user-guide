@@ -52,7 +52,7 @@ NAME           TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE
 nodeportsvc    NodePort   172.30.232.73   <none>        27017:30000/TCP   5m
 ```
 
-Connect to the VirtualMachine by using a node IP and node port outside the clusternetwork:
+Connect to the VirtualMachine by using a node IP and node port outside the cluster network:
 
 ```bash
 $ ssh cirros@$NODE_IP -p 30000
@@ -74,7 +74,7 @@ NAME        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
 vmservice   ClusterIP   172.30.3.149   <none>        27017/TCP   2m
 ```
 
-You can connect to the VirtualMachine by service IP and service port inside the clusternetwork:
+You can connect to the VirtualMachine by service IP and service port inside the cluster network:
 
 ```bash
 $ ssh cirros@172.30.232.73 -p 27017
