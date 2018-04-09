@@ -1,12 +1,12 @@
 # Presets
 
-## What is a VirtualMachinePreset
+## What is a VirtualMachinePreset?
 
 `VirtualMachinePresets` are an extension to general `VirtualMachine` configuration behaving much like `PodPresets` from Kubernetes. When a `VirtualMachine` is created, any applicable `VirtualMachinePresets` will be applied to the existing spec for the `VirtualMachine`. This allows for re-use of common settings that should apply to multiple `VirtualMachines`.
 
 ## Create a VirtualMachinePreset
 
-You can describe a `VirtualMachinePreset` in a YAML file. For example the `vm-preset.yaml` file below desribes a `VirtualMachinePreset` that requests a `VirtualMachine` be created with a resource request for 64M of RAM.
+You can describe a `VirtualMachinePreset` in a YAML file. For example, the `vm-preset.yaml` file below describes a `VirtualMachinePreset` that requests a `VirtualMachine` be created with a resource request for 64M of RAM.
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
@@ -37,11 +37,11 @@ Additionally `VirtualMachinePresets` also need a `spec` section. While not techn
 
 ### VirtalMachine Selector
 
-KubeVirt uses Kubernetes `Labels` and `Selectors` to determine which `VirtualMachinePresets` apply to any given `VirtualMachine`, similarly to how `PodPresets` work in Kubernetes. If any setting from a `VirtualMachinePreset` is applied to a `VirtualMachine`, the `VirtualMachine` will be marked with an Annotation upon completion.
+KubeVirt uses Kubernetes `Labels` and `Selectors` to determine which `VirtualMachinePresets` apply to a given `VirtualMachine`, similarly to how `PodPresets` work in Kubernetes. If a setting from a `VirtualMachinePreset` is applied to a `VirtualMachine`, the `VirtualMachine` will be marked with an Annotation upon completion.
 
-Any domain structure can be listed in the `spec` of a `VirtualMachinePreset`. e.g. Clock, Features, Memory, CPU, or Devices such as network interfaces. All elements of the `spec` section of a `VirtualMachinePreset` will be applied to the `VirtualMachine`.
+Any domain structure can be listed in the `spec` of a `VirtualMachinePreset`, e.g. Clock, Features, Memory, CPU, or Devices such as network interfaces. All elements of the `spec` section of a `VirtualMachinePreset` will be applied to the `VirtualMachine`.
 
-Once a `VirtualMachinePreset` is successfully applied to a `VirtualMachine`, the `VirtualMachine` will be marked with an annotation to indicate that it was applied. If a conflict occurs while a `VirtualMachinePreset` is being applied that portion of the `VirtualMachinePreset` will be skipped.
+Once a `VirtualMachinePreset` is successfully applied to a `VirtualMachine`, the `VirtualMachine` will be marked with an annotation to indicate that it was applied. If a conflict occurs while a `VirtualMachinePreset` is being applied, that portion of the `VirtualMachinePreset` will be skipped.
 
 Any valid `Label` can be matched against, but it is suggested that a general rule of thumb is to use os/shortname, e.g. `kubevirt.io/os: rhel7`.
 
@@ -51,7 +51,7 @@ If a `VirtualMachinePreset` is modified, changes will _not_ be applied to existi
 
 ### Conflicts
 
-`VirtualMachinePresets` use a similar conflict resolution strategy to Kubernetes `PodPresets`. If a portion of the domain spec is present in both a `VirtualMachine` and a `VirtualMachinePreset` and both resources have the identical information, then no conflict will occur and `VirtualMachine` creation will continue normally. If however there is a conflict between the resources, an Event will be created indicating which `DomainSpec` element of which `VirtualMachinePreset` was problematic. For example: If both the `VirtualMachine` and `VirtualMachinePreset` define a `CPU`, but use a different number of `Cores`, KubeVirt will note the conflict.
+`VirtualMachinePresets` use a conflict resolution strategy similar to Kubernetes `PodPresets`. If a portion of the domain spec is present in both a `VirtualMachine` and a `VirtualMachinePreset` and both resources have the identical information, then no conflict will occur and `VirtualMachine` creation will continue normally. If there is a conflict between the resources, an Event will be created indicating which `DomainSpec` element of which `VirtualMachinePreset` was problematic. For example, if both the `VirtualMachine` and `VirtualMachinePreset` define a `CPU`, but use a different number of `Cores`, KubeVirt will note the conflict.
 
 If any settings from the `VirtualMachinePreset` were successfully applied, the `VirtualMachine` will still be annotated.
 
@@ -135,7 +135,7 @@ metadata:
     kubevirt.io/os: fedora27
 ```
 
-Using matchExpressions allows for matching multiple labels of `VirtualMachines` without needed to explicity list a label.
+Using matchExpressions allows for matching multiple labels of `VirtualMachines` without needing to explicity list a label.
 
 ```yaml
 selector:

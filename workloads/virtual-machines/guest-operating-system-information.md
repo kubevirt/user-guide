@@ -1,6 +1,6 @@
 # Guest Operating System Information
 
-Guest operating system identity for the Virtual Machine will be provided by the label `kubevirt.io/os` :
+Guest operating system identity for the VirtualMachine will be provided by the label `kubevirt.io/os` :
 
 ```text
 metadata:
@@ -17,7 +17,7 @@ The `kubevirt.io/os` label is based on the short OS identifier from [libosinfo](
 
 ## Use with presets
 
-A Virtual Machine Preset representing an operating system with a `kubevirt.io/os` label could be applied on any given Virtual Machine that have and match the`kubevirt.io/os` label.
+A VirtualMachinePreset representing an operating system with a `kubevirt.io/os` label could be applied on any given VirtualMachine that have and match the`kubevirt.io/os` label.
 
 Default presets for the OS identifiers above are included in the current release.
 
@@ -132,5 +132,5 @@ spec:
         claimName: my-windows-image
 ```
 
-For more information see [Virtual Machine Presets](presets.md)
+For more information see [VirtualMachinePresets](presets.md)
 

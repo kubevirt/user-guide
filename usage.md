@@ -1,6 +1,6 @@
 # Usage
 
-Using KubeVirt should be fairly nautral if you are used to work with Kubernetes.
+Using KubeVirt should be fairly natural if you are used to working with Kubernetes.
 
 The primary way of using KubeVirt is by working with the KubeVirt kinds in the Kubernetes API:
 
