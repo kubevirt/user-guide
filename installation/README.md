@@ -23,7 +23,7 @@ There are several distributions of Kubernetes, you need to decide on one and dep
 
 Hardware with virtualization support is recommended. You can use virt-host-validate to ensure that your hosts are capable of running virtualization workloads:
 
-```text
+```bash
 $ virt-host-validate qemu
   QEMU: Checking for hardware virtualization                                 : PASS
   QEMU: Checking if device /dev/kvm exists                                   : PASS
@@ -75,20 +75,20 @@ There are three ways to deploy KubeVirt on OpenShift.
 
 The following [SCCs](https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html) need to be added prior `kubevirt.yaml` deployment:
 
-```text
+```bash
 oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-privileged
 oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-controller
 ```
 
 **NOTE:** For Kubevirt **0.2.0**, following is required in addition to the SCCs above:
 
-```text
+```bash
 oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-infra
 ```
 
 Once privileges are granted, the `kubevirt.yaml` can be deployed:
 
-```text
+```bash
 kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 ```
 

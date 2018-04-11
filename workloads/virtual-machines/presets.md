@@ -25,7 +25,7 @@ spec:
 
 * Create a `VirtualMachinePreset` based on that YAML file:
 
-```text
+```bash
 kubectl create -f vmpreset.yaml
 ```
 
@@ -57,7 +57,7 @@ If any settings from the `VirtualMachinePreset` were successfully applied, the `
 
 In the event that a conflict occurs, KubeVirt will create an `Event`. `kubectl get events` can be used to show all `Events`. For example:
 
-```text
+```bash
 $ kubectl get events
 ....
 Events:

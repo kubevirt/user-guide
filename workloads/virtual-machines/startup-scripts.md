@@ -32,7 +32,7 @@ In order to assign a custom userdata script to a VirtualMachine using this metho
 
 In the example below, a SSH key is stored in the cloudInitNoCloud Volume's userData field as clean text. There is a corresponding disks entry that references the cloud-init volume and assigns it to the VM's device.
 
-```text
+```bash
 # Create a VM manifest with the startup script
 # a cloudInitNoCloud volume's userData field.
 
@@ -80,7 +80,7 @@ In the example below, a simple bash script is base64 encoded and stored in the c
 
 _Users also have the option of storing the startup script in a Kubernetes Secret and referencing the Secret in the VM's spec. Examples further down in the document illustrate how that is done._
 
-```text
+```bash
 # Create a simple startup script
 
 cat << END > startup-script.sh
@@ -134,7 +134,7 @@ Multiple VirtualMachine specs can reference the same Kubernetes Secret containin
 
 Below is an example of how to create a Kubernetes Secret containing a startup script and reference that Secret in the VM's spec.
 
-```text
+```bash
 # Create a simple startup script
 
 cat << END > startup-script.sh
@@ -200,7 +200,7 @@ More cloud-config examples can be found here: [Cloud-init Examples](https://clou
 
 Below is an example of using cloud-config to inject an SSH key for the default user \(fedora in this case\) of a [Fedora Atomic](https://getfedora.org/en/atomic/download/) disk image.
 
-```text
+```bash
 # Create the cloud-init cloud-config userdata.
 cat << END > startup-script
 #cloud-config
@@ -255,7 +255,7 @@ Depending on the boot image in use, users may have a mixed experience using clou
 
 Below is an example of creating a user and injecting SSH keys for that user using a script instead of cloud-config.
 
-```text
+```bash
 cat << END > startup-script.sh
 #!/bin/bash
 export NEW_USER="foo"
@@ -312,7 +312,7 @@ Depending on the operating system distribution in use, cloud-init output is ofte
 
 Example of connecting to console using virtctl:
 
-```text
+```bash
 virtctl console <name of vm>
 ```
 

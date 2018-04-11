@@ -23,7 +23,7 @@ A `lun` disk will expose the volume as a LUN device to the VM. This allows the V
 
 A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `lun` device to the VM:
 
-```text
+```yaml
 metadata:
   name: testvm-lun
 apiVersion: kubevirt.io/v1alpha1
@@ -51,7 +51,7 @@ A `disk` disk will expose the volume as an ordinary disk to the VM.
 
 A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `disk` device to the VM:
 
-```text
+```yaml
 metadata:
   name: testvm-disk
 apiVersion: kubevirt.io/v1alpha1
@@ -75,7 +75,7 @@ spec:
 
 You can set the disk `bus` type, overriding the defaults, which in turn depends on the chipset the VM is configured to use:
 
-```text
+```yaml
 metadata:
   name: testvm-disk
 apiVersion: kubevirt.io/v1alpha1
@@ -106,7 +106,7 @@ A `floppy` disk will expose the volume as a floppy drive to the VM.
 
 A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `floppy` device to the VM:
 
-```text
+```yaml
 metadata:
   name: testvm-floppy
 apiVersion: kubevirt.io/v1alpha1
@@ -134,7 +134,7 @@ A `cdrom` disk will expose the volume as a cdrom drive to the VM. It is read-onl
 
 A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `floppy` device to the VM:
 
-```text
+```yaml
 metadata:
   name: testvm-cdrom
 apiVersion: kubevirt.io/v1alpha1
@@ -178,7 +178,7 @@ Allows attaching `cloudInitNoCloud` data-sources to the VM. If the VM contains a
 
 A simple example which attaches a `Secret` as a cloud-init `disk` datasource may look like this:
 
-```text
+```yaml
 metadata:
   name: testvm-cloudinitnocloud
 apiVersion: kubevirt.io/v1alpha1
@@ -218,7 +218,7 @@ For KubeVirt to be able to consume the disk present on a PersistentVolume's file
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look like this:
 
-```text
+```yaml
 metadata:
   name: testvm-pvc
 apiVersion: kubevirt.io/v1alpha1
@@ -249,7 +249,7 @@ Currently, only `PersistentVolumeClaim` may be used as a backing store of the ep
 
 Up-to-date information on supported backing stores can be found in the [KubeVirt API](http://www.kubevirt.io/api-reference/master/definitions.html#_v1_ephemeralvolumesource).
 
-```text
+```yaml
 metadata:
   name: testvm-ephemeral-pvc
 apiVersion: kubevirt.io/v1alpha1
@@ -293,7 +293,7 @@ Using this base image, users can inject a VirtualMachine disk into a container i
 
 Example: Inject a VirtualMachine disk into a container image.
 
-```text
+```yaml
 cat << END > Dockerfile
 FROM kubevirt.io/registry-disk-v1alpha
 ADD fedora25.qcow2 /disk
@@ -304,13 +304,13 @@ docker build -t vmdisks/fedora25:latest .
 
 Example: Upload the RegistryDisk container image to a registry.
 
-```text
+```yaml
 docker push vmdisks/fedora25:latest
 ```
 
 Example: Attach the RegistryDisk as an ephemeral disk to a VM.
 
-```text
+```yaml
 metadata:
   name: testvm-registrydisk
 apiVersion: kubevirt.io/v1alpha1
@@ -339,7 +339,7 @@ An `emptyDisk` works similar to an `emptyDir` in Kubernetes. An extra sparse `qc
 
 Example: Boot cirros with an extra `emptyDisk` with a size of `2GiB`:
 
-```text
+```yaml
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 metadata:

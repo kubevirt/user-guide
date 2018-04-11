@@ -2,7 +2,7 @@
 
 Guest operating system identity for the VirtualMachine will be provided by the label `kubevirt.io/os` :
 
-```text
+```yaml
 metadata:
   name: myvm
   labels:

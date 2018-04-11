@@ -15,7 +15,7 @@ Users and Service Accounts can be granted access to virtual machine console/VNC 
 
 Below is an example of a ClusterRole which grants access to all virtual machine consoles and VNC.
 
-```text
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
@@ -32,7 +32,7 @@ rules:
 
 The ClusterRole above provides access to virtual machines across all namespaces. In order to reduce the scope to a single namespace, use a Role object instead.
 
-```text
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
 metadata:
