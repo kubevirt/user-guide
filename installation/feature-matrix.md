@@ -25,7 +25,7 @@ Migrations are temporarily removed and will be re-enabled soon. Track [\#676](ht
 
 ## Virtual Machine API
 
-The following table lists the major features of the Virutal Machine API.
+The following table lists the major features of the Virtual Machine API.
 
 | Virtual Machine Feature | Available since | Required Kubernetes and kubectl Version |
 | --- | --- | --- |

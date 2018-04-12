@@ -108,7 +108,7 @@ See the [Developer Getting Started Guide](https://github.com/kubevirt/kubevirt/b
 
 > Note: Updates are not yet supported.
 
-Usually it is sufficient to re-apply the manifests for performing a roling update:
+Usually it is sufficient to re-apply the manifests for performing a rolling update:
 
 ```bash
 $ RELEASE=v0.4.0
