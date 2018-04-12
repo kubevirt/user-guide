@@ -5,7 +5,7 @@ Once a virtual machine is started you are able to connect to the consoles it exp
 * Serial Console
 * Graphical Console \(VNC\)
 
-> Note: You need to have `virtctl` [installed](../../installation/) to gain access to the VirtualMachine.
+> Note: You need to have `virtctl` [installed](/installation/?id=client-side-virtctl-deployment) to gain access to the VirtualMachine.
 
 ## RBAC Permissions for Console/VNC Access
 
