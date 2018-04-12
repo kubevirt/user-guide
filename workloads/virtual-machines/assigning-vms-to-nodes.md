@@ -9,7 +9,7 @@ You can constrain the VM to only run on specific nodes or to prefer running on s
 
 Setting `spec.nodeSelector` requirements, constrains the scheduler to only schedule VMs on nodes, which contain the specified labels. In the following example the vm contains the labels `cpu: slow` and `storage: fast`:
 
-```text
+```yaml
 metadata:
   name: testvm-ephemeral
 apiVersion: kubevirt.io/v1alpha1
@@ -41,7 +41,7 @@ The `spec.affinity` field allows specifying hard- and soft-affinity for VMs. It 
 
 An example for `podAffinity` and `podAntiAffinity` may look like this:
 
-```text
+```yaml
 metadata:
   name: testvm-ephemeral
 apiVersion: kubevirt.io/v1alpha1

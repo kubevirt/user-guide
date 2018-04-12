@@ -8,7 +8,7 @@ QEMU is able to work with two different classes of chipsets for x86\_64, so call
 
 KubeVirt defaults to QEMU's newest q35 machine type. If a custom machine type is desired, it is configurable through the following structure:
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -40,7 +40,7 @@ All virtual machines currently use BIOS for booting. UEFI/OVMF is not yet suppor
 
 In order to provide a consistent view on the virtualized hardware for the guest OS, the SMBIOS UUID can be set to a constant value via `spec.firmware.uuid`:
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -68,7 +68,7 @@ spec:
 
 Setting the number of CPU cores is possible via `spec.domain.cpu.cores`. The following VM will have a CPU with `3` cores:
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -105,7 +105,7 @@ See the [Clock API Reference](https://kubevirt.github.io/api-reference/master/de
 
 If `utc` is specified, the VM's clock will be set to UTC.
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -130,7 +130,7 @@ spec:
 
 If `timezone` is specified, the VM's clock will be set to the specified local time.
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -160,7 +160,7 @@ spec:
 
 A pretty common timer configuration for VMs looks like this:
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -206,7 +206,7 @@ KubeVirt supports a range of virtualization features which may be tweaked in ord
 
 A common feature configuration is shown by the following example:
 
-```text
+```yaml
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 metadata:
@@ -242,7 +242,7 @@ See the [Features API Reference](https://kubevirt.github.io/api-reference/master
 
 An optional resource request can be specified by the users to allow the scheduler to make a better decision in finding the most suitable Node to place the VM.
 
-```text
+```yaml
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 metadata:

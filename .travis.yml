@@ -1,0 +1,17 @@
+---
+
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#kubevirt"
+    on_success: change
+    on_failure: always
+
+addons:
+  apt:
+    packages:
+      - aspell
+      - aspell-en
+
+script:
+  - make test
