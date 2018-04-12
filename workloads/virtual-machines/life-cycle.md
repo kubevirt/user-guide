@@ -1,7 +1,7 @@
 # Life-cycle
 
-Every `VirtualMachine` represents a single virtual machine _instance_.  
-In general, the management of VirtualMachines is kept similar to how `Pods` are managed: Every VM that is defined in the cluster is expected to be running, just like Pods.  
+Every `VirtualMachine` represents a single virtual machine _instance_.
+In general, the management of VirtualMachines is kept similar to how `Pods` are managed: Every VM that is defined in the cluster is expected to be running, just like Pods.
 Deleting a VirtualMachine is equivalent to shutting it down, this is also equivalent to how Pods behave.
 
 FIXME needs to be reworked.
@@ -43,4 +43,3 @@ $ kubectl delete vms testvm
 ```
 
 > Note: Stopping a VirtualMachine implies that it will be deleted from the cluster. You will not be able to start this VirtualMachine object again.
-
