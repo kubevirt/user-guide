@@ -1,8 +1,8 @@
 # Life-cycle
 
 Every `VirtualMachine` represents a single virtual machine _instance_.  
-In general, the management of VirtualMachines is kept similar to how `Pods` are managed: Every Vm that is defined in the cluster is expected to be running, just like pods.  
-Deleting a VirtualMachine is equivalent to shutting it down, this is also equivalent to how pods behave.
+In general, the management of VirtualMachines is kept similar to how `Pods` are managed: Every VM that is defined in the cluster is expected to be running, just like Pods.  
+Deleting a VirtualMachine is equivalent to shutting it down, this is also equivalent to how Pods behave.
 
 FIXME needs to be reworked.
 

@@ -2,37 +2,37 @@
 
 ## Overview
 
-KubeVirt supports the ability to assign a startup script to a Virtual Machine instance which is executed automatically when the Virtual Machine initializes.
+KubeVirt supports the ability to assign a startup script to a VirtualMachine instance which is executed automatically when the VM initializes.
 
-These scripts are commonly used to automate injection of users and ssh keys into Virtual Machines in order to provide remote access to the machine. For example, a startup script can be used to inject credentials into a Virtual Machine that allows an Ansible job running on a remote host to access and provision the Virtual Machine.
+These scripts are commonly used to automate injection of users and SSH keys into VMs in order to provide remote access to the machine. For example, a startup script can be used to inject credentials into a VM that allows an Ansible job running on a remote host to access and provision the VM.
 
-Startup scripts are not limited to any specific use case though. They can be used to run any arbitrary script in a Virtual Machine on boot.
+Startup scripts are not limited to any specific use case though. They can be used to run any arbitrary script in a VM on boot.
 
 ### Cloud-init
 
-cloud-init is a widely adopted project used for early initialization of a Virtual Machine. Used by cloud providers such as AWS and GCP, cloud-init has established itself as the defacto method of providing startup scripts to Virtual Machines.
+cloud-init is a widely adopted project used for early initialization of a VM. Used by cloud providers such as AWS and GCP, cloud-init has established itself as the defacto method of providing startup scripts to VMs.
 
-Cloud-init documentation can be found at the link below. [Cloud-init Documentation](https://cloudinit.readthedocs.io/en/latest/)
+Cloud-init documentation can be found here: [Cloud-init Documentation](https://cloudinit.readthedocs.io/en/latest/).
 
-KubeVirt supports cloud-init's "NoCloud" datasource which involves injecting startup scripts into a Virtual Machine instance though the use of an ephemeral disk. Virtual Machines with the cloud-init package installed will detect the ephemeral disk and execute custom userdata script at boot.
+KubeVirt supports cloud-init's "NoCloud" datasource which involves injecting startup scripts into a VM instance though the use of an ephemeral disk. VMs with the cloud-init package installed will detect the ephemeral disk and execute custom userdata scripts at boot.
 
 ### Sysprep
 
-Sysprep is an automation tool for Windows that automates Windows installation, setup, and in custom software provisioning as well.
+Sysprep is an automation tool for Windows that automates Windows installation, setup, and custom software provisioning.
 
 **Sysprep support is currently not implemented by KubeVirt.** However it is a feature the KubeVirt upstream community has shown interest in. As a result, it is likely Sysprep support will make its way into a future KubeVirt release.
 
 ## Cloud-init Examples
 
-KubeVirt supports the cloud-init NoCloud datasource which involves injecting startup scripts through the use of a disk attached to the Virtual Machine.
+KubeVirt supports the cloud-init NoCloud datasource which involves injecting startup scripts through the use of a disk attached to the VM.
 
-In order to assign a custom userdata script to a VirtualMachine using this method, users must define disk and volume for the NoCloud datasource in the VirtualMachine's spec.
+In order to assign a custom userdata script to a VirtualMachine using this method, users must define a disk and a volume for the NoCloud datasource in the VirtualMachine's spec.
 
 ### Cloud-init user-data as clear text
 
-In the example below, a ssh-key is stored in the cloudInitNoCloud Volume's userData field as clean text. There's a corresponding disks entry that references the cloud-init volume and assigns it to the Virtual Machine's device.
+In the example below, a SSH key is stored in the cloudInitNoCloud Volume's userData field as clean text. There is a corresponding disks entry that references the cloud-init volume and assigns it to the VM's device.
 
-```text
+```bash
 # Create a VM manifest with the startup script
 # a cloudInitNoCloud volume's userData field.
 
@@ -76,11 +76,11 @@ kubectl create -f my-vm.yaml
 
 ### Cloud-init user-data as base64 string
 
-In the example below, a simple bash script is base64 encoded and stored in the cloudInitNoCloud Volume's userDataBase64 field. There's a corresponding disks entry that references the cloud-init volume and assigns it to the Virtual Machine's device.
+In the example below, a simple bash script is base64 encoded and stored in the cloudInitNoCloud Volume's userDataBase64 field. There is a corresponding disks entry that references the cloud-init volume and assigns it to the VM's device.
 
-_Users also have the option of storing the startup script in a Kubernetes secret and referencing the secret in the Virtual Machine's spec. Examples further down in the document outline how that is done._
+_Users also have the option of storing the startup script in a Kubernetes Secret and referencing the Secret in the VM's spec. Examples further down in the document illustrate how that is done._
 
-```text
+```bash
 # Create a simple startup script
 
 cat << END > startup-script.sh
@@ -128,13 +128,13 @@ kubectl create -f my-vm.yaml
 
 ### Cloud-init UserData as k8s Secret
 
-Users who wish to not store the cloud-init userdata directly in the Virtual Machine's spec have the option to store the userdata into a kubernetes secret and reference that secret in the spec.
+Users who wish to not store the cloud-init userdata directly in the VirtualMachine spec have the option to store the userdata into a Kubernetes Secret and reference that Secret in the spec.
 
-Multiple VirtualMachine spec's can reference the same kuberentes secret containing cloud-init userdata.
+Multiple VirtualMachine specs can reference the same Kubernetes Secret containing cloud-init userdata.
 
-Below is an example of how to create a kubernetes secret containing a startup script and reference that secret in the Virtual Machine's spec.
+Below is an example of how to create a Kubernetes Secret containing a startup script and reference that Secret in the VM's spec.
 
-```text
+```bash
 # Create a simple startup script
 
 cat << END > startup-script.sh
@@ -142,7 +142,7 @@ cat << END > startup-script.sh
 echo "Hi from startup script!"
 END
 
-# Store the startup script in a kubernetes secret
+# Store the startup script in a Kubernetes Secret
 
 cat << END > my-secret.yaml
 apiVersion: v1
@@ -154,8 +154,8 @@ data:
   userdata: $(cat startup-script.sh | base64 -w0)
 END
 
-# Create a VM manifest and reference the secret's name in the cloudInitNoCloud
-# volume's userDataSecretRef field
+# Create a VM manifest and reference the Secret's name in the cloudInitNoCloud
+# Volume's userDataSecretRef field
 
 cat << END > my-vm.yaml
 apiVersion: kubevirt.io/v1alpha1
@@ -187,20 +187,20 @@ spec:
         userDataSecretRef: my-vm-secret
 END
 
-# Post the secret first, and then post the VM
+# Post the Secret first, and then post the VM
 kubectl create -f my-secret.yaml
 kubectl create -f my-vm.yaml
 ```
 
 ### Injecting SSH keys with Cloud-init's Cloud-config
 
-In the examples so far, the cloud-init userdata script has been a bash script. Cloud-init has it's own configuration that can handle some common tasks such as user creation and ssh key injection.
+In the examples so far, the cloud-init userdata script has been a bash script. Cloud-init has it's own configuration that can handle some common tasks such as user creation and SSH key injection.
 
-More cloud-config examples can be found here. [Cloud-init Examples](https://cloudinit.readthedocs.io/en/latest/topics/examples.html)
+More cloud-config examples can be found here: [Cloud-init Examples](https://cloudinit.readthedocs.io/en/latest/topics/examples.html)
 
-Below is an example of using cloud-config to inject an ssh key for the default user \(fedora in this case\) of a [Fedora Atomic](https://getfedora.org/en/atomic/download/) disk image.
+Below is an example of using cloud-config to inject an SSH key for the default user \(fedora in this case\) of a [Fedora Atomic](https://getfedora.org/en/atomic/download/) disk image.
 
-```text
+```bash
 # Create the cloud-init cloud-config userdata.
 cat << END > startup-script
 #cloud-config
@@ -242,20 +242,20 @@ spec:
         userDataBase64: $(cat startup-script | base64 -w0)
 END
 
-# Post the Virtual Machine spec to KubeVirt.
+# Post the VirtualMachine spec to KubeVirt.
 kubectl create -f my-vm.yaml
 
-# Connect to VM with passwordless ssh key
+# Connect to VM with passwordless SSH key
 ssh -i <insert private key here> fedora@<insert ip here>
 ```
 
-### Inject SSH key using Custom Shell Script
+### Inject SSH key using a Custom Shell Script
 
-Depending on the boot image in use, users may have a mixed experience using cloud-init's cloud-config to create users and inject ssh keys.
+Depending on the boot image in use, users may have a mixed experience using cloud-init's cloud-config to create users and inject SSH keys.
 
-Below is an example of creating a user and injecting ssh keys for that user using a script instead of cloud-config.
+Below is an example of creating a user and injecting SSH keys for that user using a script instead of cloud-config.
 
-```text
+```bash
 cat << END > startup-script.sh
 #!/bin/bash
 export NEW_USER="foo"
@@ -299,20 +299,20 @@ spec:
         userDataBase64: $(cat startup-script.sh | base64 -w0)
 END
 
-# Post the Virtual Machine spec to KubeVirt.
+# Post the VirtualMachine spec to KubeVirt.
 kubectl create -f my-vm.yaml
 
-# Connect to VM with passwordless ssh key
+# Connect to VM with passwordless SSH key
 ssh -i <insert private key here> foo@<insert ip here>
 ```
 
 ## Debugging
 
-Depending on the operating system distribution in use, cloud-init output is often printed to the console output on bootup. When developing userdata scripts, users can connect to the Virtual Machine's console during bootup to debug.
+Depending on the operating system distribution in use, cloud-init output is often printed to the console output on boot up. When developing userdata scripts, users can connect to the VM's console during boot up to debug.
 
-Example of connecting to console using virtctl
+Example of connecting to console using virtctl:
 
-```text
+```bash
 virtctl console <name of vm>
 ```
 

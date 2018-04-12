@@ -1,14 +1,14 @@
 # Virtualized Hardware Configuration
 
-Finetuning different aspects of the hardware which are not device related \(BIOS, mainboard, ...\) is sometimes necessary to allow Guest Operating Systems to properly boot and reboot.
+Fine-tuning different aspects of the hardware which are not device related \(BIOS, mainboard, ...\) is sometimes necessary to allow guest operating systems to properly boot and reboot.
 
 ## Machine Type
 
 QEMU is able to work with two different classes of chipsets for x86\_64, so called machine types. The x86\_64 chipsets are i440fx \(also called pc\) and q35. They are versioned based on qemu-system-$ARCH, following the format `pc-${machine_type}-${qemu_version}`, e.g. `pc-i440fx-2.10` and `pc-q35-2.10`.
 
-KubeVirt defaults to QEMU's newest q35 machine type. If a custom machine type is desired, it is configurable via following structure:
+KubeVirt defaults to QEMU's newest q35 machine type. If a custom machine type is desired, it is configurable through the following structure:
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -30,7 +30,7 @@ spec:
         claimName: myclaim
 ```
 
-Comparision of the machine types' internals can be found [at QEMU wiki](https://wiki.qemu.org/Features/Q35).
+Comparison of the machine types' internals can be found [at QEMU wiki](https://wiki.qemu.org/Features/Q35).
 
 ## BIOS/UEFI
 
@@ -38,9 +38,9 @@ All virtual machines currently use BIOS for booting. UEFI/OVMF is not yet suppor
 
 ## SMBIOS Firmware
 
-In order to provide a consistent view on the virtualized hardware for the Guest OS, the SMBIOS UUID can be set to a constant value via `spec.firmware.uuid`:
+In order to provide a consistent view on the virtualized hardware for the guest OS, the SMBIOS UUID can be set to a constant value via `spec.firmware.uuid`:
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -66,9 +66,9 @@ spec:
 
 **Note**: This is not related to scheduling decisions or resource assignment.
 
-Setting the number of cpu cores is possible via `spec.domain.cpu.cores`. The following vm will have a cpu with `3` cores:
+Setting the number of CPU cores is possible via `spec.domain.cpu.cores`. The following VM will have a CPU with `3` cores:
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -94,7 +94,7 @@ spec:
 
 ### Guest time
 
-Sets the virtualized hardware clock inside the vm to a specific time. Available are
+Sets the virtualized hardware clock inside the VM to a specific time. Available options are
 
 * **utc**
 * **timezone**
@@ -103,9 +103,9 @@ See the [Clock API Reference](https://kubevirt.github.io/api-reference/master/de
 
 #### utc
 
-If `utc` is specified, the vm clock will be set to utc.
+If `utc` is specified, the VM's clock will be set to UTC.
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -128,9 +128,9 @@ spec:
 
 #### timezone
 
-If `timezone` is specified, the vm clock will be set to the specified local time.
+If `timezone` is specified, the VM's clock will be set to the specified local time.
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -158,9 +158,9 @@ spec:
 * **kvm**
 * **hyperv**
 
-A pretty common timer configuration for vms looks like this:
+A pretty common timer configuration for VMs looks like this:
 
-```text
+```yaml
 metadata:
   name: myvm
 spec:
@@ -190,15 +190,15 @@ spec:
         claimName: myclaim
 ```
 
-`hpet` is disabled,`pit` and `rtc` are configured to use a specific `tickPolicy`. Finally `hyperv` is made available too.
+`hpet` is disabled,`pit` and `rtc` are configured to use a specific `tickPolicy`. Finally, `hyperv` is made available too.
 
 See the [Timer API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_timer) for all possible configuration options.
 
-**Note**: Timer can be part of a machine type. Thus it may be necessary to explicitly disable them. We may in the future decide to add them via cluster-level defaulting, if they are part of a qemu machine definition.
+**Note**: Timer can be part of a machine type. Thus it may be necessary to explicitly disable them. We may in the future decide to add them via cluster-level defaulting, if they are part of a QEMU machine definition.
 
 ## Features
 
-KubeVirt supports a range of virtualization features which may be tweaked in order to allow non-linux based operating systems to properly boot. Most noteworthy are
+KubeVirt supports a range of virtualization features which may be tweaked in order to allow non-Linux based operating systems to properly boot. Most noteworthy are
 
 * **acpi** 
 * **apic**
@@ -206,7 +206,7 @@ KubeVirt supports a range of virtualization features which may be tweaked in ord
 
 A common feature configuration is shown by the following example:
 
-```text
+```yaml
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 metadata:
@@ -240,9 +240,9 @@ See the [Features API Reference](https://kubevirt.github.io/api-reference/master
 
 ## Resources Requests and Limits
 
-An optional resource request can be specified by the users to allow the scheduler to make a better decision in finding the most suitable Node to place the Virtual Machine on.
+An optional resource request can be specified by the users to allow the scheduler to make a better decision in finding the most suitable Node to place the VM.
 
-```text
+```yaml
 apiVersion: kubevirt.io/v1alpha1
 kind: VirtualMachine
 metadata:
@@ -268,13 +268,13 @@ spec:
 
 #### CPU
 
-Specifying CPU limits will determine the amount of cpu _shares_ set on the control group the Virtual Machine is running in, in other words, the amount of time Virtual Machine CPUs can execute on the assigned resources when there is a competition for CPU resources.
+Specifying CPU limits will determine the amount of _cpu_ _shares_ set on the control group the VM is running in, in other words, the amount of time the VM's CPUs can execute on the assigned resources when there is a competition for CPU resources.
 
 For more information please refer to [how Pods with resource limits are run](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-limits-are-run).
 
 #### Memory Overhead
 
-Various Virtual Machine resources, such as a video adapter, IOThreads, and supplementary system software, consume additional memory from the Node, beyond the requested memory intended for the guest OS consumption. In order to provide a better estimate for the scheduler, this memory overhead will be calculated and added to the requested memory.
+Various VM resources, such as a video adapter, IOThreads, and supplementary system software, consume additional memory from the Node, beyond the requested memory intended for the guest OS consumption. In order to provide a better estimate for the scheduler, this memory overhead will be calculated and added to the requested memory.
 
-Please see [how Pods with resource requests are scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled) for additional information on resources requests and limits.
+Please see [how Pods with resource requests are scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled) for additional information on resource requests and limits.
 

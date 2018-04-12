@@ -6,7 +6,7 @@ The KubeVirt incubator is a place to give projects associated with KubeVirt a ro
 
 [https://github.com/kubernetes-incubator/](https://github.com/kubernetes-incubator/)
 
-## Try out
+## Try it out
 
 * An easy to use demo: [https://github.com/kubevirt/demo](https://github.com/kubevirt/demo)
 
