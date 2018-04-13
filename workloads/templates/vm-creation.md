@@ -2,7 +2,7 @@
 
 ## Overview
 
-KubeVirt adds new types to the Kubernetes API to manage Virtual Machines and, in OpenShift, you can interact with these new resources via `oc` command as you would with any other Kubernetes API resource.
+The [OpenShift's template mechanism](https://docs.openshift.org/latest/dev_guide/templates.html) allows user to create a set of objects from a template.  KubeVirt takes benefit from this template mechanism to create OfflineVirtualMachines.
 
 In order to create a virtual machine via OpenShift CLI, you need to provide a template defining the corresponding object and its metadata.
 
@@ -48,32 +48,20 @@ objects:
           devices:
             disks:
               - name: disk0
-                volumeName: registryvolume
-                disk:
-                  bus: virtio
-              - name: disk1
-                volumeName: cloudinitvolume
-                disk:
-                  bus: virtio
+                volumeName: root
         volumes:
-          - name: registryvolume
-            registryDisk:
-              image: kubevirt/fedora-cloud-registry-disk-demo:latest
-          - name: cloudinitvolume
-            cloudInitNoCloud:
-              userDataBase64: I2Nsb3VkLWNvbmZpZwpwYXNzd29yZDogYXRvbWljCnNzaF9wd2F1dGg6IFRydWUKY2hwYXNzd2Q6IHsgZXhwaXJlOiBGYWxzZSB9Cg==
+          - name: root
+            persistentVolumeClaim:
+              claimName: myroot
 parameters:
 - name: NAME
   description: Name for the new VM
-- name: MEMORY
-  description: Amount of memory
-  value: 4096Mi
 - name: CPU_CORES
   description: Amount of cores
   value: "4"
 ```
 
-Note that the template above defines three free parameters \(`NAME`, `MEMORY` and `CPU_CORES`\) and `NAME` does not have specified default value.
+Note that the template above defines free parameters \(`NAME` and `CPU_CORES`\) and  the `NAME` parameter does not have specified default value.
 
 An OpenShift template has to be converted into the JSON file via `oc process` command, that also allows you to set the template parameters.
 
@@ -82,7 +70,14 @@ An OpenShift template has to be converted into the JSON file via `oc process` co
 ```bash
 $ oc process -f cluster/vm-template-fedora.yaml\
     -p NAME=testvm \
-    -p CPU_CORES=2 \
+    -p CPU_CORES=2
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+...
 ```
 
 The JSON file is usually applied directly by piping the processed output to `oc create` command.
@@ -92,6 +87,7 @@ $ oc process -f cluster/vm-template-fedora.yaml \
     -p NAME=testvm \
     -p CPU_CORES=2 \
     | oc create -f -
+offlinevirtualmachine "testvm" created
 ```
 
 The command above results in creating a Kubernetes object according to the specification given by the template \(in this example it is an instance of the OfflineVirtualMachine object\).
@@ -99,8 +95,11 @@ The command above results in creating a Kubernetes object according to the speci
 
 ## Starting virtual machine from the created object
 
-The virtual machine can be then started by patching Kubernetes API resources.
+The created object is now a regular OfflineVirtualMachine object and from now it can be controlled by accessing Kubernetes API resources.  The preferred way how to do this from within the OpenShift environment is to use `oc patch` command.
 
 ``` bash
 $ oc patch offlinevirtualmachine testvm --type merge -p '{"spec":{"running":true}}'
+offlinevirtualmachine "testvm" patched
 ```
+
+You can follow [Virtual Machine Lifecycle Guide](/workloads/virtual-machines/life-cycle) for further reference.
