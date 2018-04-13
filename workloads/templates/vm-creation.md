@@ -1,0 +1,105 @@
+# Virtual Machine Creation
+
+## Overview
+
+The [OpenShift's template mechanism](https://docs.openshift.org/latest/dev_guide/templates.html) allows user to create a set of objects from a template.  KubeVirt takes benefit from this template mechanism to create OfflineVirtualMachines.
+
+In order to create a virtual machine via OpenShift CLI, you need to provide a template defining the corresponding object and its metadata.
+
+!> Only `OfflineVirtualMachine` object is currently supported.
+
+
+## Example template
+
+Here is an example template that defines an instance of the `OfflineVirtualMachine` object:
+
+\([cluster/vm-template-fedora.yaml](cluster/vm-template-fedora.yaml)\):
+
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: fedora-vm-template
+  annotations:
+    description: "OpenShift KubeVirt Fedora VM template"
+    tags: "kubevirt,openshift,template,linux"
+  labels:
+    kubevirt.io/os: fedora27
+    miq.github.io/kubevirt-is-vm-template: "true"
+objects:
+- apiVersion: kubevirt.io/v1alpha1
+  kind: OfflineVirtualMachine
+  metadata:
+    name: ${NAME}
+    labels:
+      kubevirt-ovm: ovm-${NAME}
+  spec:
+    template:
+      metadata:
+        labels:
+          kubevirt-ovm: ovm-${NAME}
+      spec:
+        domain:
+          cpu:
+            cores: ${{CPU_CORES}}
+          resources:
+            requests:
+              memory: ${{MEMORY}}
+          devices:
+            disks:
+              - name: disk0
+                volumeName: root
+        volumes:
+          - name: root
+            persistentVolumeClaim:
+              claimName: myroot
+parameters:
+- name: NAME
+  description: Name for the new VM
+- name: CPU_CORES
+  description: Amount of cores
+  value: "4"
+```
+
+Note that the template above defines free parameters \(`NAME` and `CPU_CORES`\) and  the `NAME` parameter does not have specified default value.
+
+An OpenShift template has to be converted into the JSON file via `oc process` command, that also allows you to set the template parameters.
+
+!> You need to be logged in by `oc login` command.
+
+```bash
+$ oc process -f cluster/vm-template-fedora.yaml\
+    -p NAME=testvm \
+    -p CPU_CORES=2
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+...
+```
+
+The JSON file is usually applied directly by piping the processed output to `oc create` command.
+
+```bash
+$ oc process -f cluster/vm-template-fedora.yaml \
+    -p NAME=testvm \
+    -p CPU_CORES=2 \
+    | oc create -f -
+offlinevirtualmachine "testvm" created
+```
+
+The command above results in creating a Kubernetes object according to the specification given by the template \(in this example it is an instance of the OfflineVirtualMachine object\).
+
+
+## Starting virtual machine from the created object
+
+The created object is now a regular OfflineVirtualMachine object and from now it can be controlled by accessing Kubernetes API resources.  The preferred way how to do this from within the OpenShift environment is to use `oc patch` command.
+
+``` bash
+$ oc patch offlinevirtualmachine testvm --type merge -p '{"spec":{"running":true}}'
+offlinevirtualmachine "testvm" patched
+```
+
+You can follow [Virtual Machine Lifecycle Guide](/workloads/virtual-machines/life-cycle) for further reference.
