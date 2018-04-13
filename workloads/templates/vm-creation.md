@@ -13,8 +13,6 @@ In order to create a virtual machine via OpenShift CLI, you need to provide a te
 
 Here is an example template that defines an instance of the `OfflineVirtualMachine` object:
 
-\([cluster/vm-template-fedora.yaml](cluster/vm-template-fedora.yaml)\):
-
 ```yaml
 apiVersion: v1
 kind: Template
@@ -64,6 +62,8 @@ parameters:
 Note that the template above defines free parameters \(`NAME` and `CPU_CORES`\) and  the `NAME` parameter does not have specified default value.
 
 An OpenShift template has to be converted into the JSON file via `oc process` command, that also allows you to set the template parameters.
+
+A complete example can be found in the [KubeVirt repository](https://github.com/kubevirt/kubevirt/blob/master/cluster/vm-template-fedora.yaml).
 
 !> You need to be logged in by `oc login` command.
 
