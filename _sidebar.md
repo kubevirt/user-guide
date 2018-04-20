@@ -2,6 +2,7 @@
 
 * [Introduction](README.md)
 * [Installation](installation/README.md)
+  * [Admission controllers](installation/api-validation.md)
   * [Feature matrix](installation/feature-matrix.md)
 * [Usage](usage.md)
 * [Workloads](workloads/README.md)
