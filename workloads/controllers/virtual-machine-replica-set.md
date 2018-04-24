@@ -36,24 +36,33 @@ In this scenario, one still does not care about the state, but since re-provisio
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineReplicaSet
 metadata:
-  name: testvm-ephemeral
+  name: testreplicaset
 spec:
-  domain:
-    resources:
-      requests:
-        memory: 64M
-    devices:
-      disks:
-      - name: registrydisk
-        volumeName: registryvolume
-        disk:
-          dev: vda
-  volumes:
-    - name: registryvolume
-      registryDisk:
-        image: kubevirt/cirros-registry-disk-demo:latest
+  replicas: 3
+  selector:
+    matchLabels:
+      myvm: myvm
+  template:
+    metadata:
+      name: test
+      labels:
+        myvm: myvm
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+            name: registrydisk
+            volumeName: registryvolume
+        resources:
+          requests:
+            memory: 64M
+      volumes:
+      - name: registryvolume
+        registryDisk:
+          image: kubevirt/cirros-registry-disk-demo:latest
 ```
 
 Saving this manifest into `testreplicaset.yaml` and submitting it to Kubernetes will create three virtual machines based on the template.
@@ -91,7 +100,6 @@ Spec:
         Devices:
           Disks:
             Disk:
-              Dev:        vda
             Name:         registrydisk
             Volume Name:  registryvolume
         Resources:
