@@ -8,6 +8,7 @@
 * [Workloads](workloads/README.md)
   * [Virtual Machines](workloads/virtual-machines/README.md)
     * [Creation](workloads/virtual-machines/creation.md)
+    * [Node Eviction](workloads/virtual-machines/node-eviction.md)
     * [Presets](workloads/virtual-machines/presets.md)
     * [Life-cycle](workloads/virtual-machines/life-cycle.md)
     * [Expose Service](workloads/virtual-machines/expose-service.md)
