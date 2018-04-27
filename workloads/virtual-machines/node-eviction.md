@@ -58,7 +58,7 @@ associated with VMs as well as all other Pods are evicted from the target node.
 ## Re-enabling a Node after Eviction
 
 The **kubectl drain** will result in the target node being marked as
-unschedulable. This means the node will not be elgible for running new
+unschedulable. This means the node will not be eligible for running new
 VirtualMachines or Pods.
 
 If it is decided that the target node should become schedulable again, the
@@ -80,7 +80,7 @@ down the node.
 
 ## OfflineVirtualMachine Evictions
 
-The eviction of any VirtualMachine that is owned by a OfflineVirtualMachine
+The eviction of any VirtualMachine that is owned by an OfflineVirtualMachine
 set to **running=true** will result in the VirtualMachine being re-scheduled to
 another node.
 
