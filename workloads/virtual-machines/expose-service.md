@@ -7,7 +7,7 @@ Currently, three types of service are supported: `ClusterIP`, `NodePort` and `Lo
 
 ## Expose VirtualMachine as a ClusterIP service
 
-Expose the SSH port (22) of a VirtualMachine running on KubeVirt by creating a `ClusterIP service`. Here is an example of a ClusterIP service:
+Expose the SSH port (22) of a VirtualMachine running on KubeVirt by creating a `ClusterIP` service. Here is an example of a ClusterIP service:
 
 ```yaml
 apiVersion: v1
@@ -16,7 +16,7 @@ metadata:
   labels:
     kubevirt.io: virt-launcher
     kubevirt.io/domain: testvm-ephemeral
-  name: vmservice
+  name: cluster-ip-svc
 spec:
   ports:
   - port: 27017
@@ -28,23 +28,23 @@ spec:
   type: ClusterIP
 ```
 
-You just need to create this `ClusterIP service` by using `kubectl`:
+You just need to create this `ClusterIP` service by using `kubectl`:
 
 ```bash
-$ kubectl -f svc.yaml
+$ kubectl -f cluster-ip-svc.yaml
 # OR
 $ kubectl get pod
 NAME                                   READY     STATUS    RESTARTS   AGE
 virt-launcher-testvm-ephemeral-9bqv4   2/2       Running   0          10m
-$ kubectl expose pod virt-launcher-testvm-ephemeral-9bqv4 --port=27017 --target-port=22 --name=vmservice
+$ kubectl expose pod virt-launcher-testvm-ephemeral-9bqv4 --port=27017 --target-port=22 --name=cluster-ip-svc
 ```
 
 Query the service object:
 
 ```bash
 $ kubectl get service
-NAME        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
-vmservice   ClusterIP   172.30.3.149   <none>        27017/TCP   2m
+NAME             TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
+cluster-ip-svc   ClusterIP   172.30.3.149   <none>        27017/TCP   2m
 ```
 
 You can connect to the VirtualMachine by service IP and service port inside the cluster network:
@@ -53,9 +53,22 @@ You can connect to the VirtualMachine by service IP and service port inside the 
 $ ssh cirros@172.30.3.149 -p 27017
 ```
 
+In case that `target-port` is not provided, it is assumed that it is the same as the `port`. For example, if the pod is exposed via:
+
+```bash
+$ kubectl expose pod virt-launcher-testvm-ephemeral-9bqv4 --port=22 --name=cluster-ip-svc
+```
+
+You should connect to the VirtualMAchine using:
+
+
+```bash
+$ ssh cirros@172.30.3.149
+```
+
 ## Expose VirtualMachine as a NodePort service
 
-Expose the SSH port (22) of a VirtualMachine running on KubeVirt by creating a `NodePort service`. Here is an example of a NodePort service:
+Expose the SSH port (22) of a VirtualMachine running on KubeVirt by creating a `NodePort` service. Here is an example of a NodePort service:
 
 ```yaml
 apiVersion: v1
@@ -64,11 +77,10 @@ metadata:
   labels:
     kubevirt.io: virt-launcher
     kubevirt.io/domain: testvm-ephemeral
-  name: testnodeport
+  name: node-port-svc
 spec:
   externalTrafficPolicy: Cluster
   ports:
-  - name: nodeport
     nodePort: 30000
     port: 27017
     protocol: TCP
@@ -79,30 +91,38 @@ spec:
   type: NodePort
 ```
 
-You just need to create this `NodePort service` by using `kubectl`:
+You just need to create this `NodePort` service by using `kubectl`:
 
 ```bash
-$ kubectl -f nodeport.yaml
+$ kubectl -f node-port-svc.yaml
 # OR
 $ kubectl get pod
 NAME                                   READY     STATUS    RESTARTS   AGE
-virt-launcher-testvm-ephemeral-9bqv4   2/2       Running   0          10m
-$ kubectl expose pod virt-launcher-testvm-ephemeral-mxjh8 --port=27017 --target-port=22 --type=NodePort --name=nodeportsvc
+virt-launcher-testvm-ephemeral-mxjh8   2/2       Running   0          10m
+$ kubectl expose pod virt-launcher-testvm-ephemeral-mxjh8 --port=27017 --target-port=22 --type=NodePort --name=node-port-svc
 ```
 
 The service can be listed by querying for the service objects:
 
 ```bash
 $ kubectl get service
-NAME           TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE
-nodeportsvc    NodePort   172.30.232.73   <none>        27017:30000/TCP   5m
+NAME             TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE
+node-port-svc    NodePort   172.30.232.73   <none>        27017:30000/TCP   5m
 ```
 
-Connect to the VirtualMachine by using a node IP and node port outside the clusternetwork:
+Connect to the VirtualMachine by using a node IP and node port outside the cluster network:
 
 ```bash
 $ ssh cirros@$NODE_IP -p 30000
 ```
+
+Note that in this case, the machine could be also accessed via the Cluster IP, similarly to the previos case:
+
+```bash
+$ ssh cirros@172.30.232.73 -p 27017
+```
+
+Also note that unline in the case of the Cluster IP port, different services cannot use the same Node Port.
 
 ## Expose VirtualMachine as a LoadBalancer service
 
