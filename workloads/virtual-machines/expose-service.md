@@ -116,7 +116,7 @@ virt-launcher-testvm-ephemeral-mxjh8   2/2       Running   0          10m
 And then exposing the service on the pod:
 
 ```bash
-$ kubectl expose pod virt-launcher-testvm-ephemeral-mxjh8 --port=27017 --target-port=22 --type=NodePort --name=node-port-svc
+$ kubectl expose pod virt-launcher-testvm-ephemeral-mxjh8 --port=27017 --target-port=22 --type=NodePort --name=node-port
 ```
 
 The service can be listed by querying for the service objects:
