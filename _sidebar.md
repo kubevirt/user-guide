@@ -13,7 +13,7 @@
     * [Life-cycle](workloads/virtual-machines/life-cycle.md)
     * [Expose Service](workloads/virtual-machines/expose-service.md)
     * [Create Networkpolicy](workloads/virtual-machines/create-networkpolicy.md)
-    * [Access](workloads/virtual-machines/access.md)
+    * [Graphical and Console Access](workloads/virtual-machines/graphical-and-console-access.md)
     * [Disks and Volumes](workloads/virtual-machines/disks-and-volumes.md)
     * [Startup Scripts](workloads/virtual-machines/startup-scripts.md)
     * [Guest Operating System Information](workloads/virtual-machines/guest-operating-system-information.md)
