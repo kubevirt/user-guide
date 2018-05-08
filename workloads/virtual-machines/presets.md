@@ -159,6 +159,21 @@ metadata:
 
 The Kubernetes [documentation](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) has a detailed explanation. Examples are provided below.
 
+### Exclusions
+
+Since `VirtualMachinePresets` use `Selectors` that indicate which `VirtualMachines` their settings should apply to, there needs to exist a mechanism by which `VirtualMachines` can opt out of `VirtualMachinePresets` altogether. This is done using an annotation:
+
+```yaml
+kind: VirtualMachine
+version: v1
+metadata:
+  name: myvm
+  annotations:
+    virtualmachinepresets.admission.kubevirt.io/exclude: "true"
+  ...
+```
+
+
 ## Examples
 
 ### Simple `VirtualMachinePreset` Example
