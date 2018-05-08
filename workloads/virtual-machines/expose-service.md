@@ -157,3 +157,17 @@ lbsvc     LoadBalancer   172.30.27.5      172.29.10.235,172.29.10.235   27017:31
 
 Use `vinagre` client to connect your VirtualMachine by using the public IP and
 port.
+
+## Directly exposing the Pod behind the VirtualMachine
+
+It is also possible to use `kubectl expose` to expose the pod of the
+VirtualMachine directly:
+
+```bash
+$ kubectl get pod -l "special=key"
+NAME                                READY     STATUS    RESTARTS   AGE
+virt-launcher-windows2012r2-x9x2f   1/1       Running   0          9m
+$ kubectl expose pod virt-launcher-windows2012r2-x9x2f --port=27017 --target-port=3389 --name=lbsvc --type=LoadBalancer
+```
+
+We will soon provide a similar command for `virtctl`.
