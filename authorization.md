@@ -37,11 +37,14 @@ console and VNC.
 The **kubevirt.io:admin** ClusterRole grants users full permissions to all
 KubeVirt resources, including the ability to delete collections of resources.
 
-## Default Config Role
+The admin role also grants users access to view and modify the KubeVirt runtime
+config. This config exists within a configmap called **kubevirt-config** in the
+namespace the KubeVirt components are running.
 
-The **kubevirt.io:config** Role grants users access to view and modify the
-KubeVirt runtime config. This config exists within a configmap called
-**kubevirt-config** in the namespace the KubeVirt components are running.
+*NOTE* Users are only guaranteed the ability to modify the kubevirt runtime
+configuration if a ClusterRoleBinding is used. A RoleBinding will work to
+provide kubevirt-config access only if the RoleBinding targets the same
+namespace the kubevirt-config exists in.
 
 ### Binding Default ClusterRoles to Users
 
@@ -96,4 +99,13 @@ rules:
       - list
       - watch
       - deletecollection
+  - apiGroups: [""]
+    resources:
+      - configmaps
+    resourceNames:
+      - kubevirt-config
+    verbs:
+      - update
+      - get
+      - patch
 ```
