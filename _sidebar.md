@@ -5,7 +5,7 @@
   * [Admission controllers](installation/api-validation.md)
   * [Feature matrix](installation/feature-matrix.md)
 * [Usage](usage.md)
-* [Authorization](autorization.md)
+* [Authorization](authorization.md)
 * [Workloads](workloads/README.md)
   * [Virtual Machines](workloads/virtual-machines/README.md)
     * [Creation](workloads/virtual-machines/creation.md)
