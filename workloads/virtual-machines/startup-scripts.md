@@ -143,16 +143,7 @@ echo "Hi from startup script!"
 END
 
 # Store the startup script in a Kubernetes Secret
-
-cat << END > my-secret.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: my-vm-secret
-type: Opaque
-data:
-  userdata: $(cat startup-script.sh | base64 -w0)
-END
+kubectl create secret generic my-vm-secret --from-file=userdata=startup-script.sh
 
 # Create a VM manifest and reference the Secret's name in the cloudInitNoCloud
 # Volume's userDataSecretRef field
@@ -187,8 +178,7 @@ spec:
         userDataSecretRef: my-vm-secret
 END
 
-# Post the Secret first, and then post the VM
-kubectl create -f my-secret.yaml
+# Post the VM
 kubectl create -f my-vm.yaml
 ```
 
