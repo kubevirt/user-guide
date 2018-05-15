@@ -146,7 +146,7 @@ END
 kubectl create secret generic my-vm-secret --from-file=userdata=startup-script.sh
 
 # Create a VM manifest and reference the Secret's name in the cloudInitNoCloud
-# Volume's userDataSecretRef field
+# Volume's secretRef field
 
 cat << END > my-vm.yaml
 apiVersion: kubevirt.io/v1alpha1
@@ -175,7 +175,8 @@ spec:
         image: kubevirt/cirros-registry-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
-        userDataSecretRef: my-vm-secret
+        secretRef:
+          name: my-vm-secret
 END
 
 # Post the VM
