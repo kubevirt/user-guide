@@ -51,11 +51,38 @@ namespace the kubevirt-config exists in.
 The KubeVirt default ClusterRoles are granted to users by creating either a
 ClusterRoleBinding or RoleBinding object.
 
+#### Binding within All Namespaces
+
 With a ClusterRoleBinding, users receive the permissions granted by the role
 across all namespaces.
 
+#### Binding within Single Namespace
+
 With a RoleBinding, users receive the permissions granted by the role only
 within a targeted namespace.
+
+## Extending Kubernetes Default Roles with KubeVirt permissions
+
+The aggregated ClusterRole Kubernetes feature facilitates combining multiple
+ClusterRoles into a single aggregated ClusterRole. This feature is commonly
+used to extend the default Kubernetes roles with permissions to access custom
+resources that do not exist in the Kubernetes core.
+
+In order to extend the default Kubernetes roles to provide permission to access
+KubeVirt resources, we need to add the following labels to the KubeVirt
+ClusterRoles.
+
+```
+kubectl label clusterrole kubevirt.io:admin rbac.authorization.k8s.io/aggregate-to-admin=true
+kubectl label clusterrole kubevirt.io:edit rbac.authorization.k8s.io/aggregate-to-edit=true
+kubectl label clusterrole kubevirt.io:view rbac.authorization.k8s.io/aggregate-to-view=true
+```
+
+By adding these labels, any user with a RoleBinding or ClusterRoleBinding
+involving one of the default Kubernetes roles will automatically gain access
+to the equivalent KubeVirt roles as well.
+
+More information about aggregated cluster roles can be found [here](https://kubernetes.io/docs/admin/authorization/rbac/#aggregated-clusterroles)
 
 ## Creating Custom RBAC Roles
 
