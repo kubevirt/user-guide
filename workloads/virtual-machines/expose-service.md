@@ -39,13 +39,13 @@ spec:
       image: kubevirt/cirros-registry-disk-demo:latest
 ```
 
-we can expose its SSH port (22) by creating a `ClusterIP service`:
+we can expose its SSH port (22) by creating a `ClusterIP` service:
 
 ```yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: vmservice
+  name: cluster-ip
 spec:
   ports:
   - port: 27017
@@ -56,42 +56,67 @@ spec:
   type: ClusterIP
 ```
 
-You just need to create this `ClusterIP service` by using `kubectl`:
+You just need to create this `ClusterIP` service by using `kubectl`:
 
 ```bash
-$ kubectl create -f svc.yaml
+$ kubectl -f cluster-ip.yaml
 ```
 
-Query the service object:
+Or, by first getting the pod:
+
+```bash
+$ kubectl get pod
+NAME                                   READY     STATUS    RESTARTS   AGE
+virt-launcher-testvm-ephemeral-9bqv4   2/2       Running   0          10m
+```
+
+And then exposing the service on the pod:
+
+```
+$ kubectl expose pod virt-launcher-testvm-ephemeral-9bqv4 --port=27017 --target-port=22 --name=cluster-ip
+```
+
+Once the service is created, query the service object to get the IP that was allocated for the service:
 
 ```bash
 $ kubectl get service
-NAME        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
-vmservice   ClusterIP   172.30.3.149   <none>        27017/TCP   2m
+NAME             TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
+cluster-ip-svc   ClusterIP   172.30.3.149   <none>        27017/TCP   2m
 ```
 
-You can connect to the VirtualMachine by service IP and service port inside the cluster network:
+And connect to the VirtualMachine by cluster IP and service port, from inside the cluster network:
 
 ```bash
 $ ssh cirros@172.30.3.149 -p 27017
 ```
 
+In case that `target-port` is not provided, it is assumed that it is the same as the `port`. For example, if the pod is exposed via:
+
+```bash
+$ kubectl expose pod virt-launcher-testvm-ephemeral-9bqv4 --port=22 --name=cluster-ip-svc
+```
+
+You should connect to the VirtualMAchine using (as ssh uses port 22 by default):
+
+```bash
+$ ssh cirros@172.30.3.149
+```
+
 ## Expose VirtualMachine as a NodePort service
 
 Expose the SSH port (22) of a VirtualMachine running on KubeVirt by creating a
-`NodePort service`:
+`NodePort` service:
 
 ```yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: testnodeport
+  name: node-port
 spec:
   externalTrafficPolicy: Cluster
   ports:
-  - name: nodeport
+  - port: 27017
     nodePort: 30000
-    port: 27017
     protocol: TCP
     targetPort: 22
   selector:
@@ -99,31 +124,52 @@ spec:
   type: NodePort
 ```
 
-You just need to create this `NodePort service` by using `kubectl`:
+You just need to create this `NodePort` service by using `kubectl`:
 
 ```bash
-$ kubectl -f nodeport.yaml
+$ kubectl -f node-port.yaml
+```
+Or, by first getting the pod:
+
+```bash
+$ kubectl get pod
+NAME                                   READY     STATUS    RESTARTS   AGE
+virt-launcher-testvm-ephemeral-mxjh8   2/2       Running   0          10m
+```
+
+And then exposing the service on the pod:
+
+```bash
+$ kubectl expose pod virt-launcher-testvm-ephemeral-mxjh8 --port=27017 --target-port=22 --type=NodePort --name=node-port
 ```
 
 The service can be listed by querying for the service objects:
 
 ```bash
 $ kubectl get service
-NAME           TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE
-nodeportsvc    NodePort   172.30.232.73   <none>        27017:30000/TCP   5m
+NAME             TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE
+node-port-svc    NodePort   172.30.232.73   <none>        27017:30000/TCP   5m
 ```
 
 Connect to the VirtualMachine by using a node IP and node port outside the
-clusternetwork:
+cluster network:
 
 ```bash
 $ ssh cirros@$NODE_IP -p 30000
 ```
 
+Note that in this case, the machine could be also accessed via the cluster IP, from within the cluster, similarly to the previous case:
+
+```bash
+$ ssh cirros@172.30.232.73 -p 27017
+```
+
+Also note that while different cluster IPs may use the same port, different services cannot use the same node port.
+
 ## Expose VirtualMachine as a LoadBalancer service
 
 Expose the RDP port (3389) of a VirtualMachine running on KubeVirt by creating
-`LoadBalancer service`. Here is an example of a LoadBalancer service:
+`LoadBalancer` service. Here is an example of a LoadBalancer service:
 
 ```yaml
 apiVersion: v1
@@ -155,8 +201,7 @@ NAME      TYPE           CLUSTER-IP       EXTERNAL-IP                   PORT(S) 
 lbsvc     LoadBalancer   172.30.27.5      172.29.10.235,172.29.10.235   27017:31829/TCP   5s
 ```
 
-Use `vinagre` client to connect your VirtualMachine by using the public IP and
-port.
+Use `vinagre` client to connect your VirtualMachine by using the public IP (172.29.10.235) and port (31829) that were dynamically allocated for the service.
 
 ## Directly exposing the Pod behind the VirtualMachine
 
