@@ -49,13 +49,13 @@ Any valid `Label` can be matched against, but it is suggested that a general rul
 
 If a `VirtualMachinePreset` is modified, changes will _not_ be applied to existing `VirtualMachines`. This applies to both the `Selector` indicating which `VirtualMachines` should be matched, and also the `Domain` section which lists the settings that should be applied to a `VirtalMachine`.
 
-### Conflicts
+### Overrides
 
-`VirtualMachinePresets` use a conflict resolution strategy similar to Kubernetes `PodPresets`. If a portion of the domain spec is present in both a `VirtualMachine` and a `VirtualMachinePreset` and both resources have the identical information, then no conflict will occur and `VirtualMachine` creation will continue normally. If there is a conflict between the resources, an Event will be created indicating which `DomainSpec` element of which `VirtualMachinePreset` was problematic. For example, if both the `VirtualMachine` and `VirtualMachinePreset` define a `CPU`, but use a different number of `Cores`, KubeVirt will note the conflict.
+`VirtualMachinePresets` use a similar conflict resolution strategy to Kubernetes `PodPresets`. If a portion of the domain spec is present in both a `VirtualMachine` and a `VirtualMachinePreset` and both resources have the identical information, then creation of the `VirtualMachine` will continue normally. If however there is a difference between the resources, an Event will be created indicating which `DomainSpec` element of which `VirtualMachinePreset` was overridden. For example: If both the `VirtualMachine` and `VirtualMachinePreset` define a `CPU`, but use a different number of `Cores`, KubeVirt will note the difference.
 
-If any settings from the `VirtualMachinePreset` were successfully applied, the `VirtualMachine` will still be annotated.
+If any settings from the `VirtualMachinePreset` were successfully applied, the `VirtualMachine` will be annotated.
 
-In the event that a conflict occurs, KubeVirt will create an `Event`. `kubectl get events` can be used to show all `Events`. For example:
+In the event that there is a difference between the `Domains` of a `VirtualMachine` and `VirtualMachinePreset`, KubeVirt will create an `Event`. `kubectl get events` can be used to show all `Events`. For example:
 
 ```bash
 $ kubectl get events
@@ -96,6 +96,10 @@ metadata:
     kubevirt.io/os: win10
   ...
 ```
+
+### Conflicts
+
+When multiple `VirtualMachinePresets` match a particular `VirtualMachine`, if they specify the same settings within a Domain, those settings must match. If two `VirtualMachinePresets` have conflicting settings (e.g. for the number of CPU cores requested), an error will occur, and the `VirtualMachine` will enter the `Failed` state, and a `Warning` event will be emitted explaining which settings of which `VirtualMachinePresets` were problematic.
 
 ### Matching Multiple `VirtualMachines`
 
@@ -158,6 +162,21 @@ metadata:
 ```
 
 The Kubernetes [documentation](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/) has a detailed explanation. Examples are provided below.
+
+### Exclusions
+
+Since `VirtualMachinePresets` use `Selectors` that indicate which `VirtualMachines` their settings should apply to, there needs to exist a mechanism by which `VirtualMachines` can opt out of `VirtualMachinePresets` altogether. This is done using an annotation:
+
+```yaml
+kind: VirtualMachine
+version: v1
+metadata:
+  name: myvm
+  annotations:
+    virtualmachinepresets.admission.kubevirt.io/exclude: "true"
+  ...
+```
+
 
 ## Examples
 
