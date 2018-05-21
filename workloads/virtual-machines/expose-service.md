@@ -184,4 +184,4 @@ NAME      TYPE           CLUSTER-IP       EXTERNAL-IP                   PORT(S) 
 lbsvc     LoadBalancer   172.30.27.5      172.29.10.235,172.29.10.235   27017:31829/TCP   5s
 ```
 
-Use `vinagre` client to connect your VirtualMachine by using the public IP (172.29.10.235) and port (31829) that were dynamically allocated fo the service.
+Use `vinagre` client to connect your VirtualMachine by using the public IP (172.29.10.235) and port (31829) that were dynamically allocated of the service.
