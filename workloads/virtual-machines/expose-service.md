@@ -1,8 +1,7 @@
-# Expose Service
+# Expose VirtualMachines as a Services
 
-## Expose VirtualMachine as a Service
-
-Once the VirtualMachine is started, it could be exposed to others as a service.  Currently, three types
+Once the VirtualMachine is started, in order to connect to a VirtualMachine,
+you can create a `Service` object for a VirtualMachine. Currently, three types
 of service are supported: `ClusterIP`, `NodePort` and `LoadBalancer`. The
 default type is `ClusterIP`.
 
