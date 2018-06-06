@@ -1,6 +1,27 @@
-# Virtual network interfaces and Networks
+# Interfaces and Networks
 
-In order to provide network connectivity to a guest OS, users must specify an `interface`. Every interface has to specify the `network` it should be connected, from the list of networks set in the spec, referenced by `name`.
+An `interface` defines a virtual network interface of a virtual machine.
+
+A `network` specifies the backend of an `interface` and controlls to which logical or physical device it is connected to.
+
+Often there is more than one way to connect an `interface` to a `network`. A user can control this connection by choosing between different options.
+However, at time of writing this document there is only a single way to connect interfaces and pods, and this method is `delegateIp`.
+
+## Default network connectivity of a virtual machine
+
+> **Note:** Currently, only a single interface is supported, and this must be connected to the pod network.
+
+By default - thus if nothing else is specified - a virtual machine will get a single network interface connected to the pod network.
+
+## Customizing network interfaces and networks
+
+In order customize the network connectivity of a virtual machine, users must provide
+
+- a list of interfaces and
+- a list of networks each of the interfaces is connected to
+
+The `name` property of an interface and network items defines which interface is connected to which network.
+This mean sthat if an interface is named `red`, then it will be connected to a network which is also named `red`:
 
 ```yaml
 kind: VM
@@ -8,19 +29,53 @@ spec:
   devices:
     interfaces:
       - name: red
-        bridge: ##
+        bridge: ## Define how the interface is connected to a network
           delegateIp: true # offers the ip in case that the source has an ip
   networks:
   - name: red
     pod: {} # Stock pod network
 ```
 
-- Networks
-A list of networks that represent a physical device that can be attached to the Virtual Machine network interface.
+## Backend connection support matrix
 
-- Interfaces
-A list of Virtual interfaces that can be created for the virtual machine. The interface also provides a mechanism that will be used to connect to the physical device specified by the network.
+||||
+|--:|:--:|:--:|
+| Backend / Connection | `bridge` | `bridge.delegateIp` |
+|`pod` | Ethernet | IP |
 
-**Currently, only a single interface, connected to a pod network is supported.**
+## Available backends
 
-**Note:** By not specifying any interfaces and networks, pod network interface will be bridged and it's MAC and IP will be delegated to the VM.
+| Backend | Description |
+|--|--|
+| `pod` | This represents the default interface present in each Kubernetes pod |
+
+### `pod` backend
+
+|Feature||
+|--|--|
+| Supported protocols | TCP, UDP |
+| Eventually supported protocols | IP |
+
+This backend type is used if an interface should be connected to the regular pod network interface.
+
+In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts as an ethernet bridge or switch, in those cases the `pod` backend can also be used to provide an IP level connectivity to an interface (see backend `bridge.delegateIP`).
+
+## Available connections methods
+
+| Connection method | Description |
+|--|--|
+| `bridge` | Bridge the interface to the network |
+
+### `bridge` connection
+
+This connection will create an ethernet bridge between the interface and the network.
+
+If the `delegateIp` option is used, then - if available - an IP address assigned to the network device representing the network, will be offered to the virtual machine via DHCP and be removed from the interface itself. The effect is that the IP endpoitn is "moved" form the network interface to the virtual machine.
+
+|Feature||
+|--|--|
+| Supported protocols | Ethernet, IP |
+
+|Options||
+|--|--|
+| `delegateIp` | `pod` backend only: The IP assigned to the pod will be delegated to the VM using DHCP |
