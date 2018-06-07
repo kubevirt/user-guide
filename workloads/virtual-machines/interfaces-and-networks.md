@@ -2,7 +2,7 @@
 
 An `interface` defines a virtual network interface of a virtual machine.
 
-A `network` specifies the backend of an `interface` and controlls to which logical or physical device it is connected to.
+A `network` specifies the backend of an `interface` and controls to which logical or physical device it is connected to.
 
 Often there is more than one way to connect an `interface` to a `network`. A user can control this connection by choosing between different options.
 However, at time of writing this document there is only a single way to connect interfaces and pods, and this method is `delegateIp`.
@@ -21,7 +21,7 @@ In order customize the network connectivity of a virtual machine, users must pro
 - a list of networks each of the interfaces is connected to
 
 The `name` property of an interface and network items defines which interface is connected to which network.
-This mean sthat if an interface is named `red`, then it will be connected to a network which is also named `red`:
+This means that if an interface is named `red`, then it will be connected to a network which is also named `red`:
 
 ```yaml
 kind: VM
@@ -58,7 +58,7 @@ spec:
 
 This backend type is used if an interface should be connected to the regular pod network interface.
 
-In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts as an ethernet bridge or switch, in those cases the `pod` backend can also be used to provide an IP level connectivity to an interface (see backend `bridge.delegateIP`).
+In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts as an Ethernet bridge or switch, in those cases the `pod` backend can also be used to provide an IP level connectivity to an interface (see backend `bridge.delegateIP`).
 
 ## Available connections methods
 
@@ -68,9 +68,9 @@ In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts
 
 ### `bridge` connection
 
-This connection will create an ethernet bridge between the interface and the network.
+This connection will create an Ethernet bridge between the interface and the network.
 
-If the `delegateIp` option is used, then - if available - an IP address assigned to the network device representing the network, will be offered to the virtual machine via DHCP and be removed from the interface itself. The effect is that the IP endpoitn is "moved" form the network interface to the virtual machine.
+If the `delegateIp` option is used, then - if available - an IP address assigned to the network device representing the network, will be offered to the virtual machine via DHCP and be removed from the interface itself. The effect is that the IP endpoint is "moved" form the network interface to the virtual machine.
 
 |Feature||
 |--|--|
