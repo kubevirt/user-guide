@@ -14,7 +14,7 @@ The following example consists of a VirtualMchine and a headless Service witch
 matches the labels and the subdomain of the VirtualMachineInstance:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: vm-fedora

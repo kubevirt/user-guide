@@ -14,7 +14,7 @@ default type is `ClusterIP`.
 Give a VirtualMachineInstance with the label `special: key`:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: vm-ephemeral

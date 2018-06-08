@@ -25,7 +25,7 @@ metadata:
     kubevirt.io/os: fedora27
     miq.github.io/kubevirt-is-vm-template: "true"
 objects:
-- apiVersion: kubevirt.io/v1alpha1
+- apiVersion: kubevirt.io/v1alpha2
   kind: VirtualMachine
   metadata:
     name: ${NAME}

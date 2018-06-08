@@ -47,7 +47,7 @@ In this scenario, one still does not care about the state, but since re-provisio
 ## Example
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstanceReplicaSet
 metadata:
   name: testreplicaset
@@ -87,14 +87,14 @@ Name:         testreplicaset
 Namespace:    default
 Labels:       <none>
 Annotations:  <none>
-API Version:  kubevirt.io/v1alpha1
+API Version:  kubevirt.io/v1alpha2
 Kind:         VirtualMachineInstanceReplicaSet
 Metadata:
   Cluster Name:        
   Creation Timestamp:  2018-01-03T12:42:30Z
   Generation:          0
   Resource Version:    6380
-  Self Link:           /apis/kubevirt.io/v1alpha1/namespaces/default/virtualmachineinstancereplicasets/testreplicaset
+  Self Link:           /apis/kubevirt.io/v1alpha2/namespaces/default/virtualmachineinstancereplicasets/testreplicaset
   UID:                 903a9ea0-f083-11e7-9094-525400ee45b0
 Spec:
   Replicas:  3

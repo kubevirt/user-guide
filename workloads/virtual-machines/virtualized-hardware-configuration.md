@@ -207,7 +207,7 @@ KubeVirt supports a range of virtualization features which may be tweaked in ord
 A common feature configuration is shown by the following example:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: myvm
@@ -243,7 +243,7 @@ See the [Features API Reference](https://kubevirt.github.io/api-reference/master
 An optional resource request can be specified by the users to allow the scheduler to make a better decision in finding the most suitable Node to place the VM.
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: myvm

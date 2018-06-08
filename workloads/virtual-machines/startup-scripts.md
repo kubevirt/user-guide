@@ -37,7 +37,7 @@ In the example below, a SSH key is stored in the cloudInitNoCloud Volume's userD
 # a cloudInitNoCloud volume's userData field.
 
 cat << END > my-vm.yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: myvm
@@ -92,7 +92,7 @@ END
 # a cloudInitNoCloud volume's userDataBase64 field.
 
 cat << END > my-vm.yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: myvm
@@ -149,7 +149,7 @@ kubectl create secret generic my-vm-secret --from-file=userdata=startup-script.s
 # Volume's secretRef field
 
 cat << END > my-vm.yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: myvm
@@ -204,7 +204,7 @@ END
 
 # Create the VM spec
 cat << END > my-vm.yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: sshvm
@@ -261,7 +261,7 @@ END
 
 # Create the VM spec
 cat << END > my-vm.yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: sshvm

@@ -117,7 +117,7 @@ the VirtualMachine will try to make sure it stays running.
 ## Example
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachine
 metadata:
   creationTimestamp: null
@@ -187,14 +187,14 @@ Name:         ovm-cirros
 Namespace:    default
 Labels:       kubevirt.io/ovm=ovm-cirros
 Annotations:  <none>
-API Version:  kubevirt.io/v1alpha1
+API Version:  kubevirt.io/v1alpha2
 Kind:         VirtualMachine
 Metadata:
   Cluster Name:        
   Creation Timestamp:  2018-04-30T09:25:08Z
   Generation:          0
   Resource Version:    6418
-  Self Link:           /apis/kubevirt.io/v1alpha1/namespaces/default/virtualmachines/ovm-cirros
+  Self Link:           /apis/kubevirt.io/v1alpha2/namespaces/default/virtualmachines/ovm-cirros
   UID:                 60043358-4c58-11e8-8653-525500d15501
 Spec:
   Running:  true

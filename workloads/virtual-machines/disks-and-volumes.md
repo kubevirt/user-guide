@@ -26,7 +26,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `l
 ```yaml
 metadata:
   name: testvm-lun
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -54,7 +54,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `d
 ```yaml
 metadata:
   name: testvm-disk
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -78,7 +78,7 @@ You can set the disk `bus` type, overriding the defaults, which in turn depends 
 ```yaml
 metadata:
   name: testvm-disk
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -109,7 +109,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `f
 ```yaml
 metadata:
   name: testvm-floppy
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -137,7 +137,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `f
 ```yaml
 metadata:
   name: testvm-cdrom
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -181,7 +181,7 @@ A simple example which attaches a `Secret` as a cloud-init `disk` datasource may
 ```yaml
 metadata:
   name: testvm-cloudinitnocloud
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -221,7 +221,7 @@ A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look l
 ```yaml
 metadata:
   name: testvm-pvc
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -252,7 +252,7 @@ Up-to-date information on supported backing stores can be found in the [KubeVirt
 ```yaml
 metadata:
   name: testvm-ephemeral-pvc
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -313,7 +313,7 @@ Example: Attach the RegistryDisk as an ephemeral disk to a VM.
 ```yaml
 metadata:
   name: testvm-registrydisk
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -340,7 +340,7 @@ An `emptyDisk` works similar to an `emptyDir` in Kubernetes. An extra sparse `qc
 Example: Boot cirros with an extra `emptyDisk` with a size of `2GiB`:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: testvm-nocloud

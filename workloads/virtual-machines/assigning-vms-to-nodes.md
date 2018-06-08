@@ -12,7 +12,7 @@ Setting `spec.nodeSelector` requirements, constrains the scheduler to only sched
 ```yaml
 metadata:
   name: testvm-ephemeral
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   nodeSelector:
@@ -44,7 +44,7 @@ An example for `podAffinity` and `podAntiAffinity` may look like this:
 ```yaml
 metadata:
   name: testvm-ephemeral
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
   nodeSelector:

@@ -24,7 +24,7 @@ Default presets for the OS identifiers above are included in the current release
 ### Windows Server 2012R2 `VirtualMachineInstancePreset` Example
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstancePreset
 metadata:
   name: windows-server-2012r2
@@ -57,7 +57,7 @@ spec:
           tickPolicy: catchup
         hyperv: {}
 ---
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -83,12 +83,12 @@ spec:
 Once the `VirtualMachineInstancePreset` is applied to the `VirtualMachineInstance`, the resulting resource would look like this:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   annotations:
-    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-    virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1alpha1
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha2
+    virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1alpha2
   labels:
     kubevirt.io/os: win2k12r2  
   name: windows2012r2

@@ -15,7 +15,7 @@ A VirtualMachineInstance API is also called a VirtualMachineInstance object, bec
 Here is an example of a VirtualMachineInstance object:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
+apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
   name: testvm-nocloud
