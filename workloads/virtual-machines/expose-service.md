@@ -6,7 +6,7 @@ of service are supported: `ClusterIP`, `NodePort` and `LoadBalancer`. The
 default type is `ClusterIP`.
 
 > **Note**: Labels on a VirtualMachine are passed through to the pod, so simply
-> add your labels for service creation to the VirtualMAchine. From there on it works like
+> add your labels for service creation to the VirtualMachine. From there on it works like
 > exposing any other k8s resource, by referencing these labels in a service.
 
 ## Expose VirtualMachine as a ClusterIP Service
@@ -183,5 +183,7 @@ lbsvc     LoadBalancer   172.30.27.5      172.29.10.235,172.29.10.235   27017:31
 ```
 
 Use `vinagre` client to connect your VirtualMachine by using the public IP and
-port. Note that here the external port here (31829) was dynamically allocated.
+port. 
+
+Note that here the external port here (31829) was dynamically allocated.
 
