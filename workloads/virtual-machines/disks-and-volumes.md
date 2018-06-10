@@ -287,7 +287,7 @@ Registry Disks are not a good solution for any workload that requires persistent
 
 #### registryDisk Workflow Example
 
-Users push VM disks into the container registry using a KubeVirt base image designed to work with the Registry Disk feature. The latest base container image is **kubevirt.io/registry-disk-v1alpha**.
+Users push VM disks into the container registry using a KubeVirt base image designed to work with the Registry Disk feature. The latest base container image is **kubevirt/registry-disk-v1alpha**.
 
 Using this base image, users can inject a VirtualMachine disk into a container image in a way that is consumable by the KubeVirt runtime. Disks placed into the base container must be placed into the /disk directory. Raw and qcow2 formats are supported. Qcow2 is recommended in order to reduce the container image's size.
 
@@ -295,7 +295,7 @@ Example: Inject a VirtualMachine disk into a container image.
 
 ```yaml
 cat << END > Dockerfile
-FROM kubevirt.io/registry-disk-v1alpha
+FROM kubevirt/registry-disk-v1alpha
 ADD fedora25.qcow2 /disk
 END
 
