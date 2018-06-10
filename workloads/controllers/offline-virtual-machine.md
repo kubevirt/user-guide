@@ -71,6 +71,17 @@ kubectl delete virtualmachine myvm
 An OfflineVirtualMachine will never restart or re-create a VirtualMachine until
 the current instance of the VirtualMachine is deleted from the cluster.
 
+### Exposing as a Service
+An OfflineVirtualMachine could be exposed as a service. The actual service will be available once the VirtualMachine starts without additional interaction.
+
+For example, exposing SSH port (22) as a `ClusterIP` service using `virtctl` after the OfflineVirtualMAchine was created, but before it started:
+
+```bash
+$ virtctl expose offlinevirtualmachine vm-ephemeral --name vmservice --port 27017 --target-port 22
+```
+
+All service exposure options that apply to a VirtualMachine apply to an OfflineVirtualMachine. See [Exposing VirtualMachine](http://www.kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service) for more details.
+
 ## When to use an OfflineVirtualMachine
 
 ### When ABI stability is required between restarts

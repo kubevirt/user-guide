@@ -14,6 +14,18 @@ The _VirtualMachineReplicaSet_ allows us to specify a _VirtualMachineTemplate_ i
 
 `spec.selector` is used by the controller to keep track of managed virtual machines. The selector specified there must be able to match the virtual machine labels as specified in `spec.template.metadata.labels`. If the selector does not match these labels, or they are empty, the controller will simply do nothing except from logging an error. The user is responsible for not creating other virtual machines or _VirtualMachineReplicaSets_ which conflict with the selector and the template labels.
 
+## Exposing a VirtualMachineReplicaSet as a Service
+
+A VirtualMachineReplicaSet could be exposed as a service. When this is done, one of the VirtualMachines replicas will be picked for the actual delivery of the service.
+
+For example, exposing SSH port (22) as a ClusterIP service using virtctl on a VirtualMachineReplicaSet:
+
+```bash
+$ virtctl expose vmrs vm-ephemeral --name vmservice --port 27017 --target-port 22
+```
+
+All service exposure options that apply to a VirtualMachine apply to an VirtualMachineReplicaSet. See [Exposing VirtualMachine](http://www.kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service) for more details.
+
 ## When to use a VirtualMachineReplicaSet
 
 Using VirtualMachineReplicaSet is the right choice when one wants many identical VMs and does not care about maintaining any disk state after the VMs are terminated.
