@@ -8,6 +8,10 @@ exposes. Usually there are two types of consoles:
 
 > Note: You need to have `virtctl` [installed](/installation/?id=client-side-virtctl-deployment) to gain access to the VirtualMachine.
 
+> Note: These features require use of TLS client certificates for client
+authentication. Most Kubernetes clusters are set up to use client certificates
+automatically, so this should not require any action for the majority of users.
+
 ## Accessing the serial console
 
 The serial console of a virtual machine can be accessed by using the
