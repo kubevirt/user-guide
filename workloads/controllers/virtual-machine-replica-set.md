@@ -21,7 +21,7 @@ A VirtualMachineInstanceReplicaSet could be exposed as a service. When this is d
 For example, exposing SSH port (22) as a ClusterIP service using virtctl on a VirtualMachineInstanceReplicaSet:
 
 ```bash
-$ virtctl expose vmrs vm-ephemeral --name vmservice --port 27017 --target-port 22
+$ virtctl expose vmirs vmi-ephemeral --name vmiservice --port 27017 --target-port 22
 ```
 
 All service exposure options that apply to a VirtualMachineInstance apply to an VirtualMachineInstanceReplicaSet. See [Exposing VirtualMachineInstance](http://www.kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service) for more details.
@@ -55,12 +55,12 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      myvm: myvm
+      myvmi: myvmi
   template:
     metadata:
       name: test
       labels:
-        myvm: myvm
+        myvmi: myvmi
     spec:
       domain:
         devices:
@@ -82,7 +82,7 @@ Saving this manifest into `testreplicaset.yaml` and submitting it to Kubernetes 
 ```bash
 $ kubectl create -f testreplicaset.yaml
 virtualmachineinstancereplicaset "testreplicaset" created
-$ kubectl describe vmrs testreplicaset
+$ kubectl describe vmirs testreplicaset
 Name:         testreplicaset
 Namespace:    default
 Labels:       <none>
@@ -100,12 +100,12 @@ Spec:
   Replicas:  3
   Selector:
     Match Labels:
-      Myvm:  myvm
+      Myvmi:  myvmi
   Template:
     Metadata:
       Creation Timestamp:  <nil>
       Labels:
-        Myvm:  myvm
+        Myvmi:  myvmi
       Name:    test
     Spec:
       Domain:

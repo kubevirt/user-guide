@@ -17,11 +17,11 @@ matches the labels and the subdomain of the VirtualMachineInstance:
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: vm-fedora
+  name: vmi-fedora
   labels:
     expose: me
 spec:
-  hostname: "myvm"
+  hostname: "myvmi"
   subdomain: "mysubdomain"
   domain:
     devices:
@@ -61,15 +61,15 @@ spec:
 ```
 
 As a consequence, when we enter the VirtualMachineInstance via e.g. `virtctl console
-vm-fedora` and ping `myvm.mysubdomain` we see that we find a DNS entry for
-`myvm.mysubdomain.default.svc.cluster.local` which points to `10.244.0.57`,
+vmi-fedora` and ping `myvmi.mysubdomain` we see that we find a DNS entry for
+`myvmi.mysubdomain.default.svc.cluster.local` which points to `10.244.0.57`,
 which is the IP of the VirtualMachineInstance (not of the Service):
 
 ```bash
-[fedora@myvm ~]$ ping myvm.mysubdomain
-PING myvm.mysubdomain.default.svc.cluster.local (10.244.0.57) 56(84) bytes of data.
-64 bytes from myvm.mysubdomain.default.svc.cluster.local (10.244.0.57): icmp_seq=1 ttl=64 time=0.029 ms
-[fedora@myvm ~]$ ip a
+[fedora@myvmi ~]$ ping myvmi.mysubdomain
+PING myvmi.mysubdomain.default.svc.cluster.local (10.244.0.57) 56(84) bytes of data.
+64 bytes from myvmi.mysubdomain.default.svc.cluster.local (10.244.0.57): icmp_seq=1 ttl=64 time=0.029 ms
+[fedora@myvmi ~]$ ip a
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
     link/ether 0a:58:0a:f4:00:39 brd ff:ff:ff:ff:ff:ff
     inet 10.244.0.57/24 brd 10.244.0.255 scope global dynamic eth0
@@ -80,7 +80,7 @@ PING myvm.mysubdomain.default.svc.cluster.local (10.244.0.57) 56(84) bytes of da
 
 So `spec.hostname` and `spec.subdomain` get translated to a DNS A-record of the
 form
-`<vm.spec.hostname>.<vm.spec.subdomain>.<vm.metadata.namespace>.svc.cluster.local`.
+`<vmi.spec.hostname>.<vmi.spec.subdomain>.<vmi.metadata.namespace>.svc.cluster.local`.
 If no `spec.hostname` is set, then we fall back to the VirtualMachineInstance name
 itself. The resulting DNS A-record looks like this then:
-`<vm.metadata.name>.<vm.spec.subdomain>.<vm.metadata.namespace>.svc.cluster.local`.
+`<vmi.metadata.name>.<vmi.spec.subdomain>.<vmi.metadata.namespace>.svc.cluster.local`.

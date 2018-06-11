@@ -17,7 +17,7 @@ Give a VirtualMachineInstance with the label `special: key`:
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: vm-ephemeral
+  name: vmi-ephemeral
   labels:
     special: key
 spec:
@@ -43,7 +43,7 @@ we can expose its SSH port (22) by creating a `ClusterIP` service:
 apiVersion: v1
 kind: Service
 metadata:
-  name: vmservice
+  name: vmiservice
 spec:
   ports:
   - port: 27017
@@ -57,14 +57,14 @@ spec:
 You just need to create this `ClusterIP` service by using `kubectl`:
 
 ```bash
-$ kubectl create -f vmservice.yaml
+$ kubectl create -f vmiservice.yaml
 ```
 
 Alternatively, the VirtualMachineInstance could be exposed using the `virtctl` command:
 
 
 ```bash
-$ virtctl expose virtualmachineinstance vm-ephemeral --name vmservice --port 27017 --target-port 22
+$ virtctl expose virtualmachineinstance vmi-ephemeral --name vmiservice --port 27017 --target-port 22
 ```
 
 Notes:
@@ -76,7 +76,7 @@ Query the service object:
 ```bash
 $ kubectl get service
 NAME        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
-vmservice   ClusterIP   172.30.3.149   <none>        27017/TCP   2m
+vmiservice   ClusterIP   172.30.3.149   <none>        27017/TCP   2m
 ```
 
 You can connect to the VirtualMachineInstance by service IP and service port inside the cluster network:
@@ -117,7 +117,7 @@ $ kubectl -f nodeport.yaml
 Alternatively, the VirtualMachineInstance could be exposed using the `virtctl` command:
 
 ```bash
-$ virtctl expose virtualmachineinstance vm-ephemeral --name nodeport --type NodePort --port 27017 --target-port 22 --node-port 30000
+$ virtctl expose virtualmachineinstance vmi-ephemeral --name nodeport --type NodePort --port 27017 --target-port 22 --node-port 30000
 ```
 
 Notes:
@@ -169,7 +169,7 @@ $ kubectl -f lbsvc.yaml
 Alternatively, the VirtualMachineInstance could be exposed using the `virtctl` command:
 
 ```bash
-$ virtctl expose virtualmachineinstance vm-ephemeral --name lbsvc --type LoadBalancer --port 27017 --target-port 3389
+$ virtctl expose virtualmachineinstance vmi-ephemeral --name lbsvc --type LoadBalancer --port 27017 --target-port 3389
 ```
 
 Note that the external IP of the service could be forced to a value using the `--external-ip` flag (no validation is performed on this value).

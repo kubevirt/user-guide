@@ -18,7 +18,7 @@ Here is an example of a VirtualMachineInstance object:
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: testvm-nocloud
+  name: testvmi-nocloud
 spec:
   terminationGracePeriodSeconds: 30
   domain:

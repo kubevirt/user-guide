@@ -17,25 +17,25 @@ Here is an example template that defines an instance of the `VirtualMachine` obj
 apiVersion: v1
 kind: Template
 metadata:
-  name: fedora-vm-template
+  name: fedora-vmi-template
   annotations:
     description: "OpenShift KubeVirt Fedora VM template"
     tags: "kubevirt,openshift,template,linux"
   labels:
     kubevirt.io/os: fedora27
-    miq.github.io/kubevirt-is-vm-template: "true"
+    miq.github.io/kubevirt-is-vmi-template: "true"
 objects:
 - apiVersion: kubevirt.io/v1alpha2
   kind: VirtualMachine
   metadata:
     name: ${NAME}
     labels:
-      kubevirt-ovm: ovm-${NAME}
+      kubevirt-vm: vm-${NAME}
   spec:
     template:
       metadata:
         labels:
-          kubevirt-ovm: ovm-${NAME}
+          kubevirt-vm: vm-${NAME}
       spec:
         domain:
           cpu:
@@ -63,13 +63,13 @@ Note that the template above defines free parameters \(`NAME` and `CPU_CORES`\) 
 
 An OpenShift template has to be converted into the JSON file via `oc process` command, that also allows you to set the template parameters.
 
-A complete example can be found in the [KubeVirt repository](https://github.com/kubevirt/kubevirt/blob/master/cluster/vm-template-fedora.yaml).
+A complete example can be found in the [KubeVirt repository](https://github.com/kubevirt/kubevirt/blob/master/cluster/vmi-template-fedora.yaml).
 
 !> You need to be logged in by `oc login` command.
 
 ```bash
-$ oc process -f cluster/vm-template-fedora.yaml\
-    -p NAME=testvm \
+$ oc process -f cluster/vmi-template-fedora.yaml\
+    -p NAME=testvmi \
     -p CPU_CORES=2
 {
     "kind": "List",
@@ -83,11 +83,11 @@ $ oc process -f cluster/vm-template-fedora.yaml\
 The JSON file is usually applied directly by piping the processed output to `oc create` command.
 
 ```bash
-$ oc process -f cluster/vm-template-fedora.yaml \
-    -p NAME=testvm \
+$ oc process -f cluster/vmi-template-fedora.yaml \
+    -p NAME=testvmi \
     -p CPU_CORES=2 \
     | oc create -f -
-virtualmachine "testvm" created
+virtualmachine "testvmi" created
 ```
 
 The command above results in creating a Kubernetes object according to the specification given by the template \(in this example it is an instance of the VirtualMachine object\).
@@ -98,8 +98,8 @@ The command above results in creating a Kubernetes object according to the speci
 The created object is now a regular VirtualMachine object and from now it can be controlled by accessing Kubernetes API resources.  The preferred way how to do this from within the OpenShift environment is to use `oc patch` command.
 
 ``` bash
-$ oc patch virtualmachine testvm --type merge -p '{"spec":{"running":true}}'
-virtualmachine "testvm" patched
+$ oc patch virtualmachine testvmi --type merge -p '{"spec":{"running":true}}'
+virtualmachine "testvmi" patched
 ```
 
 You can follow [Virtual Machine Lifecycle Guide](/workloads/virtual-machines/life-cycle) for further reference.

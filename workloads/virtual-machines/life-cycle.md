@@ -13,7 +13,7 @@ FIXME needs to be reworked.
 In order to start a VirtualMachineInstance, you just need to create a `VirtualMachineInstance` object using `kubectl`:
 
 ```bash
-$ kubectl create -f vm.yaml
+$ kubectl create -f vmi.yaml
 ```
 
 ## Listing virtual machines
@@ -21,7 +21,7 @@ $ kubectl create -f vm.yaml
 VirtualMachineInstances can be listed by querying for VirtualMachineInstance objects:
 
 ```bash
-$ kubectl get vms
+$ kubectl get vmis
 ```
 
 ## Retrieving a virtual machine definition
@@ -29,7 +29,7 @@ $ kubectl get vms
 A single VirtualMachineInstance definition can be retrieved by getting the specific VirtualMachineInstance object:
 
 ```bash
-$ kubectl get vms testvm
+$ kubectl get vmis testvmi
 ```
 
 ## Stopping a virtual machine
@@ -37,9 +37,9 @@ $ kubectl get vms testvm
 To stop the VirtualMachineInstance, you just need to delete the corresponding `VirtualMachineInstance` object using `kubectl`.
 
 ```bash
-$ kubectl delete -f vm.yaml
+$ kubectl delete -f vmi.yaml
 # OR
-$ kubectl delete vms testvm
+$ kubectl delete vmis testvmi
 ```
 
 > Note: Stopping a VirtualMachineInstance implies that it will be deleted from the cluster. You will not be able to start this VirtualMachineInstance object again.

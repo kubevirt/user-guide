@@ -14,7 +14,7 @@ The serial console of a virtual machine can be accessed by using the
 `console` command:
 
 ```bash
-$ virtctl console --kubeconfig=$KUBECONFIG testvm
+$ virtctl console --kubeconfig=$KUBECONFIG testvmi
 ```
 
 ## Accessing the graphical console \(VNC\)
@@ -24,7 +24,7 @@ VNC, which requires `remote-viewer`. Once the tool is installed you can
 access the graphical console using:
 
 ```bash
-$ virtctl vnc --kubeconfig=$KUBECONFIG testvm
+$ virtctl vnc --kubeconfig=$KUBECONFIG testvmi
 ```
 
 ## Debugging console access
@@ -33,7 +33,7 @@ Should the connection fail, you can use the `-v` flag to get more output
 from both `virtctl` and the `remote-viewer` tool, to troubleshoot the problem.
 
 ```bash
-$ virtctl vnc --kubeconfig=$KUBECONFIG testvm -v 4
+$ virtctl vnc --kubeconfig=$KUBECONFIG testvmi -v 4
 ```
 
 ## RBAC Permissions for Console/VNC Access

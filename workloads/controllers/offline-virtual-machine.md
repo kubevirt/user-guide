@@ -26,21 +26,21 @@ After creating an VirtualMachine it can be switched on or off like this:
 
 ```bash
 # Start the virtual machine:
-virtctl start myvm
+virtctl start myvmi
 
 # Stop the virtual machine:
-virtctl stop myvm
+virtctl stop myvmi
 ```
 
 `kubectl` can be used too:
 
 ```bash
 # Start the virtual machine:
-kubectl patch virtualmachine myvm --type merge -p \
+kubectl patch virtualmachine myvmi --type merge -p \
     '{"spec":{"running":true}}'
 
 # Stop the virtual machine:
-kubectl patch virtualmachine myvm --type merge -p \
+kubectl patch virtualmachine myvmi --type merge -p \
     '{"spec":{"running":false}}'
 ```
 
@@ -63,7 +63,7 @@ VirtualMachine:
 
 ```bash
 # Restart the virtual machine (you delete the instance!):
-kubectl delete virtualmachineinstance myvm
+kubectl delete virtualmachineinstance myvmi
 ```
 
 ### Fencing considerations
@@ -77,7 +77,7 @@ A VirtualMachine can be exposed as a service. The actual service will be availab
 For example, exposing SSH port (22) as a `ClusterIP` service using `virtctl` after the OfflineVirtualMAchine was created, but before it started:
 
 ```bash
-$ virtctl expose virtualmachine vm-ephemeral --name vmservice --port 27017 --target-port 22
+$ virtctl expose virtualmachine vmi-ephemeral --name vmiservice --port 27017 --target-port 22
 ```
 
 All service exposure options that apply to a VirtualMachineInstance apply to a VirtualMachine. See [Exposing VirtualMachineInstance](http://www.kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service) for more details.
@@ -122,15 +122,15 @@ kind: VirtualMachine
 metadata:
   creationTimestamp: null
   labels:
-    kubevirt.io/ovm: ovm-cirros
-  name: ovm-cirros
+    kubevirt.io/vm: vm-cirros
+  name: vm-cirros
 spec:
   running: false
   template:
     metadata:
       creationTimestamp: null
       labels:
-        kubevirt.io/ovm: ovm-cirros
+        kubevirt.io/vm: vm-cirros
     spec:
       domain:
         devices:
@@ -158,34 +158,34 @@ spec:
         name: cloudinitvolume
 ```
 
-Saving this manifest into `ovm.yaml` and submitting it to Kubernetes will
+Saving this manifest into `vm.yaml` and submitting it to Kubernetes will
 create the controller instance:
 
 ```bash
-$ kubectl create -f ovm.yaml 
-virtualmachine "ovm-cirros" created
+$ kubectl create -f vm.yaml 
+virtualmachine "vm-cirros" created
 ```
 
-Since `spec.running` is set to `false`, no vm will be created:
+Since `spec.running` is set to `false`, no vmi will be created:
 
 ```bash
-$ kubectl get vms
+$ kubectl get vmis
 No resources found.
 ```
 
 Let's start the VirtualMachine:
 
 ```bash
-$ virtctl start omv ovm-cirros
+$ virtctl start omv vm-cirros
 ```
 
-As expected, a VirtualMachineInstance called `ovm-cirros` got created:
+As expected, a VirtualMachineInstance called `vm-cirros` got created:
 
 ```yaml
-$ kubectl describe ovm ovm-cirros
-Name:         ovm-cirros
+$ kubectl describe vm vm-cirros
+Name:         vm-cirros
 Namespace:    default
-Labels:       kubevirt.io/ovm=ovm-cirros
+Labels:       kubevirt.io/vm=vm-cirros
 Annotations:  <none>
 API Version:  kubevirt.io/v1alpha2
 Kind:         VirtualMachine
@@ -194,7 +194,7 @@ Metadata:
   Creation Timestamp:  2018-04-30T09:25:08Z
   Generation:          0
   Resource Version:    6418
-  Self Link:           /apis/kubevirt.io/v1alpha2/namespaces/default/virtualmachines/ovm-cirros
+  Self Link:           /apis/kubevirt.io/v1alpha2/namespaces/default/virtualmachines/vm-cirros
   UID:                 60043358-4c58-11e8-8653-525500d15501
 Spec:
   Running:  true
@@ -202,7 +202,7 @@ Spec:
     Metadata:
       Creation Timestamp:  <nil>
       Labels:
-        Kubevirt . Io / Ovm:  ovm-cirros
+        Kubevirt . Io / Ovmi:  vm-cirros
     Spec:
       Domain:
         Devices:
@@ -234,7 +234,7 @@ Status:
 Events:
   Type    Reason            Age   From                              Message
   ----    ------            ----  ----                              -------
-  Normal  SuccessfulCreate  15s   virtualmachine-controller  Created virtual machine: ovm-cirros
+  Normal  SuccessfulCreate  15s   virtualmachine-controller  Created virtual machine: vm-cirros
 ```
 
 ### kubectl commandline interactions
@@ -245,32 +245,32 @@ demonstrating how to do it.
 
 ```bash
 # Define an virtual machine:
-kubectl create -f myofflinevm.yaml
+kubectl create -f myofflinevmi.yaml
 
 # Start the virtual machine:
-kubectl patch virtualmachine myvm --type merge -p \
+kubectl patch virtualmachine myvmi --type merge -p \
     '{"spec":{"running":true}}'
 
 # Look at virtual machine status and associated events:
-kubectl describe virtualmachine myvm
+kubectl describe virtualmachine myvmi
 
 # Look at the now created virtual machine instance status and associated events:
-kubectl describe virtualmachineinstance myvm
+kubectl describe virtualmachineinstance myvmi
 
 # Stop the virtual machine instance:
-kubectl patch virtualmachine myvm --type merge -p \
+kubectl patch virtualmachine myvmi --type merge -p \
     '{"spec":{"running":false}}'
 
 # Restart the virtual machine (you delete the instance!):
-kubectl delete virtualmachineinstance myvm
+kubectl delete virtualmachineinstance myvmi
 
 # Implicit cascade delete (first deletes the virtual machine and then the virtual machine)
-kubectl delete virtualmachine myvm
+kubectl delete virtualmachine myvmi
 
 # Explicit cascade delete (first deletes the virtual machine and then the virtual machine)
-kubectl delete virtualmachine myvm --cascade=true
+kubectl delete virtualmachine myvmi --cascade=true
 
 # Orphan delete (The running virtual machine is only detached, not deleted)
 # Recreating the virtual machine would lead to the adoption of the virtual machine instance
-kubectl delete virtualmachine myvm --cascade=false
+kubectl delete virtualmachine myvmi --cascade=false
 ```

@@ -36,11 +36,11 @@ In the example below, a SSH key is stored in the cloudInitNoCloud Volume's userD
 # Create a VM manifest with the startup script
 # a cloudInitNoCloud volume's userData field.
 
-cat << END > my-vm.yaml
+cat << END > my-vmi.yaml
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   terminationGracePeriodSeconds: 5
   domain:
@@ -71,7 +71,7 @@ END
 
 # Post the Virtual Machine spec to KubeVirt.
 
-kubectl create -f my-vm.yaml
+kubectl create -f my-vmi.yaml
 ```
 
 ### Cloud-init user-data as base64 string
@@ -91,11 +91,11 @@ END
 # Create a VM manifest with the startup script base64 encoded into
 # a cloudInitNoCloud volume's userDataBase64 field.
 
-cat << END > my-vm.yaml
+cat << END > my-vmi.yaml
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   terminationGracePeriodSeconds: 5
   domain:
@@ -123,7 +123,7 @@ END
 
 # Post the Virtual Machine spec to KubeVirt.
 
-kubectl create -f my-vm.yaml
+kubectl create -f my-vmi.yaml
 ```
 
 ### Cloud-init UserData as k8s Secret
@@ -143,16 +143,16 @@ echo "Hi from startup script!"
 END
 
 # Store the startup script in a Kubernetes Secret
-kubectl create secret generic my-vm-secret --from-file=userdata=startup-script.sh
+kubectl create secret generic my-vmi-secret --from-file=userdata=startup-script.sh
 
 # Create a VM manifest and reference the Secret's name in the cloudInitNoCloud
 # Volume's secretRef field
 
-cat << END > my-vm.yaml
+cat << END > my-vmi.yaml
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   terminationGracePeriodSeconds: 5
   domain:
@@ -176,11 +176,11 @@ spec:
     - name: cloudinitvolume
       cloudInitNoCloud:
         secretRef:
-          name: my-vm-secret
+          name: my-vmi-secret
 END
 
 # Post the VM
-kubectl create -f my-vm.yaml
+kubectl create -f my-vmi.yaml
 ```
 
 ### Injecting SSH keys with Cloud-init's Cloud-config
@@ -203,11 +203,11 @@ ssh_authorized_keys:
 END
 
 # Create the VM spec
-cat << END > my-vm.yaml
+cat << END > my-vmi.yaml
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: sshvm
+  name: sshvmi
 spec:
   terminationGracePeriodSeconds: 0
   domain:
@@ -234,7 +234,7 @@ spec:
 END
 
 # Post the VirtualMachineInstance spec to KubeVirt.
-kubectl create -f my-vm.yaml
+kubectl create -f my-vmi.yaml
 
 # Connect to VM with passwordless SSH key
 ssh -i <insert private key here> fedora@<insert ip here>
@@ -260,11 +260,11 @@ sudo chown -R ${NEW_USER}: /home/$NEW_USER/.ssh
 END
 
 # Create the VM spec
-cat << END > my-vm.yaml
+cat << END > my-vmi.yaml
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: sshvm
+  name: sshvmi
 spec:
   terminationGracePeriodSeconds: 0
   domain:
@@ -291,7 +291,7 @@ spec:
 END
 
 # Post the VirtualMachineInstance spec to KubeVirt.
-kubectl create -f my-vm.yaml
+kubectl create -f my-vmi.yaml
 
 # Connect to VM with passwordless SSH key
 ssh -i <insert private key here> foo@<insert ip here>
@@ -304,6 +304,6 @@ Depending on the operating system distribution in use, cloud-init output is ofte
 Example of connecting to console using virtctl:
 
 ```bash
-virtctl console <name of vm>
+virtctl console <name of vmi>
 ```
 

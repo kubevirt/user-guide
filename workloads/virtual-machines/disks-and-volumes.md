@@ -4,7 +4,7 @@ Making persistent storage in the cluster \(**volumes**\) accessible to VMs consi
 
 ## Disks
 
-Like all other vm devices a `spec.domain.devices.disks` element has a mandatory `name`, and furthermore, it has a mandatory `volumeName` entry which references a volume inside `spec.volumes`.
+Like all other vmi devices a `spec.domain.devices.disks` element has a mandatory `name`, and furthermore, it has a mandatory `volumeName` entry which references a volume inside `spec.volumes`.
 
 A disk can be made accessible via four different types:
 
@@ -25,7 +25,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `l
 
 ```yaml
 metadata:
-  name: testvm-lun
+  name: testvmi-lun
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -53,7 +53,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `d
 
 ```yaml
 metadata:
-  name: testvm-disk
+  name: testvmi-disk
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -77,7 +77,7 @@ You can set the disk `bus` type, overriding the defaults, which in turn depends 
 
 ```yaml
 metadata:
-  name: testvm-disk
+  name: testvmi-disk
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -108,7 +108,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `f
 
 ```yaml
 metadata:
-  name: testvm-floppy
+  name: testvmi-floppy
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -136,7 +136,7 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `f
 
 ```yaml
 metadata:
-  name: testvm-cdrom
+  name: testvmi-cdrom
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -180,7 +180,7 @@ A simple example which attaches a `Secret` as a cloud-init `disk` datasource may
 
 ```yaml
 metadata:
-  name: testvm-cloudinitnocloud
+  name: testvmi-cloudinitnocloud
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -220,7 +220,7 @@ A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look l
 
 ```yaml
 metadata:
-  name: testvm-pvc
+  name: testvmi-pvc
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -251,7 +251,7 @@ Up-to-date information on supported backing stores can be found in the [KubeVirt
 
 ```yaml
 metadata:
-  name: testvm-ephemeral-pvc
+  name: testvmi-ephemeral-pvc
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -299,20 +299,20 @@ FROM kubevirt/registry-disk-v1alpha
 ADD fedora25.qcow2 /disk
 END
 
-docker build -t vmdisks/fedora25:latest .
+docker build -t vmidisks/fedora25:latest .
 ```
 
 Example: Upload the RegistryDisk container image to a registry.
 
 ```yaml
-docker push vmdisks/fedora25:latest
+docker push vmidisks/fedora25:latest
 ```
 
 Example: Attach the RegistryDisk as an ephemeral disk to a VM.
 
 ```yaml
 metadata:
-  name: testvm-registrydisk
+  name: testvmi-registrydisk
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -328,7 +328,7 @@ spec:
   volumes:
     - name: registryvolume
       registryDisk:
-        image: vmdisks/fedora25:latest
+        image: vmidisks/fedora25:latest
 ```
 
 Note that a `registryDisk` is file-based and therefore cannot be attached as a `lun` device to the VM.
@@ -343,7 +343,7 @@ Example: Boot cirros with an extra `emptyDisk` with a size of `2GiB`:
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: testvm-nocloud
+  name: testvmi-nocloud
 spec:
   terminationGracePeriodSeconds: 5
   domain:

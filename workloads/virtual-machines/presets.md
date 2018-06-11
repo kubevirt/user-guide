@@ -6,7 +6,7 @@
 
 ## Create a VirtualMachineInstancePreset
 
-You can describe a `VirtualMachineInstancePreset` in a YAML file. For example, the `vm-preset.yaml` file below describes a `VirtualMachineInstancePreset` that requests a `VirtualMachineInstance` be created with a resource request for 64M of RAM.
+You can describe a `VirtualMachineInstancePreset` in a YAML file. For example, the `vmi-preset.yaml` file below describes a `VirtualMachineInstancePreset` that requests a `VirtualMachineInstance` be created with a resource request for 64M of RAM.
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha2
@@ -26,7 +26,7 @@ spec:
 * Create a `VirtualMachineInstancePreset` based on that YAML file:
 
 ```bash
-kubectl create -f vmpreset.yaml
+kubectl create -f vmipreset.yaml
 ```
 
 ### Required Fields
@@ -62,7 +62,7 @@ $ kubectl get events
 ....
 Events:
   FirstSeen                         LastSeen                        Count From                              SubobjectPath                Reason    Message
-  2m          2m           1         myvm.1515bbb8d397f258                       VirtualMachineInstance                                     Warning   Conflict                  virtualmachineinstance-preset-controller   Unable to apply VirtualMachineInstancePreset 'example-preset': spec.cpu: &{6} != &{4}
+  2m          2m           1         myvmi.1515bbb8d397f258                       VirtualMachineInstance                                     Warning   Conflict                  virtualmachineinstance-preset-controller   Unable to apply VirtualMachineInstancePreset 'example-preset': spec.cpu: &{6} != &{4}
 ```
 
 ### Usage
@@ -91,7 +91,7 @@ apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 version: v1
 metadata:
-  name: myvm
+  name: myvmi
   labels:
     kubevirt.io/os: win10
   ...
@@ -171,7 +171,7 @@ Since `VirtualMachineInstancePresets` use `Selectors` that indicate which `Virtu
 kind: VirtualMachineInstance
 version: v1
 metadata:
-  name: myvm
+  name: myvmi
   annotations:
     virtualmachineinstancepresets.admission.kubevirt.io/exclude: "true"
   ...
@@ -206,7 +206,7 @@ apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 version: v1
 metadata:
-  name: myvm
+  name: myvmi
   labels:
     kubevirt.io/os: win10
 spec:
@@ -227,7 +227,7 @@ metadata:
   labels:
     kubevirt.io/os: win10
     kubevirt.io/nodeName: master
-  name: myvm
+  name: myvmi
   namespace: default
 spec:
   domain:
@@ -276,7 +276,7 @@ apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 version: v1
 metadata:
-  name: myvm
+  name: myvmi
   labels:
     kubevirt.io/flavor: default-features
 spec:
@@ -296,7 +296,7 @@ metadata:
   generation: 0
   labels:
     kubevirt.io/flavor: default-features
-  name: myvm
+  name: myvmi
   namespace: default
 spec:
   domain:
@@ -309,7 +309,7 @@ spec:
 status: {}
 ```
 
-Calling `kubectl get events` would have a line like: 2m 2m 1 myvm.1515bbb8d397f258 VirtualMachineInstance Warning Conflict virtualmachineinstance-preset-controller Unable to apply VirtualMachineInstancePreset 'example-preset': spec.cpu: &{6} != &{4}
+Calling `kubectl get events` would have a line like: 2m 2m 1 myvmi.1515bbb8d397f258 VirtualMachineInstance Warning Conflict virtualmachineinstance-preset-controller Unable to apply VirtualMachineInstancePreset 'example-preset': spec.cpu: &{6} != &{4}
 
 ### Matching Multiple VirtualMachineInstances Using MatchLabels
 
@@ -401,7 +401,7 @@ This `VirtualMachineInstancePreset` has a matchExpression that will match two la
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstancePreset
 metadata:
-  name: windows-vms
+  name: windows-vmis
 spec:
   selector:
     matchExpressions:
@@ -414,7 +414,7 @@ spec:
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: smallvm
+  name: smallvmi
   labels:
     kubevirt.io/os: win10
 spec:
@@ -423,7 +423,7 @@ spec:
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
-  name: largevm
+  name: largevmi
   labels:
     kubevirt.io/os: win7
 spec:
@@ -440,10 +440,10 @@ items:
   metadata:
     annotations:
       presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha2
-      virtualmachineinstancepreset.kubevirt.io/windows-vms: kubevirt.io/v1alpha2
+      virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1alpha2
     labels:
       kubevirt.io/os: win7
-    name: largevm
+    name: largevmi
   spec:
     domain:
       resources:
@@ -455,10 +455,10 @@ items:
   metadata:
     annotations:
       presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha2
-      virtualmachineinstancepreset.kubevirt.io/windows-vms: kubevirt.io/v1alpha2
+      virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1alpha2
     labels:
       kubevirt.io/os: win10
-    name: smallvm
+    name: smallvmi
   spec:
     domain:
       resources:

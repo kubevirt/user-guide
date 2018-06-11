@@ -4,7 +4,7 @@ Guest operating system identity for the VirtualMachineInstance will be provided 
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
   labels:
     kubevirt.io/os: win2k12r2
 ```
