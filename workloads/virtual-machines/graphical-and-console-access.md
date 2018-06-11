@@ -27,6 +27,8 @@ access the graphical console using:
 $ virtctl vnc --kubeconfig=$KUBECONFIG testvm
 ```
 
+## Debugging console access
+
 Should the connection fail, you can use the `-v` flag to get more output
 from both `virtctl` and the `remote-viewer` tool, to troubleshoot the problem.
 
