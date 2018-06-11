@@ -27,6 +27,13 @@ access the graphical console using:
 $ virtctl vnc --kubeconfig=$KUBECONFIG testvm
 ```
 
+Should the connection fail, you can use the `-v` flag to get more output
+from both `virtctl` and the `remote-viewer` tool, to troubleshoot the problem.
+
+```bash
+$ virtctl vnc --kubeconfig=$KUBECONFIG testvm -v 4
+```
+
 ## RBAC Permissions for Console/VNC Access
 
 ### Using Default RBAC ClusterRoles
