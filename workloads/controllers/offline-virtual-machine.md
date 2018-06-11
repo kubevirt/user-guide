@@ -62,7 +62,7 @@ will also propagate configuration changes from the template in the
 VirtualMachine:
 
 ```bash
-# Restart the offline virtual machine (you delete the vm!):
+# Restart the virtual machine (you delete the instance!):
 kubectl delete virtualmachineinstance myvm
 ```
 
@@ -72,7 +72,7 @@ An VirtualMachine will never restart or re-create a VirtualMachineInstance until
 the current instance of the VirtualMachineInstance is deleted from the cluster.
 
 ### Exposing as a Service
-An VirtualMachine could be exposed as a service. The actual service will be available once the VirtualMachineInstance starts without additional interaction.
+A VirtualMachine can be exposed as a service. The actual service will be available once the VirtualMachineInstance starts without additional interaction.
 
 For example, exposing SSH port (22) as a `ClusterIP` service using `virtctl` after the OfflineVirtualMAchine was created, but before it started:
 
@@ -80,13 +80,13 @@ For example, exposing SSH port (22) as a `ClusterIP` service using `virtctl` aft
 $ virtctl expose virtualmachine vm-ephemeral --name vmservice --port 27017 --target-port 22
 ```
 
-All service exposure options that apply to a VirtualMachineInstance apply to an VirtualMachine. See [Exposing VirtualMachineInstance](http://www.kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service) for more details.
+All service exposure options that apply to a VirtualMachineInstance apply to a VirtualMachine. See [Exposing VirtualMachineInstance](http://www.kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service) for more details.
 
-## When to use an VirtualMachine
+## When to use a VirtualMachine
 
 ### When ABI stability is required between restarts
 
-An _VirtualMachine_ makes sure that VirtualMachineInstance ABI configurations
+A _VirtualMachine_ makes sure that VirtualMachineInstance ABI configurations
 are consistent between restarts. A classical example are licenses which are
 bound to the firmware UUID of a virtual machine. The _VirtualMachine_
 makes sure that the UUID will always stay the same without the user having to
@@ -244,33 +244,33 @@ commandline you can use the kubectl command. The following are examples
 demonstrating how to do it.
 
 ```bash
-# Define an offline virtual machine:
+# Define an virtual machine:
 kubectl create -f myofflinevm.yaml
 
 # Start the virtual machine:
 kubectl patch virtualmachine myvm --type merge -p \
     '{"spec":{"running":true}}'
 
-# Look at offline virtual machine status and associated events:
+# Look at virtual machine status and associated events:
 kubectl describe virtualmachine myvm
 
-# Look at the now created virtual machine status and associated events:
+# Look at the now created virtual machine instance status and associated events:
 kubectl describe virtualmachineinstance myvm
 
-# Stop the virtual machine:
+# Stop the virtual machine instance:
 kubectl patch virtualmachine myvm --type merge -p \
     '{"spec":{"running":false}}'
 
-# Restart the offline virtual machine (you delete the vm!):
+# Restart the virtual machine (you delete the instance!):
 kubectl delete virtualmachineinstance myvm
 
-# Implicit cascade delete (first deletes the virtual machine and then the offline virtual machine)
+# Implicit cascade delete (first deletes the virtual machine and then the virtual machine)
 kubectl delete virtualmachine myvm
 
-# Explicit cascade delete (first deletes the virtual machine and then the offline virtual machine)
+# Explicit cascade delete (first deletes the virtual machine and then the virtual machine)
 kubectl delete virtualmachine myvm --cascade=true
 
 # Orphan delete (The running virtual machine is only detached, not deleted)
-# Recreating the offline virtual machine would lead to the adoption of the virtual machine
+# Recreating the virtual machine would lead to the adoption of the virtual machine instance
 kubectl delete virtualmachine myvm --cascade=false
 ```
