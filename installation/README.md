@@ -56,14 +56,14 @@ virt-handler-vwdjx                             1/1       Running       0        
 
 ## Client side `virtctl` deployment
 
-Basic VirtualMachine operations can be performed with the stock `kubectl` utility. However, the `virtctl` binary utility is required to use advanced features such as:
+Basic VirtualMachineInstance operations can be performed with the stock `kubectl` utility. However, the `virtctl` binary utility is required to use advanced features such as:
 
 * Serial and graphical console access
 
 It also provides convenience commands for:
 
-* Starting and stopping VirtualMachines
-* Live migrating VirtualMachines
+* Starting and stopping VirtualMachineInstances
+* Live migrating VirtualMachineInstances
 
 The most recent version of the tool can be retrieved from the [official release page](https://github.com/kubevirt/kubevirt/releases).
 

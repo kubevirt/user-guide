@@ -1,6 +1,6 @@
 # KubeVirt API Validation
 
-The KubeVirt VirtualMachine API is implemented using a Kubernetes Custom
+The KubeVirt VirtualMachineInstance API is implemented using a Kubernetes Custom
 Resource Definition (CRD). Because of this, KubeVirt is able to leverage a
 couple of features Kubernetes provides in order to perform validation checks on
 our API as objects created and updated on the cluster.
@@ -26,7 +26,7 @@ the contents of that object make sense.
 
 With OpenAPIv3 validation alone, users can easily make simple mistakes (like
 not referencing a volumeName correctly with a disk) and the cluster will still
-accept the object. However, the VirtualMachine will of course not start if
+accept the object. However, the VirtualMachineInstance will of course not start if
 these errors in the API exist. Ideally we'd like to catch configuration issues
 as early as possible and not allow an object to even be posted to the cluster
 if we can detect there's a problem with the object's Spec.

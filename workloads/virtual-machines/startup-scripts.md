@@ -2,7 +2,7 @@
 
 ## Overview
 
-KubeVirt supports the ability to assign a startup script to a VirtualMachine instance which is executed automatically when the VM initializes.
+KubeVirt supports the ability to assign a startup script to a VirtualMachineInstance instance which is executed automatically when the VM initializes.
 
 These scripts are commonly used to automate injection of users and SSH keys into VMs in order to provide remote access to the machine. For example, a startup script can be used to inject credentials into a VM that allows an Ansible job running on a remote host to access and provision the VM.
 
@@ -26,7 +26,7 @@ Sysprep is an automation tool for Windows that automates Windows installation, s
 
 KubeVirt supports the cloud-init NoCloud datasource which involves injecting startup scripts through the use of a disk attached to the VM.
 
-In order to assign a custom userdata script to a VirtualMachine using this method, users must define a disk and a volume for the NoCloud datasource in the VirtualMachine's spec.
+In order to assign a custom userdata script to a VirtualMachineInstance using this method, users must define a disk and a volume for the NoCloud datasource in the VirtualMachineInstance's spec.
 
 ### Cloud-init user-data as clear text
 
@@ -38,7 +38,7 @@ In the example below, a SSH key is stored in the cloudInitNoCloud Volume's userD
 
 cat << END > my-vm.yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: myvm
 spec:
@@ -93,7 +93,7 @@ END
 
 cat << END > my-vm.yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: myvm
 spec:
@@ -128,9 +128,9 @@ kubectl create -f my-vm.yaml
 
 ### Cloud-init UserData as k8s Secret
 
-Users who wish to not store the cloud-init userdata directly in the VirtualMachine spec have the option to store the userdata into a Kubernetes Secret and reference that Secret in the spec.
+Users who wish to not store the cloud-init userdata directly in the VirtualMachineInstance spec have the option to store the userdata into a Kubernetes Secret and reference that Secret in the spec.
 
-Multiple VirtualMachine specs can reference the same Kubernetes Secret containing cloud-init userdata.
+Multiple VirtualMachineInstance specs can reference the same Kubernetes Secret containing cloud-init userdata.
 
 Below is an example of how to create a Kubernetes Secret containing a startup script and reference that Secret in the VM's spec.
 
@@ -150,7 +150,7 @@ kubectl create secret generic my-vm-secret --from-file=userdata=startup-script.s
 
 cat << END > my-vm.yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: myvm
 spec:
@@ -205,7 +205,7 @@ END
 # Create the VM spec
 cat << END > my-vm.yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: sshvm
 spec:
@@ -233,7 +233,7 @@ spec:
         userDataBase64: $(cat startup-script | base64 -w0)
 END
 
-# Post the VirtualMachine spec to KubeVirt.
+# Post the VirtualMachineInstance spec to KubeVirt.
 kubectl create -f my-vm.yaml
 
 # Connect to VM with passwordless SSH key
@@ -262,7 +262,7 @@ END
 # Create the VM spec
 cat << END > my-vm.yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: sshvm
 spec:
@@ -290,7 +290,7 @@ spec:
         userDataBase64: $(cat startup-script.sh | base64 -w0)
 END
 
-# Post the VirtualMachine spec to KubeVirt.
+# Post the VirtualMachineInstance spec to KubeVirt.
 kubectl create -f my-vm.yaml
 
 # Connect to VM with passwordless SSH key

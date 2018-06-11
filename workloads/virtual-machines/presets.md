@@ -1,16 +1,16 @@
 # Presets
 
-## What is a VirtualMachinePreset?
+## What is a VirtualMachineInstancePreset?
 
-`VirtualMachinePresets` are an extension to general `VirtualMachine` configuration behaving much like `PodPresets` from Kubernetes. When a `VirtualMachine` is created, any applicable `VirtualMachinePresets` will be applied to the existing spec for the `VirtualMachine`. This allows for re-use of common settings that should apply to multiple `VirtualMachines`.
+`VirtualMachineInstancePresets` are an extension to general `VirtualMachineInstance` configuration behaving much like `PodPresets` from Kubernetes. When a `VirtualMachineInstance` is created, any applicable `VirtualMachineInstancePresets` will be applied to the existing spec for the `VirtualMachineInstance`. This allows for re-use of common settings that should apply to multiple `VirtualMachineInstances`.
 
-## Create a VirtualMachinePreset
+## Create a VirtualMachineInstancePreset
 
-You can describe a `VirtualMachinePreset` in a YAML file. For example, the `vm-preset.yaml` file below describes a `VirtualMachinePreset` that requests a `VirtualMachine` be created with a resource request for 64M of RAM.
+You can describe a `VirtualMachineInstancePreset` in a YAML file. For example, the `vm-preset.yaml` file below describes a `VirtualMachineInstancePreset` that requests a `VirtualMachineInstance` be created with a resource request for 64M of RAM.
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachinePreset
+kind: VirtualMachineInstancePreset
 metadata:
   name: small-qemu
 spec:
@@ -23,7 +23,7 @@ spec:
         memory: 64M
 ```
 
-* Create a `VirtualMachinePreset` based on that YAML file:
+* Create a `VirtualMachineInstancePreset` based on that YAML file:
 
 ```bash
 kubectl create -f vmpreset.yaml
@@ -31,51 +31,51 @@ kubectl create -f vmpreset.yaml
 
 ### Required Fields
 
-As with most Kubernetes resources, a `VirtualMachinePreset` requires `apiVersion`, `kind` and `metadata` fields.
+As with most Kubernetes resources, a `VirtualMachineInstancePreset` requires `apiVersion`, `kind` and `metadata` fields.
 
-Additionally `VirtualMachinePresets` also need a `spec` section. While not technically required to satisfy syntax, it is strongly recommended to include a `Selector` in the `spec` section, otherwise a `VirtualMachinePreset` will match all `VirtualMachines` in a namespace.
+Additionally `VirtualMachineInstancePresets` also need a `spec` section. While not technically required to satisfy syntax, it is strongly recommended to include a `Selector` in the `spec` section, otherwise a `VirtualMachineInstancePreset` will match all `VirtualMachineInstances` in a namespace.
 
 ### VirtalMachine Selector
 
-KubeVirt uses Kubernetes `Labels` and `Selectors` to determine which `VirtualMachinePresets` apply to a given `VirtualMachine`, similarly to how `PodPresets` work in Kubernetes. If a setting from a `VirtualMachinePreset` is applied to a `VirtualMachine`, the `VirtualMachine` will be marked with an Annotation upon completion.
+KubeVirt uses Kubernetes `Labels` and `Selectors` to determine which `VirtualMachineInstancePresets` apply to a given `VirtualMachineInstance`, similarly to how `PodPresets` work in Kubernetes. If a setting from a `VirtualMachineInstancePreset` is applied to a `VirtualMachineInstance`, the `VirtualMachineInstance` will be marked with an Annotation upon completion.
 
-Any domain structure can be listed in the `spec` of a `VirtualMachinePreset`, e.g. Clock, Features, Memory, CPU, or Devices such as network interfaces. All elements of the `spec` section of a `VirtualMachinePreset` will be applied to the `VirtualMachine`.
+Any domain structure can be listed in the `spec` of a `VirtualMachineInstancePreset`, e.g. Clock, Features, Memory, CPU, or Devices such as network interfaces. All elements of the `spec` section of a `VirtualMachineInstancePreset` will be applied to the `VirtualMachineInstance`.
 
-Once a `VirtualMachinePreset` is successfully applied to a `VirtualMachine`, the `VirtualMachine` will be marked with an annotation to indicate that it was applied. If a conflict occurs while a `VirtualMachinePreset` is being applied, that portion of the `VirtualMachinePreset` will be skipped.
+Once a `VirtualMachineInstancePreset` is successfully applied to a `VirtualMachineInstance`, the `VirtualMachineInstance` will be marked with an annotation to indicate that it was applied. If a conflict occurs while a `VirtualMachineInstancePreset` is being applied, that portion of the `VirtualMachineInstancePreset` will be skipped.
 
 Any valid `Label` can be matched against, but it is suggested that a general rule of thumb is to use os/shortname, e.g. `kubevirt.io/os: rhel7`.
 
-### Updating a VirtualMachinePreset
+### Updating a VirtualMachineInstancePreset
 
-If a `VirtualMachinePreset` is modified, changes will _not_ be applied to existing `VirtualMachines`. This applies to both the `Selector` indicating which `VirtualMachines` should be matched, and also the `Domain` section which lists the settings that should be applied to a `VirtalMachine`.
+If a `VirtualMachineInstancePreset` is modified, changes will _not_ be applied to existing `VirtualMachineInstances`. This applies to both the `Selector` indicating which `VirtualMachineInstances` should be matched, and also the `Domain` section which lists the settings that should be applied to a `VirtalMachine`.
 
 ### Overrides
 
-`VirtualMachinePresets` use a similar conflict resolution strategy to Kubernetes `PodPresets`. If a portion of the domain spec is present in both a `VirtualMachine` and a `VirtualMachinePreset` and both resources have the identical information, then creation of the `VirtualMachine` will continue normally. If however there is a difference between the resources, an Event will be created indicating which `DomainSpec` element of which `VirtualMachinePreset` was overridden. For example: If both the `VirtualMachine` and `VirtualMachinePreset` define a `CPU`, but use a different number of `Cores`, KubeVirt will note the difference.
+`VirtualMachineInstancePresets` use a similar conflict resolution strategy to Kubernetes `PodPresets`. If a portion of the domain spec is present in both a `VirtualMachineInstance` and a `VirtualMachineInstancePreset` and both resources have the identical information, then creation of the `VirtualMachineInstance` will continue normally. If however there is a difference between the resources, an Event will be created indicating which `DomainSpec` element of which `VirtualMachineInstancePreset` was overridden. For example: If both the `VirtualMachineInstance` and `VirtualMachineInstancePreset` define a `CPU`, but use a different number of `Cores`, KubeVirt will note the difference.
 
-If any settings from the `VirtualMachinePreset` were successfully applied, the `VirtualMachine` will be annotated.
+If any settings from the `VirtualMachineInstancePreset` were successfully applied, the `VirtualMachineInstance` will be annotated.
 
-In the event that there is a difference between the `Domains` of a `VirtualMachine` and `VirtualMachinePreset`, KubeVirt will create an `Event`. `kubectl get events` can be used to show all `Events`. For example:
+In the event that there is a difference between the `Domains` of a `VirtualMachineInstance` and `VirtualMachineInstancePreset`, KubeVirt will create an `Event`. `kubectl get events` can be used to show all `Events`. For example:
 
 ```bash
 $ kubectl get events
 ....
 Events:
   FirstSeen                         LastSeen                        Count From                              SubobjectPath                Reason    Message
-  2m          2m           1         myvm.1515bbb8d397f258                       VirtualMachine                                     Warning   Conflict                  virtualmachine-preset-controller   Unable to apply VirtualMachinePreset 'example-preset': spec.cpu: &{6} != &{4}
+  2m          2m           1         myvm.1515bbb8d397f258                       VirtualMachineInstance                                     Warning   Conflict                  virtualmachineinstance-preset-controller   Unable to apply VirtualMachineInstancePreset 'example-preset': spec.cpu: &{6} != &{4}
 ```
 
 ### Usage
 
-`VirtualMachinePresets` are namespaced resources, so should be created in the same namespace as the `VirtualMachines` that will use them:
+`VirtualMachineInstancePresets` are namespaced resources, so should be created in the same namespace as the `VirtualMachineInstances` that will use them:
 
 `kubectl create -f <preset>.yaml [--namespace <namespace>]`
 
-KubeVirt will determine which `VirtualMachinePresets` apply to a Particular `VirtualMachine` by matching `Labels`. For example:
+KubeVirt will determine which `VirtualMachineInstancePresets` apply to a Particular `VirtualMachineInstance` by matching `Labels`. For example:
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachinePreset
+kind: VirtualMachineInstancePreset
 metadata:
   name: example-preset
   selector:
@@ -84,11 +84,11 @@ metadata:
   ...
 ```
 
-would match any `VirtualMachine` in the same namespace with a `Label` of `flavor: foo`. For example:
+would match any `VirtualMachineInstance` in the same namespace with a `Label` of `flavor: foo`. For example:
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 version: v1
 metadata:
   name: myvm
@@ -99,13 +99,13 @@ metadata:
 
 ### Conflicts
 
-When multiple `VirtualMachinePresets` match a particular `VirtualMachine`, if they specify the same settings within a Domain, those settings must match. If two `VirtualMachinePresets` have conflicting settings (e.g. for the number of CPU cores requested), an error will occur, and the `VirtualMachine` will enter the `Failed` state, and a `Warning` event will be emitted explaining which settings of which `VirtualMachinePresets` were problematic.
+When multiple `VirtualMachineInstancePresets` match a particular `VirtualMachineInstance`, if they specify the same settings within a Domain, those settings must match. If two `VirtualMachineInstancePresets` have conflicting settings (e.g. for the number of CPU cores requested), an error will occur, and the `VirtualMachineInstance` will enter the `Failed` state, and a `Warning` event will be emitted explaining which settings of which `VirtualMachineInstancePresets` were problematic.
 
-### Matching Multiple `VirtualMachines`
+### Matching Multiple `VirtualMachineInstances`
 
-The main use case for `VirtualMachinePresets` is to create re-usable settings that can be applied across various machines. Multiple methods are available to match the labels of a `VirtualMachine` using selectors.
+The main use case for `VirtualMachineInstancePresets` is to create re-usable settings that can be applied across various machines. Multiple methods are available to match the labels of a `VirtualMachineInstance` using selectors.
 
-* matchLabels: Each `VirtualMachine` can use a specific label shared by all
+* matchLabels: Each `VirtualMachineInstance` can use a specific label shared by all
 
     instances.
 
@@ -113,7 +113,7 @@ The main use case for `VirtualMachinePresets` is to create re-usable settings th
 
     labels.
 
-Using matchLabels, the label used in the `VirtualMachinePreset` must match one of the labels of the `VirtualMachine`:
+Using matchLabels, the label used in the `VirtualMachineInstancePreset` must match one of the labels of the `VirtualMachineInstance`:
 
 ```yaml
 selector:
@@ -139,7 +139,7 @@ metadata:
     kubevirt.io/os: fedora27
 ```
 
-Using matchExpressions allows for matching multiple labels of `VirtualMachines` without needing to explicity list a label.
+Using matchExpressions allows for matching multiple labels of `VirtualMachineInstances` without needing to explicity list a label.
 
 ```yaml
 selector:
@@ -165,26 +165,26 @@ The Kubernetes [documentation](https://kubernetes.io/docs/concepts/overview/work
 
 ### Exclusions
 
-Since `VirtualMachinePresets` use `Selectors` that indicate which `VirtualMachines` their settings should apply to, there needs to exist a mechanism by which `VirtualMachines` can opt out of `VirtualMachinePresets` altogether. This is done using an annotation:
+Since `VirtualMachineInstancePresets` use `Selectors` that indicate which `VirtualMachineInstances` their settings should apply to, there needs to exist a mechanism by which `VirtualMachineInstances` can opt out of `VirtualMachineInstancePresets` altogether. This is done using an annotation:
 
 ```yaml
-kind: VirtualMachine
+kind: VirtualMachineInstance
 version: v1
 metadata:
   name: myvm
   annotations:
-    virtualmachinepresets.admission.kubevirt.io/exclude: "true"
+    virtualmachineinstancepresets.admission.kubevirt.io/exclude: "true"
   ...
 ```
 
 
 ## Examples
 
-### Simple `VirtualMachinePreset` Example
+### Simple `VirtualMachineInstancePreset` Example
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachinePreset
+kind: VirtualMachineInstancePreset
 version: v1alpha1
 metadata:
   name: example-preset
@@ -203,7 +203,7 @@ spec:
           spinlocks: 8191
 ---
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 version: v1
 metadata:
   name: myvm
@@ -215,15 +215,15 @@ spec:
       uuid: c8f99fc8-20f5-46c4-85e5-2b841c547cef
 ```
 
-Once the `VirtualMachinePreset` is applied to the `VirtualMachine`, the resulting resource would look like this:
+Once the `VirtualMachineInstancePreset` is applied to the `VirtualMachineInstance`, the resulting resource would look like this:
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   annotations:
-    presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-    virtualmachinepreset.kubevirt.io/example-preset: kubevirt.io/v1alpha1
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+    virtualmachineinstancepreset.kubevirt.io/example-preset: kubevirt.io/v1alpha1
   labels:
     kubevirt.io/os: win10
     kubevirt.io/nodeName: master
@@ -256,11 +256,11 @@ spec:
 
 ### Conflict Example
 
-This is an example of a merge conflict. In this case both the `VirtualMachine` and `VirtualMachinePreset` request different number of CPU's.
+This is an example of a merge conflict. In this case both the `VirtualMachineInstance` and `VirtualMachineInstancePreset` request different number of CPU's.
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachinePreset
+kind: VirtualMachineInstancePreset
 version: v1alpha1
 metadata:
   name: example-preset
@@ -273,7 +273,7 @@ spec:
       cores: 4
 ---
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 version: v1
 metadata:
   name: myvm
@@ -285,14 +285,14 @@ spec:
       cores: 6
 ```
 
-In this case the `VirtualMachine` Spec will remain unmodified. Use `kubectl get events` to show events.
+In this case the `VirtualMachineInstance` Spec will remain unmodified. Use `kubectl get events` to show events.
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   annotations:
-    presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
   generation: 0
   labels:
     kubevirt.io/flavor: default-features
@@ -309,17 +309,17 @@ spec:
 status: {}
 ```
 
-Calling `kubectl get events` would have a line like: 2m 2m 1 myvm.1515bbb8d397f258 VirtualMachine Warning Conflict virtualmachine-preset-controller Unable to apply VirtualMachinePreset 'example-preset': spec.cpu: &{6} != &{4}
+Calling `kubectl get events` would have a line like: 2m 2m 1 myvm.1515bbb8d397f258 VirtualMachineInstance Warning Conflict virtualmachineinstance-preset-controller Unable to apply VirtualMachineInstancePreset 'example-preset': spec.cpu: &{6} != &{4}
 
-### Matching Multiple VirtualMachines Using MatchLabels
+### Matching Multiple VirtualMachineInstances Using MatchLabels
 
-These `VirtualMachines` have multiple labels, one that is unique and one that is shared.
+These `VirtualMachineInstances` have multiple labels, one that is unique and one that is shared.
 
 Note: This example breaks from the convention of using os-shortname as a `Label` for demonstration purposes.
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachinePreset
+kind: VirtualMachineInstancePreset
 metadata:
   name: twelve-cores
 spec:
@@ -331,7 +331,7 @@ spec:
       cores: 12
 ---
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: windows-10
   labels:
@@ -340,7 +340,7 @@ metadata:
 spec:
 ---
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: windows-7
   labels:
@@ -350,15 +350,15 @@ spec:
   terminationGracePeriodSeconds: 0
 ```
 
-Adding this `VirtualMachinePreset` and these `VirtualMachines` will result in:
+Adding this `VirtualMachineInstancePreset` and these `VirtualMachineInstances` will result in:
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   annotations:
-    presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-    virtualmachinepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha1
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+    virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha1
   labels:
     kubevirt.io/cpu: dodecacore
     kubevirt.io/os: win10
@@ -373,11 +373,11 @@ spec:
         memory: 4Gi
 ---
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   annotations:
-    presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-    virtualmachinepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha1
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+    virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha1
   labels:
     kubevirt.io/cpu: dodecacore
     kubevirt.io/os: win7
@@ -393,13 +393,13 @@ spec:
   terminationGracePeriodSeconds: 0
 ```
 
-### Matching Multiple VirtualMachines Using MatchExpressions
+### Matching Multiple VirtualMachineInstances Using MatchExpressions
 
-This `VirtualMachinePreset` has a matchExpression that will match two labels: `kubevirt.io/os: win10` and `kubevirt.io/os: win7`.
+This `VirtualMachineInstancePreset` has a matchExpression that will match two labels: `kubevirt.io/os: win10` and `kubevirt.io/os: win7`.
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachinePreset
+kind: VirtualMachineInstancePreset
 metadata:
   name: windows-vms
 spec:
@@ -412,7 +412,7 @@ spec:
         memory: 128M
 ---
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: smallvm
   labels:
@@ -421,7 +421,7 @@ spec:
   terminationGracePeriodSeconds: 60
 ---
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: largevm
   labels:
@@ -436,11 +436,11 @@ Applying the preset to both VM's will result in:
 apiVersion: v1
 items:
 - apiVersion: kubevirt.io/v1alpha1
-  kind: VirtualMachine
+  kind: VirtualMachineInstance
   metadata:
     annotations:
-      presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-      virtualmachinepreset.kubevirt.io/windows-vms: kubevirt.io/v1alpha1
+      presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+      virtualmachineinstancepreset.kubevirt.io/windows-vms: kubevirt.io/v1alpha1
     labels:
       kubevirt.io/os: win7
     name: largevm
@@ -451,11 +451,11 @@ items:
           memory: 128M
     terminationGracePeriodSeconds: 120
 - apiVersion: kubevirt.io/v1alpha1
-  kind: VirtualMachine
+  kind: VirtualMachineInstance
   metadata:
     annotations:
-      presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-      virtualmachinepreset.kubevirt.io/windows-vms: kubevirt.io/v1alpha1
+      presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+      virtualmachineinstancepreset.kubevirt.io/windows-vms: kubevirt.io/v1alpha1
     labels:
       kubevirt.io/os: win10
     name: smallvm

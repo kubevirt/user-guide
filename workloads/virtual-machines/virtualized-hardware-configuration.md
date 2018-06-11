@@ -208,7 +208,7 @@ A common feature configuration is shown by the following example:
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: myvm
 spec:
@@ -244,7 +244,7 @@ An optional resource request can be specified by the users to allow the schedule
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: myvm
 spec:

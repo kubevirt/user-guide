@@ -1,21 +1,21 @@
-# Expose VirtualMachines as a Services
+# Expose VirtualMachineInstances as a Services
 
-Once the VirtualMachine is started, in order to connect to a VirtualMachine,
-you can create a `Service` object for a VirtualMachine. Currently, three types
+Once the VirtualMachineInstance is started, in order to connect to a VirtualMachineInstance,
+you can create a `Service` object for a VirtualMachineInstance. Currently, three types
 of service are supported: `ClusterIP`, `NodePort` and `LoadBalancer`. The
 default type is `ClusterIP`.
 
-> **Note**: Labels on a VirtualMachine are passed through to the pod, so simply
-> add your labels for service creation to the VirtualMachine. From there on it works like
+> **Note**: Labels on a VirtualMachineInstance are passed through to the pod, so simply
+> add your labels for service creation to the VirtualMachineInstance. From there on it works like
 > exposing any other k8s resource, by referencing these labels in a service.
 
-## Expose VirtualMachine as a ClusterIP Service
+## Expose VirtualMachineInstance as a ClusterIP Service
 
-Give a VirtualMachine with the label `special: key`:
+Give a VirtualMachineInstance with the label `special: key`:
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   name: vm-ephemeral
   labels:
@@ -60,11 +60,11 @@ You just need to create this `ClusterIP` service by using `kubectl`:
 $ kubectl create -f vmservice.yaml
 ```
 
-Alternatively, the VirtualMachine could be exposed using the `virtctl` command:
+Alternatively, the VirtualMachineInstance could be exposed using the `virtctl` command:
 
 
 ```bash
-$ virtctl expose virtualmachine vm-ephemeral --name vmservice --port 27017 --target-port 22
+$ virtctl expose virtualmachineinstance vm-ephemeral --name vmservice --port 27017 --target-port 22
 ```
 
 Notes:
@@ -79,15 +79,15 @@ NAME        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
 vmservice   ClusterIP   172.30.3.149   <none>        27017/TCP   2m
 ```
 
-You can connect to the VirtualMachine by service IP and service port inside the cluster network:
+You can connect to the VirtualMachineInstance by service IP and service port inside the cluster network:
 
 ```bash
 $ ssh cirros@172.30.3.149 -p 27017
 ```
 
-## Expose VirtualMachine as a NodePort Service
+## Expose VirtualMachineInstance as a NodePort Service
 
-Expose the SSH port (22) of a VirtualMachine running on KubeVirt by creating a
+Expose the SSH port (22) of a VirtualMachineInstance running on KubeVirt by creating a
 `NodePort` service:
 
 ```yaml
@@ -114,10 +114,10 @@ You just need to create this `NodePort` service by using `kubectl`:
 $ kubectl -f nodeport.yaml
 ```
 
-Alternatively, the VirtualMachine could be exposed using the `virtctl` command:
+Alternatively, the VirtualMachineInstance could be exposed using the `virtctl` command:
 
 ```bash
-$ virtctl expose virtualmachine vm-ephemeral --name nodeport --type NodePort --port 27017 --target-port 22 --node-port 30000
+$ virtctl expose virtualmachineinstance vm-ephemeral --name nodeport --type NodePort --port 27017 --target-port 22 --node-port 30000
 ```
 
 Notes:
@@ -132,16 +132,16 @@ NAME           TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE
 nodeport       NodePort   172.30.232.73   <none>        27017:30000/TCP   5m
 ```
 
-Connect to the VirtualMachine by using a node IP and node port outside the
+Connect to the VirtualMachineInstance by using a node IP and node port outside the
 cluster network:
 
 ```bash
 $ ssh cirros@$NODE_IP -p 30000
 ```
 
-## Expose VirtualMachine as a LoadBalancer Service
+## Expose VirtualMachineInstance as a LoadBalancer Service
 
-Expose the RDP port (3389) of a VirtualMachine running on KubeVirt by creating
+Expose the RDP port (3389) of a VirtualMachineInstance running on KubeVirt by creating
 `LoadBalancer` service. Here is an example:
 
 ```yaml
@@ -166,10 +166,10 @@ You could create this `LoadBalancer` service by using `kubectl`:
 $ kubectl -f lbsvc.yaml
 ```
 
-Alternatively, the VirtualMachine could be exposed using the `virtctl` command:
+Alternatively, the VirtualMachineInstance could be exposed using the `virtctl` command:
 
 ```bash
-$ virtctl expose virtualmachine vm-ephemeral --name lbsvc --type LoadBalancer --port 27017 --target-port 3389
+$ virtctl expose virtualmachineinstance vm-ephemeral --name lbsvc --type LoadBalancer --port 27017 --target-port 3389
 ```
 
 Note that the external IP of the service could be forced to a value using the `--external-ip` flag (no validation is performed on this value).
@@ -182,7 +182,7 @@ NAME      TYPE           CLUSTER-IP       EXTERNAL-IP                   PORT(S) 
 lbsvc     LoadBalancer   172.30.27.5      172.29.10.235,172.29.10.235   27017:31829/TCP   5s
 ```
 
-Use `vinagre` client to connect your VirtualMachine by using the public IP and
+Use `vinagre` client to connect your VirtualMachineInstance by using the public IP and
 port. 
 
 Note that here the external port here (31829) was dynamically allocated.

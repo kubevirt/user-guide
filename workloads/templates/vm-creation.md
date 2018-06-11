@@ -2,16 +2,16 @@
 
 ## Overview
 
-The [OpenShift's template mechanism](https://docs.openshift.org/latest/dev_guide/templates.html) allows user to create a set of objects from a template.  KubeVirt takes benefit from this template mechanism to create OfflineVirtualMachines.
+The [OpenShift's template mechanism](https://docs.openshift.org/latest/dev_guide/templates.html) allows user to create a set of objects from a template.  KubeVirt takes benefit from this template mechanism to create VirtualMachines.
 
 In order to create a virtual machine via OpenShift CLI, you need to provide a template defining the corresponding object and its metadata.
 
-!> Only `OfflineVirtualMachine` object is currently supported.
+!> Only `VirtualMachine` object is currently supported.
 
 
 ## Example template
 
-Here is an example template that defines an instance of the `OfflineVirtualMachine` object:
+Here is an example template that defines an instance of the `VirtualMachine` object:
 
 ```yaml
 apiVersion: v1
@@ -26,7 +26,7 @@ metadata:
     miq.github.io/kubevirt-is-vm-template: "true"
 objects:
 - apiVersion: kubevirt.io/v1alpha1
-  kind: OfflineVirtualMachine
+  kind: VirtualMachine
   metadata:
     name: ${NAME}
     labels:
@@ -87,19 +87,19 @@ $ oc process -f cluster/vm-template-fedora.yaml \
     -p NAME=testvm \
     -p CPU_CORES=2 \
     | oc create -f -
-offlinevirtualmachine "testvm" created
+virtualmachine "testvm" created
 ```
 
-The command above results in creating a Kubernetes object according to the specification given by the template \(in this example it is an instance of the OfflineVirtualMachine object\).
+The command above results in creating a Kubernetes object according to the specification given by the template \(in this example it is an instance of the VirtualMachine object\).
 
 
 ## Starting virtual machine from the created object
 
-The created object is now a regular OfflineVirtualMachine object and from now it can be controlled by accessing Kubernetes API resources.  The preferred way how to do this from within the OpenShift environment is to use `oc patch` command.
+The created object is now a regular VirtualMachine object and from now it can be controlled by accessing Kubernetes API resources.  The preferred way how to do this from within the OpenShift environment is to use `oc patch` command.
 
 ``` bash
-$ oc patch offlinevirtualmachine testvm --type merge -p '{"spec":{"running":true}}'
-offlinevirtualmachine "testvm" patched
+$ oc patch virtualmachine testvm --type merge -p '{"spec":{"running":true}}'
+virtualmachine "testvm" patched
 ```
 
 You can follow [Virtual Machine Lifecycle Guide](/workloads/virtual-machines/life-cycle) for further reference.

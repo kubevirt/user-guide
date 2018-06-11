@@ -1,28 +1,28 @@
-# OfflineVirtualMachine
+# VirtualMachine
 
-An _OfflineVirtualMachine_  provides additional management capabilities to a
-VirtualMachine inside the cluster. That includes:
+An _VirtualMachine_  provides additional management capabilities to a
+VirtualMachineInstance inside the cluster. That includes:
 
  * ABI stability
  * Start/stop/restart capabilities on the controller level
- * Offline configuration change with propagation on VirtualMachine recreation
- * Ensure that the VirtualMachine is running if it should be running
+ * Offline configuration change with propagation on VirtualMachineInstance recreation
+ * Ensure that the VirtualMachineInstance is running if it should be running
 
 It focuses on a 1:1 relationship between the controller instance and a virtual
 machine instance. In many ways it is very similar to a
 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
 with `spec.replica` set to `1`.
 
-## How to use an OfflineVirtualMachine
+## How to use an VirtualMachine
 
-An OfflineVirtualMachine will make sure that a VirtualMachine object with an
+An VirtualMachine will make sure that a VirtualMachineInstance object with an
 identical name will be present in the cluster, if `spec.running` is set to
-`true`. Further it will make sure that a VirtualMachine will be removed from
+`true`. Further it will make sure that a VirtualMachineInstance will be removed from
 the cluster if `spec.running` is set to `false`.
 
 ### Starting and stopping
 
-After creating an OfflineVirtualMachine it can be switched on or off like this:
+After creating an VirtualMachine it can be switched on or off like this:
 
 ```bash
 # Start the virtual machine:
@@ -36,59 +36,59 @@ virtctl stop myvm
 
 ```bash
 # Start the virtual machine:
-kubectl patch offlinevirtualmachine myvm --type merge -p \
+kubectl patch virtualmachine myvm --type merge -p \
     '{"spec":{"running":true}}'
 
 # Stop the virtual machine:
-kubectl patch offlinevirtualmachine myvm --type merge -p \
+kubectl patch virtualmachine myvm --type merge -p \
     '{"spec":{"running":false}}'
 ```
 
 ### Controller status
 
-Once a VirtualMachine is created, its state will be tracked via
-`status.created` and `status.ready`. If a VirtualMachine exists in the cluster,
-`status.created` will equal to `true`. If the VirtualMachine is also ready,
+Once a VirtualMachineInstance is created, its state will be tracked via
+`status.created` and `status.ready`. If a VirtualMachineInstance exists in the cluster,
+`status.created` will equal to `true`. If the VirtualMachineInstance is also ready,
 `status.ready` will equal `true` too.
 
-If a VirtualMachine reaches a final state but the `spec.running` equals `true`,
-the OfflineVirtualMachine controller will set `status.ready` to `false` and
-re-create the VirtualMachine.
+If a VirtualMachineInstance reaches a final state but the `spec.running` equals `true`,
+the VirtualMachine controller will set `status.ready` to `false` and
+re-create the VirtualMachineInstance.
 
 ### Restarting
 
-A VirtualMachine restart can be triggered by deleting the VirtualMachine. This
+A VirtualMachineInstance restart can be triggered by deleting the VirtualMachineInstance. This
 will also propagate configuration changes from the template in the
-OfflineVirtualMachine:
+VirtualMachine:
 
 ```bash
 # Restart the offline virtual machine (you delete the vm!):
-kubectl delete virtualmachine myvm
+kubectl delete virtualmachineinstance myvm
 ```
 
 ### Fencing considerations
 
-An OfflineVirtualMachine will never restart or re-create a VirtualMachine until
-the current instance of the VirtualMachine is deleted from the cluster.
+An VirtualMachine will never restart or re-create a VirtualMachineInstance until
+the current instance of the VirtualMachineInstance is deleted from the cluster.
 
 ### Exposing as a Service
-An OfflineVirtualMachine could be exposed as a service. The actual service will be available once the VirtualMachine starts without additional interaction.
+An VirtualMachine could be exposed as a service. The actual service will be available once the VirtualMachineInstance starts without additional interaction.
 
 For example, exposing SSH port (22) as a `ClusterIP` service using `virtctl` after the OfflineVirtualMAchine was created, but before it started:
 
 ```bash
-$ virtctl expose offlinevirtualmachine vm-ephemeral --name vmservice --port 27017 --target-port 22
+$ virtctl expose virtualmachine vm-ephemeral --name vmservice --port 27017 --target-port 22
 ```
 
-All service exposure options that apply to a VirtualMachine apply to an OfflineVirtualMachine. See [Exposing VirtualMachine](http://www.kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service) for more details.
+All service exposure options that apply to a VirtualMachineInstance apply to an VirtualMachine. See [Exposing VirtualMachineInstance](http://www.kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service) for more details.
 
-## When to use an OfflineVirtualMachine
+## When to use an VirtualMachine
 
 ### When ABI stability is required between restarts
 
-An _OfflineVirtualMachine_ makes sure that VirtualMachine ABI configurations
+An _VirtualMachine_ makes sure that VirtualMachineInstance ABI configurations
 are consistent between restarts. A classical example are licenses which are
-bound to the firmware UUID of a virtual machine. The _OfflineVirtualMachine_
+bound to the firmware UUID of a virtual machine. The _VirtualMachine_
 makes sure that the UUID will always stay the same without the user having to
 take care of it.
 
@@ -97,19 +97,19 @@ although a stable ABI is needed.
 
 ### When config updates should be picked up on the next restart
 
-If the VirtualMachine configuration should be modifyable inside the cluster and
-these changes should be picked up on the next VirtualMachine restart. This
+If the VirtualMachineInstance configuration should be modifyable inside the cluster and
+these changes should be picked up on the next VirtualMachineInstance restart. This
 means that no hotplug is involved.
 
-### When you want to let the cluster manage your individual VirtualMachine
+### When you want to let the cluster manage your individual VirtualMachineInstance
 
-Kubernetes as a declarative system can help you to manage the VirtualMachine.
+Kubernetes as a declarative system can help you to manage the VirtualMachineInstance.
 
-You tell it that you want this VirtualMachine with your application running,
-the OfflineVirtualMachine will try to make sure it stays running.
+You tell it that you want this VirtualMachineInstance with your application running,
+the VirtualMachine will try to make sure it stays running.
 
 > **Note**: The current believe is that if it is defined that the
-> VirtualMachine should be running, it should be running. This is different to
+> VirtualMachineInstance should be running, it should be running. This is different to
 > many classical virtualization platforms, where VMs stay down if they were
 > switched off. Restart policies may be added if needed. Please provide your
 > use-case if you need this!
@@ -118,7 +118,7 @@ the OfflineVirtualMachine will try to make sure it stays running.
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: OfflineVirtualMachine
+kind: VirtualMachine
 metadata:
   creationTimestamp: null
   labels:
@@ -163,7 +163,7 @@ create the controller instance:
 
 ```bash
 $ kubectl create -f ovm.yaml 
-offlinevirtualmachine "ovm-cirros" created
+virtualmachine "ovm-cirros" created
 ```
 
 Since `spec.running` is set to `false`, no vm will be created:
@@ -173,13 +173,13 @@ $ kubectl get vms
 No resources found.
 ```
 
-Let's start the OfflineVirtualMachine:
+Let's start the VirtualMachine:
 
 ```bash
 $ virtctl start omv ovm-cirros
 ```
 
-As expected, a VirtualMachine called `ovm-cirros` got created:
+As expected, a VirtualMachineInstance called `ovm-cirros` got created:
 
 ```yaml
 $ kubectl describe ovm ovm-cirros
@@ -188,13 +188,13 @@ Namespace:    default
 Labels:       kubevirt.io/ovm=ovm-cirros
 Annotations:  <none>
 API Version:  kubevirt.io/v1alpha1
-Kind:         OfflineVirtualMachine
+Kind:         VirtualMachine
 Metadata:
   Cluster Name:        
   Creation Timestamp:  2018-04-30T09:25:08Z
   Generation:          0
   Resource Version:    6418
-  Self Link:           /apis/kubevirt.io/v1alpha1/namespaces/default/offlinevirtualmachines/ovm-cirros
+  Self Link:           /apis/kubevirt.io/v1alpha1/namespaces/default/virtualmachines/ovm-cirros
   UID:                 60043358-4c58-11e8-8653-525500d15501
 Spec:
   Running:  true
@@ -234,12 +234,12 @@ Status:
 Events:
   Type    Reason            Age   From                              Message
   ----    ------            ----  ----                              -------
-  Normal  SuccessfulCreate  15s   offlinevirtualmachine-controller  Created virtual machine: ovm-cirros
+  Normal  SuccessfulCreate  15s   virtualmachine-controller  Created virtual machine: ovm-cirros
 ```
 
 ### kubectl commandline interactions
 
-Whenever you want to manipulate the OfflineVirtualMachine through the
+Whenever you want to manipulate the VirtualMachine through the
 commandline you can use the kubectl command. The following are examples
 demonstrating how to do it.
 
@@ -248,29 +248,29 @@ demonstrating how to do it.
 kubectl create -f myofflinevm.yaml
 
 # Start the virtual machine:
-kubectl patch offlinevirtualmachine myvm --type merge -p \
+kubectl patch virtualmachine myvm --type merge -p \
     '{"spec":{"running":true}}'
 
 # Look at offline virtual machine status and associated events:
-kubectl describe offlinevirtualmachine myvm
-
-# Look at the now created virtual machine status and associated events:
 kubectl describe virtualmachine myvm
 
+# Look at the now created virtual machine status and associated events:
+kubectl describe virtualmachineinstance myvm
+
 # Stop the virtual machine:
-kubectl patch offlinevirtualmachine myvm --type merge -p \
+kubectl patch virtualmachine myvm --type merge -p \
     '{"spec":{"running":false}}'
 
 # Restart the offline virtual machine (you delete the vm!):
-kubectl delete virtualmachine myvm
+kubectl delete virtualmachineinstance myvm
 
 # Implicit cascade delete (first deletes the virtual machine and then the offline virtual machine)
-kubectl delete offlinevirtualmachine myvm
+kubectl delete virtualmachine myvm
 
 # Explicit cascade delete (first deletes the virtual machine and then the offline virtual machine)
-kubectl delete offlinevirtualmachine myvm --cascade=true
+kubectl delete virtualmachine myvm --cascade=true
 
 # Orphan delete (The running virtual machine is only detached, not deleted)
 # Recreating the offline virtual machine would lead to the adoption of the virtual machine
-kubectl delete offlinevirtualmachine myvm --cascade=false
+kubectl delete virtualmachine myvm --cascade=false
 ```

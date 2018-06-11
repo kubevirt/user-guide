@@ -6,7 +6,7 @@ exposes. Usually there are two types of consoles:
 * Serial Console
 * Graphical Console \(VNC\)
 
-> Note: You need to have `virtctl` [installed](/installation/?id=client-side-virtctl-deployment) to gain access to the VirtualMachine.
+> Note: You need to have `virtctl` [installed](/installation/?id=client-side-virtctl-deployment) to gain access to the VirtualMachineInstance.
 
 ## Accessing the serial console
 
@@ -41,7 +41,7 @@ $ virtctl vnc --kubeconfig=$KUBECONFIG testvm -v 4
 ### Using Default RBAC ClusterRoles
 
 Every KubeVirt installation after version v0.5.1 comes a set of default RBAC
-cluster roles that can be used to grant users access to VirtualMachines.
+cluster roles that can be used to grant users access to VirtualMachineInstances.
 
 The **kubevirt.io:admin** and **kubevirt.io:edit** ClusterRoles have console
 and VNC access permissions built into them. By binding either of these roles
@@ -62,8 +62,8 @@ rules:
   - apiGroups:
       - subresources.kubevirt.io
     resources:
-      - virtualmachines/console
-      - virtualmachines/vnc
+      - virtualmachineinstances/console
+      - virtualmachineinstances/vnc
     verbs:
       - get
 ```

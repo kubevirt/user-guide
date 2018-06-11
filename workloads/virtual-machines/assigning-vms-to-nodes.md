@@ -13,7 +13,7 @@ Setting `spec.nodeSelector` requirements, constrains the scheduler to only sched
 metadata:
   name: testvm-ephemeral
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 spec:
   nodeSelector:
     cpu: slow
@@ -45,7 +45,7 @@ An example for `podAffinity` and `podAntiAffinity` may look like this:
 metadata:
   name: testvm-ephemeral
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 spec:
   nodeSelector:
     cpu: slow

@@ -1,6 +1,6 @@
 # Guest Operating System Information
 
-Guest operating system identity for the VirtualMachine will be provided by the label `kubevirt.io/os` :
+Guest operating system identity for the VirtualMachineInstance will be provided by the label `kubevirt.io/os` :
 
 ```yaml
 metadata:
@@ -17,15 +17,15 @@ The `kubevirt.io/os` label is based on the short OS identifier from [libosinfo](
 
 ## Use with presets
 
-A VirtualMachinePreset representing an operating system with a `kubevirt.io/os` label could be applied on any given VirtualMachine that have and match the`kubevirt.io/os` label.
+A VirtualMachineInstancePreset representing an operating system with a `kubevirt.io/os` label could be applied on any given VirtualMachineInstance that have and match the`kubevirt.io/os` label.
 
 Default presets for the OS identifiers above are included in the current release.
 
-### Windows Server 2012R2 `VirtualMachinePreset` Example
+### Windows Server 2012R2 `VirtualMachineInstancePreset` Example
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachinePreset
+kind: VirtualMachineInstancePreset
 metadata:
   name: windows-server-2012r2
   selector:
@@ -58,7 +58,7 @@ spec:
         hyperv: {}
 ---
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   labels:
     kubevirt.io/os: win2k12r2  
@@ -80,15 +80,15 @@ spec:
         claimName: my-windows-image
 ```
 
-Once the `VirtualMachinePreset` is applied to the `VirtualMachine`, the resulting resource would look like this:
+Once the `VirtualMachineInstancePreset` is applied to the `VirtualMachineInstance`, the resulting resource would look like this:
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+kind: VirtualMachineInstance
 metadata:
   annotations:
-    presets.virtualmachines.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
-    virtualmachinepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1alpha1
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha1
+    virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1alpha1
   labels:
     kubevirt.io/os: win2k12r2  
   name: windows2012r2
@@ -132,5 +132,5 @@ spec:
         claimName: my-windows-image
 ```
 
-For more information see [VirtualMachinePresets](presets.md)
+For more information see [VirtualMachineInstancePresets](presets.md)
 
