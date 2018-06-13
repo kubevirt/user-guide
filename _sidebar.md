@@ -23,7 +23,7 @@
     * [Virtualized Hardware Configuration](workloads/virtual-machines/virtualized-hardware-configuration.md)
     * [Assigning VMs to Nodes](workloads/virtual-machines/assigning-vms-to-nodes.md)
   * [Controllers](workloads/controllers/README.md)
-    * [VirtualMachine](workloads/controllers/offline-virtual-machine.md)
+    * [VirtualMachine](workloads/controllers/virtual-machine.md)
     * [Virtual Machine Replica Set](workloads/controllers/virtual-machine-replica-set.md)
   * [Templates](workloads/templates/README.md)
     * [Virtual Machine Creation](workloads/templates/vm-creation.md)

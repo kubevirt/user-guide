@@ -26,21 +26,21 @@ After creating an VirtualMachine it can be switched on or off like this:
 
 ```bash
 # Start the virtual machine:
-virtctl start myvmi
+virtctl start myvm
 
 # Stop the virtual machine:
-virtctl stop myvmi
+virtctl stop myvm
 ```
 
 `kubectl` can be used too:
 
 ```bash
 # Start the virtual machine:
-kubectl patch virtualmachine myvmi --type merge -p \
+kubectl patch virtualmachine myvm --type merge -p \
     '{"spec":{"running":true}}'
 
 # Stop the virtual machine:
-kubectl patch virtualmachine myvmi --type merge -p \
+kubectl patch virtualmachine myvm --type merge -p \
     '{"spec":{"running":false}}'
 ```
 
@@ -63,7 +63,7 @@ VirtualMachine:
 
 ```bash
 # Restart the virtual machine (you delete the instance!):
-kubectl delete virtualmachineinstance myvmi
+kubectl delete virtualmachineinstance myvm
 ```
 
 ### Fencing considerations
@@ -245,32 +245,32 @@ demonstrating how to do it.
 
 ```bash
 # Define an virtual machine:
-kubectl create -f myofflinevmi.yaml
+kubectl create -f myvm.yaml
 
 # Start the virtual machine:
-kubectl patch virtualmachine myvmi --type merge -p \
+kubectl patch virtualmachine myvm --type merge -p \
     '{"spec":{"running":true}}'
 
 # Look at virtual machine status and associated events:
-kubectl describe virtualmachine myvmi
+kubectl describe virtualmachine myvm
 
 # Look at the now created virtual machine instance status and associated events:
-kubectl describe virtualmachineinstance myvmi
+kubectl describe virtualmachineinstance myvm
 
 # Stop the virtual machine instance:
-kubectl patch virtualmachine myvmi --type merge -p \
+kubectl patch virtualmachine myvm --type merge -p \
     '{"spec":{"running":false}}'
 
 # Restart the virtual machine (you delete the instance!):
-kubectl delete virtualmachineinstance myvmi
+kubectl delete virtualmachineinstance myvm
 
 # Implicit cascade delete (first deletes the virtual machine and then the virtual machine)
-kubectl delete virtualmachine myvmi
+kubectl delete virtualmachine myvm
 
 # Explicit cascade delete (first deletes the virtual machine and then the virtual machine)
-kubectl delete virtualmachine myvmi --cascade=true
+kubectl delete virtualmachine myvm --cascade=true
 
 # Orphan delete (The running virtual machine is only detached, not deleted)
 # Recreating the virtual machine would lead to the adoption of the virtual machine instance
-kubectl delete virtualmachine myvmi --cascade=false
+kubectl delete virtualmachine myvm --cascade=false
 ```

@@ -10,8 +10,6 @@ You can interact with the new resources \(via `kubectl`\) as you would with any 
 
 > Note: A full API reference is available at (https://kubevirt.io/api-reference/)[https://kubevirt.io/api-reference/].
 
-A VirtualMachineInstance API is also called a VirtualMachineInstance object, because the object is used to define a virtual machine.
-
 Here is an example of a VirtualMachineInstance object:
 
 ```yaml
