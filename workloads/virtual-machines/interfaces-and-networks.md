@@ -65,6 +65,7 @@ In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts
 | Connection method | Description |
 |--|--|
 | `bridge` | Bridge the interface to the network |
+| `slirp` | Use qemu user interface |
 
 ### `bridge` connection
 
@@ -79,3 +80,31 @@ If the `delegateIp` option is used, then - if available - an IP address assigned
 |Options||
 |--|--|
 | `delegateIp` | `pod` backend only: The IP assigned to the pod will be delegated to the VM using DHCP |
+
+### `slirp` connection
+
+This connection will use the qemu user interface.
+Let the VM be exposed like a process which would be running inside a container. The requirement is that a process will bind to a port.
+
+It is a known issue that SLIRP is not recommended for anything in production.
+
+All the egress connection will came from the qemu process and all the ingress connection will go to qemu process.
+
+|Feature||
+|--|--|
+| Supported protocols | TCP/UDP only |
+
+|Options||
+|--|--|
+| `ports` | Expose ports  |
+
+#### Ports
+this configuration allow to expose vm ports to the pod.
+
+|Options||
+|--|--|
+| `name` | name of the port  |
+| `port` | Port to expose (unique and mandatory) |
+| `podPort` | Expose diferent port on the pod  |
+| `protocol` | connection protocol (TCP,UDP)  |
+
