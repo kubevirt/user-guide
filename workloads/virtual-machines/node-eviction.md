@@ -80,7 +80,7 @@ down the node.
 
 ## VirtualMachine Evictions
 
-The eviction of any VirtualMachineInstance that is owned by an VirtualMachine
+The eviction of any VirtualMachineInstance that is owned by a VirtualMachine
 set to **running=true** will result in the VirtualMachineInstance being re-scheduled to
 another node.
 

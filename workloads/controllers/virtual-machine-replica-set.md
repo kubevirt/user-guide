@@ -24,7 +24,7 @@ For example, exposing SSH port (22) as a ClusterIP service using virtctl on a Vi
 $ virtctl expose vmirs vmi-ephemeral --name vmiservice --port 27017 --target-port 22
 ```
 
-All service exposure options that apply to a VirtualMachineInstance apply to an VirtualMachineInstanceReplicaSet. See [Exposing VirtualMachineInstance](http://www.kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service) for more details.
+All service exposure options that apply to a VirtualMachineInstance apply to a VirtualMachineInstanceReplicaSet. See [Exposing VirtualMachineInstance](http://www.kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service) for more details.
 
 ## When to use a VirtualMachineInstanceReplicaSet
 

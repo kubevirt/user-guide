@@ -13,16 +13,16 @@ machine instance. In many ways it is very similar to a
 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
 with `spec.replica` set to `1`.
 
-## How to use an VirtualMachine
+## How to use a VirtualMachine
 
-An VirtualMachine will make sure that a VirtualMachineInstance object with an
+A VirtualMachine will make sure that a VirtualMachineInstance object with an
 identical name will be present in the cluster, if `spec.running` is set to
 `true`. Further it will make sure that a VirtualMachineInstance will be removed from
 the cluster if `spec.running` is set to `false`.
 
 ### Starting and stopping
 
-After creating an VirtualMachine it can be switched on or off like this:
+After creating a VirtualMachine it can be switched on or off like this:
 
 ```bash
 # Start the virtual machine:
@@ -68,7 +68,7 @@ kubectl delete virtualmachineinstance myvm
 
 ### Fencing considerations
 
-An VirtualMachine will never restart or re-create a VirtualMachineInstance until
+A VirtualMachine will never restart or re-create a VirtualMachineInstance until
 the current instance of the VirtualMachineInstance is deleted from the cluster.
 
 ### Exposing as a Service
@@ -244,7 +244,7 @@ commandline you can use the kubectl command. The following are examples
 demonstrating how to do it.
 
 ```bash
-# Define an virtual machine:
+# Define a virtual machine:
 kubectl create -f myvm.yaml
 
 # Start the virtual machine:
