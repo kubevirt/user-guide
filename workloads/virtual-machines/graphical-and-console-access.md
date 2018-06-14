@@ -36,6 +36,12 @@ from both `virtctl` and the `remote-viewer` tool, to troubleshoot the problem.
 $ virtctl vnc --kubeconfig=$KUBECONFIG testvmi -v 4
 ```
 
+> **Note:** If you are using virtctl via ssh on a remote machine, you need to
+> forward the X session to your machine (Look up the -X and -Y flags of `ssh`
+> if you are not familiar with that). As an alternative you can proxy the
+> apiserver port with ssh to your machine (either direct or in combination with
+> `kubectl proxy`)
+
 ## RBAC Permissions for Console/VNC Access
 
 ### Using Default RBAC ClusterRoles
