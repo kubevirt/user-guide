@@ -278,3 +278,38 @@ Various VM resources, such as a video adapter, IOThreads, and supplementary syst
 
 Please see [how Pods with resource requests are scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled) for additional information on resource requests and limits.
 
+## Hugepages
+
+KubeVirt give you possibility to use hugepages as backing memory for your VM. You will need to provide desired amount of memory `resources.requests.memory` and size of hugepages to use `memory.hugepages.pageSize`, for example for x86_64 architecture it can be `2Mi`.
+
+```yaml
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: myvm
+spec:
+  domain:
+    resources:
+      requests:
+        memory: "64Mi"
+    memory:
+      hugepages:
+        pageSize: "2Mi"
+    disks:
+    - name: myimage
+      volumeName: myimage
+      disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimname: myclaim
+```
+
+In the above example the VM will have `64Mi` of memory, but instead of regular memory it will use node hugepages of the size of `2Mi`.
+
+#### Limitations
+
+- a node must have pre-allocated hugepages
+- hugepages size cannot be bigger than requested memory
+- requested memory must be divisible by hugepages size
+
