@@ -6,7 +6,7 @@ exposes. Usually there are two types of consoles:
 * Serial Console
 * Graphical Console \(VNC\)
 
-> Note: You need to have `virtctl` [installed](/installation/?id=client-side-virtctl-deployment) to gain access to the VirtualMachine.
+> Note: You need to have `virtctl` [installed](/installation/?id=client-side-virtctl-deployment) to gain access to the VirtualMachineInstance.
 
 ## Accessing the serial console
 
@@ -14,7 +14,7 @@ The serial console of a virtual machine can be accessed by using the
 `console` command:
 
 ```bash
-$ virtctl console --kubeconfig=$KUBECONFIG testvm
+$ virtctl console --kubeconfig=$KUBECONFIG testvmi
 ```
 
 ## Accessing the graphical console \(VNC\)
@@ -24,7 +24,7 @@ VNC, which requires `remote-viewer`. Once the tool is installed you can
 access the graphical console using:
 
 ```bash
-$ virtctl vnc --kubeconfig=$KUBECONFIG testvm
+$ virtctl vnc --kubeconfig=$KUBECONFIG testvmi
 ```
 
 ## Debugging console access
@@ -33,7 +33,7 @@ Should the connection fail, you can use the `-v` flag to get more output
 from both `virtctl` and the `remote-viewer` tool, to troubleshoot the problem.
 
 ```bash
-$ virtctl vnc --kubeconfig=$KUBECONFIG testvm -v 4
+$ virtctl vnc --kubeconfig=$KUBECONFIG testvmi -v 4
 ```
 
 ## RBAC Permissions for Console/VNC Access
@@ -41,7 +41,7 @@ $ virtctl vnc --kubeconfig=$KUBECONFIG testvm -v 4
 ### Using Default RBAC ClusterRoles
 
 Every KubeVirt installation after version v0.5.1 comes a set of default RBAC
-cluster roles that can be used to grant users access to VirtualMachines.
+cluster roles that can be used to grant users access to VirtualMachineInstances.
 
 The **kubevirt.io:admin** and **kubevirt.io:edit** ClusterRoles have console
 and VNC access permissions built into them. By binding either of these roles
@@ -62,8 +62,8 @@ rules:
   - apiGroups:
       - subresources.kubevirt.io
     resources:
-      - virtualmachines/console
-      - virtualmachines/vnc
+      - virtualmachineinstances/console
+      - virtualmachineinstances/vnc
     verbs:
       - get
 ```

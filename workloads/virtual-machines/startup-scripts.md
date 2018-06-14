@@ -2,7 +2,7 @@
 
 ## Overview
 
-KubeVirt supports the ability to assign a startup script to a VirtualMachine instance which is executed automatically when the VM initializes.
+KubeVirt supports the ability to assign a startup script to a VirtualMachineInstance instance which is executed automatically when the VM initializes.
 
 These scripts are commonly used to automate injection of users and SSH keys into VMs in order to provide remote access to the machine. For example, a startup script can be used to inject credentials into a VM that allows an Ansible job running on a remote host to access and provision the VM.
 
@@ -26,7 +26,7 @@ Sysprep is an automation tool for Windows that automates Windows installation, s
 
 KubeVirt supports the cloud-init NoCloud datasource which involves injecting startup scripts through the use of a disk attached to the VM.
 
-In order to assign a custom userdata script to a VirtualMachine using this method, users must define a disk and a volume for the NoCloud datasource in the VirtualMachine's spec.
+In order to assign a custom userdata script to a VirtualMachineInstance using this method, users must define a disk and a volume for the NoCloud datasource in the VirtualMachineInstance's spec.
 
 ### Cloud-init user-data as clear text
 
@@ -36,11 +36,11 @@ In the example below, a SSH key is stored in the cloudInitNoCloud Volume's userD
 # Create a VM manifest with the startup script
 # a cloudInitNoCloud volume's userData field.
 
-cat << END > my-vm.yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+cat << END > my-vmi.yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   terminationGracePeriodSeconds: 5
   domain:
@@ -71,7 +71,7 @@ END
 
 # Post the Virtual Machine spec to KubeVirt.
 
-kubectl create -f my-vm.yaml
+kubectl create -f my-vmi.yaml
 ```
 
 ### Cloud-init user-data as base64 string
@@ -91,11 +91,11 @@ END
 # Create a VM manifest with the startup script base64 encoded into
 # a cloudInitNoCloud volume's userDataBase64 field.
 
-cat << END > my-vm.yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+cat << END > my-vmi.yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   terminationGracePeriodSeconds: 5
   domain:
@@ -123,14 +123,14 @@ END
 
 # Post the Virtual Machine spec to KubeVirt.
 
-kubectl create -f my-vm.yaml
+kubectl create -f my-vmi.yaml
 ```
 
 ### Cloud-init UserData as k8s Secret
 
-Users who wish to not store the cloud-init userdata directly in the VirtualMachine spec have the option to store the userdata into a Kubernetes Secret and reference that Secret in the spec.
+Users who wish to not store the cloud-init userdata directly in the VirtualMachineInstance spec have the option to store the userdata into a Kubernetes Secret and reference that Secret in the spec.
 
-Multiple VirtualMachine specs can reference the same Kubernetes Secret containing cloud-init userdata.
+Multiple VirtualMachineInstance specs can reference the same Kubernetes Secret containing cloud-init userdata.
 
 Below is an example of how to create a Kubernetes Secret containing a startup script and reference that Secret in the VM's spec.
 
@@ -143,16 +143,16 @@ echo "Hi from startup script!"
 END
 
 # Store the startup script in a Kubernetes Secret
-kubectl create secret generic my-vm-secret --from-file=userdata=startup-script.sh
+kubectl create secret generic my-vmi-secret --from-file=userdata=startup-script.sh
 
 # Create a VM manifest and reference the Secret's name in the cloudInitNoCloud
 # Volume's secretRef field
 
-cat << END > my-vm.yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+cat << END > my-vmi.yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   terminationGracePeriodSeconds: 5
   domain:
@@ -176,11 +176,11 @@ spec:
     - name: cloudinitvolume
       cloudInitNoCloud:
         secretRef:
-          name: my-vm-secret
+          name: my-vmi-secret
 END
 
 # Post the VM
-kubectl create -f my-vm.yaml
+kubectl create -f my-vmi.yaml
 ```
 
 ### Injecting SSH keys with Cloud-init's Cloud-config
@@ -203,11 +203,11 @@ ssh_authorized_keys:
 END
 
 # Create the VM spec
-cat << END > my-vm.yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+cat << END > my-vmi.yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: sshvm
+  name: sshvmi
 spec:
   terminationGracePeriodSeconds: 0
   domain:
@@ -233,8 +233,8 @@ spec:
         userDataBase64: $(cat startup-script | base64 -w0)
 END
 
-# Post the VirtualMachine spec to KubeVirt.
-kubectl create -f my-vm.yaml
+# Post the VirtualMachineInstance spec to KubeVirt.
+kubectl create -f my-vmi.yaml
 
 # Connect to VM with passwordless SSH key
 ssh -i <insert private key here> fedora@<insert ip here>
@@ -260,11 +260,11 @@ sudo chown -R ${NEW_USER}: /home/$NEW_USER/.ssh
 END
 
 # Create the VM spec
-cat << END > my-vm.yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+cat << END > my-vmi.yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: sshvm
+  name: sshvmi
 spec:
   terminationGracePeriodSeconds: 0
   domain:
@@ -290,8 +290,8 @@ spec:
         userDataBase64: $(cat startup-script.sh | base64 -w0)
 END
 
-# Post the VirtualMachine spec to KubeVirt.
-kubectl create -f my-vm.yaml
+# Post the VirtualMachineInstance spec to KubeVirt.
+kubectl create -f my-vmi.yaml
 
 # Connect to VM with passwordless SSH key
 ssh -i <insert private key here> foo@<insert ip here>
@@ -304,6 +304,6 @@ Depending on the operating system distribution in use, cloud-init output is ofte
 Example of connecting to console using virtctl:
 
 ```bash
-virtctl console <name of vm>
+virtctl console <name of vmi>
 ```
 

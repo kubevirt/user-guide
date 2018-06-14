@@ -2,5 +2,5 @@
 
 This part contains sections with details about the different workload types which KubeVirt supports.
 
-All workload types do somehow build around the `VirtualMachine` type, which in essence defines every virtual machine instance.
+All workload types do somehow build around the `VirtualMachineInstance` type, which in essence defines every virtual machine instance.
 

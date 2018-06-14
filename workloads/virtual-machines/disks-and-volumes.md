@@ -4,7 +4,7 @@ Making persistent storage in the cluster \(**volumes**\) accessible to VMs consi
 
 ## Disks
 
-Like all other vm devices a `spec.domain.devices.disks` element has a mandatory `name`, and furthermore, it has a mandatory `volumeName` entry which references a volume inside `spec.volumes`.
+Like all other vmi devices a `spec.domain.devices.disks` element has a mandatory `name`, and furthermore, it has a mandatory `volumeName` entry which references a volume inside `spec.volumes`.
 
 A disk can be made accessible via four different types:
 
@@ -25,9 +25,9 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `l
 
 ```yaml
 metadata:
-  name: testvm-lun
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+  name: testvmi-lun
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 spec:
   domain:
     resources:
@@ -53,9 +53,9 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `d
 
 ```yaml
 metadata:
-  name: testvm-disk
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+  name: testvmi-disk
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 spec:
   domain:
     resources:
@@ -77,9 +77,9 @@ You can set the disk `bus` type, overriding the defaults, which in turn depends 
 
 ```yaml
 metadata:
-  name: testvm-disk
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+  name: testvmi-disk
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 spec:
   domain:
     resources:
@@ -108,9 +108,9 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `f
 
 ```yaml
 metadata:
-  name: testvm-floppy
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+  name: testvmi-floppy
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 spec:
   domain:
     resources:
@@ -136,9 +136,9 @@ A minimal example which attaches a `PersistentVolumeClame` named `mypvc` as a `f
 
 ```yaml
 metadata:
-  name: testvm-cdrom
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+  name: testvmi-cdrom
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 spec:
   domain:
     resources:
@@ -180,9 +180,9 @@ A simple example which attaches a `Secret` as a cloud-init `disk` datasource may
 
 ```yaml
 metadata:
-  name: testvm-cloudinitnocloud
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+  name: testvmi-cloudinitnocloud
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 spec:
   domain:
     resources:
@@ -210,7 +210,7 @@ spec:
 
 Allows connecting a `PersistentVolumeClaim` to a VM disk.
 
-Use a PersistentVolumeClain when the VirtualMachine's disk needs to persist after the VM terminates. This allows for the VM's data to remain persistent between restarts.
+Use a PersistentVolumeClain when the VirtualMachineInstance's disk needs to persist after the VM terminates. This allows for the VM's data to remain persistent between restarts.
 
 For KubeVirt to be able to consume the disk present on a PersistentVolume's filesystem, the disk must be named `disk.img` and be placed in the root path of the filesystem. Currently the disk is also required to be in raw format.
 
@@ -220,9 +220,9 @@ A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look l
 
 ```yaml
 metadata:
-  name: testvm-pvc
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+  name: testvmi-pvc
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 spec:
   domain:
     resources:
@@ -251,9 +251,9 @@ Up-to-date information on supported backing stores can be found in the [KubeVirt
 
 ```yaml
 metadata:
-  name: testvm-ephemeral-pvc
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+  name: testvmi-ephemeral-pvc
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 spec:
   domain:
     resources:
@@ -273,13 +273,13 @@ spec:
 
 ### registryDisk
 
-The Registry Disk feature provides the ability to store and distribute VM disks in the container image registry. Registry Disks can be assigned to VMs in the disks section of the VirtualMachine spec.
+The Registry Disk feature provides the ability to store and distribute VM disks in the container image registry. Registry Disks can be assigned to VMs in the disks section of the VirtualMachineInstance spec.
 
 No network shared storage devices are utilized by Registry Disks. The disks are pulled from the container registry and reside on the local node hosting the VMs that consume the disks.
 
 #### When to use a registryDisk
 
-Registry Disks are ephemeral storage devices that can be assigned to any number of active VirtualMachines. This makes them an ideal tool for users who want to replicate a large number of VM workloads that do not require persistent data. Registry Disks are commonly used in conjunction with VirtualMachineReplicaSets.
+Registry Disks are ephemeral storage devices that can be assigned to any number of active VirtualMachineInstances. This makes them an ideal tool for users who want to replicate a large number of VM workloads that do not require persistent data. Registry Disks are commonly used in conjunction with VirtualMachineInstanceReplicaSets.
 
 #### When Not to use a registryDisk
 
@@ -289,9 +289,9 @@ Registry Disks are not a good solution for any workload that requires persistent
 
 Users push VM disks into the container registry using a KubeVirt base image designed to work with the Registry Disk feature. The latest base container image is **kubevirt/registry-disk-v1alpha**.
 
-Using this base image, users can inject a VirtualMachine disk into a container image in a way that is consumable by the KubeVirt runtime. Disks placed into the base container must be placed into the /disk directory. Raw and qcow2 formats are supported. Qcow2 is recommended in order to reduce the container image's size.
+Using this base image, users can inject a VirtualMachineInstance disk into a container image in a way that is consumable by the KubeVirt runtime. Disks placed into the base container must be placed into the /disk directory. Raw and qcow2 formats are supported. Qcow2 is recommended in order to reduce the container image's size.
 
-Example: Inject a VirtualMachine disk into a container image.
+Example: Inject a VirtualMachineInstance disk into a container image.
 
 ```yaml
 cat << END > Dockerfile
@@ -299,22 +299,22 @@ FROM kubevirt/registry-disk-v1alpha
 ADD fedora25.qcow2 /disk
 END
 
-docker build -t vmdisks/fedora25:latest .
+docker build -t vmidisks/fedora25:latest .
 ```
 
 Example: Upload the RegistryDisk container image to a registry.
 
 ```yaml
-docker push vmdisks/fedora25:latest
+docker push vmidisks/fedora25:latest
 ```
 
 Example: Attach the RegistryDisk as an ephemeral disk to a VM.
 
 ```yaml
 metadata:
-  name: testvm-registrydisk
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+  name: testvmi-registrydisk
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 spec:
   domain:
     resources:
@@ -328,7 +328,7 @@ spec:
   volumes:
     - name: registryvolume
       registryDisk:
-        image: vmdisks/fedora25:latest
+        image: vmidisks/fedora25:latest
 ```
 
 Note that a `registryDisk` is file-based and therefore cannot be attached as a `lun` device to the VM.
@@ -340,10 +340,10 @@ An `emptyDisk` works similar to an `emptyDir` in Kubernetes. An extra sparse `qc
 Example: Boot cirros with an extra `emptyDisk` with a size of `2GiB`:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: testvm-nocloud
+  name: testvmi-nocloud
 spec:
   terminationGracePeriodSeconds: 5
   domain:

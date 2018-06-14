@@ -10,7 +10,7 @@ KubeVirt defaults to QEMU's newest q35 machine type. If a custom machine type is
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     machine:
@@ -42,7 +42,7 @@ In order to provide a consistent view on the virtualized hardware for the guest 
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     firmware:
@@ -70,7 +70,7 @@ Setting the number of CPU cores is possible via `spec.domain.cpu.cores`. The fol
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     cpu:
@@ -107,7 +107,7 @@ If `utc` is specified, the VM's clock will be set to UTC.
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     clock:
@@ -132,7 +132,7 @@ If `timezone` is specified, the VM's clock will be set to the specified local ti
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     clock:
@@ -162,7 +162,7 @@ A pretty common timer configuration for VMs looks like this:
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     clock:
@@ -207,10 +207,10 @@ KubeVirt supports a range of virtualization features which may be tweaked in ord
 A common feature configuration is shown by the following example:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     # typical features 
@@ -243,10 +243,10 @@ See the [Features API Reference](https://kubevirt.github.io/api-reference/master
 An optional resource request can be specified by the users to allow the scheduler to make a better decision in finding the most suitable Node to place the VM.
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     resources:
