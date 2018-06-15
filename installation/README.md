@@ -94,6 +94,7 @@ The following [SCCs](https://docs.openshift.com/container-platform/3.7/admin_gui
 ```bash
 oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-privileged
 oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-controller
+oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-apiserver
 ```
 
 **NOTE:** For Kubevirt **0.2.0**, following is required in addition to the SCCs above:
