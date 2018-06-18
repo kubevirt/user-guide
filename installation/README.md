@@ -33,6 +33,17 @@ $ virt-host-validate qemu
 ...
 ```
 
+#### Software emulation
+
+If hardware virtualization is not available, then a software emulation fallback can be enabled using:
+
+```
+$ kubectl configmap kubevirt-config \
+    --from-literal debug.allowEmulation=true
+```
+
+This ConfigMpa needs to be created before deployment or the virt-controller deployment has to be restarted.
+
 ### Hugepages support
 
 For hugepages support you need at least Kubernetes version `1.9`.
