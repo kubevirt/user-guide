@@ -38,11 +38,11 @@ $ virt-host-validate qemu
 If hardware virtualization is not available, then a [software emulation fallback](https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md) can be enabled using:
 
 ```
-$ kubectl configmap kubevirt-config \
+$ kubectl configmap -n kube-system kubevirt-config \
     --from-literal debug.allowEmulation=true
 ```
 
-This ConfigMpa needs to be created before deployment or the virt-controller deployment has to be restarted.
+This ConfigMap needs to be created before deployment or the virt-controller deployment has to be restarted.
 
 ### Hugepages support
 
