@@ -119,7 +119,7 @@ spec:
       interfaces:
       - name: testSlirp
         slirp:
-          Ports:
+          ports:
           - name: http
             podPort: 80
             port: 80
