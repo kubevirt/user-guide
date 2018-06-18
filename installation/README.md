@@ -35,7 +35,7 @@ $ virt-host-validate qemu
 
 #### Software emulation
 
-If hardware virtualization is not available, then a software emulation fallback can be enabled using:
+If hardware virtualization is not available, then a [software emulation fallback](https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md) can be enabled using:
 
 ```
 $ kubectl configmap kubevirt-config \
