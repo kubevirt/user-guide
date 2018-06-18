@@ -92,15 +92,9 @@ There are three ways to deploy KubeVirt on OpenShift.
 The following [SCCs](https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html) need to be added prior `kubevirt.yaml` deployment:
 
 ```bash
-oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-privileged
-oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-controller
-oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-apiserver
-```
-
-**NOTE:** For Kubevirt **0.2.0**, following is required in addition to the SCCs above:
-
-```bash
-oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:kubevirt-infra
+oc adm policy add-scc-to-user privileged -n kube-system -z kubevirt-privileged
+oc adm policy add-scc-to-user privileged -n kube-system -z kubevirt-controller
+oc adm policy add-scc-to-user privileged -n kube-system -z kubevirt-apiserver
 ```
 
 Once privileges are granted, the `kubevirt.yaml` can be deployed:
