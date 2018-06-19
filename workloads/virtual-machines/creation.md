@@ -8,7 +8,7 @@ You can interact with the new resources \(via `kubectl`\) as you would with any 
 
 ## VirtualMachineInstance API
 
-> Note: A full API reference is available at (https://kubevirt.io/api-reference/)[https://kubevirt.io/api-reference/].
+> Note: A full API reference is available at [https://kubevirt.io/api-reference/](https://kubevirt.io/api-reference/).
 
 Here is an example of a VirtualMachineInstance object:
 
