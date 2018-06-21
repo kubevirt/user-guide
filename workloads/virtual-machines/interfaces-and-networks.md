@@ -60,7 +60,13 @@ This backend type is used if an interface should be connected to the regular pod
 
 In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts as an Ethernet bridge or switch, in those cases the `pod` backend can also be used to provide an IP level connectivity to an interface (see backend `bridge.delegateIP`).
 
-## Available connections methods
+## Available interface attributes
+
+|Name|Possible values|Default|Description|
+|--|--|--|--|
+|model|e1000, e1000e, ne2k_pci, pcnet, rtl8139, virtio|virtio|Interface model type exposed to guest (tip: use e1000 if your image doesn't support virtio)|
+
+### Available connection methods
 
 | Connection method | Description |
 |--|--|
