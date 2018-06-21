@@ -7,4 +7,5 @@ The `VirtualMachineInstance` type conceptionally has two parts:
 
 Every `VirtualMachineInstance` object represents a single running virtual machine instance.
 
+bar
 [filename](https://raw.githubusercontent.com/kubevirt/kubevirt/master/cluster/examples/vm-alpine-multipvc.yaml ':include :type=code')
