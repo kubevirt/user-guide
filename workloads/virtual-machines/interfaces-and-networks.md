@@ -84,71 +84,25 @@ If the `delegateIp` option is used, then - if available - an IP address assigned
 ### `slirp` connection
 
 This connection will use the qemu user interface.
+
 Let the VM be exposed like a process which would be running inside a container. The requirement is that a process will bind to a port.
 
-It is a known issue that SLIRP is not recommended for anything in production.
+ <span style="color:red">Note:</span> SLIRP is not recommended for production use.
 
-All the egress connection will came from the qemu process and all the ingress connection will go to qemu process.
+All the egress connection will originate from the qemu process, and all the ingress connection will go through the qemu process.
 
 |Feature||
 |--|--|
 | Supported protocols | TCP/UDP only |
 
 #### Example
-this configuration allow to expose vm ports to the pod.
-```
-apiVersion: kubevirt.io/v1alpha2
-kind: VirtualMachineInstance
-metadata:
-  creationTimestamp: null
-  labels:
-    special: vm-slirp
-  name: vm-slirp
-spec:
-  domain:
-    devices:
-      disks:
-      - disk:
-          bus: virtio
-        name: registrydisk
-        volumeName: registryvolume
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-        volumeName: cloudinitvolume
-      interfaces:
-      - name: testSlirp
-        slirp:
-          ports:
-          - name: http
-            podPort: 80
-            port: 80
-            protocol: TCP
-    machine:
-      type: ""
-    resources:
-      requests:
-        memory: 1024M
-  networks:
-  - name: testSlirp
-    pod: {}
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - name: registryvolume
-    registryDisk:
-      image: kubevirt/fedora-cloud-registry-disk-demo:latest
-  - cloudInitNoCloud:
-      userData: |-
-        #!/bin/bash
-        echo "fedora" |passwd fedora --stdin
-    name: cloudinitvolume
-status: {}
-```
+
+This [Configuration](https://raw.githubusercontent.com/kubevirt/kubevirt/master/cluster/examples/vmi-slirp.yaml) will deploy a virtual machine. Then it will install an nginx server with the cloud-init script and expose port 80 from the VM to the pod.
 
 |Options||
 |--|--|
 | `name` | name of the port  |
 | `port` | Port to expose (unique and mandatory) |
-| `podPort` | Expose diferent port on the pod  |
-| `protocol` | connection protocol (TCP,UDP)  |
+| `podPort` | Expose different port on the pod  |
+| `protocol` | connection protocol (TCP, UDP)  |
 
