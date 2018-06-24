@@ -97,7 +97,59 @@ All the egress connection will originate from the qemu process, and all the ingr
 
 #### Example
 
-This [Configuration](https://raw.githubusercontent.com/kubevirt/kubevirt/master/cluster/examples/vmi-slirp.yaml) will deploy a virtual machine. Then it will install an nginx server with the cloud-init script and expose port 80 from the VM to the pod.
+This configuration will deploy a virtual machine. Then it will install an nginx server with the cloud-init script and expose port 80 from the VM to the pod.
+
+```
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  labels:
+    special: vmi-slirp
+  name: vmi-slirp
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: registrydisk
+        volumeName: registryvolume
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+        volumeName: cloudinitvolume
+      interfaces:
+      - name: testSlirp
+        slirp:
+          ports:
+          - name: http
+            podPort: 80
+            port: 80
+            protocol: TCP
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  networks:
+  - name: testSlirp
+    pod: {}
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: registryvolume
+    registryDisk:
+      image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
+  - cloudInitNoCloud:
+      userData: |-
+        #!/bin/bash
+        echo "fedora" |passwd fedora --stdin
+        yum install -y nginx
+        systemctl enable nginx
+        systemctl start nginx
+    name: cloudinitvolume
+status: {}
+```
 
 |Options||
 |--|--|
