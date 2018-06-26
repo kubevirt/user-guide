@@ -10,12 +10,18 @@ A few requirements need to be met before you can begin:
 * `kubectl` client utility
 * `git`
 
-### Minimum Requirements
+### Minimum Cluster Requirements
 
-| Component | Minimum Version |
-| --- | --- |
-| Kubernetes | 1.7 |
-| KubeVirt | [v0.1.0](https://github.com/kubevirt/kubevirt/releases/v0.1.0) |
+Kubernetes 1.8 or later is required to run KubeVirt.
+
+In addition it can be that feature gates need to be opened.
+
+#### Runtime
+
+KubeVirt is currently support on the following container runtimes:
+
+- docker
+- crio (with runv)
 
 ### Virtualization support
 
