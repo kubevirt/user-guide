@@ -12,7 +12,7 @@ A few requirements need to be met before you can begin:
 
 ### Minimum Cluster Requirements
 
-Kubernetes 1.8 or later is required to run KubeVirt.
+Kubernetes 1.10 or later is required to run KubeVirt.
 
 In addition it can be that feature gates need to be opened.
 
