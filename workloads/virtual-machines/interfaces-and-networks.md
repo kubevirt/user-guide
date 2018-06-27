@@ -60,6 +60,18 @@ This backend type is used if an interface should be connected to the regular pod
 
 In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts as an Ethernet bridge or switch, in those cases the `pod` backend can also be used to provide an IP level connectivity to an interface (see backend `bridge.delegateIP`).
 
+## Interface
+
+Interfaces are the glue which is connecting a backend to the frontend.
+
+|Options||
+|--|--|
+| `name` | Logical name of the interface as well as a reference to the associated networks. Must match the Name of a Network. |
+| `model` | Interface model. |
+| connection method | specifies the method which will be used to connect the interface to the guest. |
+| `ports` | List of ports to be forwarded to the virtual machine. |
+
+
 ## Available connections methods
 
 | Connection method | Description |
@@ -99,7 +111,7 @@ All the egress connection will originate from the qemu process, and all the ingr
 
 This configuration will deploy a virtual machine. Then it will install an nginx server with the cloud-init script and expose port 80 from the VM to the pod.
 
-```
+```yaml
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 metadata:
@@ -121,12 +133,11 @@ spec:
         volumeName: cloudinitvolume
       interfaces:
       - name: testSlirp
-        slirp:
-          ports:
-          - name: http
-            podPort: 80
-            port: 80
-            protocol: TCP
+        slirp: {}
+        ports:
+        - name: http
+          port: 80
+          protocol: TCP
     machine:
       type: ""
     resources:
@@ -151,10 +162,10 @@ spec:
 status: {}
 ```
 
-|Options||
-|--|--|
-| `name` | name of the port  |
-| `port` | Port to expose (unique and mandatory) |
-| `podPort` | Expose different port on the pod  |
-| `protocol` | connection protocol (TCP, UDP)  |
+## Ports
 
+| Options ||
+|--|--|
+| `name` | Name |
+| `port` | Port to expose (mandatory)|
+| `protocol` | Connection protocol (TCP, UDP)|
