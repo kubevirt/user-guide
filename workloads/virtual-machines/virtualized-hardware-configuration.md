@@ -10,7 +10,7 @@ KubeVirt defaults to QEMU's newest q35 machine type. If a custom machine type is
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     machine:
@@ -42,7 +42,7 @@ In order to provide a consistent view on the virtualized hardware for the guest 
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     firmware:
@@ -70,7 +70,7 @@ Setting the number of CPU cores is possible via `spec.domain.cpu.cores`. The fol
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     cpu:
@@ -107,7 +107,7 @@ If `utc` is specified, the VM's clock will be set to UTC.
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     clock:
@@ -132,7 +132,7 @@ If `timezone` is specified, the VM's clock will be set to the specified local ti
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     clock:
@@ -162,7 +162,7 @@ A pretty common timer configuration for VMs looks like this:
 
 ```yaml
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     clock:
@@ -207,10 +207,10 @@ KubeVirt supports a range of virtualization features which may be tweaked in ord
 A common feature configuration is shown by the following example:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     # typical features 
@@ -243,10 +243,10 @@ See the [Features API Reference](https://kubevirt.github.io/api-reference/master
 An optional resource request can be specified by the users to allow the scheduler to make a better decision in finding the most suitable Node to place the VM.
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: myvm
+  name: myvmi
 spec:
   domain:
     resources:
@@ -277,4 +277,39 @@ For more information please refer to [how Pods with resource limits are run](htt
 Various VM resources, such as a video adapter, IOThreads, and supplementary system software, consume additional memory from the Node, beyond the requested memory intended for the guest OS consumption. In order to provide a better estimate for the scheduler, this memory overhead will be calculated and added to the requested memory.
 
 Please see [how Pods with resource requests are scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled) for additional information on resource requests and limits.
+
+## Hugepages
+
+KubeVirt give you possibility to use hugepages as backing memory for your VM. You will need to provide desired amount of memory `resources.requests.memory` and size of hugepages to use `memory.hugepages.pageSize`, for example for x86_64 architecture it can be `2Mi`.
+
+```yaml
+apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: myvm
+spec:
+  domain:
+    resources:
+      requests:
+        memory: "64Mi"
+    memory:
+      hugepages:
+        pageSize: "2Mi"
+    disks:
+    - name: myimage
+      volumeName: myimage
+      disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimname: myclaim
+```
+
+In the above example the VM will have `64Mi` of memory, but instead of regular memory it will use node hugepages of the size of `2Mi`.
+
+#### Limitations
+
+- a node must have pre-allocated hugepages
+- hugepages size cannot be bigger than requested memory
+- requested memory must be divisible by hugepages size
 

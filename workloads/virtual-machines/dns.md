@@ -1,27 +1,27 @@
-# DNS for Services and VirtualMachines
+# DNS for Services and VirtualMachineInstances
 
-## Creating unique DNS entries per VirtualMachine
+## Creating unique DNS entries per VirtualMachineInstance
 
-In order to create unique DNS entries per VirtualMachine, it is possible to set
+In order to create unique DNS entries per VirtualMachineInstance, it is possible to set
 `spec.hostname` and `spec.subdomain`. If a subdomain is set and a headless
 service with a name, matching the subdomain, exists, kube-dns will create
-unique DNS entries for every VirtualMachine which matches the selector of the
+unique DNS entries for every VirtualMachineInstance which matches the selector of the
 service. Have a look at the [DNS for Servies and Pods
 documentation](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pods-hostname-and-subdomain-fields)
 for additional information.
 
 The following example consists of a VirtualMchine and a headless Service witch
-matches the labels and the subdomain of the VirtualMachine:
+matches the labels and the subdomain of the VirtualMachineInstance:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha1
-kind: VirtualMachine
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
 metadata:
-  name: vm-fedora
+  name: vmi-fedora
   labels:
     expose: me
 spec:
-  hostname: "myvm"
+  hostname: "myvmi"
   subdomain: "mysubdomain"
   domain:
     devices:
@@ -60,16 +60,16 @@ spec:
     targetPort: 1234
 ```
 
-As a consequence, when we enter the VirtualMachine via e.g. `virtctl console
-vm-fedora` and ping `myvm.mysubdomain` we see that we find a DNS entry for
-`myvm.mysubdomain.default.svc.cluster.local` which points to `10.244.0.57`,
-which is the IP of the VirtualMachine (not of the Service):
+As a consequence, when we enter the VirtualMachineInstance via e.g. `virtctl console
+vmi-fedora` and ping `myvmi.mysubdomain` we see that we find a DNS entry for
+`myvmi.mysubdomain.default.svc.cluster.local` which points to `10.244.0.57`,
+which is the IP of the VirtualMachineInstance (not of the Service):
 
 ```bash
-[fedora@myvm ~]$ ping myvm.mysubdomain
-PING myvm.mysubdomain.default.svc.cluster.local (10.244.0.57) 56(84) bytes of data.
-64 bytes from myvm.mysubdomain.default.svc.cluster.local (10.244.0.57): icmp_seq=1 ttl=64 time=0.029 ms
-[fedora@myvm ~]$ ip a
+[fedora@myvmi ~]$ ping myvmi.mysubdomain
+PING myvmi.mysubdomain.default.svc.cluster.local (10.244.0.57) 56(84) bytes of data.
+64 bytes from myvmi.mysubdomain.default.svc.cluster.local (10.244.0.57): icmp_seq=1 ttl=64 time=0.029 ms
+[fedora@myvmi ~]$ ip a
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
     link/ether 0a:58:0a:f4:00:39 brd ff:ff:ff:ff:ff:ff
     inet 10.244.0.57/24 brd 10.244.0.255 scope global dynamic eth0
@@ -80,7 +80,7 @@ PING myvm.mysubdomain.default.svc.cluster.local (10.244.0.57) 56(84) bytes of da
 
 So `spec.hostname` and `spec.subdomain` get translated to a DNS A-record of the
 form
-`<vm.spec.hostname>.<vm.spec.subdomain>.<vm.metadata.namespace>.svc.cluster.local`.
-If no `spec.hostname` is set, then we fall back to the VirtualMachine name
+`<vmi.spec.hostname>.<vmi.spec.subdomain>.<vmi.metadata.namespace>.svc.cluster.local`.
+If no `spec.hostname` is set, then we fall back to the VirtualMachineInstance name
 itself. The resulting DNS A-record looks like this then:
-`<vm.metadata.name>.<vm.spec.subdomain>.<vm.metadata.namespace>.svc.cluster.local`.
+`<vmi.metadata.name>.<vmi.spec.subdomain>.<vmi.metadata.namespace>.svc.cluster.local`.

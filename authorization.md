@@ -5,8 +5,8 @@ Authorization Control system (RBAC). RBAC allows cluster admins to grant
 access to cluster resources by binding RBAC roles to users.
 
 For example, an admin creates an RBAC role that represents the permissions
-required to create a VirtualMachine. The admin can then bind that role to users
-in order to grant them the permissions required to launch a VirtualMachine.
+required to create a VirtualMachineInstance. The admin can then bind that role to users
+in order to grant them the permissions required to launch a VirtualMachineInstance.
 
 With RBAC roles, admins can grant users targeted access to various KubeVirt
 features.
@@ -22,14 +22,14 @@ The **kubevirt.io:view** ClusterRole gives users permissions to view all
 KubeVirt resources in the cluster. The permissions to create, delete, modify
 or access any KubeVirt resources beyond viewing the resource's spec are not
 included in this role. This means a user with this role could see that a 
-VirtualMachine is running, but neither shutdown nor gain access to that
-VirtualMachine via console/VNC.
+VirtualMachineInstance is running, but neither shutdown nor gain access to that
+VirtualMachineInstance via console/VNC.
 
 ### Default Edit Role
 
 The **kubevirt.io:edit** ClusterRole gives users permissions to modify all
 KubeVirt resources in the cluster. For example, a user with this role can
-create new VirtualMachines, delete VirtualMachines, and gain access to both
+create new VirtualMachineInstances, delete VirtualMachineInstances, and gain access to both
 console and VNC.
 
 ### Default Admin Role
@@ -106,17 +106,17 @@ rules:
   - apiGroups:
       - subresources.kubevirt.io
     resources:
-      - virtualmachines/console
-      - virtualmachines/vnc
+      - virtualmachineinstances/console
+      - virtualmachineinstances/vnc
     verbs:
       - get
   - apiGroups:
       - kubevirt.io
     resources:
+      - virtualmachineinstances
       - virtualmachines
-      - offlinevirtualmachines
-      - virtualmachinepresets
-      - virtualmachinereplicasets
+      - virtualmachineinstancepresets
+      - virtualmachineinstancereplicasets
     verbs:
       - get
       - delete
