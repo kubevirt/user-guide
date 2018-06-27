@@ -65,6 +65,7 @@ In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts
 |Name|Possible values|Default|Description|
 |--|--|--|--|
 |model|e1000, e1000e, ne2k_pci, pcnet, rtl8139, virtio|virtio|Interface model type exposed to guest (tip: use e1000 if your image doesn't support virtio)|
+| ports ||empty| List of ports to be forwarded to the virtual machine. |
 
 ### Available connection methods
 
