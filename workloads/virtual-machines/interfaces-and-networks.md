@@ -29,6 +29,8 @@ spec:
   devices:
     interfaces:
       - name: red
+        macAddress: de:ad:00:00:be:af
+        model: e1000
         bridge: ## Define how the interface is connected to a network
           delegateIp: true # offers the ip in case that the source has an ip
   networks:
@@ -62,9 +64,10 @@ In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts
 
 ## Available interface attributes
 
-|Name|Possible values|Default|Description|
+|Name|Format|Default|Description|
 |--|--|--|--|
-|model|e1000, e1000e, ne2k_pci, pcnet, rtl8139, virtio|virtio|Interface model type exposed to guest (tip: use e1000 if your image doesn't support virtio)|
+|model|One of: e1000, e1000e, ne2k_pci, pcnet, rtl8139, virtio|virtio|Interface model type exposed to guest (tip: use e1000 if your image doesn't support virtio)|
+|macAddress|ff:ff:ff:ff:ff:ff or FF-FF-FF-FF-FF-FF||MAC address as seen inside the guest system, for example: de:ad:00:00:be:af|
 
 ### Available connection methods
 
