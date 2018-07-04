@@ -94,6 +94,10 @@ spec:
 
 ### Model
 
+**Note**: Be sure that node CPU model where you run a VM, has the same or higher CPU family.
+
+**Note**: If CPU model wasn't defined, the VM will have CPU model closest to one that used on the node where the VM is running.
+
 Setting the CPU model is possible via `spec.domain.cpu.model`. The following VM will have a CPU with the `Conroe` model:
 
 ```yaml
@@ -104,25 +108,11 @@ spec:
     cpu:
       # this sets the CPU model
       model: Conroe
-    resources:
-      requests:
-        memory: 512M
-    devices:
-      disks:
-      - name: myimage
-        volumeName: myimage
-        disk: {}
-  volumes:
-    - name: myimage
-      persistentVolumeClaim:
-        claimName: myclaim
+...
 ```
 
 You can check list of available models [here](https://github.com/libvirt/libvirt/blob/master/src/cpu/cpu_map.xml).
  
-**Note**: Be sure that node CPU model where you run a VM, has the same or higher CPU family.
-
-**Note**: If CPU model wasn't defined, the VM will have CPU model closest to one that used on the node where the VM is running.
 
 ## Clock
 
