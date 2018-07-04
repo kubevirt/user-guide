@@ -169,6 +169,7 @@ Supported volume sources are
 * **persistentVolumeClaim**
 * **registryDisk**
 * **emptyDisk**
+* **dataVolume**
 
 All possible configuration options are available in the [Volume API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume).
 
@@ -372,4 +373,158 @@ spec:
 #### When to use an emptyDisk
 
 Ephemeral VMs very often come with read-only root images and limited tmpfs space. In many cases this is not enough to install application dependencies and provide enough disk space for the application data. While this data is not critical and thus can be lost, it is still needed for the application to function properly during its lifetime. This is where an `emptyDisk` can be useful. An emptyDisk is often used and mounted somewhere in `/var/lib` or `/var/run`.
+
+### DataVolume
+
+DataVolumes are a way to automate importing virtual machine disks onto pvcs
+during the virtual machine's launch flow. Without using a DataVolume, users
+have to prepare a pvc with a disk image before assigning it to a VM or VMI
+manifest. With a DataVolume, both the pvc creation and import is automated on
+behalf of the user.
+
+#### DataVolume VM Behavior
+
+DataVolumes can be defined in the VM spec directly by adding the DataVolumes to
+the dataVolumeTemplates list. Below is an example.
+
+```
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-alpine-datavolume
+  name: vm-alpine-datavolume
+spec:
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-alpine-datavolume
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: datavolumedisk1
+            volumeName: datavolumevolume1
+        resources:
+          requests:
+            memory: 64M
+      volumes:
+      - dataVolume:
+          name: alpine-dv
+        name: datavolumevolume1
+  dataVolumeTemplates:
+  - metadata:
+      name: alpine-dv
+    spec:
+      pvc:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
+      source:
+        http:
+          url: http://cdi-http-import-server.kube-system/images/alpine.iso
+```
+
+You can see the DataVolume defined in the dataVolumeTemplates section has two
+parts. The **source** and **pvc**
+
+The **source** part declares that there is a disk image living on an http server
+that we want to use as a volume for this VM. The **pvc** part declares the spec
+that should be used to create the pvc that hosts the **source** data.
+
+When this VM manifest is posted to the cluster, as part of the launch flow a
+pvc will be created using the spec provided and the source data will be
+automatically imported into that pvc before the VM starts. When the VM is
+deleted, the storage provisioned by the DataVolume will automatically be
+deleted as well. 
+
+#### DataVolume VMI Behavior
+
+For a VMI object, DataVolumes can be referenced as a volume source for the VMI.
+When this is done, it is expected that the referenced DataVolume exists in
+the cluster. The VMI will consume the DataVolume, but the DataVolume's
+life-cycle will not be tied to the VMI.
+
+Below is an example of a DataVolume being referenced by a VMI. It is expected
+that the DataVolume *alpine-datavolume* was created prior to posting the VMI
+manifest to the cluster. It is okay to post the VMI manifest to the cluster
+while the DataVolume is still having data imported. KubeVirt knows not to start
+the VMI until all referenced DataVolumes have finished their clone and import
+phases.
+
+
+```
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  labels:
+    special: vmi-alpine-datavolume
+  name: vmi-alpine-datavolume
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: disk1
+        volumeName: volume1
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: volume1
+    dataVolume:
+      name: alpine-datavolume
+``` 
+
+#### Enabling DataVolume support.
+
+A DataVolume is a custom resource provided by the Containerized Data Importer
+(CDI) project. KubeVirt integrates with CDI in order to provide users a workflow
+for dynamically creating pvcs and importing data into those pvcs.
+
+In order to take advantage of the DataVolume volume source on a VM or VMI, the
+**DataVolumes** feature gate must be enabled in the **kubevirt-config** config
+map before KubeVirt is installed. CDI must also be installed.
+
+**Installing CDI**
+
+Go to the [CDI release page](https://github.com/kubevirt/containerized-data-importer/releases)
+
+Pick the latest stable release and post the corresponding
+cdi-controller-deployment.yaml manifest to your cluster.
+
+**Enabling the DataVolumes feature gate**
+
+Below is an example of how to enable DataVolume support using the kubevit-config
+config map.
+
+```
+cat <<EOF | _kubectl create -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kube-system
+  labels:
+    kubevirt.io: ""
+data:
+  feature-gates: "DataVolumes"
+
+```
+
+This config map assumes KubeVirt will be installed in the kube-system namespace.
+Change the namespace to suite your installation.
+
+First post the configmap above, then install KubeVirt. At that point DataVolume
+integration will be enabled.
 
