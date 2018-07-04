@@ -29,6 +29,8 @@ spec:
   devices:
     interfaces:
       - name: red
+        macAddress: de:ad:00:00:be:af
+        model: e1000
         bridge: ## Define how the interface is connected to a network
           delegateIp: true # offers the ip in case that the source has an ip
   networks:
@@ -38,10 +40,10 @@ spec:
 
 ## Backend connection support matrix
 
-||||
-|--:|:--:|:--:|
-| Backend / Connection | `bridge` | `bridge.delegateIp` |
-|`pod` | Ethernet | IP |
+|||||
+|--:|:--:|:--:|:--:|
+| Backend / Connection | `bridge` | `bridge.delegateIp` | `slirp`
+|`pod` | Ethernet | IP | IP |
 
 ## Available backends
 
@@ -62,11 +64,11 @@ In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts
 
 ## Available interface attributes
 
-|Name|Possible values|Default|Description|
+|Name|Format|Default|Description|
 |--|--|--|--|
-|model|e1000, e1000e, ne2k_pci, pcnet, rtl8139, virtio|virtio|Interface model type exposed to guest (tip: use e1000 if your image doesn't support virtio)|
+|model|One of: e1000, e1000e, ne2k_pci, pcnet, rtl8139, virtio|virtio|Interface model type exposed to guest (tip: use e1000 if your image doesn't support virtio)|
+|macAddress|ff:ff:ff:ff:ff:ff or FF-FF-FF-FF-FF-FF||MAC address as seen inside the guest system, for example: de:ad:00:00:be:af|
 | ports ||empty| List of ports to be forwarded to the virtual machine. |
-
 ### Available connection methods
 
 | Connection method | Description |
