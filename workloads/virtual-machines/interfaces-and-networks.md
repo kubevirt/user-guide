@@ -1,90 +1,145 @@
 # Interfaces and Networks
 
-An `interface` defines a virtual network interface of a virtual machine.
+Connecting a virtual machine to a network consists of two parts. First,
+networks are specified in `spec.networks`. Then, interfaces backed by the
+networks are added to the VM by specifying them in
+`spec.domain.devices.interfaces`.
 
-A `network` specifies the backend of an `interface` and controls to which logical or physical device it is connected to.
+Each interface must have a corresponding network with the same name.
 
-Often there is more than one way to connect an `interface` to a `network`. A user can control this connection by choosing between different options.
-However, at time of writing this document there is only a single way to connect interfaces and pods, and this method is `delegateIp`.
+An `interface` defines a virtual network interface of a virtual machine (also
+called a frontend). A `network` specifies the backend of an `interface` and
+declares which logical or physical device it is connected to (also called as
+backend).
 
-## Default network connectivity of a virtual machine
+There are multiple ways of configuring an `interface` as well as a `network`.
 
-> **Note:** Currently, only a single interface is supported, and this must be connected to the pod network.
+All possible configuration options are available in the
+[Interface API Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_interface)
+and [Network API Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_network).
 
-By default - thus if nothing else is specified - a virtual machine will get a single network interface connected to the pod network.
+> **Note:** Currently, the only supported network type is `pod`.
 
-## Customizing network interfaces and networks
+## Backend
 
-In order customize the network connectivity of a virtual machine, users must provide
+Network backends are configured in `spec.networks`. A network must have a
+unique name. Additional fields declare which logical or physical device the
+network relates to.
 
-- a list of interfaces and
-- a list of networks each of the interfaces is connected to
+A `pod` network represents the default pod `eth0` interface configured by
+cluster SDN solution that is present in each pod.
 
-The `name` property of an interface and network items defines which interface is connected to which network.
-This means that if an interface is named `red`, then it will be connected to a network which is also named `red`:
+> **Note:** Currently, the only supported network type is `pod`. In the future,
+> more network types may be supported.
 
 ```yaml
 kind: VM
 spec:
-  devices:
-    interfaces:
-      - name: red
-        macAddress: de:ad:00:00:be:af
-        model: e1000
-        bridge: ## Define how the interface is connected to a network
-          delegateIp: true # offers the ip in case that the source has an ip
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          macAddress: de:ad:00:00:be:af
+          model: e1000
+          bridge: {}
   networks:
   - name: red
     pod: {} # Stock pod network
 ```
 
-## Backend connection support matrix
+## Frontend
 
-||||
-|--:|:--:|:--:|
-| Backend / Connection | `bridge` | `bridge.delegateIp` |
-|`pod` | Ethernet | IP |
+Network interfaces are configured in `spec.domain.devices.interfaces`. They
+describe properties of virtual interfaces as "seen" inside guest instances. The
+same network backend may be connected to a virtual machine in multiple
+different ways, each with their own connectivity guarantees and
+characteristics.
 
-## Available backends
+Each interface should declare its type by defining on of the following fields:
 
-| Backend | Description |
+| Type | Description |
 |--|--|
-| `pod` | This represents the default interface present in each Kubernetes pod |
+| `bridge` | Connect using a linux bridge |
+| `slirp` | Connect using QEMU user networking mode |
 
-### `pod` backend
+> **Note:** If `spec.domain.devices.interfaces` is omitted, the virtual machine
+> is connected using the default pod network interface of `bridge` type.
 
-|Feature||
-|--|--|
-| Supported protocols | TCP, UDP |
-| Eventually supported protocols | IP |
+Each interface may also have additional configuration fields that modify
+properties "seen" inside guest instances, as listed below:
 
-This backend type is used if an interface should be connected to the regular pod network interface.
-
-In some cases the underlying network plugin (flannel, weave, OpenShift SDN) acts as an Ethernet bridge or switch, in those cases the `pod` backend can also be used to provide an IP level connectivity to an interface (see backend `bridge.delegateIP`).
-
-## Available interface attributes
-
-|Name|Format|Default|Description|
+| Name | Format | Default value | Description |
 |--|--|--|--|
-|model|One of: e1000, e1000e, ne2k_pci, pcnet, rtl8139, virtio|virtio|Interface model type exposed to guest (tip: use e1000 if your image doesn't support virtio)|
-|macAddress|ff:ff:ff:ff:ff:ff or FF-FF-FF-FF-FF-FF||MAC address as seen inside the guest system, for example: de:ad:00:00:be:af|
+| `model` | One of: `e1000`, `e1000e`, `ne2k_pci`, `pcnet`, `rtl8139`, `virtio` | `virtio` | NIC type |
+| macAddress | ff:ff:ff:ff:ff:ff or FF-FF-FF-FF-FF-FF | | MAC address as seen inside the guest system, for example: de:ad:00:00:be:af |
 
-### Available connection methods
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          model: e1000 # expose e1000 NIC to the guest
+          bridge: {} # connect through a bridge
+  networks:
+  - name: red
+    pod: {}
+```
 
-| Connection method | Description |
-|--|--|
-| `bridge` | Bridge the interface to the network |
+> **Tip:** Use `e1000` model if your guest image doesn't ship with virtio
+> drivers.
 
-### `bridge` connection
+### bridge
 
-This connection will create an Ethernet bridge between the interface and the network.
+In `bridge` mode, virtual machines are connected to the network backend through
+a linux "bridge". The pod network IPv4 address is delegated to the virtual
+machine via DHCPv4. The virtual machine should be configured to use DHCP to
+acquire IPv4 addresses.
 
-If the `delegateIp` option is used, then - if available - an IP address assigned to the network device representing the network, will be offered to the virtual machine via DHCP and be removed from the interface itself. The effect is that the IP endpoint is "moved" form the network interface to the virtual machine.
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          bridge: {} # connect through a bridge
+  networks:
+  - name: red
+    pod: {}
+```
 
-|Feature||
-|--|--|
-| Supported protocols | Ethernet, IP |
+At this time, `bridge` mode doesn't support additional configuration
+fields.
 
-|Options||
-|--|--|
-| `delegateIp` | `pod` backend only: The IP assigned to the pod will be delegated to the VM using DHCP |
+> **Note:** due to IPv4 address delagation, in `bridge` mode the pod doesn't
+> have an IP address configured, which may introduce issues with third-party
+> solutions that may rely on it. For example, Istio may not work in this mode.
+
+### slirp
+
+In `slirp` mode, virtual machines are connected to the network backend using
+QEMU user networking mode. In this mode, QEMU allocates internal IP addresses
+to virtual machines and hides them behind NAT.
+
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          slirp: {} # connect using SLIRP mode
+  networks:
+  - name: red
+    pod: {}
+```
+
+At this time, `slirp` mode doesn't support additional configuration fields.
+
+> **Note:** in `slirp` mode, the only supported protocols are TCP and UDP. ICMP
+> is *not* supported.
+
+More information about SLIRP mode can be found in
+[QEMU Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29).
