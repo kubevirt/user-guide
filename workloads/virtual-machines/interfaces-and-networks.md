@@ -93,15 +93,15 @@ spec:
 
 ### Ports
 
-Ports will be configured as container ports for the virt-launcher pod.
+Declare ports listen by the virtual machine
 
 > **Note:** When using the slirp interface only the configured ports will be forwarded to the virtual machine.
 
-| Options ||
-|--|--|
-| `name` | Name |
-| `port` | Port to expose (mandatory)|
-| `protocol` | Connection protocol (TCP, UDP)|
+| Name | Format | Required | Description|
+|--|--|--|--|
+| `name` | | no | Name|
+| `port` | 1 - 65535| yes | Port to expose|
+| `protocol` | TCP,UDP| no | Connection protocol|
 
 > **Tip:** Use `e1000` model if your guest image doesn't ship with virtio
 > drivers.
