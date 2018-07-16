@@ -62,9 +62,6 @@ Each interface should declare its type by defining on of the following fields:
 | `bridge` | Connect using a linux bridge |
 | `slirp` | Connect using QEMU user networking mode |
 
-> **Note:** If `spec.domain.devices.interfaces` is omitted, the virtual machine
-> is connected using the default pod network interface of `bridge` type.
-
 Each interface may also have additional configuration fields that modify
 properties "seen" inside guest instances, as listed below:
 
@@ -89,6 +86,19 @@ spec:
 
 > **Tip:** Use `e1000` model if your guest image doesn't ship with virtio
 > drivers.
+
+If `spec.domain.devices.interfaces` is omitted, the virtual machine is
+connected using the default pod network interface of `bridge` type. If you'd
+like to have a virtual machine instance without any network connectivity, you
+can use the `autoattachPodInterface` field as follows:
+
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      autoattachPodInterface: false
+```
 
 ### bridge
 
