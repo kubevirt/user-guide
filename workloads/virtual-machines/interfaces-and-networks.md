@@ -72,6 +72,7 @@ properties "seen" inside guest instances, as listed below:
 |--|--|--|--|
 | `model` | One of: `e1000`, `e1000e`, `ne2k_pci`, `pcnet`, `rtl8139`, `virtio` | `virtio` | NIC type |
 | macAddress | ff\:ff\:ff\:ff\:ff\:ff or FF-FF-FF-FF-FF-FF | | MAC address as seen inside the guest system, for example: de\:ad\:00\:00\:be\:af |
+| ports ||empty| List of ports to be forwarded to the virtual machine. |
 
 ```yaml
 kind: VM
@@ -82,10 +83,25 @@ spec:
         - name: red
           model: e1000 # expose e1000 NIC to the guest
           bridge: {} # connect through a bridge
+          ports:
+           - name: http
+             port: 80
   networks:
   - name: red
     pod: {}
 ```
+
+### Ports
+
+Declare ports listen by the virtual machine
+
+> **Note:** When using the slirp interface only the configured ports will be forwarded to the virtual machine.
+
+| Name | Format | Required | Description|
+|--|--|--|--|
+| `name` | | no | Name|
+| `port` | 1 - 65535| yes | Port to expose|
+| `protocol` | TCP,UDP| no | Connection protocol|
 
 > **Tip:** Use `e1000` model if your guest image doesn't ship with virtio
 > drivers.

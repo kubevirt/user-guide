@@ -66,6 +66,8 @@ spec:
 
 **Note**: This is not related to scheduling decisions or resource assignment.
 
+### Topology
+
 Setting the number of CPU cores is possible via `spec.domain.cpu.cores`. The following VM will have a CPU with `3` cores:
 
 ```yaml
@@ -89,6 +91,28 @@ spec:
       persistentVolumeClaim:
         claimName: myclaim
 ```
+
+### Model
+
+**Note**: Be sure that node CPU model where you run a VM, has the same or higher CPU family.
+
+**Note**: If CPU model wasn't defined, the VM will have CPU model closest to one that used on the node where the VM is running.
+
+Setting the CPU model is possible via `spec.domain.cpu.model`. The following VM will have a CPU with the `Conroe` model:
+
+```yaml
+metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      # this sets the CPU model
+      model: Conroe
+...
+```
+
+You can check list of available models [here](https://github.com/libvirt/libvirt/blob/master/src/cpu/cpu_map.xml).
+ 
 
 ## Clock
 
