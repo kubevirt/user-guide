@@ -71,7 +71,7 @@ properties "seen" inside guest instances, as listed below:
 | Name | Format | Default value | Description |
 |--|--|--|--|
 | `model` | One of: `e1000`, `e1000e`, `ne2k_pci`, `pcnet`, `rtl8139`, `virtio` | `virtio` | NIC type |
-| macAddress | ff:ff:ff:ff:ff:ff or FF-FF-FF-FF-FF-FF | | MAC address as seen inside the guest system, for example: de:ad:00:00:be:af |
+| macAddress | ff\:ff\:ff\:ff\:ff\:ff or FF-FF-FF-FF-FF-FF | | MAC address as seen inside the guest system, for example: de\:ad\:00\:00\:be\:af |
 | ports ||empty| List of ports to be forwarded to the virtual machine. |
 
 ```yaml
