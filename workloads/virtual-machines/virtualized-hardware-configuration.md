@@ -115,6 +115,8 @@ You can check list of available models [here](https://github.com/libvirt/libvirt
  
 ### Mode
 
+> **Note:** CPU mode should not be mixed with CPU model.
+
 Setting the CPU mode is possible via `spec.domain.cpu.mode`. Setting the mode allows to achieve high performance by choosing `host-model` or `host-passthrough`.
 
 ```yaml
