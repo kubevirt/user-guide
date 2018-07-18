@@ -113,6 +113,21 @@ spec:
 
 You can check list of available models [here](https://github.com/libvirt/libvirt/blob/master/src/cpu/cpu_map.xml).
  
+### Mode
+
+Setting the CPU mode is possible via `spec.domain.cpu.mode`. Setting the mode allows to achieve high performance by choosing `host-model` or `host-passthrough`.
+
+```yaml
+metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      mode: host-passthrough
+...
+```
+
+Take a look [here](https://libvirt.org/formatdomain.html#elementsCPU) to learn mode about the CPU modes
 
 ## Clock
 
