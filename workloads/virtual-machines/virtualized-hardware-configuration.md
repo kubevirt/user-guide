@@ -113,9 +113,33 @@ spec:
 
 You can check list of available models [here](https://github.com/libvirt/libvirt/blob/master/src/cpu/cpu_map.xml).
 
-If no `model` is specified, the model type which most-closely matches the host
-cpu will be selected from the above list of cpu models (also known as
-`host-model`).
+#### CPU model special cases
+
+As special cases you can set `spec.domain.cpu.model` equals to:
+- `host-passthrough` to passthrough CPU from the node to the VM
+```yaml
+metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      # this passthrough the node CPU to the VM
+      model: host-passthrough
+...
+```
+- `host-model` to get CPU on the VM close to the node one
+```yaml
+metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      # this set the VM CPU close to the node one
+      model: host-model
+...
+```
+
+See the [CPU API reference](https://libvirt.org/formatdomain.html#elementsCPU) for more details.
 
 ## Clock
 
