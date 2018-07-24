@@ -18,7 +18,7 @@ All possible configuration options are available in the
 [Interface API Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_interface)
 and [Network API Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_network).
 
-> **Note:** Currently, the only supported network type is `pod`.
+> **Note:** Currently, the only supported network types are `pod` and "resource".
 
 ## Backend
 
@@ -26,11 +26,10 @@ Network backends are configured in `spec.networks`. A network must have a
 unique name. Additional fields declare which logical or physical device the
 network relates to.
 
+### Pod
+
 A `pod` network represents the default pod `eth0` interface configured by
 cluster SDN solution that is present in each pod.
-
-> **Note:** Currently, the only supported network type is `pod`. In the future,
-> more network types may be supported.
 
 ```yaml
 kind: VM
@@ -46,6 +45,36 @@ spec:
   - name: red
     pod: {} # Stock pod network
 ```
+
+### Resource
+
+A `resource` network represents networks exposed by using a network device plugin. The configuration of the network will include the name of the device plugin and the name of the network resource it should expose, using the following format: `<device-plugin-name>/<network-name>`. In the yaml this will look like that:
+
+```yaml
+networks:
+  - name: red 
+    resource:
+      resourceName: bridge.network.kubevirt.io/red
+```
+To communicate the name of the pod interface that the device plugin creates, and what kind of networking this interface exposes to the pod, the device plugin will set a JSON encoded environment variable to the pod.
+
+The name of this environment variable must start with: `"NETWORK_INTERFACE_RESOURCES_"`, and assumes the following JSON format for example:
+```json
+{
+  "name": "bridge.network.kubevirt.io/red", 
+  "interfaces": [{"name": "eth-red01", "protocol": "Ethernet"}, {"name": "eth-red02", "protocol": "Ethernet"}]
+}
+```
+
+Other than the definition of the environment variable, no other requirements exists on the device plugin, or how the host network is managed or created.
+The following [network bridge device plugin](https://github.com/kubevirt/kubernetes-device-plugins/blob/master/docs/README.bridge.md) allows exposing a bridge into the pod as an interface, and is compliant with the above environment variable based API.
+
+> **Notes:**
+> - The device plugin allows multiple pod interfaces to be exposed fro the same network (`eth-red01` and `eth-red02` in the example above), however, inside the virtual machine, we will expose only one interface
+> - If multiple device plugins exposes the same network, needed by the virtual machine, only one of them will be used, and a single interface per network will be created on the virtual machine
+> - In the virtual machine specification, only interface with "bridge" binding is allowed to use a network of type "resource". Any other combination is considered invalid
+> - The only "protocol" currently supported is "Ethernet" - which imply "bridged" binding without delegating the IP/MAC
+> - Since there is no control on the names given to the interfaces inside the guest OS, the way to match the interface to the network is by matching the MAC address given to the interface on the host, to the MAC address configured in the yaml (if a static address was configured there), or dynamically given to the pod's side of the veth, which will have the following name format: `net-<network-name>` (For example: `net-red`)
 
 ## Frontend
 
