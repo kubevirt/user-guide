@@ -247,6 +247,37 @@ See the [Timer API Reference](https://kubevirt.github.io/api-reference/master/de
 
 **Note**: Timer can be part of a machine type. Thus it may be necessary to explicitly disable them. We may in the future decide to add them via cluster-level defaulting, if they are part of a QEMU machine definition.
 
+## Video and Graphics Device
+
+By default a minimal Video and Graphics device configuration will be applied to
+the VirtualMachineInstance. The video device is `vga` compatible and comes with
+a memory size of 16 MB. These devices allow connecting to the OS via `vnc`.
+
+It is possible not attach these devices by setting
+`spec.domain.devices.autoattachGraphicsDevice` to `false`:
+
+```yaml
+metadata:
+  name: myvmi
+spec:
+  domain:
+    devices:
+      autoattachGraphicsDevice: false
+      disks:
+      - name: myimage
+        volumeName: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimName: myclaim
+```
+
+Such VMIs are very often referenced as `headless` VMIs.
+
+If using a huge amount of small VMs this can be helpful to increase the VMI
+density per node, since no memory needs to be reserved for video.
+
 ## Features
 
 KubeVirt supports a range of virtualization features which may be tweaked in order to allow non-Linux based operating systems to properly boot. Most noteworthy are
