@@ -251,9 +251,9 @@ See the [Timer API Reference](https://kubevirt.github.io/api-reference/master/de
 
 By default a minimal Video and Graphics device configuration will be applied to
 the VirtualMachineInstance. The video device is `vga` compatible and comes with
-a memory size of 16 MB. These devices allow connecting to the OS via `vnc`.
+a memory size of 16 MB. This device allows connecting to the OS via `vnc`.
 
-It is possible not attach these devices by setting
+It is possible not attach it by setting
 `spec.domain.devices.autoattachGraphicsDevice` to `false`:
 
 ```yaml
@@ -273,7 +273,8 @@ spec:
         claimName: myclaim
 ```
 
-Such VMIs are very often referenced as `headless` VMIs.
+VMIs without graphics and video devices are very often referenced as `headless`
+VMIs.
 
 If using a huge amount of small VMs this can be helpful to increase the VMI
 density per node, since no memory needs to be reserved for video.

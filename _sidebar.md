@@ -21,6 +21,7 @@
     * [Startup Scripts](workloads/virtual-machines/startup-scripts.md)
     * [Guest Operating System Information](workloads/virtual-machines/guest-operating-system-information.md)
     * [Virtualized Hardware Configuration](workloads/virtual-machines/virtualized-hardware-configuration.md)
+    * [Memory Overcommit](workloads/virtual-machines/overcommit.md)
     * [Assigning VMs to Nodes](workloads/virtual-machines/assigning-vms-to-nodes.md)
   * [Controllers](workloads/controllers/README.md)
     * [VirtualMachine](workloads/controllers/virtual-machine.md)
