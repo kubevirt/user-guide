@@ -91,13 +91,13 @@ Affinity and anti-affinity works exactly like the Pods `affinity`. This includes
 
 ## Taints and Tolerations
 
-Affinity as described above, is a property of vm that attracts them to a set of nodes (either as a preference or a hard requirement). Taints are the opposite – they allow a node to repel a set of vms.
+Affinity as described above, is a property of VMs that attracts them to a set of nodes (either as a preference or a hard requirement). Taints are the opposite – they allow a node to repel a set of VMs.
 
-Taints and tolerations work together to ensure that vms are not scheduled onto inappropriate nodes. One or more taints are applied to a node; this marks that the node should not accept any vms that do not tolerate the taints. Tolerations are applied to vms, and allow (but do not require) the vms to schedule onto nodes with matching taints.
+Taints and tolerations work together to ensure that VMs are not scheduled onto inappropriate nodes. One or more taints are applied to a node; this marks that the node should not accept any VMs that do not tolerate the taints. Tolerations are applied to VMs, and allow (but do not require) the VMs to schedule onto nodes with matching taints.
 
 You add a taint to a node using kubectl taint. For example,
 
-```
+```bash
 kubectl taint nodes node1 key=value:NoSchedule
 ```
 
