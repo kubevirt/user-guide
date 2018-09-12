@@ -1,17 +1,8 @@
----
-
-notifications:
-  irc:
-    channels:
-      - "chat.freenode.net#kubevirt"
-    on_success: change
-    on_failure: always
-
-addons:
-  apt:
-    packages:
-      - aspell
-      - aspell-en
-
-script:
-  - make test
+language: ruby
+rvm:
+- 2.2.0
+sudo: false
+script: bundle exec rake deploy
+env:
+  global:
+    secure: 6y9xkbejWngb1qvu6RCww4c2j3VCs22V63HU2aUDnkJ1VQncz8pSoMW7ww+DjilGsqpFjZ4kP77LbdtjXy9iHO2aRqkWYzfb4m1YXKBxT/aW8b1STDOCoCy2pMvqYT4mufRKqFG3ADw0Y0yLGOVCdPqEIOBv+VWNzJfYc2s5F7jN3j149u2VuZMJ2tSYJX1g9Fw7UgnQsvDuMO6RPa1EdiSnwU8+mxCGtW0tT32dA8BmN88rnlkDje2Sj/3ynC5uLsFPmMNcTFsbT4YHiE7Ui0G4fLi3vIByO3sG9bvLfLfWVcKIUTdGGabJR9GvZCfPYuWhdEIbYggaH+6vS0Tif+AnXJeuNsLzAWEhBUDYOHdEflPGWOy3wYxo2YVqD1lzUi2YmynsawpB69t9lceMoF1xDE0fk89F/LnqgEAmYn7HP5W1jksQcDUNtociXtZ7olBUr5DRXC2r5+KqxfljaS7RRv7/tcFRxhAViqXxsqPxF/BspERP0eOsdB9MMJdB37OxG/sAO+YVgyhL4i6C4s8W/pUZHDedqTZK4yyJzIUK1D5sYOAvdfaMVs1ORlDTNW806CqrgYHf+TcRkE8v23gcIixGYHyn0VlZpQy19JXrmqGSMGkw/hiepjd1ql9vX6DNlXfbp5+uEm73tQMVnr3gEXmVOyHN75mHHBq4+AI=
