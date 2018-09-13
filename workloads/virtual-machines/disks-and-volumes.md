@@ -170,6 +170,8 @@ Supported volume sources are
 * **registryDisk**
 * **emptyDisk**
 * **dataVolume**
+* **configMap**
+* **secret**
 
 All possible configuration options are available in the [Volume API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume).
 
@@ -528,3 +530,98 @@ Change the namespace to suite your installation.
 First post the configmap above, then install KubeVirt. At that point DataVolume
 integration will be enabled.
 
+### configMap
+
+A `configMap` is a reference to a [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) in Kubernetes. An extra `iso` disk will be allocated which has to be mounted on a VM. To mount the `configMap` users can use a `cloudInit` and disk serial number. The `configMapName` needs to be specified for a reference to the created kubernetes `ConfigMap` with the same name.
+
+Example: Attach the `configMap` to a VM and use a `cloudInit` to mount the `iso` disk:
+
+```yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-configmap
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: registrydisk
+        volumeName: registryvolume
+        disk:
+          bus: virtio
+      - name: configmap-disk
+        volumeName: configmap-volume
+        disk: {}
+      - name: cloudinit-disk
+        volumeName: cloudinit-volume
+        disk:
+          bus: virtio
+        # serial has to be set
+        serial: CVLY623300HK240D
+  volumes:
+    - name: registryvolume
+      registryDisk:
+        image: kubevirt/cirros-registry-disk-demo:latest
+    - name: configmap-volume
+      configMap:
+        configMapName: app-config
+    - name: cloudinit-volume
+      cloudInitNoCloud:
+        userData: |
+          #!/bin/sh
+
+          # use a disk serial number to mount the ConfigMap
+          "sudo mount /dev/$(lsblk --nodeps -no name,serial | grep CVLY623300HK240D | cut -f1 -d' ') /blub"
+```
+
+### secret
+
+A `secret` is a reference to a [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) in Kubernetes. An extra `iso` disk will be allocated which has to be mounted on a VM. To mount the `secret` users can use a `cloudInit` and disk serial number. The `secretName` needs to be specified for a reference to the created kubernetes `Secret` with the same name.
+
+Example: Attach the `secret` to a VM and use a `cloudInit` to mount the `iso` disk:
+
+```yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-secret
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: registrydisk
+        volumeName: registryvolume
+        disk:
+          bus: virtio
+      - name: secret-disk
+        volumeName: secret-volume
+        disk: {}
+      - name: cloudinit-disk
+        volumeName: cloudinit-volume
+        disk:
+          bus: virtio
+        # serial has to be set
+        serial: D23YZ9W6WA5DJ487
+  volumes:
+    - name: registryvolume
+      registryDisk:
+        image: kubevirt/cirros-registry-disk-demo:latest
+    - name: secret-volume
+      secret:
+        secretName: app-secrets
+    - name: cloudinit-volume
+      cloudInitNoCloud:
+        userData: |
+          #!/bin/sh
+
+          # use a disk serial number to mount the Secret
+          "sudo mount /dev/$(lsblk --nodeps -no name,serial | grep D23YZ9W6WA5DJ487 | cut -f1 -d' ') /blub"
+```
