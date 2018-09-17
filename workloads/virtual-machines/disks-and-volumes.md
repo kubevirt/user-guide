@@ -534,7 +534,7 @@ integration will be enabled.
 
 A `configMap` is a reference to a [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) in Kubernetes. An extra `iso` disk will be allocated which has to be mounted on a VM. To mount the `configMap` users can use `cloudInit` and the disks serial number. The `name` needs to be set for a reference to the created kubernetes `ConfigMap`.
 
-> **Note:** Currently, the ConfigMap update propagation is not supported. After the update, only a pod will be aware of changes, not running VMIs.
+> **Note:** Currently, ConfigMap update propagation is not supported. If a ConfigMap is updated, only a pod will be aware of changes, not running VMIs.
 
 > **Note:** Due to a Kubernetes CRD [issue](https://github.com/kubernetes/kubernetes/issues/68466), you cannot control the paths within the volume where ConfigMap keys are projected.
 
@@ -595,7 +595,7 @@ status: {}
 
 A `secret` is a reference to a [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) in Kubernetes. An extra `iso` disk will be allocated which has to be mounted on a VM. To mount the `secret` users can use `cloudInit` and the disks serial number. The `secretName` needs to be set for a reference to the created kubernetes `Secret`.
 
-> **Note:** Currently, the Secret update propagation is not supported. After the update, only a pod will be aware of changes, not running VMIs.
+> **Note:** Currently, Secret update propagation is not supported. If a Secret is updated, only a pod will be aware of changes, not running VMIs.
 
 > **Note:** Due to a Kubernetes CRD [issue](https://github.com/kubernetes/kubernetes/issues/68466), you cannot control the paths within the volume where Secret keys are projected.
 
