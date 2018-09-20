@@ -170,6 +170,8 @@ Supported volume sources are
 * **registryDisk**
 * **emptyDisk**
 * **dataVolume**
+* **configMap**
+* **secret**
 
 All possible configuration options are available in the [Volume API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume).
 
@@ -528,3 +530,124 @@ Change the namespace to suite your installation.
 First post the configmap above, then install KubeVirt. At that point DataVolume
 integration will be enabled.
 
+### configMap
+
+A `configMap` is a reference to a [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) in Kubernetes. An extra `iso` disk will be allocated which has to be mounted on a VM. To mount the `configMap` users can use `cloudInit` and the disks serial number. The `name` needs to be set for a reference to the created kubernetes `ConfigMap`.
+
+> **Note:** Currently, ConfigMap update propagation is not supported. If a ConfigMap is updated, only a pod will be aware of changes, not running VMIs.
+
+> **Note:** Due to a Kubernetes CRD [issue](https://github.com/kubernetes/kubernetes/issues/68466), you cannot control the paths within the volume where ConfigMap keys are projected.
+
+Example: Attach the `configMap` to a VM and use `cloudInit` to mount the `iso` disk:
+
+```yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: registrydisk
+        volumeName: registryvolume
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+        volumeName: cloudinitvolume
+      - disk: {}
+        name: app-config-disk
+        volumeName: configmap-volume
+        # set serial
+        serial: CVLY623300HK240D
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: registryvolume
+    registryDisk:
+      image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          # mount the ConfigMap
+          - "mkdir /mnt/app-config"
+          - "mount /dev/$(lsblk --nodeps -no name,serial | grep CVLY623300HK240D | cut -f1 -d' ') /mnt/app-config"
+    name: cloudinitvolume
+  - configMap:
+      name: app-config
+    name: configmap-volume
+status: {}
+```
+
+### secret
+
+A `secret` is a reference to a [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) in Kubernetes. An extra `iso` disk will be allocated which has to be mounted on a VM. To mount the `secret` users can use `cloudInit` and the disks serial number. The `secretName` needs to be set for a reference to the created kubernetes `Secret`.
+
+> **Note:** Currently, Secret update propagation is not supported. If a Secret is updated, only a pod will be aware of changes, not running VMIs.
+
+> **Note:** Due to a Kubernetes CRD [issue](https://github.com/kubernetes/kubernetes/issues/68466), you cannot control the paths within the volume where Secret keys are projected.
+
+Example: Attach the `secret` to a VM and use `cloudInit` to mount the `iso` disk:
+
+```yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: registrydisk
+        volumeName: registryvolume
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+        volumeName: cloudinitvolume
+      - disk: {}
+        name: app-secret-disk
+        volumeName: secret-volume
+        # set serial
+        serial: D23YZ9W6WA5DJ487
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: registryvolume
+    registryDisk:
+      image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          # mount the Secret
+          - "mkdir /mnt/app-secret"
+          - "mount /dev/$(lsblk --nodeps -no name,serial | grep D23YZ9W6WA5DJ487 | cut -f1 -d' ') /mnt/app-secret"
+    name: cloudinitvolume
+  - secret:
+      secretName: app-secret
+    name: secret-volume
+status: {}
+```
