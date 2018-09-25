@@ -651,3 +651,205 @@ spec:
     name: secret-volume
 status: {}
 ```
+
+## High Performance Features
+
+### IOThreads
+
+Libvirt has the ability to use IOThreads for dedicated disk access (for supported devices). These are dedicated event loop threads that perform block I/O requests and improve scalability on SMP systems. KubeVirt exposes this libvirt feature through the `ioThreadsPolicy` setting. Additionaly, each `Disk` device exposes a `dedicatedIOThread` setting. This is a boolean that indicates the specified disk should be allocated an exclusive IOThread that will never be shared with other disks.
+
+Currently valid policies are `shared` and `auto`.
+
+#### Shared
+
+An `ioThreadsPolicy` of `shared` indicates that KubeVirt should use one thread that will be shared by all disk devices. This policy stems from the fact that large numbers of IOThreads is generally not useful as additional context switching is incurred for each thread.
+
+Disks with `dedicatedIOThread` set to `true` will not use the shared thread, but will instead be allocated an exclusive thread. This is generally useful if a specific Disk is expected to have heavy I/O traffic, e.g. a database spindle.
+
+#### Auto
+
+`auto` IOThreads indicates that KubeVirt should use a pool of IOThreads and allocate disks to IOThreads in a round-robin fashion. The pool size is generally limited to twice the number of VCPU's allocated to the VM. This essentially attempts to dedicate disks to separate IOThreads, but only up to a reasonable limit. This would come in to play for systems with a large number of disks and a smaller number of CPU's for instance.
+
+As a caveat to the size of the IOThread pool, disks with `dedicatedIOThread` will always be guaranteed their own thread. This effectively diminishes the upper limit of the number of threads allocated to the rest of the disks. For example, a VM with 2 CPUs would normally use 4 IOThreads for all disks. However if one disk had `dedicatedIOThread` set to true, then KubeVirt would only use 3 IOThreads for the shared pool.
+
+There is always guaranteed to be at least one thread for disks that will use the shared IOThreads pool. Thus if a sufficiently large number of disks have dedicated IOThreads assigned, `auto` and `shared` policies would essentially result in the same layout.
+
+### Examples
+
+#### Shared IOThreads
+
+```yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  labels:
+    special: vmi-shared
+  name: vmi-shared
+spec:
+  domain:
+    ioThreadsPolicy: shared
+    cpu:
+      cores: 2
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: mydisk
+        volumeName: myvolume
+      - disk:
+          bus: virtio
+        name: emptydisk
+        volumeName: emptydiskvolume
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
+        name: emptydisk2
+        volumeName: emptydiskvolume2
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
+        name: emptydisk3
+        volumeName: emptydiskvolume3
+      - disk:
+          bus: virtio
+        name: emptydisk4
+        volumeName: emptydiskvolume4
+      - disk:
+          bus: virtio
+        name: emptydisk5
+        volumeName: emptydiskvolume5
+      - disk:
+          bus: virtio
+        name: emptydisk6
+        volumeName: emptydiskvolume6
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  volumes:
+  - name: mypvc
+    persistentVolumeClaim:
+      claimName: mypvc
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume2
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume3
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume4
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume5
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume6
+```
+
+In this example, emptydisk and emptydisk2 both request a dedicated IOThread. mydisk, and emptydisk 3 through 6 will all shared one IOThread.
+
+```
+mypvc:        1
+emptydisk:    2
+emptydisk2:   3
+emptydisk3:   1
+emptydisk4:   1
+emptydisk5:   1
+emptydisk6:   1
+```
+
+#### Auto IOThreads
+
+```yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  labels:
+    special: vmi-shared
+  name: vmi-shared
+spec:
+  domain:
+    ioThreadsPolicy: auto
+    cpu:
+      cores: 2
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: mydisk
+        volumeName: mypvc
+      - disk:
+          bus: virtio
+        name: emptydisk
+        volumeName: emptydiskvolume
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
+        name: emptydisk2
+        volumeName: emptydiskvolume2
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
+        name: emptydisk3
+        volumeName: emptydiskvolume3
+      - disk:
+          bus: virtio
+        name: emptydisk4
+        volumeName: emptydiskvolume4
+      - disk:
+          bus: virtio
+        name: emptydisk5
+        volumeName: emptydiskvolume5
+      - disk:
+          bus: virtio
+        name: emptydisk6
+        volumeName: emptydiskvolume6
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  volumes:
+  - name: mypvc
+    persistentVolumeClaim:
+      claimName: mypvc
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume2
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume3
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume4
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume5
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydiskvolume6
+```
+
+This VM is identical to the first, except it requests auto IOThreads. `emptydisk` and `emptydisk2` will still be allocated individual IOThreads, but the rest of the disks will be split across 2 separate iothreads (twice the number of CPU cores is 4).
+
+Disks will be assigned to IOThreads like this:
+
+```
+mypvc:        1
+emptydisk:    3
+emptydisk2:   4
+emptydisk3:   2
+emptydisk4:   1
+emptydisk5:   2
+emptydisk6:   1
+```
