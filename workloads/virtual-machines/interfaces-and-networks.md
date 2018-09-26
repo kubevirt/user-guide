@@ -18,19 +18,23 @@ All possible configuration options are available in the
 [Interface API Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_interface)
 and [Network API Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_network).
 
-> **Note:** Currently, the only supported network type is `pod`.
-
 ## Backend
 
 Network backends are configured in `spec.networks`. A network must have a
 unique name. Additional fields declare which logical or physical device the
 network relates to.
 
-A `pod` network represents the default pod `eth0` interface configured by
-cluster SDN solution that is present in each pod.
+Each network should declare its type by defining one of the following fields:
 
-> **Note:** Currently, the only supported network type is `pod`. In the future,
-> more network types may be supported.
+| Type | Description |
+|--|--|
+| `pod` | Default Kubernetes network |
+| `multus` | Secondary network provided using Multus |
+
+### pod
+
+A `pod` network represents the default pod `eth0` interface configured by
+cluster network solution that is present in each pod.
 
 ```yaml
 kind: VM
@@ -38,14 +42,62 @@ spec:
   domain:
     devices:
       interfaces:
-        - name: red
-          macAddress: de:ad:00:00:be:af
-          model: e1000
-          pciAddress: 0000:81:00.1
+        - name: default
           bridge: {}
   networks:
-  - name: red
+  - name: default
     pod: {} # Stock pod network
+```
+
+### multus
+
+It is also possible to connect VMIs to secondary networks using
+[Multus](https://github.com/intel/multus-cni). This assumes that multus is
+installed accross your cluster and a corresponding
+`NetworkAttachmentDefinition` CRD was created.
+
+The following example defines a network which uses the [ovs-cni
+plugin](https://github.com/kubevirt/ovs-cni), which will connect the VMI to Open
+vSwitch's bridge `br1` and VLAN 100. Other CNI plugins such as ptp, bridge,
+macvlan or Flannel might be used as well. For their installation and usage refer
+to the respective project documentation.
+
+First the `NetworkAttachmentDefinition` needs to be created. That is usually
+done by an administrator. Users can then reference the definition.
+
+```yaml
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: ovs-vlan-100
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "type": "ovs",
+      "bridge": "br1",
+      "vlan": 100
+    }'
+```
+
+With following definition, the VMI will be connected to the default pod network
+and to the secondary Open vSwitch network.
+
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: default
+          bridge: {}
+        - name: ovs-net
+          bridge: {}
+  networks:
+  - name: default
+    pod: {} # Stock pod network
+  - name: ovs-net
+    multus: # Secondary multus network
+      networkName: ovs-vlan-100
 ```
 
 ## Frontend
@@ -79,14 +131,14 @@ spec:
   domain:
     devices:
       interfaces:
-        - name: red
+        - name: default
           model: e1000 # expose e1000 NIC to the guest
           bridge: {} # connect through a bridge
           ports:
            - name: http
              port: 80
   networks:
-  - name: red
+  - name: default
     pod: {}
 ```
 
