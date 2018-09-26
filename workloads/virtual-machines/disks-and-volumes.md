@@ -658,7 +658,7 @@ status: {}
 
 Libvirt has the ability to use IOThreads for dedicated disk access (for supported devices). These are dedicated event loop threads that perform block I/O requests and improve scalability on SMP systems. KubeVirt exposes this libvirt feature through the `ioThreadsPolicy` setting. Additionaly, each `Disk` device exposes a `dedicatedIOThread` setting. This is a boolean that indicates the specified disk should be allocated an exclusive IOThread that will never be shared with other disks.
 
-Currently valid policies are `shared` and `auto`.
+Currently valid policies are `shared` and `auto`. If `ioThreadsPolicy` is omitted entirely, use of IOThreads will be disabled. However, if any disk requests a dedicated IOThread, `ioThreadsPolicy` will be enabled and default to `shared`.
 
 #### Shared
 
