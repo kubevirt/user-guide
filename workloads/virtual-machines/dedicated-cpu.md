@@ -33,7 +33,7 @@ been dedicated for the virt-launcher container.
 Expressing the desired amount of VMI's vCPUs can be done by either setting the
 `spec.domain.cpu.cores` or `spec.domain.resources.requests.cpu` or
 `spec.domain.resources.limits.cpu` to a whole number, integer (e.g. 1, 2, etc)
-indicating the number of vCPUs requrested for the VMI.
+indicating the number of vCPUs requested for the VMI.
 
 > **Note:** Users should not specify both `spec.domain.cpu.cores` and
 >       `spec.domain.resources.[requests/limits].cpu`
