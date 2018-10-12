@@ -853,3 +853,64 @@ emptydisk4:   1
 emptydisk5:   2
 emptydisk6:   1
 ```
+
+### Virtio Block Multi-Queue
+
+Block Multi-Queue is a framework for the Linux block layer that maps Device I/O
+queries to multiple queues. This splits I/O processing up across multiple
+threads, and therefor multiple CPUs. libvirt recommends that the number of
+queues used should match the number of CPUs allocated for optimal performance.
+
+This feature is enabled by the `BlockMultiQueue` setting under `Devices`:
+
+```yaml
+spec:
+  domain:
+    devices:
+      blockMultiQueue: true
+      disks:
+      - disk:
+          bus: virtio
+        name: mydisk
+        volumeName: mypvc
+```
+
+**Note:** Due to the way KubeVirt implements CPU allocation, blockMultiQueue
+can only be used if a specific CPU allocation is requested. If a specific
+number of CPUs hasn't been allocated to a VirtualMachine, KubeVirt will use all
+CPU's on the node on a best effort basis. In that case the amount of CPU
+allocation to a VM at the host level could change over time. If blockMultiQueue
+were to request a number of queues to match all the CPUs on a node, that could
+lead to over-allocation scenarios. To avoid this, KubeVirt enforces that a
+specific slice of CPU resources is requested in order to take advantage of this
+feature.
+
+#### Example
+
+
+```yaml
+metadata:
+  name: testvmi-disk
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+        cpu: 4
+    devices:
+      blockMultiQueue: true
+      disks:
+      - name: mypvcdisk
+        volumeName: mypvc
+        disk:
+          bus: virtio
+  volumes:
+    - name: mypvc
+      persistentVolumeClaim:
+        claimName: mypvc
+```
+
+This example will enable Block Multi-Queue for the disk `mypvcdisk` and
+allocate 4 queues (to match the number of CPUs requested).
