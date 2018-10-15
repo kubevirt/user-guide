@@ -28,21 +28,56 @@ All service exposure options that apply to a VirtualMachineInstance apply to a V
 
 ## When to use a VirtualMachineInstanceReplicaSet
 
-Using VirtualMachineInstanceReplicaSet is the right choice when one wants many identical VMs and does not care about maintaining any disk state after the VMs are terminated.
+> **Note:** The base assumption is that referenced disks are read-only or that
+> the VMIs are writing internally to a tmpfs. The most obvious volume sources
+> for VirtualMachineInstanceReplicaSets which KubeVirt supports are referenced
+> below. If other types are used **data corruption** is possible.
+
+Using VirtualMachineInstanceReplicaSet is the right choice when one wants many
+identical VMs and does not care about maintaining any disk state after the VMs
+are terminated.
+
+ [Volume types](workloads/virtual-machines/disks-and-volumes.md) which
+ work well in combination with a VirtualMachineInstanceReplicaSet are:
+
+* **cloudInitNoCloud**
+* **ephemeral**
+* **registryDisk**
+* **emptyDisk**
+* **configMap**
+* **secret**
+* any other type, if the VMI writes internally to a tmpfs
 
 ### Fast starting ephemeral Virtual Machines
 
-This use-case involves small and fast booting VMs with little provisioning performed during initialization.
+This use-case involves small and fast booting VMs with little provisioning
+performed during initialization.
 
-In this scenario, migrations are not important. Redistributing VM workloads between Nodes can be achieved simply by deleting managed VirtualMachineInstances which are running on an overloaded Node. The `eviction` of such a VirtualMachineInstance can happen by directly deleting the VirtualMachineInstance instance \(KubeVirt aware workload redistribution\) or by deleting the corresponding Pod where the Virtual Machine runs in \(Only Kubernetes aware workload redistribution\).
+In this scenario, migrations are not important. Redistributing VM workloads
+between Nodes can be achieved simply by deleting managed
+VirtualMachineInstances which are running on an overloaded Node. The `eviction`
+of such a VirtualMachineInstance can happen by directly deleting the
+VirtualMachineInstance instance \(KubeVirt aware workload redistribution\) or
+by deleting the corresponding Pod where the Virtual Machine runs in \(Only
+Kubernetes aware workload redistribution\).
 
 ### Slow starting ephemeral Virtual Machines
 
-In this use-case one has big and slow booting VMs, and complex or resource intensive provisioning is done during boot. More specifically, the timespan between the creation of a new VM and it entering the ready state is long.
+In this use-case one has big and slow booting VMs, and complex or resource
+intensive provisioning is done during boot. More specifically, the timespan
+between the creation of a new VM and it entering the ready state is long.
 
-In this scenario, one still does not care about the state, but since re-provisioning VMs is expensive, migrations are important. Workload redistribution between Nodes can be achieved by migrating VirtualMachineInstances to different Nodes. A workload redistributor needs to be aware of KubeVirt and create migrations, instead of `evicting` VirtualMachineInstances by deletion.
+In this scenario, one still does not care about the state, but since
+re-provisioning VMs is expensive, migrations are important. Workload
+redistribution between Nodes can be achieved by migrating
+VirtualMachineInstances to different Nodes. A workload redistributor needs to
+be aware of KubeVirt and create migrations, instead of `evicting`
+VirtualMachineInstances by deletion.
 
-> **Note:** The simplest form of having a migratable ephemeral VirtualMachineInstance, will be to use local storage based on `RegistryDisks` in combination with a file based backing store. However, migratable backing store support has not landed yet in KubeVirt.
+> **Note:** The simplest form of having a migratable ephemeral
+> VirtualMachineInstance, will be to use local storage based on `RegistryDisks`
+> in combination with a file based backing store. However, migratable backing
+> store support has not officially landed yet in KubeVirt and is untested.
 
 ## Example
 
