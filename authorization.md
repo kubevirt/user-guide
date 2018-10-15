@@ -136,3 +136,6 @@ rules:
       - get
       - patch
 ```
+
+---
+Verified with version: v0.5.0
