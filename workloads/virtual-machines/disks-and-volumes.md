@@ -216,9 +216,11 @@ Allows connecting a `PersistentVolumeClaim` to a VM disk.
 
 Use a PersistentVolumeClain when the VirtualMachineInstance's disk needs to persist after the VM terminates. This allows for the VM's data to remain persistent between restarts.
 
-For KubeVirt to be able to consume the disk present on a PersistentVolume's filesystem, the disk must be named `disk.img` and be placed in the root path of the filesystem. Currently the disk is also required to be in raw format.
+A `PersistentVolume` can be in "filesystem" or "block" mode:
 
-**Important:** The `disk.img` image file needs to be owned by the user-id `107` in order to avoid permission issues.
+- Filesystem: For KubeVirt to be able to consume the disk present on a PersistentVolume's filesystem, the disk must be named `disk.img` and be placed in the root path of the filesystem. Currently the disk is also required to be in raw format.
+	**Important:** The `disk.img` image file needs to be owned by the user-id `107` in order to avoid permission issues.
+- Block: Use a block volume for consuming raw block devices. Note: you need to enable the BlockVolume feature gate.
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look like this:
 
