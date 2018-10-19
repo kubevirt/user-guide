@@ -169,6 +169,7 @@ Supported volume sources are
 * **persistentVolumeClaim**
 * **registryDisk**
 * **emptyDisk**
+* **hostDisk**
 * **dataVolume**
 * **configMap**
 * **secret**
@@ -221,6 +222,8 @@ A `PersistentVolume` can be in "filesystem" or "block" mode:
 - Filesystem: For KubeVirt to be able to consume the disk present on a PersistentVolume's filesystem, the disk must be named `disk.img` and be placed in the root path of the filesystem. Currently the disk is also required to be in raw format.
 	**Important:** The `disk.img` image file needs to be owned by the user-id `107` in order to avoid permission issues.
 - Block: Use a block volume for consuming raw block devices. Note: you need to enable the BlockVolume feature gate.
+
+**Note:** If the `disk.img` image file has not been created manually before starting a VM then it will be created automatically with the `PersistentVolumeClaim` size.
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look like this:
 
@@ -378,6 +381,47 @@ spec:
 #### When to use an emptyDisk
 
 Ephemeral VMs very often come with read-only root images and limited tmpfs space. In many cases this is not enough to install application dependencies and provide enough disk space for the application data. While this data is not critical and thus can be lost, it is still needed for the application to function properly during its lifetime. This is where an `emptyDisk` can be useful. An emptyDisk is often used and mounted somewhere in `/var/lib` or `/var/run`.
+
+### hostDisk
+
+A ```hostDisk``` volume type provides the ability to create or use a disk image located somewhere on a node.
+It works similar to a ```hostPath``` in Kubernetes and provides two usage types:
+
+* ```DiskOrCreate``` if a disk image does not exist at a given location then create one
+* ```Disk``` a disk image must exist at a given location
+
+Example: Create a 1Gi disk image located at /data/disk.img and attach it to a VM.
+
+```yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  labels:
+    special: vmi-host-disk
+  name: vmi-host-disk
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: host-disk
+        volumeName: hostdiskvolume
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - hostDisk:
+      capacity: 1Gi
+      path: /data/disk.img
+      type: DiskOrCreate
+    name: hostdiskvolume
+status: {}
+```
 
 ### DataVolume
 
