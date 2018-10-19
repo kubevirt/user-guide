@@ -220,6 +220,8 @@ For KubeVirt to be able to consume the disk present on a PersistentVolume's file
 
 **Important:** The `disk.img` image file needs to be owned by the user-id `107` in order to avoid permission issues.
 
+**Note:** If the `disk.img` image file has not been created manually before starting a VM then it will be created automatically with the `PersistentVolumeClaim` size.
+
 A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look like this:
 
 ```yaml
