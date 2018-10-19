@@ -387,7 +387,7 @@ It works similar to a ```hostPath``` in Kubernetes and provides two usage types:
 * ```DiskOrCreate``` if a disk image does not exist at a given location then create one
 * ```Disk``` a disk image must exist at a given location
 
-Example: Create a disk image with 1Gi size at /data/disk.img location and attach it to a VM.
+Example: Create a 1Gi disk image located at /data/disk.img and attach it to a VM.
 
 ```yaml
 apiVersion: kubevirt.io/v1alpha2
