@@ -172,6 +172,7 @@ Supported volume sources are
 * **dataVolume**
 * **configMap**
 * **secret**
+* **serviceAccount**
 
 All possible configuration options are available in the [Volume API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume).
 
@@ -574,7 +575,7 @@ spec:
   volumes:
   - name: registryvolume
     registryDisk:
-      image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
+      image: kubevirt/fedora-cloud-registry-disk-demo:latest
   - cloudInitNoCloud:
       userData: |-
         #cloud-config
@@ -635,7 +636,7 @@ spec:
   volumes:
   - name: registryvolume
     registryDisk:
-      image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
+      image: kubevirt/fedora-cloud-registry-disk-demo:latest
   - cloudInitNoCloud:
       userData: |-
         #cloud-config
@@ -650,6 +651,48 @@ spec:
       secretName: app-secret
     name: secret-volume
 status: {}
+```
+
+### serviceAccount
+
+A `serviceAccount` volume references a Kubernetes [`ServiceAccount`](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/).
+A new `iso` disk will be allocated with the content of the service account (`namespace`, `token` and `ca.crt`), which needs to be mounted in the VM. For automatic mounting,
+see the `configMap` and `secret` examples above.
+
+Example:
+
+```yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: registrydisk
+        volumeName: registryvolume
+      - disk:
+          bus: virtio
+        name: serviceaccountdisk
+        volumeName: serviceaccountvolume
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: registryvolume
+    registryDisk:
+      image: kubevirt/fedora-cloud-registry-disk-demo:latest
+  - name: serviceaccountvolume
+    serviceAccount:
+      serviceAccountName: default
 ```
 
 ## High Performance Features
