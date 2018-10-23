@@ -167,6 +167,7 @@ Each interface should declare its type by defining on of the following fields:
 |--|--|
 | `bridge` | Connect using a linux bridge |
 | `slirp` | Connect using QEMU user networking mode |
+| `sriov` | Pass through a SR-IOV PCI device via `vfio` |
 
 Each interface may also have additional configuration fields that modify
 properties "seen" inside guest instances, as listed below:
@@ -327,3 +328,35 @@ For example:
 
 More information please refer to [KVM/QEMU MultiQueue](http://www.linux-kvm.org/page/Multiqueue).
 
+### sriov
+
+In `sriov` mode, virtual machines are directly exposed to an SR-IOV PCI device,
+usually allocated by [Intel SR-IOV device
+plugin](https://github.com/intel/sriov-network-device-plugin). The device is
+passed through into the guest operating system as a host device, using the
+[vfio](https://www.kernel.org/doc/Documentation/vfio.txt) userspace interface,
+to maintain high networking performance.
+
+> **Note:** while the `sriov` mode is validated and tested using the Intel
+> SR-IOV device plugin, other plugins may add support for the same by setting
+> the `SRIOV-VF-PCI-ADDR` environment variable inside pods to a list of
+> allocated PCI device IDs, as in:
+> SRIOV-VF-PCI-ADDR=0000:81:11.1,0000:81:11.2[,...]
+
+> **Note:** as of the time of writing, in addition to attaching a VM to a
+> SR-IOV network, you have to also request corresponding devices from the
+> device plugin, by adding appropriate `resources.limits` and
+> `resources.requests` entries.
+      interfaces:
+        - name: sriov-net
+          sriov: {}
+   resources:
+     limits:
+       intel.com/sriov: "1"
+     requests:
+       intel.com/sriov: "1"
+  networks:
+  - name: sriov-net
+    multus:
+      networkName: sriov-net-crd
+```
