@@ -6,11 +6,11 @@ In order to create unique DNS entries per VirtualMachineInstance, it is possible
 `spec.hostname` and `spec.subdomain`. If a subdomain is set and a headless
 service with a name, matching the subdomain, exists, kube-dns will create
 unique DNS entries for every VirtualMachineInstance which matches the selector of the
-service. Have a look at the [DNS for Servies and Pods
+service. Have a look at the [DNS for Services and Pods
 documentation](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pods-hostname-and-subdomain-fields)
 for additional information.
 
-The following example consists of a VirtualMchine and a headless Service witch
+The following example consists of a VirtualMachine and a headless Service which
 matches the labels and the subdomain of the VirtualMachineInstance:
 
 ```yaml
