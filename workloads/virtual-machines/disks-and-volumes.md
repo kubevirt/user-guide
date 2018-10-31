@@ -1003,3 +1003,46 @@ spec:
 
 This example will enable Block Multi-Queue for the disk `mypvcdisk` and
 allocate 4 queues (to match the number of CPUs requested).
+
+### Disk device cache
+
+KubeVirt supports `none` and `writethrough` KVM/QEMU cache modes.
+
+* `none` I/O from the guest is not cached on the host. Use this option for guests with large I/O requirements. This option is generally the best choice.
+* `writethrough` I/O from the guest is cached on the host but written through to the physical medium.
+
+> **Important:** `none` cache mode is set as default if the file system supports direct I/O, otherwise, `writethrough` is used.
+
+> **Note:** It is possible to force a specific cache mode, although if `none` mode has been chosen and the file system does not support direct I/O then started VMI will return an error.
+
+Example: force `writethrough` cache mode
+
+```yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  labels:
+    special: vmi-pvc
+  name: vmi-pvc
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: pvcdisk
+        volumeName: pvcvolume
+        cache: writethrough
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: pvcvolume
+    persistentVolumeClaim:
+      claimName: disk-alpine
+status: {}
+```
