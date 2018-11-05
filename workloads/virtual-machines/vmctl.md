@@ -1,0 +1,144 @@
+# VMCTL
+
+## Background
+
+One remarkable difference between KubeVirt and other solutions that run Virtual
+Machine workloads in a container is the toplevel API. KubeVirt treats
+VirtualMachineInstances as a first class citizen by designating
+CustomResourceDefinitions to map/track VirtualMachine settings and attributes.
+This has considerable advantages, but there's a trade-off: native Kubernetes
+behavior for constructs such as Deployments, ReplicaSets, DaemonSets,
+StatefulSets or even not-yet-existing resources are designed to work directly
+with Pods. Because VirtualMachine and VirtualMachineInstance resources are
+simply defined outside the scope of Kubernetes responsibility, it will always
+be up to the KubeVirt project to create analogues of those controllers. This is
+possible, and is in fact something that exists for some entities, e.g.
+VirtualMachineInstanceReplicaSet, but the KubeVirt project will always be one
+step behind. Any significant changes upstream would need to be implemented
+manually in KubeVirt.
+
+## Overview
+
+Vmctl is designed to address this delta by managing VirtualMachines from within
+a Pod. Vmctl will take an upstream VirtualMachine to act as a prototype and
+derive/spawn a new VirtualMachine based on it. This approach allows an
+arbitrary number of VirtualMachines that are nearly identical to be spawned
+using Kubernetes-native constructs. Each VirtualMachine is an exact copy of the
+prototype VM with the following differences:
+
+* Name
+* NodeSelector
+* Running
+
+### Name
+
+The new VirtualMachine's `Name` attribute will be a concatenation of the
+prototype VM's name and the Pod's name. This will be a unique resource name
+because both the prototype VM name and the vmctl Pod name are unique.
+
+### NodeSelector
+
+The new VirtualMachine will have a selector with node affinity matching the
+running vmctl Pod's node. This is because a `DaemonSet` maps one pod to each
+node in a cluster. By tracking which Node a vmctl Pod is running on, KubeVirt
+ensures the same behavior for VirtualMachines
+
+### Running
+
+The new VirtualMachine will be set to the running state regardless of the
+prototype VM's state.
+
+## Implementation
+
+Vmctl is implemented as a go binary that takes the following parameters:
+
+* `namespace`: The namespace to create the derived VirtualMachine in. The
+   default namespace is `default`.
+* `proto-namespace`: The namespace the prototype VM is in. This defaults to
+   the value used for `namespace` if omitted.
+* `hostname-override`: Mainly for testing--in order to make it possible to run
+   vmctl outside of a pod.
+
+vmctl has a single positional argument:
+
+* prototype VM name
+
+# Examples
+
+## Deployment
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vmctl
+  labels:
+    app: vmctl
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: vmctl
+  template:
+    metadata:
+      labels:
+        app: vmctl
+    spec:
+      containers:
+      - name: vmctl
+        image: quay.io/fabiand/vmctl
+        imagePullPolicy: IfNotPresent
+        args:
+        - "testvm"
+        volumeMounts:
+        - name: podinfo
+          mountPath: /etc/podinfo
+      serviceAccountName: vmctl
+      volumes:
+      - name: podinfo
+        downwardAPI:
+          items:
+          - path: "name"
+            fieldRef:
+              fieldPath: metadata.name
+```
+
+This example would look for a VirtualMachine in the `default` namespace named
+`testvm`, and instantiate 3 replicas of it.
+
+
+## Daemonset
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vmctl
+spec:
+  template:
+    metadata:
+      labels:
+        app: vmctl
+    spec:
+      containers:
+      - name: vmctl
+        image: quay.io/fabiand/vmctl
+        imagePullPolicy: IfNotPresent
+        args:
+        - "testvm"
+        volumeMounts:
+        - name: podinfo
+          mountPath: /etc/podinfo
+      serviceAccountName: vmctl
+      volumes:
+      - name: podinfo
+        downwardAPI:
+          items:
+          - path: "name"
+            fieldRef:
+              fieldPath: metadata.name
+```
+
+This example would look for a VirtualMachine in the `default` namespace named
+`testvm`, and instantiate a VirtualMachine on every node in the Kubernetes
+cluster.
