@@ -132,6 +132,16 @@ The [kubevirt-ansible](https://github.com/kubevirt/kubevirt-ansible) project pro
 
 See the [Developer Getting Started Guide](https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md) to understand how to build and deploy KubeVirt from source.
 
+## Installing network plugins (optional)
+
+KubeVirt alone does not bring any additional network plugins, it just allows
+user to utilize them. If you want to attach your VMs to multiple networks
+(Multus CNI) or have full control over L2 (OVS CNI), you need to deploy
+respective network plugins. For more information, refer to [OVS CNI installation
+guide](https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitrary-cluster.md).
+
+> Note: Ansible playbooks install these plugins by default.
+
 ## Update
 
 > Note: Updates are not yet supported.
