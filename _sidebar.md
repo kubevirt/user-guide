@@ -10,6 +10,7 @@
   * [Virtual Machines](workloads/virtual-machines/README.md)
     * [Creation](workloads/virtual-machines/creation.md)
     * [Node Eviction](workloads/virtual-machines/node-eviction.md)
+    * [Unresponsive Node Handling](workloads/virtual-machines/unresponsive-nodes.md)
     * [Presets](workloads/virtual-machines/presets.md)
     * [Life-cycle](workloads/virtual-machines/life-cycle.md)
     * [DNS for Services and VirtualMachineInstances](workloads/virtual-machines/dns.md)
