@@ -30,6 +30,7 @@ Each network should declare its type by defining one of the following fields:
 |--|--|
 | `pod` | Default Kubernetes network |
 | `multus` | Secondary network provided using Multus |
+| `genie` | Secondary network provided using Genie |
 
 ### pod
 
@@ -53,7 +54,7 @@ spec:
 
 It is also possible to connect VMIs to secondary networks using
 [Multus](https://github.com/intel/multus-cni). This assumes that multus is
-installed accross your cluster and a corresponding
+installed across your cluster and a corresponding
 `NetworkAttachmentDefinition` CRD was created.
 
 The following example defines a network which uses the [ovs-cni
@@ -98,6 +99,56 @@ spec:
   - name: ovs-net
     multus: # Secondary multus network
       networkName: ovs-vlan-100
+```
+
+### genie
+
+It is also possible to connect VMIs to multiple networks using
+[Genie](https://github.com/Huawei-PaaS/CNI-Genie). This assumes that genie is
+installed across your cluster.
+
+The following example defines a network which uses [Flannel](https://github.com/coreos/flannel-cni) as the main network provider and as the [ovs-cni
+plugin](https://github.com/kubevirt/ovs-cni) as the secondary one. The OVS CNI will connect the VMI to Open
+vSwitch's bridge `br1` and VLAN 100. 
+
+Other CNI plugins such as ptp, bridge,
+macvlan might be used as well. For their installation and usage refer
+to the respective project documentation.
+
+Note that Genie does not use the `NetworkAttachmentDefinition` CRD. Instead it uses the name of the
+underlying CNI in order to find the required configuration. It does that by looking into the configuration
+files under ```/etc/cni/net.d/``` and finding the file that has that network name as the CNI type. 
+Therefore, for the case described above, the following configuration file should file exist ```/etc/cni/net.d/```:
+```json
+{
+  "cniVersion": "0.3.1",
+  "type": "ovs",
+  "bridge": "br1",
+  "vlan": 100
+}
+```
+Similarly to Multus, Genie's configuration file must be the first one in the ```/etc/cni/net.d/``` directory.
+
+With following definition, the VMI will be connected to the default pod network
+and to the secondary Open vSwitch network.
+
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: default
+          bridge: {}
+        - name: ovs-net
+          bridge: {}
+  networks:
+  - name: default
+    genie: # Stock pod network
+      networkName: flannel
+  - name: ovs-net
+    genie: # Secondary genie network
+      networkName: ovs
 ```
 
 ## Frontend
