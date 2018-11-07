@@ -140,7 +140,7 @@ user to utilize them. If you want to attach your VMs to multiple networks
 respective network plugins. For more information, refer to [OVS CNI installation
 guide](https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitrary-cluster.md).
 
-> Note: Ansible playbooks install these plugins by default.
+> Note: KubeVirt Ansible [network playbook](https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network) installs these plugins by default.
 
 ## Update
 
