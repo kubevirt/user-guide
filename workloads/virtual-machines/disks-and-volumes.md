@@ -763,6 +763,12 @@ As a caveat to the size of the IOThread pool, disks with `dedicatedIOThread` wil
 
 There is always guaranteed to be at least one thread for disks that will use the shared IOThreads pool. Thus if a sufficiently large number of disks have dedicated IOThreads assigned, `auto` and `shared` policies would essentially result in the same layout.
 
+#### IOThreads with Dedicated (pinned) CPUs
+When guest's vCPUs are pinned to a host's physical CPUs, it is also best to pin the IOThreads to specific CPUs to prevent these from floating between the CPUs.
+KubeVirt will automatically calculate and pin each IOThread to a CPU or a set of CPUs, depending on the ration between them.
+In case there are more IOThreads than CPUs, each IOThread will be pinned to a CPU, in a round-robin fashion.
+Otherwise, when there are fewer IOThreads than CPU, each IOThread will be pinned to a set of CPUs.
+
 ### Examples
 
 #### Shared IOThreads
