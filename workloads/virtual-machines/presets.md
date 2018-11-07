@@ -35,7 +35,7 @@ As with most Kubernetes resources, a `VirtualMachineInstancePreset` requires `ap
 
 Additionally `VirtualMachineInstancePresets` also need a `spec` section. While not technically required to satisfy syntax, it is strongly recommended to include a `Selector` in the `spec` section, otherwise a `VirtualMachineInstancePreset` will match all `VirtualMachineInstances` in a namespace.
 
-### VirtalMachine Selector
+### VirtualMachine Selector
 
 KubeVirt uses Kubernetes `Labels` and `Selectors` to determine which `VirtualMachineInstancePresets` apply to a given `VirtualMachineInstance`, similarly to how `PodPresets` work in Kubernetes. If a setting from a `VirtualMachineInstancePreset` is applied to a `VirtualMachineInstance`, the `VirtualMachineInstance` will be marked with an Annotation upon completion.
 
@@ -47,7 +47,7 @@ Any valid `Label` can be matched against, but it is suggested that a general rul
 
 ### Updating a VirtualMachineInstancePreset
 
-If a `VirtualMachineInstancePreset` is modified, changes will _not_ be applied to existing `VirtualMachineInstances`. This applies to both the `Selector` indicating which `VirtualMachineInstances` should be matched, and also the `Domain` section which lists the settings that should be applied to a `VirtalMachine`.
+If a `VirtualMachineInstancePreset` is modified, changes will _not_ be applied to existing `VirtualMachineInstances`. This applies to both the `Selector` indicating which `VirtualMachineInstances` should be matched, and also the `Domain` section which lists the settings that should be applied to a `VirtualMachine`.
 
 ### Overrides
 
