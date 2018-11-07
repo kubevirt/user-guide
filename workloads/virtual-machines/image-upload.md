@@ -70,7 +70,7 @@ Use "virtctl options" for a list of global command-line options (applies to all 
 
 ```
 
-It works by creating a PVC of the requested size, sending an `UploadTokenRequest` to the `cdi-apiserver`, and uploading the file to the `cdi-uploadproxy`.
+"virtctl image-upload" works by creating a PVC of the requested size, sending an `UploadTokenRequest` to the `cdi-apiserver`, and uploading the file to the `cdi-uploadproxy`.
 
 ```bash
 virtctl image-upload --pvc-name=cirros-vm-disk --pvc-size=500Mi --image-path=/home/mhenriks/images/cirros-0.4.0-x86_64-disk.img --uploadproxy-url=<url to upload proxy service>
