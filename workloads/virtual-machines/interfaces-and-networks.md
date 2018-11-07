@@ -223,3 +223,54 @@ At this time, `slirp` mode doesn't support additional configuration fields.
 
 More information about SLIRP mode can be found in
 [QEMU Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29).
+
+### virtio-net multiqueue
+
+Setting the `networkInterfaceMultiqueue` to `true` will enable the multi-queue functionality,
+increasing the number of vhost queue, for interfaces configured with a `virtio` model.
+
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      networkInterfaceMultiqueue: true
+```
+
+Users of a Virtual Machine with multiple vCPUs may benefit of increased network throughput and performance.
+
+Currently, the number of queues is being determined by the number of vCPUs of a VM.
+This is because multi-queue support optimizes RX interrupt affinity and TX queue
+selection in order to make a specific queue private to a specific vCPU.
+
+Without enabling the feature, network performance does not scale as the number of vCPUs increases.
+Guests cannot transmit or retrieve packets in parallel, as virtio-net has only one TX and RX queue.
+
+*NOTE*: Although the virtio-net multiqueue feature provides a performance benefit,
+it has some limitations and therefore should not be unconditionally enabled
+
+#### Some known limitations
+
+* Guest OS is limited to ~200 MSI vectors. Each NIC queue requires a MSI vector,
+as well as any virtio device or assigned PCI device. Defining an instance with
+multiple virtio NICs and vCPUs might lead to a possibility of hitting the guest MSI limit.
+* virtio-net multiqueue works well for incoming traffic, but can occasionally cause
+a performance degradation, for outgoing traffic. Specifically, this may occur when
+sending packets under 1,500 bytes over the Transmission Control Protocol (TCP) stream.
+* Enabling virtio-net multiqueue increases the total network throughput, but in parallel
+it also increases the CPU consumption.
+* Enabling virtio-net multiqueue in the host QEMU config, does not enable the functionality
+in the guest OS. The guest OS administrator needs to manually turn it on for each guest
+NIC that requires this feature, using ethtool.
+* MSI vectors would still be consumed (wasted), if multiqueue was enabled in the
+host, but has not been enabled in the guest OS by the administrator.
+* In case the number of vNICs in a guest instance is proportional to the number of vCPUs,
+enabling the multiqueue feature is less important.
+* Each virtio-net queue consumes 64 KB of kernel memory for the vhost driver.
+
+*NOTE*: Virtio-net multiqueue should be enabled in the guest OS manually, using ethtool.
+For example:
+`ethtool -L <NIC> combined #num_of_queues`
+
+More information please refer to [KVM/QEMU MultiQueue](http://www.linux-kvm.org/page/Multiqueue).
+
