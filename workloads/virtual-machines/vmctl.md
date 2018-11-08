@@ -71,6 +71,16 @@ VM, clone it, and watch wait. When the vmctl pod is deleted, vmctl will clean
 up the derived VirtualMachine. Consequently it is inadvisable to use a 0 length
 grace period for shutting down the pod.
 
+## Services
+
+One note worth stressing is that from Kubernete's perspective the vmctl Pod is
+entirely distinct from the VM it spawns. It is especially important to be
+mindful of this when creating services. From an end user's perspective, there's
+nothing useful running on the vmctl Pod itself. The recommended method of
+exposing services on a VM is to use Labels and Selectors. Applying a label to
+the prototype VM, and using that `matchLabel` on a service is sufficient to
+expose the service on all derived VM's.
+
 # Examples
 
 The following PodPreset applies to all examples below. This is done to remove
@@ -158,3 +168,26 @@ spec:
 This example would look for a VirtualMachine in the `default` namespace named
 `testvm`, and instantiate a VirtualMachine on every node in the Kubernetes
 cluster.
+
+## Service
+
+Assuming a controller similar to the examples above, where a label `app: vmctl`
+is used, a service to expose the VM's could look like this:
+
+```yaml
+kind: Service
+apiVersion: v1
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: vmctl
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+```
+
+In this case a clusterIP would be created that maps port 80 to each VM. See
+[Kubernetes Services](https://kubernetes.io/docs/concepts/services-networking/service/)
+for more information.
