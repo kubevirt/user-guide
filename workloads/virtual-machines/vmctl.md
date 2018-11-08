@@ -73,7 +73,33 @@ grace period for shutting down the pod.
 
 # Examples
 
+The following PodPreset applies to all examples below. This is done to remove
+lines that are irrelevant and make the examples more clear.
+
+```yaml
+apiVersion: settings.k8s.io/v1alpha1
+kind: PodPreset
+metadata:
+  name: have-podinfo
+  selector:
+    matchLabels:
+      app: vmctl
+spec:
+  volumeMounts:
+    - name: podinfo
+      mountPath: /etc/podinfo
+  volumes:
+    - name: podinfo
+      downwardAPI:
+        items:
+        - path: "name"
+          fieldRef:
+            fieldPath: metadata.name
+```
+
 ## Deployment
+
+This is an example of using vmctl as a Deployment:
 
 ```yaml
 apiVersion: apps/v1
@@ -98,17 +124,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
         - "testvm"
-        volumeMounts:
-        - name: podinfo
-          mountPath: /etc/podinfo
       serviceAccountName: vmctl
-      volumes:
-      - name: podinfo
-        downwardAPI:
-          items:
-          - path: "name"
-            fieldRef:
-              fieldPath: metadata.name
 ```
 
 This example would look for a VirtualMachine in the `default` namespace named
@@ -116,6 +132,8 @@ This example would look for a VirtualMachine in the `default` namespace named
 
 
 ## Daemonset
+
+This is an example of using vmctl as a Daemonset:
 
 ```yaml
 apiVersion: apps/v1
@@ -134,17 +152,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
         - "testvm"
-        volumeMounts:
-        - name: podinfo
-          mountPath: /etc/podinfo
       serviceAccountName: vmctl
-      volumes:
-      - name: podinfo
-        downwardAPI:
-          items:
-          - path: "name"
-            fieldRef:
-              fieldPath: metadata.name
 ```
 
 This example would look for a VirtualMachine in the `default` namespace named
