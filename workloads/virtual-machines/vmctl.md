@@ -147,7 +147,7 @@ This is an example of using vmctl as a Daemonset:
 
 ```yaml
 apiVersion: apps/v1
-kind: Deployment
+kind: Daemonset
 metadata:
   name: vmctl
 spec:
