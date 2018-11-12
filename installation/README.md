@@ -73,7 +73,7 @@ You can find more about hugepages under [official documentation](https://www.ker
 Once Kubernetes is deployed, you will need to deploy the KubeVirt add-on. The add-on is deployed to a cluster using the `kubectl` tool and manifest file:
 
 ```bash
-$ RELEASE=v0.4.0
+$ RELEASE=v0.10.0
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 ```
 
