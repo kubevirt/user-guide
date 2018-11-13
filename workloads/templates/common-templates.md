@@ -2,8 +2,8 @@
 
 ## What is a virtual machine template?
 
-The KubeVirt projects provides [templates](https://docs.okd.io/latest/dev_guide/templates.html) to create VMs to handle common scenarios.
-A template provides a combination of some key factors that could be further customized and processed to have a Virtual Machine object.
+The KubeVirt projects provides a set of [templates](https://docs.okd.io/latest/dev_guide/templates.html) to create VMs to handle common usage scenarios.
+These templates provide a combination of some key factors that could be further customized and processed to have a Virtual Machine object.
 The key factors which define a template are
 - Workload
 most Virtual Machine should be *generic* to have maximum flexibility; the *highperformance* workload trades some of this flexibility to
