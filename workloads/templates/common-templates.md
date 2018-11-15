@@ -25,3 +25,14 @@ To install the templates:
 $ export VERSION="v0.3.1"
 $ oc create -f https://github.com/kubevirt/common-templates/releases/download/$VERSION/common-templates-$VERSION.yaml
 ```
+
+## Editable fields
+
+You can edit the fields of the templates which define the amount of resources which the VMs will receive.
+The list of fields includes:
+
+- spec.template.spec.domain.cpu.cores
+- spec.template.spec.domain.resources.requests.memory
+- spec.template.spec.domain.devices.disks
+- spec.template.spec.volumes
+- spec.template.spec.networks
