@@ -5,13 +5,15 @@
 The KubeVirt projects provides a set of [templates](https://docs.okd.io/latest/dev_guide/templates.html) to create VMs to handle common usage scenarios.
 These templates provide a combination of some key factors that could be further customized and processed to have a Virtual Machine object.
 The key factors which define a template are
+
 - Workload
-most Virtual Machine should be *generic* to have maximum flexibility; the *highperformance* workload trades some of this flexibility to
-provide better performance
+  Most Virtual Machine should be *generic* to have maximum flexibility; the *highperformance* workload trades some of this flexibility to
+  provide better performances.
 - Guest Operating System (OS)
-Enable optimizations depending on the OS which is going to run on the guest.
+  This allow to ensure that the emulated hardware is compatible with the guest OS. Furthermore, it allows to maximize the stability
+  of the VM, and allows performance optimizations.
 - Size (flavor) 
-Amount of resources (CPU, memory) to allocate to the VM
+  Defines the amount of resources (CPU, memory) to allocate to the VM.
 
 More documentation is available in the [common templates subproject](https://github.com/kubevirt/common-templates)
 
