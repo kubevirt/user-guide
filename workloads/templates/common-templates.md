@@ -38,3 +38,18 @@ The list of fields includes:
 - spec.template.spec.domain.devices.disks
 - spec.template.spec.volumes
 - spec.template.spec.networks
+
+
+## Relationship between templates and VMs
+
+Once [processed](), the templates produce VM objects to be used in the cluster. The VMs produced from templates will have a `vm.cnv.io/template` label, whose
+value will be the name of the parent template, for example `fedora-generic-medium`:
+```yaml
+  metadata:
+    labels:
+      vm.cnv.io/template: fedora-generic-medium
+```
+This make it possible to query for all the VMs built from any template.
+
+Please note that, after the generation step, VM objects and template objects have no relationship with each other besides the aforementioned label (e.g. changes
+in templates do not automatically affect VMs, or vice versa).
