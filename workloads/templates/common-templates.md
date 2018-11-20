@@ -131,3 +131,46 @@ oc process rhel7-generic-tiny PVCNAME=mydisk NAME=rheltinyvm | oc apply -f -
 
 Please note that, after the generation step, VM objects and template objects have no relationship with each other besides the aforementioned label (e.g. changes
 in templates do not automatically affect VMs, or vice versa).
+
+## common template customization
+
+### template customization - memory, CPU
+
+There are three options to customize VM memory and CPU:
+
+ * select flavor - tiny, small, medium, etc. Each flavor grants to VM different amount of RAM and CPU cores.
+ * setting up directly editable fields spec.template.spec.domain.cpu.cores and spec.template.spec.domain.resources.requests.memory, example:
+
+```bash
+oc patch virtualmachine testguest --type merge -p '{"spec":{"template":{"spec":{"domain":{"cpu":{"cores":'3'}}}}}}'
+virtualmachine.kubevirt.io/testguest patched
+```
+ * use WebUI: WebUI supports different flavors and Workload Profiles. Also it supports custom amount of memory and CPUs
+
+### template customization - networking
+
+There are two options to customize Networking in VM:
+ * setting up directly editable field(see example above): spec.template.spec.networks. You can edit following:
+   * name (of interface)
+   * pod
+ * edit networking in webUI. Please note: WebUI also edits spec.domain.interfaces and supports changing mac address
+
+### template customization - disks
+
+There are two options to customize disks:
+
+ * Setting up sole variable - name of PersistentVolumeClaim(PVC)
+ * Choose workload profile
+ * Choose editable fields
+
+#### Setting up name of PVC
+Each template has only one variable for disk customization - name of PersistentVolumeClaim(PVC).  Note: PVC should exist before you start your VM at first time. 
+
+#### Choose worload profile
+In a case if high performance workload profile choosed, then kubevirt enables [IOThread](https://www.linux-kvm.org/images/a/a7/02x04-MultithreadedDevices.pdf) qemu feature for disk. 
+Note: not each operation system has an option of high performance workload profile.  
+
+### Editable fields related with disks
+Each template has ability to direct edit editable fields (see details and example above). By fact it provides same ability to choose name of PVC in comparison with changing variable
+
+Note: WebUI cant create specific disk in the Create Virtual Machine wizzard - only attach existing PVC
