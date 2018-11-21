@@ -81,6 +81,15 @@ exposing services on a VM is to use Labels and Selectors. Applying a label to
 the prototype VM, and using that `matchLabel` on a service is sufficient to
 expose the service on all derived VM's.
 
+## PersistentVolumeClaims
+
+Another thing to consider with vmctl is the use of shared volumes. By nature
+vmctl is designed to spawn an arbitrary number of VirtualMachines on demand,
+all of which will define the same Disk and Volume stanzas. Because of this,
+using shared volumes in read-write mode should be avoided, or the PVC's could
+be corrupted. To avoid this issue, ephemeral disks or ContainerDisks could be
+used.
+
 # Examples
 
 The following PodPreset applies to all examples below. This is done to remove
