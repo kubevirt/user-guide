@@ -162,7 +162,12 @@ apiVersion: apps/v1
 kind: Daemonset
 metadata:
   name: vmctl
+  labels:
+    app: vmctl
 spec:
+  selector:
+    matchLabels:
+      app: vmctl
   template:
     metadata:
       labels:
