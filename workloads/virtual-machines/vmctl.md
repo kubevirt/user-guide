@@ -84,7 +84,8 @@ expose the service on all derived VM's.
 # Examples
 
 The following PodPreset applies to all examples below. This is done to remove
-lines that are irrelevant and make the examples more clear.
+lines that are related to the Kubernetes DownwardAPI in order to make the
+examples more clear.
 
 ```yaml
 apiVersion: settings.k8s.io/v1alpha1
@@ -109,7 +110,8 @@ spec:
 
 ## Deployment
 
-This is an example of using vmctl as a Deployment:
+This is an example of using vmctl as a Deployment (Note: this example uses the
+`have-podinfo` PodPreset above):
 
 ```yaml
 apiVersion: apps/v1
@@ -143,7 +145,8 @@ This example would look for a VirtualMachine in the `default` namespace named
 
 ## Daemonset
 
-This is an example of using vmctl as a Daemonset:
+This is an example of using vmctl as a Daemonset (Note: this example uses the
+`have-podinfo` PodPreset above):
 
 ```yaml
 apiVersion: apps/v1
