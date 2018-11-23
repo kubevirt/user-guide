@@ -167,7 +167,7 @@ There are two options to customize disks:
 Each template has only one variable for disk customization - name of PersistentVolumeClaim(PVC).  Note: PVC should exist before you start your VM at first time. 
 
 #### Choose worload profile
-In a case if high performance workload profile choosed, then kubevirt enables [IOThread](https://www.linux-kvm.org/images/a/a7/02x04-MultithreadedDevices.pdf) qemu feature for disk. 
+In a case if high performance workload profile choosed, then kubevirt enables [IOThread](https://libvirt.org/formatdomain.html#elementsIOThreadsAllocation) qemu feature for disk. 
 Note: not each operation system has an option of high performance workload profile.  
 
 ### Editable fields related with disks
