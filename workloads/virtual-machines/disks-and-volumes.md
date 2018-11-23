@@ -219,11 +219,14 @@ Use a PersistentVolumeClain when the VirtualMachineInstance's disk needs to pers
 
 A `PersistentVolume` can be in "filesystem" or "block" mode:
 
-- Filesystem: For KubeVirt to be able to consume the disk present on a PersistentVolume's filesystem, the disk must be named `disk.img` and be placed in the root path of the filesystem. Currently the disk is also required to be in raw format.
-	**Important:** The `disk.img` image file needs to be owned by the user-id `107` in order to avoid permission issues.
+- Filesystem: For KubeVirt to be able to consume the disk present on a PersistentVolume's filesystem, the disk must be named `disk.img` and be placed in the root path of the filesystem. Currently the disk is also required to be in raw format.  
+	**Important:** The `disk.img` image file needs to be owned by the user-id `107` in order to avoid permission issues.  
+	**Note:** If the `disk.img` image file has not been created manually before starting a VM then it will be created automatically
+	with the `PersistentVolumeClaim` size. Since not every storage provisioner provides volumes with the exact usable amount of space
+	as requested (e.g. due to filesystem overhead), KubeVirt tolerates up to 10% less available space. This can be configured with the 
+	`pvc-tolerate-less-space-up-to-percent` value in the `kubevirt-config` ConfigMap.
 - Block: Use a block volume for consuming raw block devices. Note: you need to enable the BlockVolume feature gate.
 
-**Note:** If the `disk.img` image file has not been created manually before starting a VM then it will be created automatically with the `PersistentVolumeClaim` size.
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk` may look like this:
 
