@@ -337,6 +337,21 @@ passed through into the guest operating system as a host device, using the
 [vfio](https://www.kernel.org/doc/Documentation/vfio.txt) userspace interface,
 to maintain high networking performance.
 
+> **Note:** you need to enable the SRIOV feature gate to use the feature. For
+> example:
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kube-system
+  labels:
+    kubevirt.io: ""
+data:
+  feature-gates: "SRIOV"
+```
+
 > **Note:** while the `sriov` mode is validated and tested using the Intel
 > SR-IOV device plugin, other plugins may add support for the same by setting
 > the `SRIOV-VF-PCI-ADDR` environment variable inside pods to a list of
