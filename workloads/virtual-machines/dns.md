@@ -28,7 +28,7 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
+        name: containerdisk
         volumeName: registryvolume
       - disk:
           bus: virtio
@@ -40,7 +40,7 @@ spec:
   terminationGracePeriodSeconds: 0
   volumes:
   - name: registryvolume
-    registryDisk:
+    containerDisk:
       image: kubevirt/fedora-cloud-registry-disk-demo:latest
   - cloudInitNoCloud:
       userDataBase64: IyEvYmluL2Jhc2gKZWNobyAiZmVkb3JhOmZlZG9yYSIgfCBjaHBhc3N3ZAo=

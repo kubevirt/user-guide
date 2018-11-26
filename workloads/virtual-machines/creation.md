@@ -25,7 +25,7 @@ spec:
         memory: 1024M
     devices:
       disks:
-      - name: registrydisk
+      - name: containerdisk
         volumeName: registryvolume
         disk:
           bus: virtio
@@ -39,8 +39,8 @@ spec:
         volumeName: cloudinitvolume
   volumes:
   - name: registryvolume
-    registryDisk:
-      image: kubevirt/fedora-cloud-registry-disk-demo:latest
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
   - name: emptydiskvolume
     emptyDisk:
       capacity: "2Gi"

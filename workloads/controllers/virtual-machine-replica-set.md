@@ -42,7 +42,7 @@ are terminated.
 
 * **cloudInitNoCloud**
 * **ephemeral**
-* **registryDisk**
+* **containerDisk**
 * **emptyDisk**
 * **configMap**
 * **secret**
@@ -75,7 +75,7 @@ be aware of KubeVirt and create migrations, instead of `evicting`
 VirtualMachineInstances by deletion.
 
 > **Note:** The simplest form of having a migratable ephemeral
-> VirtualMachineInstance, will be to use local storage based on `RegistryDisks`
+> VirtualMachineInstance, will be to use local storage based on `ContainerDisks`
 > in combination with a file based backing store. However, migratable backing
 > store support has not officially landed yet in KubeVirt and is untested.
 
@@ -101,15 +101,15 @@ spec:
         devices:
           disks:
           - disk:
-            name: registrydisk
+            name: containerdisk
             volumeName: registryvolume
         resources:
           requests:
             memory: 64M
       volumes:
       - name: registryvolume
-        registryDisk:
-          image: kubevirt/cirros-registry-disk-demo:latest
+        containerDisk:
+          image: kubevirt/cirros-container-disk-demo:latest
 ```
 
 Saving this manifest into `testreplicaset.yaml` and submitting it to Kubernetes will create three virtual machines based on the template.
@@ -147,15 +147,15 @@ Spec:
         Devices:
           Disks:
             Disk:
-            Name:         registrydisk
+            Name:         containerdisk
             Volume Name:  registryvolume
         Resources:
           Requests:
             Memory:  64M
       Volumes:
         Name:  registryvolume
-        Registry Disk:
-          Image:  kubevirt/cirros-registry-disk-demo:latest
+        Container Disk:
+          Image:  kubevirt/cirros-container-disk-demo:latest
 Status:
   Conditions:      <nil>
   Ready Replicas:  2
