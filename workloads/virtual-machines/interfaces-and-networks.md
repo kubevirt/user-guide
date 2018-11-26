@@ -347,14 +347,20 @@ to maintain high networking performance.
 > SR-IOV network, you have to also request corresponding devices from the
 > device plugin, by adding appropriate `resources.limits` and
 > `resources.requests` entries.
+
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
       interfaces:
         - name: sriov-net
           sriov: {}
-   resources:
-     limits:
-       intel.com/sriov: "1"
-     requests:
-       intel.com/sriov: "1"
+    resources:
+      limits:
+        intel.com/sriov: "1"
+      requests:
+        intel.com/sriov: "1"
   networks:
   - name: sriov-net
     multus:
