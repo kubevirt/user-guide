@@ -111,7 +111,7 @@ spec:
 ...
 ```
 
-You can check list of available models [here](https://github.com/libvirt/libvirt/blob/master/src/cpu/cpu_map.xml).
+You can check list of available models [here](https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml).
 
 #### CPU model special cases
 
