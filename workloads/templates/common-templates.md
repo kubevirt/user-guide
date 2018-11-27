@@ -20,7 +20,7 @@ More documentation is available in the [common templates subproject](https://git
 ## Accessing the virtual machine templates
 
 If you installed KubeVirt using a supported method you should find the common templates preinstalled in the cluster.
-Should you want to upgrade the templates, or installed them from scratch, you can use one of the [supported release](https://github.com/kubevirt/common-templates/releases)
+Should you want to upgrade the templates, or install them from scratch, you can use one of the [supported releases](https://github.com/kubevirt/common-templates/releases)
 
 To install the templates:
 ```bash
