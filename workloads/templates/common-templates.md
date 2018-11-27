@@ -42,14 +42,68 @@ The list of fields includes:
 
 ## Relationship between templates and VMs
 
-Once [processed](), the templates produce VM objects to be used in the cluster. The VMs produced from templates will have a `vm.cnv.io/template` label, whose
-value will be the name of the parent template, for example `fedora-generic-medium`:
+Once [processed](https://docs.openshift.com/enterprise/3.0/dev_guide/templates.html#creating-from-templates-using-the-cli), the templates produce VM objects to be
+used in the cluster. The VMs produced from templates will have a `vm.cnv.io/template` label, whose value will be the name of the parent template,
+for example `fedora-generic-medium`:
 ```yaml
   metadata:
     labels:
       vm.cnv.io/template: fedora-generic-medium
 ```
 This make it possible to query for all the VMs built from any template.
+
+Example:
+```bash
+oc process -o yaml rhel7-generic-tiny PVCNAME=mydisk NAME=rheltinyvm
+```
+
+And the output:
+```yaml
+apiVersion: v1
+items:
+- apiVersion: kubevirt.io/v1alpha2
+  kind: VirtualMachine
+  metadata:
+    labels:
+      vm.cnv.io/template: rhel7-generic-tiny
+    name: rheltinyvm
+    osinfoname: rhel7.0
+  spec:
+    running: false
+    template:
+      spec:
+        domain:
+          cpu:
+            cores: 1
+          devices:
+            disks:
+            - disk:
+                bus: virtio
+              name: rootdisk
+              volumeName: rootvolume
+            rng: {}
+          resources:
+            requests:
+              memory: 1G
+        terminationGracePeriodSeconds: 0
+        volumes:
+        - name: rootvolume
+          persistentVolumeClaim:
+            claimName: mydisk
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              password: redhat
+              chpasswd: { expire: False }
+          name: cloudinitvolume
+kind: List
+metadata: {}
+```
+
+You can add add the VM from the template to the cluster in one go
+```bash
+oc process rhel7-generic-tiny PVCNAME=mydisk NAME=rheltinyvm | oc apply -f -
+```
 
 Please note that, after the generation step, VM objects and template objects have no relationship with each other besides the aforementioned label (e.g. changes
 in templates do not automatically affect VMs, or vice versa).
