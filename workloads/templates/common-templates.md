@@ -31,14 +31,16 @@ $ oc create -f https://github.com/kubevirt/common-templates/releases/download/$V
 ## Editable fields
 
 You can edit the fields of the templates which define the amount of resources which the VMs will receive.
-The list of fields includes:
 
-- spec.template.spec.domain.cpu.cores
-- spec.template.spec.domain.resources.requests.memory
-- spec.template.spec.domain.devices.disks
-- spec.template.spec.volumes
-- spec.template.spec.networks
+Each template can list a different set of fields that are to be considered editable.
+The fields are used as hints for the user interface, and also for other components in the cluster.
 
+The editable fields are taken from annotations in the template:
+```yaml
+metadata:
+  annotations:
+    template.cnv.io/editable: ...
+```
 
 ## Relationship between templates and VMs
 
