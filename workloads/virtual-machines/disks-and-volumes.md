@@ -567,7 +567,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kubevirt-config
-  namespace: kube-system
+  namespace: kubevirt
   labels:
     kubevirt.io: ""
 data:
@@ -575,7 +575,7 @@ data:
 
 ```
 
-This config map assumes KubeVirt will be installed in the kube-system namespace.
+This config map assumes KubeVirt will be installed in the kubevirt namespace.
 Change the namespace to suite your installation.
 
 First post the configmap above, then install KubeVirt. At that point DataVolume

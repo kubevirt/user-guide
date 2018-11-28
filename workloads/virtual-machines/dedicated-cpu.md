@@ -93,7 +93,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kubevirt-config
-  namespace: kube-system
+  namespace: kubevirt
   labels:
     kubevirt.io: ""
 data:
@@ -102,7 +102,7 @@ data:
 
 Alternatively, users can edit an existing kubevirt-config:
 
-`kubectl edit configmap kubevirt-config -n kube-system`
+`kubectl edit configmap kubevirt-config -n kubevirt`
 
 ```
 ...
