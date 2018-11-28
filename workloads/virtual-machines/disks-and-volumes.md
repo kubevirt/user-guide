@@ -480,7 +480,7 @@ spec:
             storage: 2Gi
       source:
         http:
-          url: http://cdi-http-import-server.kube-system/images/alpine.iso
+          url: http://cdi-http-import-server.kubevirt/images/alpine.iso
 ```
 
 You can see the DataVolume defined in the dataVolumeTemplates section has two
