@@ -15,7 +15,7 @@
     * [Life-cycle](workloads/virtual-machines/life-cycle.md)
     * [DNS for Services and VirtualMachineInstances](workloads/virtual-machines/dns.md)
     * [Expose VirtualMachineInstances as Services](workloads/virtual-machines/expose-service.md)
-    * [Create Networkpolicy](workloads/virtual-machines/create-networkpolicy.md)
+    * [Create NetworkPolicy](workloads/virtual-machines/create-networkpolicy.md)
     * [Graphical and Console Access](workloads/virtual-machines/graphical-and-console-access.md)
     * [Disks and Volumes](workloads/virtual-machines/disks-and-volumes.md)
     * [Interfaces and Networks](workloads/virtual-machines/interfaces-and-networks.md)
