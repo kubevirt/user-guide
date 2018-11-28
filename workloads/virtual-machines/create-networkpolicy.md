@@ -73,4 +73,4 @@ spec:
   ingress: []
 ```
 
-Kubernetes Networkpolicy Documentation can be found here: [Kubernetes Networkpolicy](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+Kubernetes NetworkPolicy Documentation can be found here: [Kubernetes NetworkPolicy](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
