@@ -167,7 +167,7 @@ Supported volume sources are
 * [**cloudInitNoCloud**](workloads/virtual-machines/disks-and-volumes.md?id=cloudInitNoCloud)
 * [**persistentVolumeClaim**](workloads/virtual-machines/disks-and-volumes.md?id=persistentVolumeClaim)
 * [**ephemeral**](workloads/virtual-machines/disks-and-volumes.md?id=ephemeral)
-* [**registryDisk**](workloads/virtual-machines/disks-and-volumes.md?id=registryDisk)
+* [**containerDisk**](workloads/virtual-machines/disks-and-volumes.md?id=containerDisk)
 * [**emptyDisk**](workloads/virtual-machines/disks-and-volumes.md?id=emptyDisk)
 * [**hostDisk**](workloads/virtual-machines/disks-and-volumes.md?id=hostDisk)
 * [**dataVolume**](workloads/virtual-machines/disks-and-volumes.md?id=dataVolume)
@@ -284,48 +284,50 @@ spec:
           claimName: mypvc
 ```
 
-### registryDisk
+### containerDisk
+
+**containerDisk was originally registryDisk, please update your code when needed.**
 
 The Registry Disk feature provides the ability to store and distribute VM disks in the container image registry. Registry Disks can be assigned to VMs in the disks section of the VirtualMachineInstance spec.
 
 No network shared storage devices are utilized by Registry Disks. The disks are pulled from the container registry and reside on the local node hosting the VMs that consume the disks.
 
-#### When to use a registryDisk
+#### When to use a containerDisk
 
 Registry Disks are ephemeral storage devices that can be assigned to any number of active VirtualMachineInstances. This makes them an ideal tool for users who want to replicate a large number of VM workloads that do not require persistent data. Registry Disks are commonly used in conjunction with VirtualMachineInstanceReplicaSets.
 
-#### When Not to use a registryDisk
+#### When Not to use a containerDisk
 
 Registry Disks are not a good solution for any workload that requires persistent disks across VM restarts, or workloads that require VM live migration support. It is possible Registry Disks may gain live migration support in the future, but at the moment live migrations are incompatible with Registry Disks.
 
-#### registryDisk Workflow Example
+#### containerDisk Workflow Example
 
-Users push VM disks into the container registry using a KubeVirt base image designed to work with the Registry Disk feature. The latest base container image is **kubevirt/registry-disk-v1alpha**.
+Users push VM disks into the container registry using a KubeVirt base image designed to work with the Registry Disk feature. The latest base container image is **kubevirt/container-disk-v1alpha**.
 
-Using this base image, users can inject a VirtualMachineInstance disk into a container image in a way that is consumable by the KubeVirt runtime. Disks placed into the base container must be placed into the /disk directory. Raw and qcow2 formats are supported. Qcow2 is recommended in order to reduce the container image's size.
+Using this base image, users can inject a VirtualMachineInstance disk into a container image in a way that is consumable by the KubeVirt runtime. Disks placed into the base container must be placed into the `/disk` directory. Raw and qcow2 formats are supported. Qcow2 is recommended in order to reduce the container image's size.
 
 Example: Inject a VirtualMachineInstance disk into a container image.
 
 ```yaml
 cat << END > Dockerfile
-FROM kubevirt/registry-disk-v1alpha
+FROM kubevirt/container-disk-v1alpha
 ADD fedora25.qcow2 /disk
 END
 
 docker build -t vmidisks/fedora25:latest .
 ```
 
-Example: Upload the RegistryDisk container image to a registry.
+Example: Upload the ContainerDisk container image to a registry.
 
 ```yaml
 docker push vmidisks/fedora25:latest
 ```
 
-Example: Attach the RegistryDisk as an ephemeral disk to a VM.
+Example: Attach the ContainerDisk as an ephemeral disk to a VM.
 
 ```yaml
 metadata:
-  name: testvmi-registrydisk
+  name: testvmi-containerdisk
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -335,16 +337,59 @@ spec:
         memory: 64M
     devices:
       disks:
-      - name: registrydisk
+      - name: containerdisk
         volumeName: registryvolume
         disk: {}
   volumes:
     - name: registryvolume
-      registryDisk:
+      containerDisk:
         image: vmidisks/fedora25:latest
 ```
 
-Note that a `registryDisk` is file-based and therefore cannot be attached as a `lun` device to the VM.
+Note that a `containerDisk` is file-based and therefore cannot be attached as a `lun` device to the VM.
+
+#### Custom disk image path
+
+ContainerDisk also allows to store disk images in any folder, when required. The process is the same as previous.
+The main difference is, that in custom location, kubevirt does not scan for any image. It is your responsibility
+to provide full path for the disk image. Providing image `path` is optional. When no `path` is provided, kubevirt
+searches for disk images in default location: `/disk`.
+
+Example: Build container disk image:
+
+```yaml
+cat << END > Dockerfile
+FROM kubevirt/container-disk-v1alpha
+ADD fedora25.qcow2 /custom-disk-path
+END
+
+docker build -t vmidisks/fedora25:latest .
+docker push vmidisks/fedora25:latest
+```
+
+Create VMI with container disk pointing to the custom location:
+
+```yaml
+metadata:
+  name: testvmi-containerdisk
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        volumeName: registryvolume
+        disk: {}
+  volumes:
+    - name: registryvolume
+      containerDisk:
+        image: vmidisks/fedora25:latest
+        path: /custom-disk-path/fedora.qcow2
+```
 
 ### emptyDisk
 
@@ -365,7 +410,7 @@ spec:
         memory: 64M
     devices:
       disks:
-      - name: registrydisk
+      - name: containerdisk
         volumeName: registryvolume
         disk:
           bus: virtio
@@ -375,7 +420,7 @@ spec:
           bus: virtio
   volumes:
     - name: registryvolume
-      registryDisk:
+      containerDisk:
         image: kubevirt/cirros-registry-disk-demo:latest
     - name: emptydiskvolume
       emptyDisk:
@@ -605,7 +650,7 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
+        name: containerdisk
         volumeName: registryvolume
       - disk:
           bus: virtio
@@ -624,8 +669,8 @@ spec:
   terminationGracePeriodSeconds: 0
   volumes:
   - name: registryvolume
-    registryDisk:
-      image: kubevirt/fedora-cloud-registry-disk-demo:latest
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
   - cloudInitNoCloud:
       userData: |-
         #cloud-config
@@ -666,7 +711,7 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
+        name: containerdisk
         volumeName: registryvolume
       - disk:
           bus: virtio
@@ -685,8 +730,8 @@ spec:
   terminationGracePeriodSeconds: 0
   volumes:
   - name: registryvolume
-    registryDisk:
-      image: kubevirt/fedora-cloud-registry-disk-demo:latest
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
   - cloudInitNoCloud:
       userData: |-
         #cloud-config
@@ -724,7 +769,7 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
+        name: containerdisk
         volumeName: registryvolume
       - disk:
           bus: virtio
@@ -738,8 +783,8 @@ spec:
   terminationGracePeriodSeconds: 0
   volumes:
   - name: registryvolume
-    registryDisk:
-      image: kubevirt/fedora-cloud-registry-disk-demo:latest
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
   - name: serviceaccountvolume
     serviceAccount:
       serviceAccountName: default

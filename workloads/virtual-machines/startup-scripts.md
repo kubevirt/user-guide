@@ -49,7 +49,7 @@ spec:
         memory: 64M
     devices:
       disks:
-      - name: registrydisk
+      - name: containerdisk
         volumeName: registryvolume
         disk:
           bus: virtio
@@ -59,8 +59,8 @@ spec:
           bus: virtio
   volumes:
     - name: registryvolume
-      registryDisk:
-        image: kubevirt/cirros-registry-disk-demo:latest
+      containerDisk:
+        image: kubevirt/cirros-container-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
         userData: |
@@ -104,7 +104,7 @@ spec:
         memory: 64M
     devices:
       disks:
-      - name: registrydisk
+      - name: containerdisk
         volumeName: registryvolume
         disk:
           bus: virtio
@@ -114,8 +114,8 @@ spec:
           bus: virtio
   volumes:
     - name: registryvolume
-      registryDisk:
-        image: kubevirt/cirros-registry-disk-demo:latest
+      containerDisk:
+        image: kubevirt/cirros-container-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
         userDataBase64: $(cat startup-script.sh | base64 -w0)
@@ -161,7 +161,7 @@ spec:
         memory: 64M
     devices:
       disks:
-      - name: registrydisk
+      - name: containerdisk
         volumeName: registryvolume
         disk:
           bus: virtio
@@ -171,7 +171,7 @@ spec:
           bus: virtio
   volumes:
     - name: registryvolume
-      registryDisk:
+      containerDisk:
         image: kubevirt/cirros-registry-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
@@ -216,7 +216,7 @@ spec:
         memory: 1024M
     devices:
       disks:
-      - name: registrydisk
+      - name: containerdisk
         volumeName: registryvolume
         disk:
           dev: vda
@@ -226,7 +226,7 @@ spec:
           dev: vdb
   volumes:
     - name: registryvolume
-      registryDisk:
+      containerDisk:
         image: kubevirt/fedora-atomic-registry-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
@@ -273,7 +273,7 @@ spec:
         memory: 1024M
     devices:
       disks:
-      - name: registrydisk
+      - name: containerdisk
         volumeName: registryvolume
         disk:
           dev: vda
@@ -283,7 +283,7 @@ spec:
           dev: vdb
   volumes:
     - name: registryvolume
-      registryDisk:
+      containerDisk:
         image: kubevirt/fedora-atomic-registry-disk-demo:latest
     - name: cloudinitvolume
       cloudInitNoCloud:
