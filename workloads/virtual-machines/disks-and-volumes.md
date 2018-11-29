@@ -603,7 +603,7 @@ cdi-controller-deployment.yaml manifest to your cluster.
 
 **Enabling the DataVolumes feature gate**
 
-Below is an example of how to enable DataVolume support using the kubevit-config
+Below is an example of how to enable DataVolume support using the kubevirt-config
 config map.
 
 ```
