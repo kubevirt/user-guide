@@ -156,7 +156,7 @@ spec:
     protocol: TCP
     targetPort: 3389
   selector:
-    speical: key
+    special: key
   type: LoadBalancer
 ```
 
