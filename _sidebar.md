@@ -30,6 +30,7 @@
     * [Virtual Machine Replica Set](workloads/controllers/virtual-machine-replica-set.md)
   * [Templates](workloads/templates/README.md)
     * [Virtual Machine Creation](workloads/templates/vm-creation.md)
+    * [Working with Templates](workloads/templates/common-templates.md)
   * [Annotations and Labels](misc/annotations_and_labels.md)
   * [Cluster Monitoring](misc/monitoring.md)
 * [Additional resources](additional-resources.md)
