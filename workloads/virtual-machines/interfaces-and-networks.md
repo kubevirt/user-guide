@@ -337,6 +337,20 @@ passed through into the guest operating system as a host device, using the
 [vfio](https://www.kernel.org/doc/Documentation/vfio.txt) userspace interface,
 to maintain high networking performance.
 
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: sriov-net
+          sriov: {}
+  networks:
+  - name: sriov-net
+    multus:
+      networkName: sriov-net-crd
+```
+
 > **Note:** you need to enable the SRIOV feature gate to use the feature. For
 > example:
 
@@ -360,27 +374,3 @@ Information on how to set up Intel SR-IOV device plugin can be found
 > the `PCIDEVICE_<resourceName>` environment variables inside pods to a list of
 > allocated PCI device IDs, as in:
 > PCIDEVICE_VENDOR_COM_RESOURCE_NAME=0000:81:11.1,0000:81:11.2[,...]
-
-> **Note:** as of the time of writing, in addition to attaching a VM to a
-> SR-IOV network, you have to also request corresponding devices from the
-> device plugin, by adding appropriate `resources.limits` and
-> `resources.requests` entries.
-
-```yaml
-kind: VM
-spec:
-  domain:
-    devices:
-      interfaces:
-        - name: sriov-net
-          sriov: {}
-    resources:
-      limits:
-        intel.com/sriov: "1"
-      requests:
-        intel.com/sriov: "1"
-  networks:
-  - name: sriov-net
-    multus:
-      networkName: sriov-net-crd
-```
