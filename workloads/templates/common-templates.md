@@ -47,6 +47,7 @@ metadata:
 ```
 
 Each entry in the editable field list must be a [jsonpath](https://kubernetes.io/docs/reference/kubectl/jsonpath/).
+The jsonpath root is the objects: element of the template.
 The actually editable field is the last entry (the "leaf") of the path. For example, the following minimal snippet highlights
 the fields which you can edit:
 ```yaml
@@ -134,43 +135,87 @@ in templates do not automatically affect VMs, or vice versa).
 
 ## common template customization
 
-### template customization - memory, CPU
+The templates provided by the kubevirt project provide a set of conventions and annotations that augment the basic feature of the
+[openshift templates](https://docs.okd.io/latest/dev_guide/templates.html).
+You can customize your kubevirt-provided templates editing these annotations, or you can add them to your existing templates to
+make them consumable by the kubevirt services.
 
-There are three options to customize VM memory and CPU:
+Here's a description of the kubevirt annotations. Unless otherwise specified, the following keys are meant to be top-level entries
+of the template metadata, like
 
- * select flavor - tiny, small, medium, etc. Each flavor grants to VM different amount of RAM and CPU cores.
- * setting up directly editable fields spec.template.spec.domain.cpu.cores and spec.template.spec.domain.resources.requests.memory, example:
-
-```bash
-oc patch virtualmachine testguest --type merge -p '{"spec":{"template":{"spec":{"domain":{"cpu":{"cores":'3'}}}}}}'
-virtualmachine.kubevirt.io/testguest patched
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: windows-10
+  annotations:
+    openshift.io/display-name: "Generic demo template"
 ```
- * use WebUI: WebUI supports different flavors and Workload Profiles. Also it supports custom amount of memory and CPUs
 
-### template customization - networking
+All the following annotations are prefixed with `defaults.template.cnv.io`, which is omitted below for brevity. So the actual annotations you should use will look like
 
-There are two options to customize Networking in VM:
- * setting up directly editable field(see example above): spec.template.spec.networks. You can edit following:
-   * name (of interface)
-   * pod
- * edit networking in webUI. Please note: WebUI also edits spec.domain.interfaces and supports changing mac address
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: windows-10
+  annotations:
+    defaults.template.cnv.io/disk: default-disk
+    defaults.template.cnv.io/volume: default-volume
+    defaults.template.cnv.io/nic: default-nic
+    defaults.template.cnv.io/network: default-network
+```
 
-### template customization - disks
+Unless otherwise specified, all annotations are meant to be safe defaults, both for performance and compability, and hints for the CNV-aware UI and tooling.
 
-There are two options to customize disks:
+#### disk
+default disk type to use. It is recommended to aim for maximum compatibility.
 
- * Setting up sole variable - name of PersistentVolumeClaim(PVC)
- * Choose workload profile
- * Choose editable fields
+Example:
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.cnv.io/disk: virtio
+```
 
-#### Setting up name of PVC
-Each template has only one variable for disk customization - name of PersistentVolumeClaim(PVC).  Note: PVC should exist before you start your VM at first time. 
+#### nic
+default nic model to use. Likewise the disk implementation, it is recomended to pick default which ensure the maximum compatibility.
 
-#### Choose worload profile
-In a case if high performance workload profile choosed, then kubevirt enables [IOThread](https://libvirt.org/formatdomain.html#elementsIOThreadsAllocation) qemu feature for disk. 
-Note: not each operation system has an option of high performance workload profile.  
+Example:
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: Windows
+  annotations:
+    defaults.template.cnv.io/nic: e1000
+```
 
-### Editable fields related with disks
-Each template has ability to direct edit editable fields (see details and example above). By fact it provides same ability to choose name of PVC in comparison with changing variable
+#### volume
+Default volume implementation to be used as backend for disks. The underlying volume implementation allow to configure the performance parameters (cache).
 
-Note: WebUI cant create specific disk in the Create Virtual Machine wizzard - only attach existing PVC
+Example:
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.cnv.io/volume: custom-volume
+```
+
+#### network
+Default network to attach the NIC(s) to. Likewise the volume, the underlying network should be configured for the performance and the connectivity.
+
+Example:
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.cnv.io/network: fast-net
+```
