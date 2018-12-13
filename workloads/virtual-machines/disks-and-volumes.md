@@ -526,6 +526,7 @@ spec:
       source:
         http:
           url: http://cdi-http-import-server.kube-system/images/alpine.iso
+    status: {}
 ```
 
 You can see the DataVolume defined in the dataVolumeTemplates section has two
