@@ -26,14 +26,14 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
+        name: containerdisk
         volumeName: registryvolume
     resources:
       requests:
         memory: 64M
   volumes:
   - name: registryvolume
-    registryDisk:
+    containerDisk:
       image: kubevirt/cirros-registry-disk-demo:latest
 ```
 
@@ -156,7 +156,7 @@ spec:
     protocol: TCP
     targetPort: 3389
   selector:
-    speical: key
+    special: key
   type: LoadBalancer
 ```
 

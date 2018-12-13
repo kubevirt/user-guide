@@ -137,7 +137,7 @@ spec:
           disks:
           - disk:
               bus: virtio
-            name: registrydisk
+            name: containerdisk
             volumeName: registryvolume
           - disk:
               bus: virtio
@@ -151,8 +151,8 @@ spec:
       terminationGracePeriodSeconds: 0
       volumes:
       - name: registryvolume
-        registryDisk:
-          image: kubevirt/cirros-registry-disk-demo:latest
+        containerDisk:
+          image: kubevirt/cirros-container-disk-demo:latest
       - cloudInitNoCloud:
           userDataBase64: IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK
         name: cloudinitvolume
@@ -209,7 +209,7 @@ Spec:
           Disks:
             Disk:
               Bus:        virtio
-            Name:         registrydisk
+            Name:         containerdisk
             Volume Name:  registryvolume
             Disk:
               Bus:        virtio

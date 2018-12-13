@@ -8,10 +8,10 @@ Like all other vmi devices a `spec.domain.devices.disks` element has a mandatory
 
 A disk can be made accessible via four different types:
 
-* [**disk**](workloads/virtual-machines/disks-and-volumes.md?id=disk)
-* [**cdrom**](workloads/virtual-machines/disks-and-volumes.md?id=cdrom)
-* [**floppy**](workloads/virtual-machines/disks-and-volumes.md?id=floppy)
-* [**lun**](workloads/virtual-machines/disks-and-volumes.md?id=lun)
+* [**lun**](#lun)
+* [**disk**](#disk)
+* [**cdrom**](#cdrom)
+* [**floppy**](#floppy)
 
 All possible configuration options are available in the [Disk API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk).
 
@@ -164,16 +164,16 @@ spec:
 
 Supported volume sources are
 
-* [**cloudInitNoCloud**](workloads/virtual-machines/disks-and-volumes.md?id=cloudInitNoCloud)
-* [**persistentVolumeClaim**](workloads/virtual-machines/disks-and-volumes.md?id=persistentVolumeClaim)
-* [**ephemeral**](workloads/virtual-machines/disks-and-volumes.md?id=ephemeral)
-* [**registryDisk**](workloads/virtual-machines/disks-and-volumes.md?id=registryDisk)
-* [**emptyDisk**](workloads/virtual-machines/disks-and-volumes.md?id=emptyDisk)
-* [**hostDisk**](workloads/virtual-machines/disks-and-volumes.md?id=hostDisk)
-* [**dataVolume**](workloads/virtual-machines/disks-and-volumes.md?id=dataVolume)
-* [**configMap**](workloads/virtual-machines/disks-and-volumes.md?id=configMap)
-* [**secret**](workloads/virtual-machines/disks-and-volumes.md?id=secret)
-* [**serviceAccount**](workloads/virtual-machines/disks-and-volumes.md?id=serviceAccount)
+* [**cloudInitNoCloud**](#cloudInitNoCloud)
+* [**persistentVolumeClaim**](#persistentVolumeClaim)
+* [**ephemeral**](#ephemeral)
+* [**containerDisk**](#containerDisk)
+* [**emptyDisk**](#emptyDisk)
+* [**hostDisk**](#hostDisk)
+* [**dataVolume**](#dataVolume)
+* [**configMap**](#configMap)
+* [**secret**](#secret)
+* [**serviceAccount**](#serviceAccount)
 
 All possible configuration options are available in the [Volume API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume).
 
@@ -219,12 +219,12 @@ Use a PersistentVolumeClain when the VirtualMachineInstance's disk needs to pers
 
 A `PersistentVolume` can be in "filesystem" or "block" mode:
 
-- Filesystem: For KubeVirt to be able to consume the disk present on a PersistentVolume's filesystem, the disk must be named `disk.img` and be placed in the root path of the filesystem. Currently the disk is also required to be in raw format.  
-	> **Important:** The `disk.img` image file needs to be owned by the user-id `107` in order to avoid permission issues.  
-	
+- Filesystem: For KubeVirt to be able to consume the disk present on a PersistentVolume's filesystem, the disk must be named `disk.img` and be placed in the root path of the filesystem. Currently the disk is also required to be in raw format.
+	> **Important:** The `disk.img` image file needs to be owned by the user-id `107` in order to avoid permission issues.
+
 	> **Note:** If the `disk.img` image file has not been created manually before starting a VM then it will be created automatically
 	with the `PersistentVolumeClaim` size. Since not every storage provisioner provides volumes with the exact usable amount of space
-	as requested (e.g. due to filesystem overhead), KubeVirt tolerates up to 10% less available space. This can be configured with the 
+	as requested (e.g. due to filesystem overhead), KubeVirt tolerates up to 10% less available space. This can be configured with the
 	`pvc-tolerate-less-space-up-to-percent` value in the `kubevirt-config` ConfigMap.
 - Block: Use a block volume for consuming raw block devices. Note: you need to enable the BlockVolume feature gate.
 
@@ -284,48 +284,50 @@ spec:
           claimName: mypvc
 ```
 
-### registryDisk
+### containerDisk
+
+**containerDisk was originally registryDisk, please update your code when needed.**
 
 The Registry Disk feature provides the ability to store and distribute VM disks in the container image registry. Registry Disks can be assigned to VMs in the disks section of the VirtualMachineInstance spec.
 
 No network shared storage devices are utilized by Registry Disks. The disks are pulled from the container registry and reside on the local node hosting the VMs that consume the disks.
 
-#### When to use a registryDisk
+#### When to use a containerDisk
 
 Registry Disks are ephemeral storage devices that can be assigned to any number of active VirtualMachineInstances. This makes them an ideal tool for users who want to replicate a large number of VM workloads that do not require persistent data. Registry Disks are commonly used in conjunction with VirtualMachineInstanceReplicaSets.
 
-#### When Not to use a registryDisk
+#### When Not to use a containerDisk
 
 Registry Disks are not a good solution for any workload that requires persistent disks across VM restarts, or workloads that require VM live migration support. It is possible Registry Disks may gain live migration support in the future, but at the moment live migrations are incompatible with Registry Disks.
 
-#### registryDisk Workflow Example
+#### containerDisk Workflow Example
 
-Users push VM disks into the container registry using a KubeVirt base image designed to work with the Registry Disk feature. The latest base container image is **kubevirt/registry-disk-v1alpha**.
+Users push VM disks into the container registry using a KubeVirt base image designed to work with the Registry Disk feature. The latest base container image is **kubevirt/container-disk-v1alpha**.
 
-Using this base image, users can inject a VirtualMachineInstance disk into a container image in a way that is consumable by the KubeVirt runtime. Disks placed into the base container must be placed into the /disk directory. Raw and qcow2 formats are supported. Qcow2 is recommended in order to reduce the container image's size.
+Using this base image, users can inject a VirtualMachineInstance disk into a container image in a way that is consumable by the KubeVirt runtime. Disks placed into the base container must be placed into the `/disk` directory. Raw and qcow2 formats are supported. Qcow2 is recommended in order to reduce the container image's size.
 
 Example: Inject a VirtualMachineInstance disk into a container image.
 
 ```yaml
 cat << END > Dockerfile
-FROM kubevirt/registry-disk-v1alpha
+FROM kubevirt/container-disk-v1alpha
 ADD fedora25.qcow2 /disk
 END
 
 docker build -t vmidisks/fedora25:latest .
 ```
 
-Example: Upload the RegistryDisk container image to a registry.
+Example: Upload the ContainerDisk container image to a registry.
 
 ```yaml
 docker push vmidisks/fedora25:latest
 ```
 
-Example: Attach the RegistryDisk as an ephemeral disk to a VM.
+Example: Attach the ContainerDisk as an ephemeral disk to a VM.
 
 ```yaml
 metadata:
-  name: testvmi-registrydisk
+  name: testvmi-containerdisk
 apiVersion: kubevirt.io/v1alpha2
 kind: VirtualMachineInstance
 spec:
@@ -335,16 +337,59 @@ spec:
         memory: 64M
     devices:
       disks:
-      - name: registrydisk
+      - name: containerdisk
         volumeName: registryvolume
         disk: {}
   volumes:
     - name: registryvolume
-      registryDisk:
+      containerDisk:
         image: vmidisks/fedora25:latest
 ```
 
-Note that a `registryDisk` is file-based and therefore cannot be attached as a `lun` device to the VM.
+Note that a `containerDisk` is file-based and therefore cannot be attached as a `lun` device to the VM.
+
+#### Custom disk image path
+
+ContainerDisk also allows to store disk images in any folder, when required. The process is the same as previous.
+The main difference is, that in custom location, kubevirt does not scan for any image. It is your responsibility
+to provide full path for the disk image. Providing image `path` is optional. When no `path` is provided, kubevirt
+searches for disk images in default location: `/disk`.
+
+Example: Build container disk image:
+
+```yaml
+cat << END > Dockerfile
+FROM kubevirt/container-disk-v1alpha
+ADD fedora25.qcow2 /custom-disk-path
+END
+
+docker build -t vmidisks/fedora25:latest .
+docker push vmidisks/fedora25:latest
+```
+
+Create VMI with container disk pointing to the custom location:
+
+```yaml
+metadata:
+  name: testvmi-containerdisk
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        volumeName: registryvolume
+        disk: {}
+  volumes:
+    - name: registryvolume
+      containerDisk:
+        image: vmidisks/fedora25:latest
+        path: /custom-disk-path/fedora.qcow2
+```
 
 ### emptyDisk
 
@@ -365,7 +410,7 @@ spec:
         memory: 64M
     devices:
       disks:
-      - name: registrydisk
+      - name: containerdisk
         volumeName: registryvolume
         disk:
           bus: virtio
@@ -375,7 +420,7 @@ spec:
           bus: virtio
   volumes:
     - name: registryvolume
-      registryDisk:
+      containerDisk:
         image: kubevirt/cirros-registry-disk-demo:latest
     - name: emptydiskvolume
       emptyDisk:
@@ -494,7 +539,7 @@ When this VM manifest is posted to the cluster, as part of the launch flow a
 pvc will be created using the spec provided and the source data will be
 automatically imported into that pvc before the VM starts. When the VM is
 deleted, the storage provisioned by the DataVolume will automatically be
-deleted as well. 
+deleted as well.
 
 #### DataVolume VMI Behavior
 
@@ -537,7 +582,7 @@ spec:
   - name: volume1
     dataVolume:
       name: alpine-datavolume
-``` 
+```
 
 #### Enabling DataVolume support.
 
@@ -558,7 +603,7 @@ cdi-controller-deployment.yaml manifest to your cluster.
 
 **Enabling the DataVolumes feature gate**
 
-Below is an example of how to enable DataVolume support using the kubevit-config
+Below is an example of how to enable DataVolume support using the kubevirt-config
 config map.
 
 ```
@@ -605,7 +650,7 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
+        name: containerdisk
         volumeName: registryvolume
       - disk:
           bus: virtio
@@ -624,8 +669,8 @@ spec:
   terminationGracePeriodSeconds: 0
   volumes:
   - name: registryvolume
-    registryDisk:
-      image: kubevirt/fedora-cloud-registry-disk-demo:latest
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
   - cloudInitNoCloud:
       userData: |-
         #cloud-config
@@ -666,7 +711,7 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
+        name: containerdisk
         volumeName: registryvolume
       - disk:
           bus: virtio
@@ -685,8 +730,8 @@ spec:
   terminationGracePeriodSeconds: 0
   volumes:
   - name: registryvolume
-    registryDisk:
-      image: kubevirt/fedora-cloud-registry-disk-demo:latest
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
   - cloudInitNoCloud:
       userData: |-
         #cloud-config
@@ -724,7 +769,7 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
+        name: containerdisk
         volumeName: registryvolume
       - disk:
           bus: virtio
@@ -738,8 +783,8 @@ spec:
   terminationGracePeriodSeconds: 0
   volumes:
   - name: registryvolume
-    registryDisk:
-      image: kubevirt/fedora-cloud-registry-disk-demo:latest
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
   - name: serviceaccountvolume
     serviceAccount:
       serviceAccountName: default

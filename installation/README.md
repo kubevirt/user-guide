@@ -109,15 +109,16 @@ There are three ways to deploy KubeVirt on OpenShift.
 The following [SCCs](https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html) need to be added prior `kubevirt.yaml` deployment:
 
 ```bash
-oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-privileged
-oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-controller
-oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-apiserver
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-privileged
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-controller
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-apiserver
 ```
 
 Once privileges are granted, the `kubevirt.yaml` can be deployed:
 
 ```bash
-kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
+$ RELEASE=v0.10.0
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 ```
 
 ### From Service Catalog as an APB
@@ -149,7 +150,7 @@ guide](https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitr
 Usually it is sufficient to re-apply the manifests for performing a rolling update:
 
 ```bash
-$ RELEASE=v0.4.0
+$ RELEASE=v0.10.1
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 ```
 

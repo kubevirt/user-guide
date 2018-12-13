@@ -145,7 +145,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
         - "testvm"
-      serviceAccountName: vmctl
+        serviceAccountName: default
 ```
 
 This example would look for a VirtualMachine in the `default` namespace named
@@ -179,7 +179,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
         - "testvm"
-      serviceAccountName: vmctl
+        serviceAccountName: default
 ```
 
 This example would look for a VirtualMachine in the `default` namespace named
