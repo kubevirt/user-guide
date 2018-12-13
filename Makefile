@@ -1,4 +1,12 @@
-build:
+docs: clean
+	asciibinder package
+	mv _package/community docs
+
+clean:
+	asciibinder clean
+	rm -rf docs
+
+preview:
 	asciibinder build -l debug
 
 find-unref:
