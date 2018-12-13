@@ -20,7 +20,7 @@ The above labels and port informations are collected by a `Service` called
 `Endpoint` with an equal name:
 
 ```
-$ kubectl get endpoints -n kube-system kubevirt-prometheus-metrics -o yaml
+$ kubectl get endpoints -n kubevirt kubevirt-prometheus-metrics -o yaml
 apiVersion: v1
 kind: Endpoints
 metadata:
@@ -28,7 +28,7 @@ metadata:
     kubevirt.io: ""
     prometheus.kubevirt.io: ""
   name: kubevirt-prometheus-metrics
-  namespace: kube-system
+  namespace: kubevirt
 subsets:
 - addresses:
   - ip: 10.244.0.5
@@ -36,7 +36,7 @@ subsets:
     targetRef:
       kind: Pod
       name: virt-handler-cjzg6
-      namespace: kube-system
+      namespace: kubevirt
       resourceVersion: "4891"
       uid: c67331f9-bfcf-11e8-bc54-525500d15501
   - ip: 10.244.0.6

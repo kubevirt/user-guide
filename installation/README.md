@@ -44,7 +44,7 @@ $ virt-host-validate qemu
 If hardware virtualization is not available, then a [software emulation fallback](https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md) can be enabled using:
 
 ```
-$ kubectl create configmap -n kube-system kubevirt-config \
+$ kubectl create configmap -n kubevirt kubevirt-config \
     --from-literal debug.useEmulation=true
 ```
 
@@ -77,10 +77,10 @@ $ RELEASE=v0.10.0
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 ```
 
-This command will deploy the most recent stable version of KubeVirt to your cluster. The new components will be deployed in the `kube-system` namespace:
+This command will deploy the most recent stable version of KubeVirt to your cluster. The new components will be deployed in the `kubevirt` namespace:
 
 ```bash
-kubectl get pods -n kube-system
+kubectl get pods -n kubevirt
 NAME                                           READY     STATUS        RESTARTS   AGE
 libvirt-9zmtl                                  2/2       Running       0          28m
 virt-controller-5d9fc8cf8b-n5trt               0/1       Running       0          27m
@@ -109,9 +109,9 @@ There are three ways to deploy KubeVirt on OpenShift.
 The following [SCCs](https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html) need to be added prior `kubevirt.yaml` deployment:
 
 ```bash
-$ oc adm policy add-scc-to-user privileged -n kube-system -z kubevirt-privileged
-$ oc adm policy add-scc-to-user privileged -n kube-system -z kubevirt-controller
-$ oc adm policy add-scc-to-user privileged -n kube-system -z kubevirt-apiserver
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-privileged
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-controller
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-apiserver
 ```
 
 Once privileges are granted, the `kubevirt.yaml` can be deployed:

@@ -525,8 +525,7 @@ spec:
             storage: 2Gi
       source:
         http:
-          url: http://cdi-http-import-server.kube-system/images/alpine.iso
-    status: {}
+          url: http://cdi-http-import-server.kubevirt/images/alpine.iso
 ```
 
 You can see the DataVolume defined in the dataVolumeTemplates section has two
@@ -613,7 +612,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kubevirt-config
-  namespace: kube-system
+  namespace: kubevirt
   labels:
     kubevirt.io: ""
 data:
@@ -621,7 +620,7 @@ data:
 
 ```
 
-This config map assumes KubeVirt will be installed in the kube-system namespace.
+This config map assumes KubeVirt will be installed in the kubevirt namespace.
 Change the namespace to suite your installation.
 
 First post the configmap above, then install KubeVirt. At that point DataVolume
