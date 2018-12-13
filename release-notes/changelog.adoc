@@ -1,0 +1,193 @@
+# Changelog
+
+## v0.11.0
+
+Released on: Thu Dec 6 10:15:51 2018 +0100
+
+- API: registryDisk got renamed to containreDisk
+- CI: User OKD 3.11
+- Fix: Tolerate if the PVC has less capacity than expected
+- Aligned to use ownerReferences
+- Update to libvirt-4.10.0
+- Support for VNC on MAC OSX
+- Support for network SR-IOV interfaces
+- Support for custom DHCP options
+- Support for VM restarts via a custom endpoint
+- Support for liveness and readiness probes
+
+## v0.10.0
+
+Released on: Thu Nov 8 15:21:34 2018 +0100
+
+- Support for vhost-net
+- Support for block multi-queue
+- Support for custom PCI addresses for virtio devices
+- Support for deploying KubeVirt to a custom namespace
+- Support for ServiceAccount token disks
+- Support for multus backed networks
+- Support for genie backed networks
+- Support for kuryr backed networks
+- Support for block PVs
+- Support for configurable disk device caches
+- Support for pinned IO threads
+- Support for virtio net multi-queue
+- Support for image upload (depending on CDI)
+- Support for custom entity lists with more VM details (cusomt columns)
+- Support for IP and MAC address reporting of all vNICs
+- Basic support for guest agent status reporting
+- More structured logging
+- Better libvirt error reporting
+- Stricter CR validation
+- Better ownership references
+- Several test improvements
+
+## v0.9.0
+
+Released on: Thu Oct 4 14:42:28 2018 +0200
+
+- CI: NetworkPolicy tests
+- CI: Support for an external provider (use a preconfigured cluster for tests)
+- Fix virtctl console issues with CRI-O
+- Support to initialize empty PVs
+- Support for basic CPU pinning
+- Support for setting IO Threads
+- Support for block volumes
+- Move preset logic to mutating webhook
+- Introduce basic metrics reporting using prometheus metrics
+- Many stabilizing fixes in many places
+
+## v0.8.0
+
+Released on: Thu Sep 6 14:25:22 2018 +0200
+
+- Support for DataVolume
+- Support for a subprotocol for webbrowser terminals
+- Support for virtio-rng
+- Support disconnected VMs
+- Support for setting host model
+- Support for host CPU passthrough
+- Support setting a vNICs mac and PCI address
+- Support for memory over-commit
+- Support booting from network devices
+- Use less devices by default, aka disable unused ones
+- Improved VMI shutdown status
+- More logging to improve debugability
+- A lot of small fixes, including typos and documentation fixes
+- Race detection in tests
+- Hook improvements
+- Update to use Fedora 28 (includes updates of dependencies like libvirt and
+- Move CI to support Kubernetes 1.11
+
+## v0.7.0
+
+Released on: Wed Jul 4 17:41:33 2018 +0200
+
+- CI: Move test storage to hostPath
+- CI: Add support for Kubernetes 1.10.4
+- CI: Improved network tests for multiple-interfaces
+- CI: Drop Origin 3.9 support
+- CI: Add test for testing templates on Origin
+- VM to VMI rename
+- VM affinity and anti-affinity
+- Add awareness for multiple networks
+- Add hugepage support
+- Add device-plugin based kvm
+- Add support for setting the network interface model
+- Add (basic and inital) Kubernetes compatible networking approach (SLIRP)
+- Add role aggregation for our roles
+- Add support for setting a disks serial number
+- Add support for specyfing the CPU model
+- Add support for setting an network intefraces MAC address
+- Relocate binaries for FHS conformance
+- Logging improvements
+- Template fixes
+- Fix OpenShift CRD validation
+- virtctl: Improve vnc logging improvements
+- virtctl: Add expose
+- virtctl: Use PATCH instead of PUT
+
+## v0.6.0
+
+Released on: Mon Jun 11 09:30:28 2018 +0200
+
+- A range of flakyness reducing test fixes
+- Vagrant setup got deprectated
+- Updated Docker and CentOS versions
+- Add Kubernetes 1.10.3 to test matrix
+- A couple of ginkgo concurrency fixes
+- A couple of spelling fixes
+- A range if infra updates
+- Use /dev/kvm if possible, otherwise fallback to emulation
+- Add default view/edit/admin RBAC Roles
+- Network MTU fixes
+- CDRom drives are now read-only
+- Secrets can now be correctly referenced on VMs
+- Add disk boot ordering
+- Add virtctl version
+- Add virtctl expose
+- Fix virtual machine memory calculations
+- Add basic virtual machine Network API
+
+## v0.5.0
+
+Released on: Fri May 4 18:25:32 2018 +0200
+
+- Better controller health signaling
+- Better virtctl error messages
+- Improvements to enable CRI-O support
+- Run CI on stable OpenShift
+- Add test coverage for multiple PVCs
+- Improved controller life-cycle guarantees
+- Add Webhook validation
+- Add tests coverage for node eviction
+- OfflineVirtualMachine status improvements
+- RegistryDisk API update
+
+## v0.4.0
+
+Released on: Fri Apr 6 16:40:31 2018 +0200
+
+- Fix several networking issues
+- Add and enable OpenShift support to CI
+- Add conditional Windows tests (if an image is present)
+- Add subresources for console access
+- virtctl config alignmnet with kubectl
+- Fix API reference generation
+- Stable UUIDs for OfflineVirtualMachines
+- Build virtctl for MacOS and Windows
+- Set default architecture to x86_64
+- Major improvement to the CI infrastructure (all containerized)
+- virtctl convenience functions for starting and stopping a VM
+
+## v0.3.0
+
+Released on: Thu Mar 8 10:21:57 2018 +0100
+
+- Kubernetes compatible networking
+- Kubernetes compatible PV based storage
+- VirtualMachinePresets support
+- OfflineVirtualMachine support
+- RBAC improvements
+- Switch to q35 machien type by default
+- A large number of test and CI fixes
+- Ephemeral disk support
+
+## v0.2.0
+
+Released on: Fri Jan 5 16:30:45 2018 +0100
+
+- VM launch and shutdown flow improvements
+- VirtualMachine API redesign
+- Removal of HAProxy
+- Redesign of VNC/Console access
+- Initial support for different vagrant providers
+
+## v0.1.0
+
+Released on: Fri Dec 8 20:43:06 2017 +0100
+
+- Many API improvements for a proper OpenAPI reference
+- Add watchdog support
+- Drastically improve the deployment on non-vagrant setups
+- Moved komponents to kube-system namespace
+- Improved and unified flag parsing
