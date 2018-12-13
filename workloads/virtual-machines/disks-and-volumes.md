@@ -8,10 +8,10 @@ Like all other vmi devices a `spec.domain.devices.disks` element has a mandatory
 
 A disk can be made accessible via four different types:
 
-* [**disk**](workloads/virtual-machines/disks-and-volumes.md?id=disk)
-* [**cdrom**](workloads/virtual-machines/disks-and-volumes.md?id=cdrom)
-* [**floppy**](workloads/virtual-machines/disks-and-volumes.md?id=floppy)
-* [**lun**](workloads/virtual-machines/disks-and-volumes.md?id=lun)
+* [**lun**](#lun)
+* [**disk**](#disk)
+* [**cdrom**](#cdrom)
+* [**floppy**](#floppy)
 
 All possible configuration options are available in the [Disk API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk).
 
@@ -164,16 +164,16 @@ spec:
 
 Supported volume sources are
 
-* [**cloudInitNoCloud**](workloads/virtual-machines/disks-and-volumes.md?id=cloudInitNoCloud)
-* [**persistentVolumeClaim**](workloads/virtual-machines/disks-and-volumes.md?id=persistentVolumeClaim)
-* [**ephemeral**](workloads/virtual-machines/disks-and-volumes.md?id=ephemeral)
-* [**containerDisk**](workloads/virtual-machines/disks-and-volumes.md?id=containerDisk)
-* [**emptyDisk**](workloads/virtual-machines/disks-and-volumes.md?id=emptyDisk)
-* [**hostDisk**](workloads/virtual-machines/disks-and-volumes.md?id=hostDisk)
-* [**dataVolume**](workloads/virtual-machines/disks-and-volumes.md?id=dataVolume)
-* [**configMap**](workloads/virtual-machines/disks-and-volumes.md?id=configMap)
-* [**secret**](workloads/virtual-machines/disks-and-volumes.md?id=secret)
-* [**serviceAccount**](workloads/virtual-machines/disks-and-volumes.md?id=serviceAccount)
+* [**cloudInitNoCloud**](#cloudInitNoCloud)
+* [**persistentVolumeClaim**](#persistentVolumeClaim)
+* [**ephemeral**](#ephemeral)
+* [**containerDisk**](#containerDisk)
+* [**emptyDisk**](#emptyDisk)
+* [**hostDisk**](#hostDisk)
+* [**dataVolume**](#dataVolume)
+* [**configMap**](#configMap)
+* [**secret**](#secret)
+* [**serviceAccount**](#serviceAccount)
 
 All possible configuration options are available in the [Volume API Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume).
 
@@ -219,12 +219,12 @@ Use a PersistentVolumeClain when the VirtualMachineInstance's disk needs to pers
 
 A `PersistentVolume` can be in "filesystem" or "block" mode:
 
-- Filesystem: For KubeVirt to be able to consume the disk present on a PersistentVolume's filesystem, the disk must be named `disk.img` and be placed in the root path of the filesystem. Currently the disk is also required to be in raw format.  
-	> **Important:** The `disk.img` image file needs to be owned by the user-id `107` in order to avoid permission issues.  
-	
+- Filesystem: For KubeVirt to be able to consume the disk present on a PersistentVolume's filesystem, the disk must be named `disk.img` and be placed in the root path of the filesystem. Currently the disk is also required to be in raw format.
+	> **Important:** The `disk.img` image file needs to be owned by the user-id `107` in order to avoid permission issues.
+
 	> **Note:** If the `disk.img` image file has not been created manually before starting a VM then it will be created automatically
 	with the `PersistentVolumeClaim` size. Since not every storage provisioner provides volumes with the exact usable amount of space
-	as requested (e.g. due to filesystem overhead), KubeVirt tolerates up to 10% less available space. This can be configured with the 
+	as requested (e.g. due to filesystem overhead), KubeVirt tolerates up to 10% less available space. This can be configured with the
 	`pvc-tolerate-less-space-up-to-percent` value in the `kubevirt-config` ConfigMap.
 - Block: Use a block volume for consuming raw block devices. Note: you need to enable the BlockVolume feature gate.
 
@@ -539,7 +539,7 @@ When this VM manifest is posted to the cluster, as part of the launch flow a
 pvc will be created using the spec provided and the source data will be
 automatically imported into that pvc before the VM starts. When the VM is
 deleted, the storage provisioned by the DataVolume will automatically be
-deleted as well. 
+deleted as well.
 
 #### DataVolume VMI Behavior
 
@@ -582,7 +582,7 @@ spec:
   - name: volume1
     dataVolume:
       name: alpine-datavolume
-``` 
+```
 
 #### Enabling DataVolume support.
 
