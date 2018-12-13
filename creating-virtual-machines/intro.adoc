@@ -1,0 +1,88 @@
+Virtual Machines
+----------------
+
+The `VirtualMachineInstance` type conceptionally has two parts:
+
+* Information for making scheduling decisions
+* Information about the virtual machine ABI
+
+Every `VirtualMachineInstance` object represents a single running
+virtual machine instance.
+Creation
+--------
+
+API Overview
+~~~~~~~~~~~~
+
+With the installation of KubeVirt, new types are added to the Kubernetes
+API to manage Virtual Machines.
+
+You can interact with the new resources (via `kubectl`) as you would
+with any other API resource.
+
+VirtualMachineInstance API
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+______________________________________________________________________________
+Note: A full API reference is available at
+https://kubevirt.io/api-reference/.
+______________________________________________________________________________
+
+Here is an example of a VirtualMachineInstance object:
+
+[source,yaml]
+----
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 30
+  domain:
+    resources:
+      requests:
+        memory: 1024M
+    devices:
+      disks:
+      - name: containerdisk
+        volumeName: registryvolume
+        disk:
+          bus: virtio
+      - name: emptydisk
+        volumeName: emptydiskvolume
+        disk:
+          bus: virtio
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+        volumeName: cloudinitvolume
+  volumes:
+  - name: registryvolume
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - name: emptydiskvolume
+    emptyDisk:
+      capacity: "2Gi"
+  - name: cloudinitvolume
+    cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+----
+
+This example uses a fedora cloud image in combination with cloud-init
+and an ephemeral empty disk with a capacity of `2Gi`. For the sake of
+simplicity, the volume sources in this example are ephemeral and don’t
+require a provisioner in your cluster.
+
+What’s next
+-----------
+
+* More information about persistent and ephemeral volumes:
+link:workloads/virtual-machines/disks-and-volumes.md[Disks and Volumes]
+* How to access a VirtualMachineInstance via `console` or `vnc`:
+link:workloads/virtual-machines/graphical-and-console-access.md[Graphical
+and Serial Console Access]
+* How to customize VirtualMachineInstances with `cloud-init`:
+link:workloads/virtual-machines/startup-scripts.md[Startup Scripts]
