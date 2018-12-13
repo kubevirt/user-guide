@@ -67,9 +67,10 @@ metadata:
 
 Each entry in the editable field list must be a
 https://kubernetes.io/docs/reference/kubectl/jsonpath/[jsonpath]. The
-actually editable field is the last entry (the ``leaf'') of the path.
-For example, the following minimal snippet highlights the fields which
-you can edit:
+jsonpath root is the objects: element of the template. The actually
+editable field is the last entry (the ``leaf'') of the path. For
+example, the following minimal snippet highlights the fields which you
+can edit:
 
 [source,yaml]
 ----
@@ -174,3 +175,116 @@ Please note that, after the generation step, VM objects and template
 objects have no relationship with each other besides the aforementioned
 label (e.g. changes in templates do not automatically affect VMs, or
 vice versa).
+
+common template customization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The templates provided by the kubevirt project provide a set of
+conventions and annotations that augment the basic feature of the
+https://docs.okd.io/latest/dev_guide/templates.html[openshift
+templates]. You can customize your kubevirt-provided templates editing
+these annotations, or you can add them to your existing templates to
+make them consumable by the kubevirt services.
+
+Here’s a description of the kubevirt annotations. Unless otherwise
+specified, the following keys are meant to be top-level entries of the
+template metadata, like
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: windows-10
+  annotations:
+    openshift.io/display-name: "Generic demo template"
+----
+
+All the following annotations are prefixed with
+`defaults.template.cnv.io`, which is omitted below for brevity. So the
+actual annotations you should use will look like
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: windows-10
+  annotations:
+    defaults.template.cnv.io/disk: default-disk
+    defaults.template.cnv.io/volume: default-volume
+    defaults.template.cnv.io/nic: default-nic
+    defaults.template.cnv.io/network: default-network
+----
+
+Unless otherwise specified, all annotations are meant to be safe
+defaults, both for performance and compability, and hints for the
+CNV-aware UI and tooling.
+
+disk
+++++
+
+Name of the default disk to use.
+
+Example:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.cnv.io/disk: virtio
+----
+
+nic
++++
+
+Name of the default NIC to use.
+
+Example:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: Windows
+  annotations:
+    defaults.template.cnv.io/nic: e1000
+----
+
+volume
+++++++
+
+Name of the default volume to be used as backend for disks.
+
+Example:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.cnv.io/volume: custom-volume
+----
+
+network
++++++++
+
+Name of the default network to be attached to the NIC.
+
+Example:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.cnv.io/network: fast-net
+----
