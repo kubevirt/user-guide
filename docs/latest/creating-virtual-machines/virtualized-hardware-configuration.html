@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>KubeVirt Latest | Creating Virtual Machines | Devices</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <link href="../../latest/_stylesheets/asciibinder.css" rel="stylesheet" />
+
+   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+   <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+   <![endif]-->
+
+  <link href="../../latest/_images/favicon32x32.png" rel="shortcut icon" type="text/css">
+  <!--[if IE]><link rel="shortcut icon" href="../../latest/_images/favicon.ico"><![endif]-->
+  <meta content="AsciiBinder" name="application-name">
+</head>
+<body>
+  <div class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="http://www.asciibinder.org/"><img alt="AsciiBinder" height="64px" src="../../latest/_images/KubeVirt_icon.png"></a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <p class="toggle-nav visible-xs pull-left">
+      <button class="btn btn-default btn-sm" type="button" data-toggle="offcanvas">Toggle nav</button>
+    </p>
+    <ol class="breadcrumb">
+      <li class="sitename">
+        <a href="../../index.html">Documentation</a>
+      </li>
+      <li class="hidden-xs active">
+        <a href="../welcome/index.html">KubeVirt Latest</a>
+      </li>
+      <li class="hidden-xs active">
+        <a href="../creating-virtual-machines/intro.html">Creating Virtual Machines</a>
+      </li>
+      
+      <li class="hidden-xs active">
+        Devices
+      </li>
+    </ol>
+    <div class="row row-offcanvas row-offcanvas-left">
+      <div class="col-xs-8 col-sm-3 col-md-3 sidebar sidebar-offcanvas">
+        <ul class="nav nav-sidebar">
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup0">
+        <span id="tgSpan0" class="fa fa-angle-right"></span>Welcome
+      </a>
+      <ul id="topicGroup0" class="collapse  list-unstyled">
+            <li><a class="" href="../welcome/index.html">Welcome</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup1">
+        <span id="tgSpan1" class="fa fa-angle-right"></span>Release Notes
+      </a>
+      <ul id="topicGroup1" class="collapse  list-unstyled">
+            <li><a class="" href="../release-notes/changelog.html">Changelog</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup2">
+        <span id="tgSpan2" class="fa fa-angle-right"></span>Architecture
+      </a>
+      <ul id="topicGroup2" class="collapse  list-unstyled">
+            <li><a class="" href="../architecture/virtual-machine.html">Virtual Machines</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup3">
+        <span id="tgSpan3" class="fa fa-angle-right"></span>Installation & Administration
+      </a>
+      <ul id="topicGroup3" class="collapse  list-unstyled">
+            <li><a class="" href="../administration/intro.html">Installation</a></li>
+            <li><a class="" href="../administration/api-validation.html">Webhooks</a></li>
+            <li><a class="" href="../administration/authorization.html">Authorization</a></li>
+            <li><a class="" href="../administration/monitoring.html">Monitoring</a></li>
+            <li><a class="" href="../administration/annotations_and_labels.html">Annotations and Labels</a></li>
+            <li><a class="" href="../administration/unresponsive-nodes.html">Unresponsive node handling</a></li>
+            <li><a class="" href="../administration/node-eviction.html">Node eviciton</a></li>
+            <li><a class="" href="../administration/image-upload.html">Image upload</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup4">
+        <span id="tgSpan4" class="fa fa-angle-down"></span>Creating Virtual Machines
+      </a>
+      <ul id="topicGroup4" class="collapse in list-unstyled">
+            <li><a class="" href="../creating-virtual-machines/intro.html">Introduction</a></li>
+            <li><a class=" active" href="../creating-virtual-machines/virtualized-hardware-configuration.html">Devices</a></li>
+            <li><a class="" href="../creating-virtual-machines/disks-and-volumes.html">Disks and Volumes</a></li>
+            <li><a class="" href="../creating-virtual-machines/interfaces-and-networks.html">Interfaces and Networks</a></li>
+            <li><a class="" href="../creating-virtual-machines/dedicated-cpu.html">Guaranteed CPU usage</a></li>
+            <li><a class="" href="../creating-virtual-machines/startup-scripts.html">cloud-init</a></li>
+            <li><a class="" href="../creating-virtual-machines/guest-operating-system-information.html">Associating Guest Informations</a></li>
+            <li><a class="" href="../creating-virtual-machines/presets.html">Presets</a></li>
+            <li><a class="" href="../creating-virtual-machines/probes.html">Probes</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup5">
+        <span id="tgSpan5" class="fa fa-angle-right"></span>Using Virtual Machines
+      </a>
+      <ul id="topicGroup5" class="collapse  list-unstyled">
+            <li><a class="" href="../using-virtual-machines/usage.html">Usage</a></li>
+            <li><a class="" href="../using-virtual-machines/life-cycle.html">Starting and Stopping</a></li>
+            <li><a class="" href="../using-virtual-machines/graphical-and-console-access.html">Console Access (Serial and Graphical)</a></li>
+            <li><a class="" href="../using-virtual-machines/assigning-vms-to-nodes.html">Node placement</a></li>
+            <li><a class="" href="../using-virtual-machines/dns.html">DNS Integration</a></li>
+            <li><a class="" href="../using-virtual-machines/expose-service.html">Service Integration</a></li>
+            <li><a class="" href="../using-virtual-machines/create-networkpolicy.html">Assigning Network Policies</a></li>
+            <li><a class="" href="../using-virtual-machines/overcommit.html">Memory over-commit</a></li>
+            <li><a class="" href="../using-virtual-machines/virtual-machine-replica-set.html">Virtual Machine Replica Set</a></li>
+            <li><a class="" href="../using-virtual-machines/vmctl.html">vmctl</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup6">
+        <span id="tgSpan6" class="fa fa-angle-right"></span>Working with Templates
+      </a>
+      <ul id="topicGroup6" class="collapse  list-unstyled">
+            <li><a class="" href="../templates/common-templates.html">Introduction</a></li>
+            <li><a class="" href="../templates/using-templates.html">Using templates</a></li>
+      </ul>
+    </li>
+</ul>
+      </div>
+      <div class="col-xs-12 col-sm-9 col-md-9 main">
+        <div class="page-header">
+          <h2>Virtualized Hardware Configuration</h2>
+        </div>
+        <div class="sect1">
+<h2 id="virtualized-hardware-configuration"><a class="anchor" href="#virtualized-hardware-configuration"></a>Virtualized Hardware Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Fine-tuning different aspects of the hardware which are not device
+related (BIOS, mainboard, …) is sometimes necessary to allow guest
+operating systems to properly boot and reboot.</p>
+</div>
+<div class="sect2">
+<h3 id="machine-type"><a class="anchor" href="#machine-type"></a>Machine Type</h3>
+<div class="paragraph">
+<p>QEMU is able to work with two different classes of chipsets for x86_64,
+so called machine types. The x86_64 chipsets are i440fx (also called pc)
+and q35. They are versioned based on
+qemu-system-\($ARCH, following the format `pc-$\){machine_type}-${qemu_version}`, e.g.<code>pc-i440fx-2.10`and`pc-q35-2.10</code>.</p>
+</div>
+<div class="paragraph">
+<p>KubeVirt defaults to QEMU’s newest q35 machine type. If a custom machine
+type is desired, it is configurable through the following structure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">machine</span>:
+      <span style="color:#777"># This value indicates QEMU machine type.</span>
+      <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">pc-q35-2.10</span></span>
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">512M</span></span>
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myimage</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Comparison of the machine types’ internals can be found
+<a href="https://wiki.qemu.org/Features/Q35">at QEMU wiki</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="biosuefi"><a class="anchor" href="#biosuefi"></a>BIOS/UEFI</h3>
+<div class="paragraph">
+<p>All virtual machines currently use BIOS for booting. UEFI/OVMF is not
+yet supported.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="smbios-firmware"><a class="anchor" href="#smbios-firmware"></a>SMBIOS Firmware</h3>
+<div class="paragraph">
+<p>In order to provide a consistent view on the virtualized hardware for
+the guest OS, the SMBIOS UUID can be set to a constant value via
+<code>spec.firmware.uuid</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">firmware</span>:
+      <span style="color:#777"># this sets the UUID</span>
+      <span style="color:#606">uuid</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">5d307ca9-b3ef-428c-8861-06e72d69f223</span></span>
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">512M</span></span>
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myimage</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cpu"><a class="anchor" href="#cpu"></a>CPU</h3>
+<div class="paragraph">
+<p><strong>Note</strong>: This is not related to scheduling decisions or resource
+assignment.</p>
+</div>
+<div class="sect3">
+<h4 id="topology"><a class="anchor" href="#topology"></a>Topology</h4>
+<div class="paragraph">
+<p>Setting the number of CPU cores is possible via <code>spec.domain.cpu.cores</code>.
+The following VM will have a CPU with <code>3</code> cores:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">cpu</span>:
+      <span style="color:#777"># this sets the cores</span>
+      <span style="color:#606">cores</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">3</span></span>
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">512M</span></span>
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myimage</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="model"><a class="anchor" href="#model"></a>Model</h4>
+<div class="paragraph">
+<p><strong>Note</strong>: Be sure that node CPU model where you run a VM, has the same or
+higher CPU family.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: If CPU model wasn’t defined, the VM will have CPU model closest
+to one that used on the node where the VM is running.</p>
+</div>
+<div class="paragraph">
+<p>Setting the CPU model is possible via <code>spec.domain.cpu.model</code>. The
+following VM will have a CPU with the <code>Conroe</code> model:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">cpu</span>:
+      <span style="color:#777"># this sets the CPU model</span>
+      <span style="color:#606">model</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Conroe</span></span>
+<span style="color:#f8f;background:#505"><span style="color:#f4f">...</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can check list of available models
+<a href="https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml">here</a>.</p>
+</div>
+<div class="sect4">
+<h5 id="cpu-model-special-cases"><a class="anchor" href="#cpu-model-special-cases"></a>CPU model special cases</h5>
+<div class="paragraph">
+<p>As special cases you can set <code>spec.domain.cpu.model</code> equals to: -
+<code>host-passthrough</code> to passthrough CPU from the node to the VM</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">cpu</span>:
+      <span style="color:#777"># this passthrough the node CPU to the VM</span>
+      <span style="color:#606">model</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">host-passthrough</span></span>
+<span style="color:#f8f;background:#505"><span style="color:#f4f">...</span></span></code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>host-model</code> to get CPU on the VM close to the node one</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">cpu</span>:
+      <span style="color:#777"># this set the VM CPU close to the node one</span>
+      <span style="color:#606">model</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">host-model</span></span>
+<span style="color:#f8f;background:#505"><span style="color:#f4f">...</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the <a href="https://libvirt.org/formatdomain.html#elementsCPU">CPU API
+reference</a> for more details.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="clock"><a class="anchor" href="#clock"></a>Clock</h3>
+<div class="sect3">
+<h4 id="guest-time"><a class="anchor" href="#guest-time"></a>Guest time</h4>
+<div class="paragraph">
+<p>Sets the virtualized hardware clock inside the VM to a specific time.
+Available options are</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>utc</strong></p>
+</li>
+<li>
+<p><strong>timezone</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>See the
+<a href="https://kubevirt.github.io/api-reference/master/definitions.html#_v1_clock">Clock
+API Reference</a> for all possible configuration options.</p>
+</div>
+<div class="sect4">
+<h5 id="utc"><a class="anchor" href="#utc"></a>utc</h5>
+<div class="paragraph">
+<p>If <code>utc</code> is specified, the VM’s clock will be set to UTC.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">clock</span>:
+      <span style="color:#606">utc</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">512M</span></span>
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myimage</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="timezone"><a class="anchor" href="#timezone"></a>timezone</h5>
+<div class="paragraph">
+<p>If <code>timezone</code> is specified, the VM’s clock will be set to the specified
+local time.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">clock</span>:
+      <span style="color:#606">timezone</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">America/New York</span><span style="color:#710">&quot;</span></span>
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">512M</span></span>
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myimage</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="timers"><a class="anchor" href="#timers"></a>Timers</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>pit</strong></p>
+</li>
+<li>
+<p><strong>rtc</strong></p>
+</li>
+<li>
+<p><strong>kvm</strong></p>
+</li>
+<li>
+<p><strong>hyperv</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A pretty common timer configuration for VMs looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">clock</span>:
+      <span style="color:#606">utc</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+      <span style="color:#777"># here are the timer</span>
+      <span style="color:#606">timer</span>:
+        <span style="color:#606">hpet</span>:
+          <span style="color:#606">present</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">false</span></span>
+        <span style="color:#606">pit</span>:
+          <span style="color:#606">tickPolicy</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">delay</span></span>
+        <span style="color:#606">rtc</span>:
+          <span style="color:#606">tickPolicy</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">catchup</span></span>
+        <span style="color:#606">hyperv</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">512M</span></span>
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myimage</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>hpet</code> is disabled,<code>pit</code> and <code>rtc</code> are configured to use a specific
+<code>tickPolicy</code>. Finally, <code>hyperv</code> is made available too.</p>
+</div>
+<div class="paragraph">
+<p>See the
+<a href="https://kubevirt.github.io/api-reference/master/definitions.html#_v1_timer">Timer
+API Reference</a> for all possible configuration options.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: Timer can be part of a machine type. Thus it may be necessary to
+explicitly disable them. We may in the future decide to add them via
+cluster-level defaulting, if they are part of a QEMU machine definition.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="video-and-graphics-device"><a class="anchor" href="#video-and-graphics-device"></a>Video and Graphics Device</h3>
+<div class="paragraph">
+<p>By default a minimal Video and Graphics device configuration will be
+applied to the VirtualMachineInstance. The video device is <code>vga</code>
+compatible and comes with a memory size of 16 MB. This device allows
+connecting to the OS via <code>vnc</code>.</p>
+</div>
+<div class="paragraph">
+<p>It is possible not attach it by setting
+<code>spec.domain.devices.autoattachGraphicsDevice</code> to <code>false</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">autoattachGraphicsDevice</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">false</span></span>
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myimage</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>VMIs without graphics and video devices are very often referenced as
+<code>headless</code> VMIs.</p>
+</div>
+<div class="paragraph">
+<p>If using a huge amount of small VMs this can be helpful to increase the
+VMI density per node, since no memory needs to be reserved for video.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="features"><a class="anchor" href="#features"></a>Features</h3>
+<div class="paragraph">
+<p>KubeVirt supports a range of virtualization features which may be
+tweaked in order to allow non-Linux based operating systems to properly
+boot. Most noteworthy are</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>acpi</strong></p>
+</li>
+<li>
+<p><strong>apic</strong></p>
+</li>
+<li>
+<p><strong>hyperv</strong></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A common feature configuration is shown by the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#777"># typical features</span>
+    <span style="color:#606">features</span>:
+      <span style="color:#606">acpi</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+      <span style="color:#606">apic</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+      <span style="color:#606">hyperv</span>:
+        <span style="color:#606">relaxed</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+        <span style="color:#606">vapic</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+        <span style="color:#606">spinlocks</span>:
+          <span style="color:#606">spinlocks</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">8191</span></span>
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">512M</span></span>
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myimage</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimname</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the
+<a href="https://kubevirt.github.io/api-reference/master/definitions.html#_v1_features">Features
+API Reference</a> for all available features and configuration options.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="resources-requests-and-limits"><a class="anchor" href="#resources-requests-and-limits"></a>Resources Requests and Limits</h3>
+<div class="paragraph">
+<p>An optional resource request can be specified by the users to allow the
+scheduler to make a better decision in finding the most suitable Node to
+place the VM.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">1Gi</span><span style="color:#710">&quot;</span></span>
+        <span style="color:#606">cpu</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">2</span><span style="color:#710">&quot;</span></span>
+      <span style="color:#606">limits</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">2Gi</span><span style="color:#710">&quot;</span></span>
+        <span style="color:#606">cpu</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">1</span><span style="color:#710">&quot;</span></span>
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myimage</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimname</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="cpu-2"><a class="anchor" href="#cpu-2"></a>CPU</h5>
+<div class="paragraph">
+<p>Specifying CPU limits will determine the amount of <em>cpu</em> <em>shares</em> set on
+the control group the VM is running in, in other words, the amount of
+time the VM’s CPUs can execute on the assigned resources when there is a
+competition for CPU resources.</p>
+</div>
+<div class="paragraph">
+<p>For more information please refer to
+<a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-limits-are-run">how
+Pods with resource limits are run</a>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="memory-overhead"><a class="anchor" href="#memory-overhead"></a>Memory Overhead</h5>
+<div class="paragraph">
+<p>Various VM resources, such as a video adapter, IOThreads, and
+supplementary system software, consume additional memory from the Node,
+beyond the requested memory intended for the guest OS consumption. In
+order to provide a better estimate for the scheduler, this memory
+overhead will be calculated and added to the requested memory.</p>
+</div>
+<div class="paragraph">
+<p>Please see
+<a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled">how
+Pods with resource requests are scheduled</a> for additional information on
+resource requests and limits.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="hugepages"><a class="anchor" href="#hugepages"></a>Hugepages</h3>
+<div class="paragraph">
+<p>KubeVirt give you possibility to use hugepages as backing memory for
+your VM. You will need to provide desired amount of memory
+<code>resources.requests.memory</code> and size of hugepages to use
+<code>memory.hugepages.pageSize</code>, for example for x86_64 architecture it can
+be <code>2Mi</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvm</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">64Mi</span><span style="color:#710">&quot;</span></span>
+    <span style="color:#606">memory</span>:
+      <span style="color:#606">hugepages</span>:
+        <span style="color:#606">pageSize</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">2Mi</span><span style="color:#710">&quot;</span></span>
+    <span style="color:#606">disks</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myimage</span></span>
+      <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimname</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example the VM will have <code>64Mi</code> of memory, but instead of
+regular memory it will use node hugepages of the size of <code>2Mi</code>.</p>
+</div>
+<div class="sect4">
+<h5 id="limitations"><a class="anchor" href="#limitations"></a>Limitations</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>a node must have pre-allocated hugepages</p>
+</li>
+<li>
+<p>hugepages size cannot be bigger than requested memory</p>
+</li>
+<li>
+<p>requested memory must be divisible by hugepages size</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+      </div>
+    </div>
+  </div>
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+   <!-- Latest compiled and minified JavaScript -->
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   <script src="../../latest/_javascripts/bootstrap-offcanvas.js" type="text/javascript"></script>
+   <script type="text/javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+      $("[id^='topicGroup']").on('show.bs.collapse', function (event) {
+        if (!($(event.target).attr('id').match(/^topicSubGroup/))) {
+          $(this).parent().find("[id^='tgSpan']").toggleClass("fa-angle-right fa-angle-down");
+        }
+      });
+      $("[id^='topicGroup']").on('hide.bs.collapse', function (event) {
+        if (!($(event.target).attr('id').match(/^topicSubGroup/))) {
+          $(this).parent().find("[id^='tgSpan']").toggleClass("fa-angle-right fa-angle-down");
+        }
+      });
+      $("[id^='topicSubGroup']").on('show.bs.collapse', function () {
+        $(this).parent().find("[id^='sgSpan']").toggleClass("fa-caret-right fa-caret-down");
+      });
+      $("[id^='topicSubGroup']").on('hide.bs.collapse', function () {
+        $(this).parent().find("[id^='sgSpan']").toggleClass("fa-caret-right fa-caret-down");
+      });
+    });
+    /*]]>*/
+  </script>
+</body>
+</html>

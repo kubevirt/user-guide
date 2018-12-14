@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>KubeVirt Latest | Installation & Administration | Installation</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <link href="../../latest/_stylesheets/asciibinder.css" rel="stylesheet" />
+
+   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+   <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+   <![endif]-->
+
+  <link href="../../latest/_images/favicon32x32.png" rel="shortcut icon" type="text/css">
+  <!--[if IE]><link rel="shortcut icon" href="../../latest/_images/favicon.ico"><![endif]-->
+  <meta content="AsciiBinder" name="application-name">
+</head>
+<body>
+  <div class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="http://www.asciibinder.org/"><img alt="AsciiBinder" height="64px" src="../../latest/_images/KubeVirt_icon.png"></a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <p class="toggle-nav visible-xs pull-left">
+      <button class="btn btn-default btn-sm" type="button" data-toggle="offcanvas">Toggle nav</button>
+    </p>
+    <ol class="breadcrumb">
+      <li class="sitename">
+        <a href="../../index.html">Documentation</a>
+      </li>
+      <li class="hidden-xs active">
+        <a href="../welcome/index.html">KubeVirt Latest</a>
+      </li>
+      <li class="hidden-xs active">
+        <a href="../administration/intro.html">Installation & Administration</a>
+      </li>
+      
+      <li class="hidden-xs active">
+        Installation
+      </li>
+    </ol>
+    <div class="row row-offcanvas row-offcanvas-left">
+      <div class="col-xs-8 col-sm-3 col-md-3 sidebar sidebar-offcanvas">
+        <ul class="nav nav-sidebar">
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup0">
+        <span id="tgSpan0" class="fa fa-angle-right"></span>Welcome
+      </a>
+      <ul id="topicGroup0" class="collapse  list-unstyled">
+            <li><a class="" href="../welcome/index.html">Welcome</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup1">
+        <span id="tgSpan1" class="fa fa-angle-right"></span>Release Notes
+      </a>
+      <ul id="topicGroup1" class="collapse  list-unstyled">
+            <li><a class="" href="../release-notes/changelog.html">Changelog</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup2">
+        <span id="tgSpan2" class="fa fa-angle-right"></span>Architecture
+      </a>
+      <ul id="topicGroup2" class="collapse  list-unstyled">
+            <li><a class="" href="../architecture/virtual-machine.html">Virtual Machines</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup3">
+        <span id="tgSpan3" class="fa fa-angle-down"></span>Installation & Administration
+      </a>
+      <ul id="topicGroup3" class="collapse in list-unstyled">
+            <li><a class=" active" href="../administration/intro.html">Installation</a></li>
+            <li><a class="" href="../administration/api-validation.html">Webhooks</a></li>
+            <li><a class="" href="../administration/authorization.html">Authorization</a></li>
+            <li><a class="" href="../administration/monitoring.html">Monitoring</a></li>
+            <li><a class="" href="../administration/annotations_and_labels.html">Annotations and Labels</a></li>
+            <li><a class="" href="../administration/unresponsive-nodes.html">Unresponsive node handling</a></li>
+            <li><a class="" href="../administration/node-eviction.html">Node eviciton</a></li>
+            <li><a class="" href="../administration/image-upload.html">Image upload</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup4">
+        <span id="tgSpan4" class="fa fa-angle-right"></span>Creating Virtual Machines
+      </a>
+      <ul id="topicGroup4" class="collapse  list-unstyled">
+            <li><a class="" href="../creating-virtual-machines/intro.html">Introduction</a></li>
+            <li><a class="" href="../creating-virtual-machines/virtualized-hardware-configuration.html">Devices</a></li>
+            <li><a class="" href="../creating-virtual-machines/disks-and-volumes.html">Disks and Volumes</a></li>
+            <li><a class="" href="../creating-virtual-machines/interfaces-and-networks.html">Interfaces and Networks</a></li>
+            <li><a class="" href="../creating-virtual-machines/dedicated-cpu.html">Guaranteed CPU usage</a></li>
+            <li><a class="" href="../creating-virtual-machines/startup-scripts.html">cloud-init</a></li>
+            <li><a class="" href="../creating-virtual-machines/guest-operating-system-information.html">Associating Guest Informations</a></li>
+            <li><a class="" href="../creating-virtual-machines/presets.html">Presets</a></li>
+            <li><a class="" href="../creating-virtual-machines/probes.html">Probes</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup5">
+        <span id="tgSpan5" class="fa fa-angle-right"></span>Using Virtual Machines
+      </a>
+      <ul id="topicGroup5" class="collapse  list-unstyled">
+            <li><a class="" href="../using-virtual-machines/usage.html">Usage</a></li>
+            <li><a class="" href="../using-virtual-machines/life-cycle.html">Starting and Stopping</a></li>
+            <li><a class="" href="../using-virtual-machines/graphical-and-console-access.html">Console Access (Serial and Graphical)</a></li>
+            <li><a class="" href="../using-virtual-machines/assigning-vms-to-nodes.html">Node placement</a></li>
+            <li><a class="" href="../using-virtual-machines/dns.html">DNS Integration</a></li>
+            <li><a class="" href="../using-virtual-machines/expose-service.html">Service Integration</a></li>
+            <li><a class="" href="../using-virtual-machines/create-networkpolicy.html">Assigning Network Policies</a></li>
+            <li><a class="" href="../using-virtual-machines/overcommit.html">Memory over-commit</a></li>
+            <li><a class="" href="../using-virtual-machines/virtual-machine-replica-set.html">Virtual Machine Replica Set</a></li>
+            <li><a class="" href="../using-virtual-machines/vmctl.html">vmctl</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup6">
+        <span id="tgSpan6" class="fa fa-angle-right"></span>Working with Templates
+      </a>
+      <ul id="topicGroup6" class="collapse  list-unstyled">
+            <li><a class="" href="../templates/common-templates.html">Introduction</a></li>
+            <li><a class="" href="../templates/using-templates.html">Using templates</a></li>
+      </ul>
+    </li>
+</ul>
+      </div>
+      <div class="col-xs-12 col-sm-9 col-md-9 main">
+        <div class="page-header">
+          <h2>Installation</h2>
+        </div>
+        <div class="sect1">
+<h2 id="installation"><a class="anchor" href="#installation"></a>Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>KubeVirt is a virtualization add-on to Kubernetes and this guide assumes
+that a Kubernetes cluster is already installed.</p>
+</div>
+<div class="sect2">
+<h3 id="requirements"><a class="anchor" href="#requirements"></a>Requirements</h3>
+<div class="paragraph">
+<p>A few requirements need to be met before you can begin:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://kubernetes.io">Kubernetes</a> cluster
+(<a href="https://github.com/openshift/origin">OpenShift</a>, Tectonic)</p>
+</li>
+<li>
+<p><code>kubectl</code> client utility</p>
+</li>
+<li>
+<p><code>git</code></p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="minimum-cluster-requirements"><a class="anchor" href="#minimum-cluster-requirements"></a>Minimum Cluster Requirements</h4>
+<div class="paragraph">
+<p>Kubernetes 1.10 or later is required to run KubeVirt.</p>
+</div>
+<div class="paragraph">
+<p>In addition it can be that feature gates need to be opened.</p>
+</div>
+<div class="sect4">
+<h5 id="runtime"><a class="anchor" href="#runtime"></a>Runtime</h5>
+<div class="paragraph">
+<p>KubeVirt is currently support on the following container runtimes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>docker</p>
+</li>
+<li>
+<p>crio (with runv)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="virtualization-support"><a class="anchor" href="#virtualization-support"></a>Virtualization support</h4>
+<div class="paragraph">
+<p>There are several distributions of Kubernetes, you need to decide on one
+and deploy it.</p>
+</div>
+<div class="paragraph">
+<p>Hardware with virtualization support is recommended. You can use
+virt-host-validate to ensure that your hosts are capable of running
+virtualization workloads:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ virt-host-validate qemu
+  QEMU: Checking for hardware virtualization                                 : PASS
+  QEMU: Checking if device /dev/kvm exists                                   : PASS
+  QEMU: Checking if device /dev/kvm is accessible                            : PASS
+  QEMU: Checking if device /dev/vhost-net exists                             : PASS
+  QEMU: Checking if device /dev/net/tun exists                               : PASS
+...</code></pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="software-emulation"><a class="anchor" href="#software-emulation"></a>Software emulation</h5>
+<div class="paragraph">
+<p>If hardware virtualization is not available, then a
+<a href="https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md">software
+emulation fallback</a> can be enabled using:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ kubectl create configmap -n kubevirt kubevirt-config \
+    --from-literal debug.useEmulation=true</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This ConfigMap needs to be created before deployment or the
+virt-controller deployment has to be restarted.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="hugepages-support"><a class="anchor" href="#hugepages-support"></a>Hugepages support</h4>
+<div class="paragraph">
+<p>For hugepages support you need at least Kubernetes version <code>1.9</code>.</p>
+</div>
+<div class="sect4">
+<h5 id="enable-feature-gate"><a class="anchor" href="#enable-feature-gate"></a>Enable feature-gate</h5>
+<div class="paragraph">
+<p>To enable hugepages on Kubernetes, check the
+<a href="https://v1-9.docs.kubernetes.io/docs/tasks/manage-hugepages/scheduling-hugepages/#before-you-begin">official
+documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>To enable hugepages on OpenShift, check the
+<a href="https://docs.openshift.org/3.9/scaling_performance/managing_hugepages.html#huge-pages-prerequisites">official
+documentation</a>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="pre-allocate-hugepages-on-a-node"><a class="anchor" href="#pre-allocate-hugepages-on-a-node"></a>Pre-allocate hugepages on a node</h5>
+<div class="paragraph">
+<p>To pre-allocate hugepages on boot time, you will need to specify
+hugepages under kernel boot parameters <code>hugepagesz=2M hugepages=64</code> and
+restart your machine.</p>
+</div>
+<div class="paragraph">
+<p>You can find more about hugepages under
+<a href="https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt">official
+documentation</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cluster-side-add-on-deployment"><a class="anchor" href="#cluster-side-add-on-deployment"></a>Cluster side add-on deployment</h3>
+<div class="sect3">
+<h4 id="core-components"><a class="anchor" href="#core-components"></a>Core components</h4>
+<div class="paragraph">
+<p>Once Kubernetes is deployed, you will need to deploy the KubeVirt
+add-on. The add-on is deployed to a cluster using the <code>kubectl</code> tool and
+manifest file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ RELEASE=v0.10.0
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This command will deploy the most recent stable version of KubeVirt to
+your cluster. The new components will be deployed in the <code>kubevirt</code>
+namespace:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">kubectl get pods -n kubevirt
+NAME                                           READY     STATUS        RESTARTS   AGE
+libvirt-9zmtl                                  2/2       Running       0          28m
+virt-controller-5d9fc8cf8b-n5trt               0/1       Running       0          27m
+virt-handler-vwdjx                             1/1       Running       0          28m</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="client-side-virtctl-deployment"><a class="anchor" href="#client-side-virtctl-deployment"></a>Client side <code>virtctl</code> deployment</h3>
+<div class="paragraph">
+<p>Basic VirtualMachineInstance operations can be performed with the stock
+<code>kubectl</code> utility. However, the <code>virtctl</code> binary utility is required to
+use advanced features such as:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Serial and graphical console access</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>It also provides convenience commands for:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Starting and stopping VirtualMachineInstances</p>
+</li>
+<li>
+<p>Live migrating VirtualMachineInstances</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The most recent version of the tool can be retrieved from the
+<a href="https://github.com/kubevirt/kubevirt/releases">official release page</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="deploying-on-openshift"><a class="anchor" href="#deploying-on-openshift"></a>Deploying on OpenShift</h3>
+<div class="paragraph">
+<p>There are three ways to deploy KubeVirt on OpenShift.</p>
+</div>
+<div class="sect3">
+<h4 id="using-command-line-interface"><a class="anchor" href="#using-command-line-interface"></a>Using command line interface</h4>
+<div class="paragraph">
+<p>The following
+<a href="https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html">SCCs</a>
+need to be added prior <code>kubevirt.yaml</code> deployment:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-privileged
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-controller
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-apiserver</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once privileges are granted, the <code>kubevirt.yaml</code> can be deployed:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ RELEASE=v0.10.0
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="from-service-catalog-as-an-apb"><a class="anchor" href="#from-service-catalog-as-an-apb"></a>From Service Catalog as an APB</h4>
+<div class="paragraph">
+<p>You can find KubeVirt in the OpenShift Service Catalog and install it
+from there. In order to do that please follow the documentation in the
+<a href="https://github.com/ansibleplaybookbundle/kubevirt-apb">KubeVirt APB
+repository</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="using-ansible-playbooks"><a class="anchor" href="#using-ansible-playbooks"></a>Using Ansible playbooks</h4>
+<div class="paragraph">
+<p>The <a href="https://github.com/kubevirt/kubevirt-ansible">kubevirt-ansible</a>
+project provides a collection of playbooks that installs KubeVirt and
+it’s related components on top of OpenShift or Kubernetes clusters.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="deploying-from-source"><a class="anchor" href="#deploying-from-source"></a>Deploying from Source</h3>
+<div class="paragraph">
+<p>See the
+<a href="https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md">Developer
+Getting Started Guide</a> to understand how to build and deploy KubeVirt
+from source.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="installing-network-plugins-optional"><a class="anchor" href="#installing-network-plugins-optional"></a>Installing network plugins (optional)</h3>
+<div class="paragraph">
+<p>KubeVirt alone does not bring any additional network plugins, it just
+allows user to utilize them. If you want to attach your VMs to multiple
+networks (Multus CNI) or have full control over L2 (OVS CNI), you need
+to deploy respective network plugins. For more information, refer to
+<a href="https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitrary-cluster.md">OVS
+CNI installation guide</a>.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Note: KubeVirt Ansible
+<a href="https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network">network
+playbook</a> installs these plugins by default.</p>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
+<h3 id="update"><a class="anchor" href="#update"></a>Update</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Note: Updates are not yet supported.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Usually it is sufficient to re-apply the manifests for performing a
+rolling update:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ RELEASE=v0.10.1
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+      </div>
+    </div>
+  </div>
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+   <!-- Latest compiled and minified JavaScript -->
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   <script src="../../latest/_javascripts/bootstrap-offcanvas.js" type="text/javascript"></script>
+   <script type="text/javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+      $("[id^='topicGroup']").on('show.bs.collapse', function (event) {
+        if (!($(event.target).attr('id').match(/^topicSubGroup/))) {
+          $(this).parent().find("[id^='tgSpan']").toggleClass("fa-angle-right fa-angle-down");
+        }
+      });
+      $("[id^='topicGroup']").on('hide.bs.collapse', function (event) {
+        if (!($(event.target).attr('id').match(/^topicSubGroup/))) {
+          $(this).parent().find("[id^='tgSpan']").toggleClass("fa-angle-right fa-angle-down");
+        }
+      });
+      $("[id^='topicSubGroup']").on('show.bs.collapse', function () {
+        $(this).parent().find("[id^='sgSpan']").toggleClass("fa-caret-right fa-caret-down");
+      });
+      $("[id^='topicSubGroup']").on('hide.bs.collapse', function () {
+        $(this).parent().find("[id^='sgSpan']").toggleClass("fa-caret-right fa-caret-down");
+      });
+    });
+    /*]]>*/
+  </script>
+</body>
+</html>

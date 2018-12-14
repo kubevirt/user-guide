@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>KubeVirt Latest | Working with Templates | Using templates</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <link href="../../latest/_stylesheets/asciibinder.css" rel="stylesheet" />
+
+   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+   <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+   <![endif]-->
+
+  <link href="../../latest/_images/favicon32x32.png" rel="shortcut icon" type="text/css">
+  <!--[if IE]><link rel="shortcut icon" href="../../latest/_images/favicon.ico"><![endif]-->
+  <meta content="AsciiBinder" name="application-name">
+</head>
+<body>
+  <div class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="http://www.asciibinder.org/"><img alt="AsciiBinder" height="64px" src="../../latest/_images/KubeVirt_icon.png"></a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <p class="toggle-nav visible-xs pull-left">
+      <button class="btn btn-default btn-sm" type="button" data-toggle="offcanvas">Toggle nav</button>
+    </p>
+    <ol class="breadcrumb">
+      <li class="sitename">
+        <a href="../../index.html">Documentation</a>
+      </li>
+      <li class="hidden-xs active">
+        <a href="../welcome/index.html">KubeVirt Latest</a>
+      </li>
+      <li class="hidden-xs active">
+        <a href="../templates/common-templates.html">Working with Templates</a>
+      </li>
+      
+      <li class="hidden-xs active">
+        Using templates
+      </li>
+    </ol>
+    <div class="row row-offcanvas row-offcanvas-left">
+      <div class="col-xs-8 col-sm-3 col-md-3 sidebar sidebar-offcanvas">
+        <ul class="nav nav-sidebar">
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup0">
+        <span id="tgSpan0" class="fa fa-angle-right"></span>Welcome
+      </a>
+      <ul id="topicGroup0" class="collapse  list-unstyled">
+            <li><a class="" href="../welcome/index.html">Welcome</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup1">
+        <span id="tgSpan1" class="fa fa-angle-right"></span>Release Notes
+      </a>
+      <ul id="topicGroup1" class="collapse  list-unstyled">
+            <li><a class="" href="../release-notes/changelog.html">Changelog</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup2">
+        <span id="tgSpan2" class="fa fa-angle-right"></span>Architecture
+      </a>
+      <ul id="topicGroup2" class="collapse  list-unstyled">
+            <li><a class="" href="../architecture/virtual-machine.html">Virtual Machines</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup3">
+        <span id="tgSpan3" class="fa fa-angle-right"></span>Installation & Administration
+      </a>
+      <ul id="topicGroup3" class="collapse  list-unstyled">
+            <li><a class="" href="../administration/intro.html">Installation</a></li>
+            <li><a class="" href="../administration/api-validation.html">Webhooks</a></li>
+            <li><a class="" href="../administration/authorization.html">Authorization</a></li>
+            <li><a class="" href="../administration/monitoring.html">Monitoring</a></li>
+            <li><a class="" href="../administration/annotations_and_labels.html">Annotations and Labels</a></li>
+            <li><a class="" href="../administration/unresponsive-nodes.html">Unresponsive node handling</a></li>
+            <li><a class="" href="../administration/node-eviction.html">Node eviciton</a></li>
+            <li><a class="" href="../administration/image-upload.html">Image upload</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup4">
+        <span id="tgSpan4" class="fa fa-angle-right"></span>Creating Virtual Machines
+      </a>
+      <ul id="topicGroup4" class="collapse  list-unstyled">
+            <li><a class="" href="../creating-virtual-machines/intro.html">Introduction</a></li>
+            <li><a class="" href="../creating-virtual-machines/virtualized-hardware-configuration.html">Devices</a></li>
+            <li><a class="" href="../creating-virtual-machines/disks-and-volumes.html">Disks and Volumes</a></li>
+            <li><a class="" href="../creating-virtual-machines/interfaces-and-networks.html">Interfaces and Networks</a></li>
+            <li><a class="" href="../creating-virtual-machines/dedicated-cpu.html">Guaranteed CPU usage</a></li>
+            <li><a class="" href="../creating-virtual-machines/startup-scripts.html">cloud-init</a></li>
+            <li><a class="" href="../creating-virtual-machines/guest-operating-system-information.html">Associating Guest Informations</a></li>
+            <li><a class="" href="../creating-virtual-machines/presets.html">Presets</a></li>
+            <li><a class="" href="../creating-virtual-machines/probes.html">Probes</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup5">
+        <span id="tgSpan5" class="fa fa-angle-right"></span>Using Virtual Machines
+      </a>
+      <ul id="topicGroup5" class="collapse  list-unstyled">
+            <li><a class="" href="../using-virtual-machines/usage.html">Usage</a></li>
+            <li><a class="" href="../using-virtual-machines/life-cycle.html">Starting and Stopping</a></li>
+            <li><a class="" href="../using-virtual-machines/graphical-and-console-access.html">Console Access (Serial and Graphical)</a></li>
+            <li><a class="" href="../using-virtual-machines/assigning-vms-to-nodes.html">Node placement</a></li>
+            <li><a class="" href="../using-virtual-machines/dns.html">DNS Integration</a></li>
+            <li><a class="" href="../using-virtual-machines/expose-service.html">Service Integration</a></li>
+            <li><a class="" href="../using-virtual-machines/create-networkpolicy.html">Assigning Network Policies</a></li>
+            <li><a class="" href="../using-virtual-machines/overcommit.html">Memory over-commit</a></li>
+            <li><a class="" href="../using-virtual-machines/virtual-machine-replica-set.html">Virtual Machine Replica Set</a></li>
+            <li><a class="" href="../using-virtual-machines/vmctl.html">vmctl</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup6">
+        <span id="tgSpan6" class="fa fa-angle-down"></span>Working with Templates
+      </a>
+      <ul id="topicGroup6" class="collapse in list-unstyled">
+            <li><a class="" href="../templates/common-templates.html">Introduction</a></li>
+            <li><a class=" active" href="../templates/using-templates.html">Using templates</a></li>
+      </ul>
+    </li>
+</ul>
+      </div>
+      <div class="col-xs-12 col-sm-9 col-md-9 main">
+        <div class="page-header">
+          <h2>Virtual Machine Creation</h2>
+        </div>
+        <div class="sect1">
+<h2 id="virtual-machine-creation"><a class="anchor" href="#virtual-machine-creation"></a>Virtual Machine Creation</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="overview"><a class="anchor" href="#overview"></a>Overview</h3>
+<div class="paragraph">
+<p>The
+<a href="https://docs.openshift.org/latest/dev_guide/templates.html">OpenShift’s
+template mechanism</a> allows user to create a set of objects from a
+template. KubeVirt takes benefit from this template mechanism to create
+VirtualMachines.</p>
+</div>
+<div class="paragraph">
+<p>In order to create a virtual machine via OpenShift CLI, you need to
+provide a template defining the corresponding object and its metadata.</p>
+</div>
+<div class="paragraph">
+<p>!&gt; Only <code>VirtualMachine</code> object is currently supported.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="example-template"><a class="anchor" href="#example-template"></a>Example template</h3>
+<div class="paragraph">
+<p>Here is an example template that defines an instance of the
+<code>VirtualMachine</code> object:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Template</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora-vmi-template</span></span>
+  <span style="color:#606">annotations</span>:
+    <span style="color:#606">description</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">OpenShift KubeVirt Fedora VM template</span><span style="color:#710">&quot;</span></span>
+    <span style="color:#606">tags</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">kubevirt,openshift,template,linux</span><span style="color:#710">&quot;</span></span>
+  <span style="color:#606">labels</span>:
+    <span style="color:#606">kubevirt.io/os</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora27</span></span>
+    <span style="color:#606">miq.github.io/kubevirt-is-vmi-template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">true</span><span style="color:#710">&quot;</span></span>
+<span style="color:#606">objects</span>:
+- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">apiVersion: kubevirt.io/v1alpha2</span></span>
+  <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
+  <span style="color:#606">metadata</span>:
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">${NAME}</span></span>
+    <span style="color:#606">labels</span>:
+      <span style="color:#606">kubevirt-vm</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vm-${NAME}</span></span>
+  <span style="color:#606">spec</span>:
+    <span style="color:#606">template</span>:
+      <span style="color:#606">metadata</span>:
+        <span style="color:#606">labels</span>:
+          <span style="color:#606">kubevirt-vm</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vm-${NAME}</span></span>
+      <span style="color:#606">spec</span>:
+        <span style="color:#606">domain</span>:
+          <span style="color:#606">cpu</span>:
+            <span style="color:#606">cores</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">${{CPU_CORES}}</span></span>
+          <span style="color:#606">resources</span>:
+            <span style="color:#606">requests</span>:
+              <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">${{MEMORY}}</span></span>
+          <span style="color:#606">devices</span>:
+            <span style="color:#606">disks</span>:
+              - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: disk0</span></span>
+                <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">root</span></span>
+        <span style="color:#606">volumes</span>:
+          - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: root</span></span>
+            <span style="color:#606">persistentVolumeClaim</span>:
+              <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myroot</span></span>
+<span style="color:#606">parameters</span>:
+- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: NAME</span></span>
+  <span style="color:#606">description</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Name for the new VM</span></span>
+- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: CPU_CORES</span></span>
+  <span style="color:#606">description</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Amount of cores</span></span>
+  <span style="color:#606">value</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">4</span><span style="color:#710">&quot;</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that the template above defines free parameters (<code>NAME</code> and
+<code>CPU_CORES</code>) and the <code>NAME</code> parameter does not have specified default
+value.</p>
+</div>
+<div class="paragraph">
+<p>An OpenShift template has to be converted into the JSON file via
+<code>oc process</code> command, that also allows you to set the template
+parameters.</p>
+</div>
+<div class="paragraph">
+<p>A complete example can be found in the
+<a href="https://github.com/kubevirt/kubevirt/blob/master/cluster/vmi-template-fedora.yaml">KubeVirt
+repository</a>.</p>
+</div>
+<div class="paragraph">
+<p>!&gt; You need to be logged in by <code>oc login</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ oc process -f cluster/vmi-template-fedora.yaml\
+    -p NAME=testvmi \
+    -p CPU_CORES=2
+{
+    &quot;kind&quot;: &quot;List&quot;,
+    &quot;apiVersion&quot;: &quot;v1&quot;,
+    &quot;metadata&quot;: {},
+    &quot;items&quot;: [
+        {
+...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The JSON file is usually applied directly by piping the processed output
+to <code>oc create</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ oc process -f cluster/vmi-template-fedora.yaml \
+    -p NAME=testvmi \
+    -p CPU_CORES=2 \
+    | oc create -f -
+virtualmachine &quot;testvmi&quot; created</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The command above results in creating a Kubernetes object according to
+the specification given by the template (in this example it is an
+instance of the VirtualMachine object).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="starting-virtual-machine-from-the-created-object"><a class="anchor" href="#starting-virtual-machine-from-the-created-object"></a>Starting virtual machine from the created object</h3>
+<div class="paragraph">
+<p>The created object is now a regular VirtualMachine object and from now
+it can be controlled by accessing Kubernetes API resources. The
+preferred way how to do this from within the OpenShift environment is to
+use <code>oc patch</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ oc patch virtualmachine testvmi --type merge -p '{&quot;spec&quot;:{&quot;running&quot;:true}}'
+virtualmachine &quot;testvmi&quot; patched</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can follow <a href="/workloads/virtual-machines/life-cycle">Virtual
+Machine Lifecycle Guide</a> for further reference.</p>
+</div>
+</div>
+</div>
+</div>
+      </div>
+    </div>
+  </div>
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+   <!-- Latest compiled and minified JavaScript -->
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   <script src="../../latest/_javascripts/bootstrap-offcanvas.js" type="text/javascript"></script>
+   <script type="text/javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+      $("[id^='topicGroup']").on('show.bs.collapse', function (event) {
+        if (!($(event.target).attr('id').match(/^topicSubGroup/))) {
+          $(this).parent().find("[id^='tgSpan']").toggleClass("fa-angle-right fa-angle-down");
+        }
+      });
+      $("[id^='topicGroup']").on('hide.bs.collapse', function (event) {
+        if (!($(event.target).attr('id').match(/^topicSubGroup/))) {
+          $(this).parent().find("[id^='tgSpan']").toggleClass("fa-angle-right fa-angle-down");
+        }
+      });
+      $("[id^='topicSubGroup']").on('show.bs.collapse', function () {
+        $(this).parent().find("[id^='sgSpan']").toggleClass("fa-caret-right fa-caret-down");
+      });
+      $("[id^='topicSubGroup']").on('hide.bs.collapse', function () {
+        $(this).parent().find("[id^='sgSpan']").toggleClass("fa-caret-right fa-caret-down");
+      });
+    });
+    /*]]>*/
+  </script>
+</body>
+</html>

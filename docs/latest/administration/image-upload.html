@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>KubeVirt Latest | Installation & Administration | Image upload</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <link href="../../latest/_stylesheets/asciibinder.css" rel="stylesheet" />
+
+   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+   <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+   <![endif]-->
+
+  <link href="../../latest/_images/favicon32x32.png" rel="shortcut icon" type="text/css">
+  <!--[if IE]><link rel="shortcut icon" href="../../latest/_images/favicon.ico"><![endif]-->
+  <meta content="AsciiBinder" name="application-name">
+</head>
+<body>
+  <div class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="http://www.asciibinder.org/"><img alt="AsciiBinder" height="64px" src="../../latest/_images/KubeVirt_icon.png"></a>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <p class="toggle-nav visible-xs pull-left">
+      <button class="btn btn-default btn-sm" type="button" data-toggle="offcanvas">Toggle nav</button>
+    </p>
+    <ol class="breadcrumb">
+      <li class="sitename">
+        <a href="../../index.html">Documentation</a>
+      </li>
+      <li class="hidden-xs active">
+        <a href="../welcome/index.html">KubeVirt Latest</a>
+      </li>
+      <li class="hidden-xs active">
+        <a href="../administration/intro.html">Installation & Administration</a>
+      </li>
+      
+      <li class="hidden-xs active">
+        Image upload
+      </li>
+    </ol>
+    <div class="row row-offcanvas row-offcanvas-left">
+      <div class="col-xs-8 col-sm-3 col-md-3 sidebar sidebar-offcanvas">
+        <ul class="nav nav-sidebar">
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup0">
+        <span id="tgSpan0" class="fa fa-angle-right"></span>Welcome
+      </a>
+      <ul id="topicGroup0" class="collapse  list-unstyled">
+            <li><a class="" href="../welcome/index.html">Welcome</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup1">
+        <span id="tgSpan1" class="fa fa-angle-right"></span>Release Notes
+      </a>
+      <ul id="topicGroup1" class="collapse  list-unstyled">
+            <li><a class="" href="../release-notes/changelog.html">Changelog</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup2">
+        <span id="tgSpan2" class="fa fa-angle-right"></span>Architecture
+      </a>
+      <ul id="topicGroup2" class="collapse  list-unstyled">
+            <li><a class="" href="../architecture/virtual-machine.html">Virtual Machines</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup3">
+        <span id="tgSpan3" class="fa fa-angle-down"></span>Installation & Administration
+      </a>
+      <ul id="topicGroup3" class="collapse in list-unstyled">
+            <li><a class="" href="../administration/intro.html">Installation</a></li>
+            <li><a class="" href="../administration/api-validation.html">Webhooks</a></li>
+            <li><a class="" href="../administration/authorization.html">Authorization</a></li>
+            <li><a class="" href="../administration/monitoring.html">Monitoring</a></li>
+            <li><a class="" href="../administration/annotations_and_labels.html">Annotations and Labels</a></li>
+            <li><a class="" href="../administration/unresponsive-nodes.html">Unresponsive node handling</a></li>
+            <li><a class="" href="../administration/node-eviction.html">Node eviciton</a></li>
+            <li><a class=" active" href="../administration/image-upload.html">Image upload</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup4">
+        <span id="tgSpan4" class="fa fa-angle-right"></span>Creating Virtual Machines
+      </a>
+      <ul id="topicGroup4" class="collapse  list-unstyled">
+            <li><a class="" href="../creating-virtual-machines/intro.html">Introduction</a></li>
+            <li><a class="" href="../creating-virtual-machines/virtualized-hardware-configuration.html">Devices</a></li>
+            <li><a class="" href="../creating-virtual-machines/disks-and-volumes.html">Disks and Volumes</a></li>
+            <li><a class="" href="../creating-virtual-machines/interfaces-and-networks.html">Interfaces and Networks</a></li>
+            <li><a class="" href="../creating-virtual-machines/dedicated-cpu.html">Guaranteed CPU usage</a></li>
+            <li><a class="" href="../creating-virtual-machines/startup-scripts.html">cloud-init</a></li>
+            <li><a class="" href="../creating-virtual-machines/guest-operating-system-information.html">Associating Guest Informations</a></li>
+            <li><a class="" href="../creating-virtual-machines/presets.html">Presets</a></li>
+            <li><a class="" href="../creating-virtual-machines/probes.html">Probes</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup5">
+        <span id="tgSpan5" class="fa fa-angle-right"></span>Using Virtual Machines
+      </a>
+      <ul id="topicGroup5" class="collapse  list-unstyled">
+            <li><a class="" href="../using-virtual-machines/usage.html">Usage</a></li>
+            <li><a class="" href="../using-virtual-machines/life-cycle.html">Starting and Stopping</a></li>
+            <li><a class="" href="../using-virtual-machines/graphical-and-console-access.html">Console Access (Serial and Graphical)</a></li>
+            <li><a class="" href="../using-virtual-machines/assigning-vms-to-nodes.html">Node placement</a></li>
+            <li><a class="" href="../using-virtual-machines/dns.html">DNS Integration</a></li>
+            <li><a class="" href="../using-virtual-machines/expose-service.html">Service Integration</a></li>
+            <li><a class="" href="../using-virtual-machines/create-networkpolicy.html">Assigning Network Policies</a></li>
+            <li><a class="" href="../using-virtual-machines/overcommit.html">Memory over-commit</a></li>
+            <li><a class="" href="../using-virtual-machines/virtual-machine-replica-set.html">Virtual Machine Replica Set</a></li>
+            <li><a class="" href="../using-virtual-machines/vmctl.html">vmctl</a></li>
+      </ul>
+    </li>
+    <li class="nav-header">
+      <a class="" href="#" data-toggle="collapse" data-target="#topicGroup6">
+        <span id="tgSpan6" class="fa fa-angle-right"></span>Working with Templates
+      </a>
+      <ul id="topicGroup6" class="collapse  list-unstyled">
+            <li><a class="" href="../templates/common-templates.html">Introduction</a></li>
+            <li><a class="" href="../templates/using-templates.html">Using templates</a></li>
+      </ul>
+    </li>
+</ul>
+      </div>
+      <div class="col-xs-12 col-sm-9 col-md-9 main">
+        <div class="page-header">
+          <h2>Creating Virtual Machines from local images with CDI and virtctl</h2>
+        </div>
+        <div class="sect1">
+<h2 id="creating-virtual-machines-from-local-images-with-cdi-and-virtctl"><a class="anchor" href="#creating-virtual-machines-from-local-images-with-cdi-and-virtctl"></a>Creating Virtual Machines from local images with CDI and virtctl</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The
+<a href="https://github.com/kubevirt/containerized-data-importer">Containerized
+Data Importer</a> (CDI) project provides facilities for enabling
+<a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/">Persistent
+Volume Claims</a> (PVCs) to be used as disks for KubeVirt VMs. The three
+main CDI use cases are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Import a disk image from a URL to a PVC (HTTP/S3)</p>
+</li>
+<li>
+<p>Clone an an existing PVC</p>
+</li>
+<li>
+<p>Upload a local disk image to a PVC</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This document deals with the third use case. So you should have CDI
+installed in your cluster, a VM disk that you’d like to upload, and
+virtctl in your path.</p>
+</div>
+<div class="sect2">
+<h3 id="install-cdi"><a class="anchor" href="#install-cdi"></a>Install CDI</h3>
+<div class="paragraph">
+<p>Install the latest CDI release
+<a href="https://github.com/kubevirt/containerized-data-importer/releases">here</a>
+(currently v1.3.0)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">VERSION=v1.3.0
+kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-controller.yaml</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="expose-cdi-uploadproxy-service"><a class="anchor" href="#expose-cdi-uploadproxy-service"></a>Expose cdi-uploadproxy service</h4>
+<div class="paragraph">
+<p>The <code>cdi-uploadproxy</code> service must be accessible from outside the
+cluster. Here are some ways to do that:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://kubernetes.io/docs/concepts/services-networking/service/#nodeport">NodePort
+Service</a></p>
+</li>
+<li>
+<p><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a></p>
+</li>
+<li>
+<p><a href="https://docs.openshift.com/container-platform/3.9/architecture/networking/routes.html">Route</a></p>
+</li>
+<li>
+<p><a href="https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/">kubectl
+port-forward</a> (not recommended for production clusters)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Look
+<a href="https://github.com/kubevirt/containerized-data-importer/blob/master/doc/upload.md">here</a>
+for example manifests.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="supported-image-formats"><a class="anchor" href="#supported-image-formats"></a>Supported image formats</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>.img</code></p>
+</li>
+<li>
+<p><code>.iso</code></p>
+</li>
+<li>
+<p><code>.qcow2</code></p>
+</li>
+<li>
+<p>compressed <code>.tar</code>, <code>.gz</code>, and <code>.xz</code> versions of above supported as
+well</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Example in this doc uses
+<a href="http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img">this</a>
+<a href="https://launchpad.net/cirros">CirrOS</a> image</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="virtctl-image-upload"><a class="anchor" href="#virtctl-image-upload"></a>virtctl image-upload</h3>
+<div class="paragraph">
+<p>virtctl has an image-upload command with the following options:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">virtctl image-upload --help
+Upload a VM image to a PersistentVolumeClaim.
+
+Usage:
+  virtctl image-upload [flags]
+
+Examples:
+  # Upload a local disk image to a newly created PersistentVolumeClaim:
+    virtctl image-upload --upload-proxy-url=https://cdi-uploadproxy.mycluster.com --pvc-name=upload-pvc --pvc-size=10Gi --image-path=/images/fedora28.qcow2
+
+Flags:
+      --access-mode string       The access mode for the PVC. (default &quot;ReadWriteOnce&quot;)
+  -h, --help                     help for image-upload
+      --image-path string        Path to the local VM image.
+      --insecure                 Allow insecure server connections when using HTTPS.
+      --no-create                Don't attempt to create a new PVC.
+      --pvc-name string          The destination PVC.
+      --pvc-size string          The size of the PVC to create (ex. 10Gi, 500Mi).
+      --storage-class string     The storage class for the PVC.
+      --uploadproxy-url string   The URL of the cdi-upload proxy service.
+      --wait-secs uint           Seconds to wait for upload pod to start. (default 60)
+
+Use &quot;virtctl options&quot; for a list of global command-line options (applies to all commands).</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>`virtctl image-upload'' works by creating a PVC of the requested size,
+sending an `UploadTokenRequest</code> to the <code>cdi-apiserver</code>, and uploading
+the file to the <code>cdi-uploadproxy</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">virtctl image-upload --pvc-name=cirros-vm-disk --pvc-size=500Mi --image-path=/home/mhenriks/images/cirros-0.4.0-x86_64-disk.img --uploadproxy-url=&lt;url to upload proxy service&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="create-a-virtualmachineinstance"><a class="anchor" href="#create-a-virtualmachineinstance"></a>Create a VirtualMachineInstance</h3>
+<div class="paragraph">
+<p>To create a <code>VirtualMachinInstance</code> from a PVC, you can execute the
+following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  name: cirros-vm
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: pvcdisk
+        volumeName: pvcvolume
+    machine:
+      type: &quot;&quot;
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: pvcvolume
+    persistentVolumeClaim:
+      claimName: cirros-vm-disk
+status: {}
+EOF</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="connect-to-virtualmachineinstance-console"><a class="anchor" href="#connect-to-virtualmachineinstance-console"></a>Connect to VirtualMachineInstance console</h3>
+<div class="paragraph">
+<p>Use <code>virtctl</code> to connect to the newly create <code>VirtualMachinInstance</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">virtctl console cirros-vm</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+      </div>
+    </div>
+  </div>
+   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+   <!-- Latest compiled and minified JavaScript -->
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   <script src="../../latest/_javascripts/bootstrap-offcanvas.js" type="text/javascript"></script>
+   <script type="text/javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+      $("[id^='topicGroup']").on('show.bs.collapse', function (event) {
+        if (!($(event.target).attr('id').match(/^topicSubGroup/))) {
+          $(this).parent().find("[id^='tgSpan']").toggleClass("fa-angle-right fa-angle-down");
+        }
+      });
+      $("[id^='topicGroup']").on('hide.bs.collapse', function (event) {
+        if (!($(event.target).attr('id').match(/^topicSubGroup/))) {
+          $(this).parent().find("[id^='tgSpan']").toggleClass("fa-angle-right fa-angle-down");
+        }
+      });
+      $("[id^='topicSubGroup']").on('show.bs.collapse', function () {
+        $(this).parent().find("[id^='sgSpan']").toggleClass("fa-caret-right fa-caret-down");
+      });
+      $("[id^='topicSubGroup']").on('hide.bs.collapse', function () {
+        $(this).parent().find("[id^='sgSpan']").toggleClass("fa-caret-right fa-caret-down");
+      });
+    });
+    /*]]>*/
+  </script>
+</body>
+</html>
