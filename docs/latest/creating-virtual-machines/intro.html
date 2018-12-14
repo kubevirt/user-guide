@@ -158,87 +158,106 @@
 </div>
 <div class="paragraph">
 <p>Every <code>VirtualMachineInstance</code> object represents a single running
-virtual machine instance.
-Creation</p>
+virtual machine instance.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creation"><a class="anchor" href="#creation"></a>Creation</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="api-overview"><a class="anchor" href="#api-overview"></a>API Overview</h3>
+<div class="paragraph">
+<p>With the installation of KubeVirt, new types are added to the Kubernetes
+API to manage Virtual Machines.</p>
+</div>
+<div class="paragraph">
+<p>You can interact with the new resources (via <code>kubectl</code>) as you would
+with any other API resource.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="virtualmachineinstance-api"><a class="anchor" href="#virtualmachineinstance-api"></a>VirtualMachineInstance API</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Note: A full API reference is available at
+<a href="https://kubevirt.io/api-reference/" class="bare">https://kubevirt.io/api-reference/</a>.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Here is an example of a VirtualMachineInstance object:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>API Overview
-~~~~~~~~~~~~
-
-With the installation of KubeVirt, new types are added to the Kubernetes
-API to manage Virtual Machines.
-
-You can interact with the new resources (via `kubectl`) as you would
-with any other API resource.
-
-VirtualMachineInstance API
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-______________________________________________________________________________
-Note: A full API reference is available at
-https://kubevirt.io/api-reference/.
-______________________________________________________________________________
-
-Here is an example of a VirtualMachineInstance object:
-
-[source,yaml]
-----
-apiVersion: kubevirt.io/v1alpha2
-kind: VirtualMachineInstance
-metadata:
-  name: testvmi-nocloud
-spec:
-  terminationGracePeriodSeconds: 30
-  domain:
-    resources:
-      requests:
-        memory: 1024M
-    devices:
-      disks:
-      - name: containerdisk
-        volumeName: registryvolume
-        disk:
-          bus: virtio
-      - name: emptydisk
-        volumeName: emptydiskvolume
-        disk:
-          bus: virtio
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-        volumeName: cloudinitvolume
-  volumes:
-  - name: registryvolume
-    containerDisk:
-      image: kubevirt/fedora-cloud-container-disk-demo:latest
-  - name: emptydiskvolume
-    emptyDisk:
-      capacity: "2Gi"
-  - name: cloudinitvolume
-    cloudInitNoCloud:
-      userData: |-
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-nocloud</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">30</span></span>
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
+        <span style="color:#606">disk</span>:
+          <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: emptydisk</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume</span></span>
+        <span style="color:#606">disk</span>:
+          <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
+          bus: virtio</span></span>
+        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
+        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
+  <span style="color:#606">volumes</span>:
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+    <span style="color:#606">containerDisk</span>:
+      <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/fedora-cloud-container-disk-demo:latest</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: emptydiskvolume</span></span>
+    <span style="color:#606">emptyDisk</span>:
+      <span style="color:#606">capacity</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">2Gi</span><span style="color:#710">&quot;</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: cloudinitvolume</span></span>
+    <span style="color:#606">cloudInitNoCloud</span>:
+      <span style="color:#606">userData</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">|-</span><span style="color:#D20">
         #cloud-config
         password: fedora
-        chpasswd: { expire: False }
-----
-
-This example uses a fedora cloud image in combination with cloud-init
-and an ephemeral empty disk with a capacity of `2Gi`. For the sake of
-simplicity, the volume sources in this example are ephemeral and don’t
-require a provisioner in your cluster.
-
-What’s next
------------
-
-* More information about persistent and ephemeral volumes:
-link:workloads/virtual-machines/disks-and-volumes.md[Disks and Volumes]
-* How to access a VirtualMachineInstance via `console` or `vnc`:
-link:workloads/virtual-machines/graphical-and-console-access.md[Graphical
-and Serial Console Access]
-* How to customize VirtualMachineInstances with `cloud-init`:
-link:workloads/virtual-machines/startup-scripts.md[Startup Scripts]</pre>
+        chpasswd: { expire: False }</span></span></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>This example uses a fedora cloud image in combination with cloud-init
+and an ephemeral empty disk with a capacity of <code>2Gi</code>. For the sake of
+simplicity, the volume sources in this example are ephemeral and don’t
+require a provisioner in your cluster.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="whats-next"><a class="anchor" href="#whats-next"></a>What’s next</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>More information about persistent and ephemeral volumes:
+<a href="workloads/virtual-machines/disks-and-volumes.md">Disks and Volumes</a></p>
+</li>
+<li>
+<p>How to access a VirtualMachineInstance via <code>console</code> or <code>vnc</code>:
+<a href="workloads/virtual-machines/graphical-and-console-access.md">Graphical
+and Serial Console Access</a></p>
+</li>
+<li>
+<p>How to customize VirtualMachineInstances with <code>cloud-init</code>:
+<a href="workloads/virtual-machines/startup-scripts.md">Startup Scripts</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
