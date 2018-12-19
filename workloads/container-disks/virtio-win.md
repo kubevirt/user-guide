@@ -1,0 +1,52 @@
+# Windows driver disk usage
+
+**Provides**:
+
+* virtio drivers
+* QEMU Guest Agent
+
+KubeVirt distributes virtio drivers for Microsoft Windows in form if container disk.
+The package contains the virtio drivers as well as qemu guest agent.
+The disk was tested on Microsoft Windows Server 2012. However, it should work on
+Microsoft Windows 7 and up.
+
+Package is intended to be used as CD-ROM attached to virtual machine with Microsoft Windows.
+It can be used either during install phase as SATA CD-ROM to provider drivers or
+in existing installation as SATA CD-ROM to provide QEMU Guest Agent installation.
+
+Example how to attach:
+
+```yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  creationTimestamp: null
+  labels:
+    special: vmi-virtio
+  name: vmi-virtio
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: pvcdisk
+        volumename: pvcvolume
+      - cdrom:
+          bus: sata
+        name: containerdisk
+        volumeName: registryvolume
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - persistentVolumeClaim:
+      claimName: disk-windows
+    name: pvcvolume
+  - containerDisk:
+      image: kubevirt/virtio-container-disk
+    name: registryvolume
+```
