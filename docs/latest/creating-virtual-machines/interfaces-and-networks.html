@@ -393,6 +393,10 @@ fields:</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sriov</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Pass through a SR-IOV PCI device via <code>vfio</code></p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>masquerade</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Connect using Iptables rules to nat the traffic</p></td>
+</tr>
 </tbody>
 </table>
 <div class="paragraph">
@@ -609,6 +613,43 @@ ICMP is <em>not</em> supported.</p>
 <p>More information about SLIRP mode can be found in
 <a href="https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29">QEMU
 Wiki</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="masquerade"><a class="anchor" href="#masquerade"></a>masquerade</h4>
+<div class="paragraph">
+<p>In <code>masquerade</code> mode, machines are connected to the network backend
+through a linux ``bridge''. In this mode, we allocates internal
+IP addresses to virtual machines and hides them behind NAT.
+All the traffic exiting the virtual machine will be natted using the pod ip address.
+The virtual machine should be configured to use DHCP to acquire IPv4 addresses.</p>
+</div>
+<div class="paragraph">
+<p>To allow traffic gets into the virtual machine the port section need to be configured in the interface spec.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VM</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">interfaces</span>:
+        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: red</span></span>
+          <span style="color:#606">masquerade</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span> <span style="color:#777"># connect using masquerade mode</span>
+          <span style="color:#606">ports</span>:
+            - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">port: 80</span></span> <span style="color:#777"># allow incomming traffic on port 80 to get into the virtual machine</span>
+  <span style="color:#606">networks</span>:
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: red</span></span>
+    <span style="color:#606">pod</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>
+</div>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Note:</strong> Masquerade is only allow to be connected to a pod network backend.
+<strong>Note:</strong> The network CIDR for can be configured in the pod network section using <code>vmNetworkCIDR</code>.</p>
+</div>
+</blockquote>
 </div>
 </div>
 <div class="sect3">
