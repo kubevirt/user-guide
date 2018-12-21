@@ -195,6 +195,7 @@ fields:
 |`bridge` |Connect using a linux bridge
 |`slirp` |Connect using QEMU user networking mode
 |`sriov` |Pass through a SR-IOV PCI device via `vfio`
+|`masquerade` | Connect using Iptables rules to nat the traffic
 |====================================================
 
 Each interface may also have additional configuration fields that modify
@@ -334,6 +335,38 @@ ________________________________________________________________________________
 More information about SLIRP mode can be found in
 https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29[QEMU
 Wiki].
+
+masquerade
+^^^^^^^^^^
+
+In `masquerade` mode, machines are connected to the network backend
+through a linux ``bridge''. In this mode, we allocates internal
+IP addresses to virtual machines and hides them behind NAT.
+All the traffic exiting the virtual machine will be natted using the pod ip address.
+The virtual machine should be configured to use DHCP to acquire IPv4 addresses.
+
+To allow traffic gets into the virtual machine the port section need to be configured in the interface spec.
+
+[source,yaml]
+----
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          masquerade: {} # connect using masquerade mode
+          ports:
+            - port: 80 # allow incomming traffic on port 80 to get into the virtual machine
+  networks:
+  - name: red
+    pod: {}
+----
+
+_______________________________________________________________________________________________
+*Note:* Masquerade is only allow to be connected to a pod network backend.
+*Note:* The network CIDR for can be configured in the pod network section using `vmNetworkCIDR`.
+_______________________________________________________________________________________________
 
 virtio-net multiqueue
 ^^^^^^^^^^^^^^^^^^^^^
