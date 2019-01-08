@@ -402,6 +402,62 @@ moment when showing the status, three Virtual Machines were already
 created, but only two are running and ready.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="scaling-via-the-scale-subresource"><a class="anchor" href="#scaling-via-the-scale-subresource"></a>Scaling via the Scale Subresource</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Note:</strong> This requires the <code>CustomResourceSubresources</code> feature gate to be
+enables for clusters prior to 1.11.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The <code>VirtualMachineInstanceReplicaSet</code> supports the <code>scale</code> subresource. As a
+consequence it is possible to scale it via <code>kubectl</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ kubectl scale vmirs myvmirs --replicas 5</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="using-the-horizontal-pod-autoscaler"><a class="anchor" href="#using-the-horizontal-pod-autoscaler"></a>Using the Horizontal Pod Autoscaler</h3>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Note:</strong> This requires at cluster newer or equal to 1.11.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>The <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/">HorizontalPodAutoscaler</a> (HPA) can be used with a
+<code>VirtualMachineInstanceReplicaSet</code>. Simply reference it in the spec of the
+autoscaler:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">autoscaling/v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">HorizontalPodAutoscaler</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myhpa</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">scaleTargetRef</span>:
+    <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstanceReplicaSet</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vmi-replicaset-cirros</span></span>
+    <span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+  <span style="color:#606">minReplicas</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">3</span></span>
+  <span style="color:#606">maxReplicas</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">10</span></span>
+  <span style="color:#606">targetCPUUtilizationPercentage</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">50</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Right now <code>kubectl autoscale</code> does not work with Custom Resources. Only the
+declarative form of writing the HPA yaml manually and posting it via <code>kubectl
+create</code> is supported.</p>
+</div>
+</div>
 </div>
 </div>
       </div>
