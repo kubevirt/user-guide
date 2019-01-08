@@ -219,3 +219,48 @@ Events:
 `Replicas` is `3` and `Ready Replicas` is `2`. This means that at the
 moment when showing the status, three Virtual Machines were already
 created, but only two are running and ready.
+
+Scaling via the Scale Subresource
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+*Note:* This requires the `CustomResourceSubresources` feature gate to be
+enables for clusters prior to 1.11.
+______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+The `VirtualMachineInstanceReplicaSet` supports the `scale` subresource. As a
+consequence it is possible to scale it via `kubectl`:
+
+[source,bash]
+----
+$ kubectl scale vmirs myvmirs --replicas 5
+----
+
+Using the Horizontal Pod Autoscaler
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+*Note:* This requires at cluster newer or equal to 1.11.
+______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+The https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/[HorizontalPodAutoscaler] (HPA) can be used with a
+`VirtualMachineInstanceReplicaSet`. Simply reference it in the spec of the
+autoscaler:
+
+[source,yaml]
+----
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: myhpa
+spec:
+  scaleTargetRef:
+    kind: VirtualMachineInstanceReplicaSet
+    name: vmi-replicaset-cirros
+    apiVersion: kubevirt.io/v1alpha2
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+----
+
+Right now `kubectl autoscale` does not work with Custom Resources. Only the
+declarative form of writing the HPA yaml manually and posting it via `kubectl
+create` is supported.
