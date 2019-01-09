@@ -217,7 +217,9 @@ a snippet presenting a couple of most commonly found editable fields:</p>
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">annotations</span>:
     <span style="color:#606">template.cnv.io/editable</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">|</span><span style="color:#D20">
+      /objects[0].spec.template.spec.domain.cpu.sockets
       /objects[0].spec.template.spec.domain.cpu.cores
+      /objects[0].spec.template.spec.domain.cpu.threads
       /objects[0].spec.template.spec.domain.resources.requests.memory</span></span></code></pre>
 </div>
 </div>
@@ -236,7 +238,11 @@ you can edit:</p>
       <span style="color:#606">spec</span>:
         <span style="color:#606">domain</span>:
           <span style="color:#606">cpu</span>:
+            <span style="color:#606">sockets</span>:
+              <span style="color:#F00;background-color:#FAA">VALUE # this is editable</span>
             <span style="color:#606">cores</span>:
+              <span style="color:#F00;background-color:#FAA">VALUE # this is editable</span>
+            <span style="color:#606">threads</span>:
               <span style="color:#F00;background-color:#FAA">VALUE # this is editable</span>
           <span style="color:#606">resources</span>:
             <span style="color:#606">requests</span>:
@@ -293,7 +299,9 @@ value will be the name of the parent template, for example
       <span style="color:#606">spec</span>:
         <span style="color:#606">domain</span>:
           <span style="color:#606">cpu</span>:
+            <span style="color:#606">sockets</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1</span></span>
             <span style="color:#606">cores</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1</span></span>
+            <span style="color:#606">threads</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1</span></span>
           <span style="color:#606">devices</span>:
             <span style="color:#606">disks</span>:
             - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">

@@ -206,20 +206,25 @@ container.</p>
 </div>
 <div class="paragraph">
 <p>Expressing the desired amount of VMI’s vCPUs can be done by either
-setting the <code>spec.domain.cpu.cores</code> or
-<code>spec.domain.resources.requests.cpu</code> or
-<code>spec.domain.resources.limits.cpu</code> to a whole number, integer (e.g. 1,
-2, etc) indicating the number of vCPUs requested for the VMI.</p>
+setting the guest topology in <code>spec.domain.cpu</code> (<code>sockets</code>, <code>cores</code>, <code>threads</code>)
+or <code>spec.domain.resources.[requests/limits].cpu</code> to a whole number, integer (e.g. 1,
+2, etc) indicating the number of vCPUs requested for the VMI. Number of vCPUs is counted
+as <code>sockets * cores * threads</code> or if <code>spec.domain.cpu</code> is empty then it takes value from
+<code>spec.domain.resources.requests.cpu</code> or <code>spec.domain.resources.limits.cpu</code>.</p>
 </div>
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
-<p><strong>Note:</strong> Users should not specify both <code>spec.domain.cpu.cores</code> and
+<p><strong>Note:</strong> Users should not specify both <code>spec.domain.cpu</code> and
 <code>spec.domain.resources.[requests/limits].cpu</code></p>
 </div>
 <div class="paragraph">
 <p><strong>Note:</strong> <code>spec.domain.resources.requests.cpu</code> must be equal to
 <code>spec.domain.resources.limits.cpu</code></p>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> Multiple cpu-bound microbenchmarks show a significant performance advantage when
+using <code>spec.domain.cpu.sockets</code> instead of <code>spec.domain.cpu.cores</code>.</p>
 </div>
 </blockquote>
 </div>
@@ -233,7 +238,9 @@ setting the <code>spec.domain.cpu.cores</code> or
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
     <span style="color:#606">cpu</span>:
-      <span style="color:#606">cores</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">2</span></span>
+      <span style="color:#606">sockets</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">2</span></span>
+      <span style="color:#606">cores</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1</span></span>
+      <span style="color:#606">threads</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1</span></span>
       <span style="color:#606">dedicatedCpuPlacement</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
     <span style="color:#606">resources</span>:
       <span style="color:#606">limits</span>:
