@@ -59,7 +59,9 @@ a snippet presenting a couple of most commonly found editable fields:
 metadata:
   annotations:
     template.cnv.io/editable: |
+      /objects[0].spec.template.spec.domain.cpu.sockets
       /objects[0].spec.template.spec.domain.cpu.cores
+      /objects[0].spec.template.spec.domain.cpu.threads
       /objects[0].spec.template.spec.domain.resources.requests.memory
 ----
 
@@ -77,7 +79,11 @@ objects:
       spec:
         domain:
           cpu:
+            sockets:
+              VALUE # this is editable
             cores:
+              VALUE # this is editable
+            threads:
               VALUE # this is editable
           resources:
             requests:
@@ -130,7 +136,9 @@ items:
       spec:
         domain:
           cpu:
+            sockets: 1
             cores: 1
+            threads: 1
           devices:
             disks:
             - disk:
