@@ -155,6 +155,7 @@ in the Kubernetes API:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">$ kubectl create -f vmi.yaml
+$ kubectl wait --for=condition=Ready vmis/my-vmi
 $ kubectl get vmis
 $ kubectl delete vmis testvmi</code></pre>
 </div>
