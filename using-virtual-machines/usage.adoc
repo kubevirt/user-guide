@@ -10,6 +10,7 @@ in the Kubernetes API:
 [source,bash]
 ----
 $ kubectl create -f vmi.yaml
+$ kubectl wait --for=condition=Ready vmis/my-vmi
 $ kubectl get vmis
 $ kubectl delete vmis testvmi
 ----
