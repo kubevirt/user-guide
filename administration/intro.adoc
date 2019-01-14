@@ -58,6 +58,7 @@ https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md[soft
 emulation fallback] can be enabled using:
 
 ....
+$ kubectl create namespace kubevirt
 $ kubectl create configmap -n kubevirt kubevirt-config \
     --from-literal debug.useEmulation=true
 ....
@@ -99,26 +100,55 @@ Core components
 ^^^^^^^^^^^^^^^
 
 Once Kubernetes is deployed, you will need to deploy the KubeVirt
-add-on. The add-on is deployed to a cluster using the `kubectl` tool and
-manifest file:
+add-on. There are 2 ways to deploy the add-on to a cluster using the `kubectl` tool and
+manifest files:
+
+1. Stable flow
++++++++++++++++
+
+The stable flow installs KubeVirt using a manifest file, which contains all deployments and configurations of the
+KubeVirt core components:
 
 [source,bash]
 ----
-$ RELEASE=v0.10.0
+$ RELEASE=v0.14.0
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 ----
 
-This command will deploy the most recent stable version of KubeVirt to
-your cluster. The new components will be deployed in the `kubevirt`
-namespace:
+2. Alternative flow (aka Operator flow)
++++++++++++++++++++++++++++++++++++++++
+
+Since version 0.13.0 KubeVirt can be installed using the new KubeVirt Operator and a KubeVirt custom resource.
+
+_________________________________________________________________________
+Note: The Operator is considered to be experimental for the time being.
+There is currently no way to upgrade KubeVirt using this flow.
+_________________________________________________________________________
+
+[source,bash]
+----
+$ export VERSION=v0.14.0
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/$VERSION/kubevirt-operator.yaml
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/$VERSION/kubevirt-cr.yaml
+----
+
+Since version 0.14.0 you can also use `kubectl` for waiting until all KubeVirt components are "Ready".
+
+[source,bash]
+----
+$ kubectl wait kv kubevirt --for condition=Ready
+----
+
+Independent of the deployment flow, the new components will be deployed in the `kubevirt` namespace:
 
 [source,bash]
 ----
 kubectl get pods -n kubevirt
 NAME                                           READY     STATUS        RESTARTS   AGE
-libvirt-9zmtl                                  2/2       Running       0          28m
-virt-controller-5d9fc8cf8b-n5trt               0/1       Running       0          27m
-virt-handler-vwdjx                             1/1       Running       0          28m
+virt-api-6d4fc3cf8a-b2ere                      1/1       Running       0          1m
+virt-controller-5d9fc8cf8b-n5trt               1/1       Running       0          1m
+virt-handler-vwdjx                             1/1       Running       0          1m
+...
 ----
 
 Client side `virtctl` deployment
@@ -147,9 +177,10 @@ Using command line interface
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The following
-https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html[SCCs]
-need to be added prior `kubevirt.yaml` deployment:
+https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html[SCC]
+needs to be added prior KubeVirt deployment:
 
+- When you use the stable deployment flow:
 [source,bash]
 ----
 $ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-privileged
@@ -157,13 +188,13 @@ $ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-controller
 $ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-apiserver
 ----
 
-Once privileges are granted, the `kubevirt.yaml` can be deployed:
-
+- When you use the operator flow:
 [source,bash]
 ----
-$ RELEASE=v0.10.0
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator
 ----
+
+Once privileges are granted, the kubevirt manifests can be deployed in the same way as explained above.
 
 From Service Catalog as an APB
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -211,11 +242,11 @@ ____________________________________
 Note: Updates are not yet supported.
 ____________________________________
 
-Usually it is sufficient to re-apply the manifests for performing a
+When using the stable deployment flow, usually it is sufficient to re-apply the manifests for performing a
 rolling update:
 
 [source,bash]
 ----
-$ RELEASE=v0.10.1
+$ RELEASE=v0.14.1
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
 ----
