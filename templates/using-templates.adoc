@@ -34,7 +34,7 @@ metadata:
     kubevirt.io/os: fedora27
     miq.github.io/kubevirt-is-vmi-template: "true"
 objects:
-- apiVersion: kubevirt.io/v1alpha2
+- apiVersion: kubevirt.io/v1alpha3
   kind: VirtualMachine
   metadata:
     name: ${NAME}
@@ -55,9 +55,8 @@ objects:
           devices:
             disks:
               - name: disk0
-                volumeName: root
         volumes:
-          - name: root
+          - name: disk0
             persistentVolumeClaim:
               claimName: myroot
 parameters:

@@ -20,7 +20,7 @@ following example the vmi contains the labels `cpu: slow` and
 ----
 metadata:
   name: testvmi-ephemeral
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 spec:
   nodeSelector:
@@ -33,10 +33,9 @@ spec:
     devices:
       disks:
       - name: mypvcdisk
-        volumeName: mypvc
         lun: {}
   volumes:
-    - name: mypvc
+    - name: mypvcdisk
       persistentVolumeClaim:
         claimName: mypvc
 ----
@@ -61,7 +60,7 @@ An example for `podAffinity` and `podAntiAffinity` may look like this:
 ----
 metadata:
   name: testvmi-ephemeral
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 spec:
   nodeSelector:
@@ -74,7 +73,6 @@ spec:
     devices:
       disks:
       - name: mypvcdisk
-        volumeName: mypvc
         lun: {}
   affinity:
     podAffinity:
@@ -98,7 +96,7 @@ spec:
               - S2
           topologyKey: kubernetes.io/hostname
   volumes:
-    - name: mypvc
+    - name: mypvcdisk
       persistentVolumeClaim:
         claimName: mypvc
 ----
@@ -135,7 +133,7 @@ An example for `tolerations` may look like this:
 ----
 metadata:
   name: testvmi-ephemeral
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 spec:
   nodeSelector:
@@ -148,7 +146,6 @@ spec:
     devices:
       disks:
       - name: mypvcdisk
-        volumeName: mypvc
         lun: {}
   tolerations:
   - key: "key"

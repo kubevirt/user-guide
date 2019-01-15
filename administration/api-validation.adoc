@@ -29,8 +29,7 @@ The OpenAPIv3 schema validation is limited. It only validates the
 general structure of a KubeVirt object looks correct. It does not
 however verify that the contents of that object make sense.
 
-With OpenAPIv3 validation alone, users can easily make simple mistakes
-(like not referencing a volumeName correctly with a disk) and the
+With OpenAPIv3 validation alone, users can easily make simple mistakes and the
 cluster will still accept the object. However, the
 VirtualMachineInstance will of course not start if these errors in the
 API exist. Ideally we’d like to catch configuration issues as early as
