@@ -128,7 +128,7 @@ Example
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstanceReplicaSet
 metadata:
   name: testreplicaset
@@ -148,12 +148,11 @@ spec:
           disks:
           - disk:
             name: containerdisk
-            volumeName: registryvolume
         resources:
           requests:
             memory: 64M
       volumes:
-      - name: registryvolume
+      - name: containerdisk
         containerDisk:
           image: kubevirt/cirros-container-disk-demo:latest
 ----
@@ -170,14 +169,14 @@ Name:         testreplicaset
 Namespace:    default
 Labels:       <none>
 Annotations:  <none>
-API Version:  kubevirt.io/v1alpha2
+API Version:  kubevirt.io/v1alpha3
 Kind:         VirtualMachineInstanceReplicaSet
 Metadata:
   Cluster Name:        
   Creation Timestamp:  2018-01-03T12:42:30Z
   Generation:          0
   Resource Version:    6380
-  Self Link:           /apis/kubevirt.io/v1alpha2/namespaces/default/virtualmachineinstancereplicasets/testreplicaset
+  Self Link:           /apis/kubevirt.io/v1alpha3/namespaces/default/virtualmachineinstancereplicasets/testreplicaset
   UID:                 903a9ea0-f083-11e7-9094-525400ee45b0
 Spec:
   Replicas:  3
@@ -196,12 +195,12 @@ Spec:
           Disks:
             Disk:
             Name:         containerdisk
-            Volume Name:  registryvolume
+            Volume Name:  containerdisk
         Resources:
           Requests:
             Memory:  64M
       Volumes:
-        Name:  registryvolume
+        Name:  containerdisk
         Container Disk:
           Image:  kubevirt/cirros-container-disk-demo:latest
 Status:
@@ -255,7 +254,7 @@ spec:
   scaleTargetRef:
     kind: VirtualMachineInstanceReplicaSet
     name: vmi-replicaset-cirros
-    apiVersion: kubevirt.io/v1alpha2
+    apiVersion: kubevirt.io/v1alpha3
   minReplicas: 3
   maxReplicas: 10
   targetCPUUtilizationPercentage: 50

@@ -20,7 +20,7 @@ Example how to attach:
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -37,7 +37,6 @@ spec:
       - cdrom:
           bus: sata
         name: containerdisk
-        volumeName: registryvolume
     machine:
       type: ""
     resources:
@@ -50,5 +49,5 @@ spec:
     name: pvcvolume
   - containerDisk:
       image: kubevirt/virtio-container-disk
-    name: registryvolume
+    name: containerdisk
 ----

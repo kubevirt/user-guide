@@ -21,7 +21,7 @@ Give a VirtualMachineInstance with the label `special: key`:
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   name: vmi-ephemeral
@@ -34,12 +34,11 @@ spec:
       - disk:
           bus: virtio
         name: containerdisk
-        volumeName: registryvolume
     resources:
       requests:
         memory: 64M
   volumes:
-  - name: registryvolume
+  - name: containerdisk
     containerDisk:
       image: kubevirt/cirros-registry-disk-demo:latest
 ----

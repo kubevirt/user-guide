@@ -38,7 +38,7 @@ Windows Server 2012R2 `VirtualMachineInstancePreset` Example
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstancePreset
 metadata:
   name: windows-server-2012r2
@@ -71,7 +71,7 @@ spec:
           tickPolicy: catchup
         hyperv: {}
 ---
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -85,7 +85,6 @@ spec:
     devices:
       disks:
       - name: server2012r2
-        volumeName: server2012r2
         disk:
           dev: vda
   volumes:
@@ -99,12 +98,12 @@ Once the `VirtualMachineInstancePreset` is applied to the
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   annotations:
-    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha2
-    virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1alpha2
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+    virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1alpha3
   labels:
     kubevirt.io/os: win2k12r2  
   name: windows2012r2
@@ -139,7 +138,6 @@ spec:
     devices:
       disks:
       - name: server2012r2
-        volumeName: server2012r2
         disk:
           dev: vda
   volumes:

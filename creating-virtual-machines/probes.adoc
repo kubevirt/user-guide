@@ -27,7 +27,7 @@ port 1500 via cloud-init.
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -39,12 +39,10 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
-        volumeName: registryvolume
+        name: containerdisk
       - disk:
           bus: virtio
         name: cloudinitdisk
-        volumeName: cloudinitvolume
     resources:
       requests:
         memory: 1024M
@@ -56,7 +54,7 @@ spec:
     timeoutSeconds: 10
   terminationGracePeriodSeconds: 0
   volumes:
-  - name: registryvolume
+  - name: containerdisk
     registryDisk:
       image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
   - cloudInitNoCloud:
@@ -68,7 +66,7 @@ spec:
           - setenforce 0
           - dnf install -y nmap-ncat
           - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
-    name: cloudinitvolume
+    name: cloudinitdisk
 ----
 
 Define a TCP Liveness Probe
@@ -82,7 +80,7 @@ port 1500 via cloud-init.
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -94,12 +92,10 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
-        volumeName: registryvolume
+        name: containerdisk
       - disk:
           bus: virtio
         name: cloudinitdisk
-        volumeName: cloudinitvolume
     resources:
       requests:
         memory: 1024M
@@ -111,7 +107,7 @@ spec:
     timeoutSeconds: 10
   terminationGracePeriodSeconds: 0
   volumes:
-  - name: registryvolume
+  - name: containerdisk
     registryDisk:
       image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
   - cloudInitNoCloud:
@@ -123,7 +119,7 @@ spec:
           - setenforce 0
           - dnf install -y nmap-ncat
           - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
-    name: cloudinitvolume
+    name: cloudinitdisk
 ----
 
 Define Readiness Probes
@@ -135,7 +131,7 @@ filled:
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -147,12 +143,10 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: registrydisk
-        volumeName: registryvolume
+        name: containerdisk
       - disk:
           bus: virtio
         name: cloudinitdisk
-        volumeName: cloudinitvolume
     resources:
       requests:
         memory: 1024M
@@ -166,7 +160,7 @@ spec:
     successThreshold: 3
   terminationGracePeriodSeconds: 0
   volumes:
-  - name: registryvolume
+  - name: containerdisk
     registryDisk:
       image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
   - cloudInitNoCloud:
@@ -178,7 +172,7 @@ spec:
           - setenforce 0
           - dnf install -y nmap-ncat
           - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
-    name: cloudinitvolume
+    name: cloudinitdisk
 ----
 
 Note that in the case of Readiness Probes, it is also possible to set a
