@@ -162,7 +162,7 @@ VirtualMachineInstance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vmi-fedora</span></span>
@@ -177,22 +177,20 @@ VirtualMachineInstance:</p>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
     <span style="color:#606">resources</span>:
       <span style="color:#606">requests</span>:
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
   <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
     <span style="color:#606">containerDisk</span>:
       <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/fedora-cloud-registry-disk-demo:latest</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudInitNoCloud:</span><span style="color:#D20">
       userDataBase64: IyEvYmluL2Jhc2gKZWNobyAiZmVkb3JhOmZlZG9yYSIgfCBjaHBhc3N3ZAo=</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
 <span style="color:#f8f;background:#505"><span style="color:#f4f">---</span></span>
 <span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Service</span></span>

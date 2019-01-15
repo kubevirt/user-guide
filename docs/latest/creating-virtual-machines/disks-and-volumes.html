@@ -155,8 +155,8 @@ volume is added to the disk specification by name.</p>
 <h3 id="disks"><a class="anchor" href="#disks"></a>Disks</h3>
 <div class="paragraph">
 <p>Like all other vmi devices a <code>spec.domain.devices.disks</code> element has a
-mandatory <code>name</code>, and furthermore, it has a mandatory <code>volumeName</code> entry
-which references a volume inside <code>spec.volumes</code>.</p>
+mandatory <code>name</code>, and furthermore, the disk&#8217;s <code>name</code> must reference the <code>name</code>
+of a volume inside <code>spec.volumes</code>.</p>
 </div>
 <div class="paragraph">
 <p>A disk can be made accessible via four different types:</p>
@@ -202,7 +202,7 @@ as a <code>lun</code> device to the VM:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-lun</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -212,11 +212,10 @@ as a <code>lun</code> device to the VM:</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#777"># This makes it a lun device</span>
         <span style="color:#606">lun</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
       <span style="color:#606">persistentVolumeClaim</span>:
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
 </div>
@@ -235,7 +234,7 @@ as a <code>disk</code> device to the VM:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-disk</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -245,11 +244,10 @@ as a <code>disk</code> device to the VM:</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#777"># This makes it a disk</span>
         <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
       <span style="color:#606">persistentVolumeClaim</span>:
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
 </div>
@@ -262,7 +260,7 @@ depends on the chipset the VM is configured to use:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-disk</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -272,14 +270,13 @@ depends on the chipset the VM is configured to use:</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#777"># This makes it a disk</span>
         <span style="color:#606">disk</span>:
           <span style="color:#777"># This makes it exposed as /dev/vda, being the only and thus first</span>
           <span style="color:#777"># disk attached to the VM</span>
           <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
       <span style="color:#606">persistentVolumeClaim</span>:
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
 </div>
@@ -298,7 +295,7 @@ as a <code>floppy</code> device to the VM:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-floppy</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -308,11 +305,10 @@ as a <code>floppy</code> device to the VM:</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#777"># This makes it a floppy</span>
         <span style="color:#606">floppy</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
       <span style="color:#606">persistentVolumeClaim</span>:
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
 </div>
@@ -332,7 +328,7 @@ as a <code>floppy</code> device to the VM:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-cdrom</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -342,7 +338,6 @@ as a <code>floppy</code> device to the VM:</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#777"># This makes it a cdrom</span>
         <span style="color:#606">cdrom</span>:
           <span style="color:#777"># This makes the cdrom writeable</span>
@@ -350,7 +345,7 @@ as a <code>floppy</code> device to the VM:</p>
           <span style="color:#777"># This makes the cdrom be exposed as SATA device</span>
           <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">sata</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
       <span style="color:#606">persistentVolumeClaim</span>:
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
 </div>
@@ -416,7 +411,7 @@ datasource may look like this:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-cloudinitnocloud</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -426,13 +421,11 @@ datasource may look like this:</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mybootdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#606">lun</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mynoclouddisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mynocloudvolume</span></span>
         <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mybootdisk</span></span>
       <span style="color:#606">persistentVolumeClaim</span>:
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
     - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mynoclouddisk</span></span>
@@ -493,7 +486,7 @@ may look like this:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-pvc</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -503,10 +496,9 @@ may look like this:</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#606">lun</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
       <span style="color:#606">persistentVolumeClaim</span>:
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
 </div>
@@ -540,7 +532,7 @@ API</a>.</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-ephemeral-pvc</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -550,10 +542,9 @@ API</a>.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#606">lun</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
       <span style="color:#606">ephemeral</span>:
         <span style="color:#606">persistentVolumeClaim</span>:
           <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
@@ -638,7 +629,7 @@ recommended in order to reduce the container image’s size.</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-containerdisk</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -648,10 +639,9 @@ recommended in order to reduce the container image’s size.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
         <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
       <span style="color:#606">containerDisk</span>:
         <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vmidisks/fedora25:latest</span></span></code></pre>
 </div>
@@ -692,7 +682,7 @@ for disk images in default location: <code>/disk</code>.</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-containerdisk</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -702,10 +692,9 @@ for disk images in default location: <code>/disk</code>.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
         <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
       <span style="color:#606">containerDisk</span>:
         <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vmidisks/fedora25:latest</span></span>
         <span style="color:#606">path</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">/custom-disk-path/fedora.qcow2</span></span></code></pre>
@@ -726,7 +715,7 @@ re-creation. The disk <code>capacity</code> needs to be specified.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-nocloud</span></span>
@@ -739,18 +728,16 @@ re-creation. The disk <code>capacity</code> needs to be specified.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
         <span style="color:#606">disk</span>:
           <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: emptydisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume</span></span>
         <span style="color:#606">disk</span>:
           <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
       <span style="color:#606">containerDisk</span>:
         <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/cirros-registry-disk-demo:latest</span></span>
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: emptydiskvolume</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: emptydisk</span></span>
       <span style="color:#606">emptyDisk</span>:
         <span style="color:#606">capacity</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">2Gi</span></span></code></pre>
 </div>
@@ -792,7 +779,7 @@ to a VM.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -805,7 +792,6 @@ to a VM.</p>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">host-disk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">hostdiskvolume</span></span>
     <span style="color:#606">machine</span>:
       <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
     <span style="color:#606">resources</span>:
@@ -817,7 +803,7 @@ to a VM.</p>
       capacity: 1Gi
       path: /data/disk.img
       type: DiskOrCreate</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">hostdiskvolume</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">host-disk</span></span>
 <span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>
 </div>
 </div>
@@ -839,7 +825,7 @@ DataVolumes to the dataVolumeTemplates list. Below is an example.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>apiVersion: kubevirt.io/v1alpha2
+<pre>apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachine
 metadata:
   labels:
@@ -858,14 +844,13 @@ spec:
           - disk:
               bus: virtio
             name: datavolumedisk1
-            volumeName: datavolumevolume1
         resources:
           requests:
             memory: 64M
       volumes:
       - dataVolume:
           name: alpine-dv
-        name: datavolumevolume1
+        name: datavolumedisk1
   dataVolumeTemplates:
   - metadata:
       name: alpine-dv
@@ -917,7 +902,7 @@ DataVolumes have finished their clone and import phases.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>apiVersion: kubevirt.io/v1alpha2
+<pre>apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -930,7 +915,6 @@ spec:
       - disk:
           bus: virtio
         name: disk1
-        volumeName: volume1
     machine:
       type: ""
     resources:
@@ -1035,7 +1019,7 @@ control the paths within the volume where ConfigMap keys are projected.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -1048,14 +1032,11 @@ control the paths within the volume where ConfigMap keys are projected.</p>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk: {}</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">app-config-disk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">configmap-volume</span></span>
         <span style="color:#777"># set serial</span>
         <span style="color:#606">serial</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">CVLY623300HK240D</span></span>
     <span style="color:#606">machine</span>:
@@ -1065,7 +1046,7 @@ control the paths within the volume where ConfigMap keys are projected.</p>
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
   <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
     <span style="color:#606">containerDisk</span>:
       <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/fedora-cloud-container-disk-demo:latest</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudInitNoCloud:</span><span style="color:#D20">
@@ -1077,10 +1058,10 @@ control the paths within the volume where ConfigMap keys are projected.</p>
           # mount the ConfigMap
           - &quot;mkdir /mnt/app-config&quot;
           - &quot;mount /dev/$(lsblk --nodeps -no name,serial | grep CVLY623300HK240D | cut -f1 -d' ') /mnt/app-config&quot;</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">configMap:</span><span style="color:#D20">
       name: app-config</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">configmap-volume</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">app-config-disk</span></span>
 <span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>
 </div>
 </div>
@@ -1119,7 +1100,7 @@ control the paths within the volume where Secret keys are projected.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -1132,14 +1113,11 @@ control the paths within the volume where Secret keys are projected.</p>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk: {}</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">app-secret-disk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">secret-volume</span></span>
         <span style="color:#777"># set serial</span>
         <span style="color:#606">serial</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">D23YZ9W6WA5DJ487</span></span>
     <span style="color:#606">machine</span>:
@@ -1149,7 +1127,7 @@ control the paths within the volume where Secret keys are projected.</p>
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
   <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
     <span style="color:#606">containerDisk</span>:
       <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/fedora-cloud-container-disk-demo:latest</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudInitNoCloud:</span><span style="color:#D20">
@@ -1161,10 +1139,10 @@ control the paths within the volume where Secret keys are projected.</p>
           # mount the Secret
           - &quot;mkdir /mnt/app-secret&quot;
           - &quot;mount /dev/$(lsblk --nodeps -no name,serial | grep D23YZ9W6WA5DJ487 | cut -f1 -d' ') /mnt/app-secret&quot;</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">secret:</span><span style="color:#D20">
       secretName: app-secret</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">secret-volume</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">app-secret-disk</span></span>
 <span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>
 </div>
 </div>
@@ -1184,7 +1162,7 @@ examples above.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -1197,11 +1175,9 @@ examples above.</p>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">serviceaccountdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">serviceaccountvolume</span></span>
     <span style="color:#606">machine</span>:
       <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
     <span style="color:#606">resources</span>:
@@ -1209,10 +1185,10 @@ examples above.</p>
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
   <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
     <span style="color:#606">containerDisk</span>:
       <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/fedora-cloud-container-disk-demo:latest</span></span>
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: serviceaccountvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: serviceaccountdisk</span></span>
     <span style="color:#606">serviceAccount</span>:
       <span style="color:#606">serviceAccountName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default</span></span></code></pre>
 </div>
@@ -1298,7 +1274,7 @@ fewer IOThreads than CPU, each IOThread will be pinned to a set of CPUs.</p>
 <h5 id="shared-iothreads"><a class="anchor" href="#shared-iothreads"></a>Shared IOThreads</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -1314,60 +1290,53 @@ fewer IOThreads than CPU, each IOThread will be pinned to a set of CPUs.</p>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mydisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvolume</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume</span></span>
         <span style="color:#606">dedicatedIOThread</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk2</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume2</span></span>
         <span style="color:#606">dedicatedIOThread</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk3</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume3</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk4</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume4</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk5</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume5</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk6</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume6</span></span>
     <span style="color:#606">machine</span>:
       <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
     <span style="color:#606">resources</span>:
       <span style="color:#606">requests</span>:
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">64M</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mydisk</span></span>
     <span style="color:#606">persistentVolumeClaim</span>:
       <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume2</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk2</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume3</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk3</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume4</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk4</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume5</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk5</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume6</span></span></code></pre>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk6</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1391,7 +1360,7 @@ emptydisk6:   1</pre>
 <h5 id="auto-iothreads"><a class="anchor" href="#auto-iothreads"></a>Auto IOThreads</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -1407,60 +1376,53 @@ emptydisk6:   1</pre>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mydisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume</span></span>
         <span style="color:#606">dedicatedIOThread</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk2</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume2</span></span>
         <span style="color:#606">dedicatedIOThread</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk3</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume3</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk4</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume4</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk5</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume5</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk6</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume6</span></span>
     <span style="color:#606">machine</span>:
       <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
     <span style="color:#606">resources</span>:
       <span style="color:#606">requests</span>:
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">64M</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mydisk</span></span>
     <span style="color:#606">persistentVolumeClaim</span>:
       <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume2</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk2</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume3</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk3</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume4</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk4</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume5</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk5</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptyDisk:</span><span style="color:#D20">
       capacity: 1Gi</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume6</span></span></code></pre>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydisk6</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1507,8 +1469,7 @@ for optimal performance.</p>
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
-        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mydisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
+        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mydisk</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1529,7 +1490,7 @@ of this feature.</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-disk</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -1541,11 +1502,10 @@ of this feature.</p>
       <span style="color:#606">blockMultiQueue</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#606">disk</span>:
           <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
       <span style="color:#606">persistentVolumeClaim</span>:
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
 </div>
@@ -1596,7 +1556,7 @@ I/O then started VMI will return an error.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -1609,7 +1569,6 @@ I/O then started VMI will return an error.</p>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">pvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">pvcvolume</span></span>
         <span style="color:#606">cache</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">writethrough</span></span>
     <span style="color:#606">machine</span>:
       <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
@@ -1618,7 +1577,7 @@ I/O then started VMI will return an error.</p>
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">64M</span></span>
   <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: pvcvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: pvcdisk</span></span>
     <span style="color:#606">persistentVolumeClaim</span>:
       <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk-alpine</span></span>
 <span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>

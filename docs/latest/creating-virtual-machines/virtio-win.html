@@ -174,7 +174,7 @@ CD-ROM to provide QEMU Guest Agent installation.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -191,7 +191,6 @@ CD-ROM to provide QEMU Guest Agent installation.</p>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cdrom:</span><span style="color:#D20">
           bus: sata</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
     <span style="color:#606">machine</span>:
       <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
     <span style="color:#606">resources</span>:
@@ -204,7 +203,7 @@ CD-ROM to provide QEMU Guest Agent installation.</p>
     <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">pvcvolume</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerDisk:</span><span style="color:#D20">
       image: kubevirt/virtio-container-disk</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span></code></pre>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span></code></pre>
 </div>
 </div>
 </div>

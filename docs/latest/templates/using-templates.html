@@ -180,7 +180,7 @@ provide a template defining the corresponding object and its metadata.</p>
     <span style="color:#606">kubevirt.io/os</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora27</span></span>
     <span style="color:#606">miq.github.io/kubevirt-is-vmi-template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">true</span><span style="color:#710">&quot;</span></span>
 <span style="color:#606">objects</span>:
-- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">apiVersion: kubevirt.io/v1alpha2</span></span>
+- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">apiVersion: kubevirt.io/v1alpha3</span></span>
   <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
   <span style="color:#606">metadata</span>:
     <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">${NAME}</span></span>
@@ -201,9 +201,8 @@ provide a template defining the corresponding object and its metadata.</p>
           <span style="color:#606">devices</span>:
             <span style="color:#606">disks</span>:
               - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: disk0</span></span>
-                <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">root</span></span>
         <span style="color:#606">volumes</span>:
-          - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: root</span></span>
+          - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: disk0</span></span>
             <span style="color:#606">persistentVolumeClaim</span>:
               <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myroot</span></span>
 <span style="color:#606">parameters</span>:

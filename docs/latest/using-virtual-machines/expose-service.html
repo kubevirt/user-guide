@@ -168,7 +168,7 @@ k8s resource, by referencing these labels in a service.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vmi-ephemeral</span></span>
@@ -181,12 +181,11 @@ k8s resource, by referencing these labels in a service.</p>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
     <span style="color:#606">resources</span>:
       <span style="color:#606">requests</span>:
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">64M</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
     <span style="color:#606">containerDisk</span>:
       <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/cirros-registry-disk-demo:latest</span></span></code></pre>
 </div>

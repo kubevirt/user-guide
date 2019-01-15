@@ -173,7 +173,7 @@ following example the vmi contains the labels <code>cpu: slow</code> and
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-ephemeral</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">nodeSelector</span>:
@@ -186,10 +186,9 @@ following example the vmi contains the labels <code>cpu: slow</code> and
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#606">lun</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
       <span style="color:#606">persistentVolumeClaim</span>:
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
 </div>
@@ -217,7 +216,7 @@ Pod-affinity affects VMs as well.</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-ephemeral</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">nodeSelector</span>:
@@ -230,7 +229,6 @@ Pod-affinity affects VMs as well.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#606">lun</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">affinity</span>:
     <span style="color:#606">podAffinity</span>:
@@ -254,7 +252,7 @@ Pod-affinity affects VMs as well.</p>
               - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">S2</span></span>
           <span style="color:#606">topologyKey</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubernetes.io/hostname</span></span>
   <span style="color:#606">volumes</span>:
-    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
       <span style="color:#606">persistentVolumeClaim</span>:
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span></code></pre>
 </div>
@@ -296,7 +294,7 @@ not require) the VMs to schedule onto nodes with matching taints.</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-ephemeral</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">nodeSelector</span>:
@@ -309,7 +307,6 @@ not require) the VMs to schedule onto nodes with matching taints.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mypvcdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
         <span style="color:#606">lun</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">tolerations</span>:
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">key: &quot;key&quot;</span></span>

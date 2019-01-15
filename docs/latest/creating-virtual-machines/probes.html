@@ -173,7 +173,7 @@ port 1500 via cloud-init.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -185,12 +185,10 @@ port 1500 via cloud-init.</p>
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
-        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registrydisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
+        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
     <span style="color:#606">resources</span>:
       <span style="color:#606">requests</span>:
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
@@ -202,7 +200,7 @@ port 1500 via cloud-init.</p>
     <span style="color:#606">timeoutSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">10</span></span>
   <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
     <span style="color:#606">registryDisk</span>:
       <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudInitNoCloud:</span><span style="color:#D20">
@@ -214,7 +212,7 @@ port 1500 via cloud-init.</p>
           - setenforce 0
           - dnf install -y nmap-ncat
           - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span></code></pre>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -229,7 +227,7 @@ port 1500 via cloud-init.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -241,12 +239,10 @@ port 1500 via cloud-init.</p>
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
-        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registrydisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
+        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
     <span style="color:#606">resources</span>:
       <span style="color:#606">requests</span>:
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
@@ -258,7 +254,7 @@ port 1500 via cloud-init.</p>
     <span style="color:#606">timeoutSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">10</span></span>
   <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
     <span style="color:#606">registryDisk</span>:
       <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudInitNoCloud:</span><span style="color:#D20">
@@ -270,7 +266,7 @@ port 1500 via cloud-init.</p>
           - setenforce 0
           - dnf install -y nmap-ncat
           - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span></code></pre>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -283,7 +279,7 @@ filled:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -295,12 +291,10 @@ filled:</p>
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
-        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registrydisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
+        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
     <span style="color:#606">resources</span>:
       <span style="color:#606">requests</span>:
         <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
@@ -314,7 +308,7 @@ filled:</p>
     <span style="color:#606">successThreshold</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">3</span></span>
   <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
     <span style="color:#606">registryDisk</span>:
       <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel</span></span>
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudInitNoCloud:</span><span style="color:#D20">
@@ -326,7 +320,7 @@ filled:</p>
           - setenforce 0
           - dnf install -y nmap-ncat
           - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span></code></pre>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">

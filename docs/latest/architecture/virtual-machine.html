@@ -326,7 +326,7 @@ Please provide your use-case if you need this!</p>
 <h3 id="example"><a class="anchor" href="#example"></a>Example</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -345,11 +345,9 @@ Please provide your use-case if you need this!</p>
           - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
               bus: virtio</span></span>
             <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
-            <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
           - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
               bus: virtio</span></span>
             <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
-            <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
         <span style="color:#606">machine</span>:
           <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
         <span style="color:#606">resources</span>:
@@ -357,12 +355,12 @@ Please provide your use-case if you need this!</p>
             <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">64M</span></span>
       <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
       <span style="color:#606">volumes</span>:
-      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
         <span style="color:#606">containerDisk</span>:
           <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/cirros-container-disk-demo:latest</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudInitNoCloud:</span><span style="color:#D20">
           userDataBase64: IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK</span></span>
-        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span></code></pre>
+        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -402,14 +400,14 @@ No resources found.</code></pre>
 <span style="color:#606">Namespace</span>:    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default</span></span>
 <span style="color:#606">Labels</span>:       <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/vm=vm-cirros</span></span>
 <span style="color:#606">Annotations</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">&lt;none&gt;</span></span>
-<span style="color:#606">API Version</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">API Version</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">Kind</span>:         <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
 <span style="color:#606">Metadata</span>:
   <span style="color:#606">Cluster Name</span>:
   <span style="color:#606">Creation Timestamp</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">2018-04-30T09:25:08Z</span></span>
   <span style="color:#606">Generation</span>:          <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
   <span style="color:#606">Resource Version</span>:    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">6418</span></span>
-  <span style="color:#606">Self Link</span>:           <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">/apis/kubevirt.io/v1alpha2/namespaces/default/virtualmachines/vm-cirros</span></span>
+  <span style="color:#606">Self Link</span>:           <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">/apis/kubevirt.io/v1alpha3/namespaces/default/virtualmachines/vm-cirros</span></span>
   <span style="color:#606">UID</span>:                 <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">60043358-4c58-11e8-8653-525500d15501</span></span>
 <span style="color:#606">Spec</span>:
   <span style="color:#606">Running</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
@@ -425,11 +423,11 @@ No resources found.</code></pre>
             <span style="color:#606">Disk</span>:
               <span style="color:#606">Bus</span>:        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
             <span style="color:#606">Name</span>:         <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
-            <span style="color:#606">Volume Name</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
+            <span style="color:#606">Volume Name</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
             <span style="color:#606">Disk</span>:
               <span style="color:#606">Bus</span>:        <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
             <span style="color:#606">Name</span>:         <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
-            <span style="color:#606">Volume Name</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
+            <span style="color:#606">Volume Name</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
         <span style="color:#606">Machine</span>:
           <span style="color:#606">Type</span>:
         <span style="color:#606">Resources</span>:
@@ -437,12 +435,12 @@ No resources found.</code></pre>
             <span style="color:#606">Memory</span>:                      <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">64M</span></span>
       <span style="color:#606">Termination Grace Period Seconds</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
       <span style="color:#606">Volumes</span>:
-        <span style="color:#606">Name</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
+        <span style="color:#606">Name</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
         <span style="color:#606">Registry Disk</span>:
           <span style="color:#606">Image</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/cirros-registry-disk-demo:latest</span></span>
         <span style="color:#606">Cloud Init No Cloud</span>:
           <span style="color:#606">User Data Base 64</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK</span></span>
-        <span style="color:#606">Name</span>:                 <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
+        <span style="color:#606">Name</span>:                 <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
 <span style="color:#606">Status</span>:
   <span style="color:#606">Created</span>:  <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
   <span style="color:#606">Ready</span>:    <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>

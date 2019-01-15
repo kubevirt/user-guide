@@ -192,7 +192,7 @@ with any other API resource.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-nocloud</span></span>
@@ -205,25 +205,22 @@ with any other API resource.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
         <span style="color:#606">disk</span>:
           <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: emptydisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">emptydiskvolume</span></span>
         <span style="color:#606">disk</span>:
           <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
           bus: virtio</span></span>
         <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
   <span style="color:#606">volumes</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
     <span style="color:#606">containerDisk</span>:
       <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/fedora-cloud-container-disk-demo:latest</span></span>
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: emptydiskvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: emptydisk</span></span>
     <span style="color:#606">emptyDisk</span>:
       <span style="color:#606">capacity</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">2Gi</span><span style="color:#710">&quot;</span></span>
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: cloudinitvolume</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: cloudinitdisk</span></span>
     <span style="color:#606">cloudInitNoCloud</span>:
       <span style="color:#606">userData</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">|-</span><span style="color:#D20">
         #cloud-config

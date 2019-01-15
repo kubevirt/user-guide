@@ -286,7 +286,7 @@ value will be the name of the parent template, for example
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
 <span style="color:#606">items</span>:
-- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">apiVersion: kubevirt.io/v1alpha2</span></span>
+- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">apiVersion: kubevirt.io/v1alpha3</span></span>
   <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
   <span style="color:#606">metadata</span>:
     <span style="color:#606">labels</span>:
@@ -307,14 +307,13 @@ value will be the name of the parent template, for example
             - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
                 bus: virtio</span></span>
               <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rootdisk</span></span>
-              <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rootvolume</span></span>
             <span style="color:#606">rng</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
           <span style="color:#606">resources</span>:
             <span style="color:#606">requests</span>:
               <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1G</span></span>
         <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
         <span style="color:#606">volumes</span>:
-        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: rootvolume</span></span>
+        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: rootdisk</span></span>
           <span style="color:#606">persistentVolumeClaim</span>:
             <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mydisk</span></span>
         - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudInitNoCloud:</span><span style="color:#D20">
@@ -322,7 +321,7 @@ value will be the name of the parent template, for example
               #cloud-config
               password: redhat
               chpasswd: { expire: False }</span></span>
-          <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
+          <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">List</span></span>
 <span style="color:#606">metadata</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>
 </div>

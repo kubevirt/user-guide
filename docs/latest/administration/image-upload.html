@@ -291,7 +291,7 @@ following:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">cat &lt;&lt;EOF | kubectl apply -f -
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   name: cirros-vm
@@ -302,7 +302,6 @@ spec:
       - disk:
           bus: virtio
         name: pvcdisk
-        volumeName: pvcvolume
     machine:
       type: &quot;&quot;
     resources:
@@ -310,7 +309,7 @@ spec:
         memory: 64M
   terminationGracePeriodSeconds: 0
   volumes:
-  - name: pvcvolume
+  - name: pvcdisk
     persistentVolumeClaim:
       claimName: cirros-vm-disk
 status: {}

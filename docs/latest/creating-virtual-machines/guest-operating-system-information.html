@@ -203,7 +203,7 @@ release.</p>
 <h4 id="windows-server-2012r2-virtualmachineinstancepreset-example"><a class="anchor" href="#windows-server-2012r2-virtualmachineinstancepreset-example"></a>Windows Server 2012R2 <code>VirtualMachineInstancePreset</code> Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstancePreset</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">windows-server-2012r2</span></span>
@@ -236,7 +236,7 @@ release.</p>
           <span style="color:#606">tickPolicy</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">catchup</span></span>
         <span style="color:#606">hyperv</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
 <span style="color:#f8f;background:#505"><span style="color:#f4f">---</span></span>
-<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">labels</span>:
@@ -250,7 +250,6 @@ release.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: server2012r2</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">server2012r2</span></span>
         <span style="color:#606">disk</span>:
           <span style="color:#606">dev</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vda</span></span>
   <span style="color:#606">volumes</span>:
@@ -265,12 +264,12 @@ release.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">annotations</span>:
-    <span style="color:#606">presets.virtualmachineinstances.kubevirt.io/presets-applied</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
-    <span style="color:#606">virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+    <span style="color:#606">presets.virtualmachineinstances.kubevirt.io/presets-applied</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
+    <span style="color:#606">virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
   <span style="color:#606">labels</span>:
     <span style="color:#606">kubevirt.io/os</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">win2k12r2</span></span>
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">windows2012r2</span></span>
@@ -305,7 +304,6 @@ release.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
       - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: server2012r2</span></span>
-        <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">server2012r2</span></span>
         <span style="color:#606">disk</span>:
           <span style="color:#606">dev</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vda</span></span>
   <span style="color:#606">volumes</span>:

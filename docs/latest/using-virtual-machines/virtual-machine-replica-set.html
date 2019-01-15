@@ -307,7 +307,7 @@ in KubeVirt and is untested.</p>
 <h3 id="example"><a class="anchor" href="#example"></a>Example</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstanceReplicaSet</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testreplicaset</span></span>
@@ -327,12 +327,11 @@ in KubeVirt and is untested.</p>
           <span style="color:#606">disks</span>:
           - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span></span>
             <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
-            <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
         <span style="color:#606">resources</span>:
           <span style="color:#606">requests</span>:
             <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">64M</span></span>
       <span style="color:#606">volumes</span>:
-      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
         <span style="color:#606">containerDisk</span>:
           <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/cirros-container-disk-demo:latest</span></span></code></pre>
 </div>
@@ -350,14 +349,14 @@ Name:         testreplicaset
 Namespace:    default
 Labels:       &lt;none&gt;
 Annotations:  &lt;none&gt;
-API Version:  kubevirt.io/v1alpha2
+API Version:  kubevirt.io/v1alpha3
 Kind:         VirtualMachineInstanceReplicaSet
 Metadata:
   Cluster Name:
   Creation Timestamp:  2018-01-03T12:42:30Z
   Generation:          0
   Resource Version:    6380
-  Self Link:           /apis/kubevirt.io/v1alpha2/namespaces/default/virtualmachineinstancereplicasets/testreplicaset
+  Self Link:           /apis/kubevirt.io/v1alpha3/namespaces/default/virtualmachineinstancereplicasets/testreplicaset
   UID:                 903a9ea0-f083-11e7-9094-525400ee45b0
 Spec:
   Replicas:  3
@@ -376,12 +375,12 @@ Spec:
           Disks:
             Disk:
             Name:         containerdisk
-            Volume Name:  registryvolume
+            Volume Name:  containerdisk
         Resources:
           Requests:
             Memory:  64M
       Volumes:
-        Name:  registryvolume
+        Name:  containerdisk
         Container Disk:
           Image:  kubevirt/cirros-container-disk-demo:latest
 Status:
@@ -446,7 +445,7 @@ autoscaler:</p>
   <span style="color:#606">scaleTargetRef</span>:
     <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstanceReplicaSet</span></span>
     <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vmi-replicaset-cirros</span></span>
-    <span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha2</span></span>
+    <span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
   <span style="color:#606">minReplicas</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">3</span></span>
   <span style="color:#606">maxReplicas</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">10</span></span>
   <span style="color:#606">targetCPUUtilizationPercentage</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">50</span></span></code></pre>
