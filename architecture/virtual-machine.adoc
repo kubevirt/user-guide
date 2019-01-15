@@ -152,7 +152,7 @@ Example
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachine
 metadata:
   labels:
@@ -171,11 +171,9 @@ spec:
           - disk:
               bus: virtio
             name: containerdisk
-            volumeName: registryvolume
           - disk:
               bus: virtio
             name: cloudinitdisk
-            volumeName: cloudinitvolume
         machine:
           type: ""
         resources:
@@ -183,12 +181,12 @@ spec:
             memory: 64M
       terminationGracePeriodSeconds: 0
       volumes:
-      - name: registryvolume
+      - name: containerdisk
         containerDisk:
           image: kubevirt/cirros-container-disk-demo:latest
       - cloudInitNoCloud:
           userDataBase64: IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK
-        name: cloudinitvolume
+        name: cloudinitdisk
 ----
 
 Saving this manifest into `vm.yaml` and submitting it to Kubernetes will
@@ -224,14 +222,14 @@ Name:         vm-cirros
 Namespace:    default
 Labels:       kubevirt.io/vm=vm-cirros
 Annotations:  <none>
-API Version:  kubevirt.io/v1alpha2
+API Version:  kubevirt.io/v1alpha3
 Kind:         VirtualMachine
 Metadata:
   Cluster Name:        
   Creation Timestamp:  2018-04-30T09:25:08Z
   Generation:          0
   Resource Version:    6418
-  Self Link:           /apis/kubevirt.io/v1alpha2/namespaces/default/virtualmachines/vm-cirros
+  Self Link:           /apis/kubevirt.io/v1alpha3/namespaces/default/virtualmachines/vm-cirros
   UID:                 60043358-4c58-11e8-8653-525500d15501
 Spec:
   Running:  true
@@ -247,11 +245,11 @@ Spec:
             Disk:
               Bus:        virtio
             Name:         containerdisk
-            Volume Name:  registryvolume
+            Volume Name:  containerdisk
             Disk:
               Bus:        virtio
             Name:         cloudinitdisk
-            Volume Name:  cloudinitvolume
+            Volume Name:  cloudinitdisk
         Machine:
           Type:  
         Resources:
@@ -259,12 +257,12 @@ Spec:
             Memory:                      64M
       Termination Grace Period Seconds:  0
       Volumes:
-        Name:  registryvolume
+        Name:  containerdisk
         Registry Disk:
           Image:  kubevirt/cirros-registry-disk-demo:latest
         Cloud Init No Cloud:
           User Data Base 64:  IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK
-        Name:                 cloudinitvolume
+        Name:                 cloudinitdisk
 Status:
   Created:  true
   Ready:    true

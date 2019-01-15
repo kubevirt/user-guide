@@ -31,7 +31,6 @@ spec:
     devices:
       disks:
       - name: myimage
-        volumeName: myimage
         disk: {}
   volumes:
     - name: myimage
@@ -70,7 +69,6 @@ spec:
     devices:
       disks:
       - name: myimage
-        volumeName: myimage
         disk: {}
   volumes:
     - name: myimage
@@ -105,7 +103,6 @@ spec:
     devices:
       disks:
       - name: myimage
-        volumeName: myimage
         disk: {}
   volumes:
     - name: myimage
@@ -210,7 +207,6 @@ spec:
     devices:
       disks:
       - name: myimage
-        volumeName: myimage
         disk: {}
   volumes:
     - name: myimage
@@ -238,7 +234,6 @@ spec:
     devices:
       disks:
       - name: myimage
-        volumeName: myimage
         disk: {}
   volumes:
     - name: myimage
@@ -279,7 +274,6 @@ spec:
     devices:
       disks:
       - name: myimage
-        volumeName: myimage
         disk: {}
   volumes:
     - name: myimage
@@ -319,7 +313,6 @@ spec:
       autoattachGraphicsDevice: false
       disks:
       - name: myimage
-        volumeName: myimage
         disk: {}
   volumes:
     - name: myimage
@@ -348,7 +341,7 @@ A common feature configuration is shown by the following example:
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   name: myvmi
@@ -369,7 +362,6 @@ spec:
     devices:
       disks:
       - name: myimage
-        volumeName: myimage
         disk: {}
   volumes:
     - name: myimage
@@ -390,7 +382,7 @@ place the VM.
 
 [source,yaml]
 ----
-apiVersion: kubevirt.io/v1alpha2
+apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstance
 metadata:
   name: myvmi
@@ -405,7 +397,6 @@ spec:
         cpu: "1"
       disks:
       - name: myimage
-        volumeName: myimage
         disk: {}
   volumes:
     - name: myimage
@@ -464,7 +455,6 @@ spec:
         pageSize: "2Mi"
     disks:
     - name: myimage
-      volumeName: myimage
       disk: {}
   volumes:
     - name: myimage
