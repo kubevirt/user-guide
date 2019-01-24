@@ -269,6 +269,20 @@ value will be the name of the parent template, for example
 </div>
 </div>
 <div class="paragraph">
+<p>In addition, these VMs can include an optional label <code>vm.cnv.io/template-namespace</code>,
+whose value will be the namespace of the parent template, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">  <span style="color:#606">metadata</span>:
+    <span style="color:#606">labels</span>:
+      <span style="color:#606">vm.cnv.io/template-namespace</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">openshift</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If this label is not defined, the template is expected to belong to the same namespace as the VM.</p>
+</div>
+<div class="paragraph">
 <p>This make it possible to query for all the VMs built from any template.</p>
 </div>
 <div class="paragraph">
