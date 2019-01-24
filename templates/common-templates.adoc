@@ -108,6 +108,18 @@ value will be the name of the parent template, for example
       vm.cnv.io/template: fedora-generic-medium
 ----
 
+In addition, these VMs can include an optional label `vm.cnv.io/template-namespace`,
+whose value will be the namespace of the parent template, for example:
+
+[source,yaml]
+----
+  metadata:
+    labels:
+      vm.cnv.io/template-namespace: openshift
+----
+
+If this label is not defined, the template is expected to belong to the same namespace as the VM.
+
 This make it possible to query for all the VMs built from any template.
 
 Example:
