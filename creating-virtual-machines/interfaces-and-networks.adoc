@@ -184,6 +184,9 @@ tungstenfabric
 It is also possible to connect VMIs to a networks using
 https://tungstenfabric.io/[TungstenFabric]. This assumes that
 TungstenFabric SDN controller is installed across your cluster.
+A `NetworkAttachmentDefinition` CRD will be automatically installed
+as part of the TungstenFabric installation.
+
 A single or multiple networks can be created as network attachment
 definitions:
 
@@ -240,6 +243,8 @@ spec:
       interfaces:
       - bridge: {}
         name: nic1
+      - bridge: {}
+        name: nic2
     machine:
       type: ""
     resources:
