@@ -183,11 +183,44 @@ tungstenfabric
 
 It is also possible to connect VMIs to a networks using
 https://tungstenfabric.io/[TungstenFabric]. This assumes that
-TungstenFabric SDN controller is installed across your cluster. For now
-only one interface is supported. By default a VMI connects to the 
-default POD network. However, by setting the network name to a specifc
-network, alternative networks can be used.
-The alternative network must be created upfront.
+TungstenFabric SDN controller is installed across your cluster.
+A single or multiple networks can be created as network attachment
+definitions:
+
+[source,yaml]
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: net1
+  namespace: default
+  annotations:
+    "opencontrail.org/cidr" : "1.0.0.0/24"
+    "opencontrail.org/ip_fabric_snat" : "true"
+    "opencontrail.org/ip_fabric_forwarding" : "true"
+spec:
+  config: '{
+    “cniVersion”: “0.3.0”,
+    "type": "contrail-k8s-cni"
+}'
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: net2
+  namespace: default
+  annotations:
+    "opencontrail.org/cidr" : "2.0.0.0/24"
+    "opencontrail.org/ip_fabric_snat" : "false"
+    "opencontrail.org/ip_fabric_forwarding" : "false"
+spec:
+  config: '{
+    “cniVersion”: “0.3.0”,
+    "type": "contrail-k8s-cni"
+}'
+
+Once the networks are created, they can be referenced in the VMI
+manifest:
 
 [source,yaml]
 ---
@@ -206,7 +239,7 @@ spec:
         name: containerdisk
       interfaces:
       - bridge: {}
-        name: net1
+        name: nic1
     machine:
       type: ""
     resources:
@@ -214,8 +247,11 @@ spec:
         memory: 64M
   networks:
   - tungstenfabric:
-      networkName: '{"domain":"default-domain", "project": "k8s-default","name":"test"}'
-    name: net1
+      networkName: '{"name":"net1"}'
+    name: nic1
+  - tungstenfabric:
+      networkName: '{"name":"net2"}'
+    name: nic2
   volumes:
   - containerDisk:
       image: kubevirt/cirros-container-disk-demo:devel
