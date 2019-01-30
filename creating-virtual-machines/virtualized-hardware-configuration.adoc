@@ -471,3 +471,34 @@ Limitations
 * a node must have pre-allocated hugepages
 * hugepages size cannot be bigger than requested memory
 * requested memory must be divisible by hugepages size
+
+Input Devices
+~~~~~~~~~~~~~
+
+Tablet
+++++++
+
+Kubevirt supports input devices. The only type which is supported is `tablet`. 
+Tablet input device supports only `virtio` bus.
+
+[source,yaml]
+----
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  name: myvm
+spec:
+  domain:
+    devices:
+      inputs:
+      - type: tablet
+        bus: virtio
+        name: tablet1
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimname: myclaim
+----
