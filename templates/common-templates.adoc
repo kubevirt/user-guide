@@ -21,8 +21,7 @@ maximize the stability of the VM, and allows performance optimizations.
 allocate to the VM.
 
 More documentation is available in the
-https://github.com/kubevirt/common-templates[common templates
-subproject]
+https://github.com/kubevirt/common-templates[common templates subproject]
 
 Accessing the virtual machine templates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,8 +29,7 @@ Accessing the virtual machine templates
 If you installed KubeVirt using a supported method you should find the
 common templates preinstalled in the cluster. Should you want to upgrade
 the templates, or install them from scratch, you can use one of the
-https://github.com/kubevirt/common-templates/releases[supported
-releases]
+https://github.com/kubevirt/common-templates/releases[supported releases]
 
 To install the templates:
 
@@ -224,7 +222,7 @@ CNV-aware UI and tooling.
 disk
 ++++
 
-Name of the default disk to use.
+See the section `references` below.
 
 Example:
 
@@ -241,7 +239,7 @@ metadata:
 nic
 +++
 
-Name of the default NIC to use.
+See the section `references` below.
 
 Example:
 
@@ -258,7 +256,7 @@ metadata:
 volume
 ++++++
 
-Name of the default volume to be used as backend for disks.
+See the section `references` below.
 
 Example:
 
@@ -275,7 +273,7 @@ metadata:
 network
 +++++++
 
-Name of the default network to be attached to the NIC.
+See the section `references` below.
 
 Example:
 
@@ -288,6 +286,13 @@ metadata:
   annotations:
     defaults.template.cnv.io/network: fast-net
 ----
+
+references
+++++++++++
+
+The default values for network, nic, volume, disk is meant to be the *name* of a section later in the document that the UI will find and consume to find the default values for the corresponding types.
+For example, considering the annotation `defaults.template.cnv.io/disk: my-disk`: we assume that later in the document it exists an element called `my-disk` that the UI can use to find the data it needs.
+The names actually don't matter as long as they are legal for kubernetes and consistent with the content of the document.
 
 complete example
 ++++++++++++++++
