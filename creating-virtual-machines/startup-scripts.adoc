@@ -47,6 +47,9 @@ KubeVirt release.
 Cloud-init Examples
 ~~~~~~~~~~~~~~~~~~~
 
+User Data
+^^^^^^^^^
+
 KubeVirt supports the cloud-init NoCloud datasource which involves
 injecting startup scripts through the use of a disk attached to the VM.
 
@@ -55,7 +58,7 @@ using this method, users must define a disk and a volume for the NoCloud
 datasource in the VirtualMachineInstance’s spec.
 
 Cloud-init user-data as clear text
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+++++++++++++++++++++++++++++++++++
 
 In the example below, a SSH key is stored in the cloudInitNoCloud
 Volume’s userData field as clean text. There is a corresponding disks
@@ -104,7 +107,7 @@ kubectl create -f my-vmi.yaml
 ----
 
 Cloud-init user-data as base64 string
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++++++++++++++++++++++++++++++++++++++
 
 In the example below, a simple bash script is base64 encoded and stored
 in the cloudInitNoCloud Volume’s userDataBase64 field. There is a
@@ -161,7 +164,7 @@ kubectl create -f my-vmi.yaml
 ----
 
 Cloud-init UserData as k8s Secret
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++++++++++++++++++++++++++++++++++
 
 Users who wish to not store the cloud-init userdata directly in the
 VirtualMachineInstance spec have the option to store the userdata into a
@@ -222,7 +225,7 @@ kubectl create -f my-vmi.yaml
 ----
 
 Injecting SSH keys with Cloud-init’s Cloud-config
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
++++++++++++++++++++++++++++++++++++++++++++++++++
 
 In the examples so far, the cloud-init userdata script has been a bash
 script. Cloud-init has it’s own configuration that can handle some
@@ -285,7 +288,7 @@ ssh -i <insert private key here> fedora@<insert ip here>
 ----
 
 Inject SSH key using a Custom Shell Script
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+++++++++++++++++++++++++++++++++++++++++++
 
 Depending on the boot image in use, users may have a mixed experience
 using cloud-init’s cloud-config to create users and inject SSH keys.
@@ -341,6 +344,213 @@ kubectl create -f my-vmi.yaml
 
 # Connect to VM with passwordless SSH key
 ssh -i <insert private key here> foo@<insert ip here>
+----
+
+Network Config
+^^^^^^^^^^^^^^
+
+A cloud-init
+link:https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html[network version 1]
+configuration can be set to configure the network at boot. 
+
+Cloud-init
+link:#user-data[user-data]
+*must* be set for cloud-init to parse _network-config_ even if it is just the
+user-data config header:
+[source,bash]
+----
+#cloud-config
+----
+
+Cloud-init network-config as clear text
++++++++++++++++++++++++++++++++++++++++
+
+In the example below, a simple cloud-init network-config is stored in the
+cloudInitNoCloud Volume’s networkData field as clean text. There is a
+corresponding disks entry that references the cloud-init volume and assigns it
+to the VM’s device.
+
+[source,bash]
+----
+# Create a VM manifest with the network-config in
+# a cloudInitNoCloud volume's networkData field.
+
+cat << END > my-vmi.yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  name: myvmi
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        volumeName: registryvolume
+        disk:
+          bus: virtio
+      - name: cloudinitdisk
+        volumeName: cloudinitvolume
+        disk:
+          bus: virtio
+  volumes:
+    - name: registryvolume
+      containerDisk:
+        image: kubevirt/cirros-container-disk-demo:latest
+    - name: cloudinitvolume
+      cloudInitNoCloud:
+        userData: "#cloud-config"
+        networkData: |
+          network:
+            version: 1
+            config:
+            - type: physical
+            name: eth0
+            subnets:
+              - type: dhcp
+
+END
+
+# Post the Virtual Machine spec to KubeVirt.
+
+kubectl create -f my-vmi.yaml
+----
+
+Cloud-init network-config as base64 string
+++++++++++++++++++++++++++++++++++++++++++
+
+In the example below, a simple network-config is base64 encoded and stored
+in the cloudInitNoCloud Volume’s networkDataBase64 field. There is a
+corresponding disks entry that references the cloud-init volume and
+assigns it to the VM’s device.
+
+_Users also have the option of storing the network-config in a
+Kubernetes Secret and referencing the Secret in the VM’s spec. Examples
+further down in the document illustrate how that is done._
+
+[source,bash]
+----
+# Create a simple network-config
+
+cat << END > network-config
+network:
+  version: 1
+  config:
+  - type: physical
+  name: eth0
+  subnets:
+    - type: dhcp
+END
+
+# Create a VM manifest with the networkData base64 encoded into
+# a cloudInitNoCloud volume's networkDataBase64 field.
+
+cat << END > my-vmi.yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  name: myvmi
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        volumeName: registryvolume
+        disk:
+          bus: virtio
+      - name: cloudinitdisk
+        volumeName: cloudinitvolume
+        disk:
+          bus: virtio
+  volumes:
+    - name: registryvolume
+      containerDisk:
+        image: kubevirt/cirros-container-disk-demo:latest
+    - name: cloudinitvolume
+      cloudInitNoCloud:
+        userData: "#cloud-config"
+        networkDataBase64: $(cat network-config | base64 -w0)
+END
+
+# Post the Virtual Machine spec to KubeVirt.
+
+kubectl create -f my-vmi.yaml
+----
+
+Cloud-init network-config as k8s Secret
++++++++++++++++++++++++++++++++++++++++
+
+Users who wish to not store the cloud-init network-config directly in the
+VirtualMachineInstance spec have the option to store the network-config into a
+Kubernetes Secret and reference that Secret in the spec.
+
+Multiple VirtualMachineInstance specs can reference the same Kubernetes
+Secret containing cloud-init network-config.
+
+Below is an example of how to create a Kubernetes Secret containing a
+network-config and reference that Secret in the VM’s spec.
+
+[source,bash]
+----
+# Create a simple network-config
+
+cat << END > network-config
+network:
+  version: 1
+  config:
+  - type: physical
+  name: eth0
+  subnets:
+    - type: dhcp
+END
+
+# Store the network-config in a Kubernetes Secret
+kubectl create secret generic my-vmi-secret --from-file=networkdata=network-config
+
+# Create a VM manifest and reference the Secret's name in the cloudInitNoCloud
+# Volume's secretRef field
+
+cat << END > my-vmi.yaml
+apiVersion: kubevirt.io/v1alpha2
+kind: VirtualMachineInstance
+metadata:
+  name: myvmi
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        volumeName: registryvolume
+        disk:
+          bus: virtio
+      - name: cloudinitdisk
+        volumeName: cloudinitvolume
+        disk:
+          bus: virtio
+  volumes:
+    - name: registryvolume
+      containerDisk:
+        image: kubevirt/cirros-registry-disk-demo:latest
+    - name: cloudinitvolume
+      cloudInitNoCloud:
+        userData: "#cloud-config"
+        networkDataSecretRef:
+          name: my-vmi-secret
+END
+
+# Post the VM
+kubectl create -f my-vmi.yaml
 ----
 
 Debugging
