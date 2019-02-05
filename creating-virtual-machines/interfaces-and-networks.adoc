@@ -105,8 +105,12 @@ spec:
       interfaces:
         - name: default
           bridge: {}
+          bootFileName: default_image.bin
+          tftpServerName: tftp.example.com
+          bootOrder: 1   # attempt to boot from an external tftp server
         - name: ovs-net
           bridge: {}
+          bootOrder: 2   # if first attempt failed, try to PXE-boot from this L2 networks
   networks:
   - name: default
     pod: {} # Stock pod network
