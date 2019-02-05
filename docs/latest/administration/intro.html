@@ -223,7 +223,8 @@ emulation fallback</a> can be enabled using:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>$ kubectl create configmap -n kubevirt kubevirt-config \
+<pre>$ kubectl create namespace kubevirt
+$ kubectl create configmap -n kubevirt kubevirt-config \
     --from-literal debug.useEmulation=true</pre>
 </div>
 </div>
@@ -272,27 +273,62 @@ documentation</a>.</p>
 <h4 id="core-components"><a class="anchor" href="#core-components"></a>Core components</h4>
 <div class="paragraph">
 <p>Once Kubernetes is deployed, you will need to deploy the KubeVirt
-add-on. The add-on is deployed to a cluster using the <code>kubectl</code> tool and
-manifest file:</p>
+add-on. There are 2 ways to deploy the add-on to a cluster using the <code>kubectl</code> tool and
+manifest files:</p>
+</div>
+<div class="sect4">
+<h5 id="1-stable-flow"><a class="anchor" href="#1-stable-flow"></a>1. Stable flow</h5>
+<div class="paragraph">
+<p>The stable flow installs KubeVirt using a manifest file, which contains all deployments and configurations of the
+KubeVirt core components:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ RELEASE=v0.10.0
+<pre class="CodeRay highlight"><code data-lang="bash">$ RELEASE=v0.14.0
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml</code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="2-alternative-flow-aka-operator-flow"><a class="anchor" href="#2-alternative-flow-aka-operator-flow"></a>2. Alternative flow (aka Operator flow)</h5>
 <div class="paragraph">
-<p>This command will deploy the most recent stable version of KubeVirt to
-your cluster. The new components will be deployed in the <code>kubevirt</code>
-namespace:</p>
+<p>Since version 0.13.0 KubeVirt can be installed using the new KubeVirt Operator and a KubeVirt custom resource.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Note: The Operator is considered to be experimental for the time being.
+There is currently no way to upgrade KubeVirt using this flow.</p>
+</div>
+</blockquote>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ export VERSION=v0.14.0
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/$VERSION/kubevirt-operator.yaml
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/$VERSION/kubevirt-cr.yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since version 0.14.0 you can also use <code>kubectl</code> for waiting until all KubeVirt components are "Ready".</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ kubectl wait kv kubevirt --for condition=Ready</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Independent of the deployment flow, the new components will be deployed in the <code>kubevirt</code> namespace:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">kubectl get pods -n kubevirt
 NAME                                           READY     STATUS        RESTARTS   AGE
-libvirt-9zmtl                                  2/2       Running       0          28m
-virt-controller-5d9fc8cf8b-n5trt               0/1       Running       0          27m
-virt-handler-vwdjx                             1/1       Running       0          28m</code></pre>
+virt-api-6d4fc3cf8a-b2ere                      1/1       Running       0          1m
+virt-controller-5d9fc8cf8b-n5trt               1/1       Running       0          1m
+virt-handler-vwdjx                             1/1       Running       0          1m
+...</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -338,24 +374,37 @@ use advanced features such as:</p>
 <h4 id="using-command-line-interface"><a class="anchor" href="#using-command-line-interface"></a>Using command line interface</h4>
 <div class="paragraph">
 <p>The following
-<a href="https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html">SCCs</a>
-need to be added prior <code>kubevirt.yaml</code> deployment:</p>
+<a href="https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html">SCC</a>
+needs to be added prior KubeVirt deployment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>When you use the stable deployment flow:</p>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-privileged
+<pre>$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-privileged
 $ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-controller
-$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-apiserver</code></pre>
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-apiserver</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>When you use the operator flow:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once privileges are granted, the <code>kubevirt.yaml</code> can be deployed:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ RELEASE=v0.10.0
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml</code></pre>
-</div>
+<p>Once privileges are granted, the kubevirt manifests can be deployed in the same way as explained above.</p>
 </div>
 </div>
 <div class="sect3">
@@ -415,12 +464,12 @@ playbook</a> installs these plugins by default.</p>
 </blockquote>
 </div>
 <div class="paragraph">
-<p>Usually it is sufficient to re-apply the manifests for performing a
+<p>When using the stable deployment flow, usually it is sufficient to re-apply the manifests for performing a
 rolling update:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ RELEASE=v0.10.1
+<pre class="CodeRay highlight"><code data-lang="bash">$ RELEASE=v0.14.0
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml</code></pre>
 </div>
 </div>
