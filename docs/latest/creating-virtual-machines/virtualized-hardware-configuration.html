@@ -191,8 +191,34 @@ type is desired, it is configurable through the following structure:</p>
 <div class="sect2">
 <h3 id="biosuefi"><a class="anchor" href="#biosuefi"></a>BIOS/UEFI</h3>
 <div class="paragraph">
-<p>All virtual machines currently use BIOS for booting. UEFI/OVMF is not
-yet supported.</p>
+<p>All virtual machines use BIOS by default for booting.</p>
+</div>
+<div class="paragraph">
+<p>It is possible to utilize UEFI/OVMF by setting a value via <code>spec.firmware.bootloader</code>:</p>
+</div>
+<div class="listingblock yaml">
+<div class="content">
+<pre class="CodeRay highlight"><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-alpine-efi
+  name: vmi-alpine-efi
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+    firmware:
+      # this sets the bootloader type
+      bootloader:
+        efi: {}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>SecureBoot is not yet supported.</p>
 </div>
 </div>
 <div class="sect2">

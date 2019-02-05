@@ -276,8 +276,12 @@ network and to the secondary Open vSwitch network.</p>
       <span style="color:#606">interfaces</span>:
         - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: default</span></span>
           <span style="color:#606">bridge</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+          <span style="color:#606">bootFileName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default_image.bin</span></span>
+          <span style="color:#606">tftpServerName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">tftp.example.com</span></span>
+          <span style="color:#606">bootOrder</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1</span></span>   <span style="color:#777"># attempt to boot from an external tftp server</span>
         - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: ovs-net</span></span>
           <span style="color:#606">bridge</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+          <span style="color:#606">bootOrder</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">2</span></span>   <span style="color:#777"># if first attempt failed, try to PXE-boot from this L2 networks</span>
   <span style="color:#606">networks</span>:
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: default</span></span>
     <span style="color:#606">pod</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span> <span style="color:#777"># Stock pod network</span>
