@@ -142,62 +142,87 @@
           <h2>Virtual Machine Creation</h2>
         </div>
         <div class="sect1">
-<h2 id="virtual-machine-creation"><a class="anchor" href="#virtual-machine-creation"></a>Virtual Machine Creation</h2>
+<h2 id="overview"><a class="anchor" href="#overview"></a>Overview</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="overview"><a class="anchor" href="#overview"></a>Overview</h3>
 <div class="paragraph">
-<p>The
-<a href="https://docs.openshift.org/latest/dev_guide/templates.html">OpenShift’s
-template mechanism</a> allows user to create a set of objects from a
-template. KubeVirt takes benefit from this template mechanism to create
-VirtualMachines.</p>
+<p>The KubeVirt projects provides a set of [templates](<a href="https://docs.okd.io/latest/dev_guide/templates.html" class="bare">https://docs.okd.io/latest/dev_guide/templates.html</a>) to create VMs to handle common usage scenarios.
+These templates provide a combination of some key factors that could be further customized and processed to have a Virtual Machine object.</p>
 </div>
 <div class="paragraph">
-<p>In order to create a virtual machine via OpenShift CLI, you need to
-provide a template defining the corresponding object and its metadata.</p>
+<p>The key factors which define a template are
+ - Workload
+  Most Virtual Machine should be <strong>generic</strong> to have maximum flexibility; the <strong>highperformance</strong> workload trades some of this flexibility to
+  provide better performances.
+- Guest Operating System (OS)
+  This allow to ensure that the emulated hardware is compatible with the guest OS. Furthermore, it allows to maximize the stability
+  of the VM, and allows performance optimizations.
+- Size (flavor)
+  Defines the amount of resources (CPU, memory) to allocate to the VM.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="webui"><a class="anchor" href="#webui"></a>WebUI</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kubevirt project has [the official UI](<a href="https://github.com/kubevirt/web-ui" class="bare">https://github.com/kubevirt/web-ui</a>). This UI supports creation VM using templates and templates features - flavors and workload profiles.
+To create VM from template, choose WorkLoads in the left panel &gt;&gt; press to the "Create Virtual Machine" blue button &gt;&gt; choose "Create from Wizzard". Next, you have to see "Create Virtual Machine" window</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="common-templates"><a class="anchor" href="#common-templates"></a>Common-templates</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There is the [common-templates subproject](<a href="https://github.com/kubevirt/common-templates/" class="bare">https://github.com/kubevirt/common-templates/</a>) subproject. It provides official prepaired and useful templates. [Additional doc available](/workloads/templates/common-templates.md). You can also create templates by hand. You can find an example below, in the "Example template" section.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="example-template"><a class="anchor" href="#example-template"></a>Example template</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to create a virtual machine via OpenShift CLI, you need to provide a template defining the corresponding object and its metadata.</p>
 </div>
 <div class="paragraph">
-<p>!&gt; Only <code>VirtualMachine</code> object is currently supported.</p>
+<p>! Only <code>VirtualMachine</code> object is currently supported.</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="example-template"><a class="anchor" href="#example-template"></a>Example template</h3>
 <div class="paragraph">
-<p>Here is an example template that defines an instance of the
-<code>VirtualMachine</code> object:</p>
+<p>Here is an example template that defines an instance of the <code>VirtualMachine</code> object:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
 <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Template</span></span>
 <span style="color:#606">metadata</span>:
-  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora-vmi-template</span></span>
   <span style="color:#606">annotations</span>:
-    <span style="color:#606">description</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">OpenShift KubeVirt Fedora VM template</span><span style="color:#710">&quot;</span></span>
-    <span style="color:#606">tags</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">kubevirt,openshift,template,linux</span><span style="color:#710">&quot;</span></span>
+    <span style="color:#606">description</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">OCP KubeVirt Fedora 27 VM template</span></span>
+    <span style="color:#606">iconClass</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">icon-fedora</span></span>
+    <span style="color:#606">tags</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt,ocp,template,linux,virtualmachine</span></span>
   <span style="color:#606">labels</span>:
     <span style="color:#606">kubevirt.io/os</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora27</span></span>
-    <span style="color:#606">miq.github.io/kubevirt-is-vmi-template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">true</span><span style="color:#710">&quot;</span></span>
+    <span style="color:#606">miq.github.io/kubevirt-is-vm-template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">true</span><span style="color:#710">&quot;</span></span>
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vm-template-fedora</span></span>
 <span style="color:#606">objects</span>:
 - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">apiVersion: kubevirt.io/v1alpha3</span></span>
   <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
   <span style="color:#606">metadata</span>:
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">${NAME}</span></span>
     <span style="color:#606">labels</span>:
       <span style="color:#606">kubevirt-vm</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vm-${NAME}</span></span>
+      <span style="color:#606">kubevirt.io/os</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora27</span></span>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">${NAME}</span></span>
   <span style="color:#606">spec</span>:
+    <span style="color:#606">running</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">false</span></span>
     <span style="color:#606">template</span>:
       <span style="color:#606">metadata</span>:
+        <span style="color:#606">creationTimestamp</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">null</span></span>
         <span style="color:#606">labels</span>:
           <span style="color:#606">kubevirt-vm</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vm-${NAME}</span></span>
+          <span style="color:#606">kubevirt.io/os</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora27</span></span>
       <span style="color:#606">spec</span>:
         <span style="color:#606">domain</span>:
           <span style="color:#606">cpu</span>:
             <span style="color:#606">cores</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">${{CPU_CORES}}</span></span>
-          <span style="color:#606">resources</span>:
-            <span style="color:#606">requests</span>:
-              <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">${{MEMORY}}</span></span>
           <span style="color:#606">devices</span>:
             <span style="color:#606">disks</span>:
               - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: disk0</span></span>
@@ -205,28 +230,50 @@ provide a template defining the corresponding object and its metadata.</p>
           - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: disk0</span></span>
             <span style="color:#606">persistentVolumeClaim</span>:
               <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myroot</span></span>
+            - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
+                bus: virtio</span></span>
+              <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registrydisk</span></span>
+              <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registryvolume</span></span>
+            - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
+                bus: virtio</span></span>
+              <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
+              <span style="color:#606">volumeName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
+          <span style="color:#606">machine</span>:
+            <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
+          <span style="color:#606">resources</span>:
+            <span style="color:#606">requests</span>:
+              <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">${MEMORY}</span></span>
+        <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
+        <span style="color:#606">volumes</span>:
+        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: registryvolume</span></span>
+          <span style="color:#606">registryDisk</span>:
+            <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel</span></span>
+        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudInitNoCloud:</span><span style="color:#D20">
+            userData: |-
+              #cloud-config
+              password: fedora
+              chpasswd: { expire: False }</span></span>
+          <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitvolume</span></span>
+  <span style="color:#606">status</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
 <span style="color:#606">parameters</span>:
-- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: NAME</span></span>
-  <span style="color:#606">description</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Name for the new VM</span></span>
-- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: CPU_CORES</span></span>
-  <span style="color:#606">description</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Amount of cores</span></span>
+- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">description: Name for the new VM</span></span>
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">NAME</span></span>
+- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">description: Amount of memory</span></span>
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">MEMORY</span></span>
+  <span style="color:#606">value</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">4096Mi</span></span>
+- <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">description: Amount of cores</span></span>
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">CPU_CORES</span></span>
   <span style="color:#606">value</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">4</span><span style="color:#710">&quot;</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Note that the template above defines free parameters (<code>NAME</code> and
-<code>CPU_CORES</code>) and the <code>NAME</code> parameter does not have specified default
-value.</p>
+<p>Note that the template above defines free parameters \(<code>NAME</code> and <code>CPU_CORES</code>\) and  the <code>NAME</code> parameter does not have specified default value.</p>
 </div>
 <div class="paragraph">
-<p>An OpenShift template has to be converted into the JSON file via
-<code>oc process</code> command, that also allows you to set the template
-parameters.</p>
+<p>An OpenShift template has to be converted into the JSON file via <code>oc process</code> command, that also allows you to set the template parameters.</p>
 </div>
 <div class="paragraph">
-<p>A complete example can be found in the
-<a href="https://github.com/kubevirt/kubevirt/blob/master/cluster/vmi-template-fedora.yaml">KubeVirt
-repository</a>.</p>
+<p>A complete example can be found in the [KubeVirt repository](<a href="https://github.com/kubevirt/kubevirt/blob/master/cluster/examples/vm-template-fedora.yaml" class="bare">https://github.com/kubevirt/kubevirt/blob/master/cluster/examples/vm-template-fedora.yaml</a>).</p>
 </div>
 <div class="paragraph">
 <p>!&gt; You need to be logged in by <code>oc login</code> command.</p>
@@ -241,47 +288,203 @@ repository</a>.</p>
     &quot;apiVersion&quot;: &quot;v1&quot;,
     &quot;metadata&quot;: {},
     &quot;items&quot;: [
-        {
-...</code></pre>
+        {</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The JSON file is usually applied directly by piping the processed output
-to <code>oc create</code> command.</p>
+<p>The JSON file is usually applied directly by piping the processed output to <code>oc create</code> command.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ oc process -f cluster/vmi-template-fedora.yaml \
-    -p NAME=testvmi \
+<pre class="CodeRay highlight"><code data-lang="bash">$ oc process -f cluster/examples/vm-template-fedora.yaml \
+    -p NAME=testvm \
     -p CPU_CORES=2 \
     | oc create -f -
-virtualmachine &quot;testvmi&quot; created</code></pre>
+virtualmachine.kubevirt.io/testvm created</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The command above results in creating a Kubernetes object according to
-the specification given by the template (in this example it is an
-instance of the VirtualMachine object).</p>
+<p>The command above results in creating a Kubernetes object according to the specification given by the template \(in this example it is an instance of the VirtualMachine object\).</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="starting-virtual-machine-from-the-created-object"><a class="anchor" href="#starting-virtual-machine-from-the-created-object"></a>Starting virtual machine from the created object</h3>
 <div class="paragraph">
-<p>The created object is now a regular VirtualMachine object and from now
-it can be controlled by accessing Kubernetes API resources. The
-preferred way how to do this from within the OpenShift environment is to
-use <code>oc patch</code> command.</p>
+<p>It&#8217;s possible to get list of available parameters using the following command:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ oc patch virtualmachine testvmi --type merge -p '{&quot;spec&quot;:{&quot;running&quot;:true}}'
-virtualmachine &quot;testvmi&quot; patched</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ oc process -f cluster/examples/vmi-template-fedora.yaml --parameters
+NAME                DESCRIPTION           GENERATOR           VALUE
+NAME                Name for the new VM
+MEMORY              Amount of memory                          4096Mi
+CPU_CORES           Amount of cores                           4</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="starting-virtual-machine-from-the-created-object"><a class="anchor" href="#starting-virtual-machine-from-the-created-object"></a>Starting virtual machine from the created object</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The created object is now a regular VirtualMachine object and from now it can be controlled by accessing Kubernetes API resources.  The preferred way how to do this from within the OpenShift environment is to use <code>oc patch</code> command.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ oc patch virtualmachine testvm --type merge -p '{&quot;spec&quot;:{&quot;running&quot;:true}}'
+virtualmachine.kubevirt.io/testvm patched</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>You can follow <a href="/workloads/virtual-machines/life-cycle">Virtual
-Machine Lifecycle Guide</a> for further reference.</p>
+<p>Do not forget about virtctl tool. Using it in the real cases instead of using kubernetes API can be more convinient. Example:</p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ virtctl start testvm
+VM testvm was scheduled to start</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As soon as VM starts, kubernates creates new type of object - VirtualMachineInstance. It has similar name to VirtualMachine. Example (not full output, it&#8217;s too big):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ kubectl describe vm testvm
+name:         testvm
+Namespace:    myproject
+Labels:       kubevirt-vm=vm-testvm
+              kubevirt.io/os=fedora27
+Annotations:  &lt;none&gt;
+API Version:  kubevirt.io/v1alpha2
+Kind:         VirtualMachine
+.......</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cloud-init-script-and-parameters"><a class="anchor" href="#cloud-init-script-and-parameters"></a>Cloud-init script and parameters</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, supports [cloud-init scripts](<a href="https://cloudinit.readthedocs.io/en/latest/" class="bare">https://cloudinit.readthedocs.io/en/latest/</a>)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-registry-images"><a class="anchor" href="#using-registry-images"></a>Using registry images</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, supports creating VM&#8217;s disks from registry. RegistryDisk is a special type volume which supports downloading images from user-defined registry server.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hack-use-pre-downloaded-image"><a class="anchor" href="#hack-use-pre-downloaded-image"></a><strong>Hack</strong> - use pre-downloaded image</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, can use pre-downloaded VM image, which can be a useful feature especially in the debug/development/testing cases. No special parameters required in the VM template or VM/VMI yaml config. The main idea is to create Kubernetes PersistentVolume and PersistentVolumeClaim corresponding to existing image in the file system. Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#f8f;background:#505"><span style="color:#f4f">---</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">PersistentVolume</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypv</span></span>
+  <span style="color:#606">labels</span>:
+    <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">local</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">storageClassName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">manual</span></span>
+  <span style="color:#606">capacity</span>:
+    <span style="color:#606">storage</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">10G</span></span>
+  <span style="color:#606">accessModes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ReadWriteOnce</span></span>
+  <span style="color:#606">hostPath</span>:
+    <span style="color:#606">path</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/mnt/sda1/images/testvm</span><span style="color:#710">&quot;</span></span>
+<span style="color:#f8f;background:#505"><span style="color:#f4f">---</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">PersistentVolumeClaim</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">storageClassName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">manual</span></span>
+  <span style="color:#606">accessModes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ReadWriteOnce</span></span>
+  <span style="color:#606">resources</span>:
+    <span style="color:#606">requests</span>:
+      <span style="color:#606">storage</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">10G</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cloud-init-script-and-parameters-2"><a class="anchor" href="#cloud-init-script-and-parameters-2"></a>Cloud-init script and parameters</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, supports [cloud-init scripts](<a href="https://cloudinit.readthedocs.io/en/latest/" class="bare">https://cloudinit.readthedocs.io/en/latest/</a>)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="using-registry-images-2"><a class="anchor" href="#using-registry-images-2"></a>Using registry images</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, supports creating VM&#8217;s disks from registry. RegistryDisk is a special type volume which supports downloading images from user-defined registry server.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="hack-use-pre-downloaded-image-2"><a class="anchor" href="#hack-use-pre-downloaded-image-2"></a><strong>Hack</strong> - use pre-downloaded image</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, can use pre-downloaded VM image, which can be a useful feature especially in the debug/development/testing cases. No special parameters required in the VM template or VM/VMI yaml config. The main idea is to create Kubernetes PersistentVolume and PersistentVolumeClaim corresponding to existing image in the file system. Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#f8f;background:#505"><span style="color:#f4f">---</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">PersistentVolume</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypv</span></span>
+  <span style="color:#606">labels</span>:
+    <span style="color:#606">type</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">local</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">storageClassName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">manual</span></span>
+  <span style="color:#606">capacity</span>:
+    <span style="color:#606">storage</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">10G</span></span>
+  <span style="color:#606">accessModes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ReadWriteOnce</span></span>
+  <span style="color:#606">hostPath</span>:
+    <span style="color:#606">path</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/mnt/sda1/images/testvm</span><span style="color:#710">&quot;</span></span>
+<span style="color:#f8f;background:#505"><span style="color:#f4f">---</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">PersistentVolumeClaim</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">storageClassName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">manual</span></span>
+  <span style="color:#606">accessModes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ReadWriteOnce</span></span>
+  <span style="color:#606">resources</span>:
+    <span style="color:#606">requests</span>:
+      <span style="color:#606">storage</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">10G</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you create this PV/PVC, then you have to put VM image in the file path</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">/mnt/sda1/images/testvm/disk.img</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Avaible in the each OpenShift/Kubevirt compute nodes.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="additional-information"><a class="anchor" href="#additional-information"></a>Additional information</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can follow [Virtual Machine Lifecycle Guide](/workloads/virtual-machines/life-cycle) for further reference.</p>
 </div>
 </div>
 </div>
