@@ -161,6 +161,27 @@ spec:
 You can check list of available models
 https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml[here].
 
+Enabling default cluster cpu model
+++++++++++++++++++++++++++++++++++
+To enable the default cpu model, user may add the
+`default-cpu-model` field in the kubevirt-config config map.
+
+....
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  default-cpu-model: "EPYC"
+....
+
+Default CPU model is set when vmi doesn't have any cpu model. When vmi has cpu 
+model set, then vmi's cpu model is preferred. When default cpu model is not set and vmi's cpu 
+model is not set too, `host-model` will be set. Default cpu model can be changed when kubevirt is running.
+
 CPU model special cases
 +++++++++++++++++++++++
 
