@@ -718,6 +718,39 @@ regular memory it will use node hugepages of the size of <code>2Mi</code>.</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="input-devices"><a class="anchor" href="#input-devices"></a>Input Devices</h3>
+<div class="sect4">
+<h5 id="tablet"><a class="anchor" href="#tablet"></a>Tablet</h5>
+<div class="paragraph">
+<p>Kubevirt supports input devices. The only type which is supported is <code>tablet</code>.
+Tablet input device supports only <code>virtio</code> and <code>usb</code> bus. Bus can be empty. In that case,
+<code>usb</code> will be selected.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvm</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">inputs</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">type: tablet</span></span>
+        <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
+        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">tablet1</span></span>
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myimage</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimname</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myclaim</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
       </div>
