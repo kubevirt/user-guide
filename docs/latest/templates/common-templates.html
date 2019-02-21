@@ -174,8 +174,7 @@ allocate to the VM.</p>
 </div>
 <div class="paragraph">
 <p>More documentation is available in the
-<a href="https://github.com/kubevirt/common-templates">common templates
-subproject</a></p>
+<a href="https://github.com/kubevirt/common-templates">common templates subproject</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -184,8 +183,7 @@ subproject</a></p>
 <p>If you installed KubeVirt using a supported method you should find the
 common templates preinstalled in the cluster. Should you want to upgrade
 the templates, or install them from scratch, you can use one of the
-<a href="https://github.com/kubevirt/common-templates/releases">supported
-releases</a></p>
+<a href="https://github.com/kubevirt/common-templates/releases">supported releases</a></p>
 </div>
 <div class="paragraph">
 <p>To install the templates:</p>
@@ -226,9 +224,10 @@ a snippet presenting a couple of most commonly found editable fields:</p>
 <div class="paragraph">
 <p>Each entry in the editable field list must be a
 <a href="https://kubernetes.io/docs/reference/kubectl/jsonpath/">jsonpath</a>. The
-actually editable field is the last entry (the ``leaf'') of the path.
-For example, the following minimal snippet highlights the fields which
-you can edit:</p>
+jsonpath root is the objects: element of the template. The actually
+editable field is the last entry (the ``leaf'') of the path. For
+example, the following minimal snippet highlights the fields which you
+can edit:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -298,7 +297,7 @@ whose value will be the namespace of the parent template, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiversion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
 <span style="color:#606">items</span>:
 - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">apiVersion: kubevirt.io/v1alpha3</span></span>
   <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
@@ -353,6 +352,223 @@ whose value will be the namespace of the parent template, for example:</p>
 objects have no relationship with each other besides the aforementioned
 label (e.g. changes in templates do not automatically affect VMs, or
 vice versa).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="common-template-customization"><a class="anchor" href="#common-template-customization"></a>common template customization</h3>
+<div class="paragraph">
+<p>The templates provided by the kubevirt project provide a set of
+conventions and annotations that augment the basic feature of the
+<a href="https://docs.okd.io/latest/dev_guide/templates.html">openshift
+templates</a>. You can customize your kubevirt-provided templates editing
+these annotations, or you can add them to your existing templates to
+make them consumable by the kubevirt services.</p>
+</div>
+<div class="paragraph">
+<p>Here’s a description of the kubevirt annotations. Unless otherwise
+specified, the following keys are meant to be top-level entries of the
+template metadata, like</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Template</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">windows-10</span></span>
+  <span style="color:#606">annotations</span>:
+    <span style="color:#606">openshift.io/display-name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Generic demo template</span><span style="color:#710">&quot;</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All the following annotations are prefixed with
+<code>defaults.template.cnv.io</code>, which is omitted below for brevity. So the
+actual annotations you should use will look like</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Template</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">windows-10</span></span>
+  <span style="color:#606">annotations</span>:
+    <span style="color:#606">defaults.template.cnv.io/disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-disk</span></span>
+    <span style="color:#606">defaults.template.cnv.io/volume</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-volume</span></span>
+    <span style="color:#606">defaults.template.cnv.io/nic</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-nic</span></span>
+    <span style="color:#606">defaults.template.cnv.io/network</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-network</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Unless otherwise specified, all annotations are meant to be safe
+defaults, both for performance and compability, and hints for the
+CNV-aware UI and tooling.</p>
+</div>
+<div class="sect4">
+<h5 id="disk"><a class="anchor" href="#disk"></a>disk</h5>
+<div class="paragraph">
+<p>See the section <code>references</code> below.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Template</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Linux</span></span>
+  <span style="color:#606">annotations</span>:
+    <span style="color:#606">defaults.template.cnv.io/disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rhel-disk</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="nic"><a class="anchor" href="#nic"></a>nic</h5>
+<div class="paragraph">
+<p>See the section <code>references</code> below.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Template</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Windows</span></span>
+  <span style="color:#606">annotations</span>:
+    <span style="color:#606">defaults.template.cnv.io/nic</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">my-nic</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="volume"><a class="anchor" href="#volume"></a>volume</h5>
+<div class="paragraph">
+<p>See the section <code>references</code> below.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Template</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Linux</span></span>
+  <span style="color:#606">annotations</span>:
+    <span style="color:#606">defaults.template.cnv.io/volume</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">custom-volume</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="network"><a class="anchor" href="#network"></a>network</h5>
+<div class="paragraph">
+<p>See the section <code>references</code> below.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Template</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Linux</span></span>
+  <span style="color:#606">annotations</span>:
+    <span style="color:#606">defaults.template.cnv.io/network</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fast-net</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="references"><a class="anchor" href="#references"></a>references</h5>
+<div class="paragraph">
+<p>The default values for network, nic, volume, disk are meant to be the <strong>name</strong> of a section later in the document that the UI will find and consume to find the default values for the corresponding types.
+For example, considering the annotation <code>defaults.template.cnv.io/disk: my-disk</code>: we assume that later in the document it exists an element called <code>my-disk</code> that the UI can use to find the data it needs.
+The names actually don&#8217;t matter as long as they are legal for kubernetes and consistent with the content of the document.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="complete-example"><a class="anchor" href="#complete-example"></a>complete example</h5>
+<div class="listingblock yaml">
+<div class="content">
+<pre>apiversion: v1
+items:
+- apiversion: kubevirt.io/v1alpha3
+  kind: virtualmachine
+  metadata:
+    labels:
+      vm.cnv.io/template: rhel7-generic-tiny
+    name: rheltinyvm
+    osinfoname: rhel7.0
+    defaults.template.cnv.io/disk: rhel-default-disk
+    defaults.template.cnv.io/nic: rhel-default-net
+  spec:
+    running: false
+    template:
+      spec:
+        domain:
+          cpu:
+            sockets: 1
+            cores: 1
+            threads: 1
+          devices:
+            rng: {}
+          resources:
+            requests:
+              memory: 1g
+        terminationgraceperiodseconds: 0
+        volumes:
+        - containerDisk:
+          image: registry:5000/kubevirt/cirros-container-disk-demo:devel
+          name: rhel-default-disk
+        networks:
+        - genie:
+          networkName: flannel
+          name: rhel-default-net
+kind: list
+metadata: {}
+
+
+once processed becomes:
+[demo-vm.yaml]
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  labels:
+    vm.cnv.io/template: rhel7-generic-tiny
+  name: rheltinyvm
+  osinfoname: rhel7.0
+spec:
+  running: false
+  template:
+    spec:
+      domain:
+        cpu:
+          sockets: 1
+          cores: 1
+          threads: 1
+        resources:
+          requests:
+            memory: 1g
+        devices:
+          rng: {}
+          disks:
+          - disk:
+            name: rhel-default-disk
+        interfaces:
+        - bridge: {}
+          name: rhel-default-nic
+      terminationgraceperiodseconds: 0
+      volumes:
+      - containerDisk:
+          image: registry:5000/kubevirt/cirros-container-disk-demo:devel
+        name: containerdisk
+      networks:
+      - genie:
+          networkName: flannel
+        name: rhel-default-nic</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
