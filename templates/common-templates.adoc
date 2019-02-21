@@ -21,8 +21,7 @@ maximize the stability of the VM, and allows performance optimizations.
 allocate to the VM.
 
 More documentation is available in the
-https://github.com/kubevirt/common-templates[common templates
-subproject]
+https://github.com/kubevirt/common-templates[common templates subproject]
 
 Accessing the virtual machine templates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,8 +29,7 @@ Accessing the virtual machine templates
 If you installed KubeVirt using a supported method you should find the
 common templates preinstalled in the cluster. Should you want to upgrade
 the templates, or install them from scratch, you can use one of the
-https://github.com/kubevirt/common-templates/releases[supported
-releases]
+https://github.com/kubevirt/common-templates/releases[supported releases]
 
 To install the templates:
 
@@ -67,9 +65,10 @@ metadata:
 
 Each entry in the editable field list must be a
 https://kubernetes.io/docs/reference/kubectl/jsonpath/[jsonpath]. The
-actually editable field is the last entry (the ``leaf'') of the path.
-For example, the following minimal snippet highlights the fields which
-you can edit:
+jsonpath root is the objects: element of the template. The actually
+editable field is the last entry (the ``leaf'') of the path. For
+example, the following minimal snippet highlights the fields which you
+can edit:
 
 [source,yaml]
 ----
@@ -133,7 +132,7 @@ And the output:
 
 [source,yaml]
 ----
-apiVersion: v1
+apiversion: v1
 items:
 - apiVersion: kubevirt.io/v1alpha3
   kind: VirtualMachine
@@ -186,3 +185,207 @@ Please note that, after the generation step, VM objects and template
 objects have no relationship with each other besides the aforementioned
 label (e.g. changes in templates do not automatically affect VMs, or
 vice versa).
+
+common template customization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The templates provided by the kubevirt project provide a set of
+conventions and annotations that augment the basic feature of the
+https://docs.okd.io/latest/dev_guide/templates.html[openshift
+templates]. You can customize your kubevirt-provided templates editing
+these annotations, or you can add them to your existing templates to
+make them consumable by the kubevirt services.
+
+Here’s a description of the kubevirt annotations. Unless otherwise
+specified, the following keys are meant to be top-level entries of the
+template metadata, like
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: windows-10
+  annotations:
+    openshift.io/display-name: "Generic demo template"
+----
+
+All the following annotations are prefixed with
+`defaults.template.cnv.io`, which is omitted below for brevity. So the
+actual annotations you should use will look like
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: windows-10
+  annotations:
+    defaults.template.cnv.io/disk: default-disk
+    defaults.template.cnv.io/volume: default-volume
+    defaults.template.cnv.io/nic: default-nic
+    defaults.template.cnv.io/network: default-network
+----
+
+Unless otherwise specified, all annotations are meant to be safe
+defaults, both for performance and compability, and hints for the
+CNV-aware UI and tooling.
+
+disk
+++++
+
+See the section `references` below.
+
+Example:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.cnv.io/disk: rhel-disk
+----
+
+nic
++++
+
+See the section `references` below.
+
+Example:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: Windows
+  annotations:
+    defaults.template.cnv.io/nic: my-nic
+----
+
+volume
+++++++
+
+See the section `references` below.
+
+Example:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.cnv.io/volume: custom-volume
+----
+
+network
++++++++
+
+See the section `references` below.
+
+Example:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.cnv.io/network: fast-net
+----
+
+references
+++++++++++
+
+The default values for network, nic, volume, disk are meant to be the *name* of a section later in the document that the UI will find and consume to find the default values for the corresponding types.
+For example, considering the annotation `defaults.template.cnv.io/disk: my-disk`: we assume that later in the document it exists an element called `my-disk` that the UI can use to find the data it needs.
+The names actually don't matter as long as they are legal for kubernetes and consistent with the content of the document.
+
+complete example
+++++++++++++++++
+
+[demo-template.yaml]
+----
+apiversion: v1
+items:
+- apiversion: kubevirt.io/v1alpha3
+  kind: virtualmachine
+  metadata:
+    labels:
+      vm.cnv.io/template: rhel7-generic-tiny
+    name: rheltinyvm
+    osinfoname: rhel7.0
+    defaults.template.cnv.io/disk: rhel-default-disk
+    defaults.template.cnv.io/nic: rhel-default-net
+  spec:
+    running: false
+    template:
+      spec:
+        domain:
+          cpu:
+            sockets: 1
+            cores: 1
+            threads: 1
+          devices:
+            rng: {}
+          resources:
+            requests:
+              memory: 1g
+        terminationgraceperiodseconds: 0
+        volumes:
+        - containerDisk:
+          image: registry:5000/kubevirt/cirros-container-disk-demo:devel
+          name: rhel-default-disk
+        networks:
+        - genie:
+          networkName: flannel
+          name: rhel-default-net
+kind: list
+metadata: {}
+
+
+once processed becomes:
+[demo-vm.yaml]
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  labels:
+    vm.cnv.io/template: rhel7-generic-tiny
+  name: rheltinyvm
+  osinfoname: rhel7.0
+spec:
+  running: false
+  template:
+    spec:
+      domain:
+        cpu:
+          sockets: 1
+          cores: 1
+          threads: 1
+        resources:
+          requests:
+            memory: 1g
+        devices:
+          rng: {}
+          disks:
+          - disk:
+            name: rhel-default-disk
+        interfaces:
+        - bridge: {}
+          name: rhel-default-nic
+      terminationgraceperiodseconds: 0
+      volumes:
+      - containerDisk:
+          image: registry:5000/kubevirt/cirros-container-disk-demo:devel
+        name: containerdisk
+      networks:
+      - genie:
+          networkName: flannel
+        name: rhel-default-nic
+
