@@ -359,6 +359,53 @@ reference</a> for more details.</p>
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="features"><a class="anchor" href="#features"></a>Features</h4>
+<div class="paragraph">
+<p>Setting CPU features is possible via <code>spec.domain.cpu.features</code> and can contain zero or more CPU features :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">cpu</span>:
+      <span style="color:#777"># this sets the CPU features</span>
+      <span style="color:#606">features</span>:
+      <span style="color:#777"># this is the feature's name</span>
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: &quot;apic&quot;</span></span>
+      <span style="color:#777"># this is the feature's policy</span>
+       <span style="color:#606">policy</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">require</span><span style="color:#710">&quot;</span></span>
+<span style="color:#f8f;background:#505"><span style="color:#f4f">...</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: Policy attribute can either be omitted or contain one of the following policies: force, require, optional, disable, forbid.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: In case a policy is omitted for a feature, it will default to <strong>require</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Behaviour according to Policies:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All policies will be passed to libvirt during virtual machine creation.</p>
+</li>
+<li>
+<p>In case the feature gate "CPUNodeDiscovery" is enabled and the policy is omitted or has "require" value, then the virtual machine could be scheduled only on nodes that support this feature.</p>
+</li>
+<li>
+<p>In case the feature gate "CPUNodeDiscovery" is enabled and the policy has "forbid" value, then the virtual machine would <strong>not</strong> be scheduled on nodes that support this feature.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Full description about features and policies can be found <a href="https://libvirt.org/formatdomain.html#elementsCPU">here</a>.</p>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="clock"><a class="anchor" href="#clock"></a>Clock</h3>
@@ -545,7 +592,7 @@ VMI density per node, since no memory needs to be reserved for video.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="features"><a class="anchor" href="#features"></a>Features</h3>
+<h3 id="features-2"><a class="anchor" href="#features-2"></a>Features</h3>
 <div class="paragraph">
 <p>KubeVirt supports a range of virtualization features which may be
 tweaked in order to allow non-Linux based operating systems to properly
