@@ -196,6 +196,42 @@ spec:
 See the https://libvirt.org/formatdomain.html#elementsCPU[CPU API
 reference] for more details.
 
+Features
+^^^^^^^^
+
+Setting CPU features is possible via `spec.domain.cpu.features` and can contain zero or more CPU features :
+
+[source,yaml]
+----
+metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      # this sets the CPU features
+      features:
+      # this is the feature's name
+      - name: "apic"
+      # this is the feature's policy
+       policy: "require"
+...
+----
+
+*Note*: Policy attribute can either be omitted or contain one of the following policies: force, require, optional, disable, forbid.
+
+*Note*: In case a policy is omitted for a feature, it will default to *require*.
+
+Behaviour according to Policies:
+
+- All policies will be passed to libvirt during virtual machine creation.
+
+- In case the feature gate "CPUNodeDiscovery" is enabled and the policy is omitted or has "require" value, then the virtual machine could be scheduled only on nodes that support this feature.
+
+- In case the feature gate "CPUNodeDiscovery" is enabled and the policy has "forbid" value, then the virtual machine would *not* be scheduled on nodes that support this feature.
+
+
+Full description about features and policies can be found https://libvirt.org/formatdomain.html#elementsCPU[here].
+
 Clock
 ~~~~~
 
