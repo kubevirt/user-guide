@@ -235,6 +235,26 @@ https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network[netwo
 playbook] installs these plugins by default.
 ______________________________________________________________________________________________________________________________________________________
 
+Installing Web User Interface (optional)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+When the KubeVirt is installed on OpenShift, the Web User Interface can be used to administer the virtual
+machines and other entities in the cluster in addition to the command line tools.
+
+The Web UI is installed by default within the kubevirt-ansible flow as described above.
+
+The Web UI URL can be retrieved from its Route object:
+----
+$ oc get route console -n kubevirt-web-ui
+----
+
+For manual installation, see https://github.com/kubevirt/web-ui-operator/blob/master/README.md[the web-ui-operator README] file.
+
+For additional details, see the https://github.com/kubevirt/web-ui[Web User Interface project].
+
+______________________________________________________________________________________________________________________________________________________
+Note: Kubevirt Web UI ansible playbook can be found https://github.com/kubevirt/kubevirt-ansible/blob/master/playbooks/kubevirt_web_ui.yml[here].
+______________________________________________________________________________________________________________________________________________________
+
 Update
 ~~~~~~
 
