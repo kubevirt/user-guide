@@ -119,6 +119,33 @@ spec:
       networkName: ovs-vlan-100
 ----
 
+It is also possible to define a multus network as the default pod network with
+https://github.com/intel/multus-cni[Multus]. A version of multus after this
+https://github.com/intel/multus-cni/pull/174[Pull Request] is required
+(currently master).
+
+The following defines a VMI with an OVS network as the default.
+
+[source,yaml]
+----
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: ovs-net
+          bridge: {}
+  networks:
+  - name: ovs-net
+    multus: # Multus network as default
+      default: true
+      networkName: ovs-vlan-100
+----
+
+*Note* that multus default network and a pod network type are mutually exclusive.
+The virt-launcher pod that starts the VMI will *not* have the pod network
+configured.
+
 genie
 ^^^^^
 
