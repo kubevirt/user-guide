@@ -124,6 +124,15 @@ https://github.com/intel/multus-cni[Multus]. A version of multus after this
 https://github.com/intel/multus-cni/pull/174[Pull Request] is required
 (currently master).
 
+
+*Note the following:*
+
+* A multus default network and a pod network type are mutually exclusive.
+* The virt-launcher pod that starts the VMI will *not* have the pod network
+configured.
+* The multus delegate chosen as default *must* return at least one IP address.
+
+
 The following defines a VMI with an OVS network as the default.
 
 [source,yaml]
@@ -141,10 +150,6 @@ spec:
       default: true
       networkName: ovs-vlan-100
 ----
-
-*Note* that multus default network and a pod network type are mutually exclusive.
-The virt-launcher pod that starts the VMI will *not* have the pod network
-configured.
 
 genie
 ^^^^^
