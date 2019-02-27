@@ -455,6 +455,37 @@ playbook</a> installs these plugins by default.</p>
 </div>
 </div>
 <div class="sect2">
+<h3 id="installing-web-user-interface-optional"><a class="anchor" href="#installing-web-user-interface-optional"></a>Installing Web User Interface (optional)</h3>
+<div class="paragraph">
+<p>When the KubeVirt is installed on OpenShift, the Web User Interface can be used to administer the virtual
+machines and other entities in the cluster in addition to the command line tools.</p>
+</div>
+<div class="paragraph">
+<p>The Web UI is installed by default within the kubevirt-ansible flow as described above.</p>
+</div>
+<div class="paragraph">
+<p>The Web UI URL can be retrieved from its Route object:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ oc get route console -n kubevirt-web-ui</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For manual installation, see <a href="https://github.com/kubevirt/web-ui-operator/blob/master/README.md">the web-ui-operator README</a> file.</p>
+</div>
+<div class="paragraph">
+<p>For additional details, see the <a href="https://github.com/kubevirt/web-ui">Web User Interface project</a>.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Note: Kubevirt Web UI ansible playbook can be found <a href="https://github.com/kubevirt/kubevirt-ansible/blob/master/playbooks/kubevirt_web_ui.yml">here</a>.</p>
+</div>
+</blockquote>
+</div>
+</div>
+<div class="sect2">
 <h3 id="update"><a class="anchor" href="#update"></a>Update</h3>
 <div class="quoteblock">
 <blockquote>
