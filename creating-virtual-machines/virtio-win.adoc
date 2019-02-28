@@ -128,6 +128,8 @@ spec:
           # Therefore virtioContainerDisk, must be after bootable disk.
           # Other option is to choose boot order explicitly:
           #  - https://kubevirt.io/api-reference/v0.13.2/definitions.html#_v1_disk
+          # NOTE: You either specify bootOrder explicitely or sort the items in
+          #       disks. You can not do both at the same time.
           # bootOrder: 2
           cdrom:
             bus: sata
