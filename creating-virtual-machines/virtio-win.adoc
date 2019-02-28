@@ -122,7 +122,7 @@ spec:
   domain:
     devices:
       disks:
-        - name: virtioContainerDisk
+        - name: virtiocontainerdisk
           # Any other disk you want to use, must go before virtioContainerDisk.
           # KubeVirt boots from disks in order ther are defined.
           # Therefore virtioContainerDisk, must be after bootable disk.
@@ -136,7 +136,7 @@ spec:
 volumes:
   - containerDisk:
       image: kubevirt/virtio-container-disk
-    name: virtioContainerDisk
+    name: virtiocontainerdisk
 ----
 
 Once you are done installing virtio drivers, you can remove virtio container disk
