@@ -317,6 +317,31 @@ following VM will have a CPU with the <code>Conroe</code> model:</p>
 <a href="https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml">here</a>.</p>
 </div>
 <div class="sect4">
+<h5 id="enabling-default-cluster-cpu-model"><a class="anchor" href="#enabling-default-cluster-cpu-model"></a>Enabling default cluster cpu model</h5>
+<div class="paragraph">
+<p>To enable the default cpu model, user may add the
+<code>default-cpu-model</code> field in the kubevirt-config config map.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  default-cpu-model: "EPYC"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Default CPU model is set when vmi doesn&#8217;t have any cpu model. When vmi has cpu
+model set, then vmi&#8217;s cpu model is preferred. When default cpu model is not set and vmi&#8217;s cpu
+model is not set too, <code>host-model</code> will be set. Default cpu model can be changed when kubevirt is running.</p>
+</div>
+</div>
+<div class="sect4">
 <h5 id="cpu-model-special-cases"><a class="anchor" href="#cpu-model-special-cases"></a>CPU model special cases</h5>
 <div class="paragraph">
 <p>As special cases you can set <code>spec.domain.cpu.model</code> equals to: -
