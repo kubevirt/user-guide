@@ -161,12 +161,67 @@ spec:
 You can check list of available models
 https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml[here].
 
+Enabling cpu compatibility enforcement
+++++++++++++++++++++++++++++++++++++++
+
+To enable the cpu compatibility enforcement, user may expand the
+`feature-gates` field in the kubevirt-config config map by adding the
+`CPUNodeDiscovery` to it.
+
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  feature-gates: "CPUNodeDiscovery"
+...
+----
+
+This feature-gate allows kubevirt to take VM cpu model and create node selector from it.
+With this node selector, VM can be scheduled on the node which can support VM cpu model.
+Following VM has CPU model `Conroe`:
+
+[source,yaml]
+----
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      model: Conroe
+...
+----
+
+When CPUNodeDiscovery feature-gate is enabled, Kubevirt creates node selector with format:
+`feature.node.kubernetes.io/cpu-model-<cpuModel>`, e.g. `feature.node.kubernetes.io/cpu-model-Conroe`. 
+When VM doesn't have cpu model, then no node selector is created.
+
+To properly label the node, user can use 
+https://github.com/ksimon1/cpu-node-labeller[cpu-node-labeller] in combination with
+https://github.com/ksimon1/cpu-model-nfd-plugin[cpu-model-nfd-plugin] or create node labels by himself. 
+
+To install cpu-node-labeller to cluster, run `oc apply -f cpu-node-labeller.yaml` with 
+https://github.com/ksimon1/cpu-node-labeller/blob/master/cpu-node-labeller.yaml[this deploy manifest]
+It will deploy cpu-node-labeller with cpu-model-nfd-plugin. 
+
+cpu-model-nfd-plugin uses libvirt to get all supported cpu models on host and 
+cpu-node-labeller create labels from cpu models. Then Kubevirt can schedule VM 
+on node which has support for VM cpu model.
+
 Enabling default cluster cpu model
 ++++++++++++++++++++++++++++++++++
 To enable the default cpu model, user may add the
 `default-cpu-model` field in the kubevirt-config config map.
 
-....
+[source,yaml]
+----
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -177,10 +232,13 @@ metadata:
 data:
   default-cpu-model: "EPYC"
 ....
+----
 
 Default CPU model is set when vmi doesn't have any cpu model. When vmi has cpu 
 model set, then vmi's cpu model is preferred. When default cpu model is not set and vmi's cpu 
 model is not set too, `host-model` will be set. Default cpu model can be changed when kubevirt is running.
+When CPUNodeDiscovery feature gate is enabled and nodes have labels with cpu models (as mentioned 
+in link:#Enabling cpu compatibility enforcement[*Enabling cpu compatibility enforcement*]), Kubevirt creates node selector with default cpu model.
 
 CPU model special cases
 +++++++++++++++++++++++
