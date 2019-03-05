@@ -87,6 +87,7 @@ spec:
     firmware:
       # this sets the UUID
       uuid: 5d307ca9-b3ef-428c-8861-06e72d69f223
+      serial: e4686d2c-6e8d-4335-b8fd-81bee22f4815
     resources:
       requests:
         memory: 512M
@@ -99,6 +100,9 @@ spec:
       persistentVolumeClaim:
         claimName: myclaim
 ----
+
+In addition, the SMBIOS serial number can be set to a constant value
+via `spec.firmware.serial`, as demonstrated above.
 
 CPU
 ~~~
