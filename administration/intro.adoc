@@ -100,46 +100,22 @@ Core components
 ^^^^^^^^^^^^^^^
 
 Once Kubernetes is deployed, you will need to deploy the KubeVirt
-add-on. There are 2 ways to deploy the add-on to a cluster using the `kubectl` tool and
-manifest files:
+add-on.
 
-1. Stable flow
-+++++++++++++++
-
-The stable flow installs KubeVirt using a manifest file, which contains all deployments and configurations of the
-KubeVirt core components:
+The installation uses the KubeVirt operator, which manages lifecycle of all KubeVirt core components:
 
 [source,bash]
 ----
-$ RELEASE=v0.14.0
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
+$ export RELEASE=v0.17.0
+# creates KubeVirt operator
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
+# creates KubeVirt KV custom resource
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
+# wait until all KubeVirt components is up
+$ kubectl -n kubevirt wait kv kubevirt --for condition=Ready
 ----
 
-2. Alternative flow (aka Operator flow)
-+++++++++++++++++++++++++++++++++++++++
-
-Since version 0.13.0 KubeVirt can be installed using the new KubeVirt Operator and a KubeVirt custom resource.
-
-_________________________________________________________________________
-Note: The Operator is considered to be experimental for the time being.
-There is currently no way to upgrade KubeVirt using this flow.
-_________________________________________________________________________
-
-[source,bash]
-----
-$ export VERSION=v0.14.0
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/$VERSION/kubevirt-operator.yaml
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/$VERSION/kubevirt-cr.yaml
-----
-
-Since version 0.14.0 you can also use `kubectl` for waiting until all KubeVirt components are "Ready".
-
-[source,bash]
-----
-$ kubectl wait kv kubevirt --for condition=Ready
-----
-
-Independent of the deployment flow, the new components will be deployed in the `kubevirt` namespace:
+All new components will be deployed under the `kubevirt` namespace:
 
 [source,bash]
 ----
@@ -150,6 +126,20 @@ virt-controller-5d9fc8cf8b-n5trt               1/1       Running       0        
 virt-handler-vwdjx                             1/1       Running       0          1m
 ...
 ----
+
+Deploying on OpenShift
+~~~~~~~~~~~~~~~~~~~~~~
+
+The following
+https://docs.openshift.com/container-platform/3.11/admin_guide/manage_scc.html[SCC]
+needs to be added prior KubeVirt deployment:
+
+[source,bash]
+----
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator
+----
+
+Once privileges are granted, the KubeVirt can be deployed as described above.
 
 Client side `virtctl` deployment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -167,37 +157,6 @@ It also provides convenience commands for:
 
 The most recent version of the tool can be retrieved from the
 https://github.com/kubevirt/kubevirt/releases[official release page].
-
-Deploying on OpenShift
-~~~~~~~~~~~~~~~~~~~~~~
-
-There are three ways to deploy KubeVirt on OpenShift.
-
-Using command line interface
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The following
-https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html[SCC]
-needs to be added prior KubeVirt deployment:
-
-- When you use the stable deployment flow:
-____________________________________
-Important: Starting with version v0.15.0 please replace `kubevirt-privileged` with `kubevirt-handler`
-____________________________________
-[source,bash]
-----
-$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-privileged
-$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-controller
-$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-apiserver
-----
-
-- When you use the operator flow:
-[source,bash]
-----
-$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator
-----
-
-Once privileges are granted, the kubevirt manifests can be deployed in the same way as explained above.
 
 From Service Catalog as an APB
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -261,15 +220,31 @@ ________________________________________________________________________________
 Update
 ~~~~~~
 
-____________________________________
-Note: Updates are not yet supported.
-____________________________________
-
-When using the stable deployment flow, usually it is sufficient to re-apply the manifests for performing a
-rolling update:
+Rolling updates supported from the release `v0.17.0`:
 
 [source,bash]
 ----
-$ RELEASE=v0.14.0
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml
+TODO
 ----
+
+Delete
+~~~~~~
+
+To delete the KubeVirt you should first to delete `KubeVirt` custom resource and then delete the KubeVirt operator:
+
+[source,bash]
+----
+$ export RELEASE=v0.17.0
+$ kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
+$ kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
+----
+
+______________________________________________________________________________________________________________________________________________________
+Note: If by mistake you deleted the operator first, the KV custom resource will stuck in the `Terminatig` state,
+to fix it, delete manually finalizer from the resource.
+
+[source,bash]
+----
+$ kubectl -n kubevirt patch kv kubevirt --type=json -p '[{ "op": "remove", "path": "/metadata/finalizers" }]'
+----
+______________________________________________________________________________________________________________________________________________________
