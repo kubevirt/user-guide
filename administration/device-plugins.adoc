@@ -1,0 +1,106 @@
+DevicePlugins
+------------------------------------
+
+Some devices on each host are made available to VMI's created via KubeVirt.
+Currently this list includes tun, kvm and vhost-net devices. KubeVirt uses the
+DevicePlugin mechanism from Kuberentes to make this possible. The benefit of
+this approach is that no special privileges to create device nodes need to be
+inherited by the virt-launcher pod.
+
+The default number of devices provided this way is 110, which is also the
+default number of pods that can be assigned to each Kubernetes node.
+
+How To Change the Number of Available Devices
+------------------------------------
+
+To change the number of devices that will be exposed by the DevicePlugin
+framework, edit the virt-handler DaemonSet:
+
+`kubectl -n kubevirt edit ds virt-handler`
+
+The current manifest used to define the virt-handler DaemonSet will be exposed
+in an editor. Add the `--max-devices` flag to the `--command` stanza:
+
+```
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  generation: 1
+  labels:
+    app.kubernetes.io/managed-by: kubevirt-operator
+    kubevirt.io: virt-handler
+  name: virt-handler
+  namespace: kubevirt
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      kubevirt.io: virt-handler
+  template:
+    metadata:
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ""
+        scheduler.alpha.kubernetes.io/tolerations: '[{"key":"CriticalAddonsOnly","operator":"Exists"}]'
+      creationTimestamp: null
+      labels:
+        kubevirt.io: virt-handler
+        prometheus.kubevirt.io: ""
+      name: virt-handler
+    spec:
+      containers:
+      - command:
+        - virt-handler
+        - --port
+        - "8443"
+        - --hostname-override
+        - $(NODE_NAME)
+        - --pod-ip-address
+        - $(MY_POD_IP)
+        - -v
+        - "2"
+        - --max-devices
+        - "300"
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+...
+```
+
+The full manifest has been truncated for clarity. In this example, the
+`--max-devices` flag was added and set to 300.
+
+**NOTE:** command line arguments must be strings. Use `"300"`, not `300`.
+
+Once each virt-handler pod is re-deployed and running, the new number of devices
+should be in effect. To verify the change took effect, inspect the nodes of the
+cluster:
+
+`kubectl get node -o yaml`
+
+The allocatable and capacity sections of each node should reflect the newly
+configured `--max-devices` flag.
+
+```
+    allocatable:
+      cpu: "5"
+      devices.kubevirt.io/kvm: "300"
+      devices.kubevirt.io/tun: "300"
+      devices.kubevirt.io/vhost-net: "300"
+      ephemeral-storage: "36190907537"
+      hugepages-1Gi: "0"
+      hugepages-2Mi: 128Mi
+      memory: 4679260Ki
+      pods: "110"
+    capacity:
+      cpu: "5"
+      devices.kubevirt.io/kvm: "300"
+      devices.kubevirt.io/tun: "300"
+      devices.kubevirt.io/vhost-net: "300"
+      ephemeral-storage: 39269648Ki
+      hugepages-1Gi: "0"
+      hugepages-2Mi: 128Mi
+      memory: 4912732Ki
+      pods: "110"
+```
