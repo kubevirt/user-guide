@@ -134,35 +134,8 @@ spec:
         claimName: myclaim
 ----
 
-Model
-^^^^^
-
-*Note*: Be sure that node CPU model where you run a VM, has the same or
-higher CPU family.
-
-*Note*: If CPU model wasn’t defined, the VM will have CPU model closest
-to one that used on the node where the VM is running.
-
-Setting the CPU model is possible via `spec.domain.cpu.model`. The
-following VM will have a CPU with the `Conroe` model:
-
-[source,yaml]
-----
-metadata:
-  name: myvmi
-spec:
-  domain:
-    cpu:
-      # this sets the CPU model
-      model: Conroe
-...
-----
-
-You can check list of available models
-https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml[here].
-
 Enabling cpu compatibility enforcement
-++++++++++++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To enable the cpu compatibility enforcement, user may expand the
 `feature-gates` field in the kubevirt-config config map by adding the
@@ -182,9 +155,63 @@ data:
 ...
 ----
 
-This feature-gate allows kubevirt to take VM cpu model and create node selector from it.
-With this node selector, VM can be scheduled on the node which can support VM cpu model.
-Following VM has CPU model `Conroe`:
+This feature-gate allows kubevirt to take VM cpu model and cpu features and create node selectors from them.
+With these node selectors, VM can be scheduled on the node which can support VM cpu model and features.
+
+Labeling nodes with cpu models and cpu features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To properly label the node, user can use (only for cpu models and cpu features)
+https://github.com/kubevirt/node-labeller[node-labeller] in combination with
+https://github.com/kubevirt/cpu-nfd-plugin[cpu-nfd-plugin] or create node labels by himself.
+
+To install node-labeller to cluster, user can use (https://github.com/MarSik/kubevirt-ssp-operator)[kubevirt-ssp-operator], 
+which will install node-labeller + all available plugins.
+
+Cpu-nfd-plugin uses libvirt to get all supported cpu models and cpu features on host and 
+Node-labeller create labels from cpu models. Then Kubevirt can schedule VM 
+on node which has support for VM cpu model and features.
+
+Cpu-nfd-plugin supports black list of cpu models and minimal baseline cpu model for features. 
+Both features can be set via config map:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cpu-plugin-configmap
+data:
+  cpu-plugin-configmap.yaml: |- 
+    obsoleteCPUs:
+      - "486"
+      - "pentium"
+    minCPU: "Penryn"
+----
+
+This config map has to be created before node-labeller is created, 
+otherwise plugin will show all cpu models. Plugin will not reload when config map is changed.
+
+Obsolete cpus will not be inserted in labels. In minCPU user can set baseline cpu model. 
+CPU features, which have this model, are used as basic features. These basic features are not in the label 
+list. Feature labels are created as subtraction between set of newer cpu features and set of basic cpu features, e.g.:
+Haswell has: aes, apic, clflush
+Penryr has: apic, clflush
+subtraction is: aes. So label will be created only with aes feature.
+
+Model
+^^^^^
+
+*Note*: Be sure that node CPU model where you run a VM, has the same or
+higher CPU family.
+
+*Note*: If CPU model wasn’t defined, the VM will have CPU model closest
+to one that used on the node where the VM is running.
+
+*Note*: CPU model is case sensitive.
+
+Setting the CPU model is possible via `spec.domain.cpu.model`. The
+following VM will have a CPU with the `Conroe` model:
 
 [source,yaml]
 ----
@@ -195,25 +222,18 @@ metadata:
 spec:
   domain:
     cpu:
+      # this sets the CPU model
       model: Conroe
 ...
 ----
 
-When CPUNodeDiscovery feature-gate is enabled, Kubevirt creates node selector with format:
-`feature.node.kubernetes.io/cpu-model-<cpuModel>`, e.g. `feature.node.kubernetes.io/cpu-model-Conroe`. 
+You can check list of available models
+https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml[here].
+
+When CPUNodeDiscovery feature-gate is enabled(as mentioned in <<Enabling cpu compatibility enforcement>>) 
+and VM has cpu model, Kubevirt creates node selector with format:
+`feature.node.kubernetes.io/cpu-model-<cpuModel>`, e.g. `feature.node.kubernetes.io/cpu-model-Conroe`.
 When VM doesn't have cpu model, then no node selector is created.
-
-To properly label the node, user can use 
-https://github.com/ksimon1/cpu-node-labeller[cpu-node-labeller] in combination with
-https://github.com/ksimon1/cpu-model-nfd-plugin[cpu-model-nfd-plugin] or create node labels by himself. 
-
-To install cpu-node-labeller to cluster, run `oc apply -f cpu-node-labeller.yaml` with 
-https://github.com/ksimon1/cpu-node-labeller/blob/master/cpu-node-labeller.yaml[this deploy manifest]
-It will deploy cpu-node-labeller with cpu-model-nfd-plugin. 
-
-cpu-model-nfd-plugin uses libvirt to get all supported cpu models on host and 
-cpu-node-labeller create labels from cpu models. Then Kubevirt can schedule VM 
-on node which has support for VM cpu model.
 
 Enabling default cluster cpu model
 ++++++++++++++++++++++++++++++++++
@@ -231,14 +251,14 @@ metadata:
     kubevirt.io: ""
 data:
   default-cpu-model: "EPYC"
-....
+...
 ----
 
 Default CPU model is set when vmi doesn't have any cpu model. When vmi has cpu 
 model set, then vmi's cpu model is preferred. When default cpu model is not set and vmi's cpu 
 model is not set too, `host-model` will be set. Default cpu model can be changed when kubevirt is running.
-When CPUNodeDiscovery feature gate is enabled and nodes have labels with cpu models (as mentioned 
-in link:#Enabling cpu compatibility enforcement[*Enabling cpu compatibility enforcement*]), Kubevirt creates node selector with default cpu model.
+When CPUNodeDiscovery feature gate is enabled (as mentioned in <<Enabling cpu compatibility enforcement>>), 
+Kubevirt creates node selector with default cpu model.
 
 CPU model special cases
 +++++++++++++++++++++++
@@ -310,6 +330,11 @@ Behaviour according to Policies:
 
 
 Full description about features and policies can be found https://libvirt.org/formatdomain.html#elementsCPU[here].
+
+When CPUNodeDiscovery feature-gate is enabled (as mentioned in <<Enabling cpu compatibility enforcement>>), 
+Kubevirt creates node selector from cpu features with format:
+ `feature.node.kubernetes.io/cpu-feature-<cpuFeature>`, e.g. `feature.node.kubernetes.io/cpu-feature-apic`.
+When VM doesn't have cpu feature, then no node selector is created.
 
 Clock
 ~~~~~
