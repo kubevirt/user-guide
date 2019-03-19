@@ -343,19 +343,21 @@ to you VirtualMachine.</p>
   <span style="color:#606">domain</span>:
     <span style="color:#606">devices</span>:
       <span style="color:#606">disks</span>:
-        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: virtioContainerDisk</span></span>
+        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: virtiocontainerdisk</span></span>
           <span style="color:#777"># Any other disk you want to use, must go before virtioContainerDisk.</span>
           <span style="color:#777"># KubeVirt boots from disks in order ther are defined.</span>
           <span style="color:#777"># Therefore virtioContainerDisk, must be after bootable disk.</span>
           <span style="color:#777"># Other option is to choose boot order explicitly:</span>
           <span style="color:#777">#  - https://kubevirt.io/api-reference/v0.13.2/definitions.html#_v1_disk</span>
+          <span style="color:#777"># NOTE: You either specify bootOrder explicitely or sort the items in</span>
+          <span style="color:#777">#       disks. You can not do both at the same time.</span>
           <span style="color:#777"># bootOrder: 2</span>
           <span style="color:#606">cdrom</span>:
-            <span style="color:#F00;background-color:#FAA">bus:sata</span>
+            <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">sata</span></span>
 <span style="color:#606">volumes</span>:
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerDisk:</span><span style="color:#D20">
       image: kubevirt/virtio-container-disk</span></span>
-    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtioContainerDisk</span></span></code></pre>
+    <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtiocontainerdisk</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">

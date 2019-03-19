@@ -317,6 +317,51 @@ release.</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="hyperv-optimizations"><a class="anchor" href="#hyperv-optimizations"></a>HyperV optimizations</h3>
+<div class="paragraph">
+<p>KubeVirt supports quite a lot of so-called "HyperV enlightenments", which are optimizations for Windows Guests.
+Some of these optimization may require an up to date host kernel support to work properly, or to deliver the maxiumum
+performance gains.</p>
+</div>
+<div class="paragraph">
+<p>KubeVirt can perform extra checks on the hosts before to run Hyper-V enabled VMs, to make sure the host has no known
+issues with HyperV support, and thus we can expect optimal performance.
+This check is disabled by default for backward compatibility and because it depends on the <a href="https://github.com/kubernetes-sigs/node-feature-discovery">node-feature-discovery</a>
+and on extra configuration.</p>
+</div>
+<div class="paragraph">
+<p>To enable strict host checking, the user may expand the
+<code>feature-gates</code> field in the kubevirt-config config map by adding the
+<code>HypervSupport</code> to it.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  feature-gates: "HypervSupport"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, users can edit an existing kubevirt-config:</p>
+</div>
+<div class="paragraph">
+<p><code>kubectl edit configmap kubevirt-config -n kubevirt</code></p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>...
+data:
+  feature-gates: "HypervSupport,CPUManager"</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
       </div>

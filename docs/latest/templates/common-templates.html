@@ -258,13 +258,13 @@ can edit:</p>
 the templates produce VM objects to be used in the cluster. The VMs
 produced from templates will have a <code>vm.cnv.io/template</code> label, whose
 value will be the name of the parent template, for example
-<code>fedora-generic-medium</code>:</p>
+<code>fedora-desktop-medium</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml">  <span style="color:#606">metadata</span>:
     <span style="color:#606">labels</span>:
-      <span style="color:#606">vm.cnv.io/template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora-generic-medium</span></span></code></pre>
+      <span style="color:#606">vm.cnv.io/template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora-desktop-medium</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -289,7 +289,7 @@ whose value will be the namespace of the parent template, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">oc process -o yaml rhel7-generic-tiny PVCNAME=mydisk NAME=rheltinyvm</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">oc process -o yaml rhel7-server-tiny PVCNAME=mydisk NAME=rheltinyvm</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -303,7 +303,7 @@ whose value will be the namespace of the parent template, for example:</p>
   <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
   <span style="color:#606">metadata</span>:
     <span style="color:#606">labels</span>:
-      <span style="color:#606">vm.cnv.io/template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rhel7-generic-tiny</span></span>
+      <span style="color:#606">vm.cnv.io/template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rhel7-server-tiny</span></span>
     <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rheltinyvm</span></span>
     <span style="color:#606">osinfoname</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rhel7.0</span></span>
   <span style="color:#606">spec</span>:
@@ -344,7 +344,7 @@ whose value will be the namespace of the parent template, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">oc process rhel7-generic-tiny PVCNAME=mydisk NAME=rheltinyvm | oc apply -f -</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">oc process rhel7-server-tiny PVCNAME=mydisk NAME=rheltinyvm | oc apply -f -</code></pre>
 </div>
 </div>
 <div class="paragraph">
