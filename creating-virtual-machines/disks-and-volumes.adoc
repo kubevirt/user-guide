@@ -36,7 +36,7 @@ lun
 A `lun` disk will expose the volume as a LUN device to the VM. This
 allows the VM to execute arbitrary iSCSI command passthrough.
 
-A minimal example which attaches a `PersistentVolumeClame` named `mypvc`
+A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `lun` device to the VM:
 
 [source,yaml]
@@ -66,7 +66,7 @@ disk
 
 A `disk` disk will expose the volume as an ordinary disk to the VM.
 
-A minimal example which attaches a `PersistentVolumeClame` named `mypvc`
+A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `disk` device to the VM:
 
 [source,yaml]
@@ -124,7 +124,7 @@ floppy
 
 A `floppy` disk will expose the volume as a floppy drive to the VM.
 
-A minimal example which attaches a `PersistentVolumeClame` named `mypvc`
+A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `floppy` device to the VM:
 
 [source,yaml]
@@ -155,7 +155,7 @@ cdrom
 A `cdrom` disk will expose the volume as a cdrom drive to the VM. It is
 read-only by default.
 
-A minimal example which attaches a `PersistentVolumeClame` named `mypvc`
+A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `floppy` device to the VM:
 
 [source,yaml]
@@ -246,7 +246,7 @@ persistentVolumeClaim
 
 Allows connecting a `PersistentVolumeClaim` to a VM disk.
 
-Use a PersistentVolumeClain when the VirtualMachineInstance’s disk needs
+Use a PersistentVolumeClaim when the VirtualMachineInstance’s disk needs
 to persist after the VM terminates. This allows for the VM’s data to
 remain persistent between restarts.
 
