@@ -98,13 +98,13 @@ https://docs.openshift.com/enterprise/3.0/dev_guide/templates.html#creating-from
 the templates produce VM objects to be used in the cluster. The VMs
 produced from templates will have a `vm.cnv.io/template` label, whose
 value will be the name of the parent template, for example
-`fedora-generic-medium`:
+`fedora-desktop-medium`:
 
 [source,yaml]
 ----
   metadata:
     labels:
-      vm.cnv.io/template: fedora-generic-medium
+      vm.cnv.io/template: fedora-desktop-medium
 ----
 
 In addition, these VMs can include an optional label `vm.cnv.io/template-namespace`,
@@ -125,7 +125,7 @@ Example:
 
 [source,bash]
 ----
-oc process -o yaml rhel7-generic-tiny PVCNAME=mydisk NAME=rheltinyvm
+oc process -o yaml rhel7-server-tiny PVCNAME=mydisk NAME=rheltinyvm
 ----
 
 And the output:
@@ -138,7 +138,7 @@ items:
   kind: VirtualMachine
   metadata:
     labels:
-      vm.cnv.io/template: rhel7-generic-tiny
+      vm.cnv.io/template: rhel7-server-tiny
     name: rheltinyvm
     osinfoname: rhel7.0
   spec:
@@ -178,7 +178,7 @@ You can add add the VM from the template to the cluster in one go
 
 [source,bash]
 ----
-oc process rhel7-generic-tiny PVCNAME=mydisk NAME=rheltinyvm | oc apply -f -
+oc process rhel7-server-tiny PVCNAME=mydisk NAME=rheltinyvm | oc apply -f -
 ----
 
 Please note that, after the generation step, VM objects and template
