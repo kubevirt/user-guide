@@ -261,6 +261,12 @@ ______________________________________________________________________________
 drivers.
 ______________________________________________________________________________
 
+______________________________________________________________________________
+*Note:* Windows machines need the latest virtio network driver to configure
+the correct MTU on the interface.
+______________________________________________________________________________
+
+
 If `spec.domain.devices.interfaces` is omitted, the virtual machine is
 connected using the default pod network interface of `bridge` type. If
 you’d like to have a virtual machine instance without any network
@@ -282,6 +288,12 @@ In `bridge` mode, virtual machines are connected to the network backend
 through a linux ``bridge''. The pod network IPv4 address is delegated to
 the virtual machine via DHCPv4. The virtual machine should be configured
 to use DHCP to acquire IPv4 addresses.
+
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+**Note:** If a specific MAC address is not configured in the virtual machine interface spec
+the MAC address from the relevant pod interface is delegated to the virtual machine.
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
 
 [source,yaml]
 ----
