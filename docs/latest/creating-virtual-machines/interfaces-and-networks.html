@@ -527,6 +527,14 @@ drivers.</p>
 </div>
 </blockquote>
 </div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Note:</strong> Windows machines need the latest virtio network driver to configure
+the correct MTU on the interface.</p>
+</div>
+</blockquote>
+</div>
 <div class="paragraph">
 <p>If <code>spec.domain.devices.interfaces</code> is omitted, the virtual machine is
 connected using the default pod network interface of <code>bridge</code> type. If
@@ -550,6 +558,14 @@ connectivity, you can use the <code>autoattachPodInterface</code> field as follo
 through a linux ``bridge''. The pod network IPv4 address is delegated to
 the virtual machine via DHCPv4. The virtual machine should be configured
 to use DHCP to acquire IPv4 addresses.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Note:</strong> If a specific MAC address is not configured in the virtual machine interface spec
+the MAC address from the relevant pod interface is delegated to the virtual machine.</p>
+</div>
+</blockquote>
 </div>
 <div class="listingblock">
 <div class="content">
