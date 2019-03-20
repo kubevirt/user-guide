@@ -133,7 +133,28 @@ configured.
 * The multus delegate chosen as default *must* return at least one IP address.
 
 
-The following defines a VMI with an OVS network as the default.
+Create a `NetworkAttachmentDefinition` with IPAM.
+
+[source,yaml]
+----
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: ovs-vlan-200
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "type": "ovs",
+      "bridge": "br1",
+      "vlan": 200,
+      "ipam": {
+        "type": "host-local",
+        "subnet": "10.250.250.0/24"
+      }
+    }'
+----
+
+Define a VMI with an OVS network as the default.
 
 [source,yaml]
 ----
@@ -148,7 +169,7 @@ spec:
   - name: ovs-net
     multus: # Multus network as default
       default: true
-      networkName: ovs-vlan-100
+      networkName: ovs-vlan-200
 ----
 
 genie
