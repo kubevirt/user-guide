@@ -15,6 +15,8 @@ addons:
 
 before_script:
 - gem install --no-document ascii_binder
+# We need to fetch all branches for building all of docs
+- git config --add remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" && git fetch
 
 script:
   - make docs
