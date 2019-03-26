@@ -1,6 +1,6 @@
-[[ -e kubevirt ]] || git clone --depth=1 git@github.com:kubevirt/kubevirt.git
+[[ -e kubevirt ]] || git clone git@github.com:kubevirt/kubevirt.git
 git -C kubevirt checkout master
-git -C kubevirt pull
+git -C kubevirt pull --tags
 
 releases() {
 git -C kubevirt tag | sort -rV | while read TAG ;
