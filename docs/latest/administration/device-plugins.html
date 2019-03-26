@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>KubeVirt Latest | Installation & Administration | Webhooks</title>
+  <title>KubeVirt Latest | Installation & Administration | Device Plugins</title>
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -47,7 +47,7 @@
       </li>
       
       <li class="hidden-xs active">
-        Webhooks
+        Device Plugins
       </li>
     </ol>
     <div class="row row-offcanvas row-offcanvas-left">
@@ -83,14 +83,14 @@
       </a>
       <ul id="topicGroup3" class="collapse in list-unstyled">
             <li><a class="" href="../administration/intro.html">Installation</a></li>
-            <li><a class=" active" href="../administration/api-validation.html">Webhooks</a></li>
+            <li><a class="" href="../administration/api-validation.html">Webhooks</a></li>
             <li><a class="" href="../administration/authorization.html">Authorization</a></li>
             <li><a class="" href="../administration/monitoring.html">Monitoring</a></li>
             <li><a class="" href="../administration/annotations_and_labels.html">Annotations and Labels</a></li>
             <li><a class="" href="../administration/unresponsive-nodes.html">Unresponsive node handling</a></li>
             <li><a class="" href="../administration/node-eviction.html">Node eviciton</a></li>
             <li><a class="" href="../administration/image-upload.html">Image upload</a></li>
-            <li><a class="" href="../administration/device-plugins.html">Device Plugins</a></li>
+            <li><a class=" active" href="../administration/device-plugins.html">Device Plugins</a></li>
       </ul>
     </li>
     <li class="nav-header">
@@ -140,98 +140,125 @@
       </div>
       <div class="col-xs-12 col-sm-9 col-md-9 main">
         <div class="page-header">
-          <h2>KubeVirt API Validation</h2>
+          <h2>Device Plugins</h2>
         </div>
-        <div class="sect1">
-<h2 id="kubevirt-api-validation"><a class="anchor" href="#kubevirt-api-validation"></a>KubeVirt API Validation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The KubeVirt VirtualMachineInstance API is implemented using a
-Kubernetes Custom Resource Definition (CRD). Because of this, KubeVirt
-is able to leverage a couple of features Kubernetes provides in order to
-perform validation checks on our API as objects created and updated on
-the cluster.</p>
+        <div class="paragraph">
+<p>DevicePlugins</p>
 </div>
-<div class="sect2">
-<h3 id="how-api-validation-works"><a class="anchor" href="#how-api-validation-works"></a>How API Validation Works</h3>
-<div class="sect3">
-<h4 id="crd-openapiv3-schema"><a class="anchor" href="#crd-openapiv3-schema"></a>CRD OpenAPIv3 Schema</h4>
-<div class="paragraph">
-<p>The KubeVirt API is registered with Kubernetes at install time through a
-series of CRD definitions. KubeVirt includes an OpenAPIv3 schema in
-these definitions which indicates to the Kubernetes Apiserver some very
-basic information about our API, such as what fields are required and
-what type of data is expected for each value.</p>
-</div>
-<div class="paragraph">
-<p>This OpenAPIv3 schema validation is installed automatically and requires
-no thought on the users part to enable.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="admission-control-webhooks"><a class="anchor" href="#admission-control-webhooks"></a>Admission Control Webhooks</h4>
-<div class="paragraph">
-<p>The OpenAPIv3 schema validation is limited. It only validates the
-general structure of a KubeVirt object looks correct. It does not
-however verify that the contents of that object make sense.</p>
-</div>
-<div class="paragraph">
-<p>With OpenAPIv3 validation alone, users can easily make simple mistakes
-(like not referencing a volume&#8217;s name correctly with a disk) and the
-cluster will still accept the object. However, the
-VirtualMachineInstance will of course not start if these errors in the
-API exist. Ideally we’d like to catch configuration issues as early as
-possible and not allow an object to even be posted to the cluster if we
-can detect there’s a problem with the object’s Spec.</p>
-</div>
-<div class="paragraph">
-<p>In order to perform this advanced validation, KubeVirt implements its
-own admission controller which is registered with kubernetes as an
-admission controller webhook. This webhook is registered with Kubernetes
-at install time. As KubeVirt objects are posted to the cluster, the
-Kubernetes API server forwards Creation requests to our webhook for
-validation before persisting the object into storage.</p>
-</div>
-<div class="paragraph">
-<p>Note however that the KubeVirt admission controller requires features to
-be enabled on the cluster in order to be enabled.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="enabling-kubevirt-admission-controller-on-kubernetes"><a class="anchor" href="#enabling-kubevirt-admission-controller-on-kubernetes"></a>Enabling KubeVirt Admission Controller on Kubernetes</h3>
-<div class="paragraph">
-<p>When provisioning a new Kubernetes cluster, ensure that both the
-<strong>MutatingAdmissionWebhook</strong> and <strong>ValidatingAdmissionWebhook</strong> values are
-present in the Apiserver’s <strong>–admission-control</strong> cli argument.</p>
-</div>
-<div class="paragraph">
-<p>Below is an example of the <strong>–admission-control</strong> values we use during
-development</p>
-</div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>--admission-control='Initializers,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota'</pre>
+<pre>Some devices on each host are made available to VMI's created via KubeVirt.
+Currently this list includes tun, kvm and vhost-net devices. KubeVirt uses the
+DevicePlugin mechanism from Kuberentes to make this possible. The benefit of
+this approach is that no special privileges to create device nodes need to be
+inherited by the virt-launcher pod.
+
+The default number of devices provided this way is 110, which is also the
+default number of pods that can be assigned to each Kubernetes node.
+
+How To Change the Number of Available Devices</pre>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="enabling-kubevirt-admission-controller-on-openshift"><a class="anchor" href="#enabling-kubevirt-admission-controller-on-openshift"></a>Enabling KubeVirt Admission Controller on OpenShift</h3>
 <div class="paragraph">
-<p>OpenShift also requires the admission control webhooks to be enabled at
-install time. The process is slightly different though. With OpenShift,
-we enable webhooks using an admission plugin.</p>
+<p>To change the number of devices that will be exposed by the DevicePlugin
+framework, edit the virt-handler DaemonSet:</p>
 </div>
 <div class="paragraph">
-<p>These admission control plugins can be configured in openshift-ansible
-by setting the following value in ansible inventory file.</p>
+<p><code>kubectl -n kubevirt edit ds virt-handler</code></p>
 </div>
-<div class="literalblock">
+<div class="paragraph">
+<p>The current manifest used to define the virt-handler DaemonSet will be exposed
+in an editor. Add the <code>--max-devices</code> flag to the <code>--command</code> stanza:</p>
+</div>
+<div class="listingblock">
 <div class="content">
-<pre>openshift_master_admission_plugin_config={"ValidatingAdmissionWebhook":{"configuration":{"kind": "DefaultAdmissionConfig","apiVersion": "v1","disable": false}},"MutatingAdmissionWebhook":{"configuration":{"kind": "DefaultAdmissionConfig","apiVersion": "v1","disable": false}}}</pre>
+<pre class="CodeRay highlight"><code>apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  generation: 1
+  labels:
+    app.kubernetes.io/managed-by: kubevirt-operator
+    kubevirt.io: virt-handler
+  name: virt-handler
+  namespace: kubevirt
+spec:
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      kubevirt.io: virt-handler
+  template:
+    metadata:
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ""
+        scheduler.alpha.kubernetes.io/tolerations: '[{"key":"CriticalAddonsOnly","operator":"Exists"}]'
+      creationTimestamp: null
+      labels:
+        kubevirt.io: virt-handler
+        prometheus.kubevirt.io: ""
+      name: virt-handler
+    spec:
+      containers:
+      - command:
+        - virt-handler
+        - --port
+        - "8443"
+        - --hostname-override
+        - $(NODE_NAME)
+        - --pod-ip-address
+        - $(MY_POD_IP)
+        - -v
+        - "2"
+        - --max-devices
+        - "300"
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+...</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>The full manifest has been truncated for clarity. In this example, the
+<code>--max-devices</code> flag was added and set to 300.</p>
 </div>
+<div class="paragraph">
+<p><strong>NOTE:</strong> command line arguments must be strings. Use <code>"300"</code>, not <code>300</code>.</p>
+</div>
+<div class="paragraph">
+<p>Once each virt-handler pod is re-deployed and running, the new number of devices
+should be in effect. To verify the change took effect, inspect the nodes of the
+cluster:</p>
+</div>
+<div class="paragraph">
+<p><code>kubectl get node -o yaml</code></p>
+</div>
+<div class="paragraph">
+<p>The allocatable and capacity sections of each node should reflect the newly
+configured <code>--max-devices</code> flag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    allocatable:
+      cpu: "5"
+      devices.kubevirt.io/kvm: "300"
+      devices.kubevirt.io/tun: "300"
+      devices.kubevirt.io/vhost-net: "300"
+      ephemeral-storage: "36190907537"
+      hugepages-1Gi: "0"
+      hugepages-2Mi: 128Mi
+      memory: 4679260Ki
+      pods: "110"
+    capacity:
+      cpu: "5"
+      devices.kubevirt.io/kvm: "300"
+      devices.kubevirt.io/tun: "300"
+      devices.kubevirt.io/vhost-net: "300"
+      ephemeral-storage: 39269648Ki
+      hugepages-1Gi: "0"
+      hugepages-2Mi: 128Mi
+      memory: 4912732Ki
+      pods: "110"</code></pre>
 </div>
 </div>
       </div>
