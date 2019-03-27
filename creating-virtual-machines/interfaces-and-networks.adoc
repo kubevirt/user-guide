@@ -119,6 +119,58 @@ spec:
       networkName: ovs-vlan-100
 ----
 
+It is also possible to define a multus network as the default pod network with
+https://github.com/intel/multus-cni[Multus]. A version of multus after this
+https://github.com/intel/multus-cni/pull/174[Pull Request] is required
+(currently master).
+
+
+*Note the following:*
+
+* A multus default network and a pod network type are mutually exclusive.
+* The virt-launcher pod that starts the VMI will *not* have the pod network
+configured.
+* The multus delegate chosen as default *must* return at least one IP address.
+
+
+Create a `NetworkAttachmentDefinition` with IPAM.
+
+[source,yaml]
+----
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: macvlan-test
+spec:
+  config: '{
+      "type": "macvlan",
+      "master": "eth0",
+      "mode": "bridge",
+      "ipam": {
+        "type": "host-local",
+              "subnet": "10.250.250.0/24"
+      }
+    }'
+----
+
+Define a VMI with a https://github.com/intel/multus-cni[Multus] network as the default.
+
+[source,yaml]
+----
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: test1
+          bridge: {}
+  networks:
+  - name: test1
+    multus: # Multus network as default
+      default: true
+      networkName: macvlan-test
+----
+
 genie
 ^^^^^
 
