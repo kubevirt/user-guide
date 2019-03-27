@@ -291,6 +291,69 @@ network and to the secondary Open vSwitch network.</p>
       <span style="color:#606">networkName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ovs-vlan-100</span></span></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>It is also possible to define a multus network as the default pod network with
+<a href="https://github.com/intel/multus-cni">Multus</a>. A version of multus after this
+<a href="https://github.com/intel/multus-cni/pull/174">Pull Request</a> is required
+(currently master).</p>
+</div>
+<div class="paragraph">
+<p><strong>Note the following:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A multus default network and a pod network type are mutually exclusive.</p>
+</li>
+<li>
+<p>The virt-launcher pod that starts the VMI will <strong>not</strong> have the pod network
+configured.</p>
+</li>
+<li>
+<p>The multus delegate chosen as default <strong>must</strong> return at least one IP address.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Create a <code>NetworkAttachmentDefinition</code> with IPAM.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">k8s.cni.cncf.io/v1</span><span style="color:#710">&quot;</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">NetworkAttachmentDefinition</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">macvlan-test</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">config</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">'{</span><span style="color:#D20">
+      &quot;type&quot;: &quot;macvlan&quot;,
+      &quot;master&quot;: &quot;eth0&quot;,
+      &quot;mode&quot;: &quot;bridge&quot;,
+      &quot;ipam&quot;: {
+        &quot;type&quot;: &quot;host-local&quot;,
+              &quot;subnet&quot;: &quot;10.250.250.0/24&quot;
+      }
+    }'</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Define a VMI with a <a href="https://github.com/intel/multus-cni">Multus</a> network as the default.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VM</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">interfaces</span>:
+        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: test1</span></span>
+          <span style="color:#606">bridge</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">networks</span>:
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: test1</span></span>
+    <span style="color:#606">multus</span>: <span style="color:#777"># Multus network as default</span>
+      <span style="color:#606">default</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
+      <span style="color:#606">networkName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">macvlan-test</span></span></code></pre>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="genie"><a class="anchor" href="#genie"></a>genie</h4>
