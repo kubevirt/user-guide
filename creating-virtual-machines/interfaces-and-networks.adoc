@@ -290,15 +290,63 @@ spec:
     pod: {}
 ----
 
+______________________________________________________________________________
+**Note:** If a specific MAC address is configured for a virtual machine
+interface, it's passed to the underlying CNI plugin that is expected to
+configure the backend to allow for this particular MAC address. Not every
+plugin has native support for custom MAC addresses.
+______________________________________________________________________________
+
+______________________________________________________________________________
+**Note:**  For some CNI plugins without native support for custom MAC
+addresses, there is a workaround, which is to use the `tuning` CNI plugin to
+adjust pod interface MAC address. This can be used as follows:
+
+[source,yaml]
+----
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: ptp-mac
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "name": "ptp-mac",
+      "plugins": [
+        {
+          "type": "ptp",
+          "ipam": {
+            "type": "host-local",
+            "subnet": "10.1.1.0/24"
+          }
+        },
+        {
+          "type": "tuning"
+        }
+      ]
+    }'
+----
+
+
+This approach may not work for all plugins. For example, OpenShift SDN is not
+compatible with `tuning` plugin.
+
+* Plugins that handle custom MAC addresses natively: `ovs`.
+* Plugins that are compatible with `tuning` plugin: `flannel`, `ptp`, `bridge`.
+* Plugins that don't need special MAC address treatment: `sriov` (in `vfio`
+  mode).
+______________________________________________________________________________
+
+
 Ports
 ^^^^^
 
 Declare ports listen by the virtual machine
 
-__________________________________________________________________________________________________________
+______________________________________________________________________________
 *Note:* When using the slirp interface only the configured ports will be
 forwarded to the virtual machine.
-__________________________________________________________________________________________________________
+______________________________________________________________________________
 
 [cols=",,,",options="header",]
 |============================================
@@ -341,10 +389,11 @@ through a linux ``bridge''. The pod network IPv4 address is delegated to
 the virtual machine via DHCPv4. The virtual machine should be configured
 to use DHCP to acquire IPv4 addresses.
 
-________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-**Note:** If a specific MAC address is not configured in the virtual machine interface spec
-the MAC address from the relevant pod interface is delegated to the virtual machine.
-________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+______________________________________________________________________________
+**Note:** If a specific MAC address is not configured in the virtual machine
+interface spec the MAC address from the relevant pod interface is delegated to
+the virtual machine.
+______________________________________________________________________________
 
 
 [source,yaml]
@@ -364,12 +413,11 @@ spec:
 At this time, `bridge` mode doesn’t support additional configuration
 fields.
 
-________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-*Note:* due to IPv4 address delagation, in `bridge` mode the pod doesn’t
-have an IP address configured, which may introduce issues with
-third-party solutions that may rely on it. For example, Istio may not
-work in this mode.
-________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+______________________________________________________________________________
+*Note:* due to IPv4 address delagation, in `bridge` mode the pod doesn’t have
+an IP address configured, which may introduce issues with third-party solutions
+that may rely on it. For example, Istio may not work in this mode.
+______________________________________________________________________________
 
 slirp
 ^^^^^
@@ -395,10 +443,10 @@ spec:
 At this time, `slirp` mode doesn’t support additional configuration
 fields.
 
-_______________________________________________________________________________________________
-*Note:* in `slirp` mode, the only supported protocols are TCP and UDP.
-ICMP is _not_ supported.
-_______________________________________________________________________________________________
+______________________________________________________________________________
+*Note:* in `slirp` mode, the only supported protocols are TCP and UDP. ICMP is
+_not_ supported.
+______________________________________________________________________________
 
 More information about SLIRP mode can be found in
 https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29[QEMU
@@ -413,7 +461,8 @@ IP addresses to virtual machines and hides them behind NAT.
 All the traffic exiting the virtual machine will be natted using the pod ip address.
 The virtual machine should be configured to use DHCP to acquire IPv4 addresses.
 
-To allow traffic gets into the virtual machine the port section need to be configured in the interface spec.
+To allow traffic gets into the virtual machine the port section need to be
+configured in the interface spec.
 
 [source,yaml]
 ----
@@ -431,10 +480,11 @@ spec:
     pod: {}
 ----
 
-_______________________________________________________________________________________________
+______________________________________________________________________________
 *Note:* Masquerade is only allow to be connected to a pod network backend.
-*Note:* The network CIDR for can be configured in the pod network section using `vmNetworkCIDR`.
-_______________________________________________________________________________________________
+*Note:* The network CIDR for can be configured in the pod network section using
+`vmNetworkCIDR`.
+______________________________________________________________________________
 
 virtio-net multiqueue
 ^^^^^^^^^^^^^^^^^^^^^
@@ -503,13 +553,12 @@ http://www.linux-kvm.org/page/Multiqueue[KVM/QEMU MultiQueue].
 sriov
 ^^^^^
 
-In `sriov` mode, virtual machines are directly exposed to an SR-IOV PCI
-device, usually allocated by
-https://github.com/intel/sriov-network-device-plugin[Intel SR-IOV device
-plugin]. The device is passed through into the guest operating system as
-a host device, using the
-https://www.kernel.org/doc/Documentation/vfio.txt[vfio] userspace
-interface, to maintain high networking performance.
+In `sriov` mode, virtual machines are directly exposed to an SR-IOV PCI device,
+usually allocated by https://github.com/intel/sriov-network-device-plugin[Intel
+SR-IOV device plugin]. The device is passed through into the guest operating
+system as a host device, using the
+https://www.kernel.org/doc/Documentation/vfio.txt[vfio] userspace interface, to
+maintain high networking performance.
 
 [source,yaml]
 ----
@@ -526,10 +575,10 @@ spec:
       networkName: sriov-net-crd
 ----
 
-__________________________________________________________________________________
-*Note:* you need to enable the SRIOV feature gate to use the feature.
-For example:
-__________________________________________________________________________________
+______________________________________________________________________________
+*Note:* you need to enable the SRIOV feature gate to use the feature. For
+example:
+______________________________________________________________________________
 
 ....
 apiVersion: v1
@@ -547,10 +596,10 @@ Information on how to set up Intel SR-IOV device plugin can be found
 https://github.com/intel/sriov-network-device-plugin/blob/master/README.md[in
 their respective documentation].
 
-__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-*Note:* while the `sriov` mode is validated and tested using the Intel
-SR-IOV device plugin, other plugins may add support for the same by
-setting the `PCIDEVICE_<resourceName>` environment variables inside pods
-to a list of allocated PCI device IDs, as in:
+______________________________________________________________________________
+*Note:* while the `sriov` mode is validated and tested using the Intel SR-IOV
+device plugin, other plugins may add support for the same by setting the
+`PCIDEVICE_<resourceName>` environment variables inside pods to a list of
+allocated PCI device IDs, as in:
 PCIDEVICE_VENDOR_COM_RESOURCE_NAME=0000:81:11.1,0000:81:11.2[,…]
-__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+______________________________________________________________________________
