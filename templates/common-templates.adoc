@@ -56,7 +56,7 @@ a snippet presenting a couple of most commonly found editable fields:
 ----
 metadata:
   annotations:
-    template.cnv.io/editable: |
+    template.kubevirt.io/editable: |
       /objects[0].spec.template.spec.domain.cpu.sockets
       /objects[0].spec.template.spec.domain.cpu.cores
       /objects[0].spec.template.spec.domain.cpu.threads
@@ -96,7 +96,7 @@ Relationship between templates and VMs
 Once
 https://docs.openshift.com/enterprise/3.0/dev_guide/templates.html#creating-from-templates-using-the-cli[processed],
 the templates produce VM objects to be used in the cluster. The VMs
-produced from templates will have a `vm.cnv.io/template` label, whose
+produced from templates will have a `vm.kubevirt.io/template` label, whose
 value will be the name of the parent template, for example
 `fedora-desktop-medium`:
 
@@ -104,17 +104,17 @@ value will be the name of the parent template, for example
 ----
   metadata:
     labels:
-      vm.cnv.io/template: fedora-desktop-medium
+      vm.kubevirt.io/template: fedora-desktop-medium
 ----
 
-In addition, these VMs can include an optional label `vm.cnv.io/template-namespace`,
+In addition, these VMs can include an optional label `vm.kubevirt.io/template-namespace`,
 whose value will be the namespace of the parent template, for example:
 
 [source,yaml]
 ----
   metadata:
     labels:
-      vm.cnv.io/template-namespace: openshift
+      vm.kubevirt.io/template-namespace: openshift
 ----
 
 If this label is not defined, the template is expected to belong to the same namespace as the VM.
@@ -138,7 +138,7 @@ items:
   kind: VirtualMachine
   metadata:
     labels:
-      vm.cnv.io/template: rhel7-server-tiny
+      vm.kubevirt.io/template: rhel7-server-tiny
     name: rheltinyvm
     osinfoname: rhel7.0
   spec:
@@ -211,7 +211,7 @@ metadata:
 ----
 
 All the following annotations are prefixed with
-`defaults.template.cnv.io`, which is omitted below for brevity. So the
+`defaults.template.kubevirt.io`, which is omitted below for brevity. So the
 actual annotations you should use will look like
 
 [source,yaml]
@@ -221,10 +221,10 @@ kind: Template
 metadata:
   name: windows-10
   annotations:
-    defaults.template.cnv.io/disk: default-disk
-    defaults.template.cnv.io/volume: default-volume
-    defaults.template.cnv.io/nic: default-nic
-    defaults.template.cnv.io/network: default-network
+    defaults.template.kubevirt.io/disk: default-disk
+    defaults.template.kubevirt.io/volume: default-volume
+    defaults.template.kubevirt.io/nic: default-nic
+    defaults.template.kubevirt.io/network: default-network
 ----
 
 Unless otherwise specified, all annotations are meant to be safe
@@ -245,7 +245,7 @@ kind: Template
 metadata:
   name: Linux
   annotations:
-    defaults.template.cnv.io/disk: rhel-disk
+    defaults.template.kubevirt.io/disk: rhel-disk
 ----
 
 nic
@@ -262,7 +262,7 @@ kind: Template
 metadata:
   name: Windows
   annotations:
-    defaults.template.cnv.io/nic: my-nic
+    defaults.template.kubevirt.io/nic: my-nic
 ----
 
 volume
@@ -279,7 +279,7 @@ kind: Template
 metadata:
   name: Linux
   annotations:
-    defaults.template.cnv.io/volume: custom-volume
+    defaults.template.kubevirt.io/volume: custom-volume
 ----
 
 network
@@ -296,14 +296,14 @@ kind: Template
 metadata:
   name: Linux
   annotations:
-    defaults.template.cnv.io/network: fast-net
+    defaults.template.kubevirt.io/network: fast-net
 ----
 
 references
 ++++++++++
 
 The default values for network, nic, volume, disk are meant to be the *name* of a section later in the document that the UI will find and consume to find the default values for the corresponding types.
-For example, considering the annotation `defaults.template.cnv.io/disk: my-disk`: we assume that later in the document it exists an element called `my-disk` that the UI can use to find the data it needs.
+For example, considering the annotation `defaults.template.kubevirt.io/disk: my-disk`: we assume that later in the document it exists an element called `my-disk` that the UI can use to find the data it needs.
 The names actually don't matter as long as they are legal for kubernetes and consistent with the content of the document.
 
 complete example
@@ -317,11 +317,11 @@ items:
   kind: virtualmachine
   metadata:
     labels:
-      vm.cnv.io/template: rhel7-generic-tiny
+      vm.kubevirt.io/template: rhel7-generic-tiny
     name: rheltinyvm
     osinfoname: rhel7.0
-    defaults.template.cnv.io/disk: rhel-default-disk
-    defaults.template.cnv.io/nic: rhel-default-net
+    defaults.template.kubevirt.io/disk: rhel-default-disk
+    defaults.template.kubevirt.io/nic: rhel-default-net
   spec:
     running: false
     template:
@@ -356,7 +356,7 @@ apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachine
 metadata:
   labels:
-    vm.cnv.io/template: rhel7-generic-tiny
+    vm.kubevirt.io/template: rhel7-generic-tiny
   name: rheltinyvm
   osinfoname: rhel7.0
 spec:
