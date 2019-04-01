@@ -534,6 +534,68 @@ example: <code>0000:81:00.1</code></p></td>
     <span style="color:#606">pod</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>
 </div>
 </div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Note:</strong> If a specific MAC address is configured for a virtual machine
+interface, it&#8217;s passed to the underlying CNI plugin that is expected to
+configure the backend to allow for this particular MAC address. Not every
+plugin has native support for custom MAC addresses.</p>
+</div>
+</blockquote>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Note:</strong>  For some CNI plugins without native support for custom MAC
+addresses, there is a workaround, which is to use the <code>tuning</code> CNI plugin to
+adjust pod interface MAC address. This can be used as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">k8s.cni.cncf.io/v1</span><span style="color:#710">&quot;</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">NetworkAttachmentDefinition</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ptp-mac</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">config</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">'{</span><span style="color:#D20">
+      &quot;cniVersion&quot;: &quot;0.3.1&quot;,
+      &quot;name&quot;: &quot;ptp-mac&quot;,
+      &quot;plugins&quot;: [
+        {
+          &quot;type&quot;: &quot;ptp&quot;,
+          &quot;ipam&quot;: {
+            &quot;type&quot;: &quot;host-local&quot;,
+            &quot;subnet&quot;: &quot;10.1.1.0/24&quot;
+          }
+        },
+        {
+          &quot;type&quot;: &quot;tuning&quot;
+        }
+      ]
+    }'</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This approach may not work for all plugins. For example, OpenShift SDN is not
+compatible with <code>tuning</code> plugin.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Plugins that handle custom MAC addresses natively: <code>ovs</code>.</p>
+</li>
+<li>
+<p>Plugins that are compatible with <code>tuning</code> plugin: <code>flannel</code>, <code>ptp</code>, <code>bridge</code>.</p>
+</li>
+<li>
+<p>Plugins that don&#8217;t need special MAC address treatment: <code>sriov</code> (in <code>vfio</code>
+mode).</p>
+</li>
+</ul>
+</div>
+</blockquote>
+</div>
 <div class="sect3">
 <h4 id="ports"><a class="anchor" href="#ports"></a>Ports</h4>
 <div class="paragraph">
@@ -626,8 +688,9 @@ to use DHCP to acquire IPv4 addresses.</p>
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
-<p><strong>Note:</strong> If a specific MAC address is not configured in the virtual machine interface spec
-the MAC address from the relevant pod interface is delegated to the virtual machine.</p>
+<p><strong>Note:</strong> If a specific MAC address is not configured in the virtual machine
+interface spec the MAC address from the relevant pod interface is delegated to
+the virtual machine.</p>
 </div>
 </blockquote>
 </div>
@@ -652,10 +715,9 @@ fields.</p>
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
-<p><strong>Note:</strong> due to IPv4 address delagation, in <code>bridge</code> mode the pod doesn’t
-have an IP address configured, which may introduce issues with
-third-party solutions that may rely on it. For example, Istio may not
-work in this mode.</p>
+<p><strong>Note:</strong> due to IPv4 address delagation, in <code>bridge</code> mode the pod doesn’t have
+an IP address configured, which may introduce issues with third-party solutions
+that may rely on it. For example, Istio may not work in this mode.</p>
 </div>
 </blockquote>
 </div>
@@ -688,8 +750,8 @@ fields.</p>
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
-<p><strong>Note:</strong> in <code>slirp</code> mode, the only supported protocols are TCP and UDP.
-ICMP is <em>not</em> supported.</p>
+<p><strong>Note:</strong> in <code>slirp</code> mode, the only supported protocols are TCP and UDP. ICMP is
+<em>not</em> supported.</p>
 </div>
 </blockquote>
 </div>
@@ -709,7 +771,8 @@ All the traffic exiting the virtual machine will be natted using the pod ip addr
 The virtual machine should be configured to use DHCP to acquire IPv4 addresses.</p>
 </div>
 <div class="paragraph">
-<p>To allow traffic gets into the virtual machine the port section need to be configured in the interface spec.</p>
+<p>To allow traffic gets into the virtual machine the port section need to be
+configured in the interface spec.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -731,7 +794,8 @@ The virtual machine should be configured to use DHCP to acquire IPv4 addresses.<
 <blockquote>
 <div class="paragraph">
 <p><strong>Note:</strong> Masquerade is only allow to be connected to a pod network backend.
-<strong>Note:</strong> The network CIDR for can be configured in the pod network section using <code>vmNetworkCIDR</code>.</p>
+<strong>Note:</strong> The network CIDR for can be configured in the pod network section using
+<code>vmNetworkCIDR</code>.</p>
 </div>
 </blockquote>
 </div>
@@ -827,13 +891,12 @@ manually, using ethtool. For example:
 <div class="sect3">
 <h4 id="sriov"><a class="anchor" href="#sriov"></a>sriov</h4>
 <div class="paragraph">
-<p>In <code>sriov</code> mode, virtual machines are directly exposed to an SR-IOV PCI
-device, usually allocated by
-<a href="https://github.com/intel/sriov-network-device-plugin">Intel SR-IOV device
-plugin</a>. The device is passed through into the guest operating system as
-a host device, using the
-<a href="https://www.kernel.org/doc/Documentation/vfio.txt">vfio</a> userspace
-interface, to maintain high networking performance.</p>
+<p>In <code>sriov</code> mode, virtual machines are directly exposed to an SR-IOV PCI device,
+usually allocated by <a href="https://github.com/intel/sriov-network-device-plugin">Intel
+SR-IOV device plugin</a>. The device is passed through into the guest operating
+system as a host device, using the
+<a href="https://www.kernel.org/doc/Documentation/vfio.txt">vfio</a> userspace interface, to
+maintain high networking performance.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -853,8 +916,8 @@ interface, to maintain high networking performance.</p>
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
-<p><strong>Note:</strong> you need to enable the SRIOV feature gate to use the feature.
-For example:</p>
+<p><strong>Note:</strong> you need to enable the SRIOV feature gate to use the feature. For
+example:</p>
 </div>
 </blockquote>
 </div>
@@ -879,10 +942,10 @@ their respective documentation</a>.</p>
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
-<p><strong>Note:</strong> while the <code>sriov</code> mode is validated and tested using the Intel
-SR-IOV device plugin, other plugins may add support for the same by
-setting the <code>PCIDEVICE_&lt;resourceName&gt;</code> environment variables inside pods
-to a list of allocated PCI device IDs, as in:
+<p><strong>Note:</strong> while the <code>sriov</code> mode is validated and tested using the Intel SR-IOV
+device plugin, other plugins may add support for the same by setting the
+<code>PCIDEVICE_&lt;resourceName&gt;</code> environment variables inside pods to a list of
+allocated PCI device IDs, as in:
 PCIDEVICE_VENDOR_COM_RESOURCE_NAME=0000:81:11.1,0000:81:11.2[,…]</p>
 </div>
 </blockquote>
