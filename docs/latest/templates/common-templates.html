@@ -215,7 +215,7 @@ a snippet presenting a couple of most commonly found editable fields:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
   <span style="color:#606">annotations</span>:
-    <span style="color:#606">template.cnv.io/editable</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">|</span><span style="color:#D20">
+    <span style="color:#606">template.kubevirt.io/editable</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">|</span><span style="color:#D20">
       /objects[0].spec.template.spec.domain.cpu.sockets
       /objects[0].spec.template.spec.domain.cpu.cores
       /objects[0].spec.template.spec.domain.cpu.threads
@@ -257,7 +257,7 @@ can edit:</p>
 <p>Once
 <a href="https://docs.openshift.com/enterprise/3.0/dev_guide/templates.html#creating-from-templates-using-the-cli">processed</a>,
 the templates produce VM objects to be used in the cluster. The VMs
-produced from templates will have a <code>vm.cnv.io/template</code> label, whose
+produced from templates will have a <code>vm.kubevirt.io/template</code> label, whose
 value will be the name of the parent template, for example
 <code>fedora-desktop-medium</code>:</p>
 </div>
@@ -265,18 +265,18 @@ value will be the name of the parent template, for example
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml">  <span style="color:#606">metadata</span>:
     <span style="color:#606">labels</span>:
-      <span style="color:#606">vm.cnv.io/template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora-desktop-medium</span></span></code></pre>
+      <span style="color:#606">vm.kubevirt.io/template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fedora-desktop-medium</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In addition, these VMs can include an optional label <code>vm.cnv.io/template-namespace</code>,
+<p>In addition, these VMs can include an optional label <code>vm.kubevirt.io/template-namespace</code>,
 whose value will be the namespace of the parent template, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml">  <span style="color:#606">metadata</span>:
     <span style="color:#606">labels</span>:
-      <span style="color:#606">vm.cnv.io/template-namespace</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">openshift</span></span></code></pre>
+      <span style="color:#606">vm.kubevirt.io/template-namespace</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">openshift</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -304,7 +304,7 @@ whose value will be the namespace of the parent template, for example:</p>
   <span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
   <span style="color:#606">metadata</span>:
     <span style="color:#606">labels</span>:
-      <span style="color:#606">vm.cnv.io/template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rhel7-server-tiny</span></span>
+      <span style="color:#606">vm.kubevirt.io/template</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rhel7-server-tiny</span></span>
     <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rheltinyvm</span></span>
     <span style="color:#606">osinfoname</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rhel7.0</span></span>
   <span style="color:#606">spec</span>:
@@ -382,7 +382,7 @@ template metadata, like</p>
 </div>
 <div class="paragraph">
 <p>All the following annotations are prefixed with
-<code>defaults.template.cnv.io</code>, which is omitted below for brevity. So the
+<code>defaults.template.kubevirt.io</code>, which is omitted below for brevity. So the
 actual annotations you should use will look like</p>
 </div>
 <div class="listingblock">
@@ -392,10 +392,10 @@ actual annotations you should use will look like</p>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">windows-10</span></span>
   <span style="color:#606">annotations</span>:
-    <span style="color:#606">defaults.template.cnv.io/disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-disk</span></span>
-    <span style="color:#606">defaults.template.cnv.io/volume</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-volume</span></span>
-    <span style="color:#606">defaults.template.cnv.io/nic</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-nic</span></span>
-    <span style="color:#606">defaults.template.cnv.io/network</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-network</span></span></code></pre>
+    <span style="color:#606">defaults.template.kubevirt.io/disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-disk</span></span>
+    <span style="color:#606">defaults.template.kubevirt.io/volume</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-volume</span></span>
+    <span style="color:#606">defaults.template.kubevirt.io/nic</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-nic</span></span>
+    <span style="color:#606">defaults.template.kubevirt.io/network</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default-network</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -418,7 +418,7 @@ CNV-aware UI and tooling.</p>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Linux</span></span>
   <span style="color:#606">annotations</span>:
-    <span style="color:#606">defaults.template.cnv.io/disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rhel-disk</span></span></code></pre>
+    <span style="color:#606">defaults.template.kubevirt.io/disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rhel-disk</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -437,7 +437,7 @@ CNV-aware UI and tooling.</p>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Windows</span></span>
   <span style="color:#606">annotations</span>:
-    <span style="color:#606">defaults.template.cnv.io/nic</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">my-nic</span></span></code></pre>
+    <span style="color:#606">defaults.template.kubevirt.io/nic</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">my-nic</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -456,7 +456,7 @@ CNV-aware UI and tooling.</p>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Linux</span></span>
   <span style="color:#606">annotations</span>:
-    <span style="color:#606">defaults.template.cnv.io/volume</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">custom-volume</span></span></code></pre>
+    <span style="color:#606">defaults.template.kubevirt.io/volume</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">custom-volume</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -475,7 +475,7 @@ CNV-aware UI and tooling.</p>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Linux</span></span>
   <span style="color:#606">annotations</span>:
-    <span style="color:#606">defaults.template.cnv.io/network</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fast-net</span></span></code></pre>
+    <span style="color:#606">defaults.template.kubevirt.io/network</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">fast-net</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -483,7 +483,7 @@ CNV-aware UI and tooling.</p>
 <h5 id="references"><a class="anchor" href="#references"></a>references</h5>
 <div class="paragraph">
 <p>The default values for network, nic, volume, disk are meant to be the <strong>name</strong> of a section later in the document that the UI will find and consume to find the default values for the corresponding types.
-For example, considering the annotation <code>defaults.template.cnv.io/disk: my-disk</code>: we assume that later in the document it exists an element called <code>my-disk</code> that the UI can use to find the data it needs.
+For example, considering the annotation <code>defaults.template.kubevirt.io/disk: my-disk</code>: we assume that later in the document it exists an element called <code>my-disk</code> that the UI can use to find the data it needs.
 The names actually don&#8217;t matter as long as they are legal for kubernetes and consistent with the content of the document.</p>
 </div>
 </div>
@@ -497,11 +497,11 @@ items:
   kind: virtualmachine
   metadata:
     labels:
-      vm.cnv.io/template: rhel7-generic-tiny
+      vm.kubevirt.io/template: rhel7-generic-tiny
     name: rheltinyvm
     osinfoname: rhel7.0
-    defaults.template.cnv.io/disk: rhel-default-disk
-    defaults.template.cnv.io/nic: rhel-default-net
+    defaults.template.kubevirt.io/disk: rhel-default-disk
+    defaults.template.kubevirt.io/nic: rhel-default-net
   spec:
     running: false
     template:
@@ -536,7 +536,7 @@ apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachine
 metadata:
   labels:
-    vm.cnv.io/template: rhel7-generic-tiny
+    vm.kubevirt.io/template: rhel7-generic-tiny
   name: rheltinyvm
   osinfoname: rhel7.0
 spec:
