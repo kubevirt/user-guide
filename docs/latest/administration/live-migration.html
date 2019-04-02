@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>KubeVirt Latest | Installation & Administration | Device Plugins</title>
+  <title>KubeVirt Latest | Installation & Administration | Live Migration</title>
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -47,7 +47,7 @@
       </li>
       
       <li class="hidden-xs active">
-        Device Plugins
+        Live Migration
       </li>
     </ol>
     <div class="row row-offcanvas row-offcanvas-left">
@@ -90,7 +90,7 @@
             <li><a class="" href="../administration/unresponsive-nodes.html">Unresponsive node handling</a></li>
             <li><a class="" href="../administration/node-eviction.html">Node eviciton</a></li>
             <li><a class="" href="../administration/image-upload.html">Image upload</a></li>
-            <li><a class=" active" href="../administration/device-plugins.html">Device Plugins</a></li>
+            <li><a class=" active" href="../administration/live-migration.html">Live Migration</a></li>
       </ul>
     </li>
     <li class="nav-header">
@@ -140,125 +140,169 @@
       </div>
       <div class="col-xs-12 col-sm-9 col-md-9 main">
         <div class="page-header">
-          <h2>Device Plugins</h2>
+          <h2>Live Migration</h2>
         </div>
-        <div class="paragraph">
-<p>DevicePlugins</p>
+        <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Live migration is a process during which a running Virtual Machine Instance
+moves to another compute node while the guest workload continues to run and
+remain accessable.</p>
 </div>
-<div class="listingblock">
+</div>
+</div>
+<div class="sect1">
+<h2 id="enabling-the-live-migration-support"><a class="anchor" href="#enabling-the-live-migration-support"></a>Enabling the live-migration support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Live migration must be eabled in the featue gates to be supported.
+The <code>feature-gates</code> field in the kubevirt-config config map can be expanded by
+adding the <code>LiveMigration</code> to it.</p>
+</div>
+<div class="literalblock">
 <div class="content">
-<pre>Some devices on each host are made available to VMI's created via KubeVirt.
-Currently this list includes tun, kvm and vhost-net devices. KubeVirt uses the
-DevicePlugin mechanism from Kuberentes to make this possible. The benefit of
-this approach is that no special privileges to create device nodes need to be
-inherited by the virt-launcher pod.
-
-The default number of devices provided this way is 110, which is also the
-default number of pods that can be assigned to each Kubernetes node.
-
-How To Change the Number of Available Devices</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To change the number of devices that will be exposed by the DevicePlugin
-framework, edit the virt-handler DaemonSet:</p>
-</div>
-<div class="paragraph">
-<p><code>kubectl -n kubevirt edit ds virt-handler</code></p>
-</div>
-<div class="paragraph">
-<p>The current manifest used to define the virt-handler DaemonSet will be exposed
-in an editor. Add the <code>--max-devices</code> flag to the <code>--command</code> stanza:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>apiVersion: extensions/v1beta1
-kind: DaemonSet
+<pre>apiVersion: v1
+kind: ConfigMap
 metadata:
-  generation: 1
-  labels:
-    app.kubernetes.io/managed-by: kubevirt-operator
-    kubevirt.io: virt-handler
-  name: virt-handler
+  name: kubevirt-config
   namespace: kubevirt
-spec:
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      kubevirt.io: virt-handler
-  template:
-    metadata:
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: ""
-        scheduler.alpha.kubernetes.io/tolerations: '[{"key":"CriticalAddonsOnly","operator":"Exists"}]'
-      creationTimestamp: null
-      labels:
-        kubevirt.io: virt-handler
-        prometheus.kubevirt.io: ""
-      name: virt-handler
-    spec:
-      containers:
-      - command:
-        - virt-handler
-        - --port
-        - "8443"
-        - --hostname-override
-        - $(NODE_NAME)
-        - --pod-ip-address
-        - $(MY_POD_IP)
-        - -v
-        - "2"
-        - --max-devices
-        - "300"
-        env:
-        - name: NODE_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-...</code></pre>
+  labels:
+    kubevirt.io: ""
+data:
+  feature-gates: "LiveMigration"</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The full manifest has been truncated for clarity. In this example, the
-<code>--max-devices</code> flag was added and set to 300.</p>
+<p>Alternatively, existing kubevirt-config can be altered:</p>
 </div>
 <div class="paragraph">
-<p><strong>NOTE:</strong> command line arguments must be strings. Use <code>"300"</code>, not <code>300</code>.</p>
+<p><code>kubectl edit configmap kubevirt-config -n kubevirt</code></p>
 </div>
-<div class="paragraph">
-<p>Once each virt-handler pod is re-deployed and running, the new number of devices
-should be in effect. To verify the change took effect, inspect the nodes of the
-cluster:</p>
+<div class="literalblock">
+<div class="content">
+<pre>...
+data:
+  feature-gates: "DataVolumes,LiveMigration"</pre>
 </div>
-<div class="paragraph">
-<p><code>kubectl get node -o yaml</code></p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="initiate-live-migration"><a class="anchor" href="#initiate-live-migration"></a>Initiate live migration</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>The allocatable and capacity sections of each node should reflect the newly
-configured <code>--max-devices</code> flag.</p>
+<p>Live migration is initiated by posting a VirtualMachineInstanceMigration (VMIM)
+object to the cluster.
+The example below starts a migration process for a virtual machine instance
+<code>vmi-fedora</code></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>    allocatable:
-      cpu: "5"
-      devices.kubevirt.io/kvm: "300"
-      devices.kubevirt.io/tun: "300"
-      devices.kubevirt.io/vhost-net: "300"
-      ephemeral-storage: "36190907537"
-      hugepages-1Gi: "0"
-      hugepages-2Mi: 128Mi
-      memory: 4679260Ki
-      pods: "110"
-    capacity:
-      cpu: "5"
-      devices.kubevirt.io/kvm: "300"
-      devices.kubevirt.io/tun: "300"
-      devices.kubevirt.io/vhost-net: "300"
-      ephemeral-storage: 39269648Ki
-      hugepages-1Gi: "0"
-      hugepages-2Mi: 128Mi
-      memory: 4912732Ki
-      pods: "110"</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstanceMigration</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">migration-job</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">vmiName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vmi-fedora</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="migration-status-reporting"><a class="anchor" href="#migration-status-reporting"></a>Migration Status Reporting</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="condition-and-migration-method"><a class="anchor" href="#condition-and-migration-method"></a>Condition and migration method</h3>
+<div class="paragraph">
+<p>When starting a virtual machine instance, it has also been calculated whether
+the machine is live migratable. The result is being stored in the VMI
+<code>VMI.status.conditions</code>. The calculation can be based on multiple parameters of
+the VMI, however, at the moment, the calculation is largely based on the
+<code>Access Mode</code> of the VMI volumes. Live migration is only permitted when the
+volume access mode is set to <code>ReadWriteMany</code>. Requests to migrate a
+non-LiveMigratable VMI will be rejected.</p>
+</div>
+<div class="paragraph">
+<p>The reported <code>Migration Method</code> is also being calculated during VMI start.
+<code>BlockMigration</code> indicates that some of the VMI disks require copying from the
+source to the destination. <code>LiveMigration</code> means that only the instance memory
+will be copied.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>Status:
+  Conditions:
+    Status:                True
+    Type:                  LiveMigratable
+  Migration Method:  BlockMigration</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="migration-status"><a class="anchor" href="#migration-status"></a>Migration Status</h3>
+<div class="paragraph">
+<p>The migration progress status is being reported in the VMI <code>VMI.status</code>.
+Most importantly, it indicates whether the migration has been <code>Completed</code> or
+if it <code>Failed</code>
+Below is an example of a successful migration.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>Migration State:
+    Completed:        true
+    End Timestamp:    2019-03-29T03:37:52Z
+    Migration Config:
+      Completion Timeout Per GiB:  800
+      Progress Timeout:             150
+    Migration UID:                  c64d4898-51d3-11e9-b370-525500d15501
+    Source Node:                    node02
+    Start Timestamp:                2019-03-29T04:02:47Z
+    Target Direct Migration Node Ports:
+      35001:                      0
+      41068:                      49152
+      38284:                      49153
+    Target Node:                  node01
+    Target Node Address:          10.128.0.46
+    Target Node Domain Detected:  true
+    Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cancel-live-migration"><a class="anchor" href="#cancel-live-migration"></a>Cancel live migration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Live migration can also be canceled by simply deleting the migration object.
+A successfully aborted migration will indicate that the abort has been
+requested <code>Abort Requested</code>, and that it succeeded: <code>Abort Status:
+Succeeded</code>. The migration in this case will be <code>Completed</code> and <code>Failed</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>Migration State:
+    Abort Requested:  true
+    Abort Status:     Succeeded
+    Completed:        true
+    End Timestamp:    2019-03-29T04:02:49Z
+    Failed:           true
+    Migration Config:
+      Completion Timeout Per GiB:  800
+      Progress Timeout:             150
+    Migration UID:                  57a693d6-51d7-11e9-b370-525500d15501
+    Source Node:                    node02
+    Start Timestamp:                2019-03-29T04:02:47Z
+    Target Direct Migration Node Ports:
+      39445:                      0
+      43345:                      49152
+      44222:                      49153
+    Target Node:                  node01
+    Target Node Address:          10.128.0.46
+    Target Node Domain Detected:  true
+    Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq</code></pre>
+</div>
+</div>
 </div>
 </div>
       </div>
