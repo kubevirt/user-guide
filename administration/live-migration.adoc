@@ -100,8 +100,6 @@ Migration State:
     Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
 ```
 
-
-
 ## Cancel live migration
 
 Live migration can also be canceled by simply deleting the migration object.
@@ -131,3 +129,28 @@ Migration State:
     Target Node Domain Detected:  true
     Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
 ```
+
+## Changing Cluster Wide Migration Limits
+
+KubeVirt puts some limits in place, so that migrations don't overwhelm the
+cluster. By default it is configured to only run `5` migrations in parallel
+with an additional limit of a maximum  of `2` outbound migrations per node.
+Finally every migration is limited to a bandwidth of `64MiB/s`.
+
+These values can be change in the `kubevirt-config`:
+
+....
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  feature-gates: "LiveMigration"
+  migrations: |-
+    parallelMigrationsPerCluster: 5
+    parallelOutboundMigrationsPerNode: 2
+    bandwidthPerMigration: 64Mi
+....
