@@ -19,7 +19,7 @@ A disk can be made accessible via four different types:
 * link:#lun[*lun*]
 * link:#disk[*disk*]
 * link:#cdrom[*cdrom*]
-* link:#floppy[*floppy*]
+* link:#floppy[*floppy*] _DEPRECATED_
 
 All possible configuration options are available in the
 https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk[Disk
@@ -121,7 +121,10 @@ spec:
 
 floppy
 ^^^^^^
-
+____________
+*Note*: Starting with version 0.16.0, floppy disks are deprecated and will be *rejected*. They will be removed from
+the API in a future version.
+____________
 A `floppy` disk will expose the volume as a floppy drive to the VM.
 
 A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
