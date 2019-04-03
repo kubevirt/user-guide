@@ -226,6 +226,128 @@ target node.</p>
 </div>
 </div>
 <div class="sect2">
+<h3 id="how-to-evacuate-vmis-via-live-migration-from-a-node"><a class="anchor" href="#how-to-evacuate-vmis-via-live-migration-from-a-node"></a>How to evacuate VMIs via Live Migration from a Node</h3>
+<div class="paragraph">
+<p>If the <strong>LiveMigration</strong> feature gate is enabled, it is possible to specify an
+<code>evictionStrategy</code> on VMIs which will react with live-migrations on specific
+taints on nodes. The following snipped on a VMI ensures that the VMI is migrated
+if the <code>kubevirt.io/drain:NoSchedule</code> taint is added to a nodes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">spec</span>:
+  <span style="color:#606">evictionStrategy</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">LiveMigrate</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here a full VMI:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-nocloud</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">30</span></span>
+  <span style="color:#606">evictionStrategy</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">LiveMigrate</span></span>
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
+        <span style="color:#606">disk</span>:
+          <span style="color:#606">bus</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtio</span></span>
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
+          bus: virtio</span></span>
+        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cloudinitdisk</span></span>
+  <span style="color:#606">volumes</span>:
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
+    <span style="color:#606">containerDisk</span>:
+      <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt/fedora-cloud-container-disk-demo:latest</span></span>
+  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: cloudinitdisk</span></span>
+    <span style="color:#606">cloudInitNoCloud</span>:
+      <span style="color:#606">userData</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">|-</span><span style="color:#D20">
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the VMI is created, taint the node with</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>kubectl taint nodes foo kubevirt.io/drain=draining:NoSchedule</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>which will trigger a migration.</p>
+</div>
+<div class="paragraph">
+<p>Behind the scenes a <strong>PodDisruptionBudget</strong> is created for each VMI which has an
+<strong>evictionStrategy</strong> defined. This ensures that evictions are be blocked on these
+VMIs and that we can guarantee that a VMI will be migrated instead of shut off.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note:</strong> While the <strong>evictionStrategy</strong> blocks the shutdown of VMIs during
+evictions, the live migration process is detached from the drain process
+itselve. Therefore it is necessary to add specified taints as part of the drain
+process explicitly, until we have a better integrated solution.</p>
+</div>
+<div class="paragraph">
+<p>By default KubeVirt will rewact with live migrations if the taint
+<code>kubevirt.io/drain:NoSchedule</code> is added to the node. It is possible to
+configure a different key in the <code>kubevirt-config</code> config map, by setting in
+the migration options the <code>nodeDrainTaintKey</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ConfigMap</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt-config</span></span>
+  <span style="color:#606">namespace</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt</span></span>
+  <span style="color:#606">labels</span>:
+    <span style="color:#606">kubevirt.io</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
+<span style="color:#606">data</span>:
+  <span style="color:#606">feature-gates</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">LiveMigration</span><span style="color:#710">&quot;</span></span>
+  <span style="color:#606">migrations</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">|-</span><span style="color:#D20">
+    nodeDrainTaintKey: mytaint/drain</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The default value is <code>kubevirt.io/drain</code>. With the change above migrations can
+be triggered with</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>kubectl taint nodes foo mytaint/drain=draining:NoSchedule</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here a full drain flow for nodes which includes VMI live migrations with the
+default setting:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>kubectl taint nodes foo kubevirt.io/drain=draining:NoSchedule
+kubectl drain foo --delete-local-data --ignore-daemonsets=true --force</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To make  the node schedulable again, run</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>kubectl taint nodes foo kubevirt.io/drain-
+kubectl uncordon foo</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="re-enabling-a-node-after-eviction"><a class="anchor" href="#re-enabling-a-node-after-eviction"></a>Re-enabling a Node after Eviction</h3>
 <div class="paragraph">
 <p>The <strong>kubectl drain</strong> will result in the target node being marked as
@@ -243,7 +365,7 @@ the following command must be run.</p>
 <p>or in the case of OpenShift</p>
 </div>
 <div class="paragraph">
-<p><code>oc adm uncordon &lt;node name</code></p>
+<p><code>oc adm uncordon &lt;node name&gt;</code></p>
 </div>
 </div>
 <div class="sect2">

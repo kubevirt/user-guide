@@ -305,6 +305,37 @@ Succeeded</code>. The migration in this case will be <code>Completed</code> and 
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="changing-cluster-wide-migration-limits"><a class="anchor" href="#changing-cluster-wide-migration-limits"></a>Changing Cluster Wide Migration Limits</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>KubeVirt puts some limits in place, so that migrations don&#8217;t overwhelm the
+cluster. By default it is configured to only run <code>5</code> migrations in parallel
+with an additional limit of a maximum  of <code>2</code> outbound migrations per node.
+Finally every migration is limited to a bandwidth of <code>64MiB/s</code>.</p>
+</div>
+<div class="paragraph">
+<p>These values can be change in the <code>kubevirt-config</code>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  feature-gates: "LiveMigration"
+  migrations: |-
+    parallelMigrationsPerCluster: 5
+    parallelOutboundMigrationsPerNode: 2
+    bandwidthPerMigration: 64Mi</pre>
+</div>
+</div>
+</div>
+</div>
       </div>
     </div>
   </div>
