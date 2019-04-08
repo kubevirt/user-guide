@@ -331,7 +331,43 @@ data:
   migrations: |-
     parallelMigrationsPerCluster: 5
     parallelOutboundMigrationsPerNode: 2
-    bandwidthPerMigration: 64Mi</pre>
+    bandwidthPerMigration: 64Mi
+    completionTimeoutPerGiB: 800
+    progressTimeout: 150</pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="migration-timeouts"><a class="anchor" href="#migration-timeouts"></a>Migration timeouts</h3>
+<div class="paragraph">
+<p>Depending on the type, the live migration process will copy virtual machine memory
+pages and disk blocks to the destination.
+During this process non-locked pages and blocks are being copied and become
+free for the instance to use again. To achieve a successful migration, it is
+assumed that the instance will write to the free pages and blocks (pollute the
+pages) at a lower rate than these are being copied.</p>
+</div>
+<div class="sect3">
+<h4 id="completion-time"><a class="anchor" href="#completion-time"></a>Completion time</h4>
+<div class="paragraph">
+<p>In some cases the virtual machine can write to different memory pages / disk
+blocks at a higher rate than these can be copied, which will prevent the
+migration process from completing in a reasonable amount of time.
+In this case, live migration will be aborted if it is running for a long
+perioud of time. The timeout is calculated base on the size of the VMI, it&#8217;s
+memory and the ephemeral disks that are needed to be copied. The configurable
+parameter <code>completionTimeoutPerGiB</code>, which deafults to 800s is the time for GiB
+of data to wait for the migration to be completed before aborting it.
+A VMI with 8Gib of memory will time out after 6400 seconds.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="progress-timeout"><a class="anchor" href="#progress-timeout"></a>Progress timeout</h4>
+<div class="paragraph">
+<p>Live migration will also be aborted when it will be noticed that copying memory
+doesn&#8217;t make any progress.
+The time to wait for live migration to make progress in transferring data is
+configurable by <code>progressTimeout</code> parameter, which defaults to 150s</p>
+</div>
 </div>
 </div>
 </div>
