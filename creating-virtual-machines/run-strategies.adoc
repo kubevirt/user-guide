@@ -19,10 +19,10 @@ To allow for greater variation of user states, the `RunStrategy` field has been
 introduced. This is mutually exclusive with `Running` as they have somewhat
 overlapping conditions. There are currently four RunStrategies defined:
 
-* RunAlways: A VirtualMachineInstance will always be present. If the
+* Always: A VirtualMachineInstance will always be present. If the
     VirtualMachineInstance crashed, a new one will be spawned. This is the same
     behavior as `spec.running: true`.
-* RestartOnError: A VirtualMachineInstance will be respawned if the previous
+* RerunOnFailure: A VirtualMachineInstance will be respawned if the previous
     instance failed in an error state. It will not be re-created if the guest
     stopped successfully (e.g. shut down from inside guest).
 * Manual: The presence of a VirtualMachineInstance or lack thereof is
@@ -46,22 +46,22 @@ runStrategy of the VirtualMachine as below:
 [cols="h,^m,^m,^m",options="header",width="50%"]
 |=================================================
 |RunStrategy    |start     |stop   |restart
-|runAlways      |-         |halted |runAlways
-|restartOnError |-         |halted |restartOnError
-|manual         |manual    |manual |manual
-|halted         |runAlways |-      |-
+|Always         |-         |Halted |Always
+|RerunOnFailure |-         |Halted |RerunOnFailure
+|Manual         |Manual    |Manual |Manual
+|Halted         |Always    |-      |-
 |=================================================
 
-Table entries marked with `*` don't make sense, so won't have an effect on
+Table entries marked with `-` don't make sense, so won't have an effect on
 RunStrategy.
 
 RunStrategy Examples
 ~~~~~~~~~~~~~~~~~~~~
 
-RunAlways
+Always
 ^^^^^^^^^
 
-An example usage of the RunAlways RunStrategy.
+An example usage of the Always RunStrategy.
 
 [source,yaml]
 ----
@@ -72,7 +72,7 @@ metadata:
     kubevirt.io/vm: vm-cirros
   name: vm-cirros
 spec:
-  runStrategy: runAlways
+  runStrategy: always
   template:
     metadata:
       labels:
