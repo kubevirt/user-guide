@@ -151,18 +151,22 @@ For more information see link:presets.md[VirtualMachineInstancePresets]
 HyperV optimizations
 ~~~~~~~~~~~~~~~~~~~~
 
-KubeVirt supports quite a lot of so-called "HyperV enlightenments", which are optimizations for Windows Guests.
-Some of these optimization may require an up to date host kernel support to work properly, or to deliver the maxiumum
-performance gains.
+KubeVirt supports quite a lot of so-called "HyperV enlightenments", which
+are optimizations for Windows Guests.
+Some of these optimization may require an up to date host kernel support
+to work properly, or to deliver the maximum performance gains.
 
-KubeVirt can perform extra checks on the hosts before to run Hyper-V enabled VMs, to make sure the host has no known
-issues with HyperV support, and thus we can expect optimal performance.
-This check is disabled by default for backward compatibility and because it depends on the https://github.com/kubernetes-sigs/node-feature-discovery[node-feature-discovery]
+KubeVirt can perform extra checks on the hosts before to run Hyper-V
+enabled VMs, to make sure the host has no known issues with Hyper-V
+support, properly expose all the required features and thus we can
+expect optimal performance.
+These checks are disabled by default for backward compatibility and
+because they depend on the https://github.com/kubernetes-sigs/node-feature-discovery[node-feature-discovery]
 and on extra configuration.
 
-To enable strict host checking, the user may expand the
-`feature-gates` field in the kubevirt-config config map by adding the
-`HypervSupport` to it.
+To enable strict host checking, the user may expand the `feature-gates`
+field in the kubevirt-config config map by adding the
+`HypervStrictCheck` to it.
 
 ....
 apiVersion: v1
@@ -173,7 +177,7 @@ metadata:
   labels:
     kubevirt.io: ""
 data:
-  feature-gates: "HypervSupport"
+  feature-gates: "HypervStrictCheck"
 ....
 
 Alternatively, users can edit an existing kubevirt-config:
@@ -183,5 +187,5 @@ Alternatively, users can edit an existing kubevirt-config:
 ....
 ...
 data:
-  feature-gates: "HypervSupport,CPUManager"
+  feature-gates: "HypervStrictCheck,CPUManager"
 ....
