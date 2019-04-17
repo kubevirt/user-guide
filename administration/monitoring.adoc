@@ -102,6 +102,31 @@ spec:
       insecureSkipVerify: true
 ----
 
+Starting from kubevirt 0.17, the served TLS certificates are signed by the k8s
+cluster authority. It is therefore possible to verify the TLS certificate of
+scrape targets by using `/var/run/secrets/kubernetes.io/serviceaccount/ca.crt`
+as certificate authority:
+
+[source,yaml]
+----
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kubevirt
+  labels:
+    openshift.io/cluster-monitoring: ""
+    prometheus.kubevirt.io: ""
+spec:
+  selector:
+    matchLabels:
+      prometheus.kubevirt.io: ""
+  endpoints:
+  - port: metrics
+    scheme: https
+    tlsConfig:
+      caFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+----
+
 Integrating with the OpenShift cluster-monitoring-operator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
