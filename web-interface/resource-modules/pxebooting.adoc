@@ -31,11 +31,10 @@ spec:
     }'
 ----
 +
-[NOTE]
-====
-In this example, the virtual machine instance (VMI) will be attached through a trunk port
+________________________
+Note: In this example, the virtual machine instance (VMI) will be attached through a trunk port
 to the Open vSwitch bridge `<br1>`.
-====
+________________________
 
 .. Create Open vSwitch bridge `<br1>` and connect it to interface `<eth1>`,
 which is connected to a network that allows for PXE booting:
@@ -54,12 +53,11 @@ $ ovs-vsctl show
     ovs_version: "2.8.1"
 ----
 +
-[NOTE]
-====
-This bridge must be configured on all nodes. If it is only
+________________________
+Note: This bridge must be configured on all nodes. If it is only
 available on a subset of nodes, make sure that VMIs have *nodeSelector*
 constraints in place.
-====
+________________________
 
 . Edit the virtual machine instance configuration file to include the
 details of the interface and network.
@@ -82,10 +80,9 @@ interfaces:
   bootOrder: 1
 ----
 +
-[NOTE]
-====
-Boot order is global for interfaces and disks.
-====
+________________________
+Note: Boot order is global for interfaces and disks.
+________________________
 
 .. Assign a boot device number to the disk to ensure proper booting
 after OS provisioning.
