@@ -502,10 +502,10 @@ The &#9654; button continues a paused events stream.</p>
 <div class="sect3">
 <h4 id="vm-console-web"><a class="anchor" href="#vm-console-web"></a>Virtual Machine Console Sessions</h4>
 <div class="paragraph">
-<p>You can connect to the VNC and serial consoles of a running virtual machine from the <strong>Consoles</strong> tab in the <strong>Virtual Machine Details</strong> screen of the web console.</p>
+<p>You can connect to the VNC, Serial, and RDP consoles of a running virtual machine from the <strong>Consoles</strong> tab in the <strong>Virtual Machine Details</strong> screen of the web console.</p>
 </div>
 <div class="paragraph">
-<p>There are two consoles available: the graphical <strong>VNC Console</strong> and the <strong>Serial Console</strong>. The <strong>VNC Console</strong> opens by default whenever you navigate to the <strong>Consoles</strong> tab. You can switch between the consoles using the <a href="#vm-vnc-console-web"><strong>VNC Console</strong></a>|<a href="#vm-serial-console-web"><strong>Serial Console</strong></a> drop-down list.</p>
+<p>There are three choices available: the graphical <strong>VNC Console</strong>, the <strong>Serial Console</strong>, and <strong>Desktop Viewer</strong> which can be used to connect to the <strong>RDP Console</strong> (Windows only). The <strong>VNC Console</strong> opens by default whenever you navigate to the <strong>Consoles</strong> tab. You can switch between the consoles using the <a href="#vm-vnc-console-web"><strong>VNC Console</strong></a>|<a href="#vm-serial-console-web"><strong>Serial Console</strong></a>|<a href="#vm-desktop-viewer-web"><strong>Desktop Viewer</strong></a> drop-down list.</p>
 </div>
 <div class="paragraph">
 <p>Console sessions remain active in the background unless they are disconnected. When the <strong>Disconnect before switching</strong> checkbox is active and you switch consoles, the current console session is disconnected and a new session with the selected console connects to the virtual machine. This ensures only one console session is open at a time.</p>
@@ -518,6 +518,10 @@ The &#9654; button continues a paused events stream.</p>
 <div class="title">Options for the <strong>Serial Console</strong></div>
 <p>Use the <strong>Disconnect</strong> button to manually disconnect the <strong>Serial Console</strong> session from the virtual machine.<br>
 Use the <strong>Reconnect</strong> button to manually open a <strong>Serial Console</strong> session to the virtual machine.</p>
+</div>
+<div class="paragraph">
+<div class="title">Options for the <strong>Desktop Viewer</strong></div>
+<p>The <strong>Network Interface</strong> drop-down allows you to choose the network interface for the VM to which you want to connect.</p>
 </div>
 </div>
 <div class="sect3">
@@ -559,6 +563,45 @@ Use the <strong>Reconnect</strong> button to manually open a <strong>Serial Cons
 </li>
 <li>
 <p>Click <strong>Consoles</strong>. The VNC console opens by default.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="vm-desktop-viewer-web"><a class="anchor" href="#vm-desktop-viewer-web"></a>Using Desktop Viewer to connect to RDP Console (Windows only)</h4>
+<div class="paragraph">
+<p>The Desktop Viewer option can be used to connect to the RDP console of a running Windows virtual machine.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Procedure</div>
+<ol class="arabic">
+<li>
+<p>Click <strong>Workloads</strong> &#8594; <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a virtual machine.</p>
+</li>
+<li>
+<p>Click <strong>Consoles</strong>. The VNC console opens by default.</p>
+</li>
+<li>
+<p>Select <strong>Desktop Viewer</strong> in the drop-down list.</p>
+</li>
+<li>
+<p>Choose the nework interface you want to connect to from the <strong>Network Interface</strong> drop-down.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>If the L2 network interface is chosen, you will need to install qemu-guest-agent on the VM.</p>
+</li>
+<li>
+<p>If the pod network interface is chosen, you will need to create a service to expose port 3389 (RDP) on the VM. Follow the on-screen instructions to do so.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Click <strong>Launch Remote Desktop</strong> to download the RDP file, which can then be opened in the RDP client of your choice.</p>
 </li>
 </ol>
 </div>
