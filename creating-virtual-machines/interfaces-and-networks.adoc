@@ -455,14 +455,13 @@ Wiki].
 masquerade
 ^^^^^^^^^^
 
-In `masquerade` mode, machines are connected to the network backend
-through a linux ``bridge''. In this mode, we allocates internal
+In `masquerade` mode, KubeVirt allocates internal
 IP addresses to virtual machines and hides them behind NAT.
-All the traffic exiting the virtual machine will be natted using the pod ip address.
-The virtual machine should be configured to use DHCP to acquire IPv4 addresses.
+All the traffic exiting virtual machines is "NAT'ed" using pod IP addresses.
+A virtual machine should be configured to use DHCP to acquire IPv4 addresses.
 
-To allow traffic gets into the virtual machine the port section need to be
-configured in the interface spec.
+To allow traffic into virtual machines, the template `ports` section of the
+interface should be configured as follows.
 
 [source,yaml]
 ----
@@ -474,16 +473,16 @@ spec:
         - name: red
           masquerade: {} # connect using masquerade mode
           ports:
-            - port: 80 # allow incomming traffic on port 80 to get into the virtual machine
+            - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
   networks:
   - name: red
     pod: {}
 ----
 
 ______________________________________________________________________________
-*Note:* Masquerade is only allow to be connected to a pod network backend.
-*Note:* The network CIDR for can be configured in the pod network section using
-`vmNetworkCIDR`.
+*Note:* Masquerade is only allowed to connect to the pod network.
+*Note:* The network CIDR can be configured in the pod network section using the
+`vmNetworkCIDR` attribute.
 ______________________________________________________________________________
 
 virtio-net multiqueue
