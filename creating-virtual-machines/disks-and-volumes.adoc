@@ -713,7 +713,7 @@ Below is an example of how to enable DataVolume support using the
 kubevirt-config config map.
 
 ....
-cat <<EOF | _kubectl create -f -
+cat <<EOF | kubectl create -f -
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -723,6 +723,7 @@ metadata:
     kubevirt.io: ""
 data:
   feature-gates: "DataVolumes"
+EOF
 ....
 
 This config map assumes KubeVirt will be installed in the kubevirt
