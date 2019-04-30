@@ -21,12 +21,13 @@ Install CDI
 
 Install the latest CDI release
 https://github.com/kubevirt/containerized-data-importer/releases[here]
-(currently v1.6.0)
+(currently v1.8.0)
 
 [source,bash]
 ----
-VERSION=v1.6.0
-kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-controller.yaml
+VERSION=v1.8.0
+kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml
+kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator-cr.yaml
 ----
 
 Expose cdi-uploadproxy service
