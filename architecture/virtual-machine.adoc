@@ -25,6 +25,12 @@ is set to `true`. Further it will make sure that a
 VirtualMachineInstance will be removed from the cluster if
 `spec.running` is set to `false`.
 
+There exists a field `spec.runStrategy` which can also be used to control the
+state of the associated VirtualMachineInstance object. To avoid confusing and
+contradictory states, these fields are mutually exclusive. An extended
+explanation of `spec.runStrategy` vs `spec.running` can be found in
+<<creating-virtual-machines/run-strategies.adoc#,Run Strategies>>.
+
 Starting and stopping
 ^^^^^^^^^^^^^^^^^^^^^
 
