@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta content="IE=edge" http-equiv="X-UA-Compatible">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>KubeVirt Latest | Using Virtual Machines | Console Access (Serial and Graphical)</title>
+  <title>KubeVirt Latest | Creating Virtual Machines | Run Strategies</title>
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -43,11 +43,11 @@
         <a href="../welcome/index.html">KubeVirt Latest</a>
       </li>
       <li class="hidden-xs active">
-        <a href="../using-virtual-machines/usage.html">Using Virtual Machines</a>
+        <a href="../creating-virtual-machines/intro.html">Creating Virtual Machines</a>
       </li>
       
       <li class="hidden-xs active">
-        Console Access (Serial and Graphical)
+        Run Strategies
       </li>
     </ol>
     <div class="row row-offcanvas row-offcanvas-left">
@@ -95,9 +95,9 @@
     </li>
     <li class="nav-header">
       <a class="" href="#" data-toggle="collapse" data-target="#topicGroup4">
-        <span id="tgSpan4" class="fa fa-angle-right"></span>Creating Virtual Machines
+        <span id="tgSpan4" class="fa fa-angle-down"></span>Creating Virtual Machines
       </a>
-      <ul id="topicGroup4" class="collapse  list-unstyled">
+      <ul id="topicGroup4" class="collapse in list-unstyled">
             <li><a class="" href="../creating-virtual-machines/intro.html">Introduction</a></li>
             <li><a class="" href="../creating-virtual-machines/virtualized-hardware-configuration.html">Devices</a></li>
             <li><a class="" href="../creating-virtual-machines/disks-and-volumes.html">Disks and Volumes</a></li>
@@ -108,17 +108,17 @@
             <li><a class="" href="../creating-virtual-machines/virtio-win.html">virtio drivers for Microsoft Windows</a></li>
             <li><a class="" href="../creating-virtual-machines/presets.html">Presets</a></li>
             <li><a class="" href="../creating-virtual-machines/probes.html">Probes</a></li>
-            <li><a class="" href="../creating-virtual-machines/run-strategies.html">Run Strategies</a></li>
+            <li><a class=" active" href="../creating-virtual-machines/run-strategies.html">Run Strategies</a></li>
       </ul>
     </li>
     <li class="nav-header">
       <a class="" href="#" data-toggle="collapse" data-target="#topicGroup5">
-        <span id="tgSpan5" class="fa fa-angle-down"></span>Using Virtual Machines
+        <span id="tgSpan5" class="fa fa-angle-right"></span>Using Virtual Machines
       </a>
-      <ul id="topicGroup5" class="collapse in list-unstyled">
+      <ul id="topicGroup5" class="collapse  list-unstyled">
             <li><a class="" href="../using-virtual-machines/usage.html">Usage</a></li>
             <li><a class="" href="../using-virtual-machines/life-cycle.html">Starting and Stopping</a></li>
-            <li><a class=" active" href="../using-virtual-machines/graphical-and-console-access.html">Console Access (Serial and Graphical)</a></li>
+            <li><a class="" href="../using-virtual-machines/graphical-and-console-access.html">Console Access (Serial and Graphical)</a></li>
             <li><a class="" href="../using-virtual-machines/assigning-vms-to-nodes.html">Node placement</a></li>
             <li><a class="" href="../using-virtual-machines/dns.html">DNS Integration</a></li>
             <li><a class="" href="../using-virtual-machines/expose-service.html">Service Integration</a></li>
@@ -149,130 +149,149 @@
       </div>
       <div class="col-xs-12 col-sm-9 col-md-9 main">
         <div class="page-header">
-          <h2>Graphical and Serial Console Access</h2>
+          <h2>Run Strategies</h2>
         </div>
         <div class="sect1">
-<h2 id="graphical-and-serial-console-access"><a class="anchor" href="#graphical-and-serial-console-access"></a>Graphical and Serial Console Access</h2>
+<h2 id="run-strategies"><a class="anchor" href="#run-strategies"></a>Run Strategies</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="overview"><a class="anchor" href="#overview"></a>Overview</h3>
 <div class="paragraph">
-<p>Once a virtual machine is started you are able to connect to the
-consoles it exposes. Usually there are two types of consoles:</p>
+<p>VirtualMachines have a <code>Running</code> setting that determines whether or not there
+should be a guest running or not. Because KubeVirt will always immediately
+restart a VirtualMachineInstance for VirtualMachines with <code>spec.running: true</code>,
+a simple boolean is not always enough to fully describe desired behavior. For
+instance, there are cases when a user would like the ability to shut down a
+guest from inside the virtual machine. With <code>spec.running: true</code>, KubeVirt
+would immediately restart the VirtualMachineInstance.</p>
+</div>
+<div class="sect3">
+<h4 id="runstrategy"><a class="anchor" href="#runstrategy"></a>RunStrategy</h4>
+<div class="paragraph">
+<p>To allow for greater variation of user states, the <code>RunStrategy</code> field has been
+introduced. This is mutually exclusive with <code>Running</code> as they have somewhat
+overlapping conditions. There are currently four RunStrategies defined:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Serial Console</p>
+<p>Always: A VirtualMachineInstance will always be present. If the
+VirtualMachineInstance crashed, a new one will be spawned. This is the same
+behavior as <code>spec.running: true</code>.</p>
 </li>
 <li>
-<p>Graphical Console (VNC)</p>
+<p>RerunOnFailure: A VirtualMachineInstance will be respawned if the previous
+instance failed in an error state. It will not be re-created if the guest
+stopped successfully (e.g. shut down from inside guest).</p>
+</li>
+<li>
+<p>Manual: The presence of a VirtualMachineInstance or lack thereof is
+controlled exclusively by the start/stop/restart VirtualMachint subresource
+endpoints.</p>
+</li>
+<li>
+<p>Halted: No VirtualMachineInstance will be present. If a guest is already
+running, it will be stopped. This is the same behavior as
+<code>spec.running: false</code>.</p>
 </li>
 </ul>
 </div>
-<div class="quoteblock">
-<blockquote>
 <div class="paragraph">
-<p>Note: You need to have <code>virtctl</code>
-<a href="/installation/?id=client-side-virtctl-deployment">installed</a> to gain
-access to the VirtualMachineInstance.</p>
-</div>
-</blockquote>
-</div>
-<div class="sect2">
-<h3 id="accessing-the-serial-console"><a class="anchor" href="#accessing-the-serial-console"></a>Accessing the serial console</h3>
-<div class="paragraph">
-<p>The serial console of a virtual machine can be accessed by using the
-<code>console</code> command:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ virtctl console --kubeconfig=$KUBECONFIG testvmi</code></pre>
+<p><em>Note</em>: RunStrategy and Running are mutually exclusive, because they can be
+contradictory. The API server will reject VirtualMachine resources that define
+both.</p>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="accessing-the-graphical-console-vnc"><a class="anchor" href="#accessing-the-graphical-console-vnc"></a>Accessing the graphical console (VNC)</h3>
+<h3 id="virtctl"><a class="anchor" href="#virtctl"></a>Virtctl</h3>
 <div class="paragraph">
-<p>Accessing the graphical console of a virtual machine is usually done
-through VNC, which requires <code>remote-viewer</code>. Once the tool is installed
-you can access the graphical console using:</p>
+<p>The <code>start</code>, <code>stop</code> and <code>restart</code> methods of virtctl will invoke their
+respective subresources of VirtualMachines. This can have an effect on the
+runStrategy of the VirtualMachine as below:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ virtctl vnc --kubeconfig=$KUBECONFIG testvmi</code></pre>
-</div>
+<table class="tableblock frame-all grid-all" style="width: 50%;">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">RunStrategy</th>
+<th class="tableblock halign-center valign-top">start</th>
+<th class="tableblock halign-center valign-top">stop</th>
+<th class="tableblock halign-center valign-top">restart</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Always</p></th>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>-</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Halted</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Always</code></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">RerunOnFailure</p></th>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>-</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Halted</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>RerunOnFailure</code></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Manual</p></th>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Manual</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Manual</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Manual</code></p></td>
+</tr>
+<tr>
+<th class="tableblock halign-left valign-top"><p class="tableblock">Halted</p></th>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>Always</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>-</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>-</code></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Table entries marked with <code>-</code> don&#8217;t make sense, so won&#8217;t have an effect on
+RunStrategy.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="debugging-console-access"><a class="anchor" href="#debugging-console-access"></a>Debugging console access</h3>
+<h3 id="runstrategy-examples"><a class="anchor" href="#runstrategy-examples"></a>RunStrategy Examples</h3>
 <div class="paragraph">
-<p>Should the connection fail, you can use the <code>-v</code> flag to get more output
-from both <code>virtctl</code> and the <code>remote-viewer</code> tool, to troubleshoot the
-problem.</p>
+<p>Always
+<sup>^</sup><sup>^</sup><sup>^</sup></p>
+</div>
+<div class="paragraph">
+<p>An example usage of the Always RunStrategy.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ virtctl vnc --kubeconfig=$KUBECONFIG testvmi -v 4</code></pre>
-</div>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><strong>Note:</strong> If you are using virtctl via ssh on a remote machine, you need
-to forward the X session to your machine (Look up the -X and -Y flags of
-<code>ssh</code> if you are not familiar with that). As an alternative you can
-proxy the apiserver port with ssh to your machine (either direct or in
-combination with <code>kubectl proxy</code>)</p>
-</div>
-</blockquote>
-</div>
-</div>
-<div class="sect2">
-<h3 id="rbac-permissions-for-consolevnc-access"><a class="anchor" href="#rbac-permissions-for-consolevnc-access"></a>RBAC Permissions for Console/VNC Access</h3>
-<div class="sect3">
-<h4 id="using-default-rbac-clusterroles"><a class="anchor" href="#using-default-rbac-clusterroles"></a>Using Default RBAC ClusterRoles</h4>
-<div class="paragraph">
-<p>Every KubeVirt installation after version v0.5.1 comes a set of default
-RBAC cluster roles that can be used to grant users access to
-VirtualMachineInstances.</p>
-</div>
-<div class="paragraph">
-<p>The <strong>kubevirt.io:admin</strong> and <strong>kubevirt.io:edit</strong> ClusterRoles have console
-and VNC access permissions built into them. By binding either of these
-roles to a user, they will have the ability to use virtctl to access
-console and VNC.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="with-custom-rbac-clusterrole"><a class="anchor" href="#with-custom-rbac-clusterrole"></a>With Custom RBAC ClusterRole</h4>
-<div class="paragraph">
-<p>The default KubeVirt ClusterRoles give access to more than just console
-in VNC. In the event that an Admin would like to craft a custom role
-that targets only console and VNC, the ClusterRole below demonstrates
-how that can be done.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">rbac.authorization.k8s.io/v1beta1</span></span>
-<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ClusterRole</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachine</span></span>
 <span style="color:#606">metadata</span>:
-  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">allow-vnc-console-access</span></span>
-<span style="color:#606">rules</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">apiGroups:</span><span style="color:#D20">
-      - subresources.kubevirt.io</span></span>
-    <span style="color:#606">resources</span>:
-      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtualmachineinstances/console</span></span>
-      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">virtualmachineinstances/vnc</span></span>
-    <span style="color:#606">verbs</span>:
-      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">get</span></span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The ClusterRole above provides access to virtual machines across all
-namespaces.</p>
-</div>
-<div class="paragraph">
-<p>In order to reduce the scope to a single namespace, bind this
-ClusterRole using a RoleBinding that targets a single namespace.</p>
+  <span style="color:#606">labels</span>:
+    <span style="color:#606">kubevirt.io/vm</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vm-cirros</span></span>
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vm-cirros</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">runStrategy</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">always</span></span>
+  <span style="color:#606">template</span>:
+    <span style="color:#606">metadata</span>:
+      <span style="color:#606">labels</span>:
+        <span style="color:#606">kubevirt.io/vm</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vm-cirros</span></span>
+    <span style="color:#606">spec</span>:
+      <span style="color:#606">domain</span>:
+        <span style="color:#606">devices</span>:
+          <span style="color:#606">disks</span>:
+          - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">disk:</span><span style="color:#D20">
+              bus: virtio</span></span>
+            <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span>
+      <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">0</span></span>
+      <span style="color:#606">volumes</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerDisk:</span><span style="color:#D20">
+          image: kubevirt/cirros-container-disk-demo:latest</span></span>
+        <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">containerdisk</span></span></code></pre>
 </div>
 </div>
 </div>

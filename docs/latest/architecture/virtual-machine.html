@@ -108,6 +108,7 @@
             <li><a class="" href="../creating-virtual-machines/virtio-win.html">virtio drivers for Microsoft Windows</a></li>
             <li><a class="" href="../creating-virtual-machines/presets.html">Presets</a></li>
             <li><a class="" href="../creating-virtual-machines/probes.html">Probes</a></li>
+            <li><a class="" href="../creating-virtual-machines/run-strategies.html">Run Strategies</a></li>
       </ul>
     </li>
     <li class="nav-header">
@@ -189,6 +190,13 @@ with an identical name will be present in the cluster, if <code>spec.running</co
 is set to <code>true</code>. Further it will make sure that a
 VirtualMachineInstance will be removed from the cluster if
 <code>spec.running</code> is set to <code>false</code>.</p>
+</div>
+<div class="paragraph">
+<p>There exists a field <code>spec.runStrategy</code> which can also be used to control the
+state of the associated VirtualMachineInstance object. To avoid confusing and
+contradictory states, these fields are mutually exclusive. An extended
+explanation of <code>spec.runStrategy</code> vs <code>spec.running</code> can be found in
+<a href="creating-virtual-machines/run-strategies.html">Run Strategies</a>.</p>
 </div>
 <div class="sect3">
 <h4 id="starting-and-stopping"><a class="anchor" href="#starting-and-stopping"></a>Starting and stopping</h4>
