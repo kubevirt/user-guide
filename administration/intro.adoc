@@ -178,26 +178,21 @@ Using command line interface
 
 The following
 https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html[SCC]
-needs to be added prior KubeVirt deployment:
-
-- When you use the stable deployment flow:
+needs to be added prior KubeVirt deployment when using the stable deployment flow:
 ____________________________________
-Important: Starting with version v0.15.0 please replace `kubevirt-privileged` with `kubevirt-handler`
+Important: Before v0.15.0 release, please replace `kubevirt-handler` with
+`kubevirt-privileged`.
 ____________________________________
 [source,bash]
 ----
-$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-privileged
+$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-handler
 $ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-controller
 $ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-apiserver
 ----
 
-- When you use the operator flow:
-[source,bash]
-----
-$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator
-----
+When using operator flow, SCC rules are created automatically.
 
-Once privileges are granted, the kubevirt manifests can be deployed in the same way as explained above.
+Once privileges are granted, KubeVirt manifests can be deployed in the same way as explained above.
 
 From Service Catalog as an APB
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
