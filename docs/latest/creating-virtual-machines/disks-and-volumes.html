@@ -981,7 +981,7 @@ kubevirt-config config map.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>cat &lt;&lt;EOF | _kubectl create -f -
+<pre>cat &lt;&lt;EOF | kubectl create -f -
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -990,7 +990,8 @@ metadata:
   labels:
     kubevirt.io: ""
 data:
-  feature-gates: "DataVolumes"</pre>
+  feature-gates: "DataVolumes"
+EOF</pre>
 </div>
 </div>
 <div class="paragraph">
