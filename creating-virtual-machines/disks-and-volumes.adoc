@@ -448,7 +448,8 @@ Example: Build container disk image:
 ----
 cat << END > Dockerfile
 FROM kubevirt/container-disk-v1alpha
-ADD fedora25.qcow2 /custom-disk-path
+RUN mkdir /custom-disk-path
+ADD fedora25.qcow2 /custom-disk-path/fedora25.qcow2
 END
 
 docker build -t vmidisks/fedora25:latest .
@@ -476,7 +477,7 @@ spec:
     - name: containerdisk
       containerDisk:
         image: vmidisks/fedora25:latest
-        path: /custom-disk-path/fedora.qcow2
+        path: /custom-disk-path/fedora25.qcow2
 ----
 
 emptyDisk
