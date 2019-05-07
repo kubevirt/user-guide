@@ -686,7 +686,8 @@ for disk images in default location: <code>/disk</code>.</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#F00;background-color:#FAA">cat &lt;&lt; END &gt; Dockerfile</span>
 <span style="color:#F00;background-color:#FAA">FROM kubevirt/container-disk-v1alpha</span>
-<span style="color:#F00;background-color:#FAA">ADD fedora25.qcow2 /custom-disk-path</span>
+<span style="color:#F00;background-color:#FAA">RUN mkdir /custom-disk-path</span>
+<span style="color:#F00;background-color:#FAA">ADD fedora25.qcow2 /custom-disk-path/fedora25.qcow2</span>
 <span style="color:#F00;background-color:#FAA">END</span>
 
 <span style="color:#F00;background-color:#FAA">docker build -t vmidisks/fedora25:latest .</span>
@@ -715,7 +716,7 @@ for disk images in default location: <code>/disk</code>.</p>
     - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: containerdisk</span></span>
       <span style="color:#606">containerDisk</span>:
         <span style="color:#606">image</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vmidisks/fedora25:latest</span></span>
-        <span style="color:#606">path</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">/custom-disk-path/fedora.qcow2</span></span></code></pre>
+        <span style="color:#606">path</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">/custom-disk-path/fedora25.qcow2</span></span></code></pre>
 </div>
 </div>
 </div>
