@@ -36,10 +36,16 @@ spec:
       - disk:
           bus: virtio
         name: cloudinitdisk
+      interfaces:
+      - name: default
+        bridge: {}
     resources:
       requests:
         memory: 1024M
   terminationGracePeriodSeconds: 0
+  networks:
+  - name: default
+    pod: {}
   volumes:
   - name: containerdisk
     containerDisk:
