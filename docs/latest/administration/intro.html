@@ -283,52 +283,24 @@ documentation</a>.</p>
 <h4 id="core-components"><a class="anchor" href="#core-components"></a>Core components</h4>
 <div class="paragraph">
 <p>Once Kubernetes is deployed, you will need to deploy the KubeVirt
-add-on. There are 2 ways to deploy the add-on to a cluster using the <code>kubectl</code> tool and
-manifest files:</p>
+add-on.</p>
 </div>
-<div class="sect4">
-<h5 id="1-stable-flow"><a class="anchor" href="#1-stable-flow"></a>1. Stable flow</h5>
 <div class="paragraph">
-<p>The stable flow installs KubeVirt using a manifest file, which contains all deployments and configurations of the
-KubeVirt core components:</p>
+<p>The installation uses the KubeVirt operator, which manages lifecycle of all KubeVirt core components:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ RELEASE=v0.14.0
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="2-alternative-flow-aka-operator-flow"><a class="anchor" href="#2-alternative-flow-aka-operator-flow"></a>2. Alternative flow (aka Operator flow)</h5>
-<div class="paragraph">
-<p>Since version 0.13.0 KubeVirt can be installed using the new KubeVirt Operator and a KubeVirt custom resource.</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>Note: The Operator is considered to be experimental for the time being.
-There is currently no way to upgrade KubeVirt using this flow.</p>
-</div>
-</blockquote>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ export VERSION=v0.14.0
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/$VERSION/kubevirt-operator.yaml
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/$VERSION/kubevirt-cr.yaml</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ export RELEASE=v0.17.0
+# creates KubeVirt operator
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
+# creates KubeVirt KV custom resource
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
+# wait until all KubeVirt components is up
+$ kubectl -n kubevirt wait kv kubevirt --for condition=Ready</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Since version 0.14.0 you can also use <code>kubectl</code> for waiting until all KubeVirt components are "Ready".</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ kubectl wait kv kubevirt --for condition=Ready</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Independent of the deployment flow, the new components will be deployed in the <code>kubevirt</code> namespace:</p>
+<p>All new components will be deployed under the <code>kubevirt</code> namespace:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -341,6 +313,21 @@ virt-handler-vwdjx                             1/1       Running       0        
 </div>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="deploying-on-openshift"><a class="anchor" href="#deploying-on-openshift"></a>Deploying on OpenShift</h3>
+<div class="paragraph">
+<p>The following
+<a href="https://docs.openshift.com/container-platform/3.11/admin_guide/manage_scc.html">SCC</a>
+needs to be added prior KubeVirt deployment:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once privileges are granted, the KubeVirt can be deployed as described above.</p>
 </div>
 </div>
 <div class="sect2">
@@ -373,56 +360,6 @@ use advanced features such as:</p>
 <div class="paragraph">
 <p>The most recent version of the tool can be retrieved from the
 <a href="https://github.com/kubevirt/kubevirt/releases">official release page</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="deploying-on-openshift"><a class="anchor" href="#deploying-on-openshift"></a>Deploying on OpenShift</h3>
-<div class="paragraph">
-<p>There are three ways to deploy KubeVirt on OpenShift.</p>
-</div>
-<div class="sect3">
-<h4 id="using-command-line-interface"><a class="anchor" href="#using-command-line-interface"></a>Using command line interface</h4>
-<div class="paragraph">
-<p>The following
-<a href="https://docs.openshift.com/container-platform/3.7/admin_guide/manage_scc.html">SCC</a>
-needs to be added prior KubeVirt deployment:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>When you use the stable deployment flow:</p>
-</li>
-</ul>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>Important: Starting with version v0.15.0 please replace <code>kubevirt-privileged</code> with <code>kubevirt-handler</code></p>
-</div>
-</blockquote>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-privileged
-$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-controller
-$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-apiserver</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>When you use the operator flow:</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Once privileges are granted, the kubevirt manifests can be deployed in the same way as explained above.</p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="from-service-catalog-as-an-apb"><a class="anchor" href="#from-service-catalog-as-an-apb"></a>From Service Catalog as an APB</h4>
@@ -504,22 +441,63 @@ machines and other entities in the cluster in addition to the command line tools
 </div>
 <div class="sect2">
 <h3 id="update"><a class="anchor" href="#update"></a>Update</h3>
-<div class="quoteblock">
-<blockquote>
 <div class="paragraph">
-<p>Note: Updates are not yet supported.</p>
-</div>
-</blockquote>
+<p>Zero downtime rolling updates supported from the release <code>v0.17.0</code>:</p>
 </div>
 <div class="paragraph">
-<p>When using the stable deployment flow, usually it is sufficient to re-apply the manifests for performing a
-rolling update:</p>
+<p>Starting in <code>v0.17.0</code>, the KubeVirt operator supports updates. Updates are
+triggered by changing the imageTag value in the KubeVirt CR&#8217;s spec.</p>
+</div>
+<div class="paragraph">
+<p>For example. Updating from <code>v0.17.0-alpha.1</code> to <code>v0.17.0</code> is as simple as
+patching the KubeVirt CR with the <code>imageTag: v0.17.0</code> value. From there the
+KubeVirt operator will begin the process of rolling out the new version of
+KubeVirt. Existing VM/VMIs will remain uninterrupted both during and after
+the update succeeds.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ RELEASE=v0.14.0
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt.yaml</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">$ kubectl patch kv kubevirt -n kubevirt --type=json -p '[{ &quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/imageTag&quot;, &quot;value&quot;: &quot;v0.17.0&quot; }]'</code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Updating from any release prior to the KubeVirt <code>v0.17.x</code> series is not
+supported.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="delete"><a class="anchor" href="#delete"></a>Delete</h3>
+<div class="paragraph">
+<p>To delete the KubeVirt you should first to delete <code>KubeVirt</code> custom resource and then delete the KubeVirt operator:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ export RELEASE=v0.17.0
+$ kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
+$ kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml</code></pre>
+</div>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Note: If by mistake you deleted the operator first, the KV custom resource will stuck in the <code>Terminatig</code> state,
+to fix it, delete manually finalizer from the resource.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ kubectl -n kubevirt patch kv kubevirt --type=json -p '[{ &quot;op&quot;: &quot;remove&quot;, &quot;path&quot;: &quot;/metadata/finalizers&quot; }]'</code></pre>
+</div>
+</div>
+</blockquote>
 </div>
 </div>
 </div>
