@@ -302,6 +302,80 @@ The following VM will have a CPU with <code>3</code> cores:</p>
 </div>
 </div>
 <div class="sect3">
+<h4 id="enabling-cpu-compatibility-enforcement"><a class="anchor" href="#enabling-cpu-compatibility-enforcement"></a>Enabling cpu compatibility enforcement</h4>
+<div class="paragraph">
+<p>To enable the cpu compatibility enforcement, user may expand the
+<code>feature-gates</code> field in the kubevirt-config config map by adding the
+<code>CPUNodeDiscovery</code> to it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ConfigMap</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt-config</span></span>
+  <span style="color:#606">namespace</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt</span></span>
+  <span style="color:#606">labels</span>:
+    <span style="color:#606">kubevirt.io</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
+<span style="color:#606">data</span>:
+  <span style="color:#606">feature-gates</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">CPUNodeDiscovery</span><span style="color:#710">&quot;</span></span>
+<span style="color:#f8f;background:#505"><span style="color:#f4f">...</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This feature-gate allows kubevirt to take VM cpu model and cpu features and create node selectors from them.
+With these node selectors, VM can be scheduled on the node which can support VM cpu model and features.</p>
+</div>
+<div class="paragraph">
+<p>Labeling nodes with cpu models and cpu features
+<sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup>^</p>
+</div>
+<div class="paragraph">
+<p>To properly label the node, user can use (only for cpu models and cpu features)
+<a href="https://github.com/kubevirt/node-labeller">node-labeller</a> in combination with
+<a href="https://github.com/kubevirt/cpu-nfd-plugin">cpu-nfd-plugin</a> or create node labels by himself.</p>
+</div>
+<div class="paragraph">
+<p>To install node-labeller to cluster, user can use (<a href="https://github.com/MarSik/kubevirt-ssp-operator)">kubevirt-ssp-operator</a>,
+which will install node-labeller + all available plugins.</p>
+</div>
+<div class="paragraph">
+<p>Cpu-nfd-plugin uses libvirt to get all supported cpu models and cpu features on host and
+Node-labeller create labels from cpu models. Then Kubevirt can schedule VM
+on node which has support for VM cpu model and features.</p>
+</div>
+<div class="paragraph">
+<p>Cpu-nfd-plugin supports black list of cpu models and minimal baseline cpu model for features.
+Both features can be set via config map:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ConfigMap</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">cpu-plugin-configmap</span></span>
+<span style="color:#606">data</span>:
+  <span style="color:#606">cpu-plugin-configmap.yaml</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">|-</span><span style="color:#D20">
+    obsoleteCPUs:
+      - &quot;486&quot;
+      - &quot;pentium&quot;
+    minCPU: &quot;Penryn&quot;</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This config map has to be created before node-labeller is created,
+otherwise plugin will show all cpu models. Plugin will not reload when config map is changed.</p>
+</div>
+<div class="paragraph">
+<p>Obsolete cpus will not be inserted in labels. In minCPU user can set baseline cpu model.
+CPU features, which have this model, are used as basic features. These basic features are not in the label
+list. Feature labels are created as subtraction between set of newer cpu features and set of basic cpu features, e.g.:
+Haswell has: aes, apic, clflush
+Penryr has: apic, clflush
+subtraction is: aes. So label will be created only with aes feature.</p>
+</div>
+</div>
+<div class="sect3">
 <h4 id="model"><a class="anchor" href="#model"></a>Model</h4>
 <div class="paragraph">
 <p><strong>Note</strong>: Be sure that node CPU model where you run a VM, has the same or
@@ -312,12 +386,17 @@ higher CPU family.</p>
 to one that used on the node where the VM is running.</p>
 </div>
 <div class="paragraph">
+<p><strong>Note</strong>: CPU model is case sensitive.</p>
+</div>
+<div class="paragraph">
 <p>Setting the CPU model is possible via <code>spec.domain.cpu.model</code>. The
 following VM will have a CPU with the <code>Conroe</code> model:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
+<span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">myvmi</span></span>
 <span style="color:#606">spec</span>:
   <span style="color:#606">domain</span>:
@@ -331,29 +410,38 @@ following VM will have a CPU with the <code>Conroe</code> model:</p>
 <p>You can check list of available models
 <a href="https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml">here</a>.</p>
 </div>
+<div class="paragraph">
+<p>When CPUNodeDiscovery feature-gate is enabled(as mentioned in <a href="#enabling-cpu-compatibility-enforcement">Enabling cpu compatibility enforcement</a>)
+and VM has cpu model, Kubevirt creates node selector with format:
+<code>feature.node.kubernetes.io/cpu-model-&lt;cpuModel&gt;</code>, e.g. <code>feature.node.kubernetes.io/cpu-model-Conroe</code>.
+When VM doesn&#8217;t have cpu model, then no node selector is created.</p>
+</div>
 <div class="sect4">
 <h5 id="enabling-default-cluster-cpu-model"><a class="anchor" href="#enabling-default-cluster-cpu-model"></a>Enabling default cluster cpu model</h5>
 <div class="paragraph">
 <p>To enable the default cpu model, user may add the
 <code>default-cpu-model</code> field in the kubevirt-config config map.</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kubevirt-config
-  namespace: kubevirt
-  labels:
-    kubevirt.io: ""
-data:
-  default-cpu-model: "EPYC"</pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">v1</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ConfigMap</span></span>
+<span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt-config</span></span>
+  <span style="color:#606">namespace</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt</span></span>
+  <span style="color:#606">labels</span>:
+    <span style="color:#606">kubevirt.io</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
+<span style="color:#606">data</span>:
+  <span style="color:#606">default-cpu-model</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">EPYC</span><span style="color:#710">&quot;</span></span>
+<span style="color:#f8f;background:#505"><span style="color:#f4f">...</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Default CPU model is set when vmi doesn&#8217;t have any cpu model. When vmi has cpu
 model set, then vmi&#8217;s cpu model is preferred. When default cpu model is not set and vmi&#8217;s cpu
-model is not set too, <code>host-model</code> will be set. Default cpu model can be changed when kubevirt is running.</p>
+model is not set too, <code>host-model</code> will be set. Default cpu model can be changed when kubevirt is running.
+When CPUNodeDiscovery feature gate is enabled (as mentioned in <a href="#enabling-cpu-compatibility-enforcement">Enabling cpu compatibility enforcement</a>),
+Kubevirt creates node selector with default cpu model.</p>
 </div>
 </div>
 <div class="sect4">
@@ -444,6 +532,12 @@ reference</a> for more details.</p>
 </div>
 <div class="paragraph">
 <p>Full description about features and policies can be found <a href="https://libvirt.org/formatdomain.html#elementsCPU">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>When CPUNodeDiscovery feature-gate is enabled (as mentioned in <a href="#enabling-cpu-compatibility-enforcement">Enabling cpu compatibility enforcement</a>),
+Kubevirt creates node selector from cpu features with format:
+ <code>feature.node.kubernetes.io/cpu-feature-&lt;cpuFeature&gt;</code>, e.g. <code>feature.node.kubernetes.io/cpu-feature-apic</code>.
+When VM doesn&#8217;t have cpu feature, then no node selector is created.</p>
 </div>
 </div>
 </div>
