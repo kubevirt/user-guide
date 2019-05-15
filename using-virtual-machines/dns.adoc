@@ -38,7 +38,9 @@ spec:
         name: cloudinitdisk
       interfaces:
       - name: default
-        bridge: {}
+        masquerade: {}
+        ports:
+        - port: 22
     resources:
       requests:
         memory: 1024M
