@@ -220,12 +220,24 @@ ________________________________________________________________________________
 Update
 ~~~~~~
 
-Rolling updates supported from the release `v0.17.0`:
+Zero downtime rolling updates supported from the release `v0.17.0`:
+ 
+Starting in `v0.17.0`, the KubeVirt operator supports updates. Updates are
+triggered by changing the imageTag value in the KubeVirt CR's spec.
+
+For example. Updating from `v0.17.0-alpha.1` to `v0.17.0` is as simple as
+patching the KubeVirt CR with the `imageTag: v0.17.0` value. From there the
+KubeVirt operator will begin the process of rolling out the new version of
+KubeVirt. Existing VM/VMIs will remain uninterrupted both during and after
+the update succeeds.
 
 [source,bash]
 ----
-TODO
+$ kubectl patch kv kubevirt -n kubevirt --type=json -p '[{ "op": "add", "path": "/spec/imageTag", "value": "v0.17.0" }]'
 ----
+
+NOTE: Updating from any release prior to the KubeVirt `v0.17.x` series is not
+supported.
 
 Delete
 ~~~~~~
