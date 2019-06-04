@@ -193,6 +193,7 @@ Volumes
 Supported volume sources are
 
 * link:#cloudinitnocloud[*cloudInitNoCloud*]
+* link:#cloudinitconfigdrive[*cloudInitConfigDrive*]
 * link:#persistentvolumeclaim[*persistentVolumeClaim*]
 * link:#ephemeral[*ephemeral*]
 * link:#containerdisk[*containerDisk*]
@@ -240,6 +241,43 @@ spec:
         claimName: mypvc
     - name: mynoclouddisk
       cloudInitNoCloud:
+        secretRef:
+          name: testsecret
+----
+
+cloudInitConfigDrive
+^^^^^^^^^^^^^^^^^^^^
+
+Allows attaching `cloudInitConfigDrive` data-sources to the VM. If the VM
+contains a proper cloud-init setup, it will pick up the disk as a
+user-data source.
+
+A simple example which attaches a `Secret` as a cloud-init `disk`
+datasource may look like this:
+
+[source,yaml]
+----
+metadata:
+  name: testvmi-cloudinitconfigdrive
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mybootdisk
+        lun: {}
+      - name: myconfigdrivedisk
+        disk: {}
+  volumes:
+    - name: mybootdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+    - name: myconfigdrivedisk
+      cloudInitConfigDrive:
         secretRef:
           name: testsecret
 ----
