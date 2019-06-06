@@ -185,9 +185,9 @@ VMs.</p>
 <a href="https://cloudinit.readthedocs.io/en/latest/">Cloud-init Documentation</a>.</p>
 </div>
 <div class="paragraph">
-<p>KubeVirt supports cloud-init’s ``NoCloud'' datasource which involves
-injecting startup scripts into a VM instance though the use of an
-ephemeral disk. VMs with the cloud-init package installed will detect
+<p>KubeVirt supports cloud-init’s <code>NoCloud'' and </code>ConfigDrive'' datasources
+which involve injecting startup scripts into a VM instance through the use
+of an ephemeral disk. VMs with the cloud-init package installed will detect
 the ephemeral disk and execute custom userdata scripts at boot.</p>
 </div>
 </div>
@@ -210,13 +210,54 @@ KubeVirt release.</p>
 <div class="sect3">
 <h4 id="user-data"><a class="anchor" href="#user-data"></a>User Data</h4>
 <div class="paragraph">
-<p>KubeVirt supports the cloud-init NoCloud datasource which involves
-injecting startup scripts through the use of a disk attached to the VM.</p>
+<p>KubeVirt supports the cloud-init NoCloud and ConfigDrive data sources which
+involve injecting startup scripts through the use of a disk attached to the
+VM.</p>
 </div>
 <div class="paragraph">
 <p>In order to assign a custom userdata script to a VirtualMachineInstance
-using this method, users must define a disk and a volume for the NoCloud
-datasource in the VirtualMachineInstance’s spec.</p>
+using this method, users must define a disk and a volume for the NoCloud or
+ConfigDrive datasource in the VirtualMachineInstance’s spec.</p>
+</div>
+<div class="sect4">
+<h5 id="data-sources"><a class="anchor" href="#data-sources"></a>Data Sources</h5>
+<div class="paragraph">
+<p>Under most circumstances users should stick to the NoCloud data source
+as it is the simplest cloud-init data source. Only if NoCloud is not
+supported by the cloud-init implementation (e.g.
+<a href="https://github.com/coreos/coreos-cloudinit">coreos-cloudinit</a>) users should
+switch the data source to ConfigDrive.</p>
+</div>
+<div class="paragraph">
+<p>Switching the cloud-init data source to ConfigDrive is as easy as changing
+the volume type in the VirtualMachineInstance’s spec from <code>cloudInitNoCloud</code>
+to <code>cloudInitConfigDrive</code>.</p>
+</div>
+<div class="paragraph">
+<p>NoCloud data source:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">  volumes:
+    - name: cloudinitvolume
+      cloudInitNoCloud:
+        userData: &quot;#cloud-config&quot;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>ConfigDrive data source:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">  volumes:
+    - name: cloudinitvolume
+      cloudInitConfigDrive:
+        userData: &quot;#cloud-config&quot;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>See the examples below for more complete cloud-init examples.</p>
+</div>
 </div>
 <div class="sect4">
 <h5 id="cloud-init-user-data-as-clear-text"><a class="anchor" href="#cloud-init-user-data-as-clear-text"></a>Cloud-init user-data as clear text</h5>

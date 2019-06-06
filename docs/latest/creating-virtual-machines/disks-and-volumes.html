@@ -381,6 +381,9 @@ as a <code>floppy</code> device to the VM:</p>
 <p><a href="#cloudinitnocloud"><strong>cloudInitNoCloud</strong></a></p>
 </li>
 <li>
+<p><a href="#cloudinitconfigdrive"><strong>cloudInitConfigDrive</strong></a></p>
+</li>
+<li>
 <p><a href="#persistentvolumeclaim"><strong>persistentVolumeClaim</strong></a></p>
 </li>
 <li>
@@ -448,6 +451,45 @@ datasource may look like this:</p>
         <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
     - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mynoclouddisk</span></span>
       <span style="color:#606">cloudInitNoCloud</span>:
+        <span style="color:#606">secretRef</span>:
+          <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testsecret</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="cloudinitconfigdrive"><a class="anchor" href="#cloudinitconfigdrive"></a>cloudInitConfigDrive</h4>
+<div class="paragraph">
+<p>Allows attaching <code>cloudInitConfigDrive</code> data-sources to the VM. If the VM
+contains a proper cloud-init setup, it will pick up the disk as a
+user-data source.</p>
+</div>
+<div class="paragraph">
+<p>A simple example which attaches a <code>Secret</code> as a cloud-init <code>disk</code>
+datasource may look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testvmi-cloudinitconfigdrive</span></span>
+<span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">64M</span></span>
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">disks</span>:
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mybootdisk</span></span>
+        <span style="color:#606">lun</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+      - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myconfigdrivedisk</span></span>
+        <span style="color:#606">disk</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+  <span style="color:#606">volumes</span>:
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: mybootdisk</span></span>
+      <span style="color:#606">persistentVolumeClaim</span>:
+        <span style="color:#606">claimName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">mypvc</span></span>
+    - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: myconfigdrivedisk</span></span>
+      <span style="color:#606">cloudInitConfigDrive</span>:
         <span style="color:#606">secretRef</span>:
           <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">testsecret</span></span></code></pre>
 </div>
