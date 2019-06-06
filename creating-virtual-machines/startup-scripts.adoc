@@ -28,9 +28,9 @@ VMs.
 Cloud-init documentation can be found here:
 https://cloudinit.readthedocs.io/en/latest/[Cloud-init Documentation].
 
-KubeVirt supports cloud-init’s ``NoCloud'' datasource which involves
-injecting startup scripts into a VM instance though the use of an
-ephemeral disk. VMs with the cloud-init package installed will detect
+KubeVirt supports cloud-init’s ``NoCloud'' and ``ConfigDrive'' datasources
+which involve injecting startup scripts into a VM instance through the use
+of an ephemeral disk. VMs with the cloud-init package installed will detect
 the ephemeral disk and execute custom userdata scripts at boot.
 
 Sysprep
@@ -50,12 +50,42 @@ Cloud-init Examples
 User Data
 ^^^^^^^^^
 
-KubeVirt supports the cloud-init NoCloud datasource which involves
-injecting startup scripts through the use of a disk attached to the VM.
+KubeVirt supports the cloud-init NoCloud and ConfigDrive data sources which
+involve injecting startup scripts through the use of a disk attached to the
+VM.
 
 In order to assign a custom userdata script to a VirtualMachineInstance
-using this method, users must define a disk and a volume for the NoCloud
-datasource in the VirtualMachineInstance’s spec.
+using this method, users must define a disk and a volume for the NoCloud or
+ConfigDrive datasource in the VirtualMachineInstance’s spec.
+
+Data Sources
+++++++++++++
+
+Under most circumstances users should stick to the NoCloud data source
+as it is the simplest cloud-init data source. Only if NoCloud is not
+supported by the cloud-init implementation (e.g.
+https://github.com/coreos/coreos-cloudinit[coreos-cloudinit]) users should
+switch the data source to ConfigDrive.
+
+Switching the cloud-init data source to ConfigDrive is as easy as changing
+the volume type in the VirtualMachineInstance’s spec from `cloudInitNoCloud`
+to `cloudInitConfigDrive`.
+
+NoCloud data source:
+[source,bash]
+  volumes:
+    - name: cloudinitvolume
+      cloudInitNoCloud:
+        userData: "#cloud-config"
+
+ConfigDrive data source:
+[source,bash]
+  volumes:
+    - name: cloudinitvolume
+      cloudInitConfigDrive:
+        userData: "#cloud-config"
+
+See the examples below for more complete cloud-init examples.
 
 Cloud-init user-data as clear text
 ++++++++++++++++++++++++++++++++++
