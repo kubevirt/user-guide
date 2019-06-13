@@ -155,8 +155,29 @@ It also provides convenience commands for:
 * Starting and stopping VirtualMachineInstances
 * Live migrating VirtualMachineInstances
 
-The most recent version of the tool can be retrieved from the
-https://github.com/kubevirt/kubevirt/releases[official release page].
+There are two ways to get it:
+
+* the most recent version of the tool can be retrieved from the
+https://github.com/kubevirt/kubevirt/releases[official release page]
+* it can be installed as a `kubectl` plugin using https://krew.dev/[krew]
+
+===== Install `virtctl` with `krew`
+
+It is required to https://github.com/kubernetes-sigs/krew/#installation[install `krew` plugin manager] beforehand.
+If `krew` is installed, `virtctl` can be installed via `krew`:
+
+[source,bash]
+----
+$ kubectl krew install virt
+----
+
+Then `virtctl` can be used as a kubectl plugin. For a list of available commands run:
+
+[source,bash]
+----
+$ kubectl virt help
+----
+
 
 From Service Catalog as an APB
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
