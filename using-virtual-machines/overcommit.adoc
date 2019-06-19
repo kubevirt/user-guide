@@ -96,6 +96,8 @@ https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#cr
 classes in Kubernetes] for more details). The same eviction rules like
 for Pods apply to the VMI in case the node gets under memory pressure.
 
+Implicit memory overcommit is disabled by default. This means that when memory request is not specified, it is set to match `spec.domain.memory.guest`. However, it can be enabled using `memory-overcommit` in the `kubevirt-config`. For example, by setting `memory-overcommit: "150"` we define that when memory request is not explicitly set, it will be implicitly set to achieve memory overcommit of 150%. For instance, when `spec.domain.memory.guest: 3072M`, memory request is set to 2048M, if omitted. Note that the actual memory request depends on additional configuration options like OvercommitGuestOverhead.
+
 Configuring the memory pressure behaviour of nodes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
