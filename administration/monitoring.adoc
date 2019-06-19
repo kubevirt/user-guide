@@ -117,6 +117,17 @@ Metrics about Virtual Machines
 The endpoints report metrics related to the runtime behaviour of the Virtual Machines.
 All the relevant metrics are prefixed with `kubevirt_vm`.
 
+The metrics have labels that allow to connect to the VMI objects they refer to.
+At minimum, the labels will expose `node`, `name` and `namespace` of the related VMI object.
+
+For example, reported metrics could look like
+```
+kubevirt_vm_memory_resident_bytes{domain="default_vm-test-01",name="vm-test-01",namespace="default",node="node01"} 2.5595904e+07
+kubevirt_vm_network_traffic_bytes_total{domain="default_vm-test-01",interface="vnet0",name="vm-test-01",namespace="default",node="node01",type="rx"} 8431
+kubevirt_vm_network_traffic_bytes_total{domain="default_vm-test-01",interface="vnet0",name="vm-test-01",namespace="default",node="node01",type="tx"} 1835
+kubevirt_vm_vcpu_seconds{domain="default_vm-test-01",id="0",name="vm-test-01",namespace="default",node="node01",state="1"} 19
+```
+
 Important Queries
 ~~~~~~~~~~~~~~~~~
 
