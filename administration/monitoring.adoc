@@ -128,6 +128,9 @@ kubevirt_vm_network_traffic_bytes_total{domain="default_vm-test-01",interface="v
 kubevirt_vm_vcpu_seconds{domain="default_vm-test-01",id="0",name="vm-test-01",namespace="default",node="node01",state="1"} 19
 ```
 
+Please note the `domain` label in the above example. This label is deprecated and it will be removed in a future release.
+You should identify the VMI using the `node`, `namespace`, `name` labels instead.
+
 Important Queries
 ~~~~~~~~~~~~~~~~~
 
