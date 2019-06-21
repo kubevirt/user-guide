@@ -127,6 +127,17 @@ virt-handler-vwdjx                             1/1       Running       0        
 ...
 ----
 
+Restricting virt-handler DaemonSet
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can patch the `virt-handler` DaemonSet post-deployment to restrict it to a specific subset of nodes with
+a nodeSelector. For example, to restrict the DaemonSet to only nodes with the "region=primary" label:
+
+[source, bash]
+----
+kubectl patch ds/virt-handler -n kubevirt -p '{"spec": {"template": {"spec": {"nodeSelector": {"region": "primary"}}}}}'
+----
+
 Deploying on OpenShift
 ~~~~~~~~~~~~~~~~~~~~~~
 
