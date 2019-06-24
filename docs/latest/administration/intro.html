@@ -313,6 +313,18 @@ virt-handler-vwdjx                             1/1       Running       0        
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="restricting-virt-handler-daemonset"><a class="anchor" href="#restricting-virt-handler-daemonset"></a>Restricting virt-handler DaemonSet</h4>
+<div class="paragraph">
+<p>You can patch the <code>virt-handler</code> DaemonSet post-deployment to restrict it to a specific subset of nodes with
+a nodeSelector. For example, to restrict the DaemonSet to only nodes with the "region=primary" label:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">kubectl patch ds/virt-handler -n kubevirt -p '{&quot;spec&quot;: {&quot;template&quot;: {&quot;spec&quot;: {&quot;nodeSelector&quot;: {&quot;region&quot;: &quot;primary&quot;}}}}}'</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="deploying-on-openshift"><a class="anchor" href="#deploying-on-openshift"></a>Deploying on OpenShift</h3>
