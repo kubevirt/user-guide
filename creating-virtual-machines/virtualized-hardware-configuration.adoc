@@ -460,6 +460,26 @@ API Reference] for all possible configuration options.
 explicitly disable them. We may in the future decide to add them via
 cluster-level defaulting, if they are part of a QEMU machine definition.
 
+Random number generator (RNG)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You may want to use entropy collected by your cluster nodes inside your guest.
+KubeVirt allows to add a `virtio` RNG device to a virtual machine as follows.
+
+[source,yaml]
+----
+metadata:
+  name: vmi-with-rng
+spec:
+  domain:
+    devices:
+      rng: {}
+----
+
+For Linux guests, the `virtio-rng` kernel module should be loaded early in the
+boot process to acquire access to the entropy source. Other systems may require
+similar adjustments to work with the `virtio` RNG device.
+
 Video and Graphics Device
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
