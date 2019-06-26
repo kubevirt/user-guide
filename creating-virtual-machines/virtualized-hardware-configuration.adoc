@@ -480,6 +480,11 @@ For Linux guests, the `virtio-rng` kernel module should be loaded early in the
 boot process to acquire access to the entropy source. Other systems may require
 similar adjustments to work with the `virtio` RNG device.
 
+*Note*: Some guest operating systems or user payloads may require the RNG
+device with enough entropy and may fail to boot without it. For example, fresh
+Fedora images with newer kernels (4.16.4+) may require the `virtio` RNG device
+to be present to boot to login.
+
 Video and Graphics Device
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
