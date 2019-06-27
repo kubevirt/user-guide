@@ -326,10 +326,9 @@ The following VM will have a CPU with <code>3</code> cores:</p>
 <p>This feature-gate allows kubevirt to take VM cpu model and cpu features and create node selectors from them.
 With these node selectors, VM can be scheduled on the node which can support VM cpu model and features.</p>
 </div>
-<div class="paragraph">
-<p>Labeling nodes with cpu models and cpu features
-<sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup>^</p>
 </div>
+<div class="sect3">
+<h4 id="labeling-nodes-with-cpu-models-and-cpu-features"><a class="anchor" href="#labeling-nodes-with-cpu-models-and-cpu-features"></a>Labeling nodes with cpu models and cpu features</h4>
 <div class="paragraph">
 <p>To properly label the node, user can use (only for cpu models and cpu features)
 <a href="https://github.com/kubevirt/node-labeller">node-labeller</a> in combination with
@@ -685,6 +684,34 @@ API Reference</a> for all possible configuration options.</p>
 explicitly disable them. We may in the future decide to add them via
 cluster-level defaulting, if they are part of a QEMU machine definition.</p>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="random-number-generator-rng"><a class="anchor" href="#random-number-generator-rng"></a>Random number generator (RNG)</h3>
+<div class="paragraph">
+<p>You may want to use entropy collected by your cluster nodes inside your guest.
+KubeVirt allows to add a <code>virtio</code> RNG device to a virtual machine as follows.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">metadata</span>:
+  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">vmi-with-rng</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">devices</span>:
+      <span style="color:#606">rng</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Linux guests, the <code>virtio-rng</code> kernel module should be loaded early in the
+boot process to acquire access to the entropy source. Other systems may require
+similar adjustments to work with the <code>virtio</code> RNG device.</p>
+</div>
+<div class="paragraph">
+<p><strong>Note</strong>: Some guest operating systems or user payloads may require the RNG
+device with enough entropy and may fail to boot without it. For example, fresh
+Fedora images with newer kernels (4.16.4+) may require the <code>virtio</code> RNG device
+to be present to boot to login.</p>
 </div>
 </div>
 <div class="sect2">
