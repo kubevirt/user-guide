@@ -370,8 +370,54 @@ use advanced features such as:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>The most recent version of the tool can be retrieved from the
-<a href="https://github.com/kubevirt/kubevirt/releases">official release page</a>.</p>
+<p>There are two ways to get it:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>the most recent version of the tool can be retrieved from the
+<a href="https://github.com/kubevirt/kubevirt/releases">official release page</a></p>
+</li>
+<li>
+<p>it can be installed as a <code>kubectl</code> plugin using <a href="https://krew.dev/">krew</a></p>
+</li>
+</ul>
+</div>
+<div class="sect4">
+<h5 id="install-virtctl-with-krew"><a class="anchor" href="#install-virtctl-with-krew"></a>Install <code>virtctl</code> with <code>krew</code></h5>
+<div class="paragraph">
+<p>It is required to <a href="https://github.com/kubernetes-sigs/krew/#installation">install <code>krew</code> plugin manager</a> beforehand.
+If <code>krew</code> is installed, <code>virtctl</code> can be installed via <code>krew</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ kubectl krew install virt</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then <code>virtctl</code> can be used as a kubectl plugin. For a list of available commands run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ kubectl virt help</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Every occurrence throughout this guide of</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ ./virtctl &lt;command&gt;...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>should then be read as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ kubectl virt &lt;command&gt;...</code></pre>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="from-service-catalog-as-an-apb"><a class="anchor" href="#from-service-catalog-as-an-apb"></a>From Service Catalog as an APB</h4>
