@@ -205,9 +205,9 @@ request the additional overhead by setting
   <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">30</span></span>
   <span style="color:#606">domain</span>:
     <span style="color:#606">resources</span>:
-    <span style="color:#606">overcommitGuestOverhead</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span><span style="color:#D20">
-      requests:
-        memory: 1024M</span></span>
+      <span style="color:#606">overcommitGuestOverhead</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
 [<span style="color:#F00;background-color:#FAA">...]</span></code></pre>
 </div>
 </div>
@@ -242,9 +242,9 @@ the VMI that it has <code>2048MB</code> of memory available:</p>
   <span style="color:#606">terminationGracePeriodSeconds</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">30</span></span>
   <span style="color:#606">domain</span>:
     <span style="color:#606">resources</span>:
-    <span style="color:#606">overcommitGuestOverhead</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span><span style="color:#D20">
-      requests:
-        memory: 1024M</span></span>
+      <span style="color:#606">overcommitGuestOverhead</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
+      <span style="color:#606">requests</span>:
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1024M</span></span>
     <span style="color:#606">memory</span>:
       <span style="color:#606">guest</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">2048M</span></span>
 [<span style="color:#F00;background-color:#FAA">...]</span></code></pre>
@@ -257,6 +257,9 @@ VMI can happily consume up to <code>2048MB</code>. This VMI will get the
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-burstable">QoS
 classes in Kubernetes</a> for more details). The same eviction rules like
 for Pods apply to the VMI in case the node gets under memory pressure.</p>
+</div>
+<div class="paragraph">
+<p>Implicit memory overcommit is disabled by default. This means that when memory request is not specified, it is set to match <code>spec.domain.memory.guest</code>. However, it can be enabled using <code>memory-overcommit</code> in the <code>kubevirt-config</code>. For example, by setting <code>memory-overcommit: "150"</code> we define that when memory request is not explicitly set, it will be implicitly set to achieve memory overcommit of 150%. For instance, when <code>spec.domain.memory.guest: 3072M</code>, memory request is set to 2048M, if omitted. Note that the actual memory request depends on additional configuration options like OvercommitGuestOverhead.</p>
 </div>
 </div>
 <div class="sect2">
