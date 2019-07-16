@@ -347,6 +347,10 @@ data:
 <div class="sect2">
 <h3 id="sidecar-containers-and-cpu-allocation-overhead"><a class="anchor" href="#sidecar-containers-and-cpu-allocation-overhead"></a>Sidecar containers and CPU allocation overhead</h3>
 <div class="paragraph">
+<p><strong>Note:</strong> In order to run sidecar containers, KubeVirt requires the <code>Sidecar</code> feature gate to be enabled by adding <code>Sidecar</code>
+to the <code>kubevirt-config</code> ConfigMap&#8217;s <code>feature-gates</code> field.</p>
+</div>
+<div class="paragraph">
 <p>According to the Kubernetes CPU manager model, in order the POD would
 reach the required QOS level <code>Guaranteed</code>, all containers in the POD
 must express CPU and memory requirements. At this time, Kubevirt often
