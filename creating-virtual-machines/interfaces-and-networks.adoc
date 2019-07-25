@@ -417,6 +417,22 @@ ______________________________________________________________________________
 *Note:* due to IPv4 address delagation, in `bridge` mode the pod doesn’t have
 an IP address configured, which may introduce issues with third-party solutions
 that may rely on it. For example, Istio may not work in this mode.
+*Note:* there is an option to dissable bridge interface with pod network.
+This is done with a deignated flag.
+The default value of the flag is 'true', meaning bridge interface is enabled.
+to disable it cahnge flag value to false. For example:
+______________________________________________________________________________
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kube-system
+  labels:
+    kubevirt.io: ""
+data:
+ permitBridgeInterfaceOnPodNetwork: "false"
+______________________________________________________________________________
+*Note:* consider changing the default interface in the config map to masquerade.
 ______________________________________________________________________________
 
 slirp
