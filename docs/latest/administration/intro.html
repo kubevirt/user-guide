@@ -551,6 +551,12 @@ over what version of KubeVirt is installed independently of what version of
 the KubeVirt operator you might be running. The second approach allows you to
 lock both the operator and operand to the same version.</p>
 </div>
+<div class="paragraph">
+<p>Newer KubeVirt may require additional or extended RBAC rules. In this case, the #1 update method may fail,
+because the virt-operator present in the cluster doesn&#8217;t have these RBAC rules itself.
+In this case, you need to update the <code>virt-operator</code> first, and then proceed to update kubevirt.
+See <a href="https://github.com/kubevirt/kubevirt/issues/2533">this issue for more details</a>.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="delete"><a class="anchor" href="#delete"></a>Delete</h3>
