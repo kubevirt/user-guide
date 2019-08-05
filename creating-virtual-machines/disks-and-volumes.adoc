@@ -415,22 +415,23 @@ incompatible with Registry Disks.
 containerDisk Workflow Example
 ++++++++++++++++++++++++++++++
 
-Users push VM disks into the container registry using a KubeVirt base
-image designed to work with the Registry Disk feature. The latest base
-container image is *kubevirt/container-disk-v1alpha*.
-
-Using this base image, users can inject a VirtualMachineInstance disk
-into a container image in a way that is consumable by the KubeVirt
-runtime. Disks placed into the base container must be placed into the
-`/disk` directory. Raw and qcow2 formats are supported. Qcow2 is
-recommended in order to reduce the container image’s size.
+Using this base image, users can inject a VirtualMachineInstance disk into a
+container image in a way that is consumable by the KubeVirt runtime. Disks
+placed into the base container must be placed into the `/disk` directory. Raw
+and qcow2 formats are supported. Qcow2 is recommended in order to reduce the
+container image’s size. Containerdisks can and should be based on `scratch`. No
+content except the image is required.
+___________________________________________________________________________________________________________________________________________________
+*Note:* Prior to kubevirt 0.20, the containerDisk image needed to have
+*kubevirt/container-disk-v1alpha* as base image.
+___________________________________________________________________________________________________________________________________________________
 
 Example: Inject a VirtualMachineInstance disk into a container image.
 
 [source,yaml]
 ----
 cat << END > Dockerfile
-FROM kubevirt/container-disk-v1alpha
+FROM scratch
 ADD fedora25.qcow2 /disk
 END
 
