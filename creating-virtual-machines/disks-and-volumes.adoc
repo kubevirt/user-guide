@@ -386,41 +386,38 @@ containerDisk
 *containerDisk was originally registryDisk, please update your code when
 needed.*
 
-The Registry Disk feature provides the ability to store and distribute
-VM disks in the container image registry. Registry Disks can be assigned
+The `containerDisk` feature provides the ability to store and distribute
+VM disks in the container image registry. `containerDisks` can be assigned
 to VMs in the disks section of the VirtualMachineInstance spec.
 
-No network shared storage devices are utilized by Registry Disks. The
+No network shared storage devices are utilized by `containerDisks`. The
 disks are pulled from the container registry and reside on the local
 node hosting the VMs that consume the disks.
 
 When to use a containerDisk
 +++++++++++++++++++++++++++
 
-Registry Disks are ephemeral storage devices that can be assigned to any
+`containerDisks` are ephemeral storage devices that can be assigned to any
 number of active VirtualMachineInstances. This makes them an ideal tool
 for users who want to replicate a large number of VM workloads that do
-not require persistent data. Registry Disks are commonly used in
+not require persistent data. `containerDisks` are commonly used in
 conjunction with VirtualMachineInstanceReplicaSets.
 
 When Not to use a containerDisk
 +++++++++++++++++++++++++++++++
 
-Registry Disks are not a good solution for any workload that requires
-persistent disks across VM restarts, or workloads that require VM live
-migration support. It is possible Registry Disks may gain live migration
-support in the future, but at the moment live migrations are
-incompatible with Registry Disks.
+`containerDisks` are not a good solution for any workload that requires
+persistent root disks across VM restarts.
 
 containerDisk Workflow Example
 ++++++++++++++++++++++++++++++
 
-Using this base image, users can inject a VirtualMachineInstance disk into a
-container image in a way that is consumable by the KubeVirt runtime. Disks
-placed into the base container must be placed into the `/disk` directory. Raw
-and qcow2 formats are supported. Qcow2 is recommended in order to reduce the
-container image’s size. Containerdisks can and should be based on `scratch`. No
-content except the image is required.
+Users can inject a VirtualMachineInstance disk into a container image in a way
+that is consumable by the KubeVirt runtime. Disks must be placed into the
+`/disk` directory inside the container. Raw and qcow2 formats are supported.
+Qcow2 is recommended in order to reduce the container image’s size.
+Containerdisks can and should be based on `scratch`. No content except the
+image is required.
 ___________________________________________________________________________________________________________________________________________________
 *Note:* Prior to kubevirt 0.20, the containerDisk image needed to have
 *kubevirt/container-disk-v1alpha* as base image.
