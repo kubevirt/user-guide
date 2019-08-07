@@ -618,44 +618,41 @@ API</a>.</p>
 needed.</strong></p>
 </div>
 <div class="paragraph">
-<p>The Registry Disk feature provides the ability to store and distribute
-VM disks in the container image registry. Registry Disks can be assigned
+<p>The <code>containerDisk</code> feature provides the ability to store and distribute
+VM disks in the container image registry. <code>containerDisks</code> can be assigned
 to VMs in the disks section of the VirtualMachineInstance spec.</p>
 </div>
 <div class="paragraph">
-<p>No network shared storage devices are utilized by Registry Disks. The
+<p>No network shared storage devices are utilized by <code>containerDisks</code>. The
 disks are pulled from the container registry and reside on the local
 node hosting the VMs that consume the disks.</p>
 </div>
 <div class="sect4">
 <h5 id="when-to-use-a-containerdisk"><a class="anchor" href="#when-to-use-a-containerdisk"></a>When to use a containerDisk</h5>
 <div class="paragraph">
-<p>Registry Disks are ephemeral storage devices that can be assigned to any
+<p><code>containerDisks</code> are ephemeral storage devices that can be assigned to any
 number of active VirtualMachineInstances. This makes them an ideal tool
 for users who want to replicate a large number of VM workloads that do
-not require persistent data. Registry Disks are commonly used in
+not require persistent data. <code>containerDisks</code> are commonly used in
 conjunction with VirtualMachineInstanceReplicaSets.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="when-not-to-use-a-containerdisk"><a class="anchor" href="#when-not-to-use-a-containerdisk"></a>When Not to use a containerDisk</h5>
 <div class="paragraph">
-<p>Registry Disks are not a good solution for any workload that requires
-persistent disks across VM restarts, or workloads that require VM live
-migration support. It is possible Registry Disks may gain live migration
-support in the future, but at the moment live migrations are
-incompatible with Registry Disks.</p>
+<p><code>containerDisks</code> are not a good solution for any workload that requires
+persistent root disks across VM restarts.</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="containerdisk-workflow-example"><a class="anchor" href="#containerdisk-workflow-example"></a>containerDisk Workflow Example</h5>
 <div class="paragraph">
-<p>Using this base image, users can inject a VirtualMachineInstance disk into a
-container image in a way that is consumable by the KubeVirt runtime. Disks
-placed into the base container must be placed into the <code>/disk</code> directory. Raw
-and qcow2 formats are supported. Qcow2 is recommended in order to reduce the
-container image’s size. Containerdisks can and should be based on <code>scratch</code>. No
-content except the image is required.</p>
+<p>Users can inject a VirtualMachineInstance disk into a container image in a way
+that is consumable by the KubeVirt runtime. Disks must be placed into the
+<code>/disk</code> directory inside the container. Raw and qcow2 formats are supported.
+Qcow2 is recommended in order to reduce the container image’s size.
+Containerdisks can and should be based on <code>scratch</code>. No content except the
+image is required.</p>
 </div>
 <div class="quoteblock">
 <blockquote>
