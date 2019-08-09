@@ -112,8 +112,11 @@ $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELE
 # creates KubeVirt KV custom resource
 $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
 # wait until all KubeVirt components is up
-$ kubectl -n kubevirt wait kv kubevirt --for condition=Ready
+$ kubectl -n kubevirt wait kv kubevirt --for condition=Available
 ----
+_____________________________
+Note: Prior to release v0.20.0 the condition for the `kubectl wait` command was named "Ready" instead of "Available"
+_____________________________
 
 All new components will be deployed under the `kubevirt` namespace:
 
