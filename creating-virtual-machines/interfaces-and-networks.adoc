@@ -574,23 +574,6 @@ spec:
       networkName: sriov-net-crd
 ----
 
-______________________________________________________________________________
-*Note:* you need to enable the SRIOV feature gate to use the feature. For
-example:
-______________________________________________________________________________
-
-....
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kubevirt-config
-  namespace: kube-system
-  labels:
-    kubevirt.io: ""
-data:
-  feature-gates: "SRIOV"
-....
-
 Information on how to set up Intel SR-IOV device plugin can be found
 https://github.com/intel/sriov-network-device-plugin/blob/master/README.md[in
 their respective documentation].
