@@ -921,27 +921,6 @@ maintain high networking performance.</p>
       <span style="color:#606">networkName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">sriov-net-crd</span></span></code></pre>
 </div>
 </div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><strong>Note:</strong> you need to enable the SRIOV feature gate to use the feature. For
-example:</p>
-</div>
-</blockquote>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kubevirt-config
-  namespace: kube-system
-  labels:
-    kubevirt.io: ""
-data:
-  feature-gates: "SRIOV"</pre>
-</div>
-</div>
 <div class="paragraph">
 <p>Information on how to set up Intel SR-IOV device plugin can be found
 <a href="https://github.com/intel/sriov-network-device-plugin/blob/master/README.md">in
