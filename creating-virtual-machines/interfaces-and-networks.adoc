@@ -581,3 +581,9 @@ to deploy and configure SR-IOV components in your cluster. On how to use the
 operator, please refer to
 https://github.com/openshift/sriov-network-operator/blob/master/doc/quickstart.md[their
 respective documentation].
+
+______________________________________________________________________________
+*Note:* KubeVirt relies on VFIO userspace driver to pass PCI devices into VMI
+guest. Because of that, when configuring SR-IOV operator policies, make sure
+you define a pool of VF resources that uses `driver: vfio`.
+______________________________________________________________________________
