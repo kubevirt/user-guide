@@ -429,7 +429,7 @@ Example: Inject a VirtualMachineInstance disk into a container image.
 ----
 cat << END > Dockerfile
 FROM scratch
-ADD fedora25.qcow2 /disk
+ADD fedora25.qcow2 /disk/
 END
 
 docker build -t vmidisks/fedora25:latest .
