@@ -54,7 +54,7 @@ spec:
     devices:
       interfaces:
         - name: default
-          bridge: {}
+          masquerade: {}
   networks:
   - name: default
     pod: {} # Stock pod network
@@ -104,7 +104,7 @@ spec:
     devices:
       interfaces:
         - name: default
-          bridge: {}
+          masquerade: {}
           bootFileName: default_image.bin
           tftpServerName: tftp.example.com
           bootOrder: 1   # attempt to boot from an external tftp server
@@ -281,7 +281,7 @@ spec:
       interfaces:
         - name: default
           model: e1000 # expose e1000 NIC to the guest
-          bridge: {} # connect through a bridge
+          masquerade: {} # connect through a masquerade
           ports:
            - name: http
              port: 80
@@ -407,8 +407,9 @@ spec:
           bridge: {} # connect through a bridge
   networks:
   - name: red
-    pod: {}
-----
+    multus:
+      networkName: red
+-----
 
 At this time, `bridge` mode doesn’t support additional configuration
 fields.
