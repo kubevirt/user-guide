@@ -231,7 +231,7 @@ by cluster network solution that is present in each pod.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">interfaces</span>:
         - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: default</span></span>
-          <span style="color:#606">bridge</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+          <span style="color:#606">masquerade</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
   <span style="color:#606">networks</span>:
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: default</span></span>
     <span style="color:#606">pod</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span> <span style="color:#777"># Stock pod network</span></code></pre>
@@ -285,7 +285,7 @@ network and to the secondary Open vSwitch network.</p>
     <span style="color:#606">devices</span>:
       <span style="color:#606">interfaces</span>:
         - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: default</span></span>
-          <span style="color:#606">bridge</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
+          <span style="color:#606">masquerade</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
           <span style="color:#606">bootFileName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">default_image.bin</span></span>
           <span style="color:#606">tftpServerName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">tftp.example.com</span></span>
           <span style="color:#606">bootOrder</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">1</span></span>   <span style="color:#777"># attempt to boot from an external tftp server</span>
@@ -534,7 +534,7 @@ example: <code>0000:81:00.1</code></p></td>
       <span style="color:#606">interfaces</span>:
         - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: default</span></span>
           <span style="color:#606">model</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">e1000</span></span> <span style="color:#777"># expose e1000 NIC to the guest</span>
-          <span style="color:#606">bridge</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span> <span style="color:#777"># connect through a bridge</span>
+          <span style="color:#606">masquerade</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span> <span style="color:#777"># connect through a masquerade</span>
           <span style="color:#606">ports</span>:
            - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: http</span></span>
              <span style="color:#606">port</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">80</span></span>
@@ -714,228 +714,198 @@ the virtual machine.</p>
           <span style="color:#606">bridge</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span> <span style="color:#777"># connect through a bridge</span>
   <span style="color:#606">networks</span>:
   - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: red</span></span>
-    <span style="color:#606">pod</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>
+    <span style="color:#606">multus</span>:
+      <span style="color:#606">networkName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">red</span></span>
+<span style="color:#f8f;background:#505"><span style="color:#f4f">---</span></span><span style="color:#F00;background-color:#FAA">--</span>
+
+<span style="color:#F00;background-color:#FAA">At this time, `bridge` mode doesn’t support additional configuration</span>
+<span style="color:#F00;background-color:#FAA">fields.</span>
+
+<span style="color:#F00;background-color:#FAA">______________________________________________________________________________</span>
+<span style="color:#d70">*Note</span><span style="color:#F00;background-color:#FAA">:</span><span style="color:#F00;background-color:#FAA">* due to IPv4 address delagation, in `bridge` mode the pod doesn’t have</span>
+<span style="color:#F00;background-color:#FAA">an IP address configured, which may introduce issues with third-party solutions</span>
+<span style="color:#F00;background-color:#FAA">that may rely on it. For example, Istio may not work in this mode.</span>
+<span style="color:#F00;background-color:#FAA">______________________________________________________________________________</span>
+
+<span style="color:#F00;background-color:#FAA">slirp</span>
+<span style="color:#F00;background-color:#FAA">^^^^^</span>
+
+<span style="color:#F00;background-color:#FAA">In `slirp` mode, virtual machines are connected to the network backend</span>
+<span style="color:#F00;background-color:#FAA">using QEMU user networking mode. In this mode, QEMU allocates internal</span>
+<span style="color:#F00;background-color:#FAA">IP addresses to virtual machines and hides them behind NAT.</span>
+
+[<span style="color:#F00;background-color:#FAA">source,yaml]</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>At this time, <code>bridge</code> mode doesn’t support additional configuration
-fields.</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><strong>Note:</strong> due to IPv4 address delagation, in <code>bridge</code> mode the pod doesn’t have
-an IP address configured, which may introduce issues with third-party solutions
-that may rely on it. For example, Istio may not work in this mode.</p>
-</div>
-</blockquote>
-</div>
-</div>
-<div class="sect3">
-<h4 id="slirp"><a class="anchor" href="#slirp"></a>slirp</h4>
-<div class="paragraph">
-<p>In <code>slirp</code> mode, virtual machines are connected to the network backend
-using QEMU user networking mode. In this mode, QEMU allocates internal
-IP addresses to virtual machines and hides them behind NAT.</p>
+<p>kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          slirp: {} # connect using SLIRP mode
+  networks:
+  - name: red
+    pod: {}</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VM</span></span>
-<span style="color:#606">spec</span>:
-  <span style="color:#606">domain</span>:
-    <span style="color:#606">devices</span>:
-      <span style="color:#606">interfaces</span>:
-        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: red</span></span>
-          <span style="color:#606">slirp</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span> <span style="color:#777"># connect using SLIRP mode</span>
-  <span style="color:#606">networks</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: red</span></span>
-    <span style="color:#606">pod</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>At this time, <code>slirp</code> mode doesn’t support additional configuration
-fields.</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><strong>Note:</strong> in <code>slirp</code> mode, the only supported protocols are TCP and UDP. ICMP is
-<em>not</em> supported.</p>
-</div>
-</blockquote>
-</div>
-<div class="paragraph">
-<p>More information about SLIRP mode can be found in
-<a href="https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29">QEMU
-Wiki</a>.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="masquerade"><a class="anchor" href="#masquerade"></a>masquerade</h4>
-<div class="paragraph">
-<p>In <code>masquerade</code> mode, KubeVirt allocates internal
+<pre>At this time, `slirp` mode doesn’t support additional configuration
+fields.
+
+______________________________________________________________________________
+*Note:* in `slirp` mode, the only supported protocols are TCP and UDP. ICMP is
+_not_ supported.
+______________________________________________________________________________
+
+More information about SLIRP mode can be found in
+https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29[QEMU
+Wiki].
+
+masquerade
+^^^^^^^^^^
+
+In `masquerade` mode, KubeVirt allocates internal
 IP addresses to virtual machines and hides them behind NAT.
-All the traffic exiting virtual machines is "NAT&#8217;ed" using pod IP addresses.
-A virtual machine should be configured to use DHCP to acquire IPv4 addresses.</p>
+All the traffic exiting virtual machines is "NAT'ed" using pod IP addresses.
+A virtual machine should be configured to use DHCP to acquire IPv4 addresses.
+
+To allow traffic into virtual machines, the template `ports` section of the
+interface should be configured as follows.
+
+[source,yaml]</pre>
+</div>
 </div>
 <div class="paragraph">
-<p>To allow traffic into virtual machines, the template <code>ports</code> section of the
-interface should be configured as follows.</p>
+<p>kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          masquerade: {} # connect using masquerade mode
+          ports:
+            - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+  networks:
+  - name: red
+    pod: {}</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VM</span></span>
-<span style="color:#606">spec</span>:
-  <span style="color:#606">domain</span>:
-    <span style="color:#606">devices</span>:
-      <span style="color:#606">interfaces</span>:
-        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: red</span></span>
-          <span style="color:#606">masquerade</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span> <span style="color:#777"># connect using masquerade mode</span>
-          <span style="color:#606">ports</span>:
-            - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">port: 80</span></span> <span style="color:#777"># allow incoming traffic on port 80 to get into the virtual machine</span>
-  <span style="color:#606">networks</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: red</span></span>
-    <span style="color:#606">pod</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span></code></pre>
-</div>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><strong>Note:</strong> Masquerade is only allowed to connect to the pod network.
-<strong>Note:</strong> The network CIDR can be configured in the pod network section using the
-<code>vmNetworkCIDR</code> attribute.</p>
-</div>
-</blockquote>
-</div>
-</div>
-<div class="sect3">
-<h4 id="virtio-net-multiqueue"><a class="anchor" href="#virtio-net-multiqueue"></a>virtio-net multiqueue</h4>
-<div class="paragraph">
-<p>Setting the <code>networkInterfaceMultiqueue</code> to <code>true</code> will enable the
+<pre>______________________________________________________________________________
+*Note:* Masquerade is only allowed to connect to the pod network.
+*Note:* The network CIDR can be configured in the pod network section using the
+`vmNetworkCIDR` attribute.
+______________________________________________________________________________
+
+virtio-net multiqueue
+^^^^^^^^^^^^^^^^^^^^^
+
+Setting the `networkInterfaceMultiqueue` to `true` will enable the
 multi-queue functionality, increasing the number of vhost queue, for
-interfaces configured with a <code>virtio</code> model.</p>
+interfaces configured with a `virtio` model.
+
+[source,yaml]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>kind: VM
+spec:
+  domain:
+    devices:
+      networkInterfaceMultiqueue: true</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VM</span></span>
-<span style="color:#606">spec</span>:
-  <span style="color:#606">domain</span>:
-    <span style="color:#606">devices</span>:
-      <span style="color:#606">networkInterfaceMultiqueue</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Users of a Virtual Machine with multiple vCPUs may benefit of increased
-network throughput and performance.</p>
-</div>
-<div class="paragraph">
-<p>Currently, the number of queues is being determined by the number of
+<pre>Users of a Virtual Machine with multiple vCPUs may benefit of increased
+network throughput and performance.
+
+Currently, the number of queues is being determined by the number of
 vCPUs of a VM. This is because multi-queue support optimizes RX
 interrupt affinity and TX queue selection in order to make a specific
-queue private to a specific vCPU.</p>
-</div>
-<div class="paragraph">
-<p>Without enabling the feature, network performance does not scale as the
+queue private to a specific vCPU.
+
+Without enabling the feature, network performance does not scale as the
 number of vCPUs increases. Guests cannot transmit or retrieve packets in
-parallel, as virtio-net has only one TX and RX queue.</p>
-</div>
-<div class="paragraph">
-<p><em>NOTE</em>: Although the virtio-net multiqueue feature provides a
+parallel, as virtio-net has only one TX and RX queue.
+
+_NOTE_: Although the virtio-net multiqueue feature provides a
 performance benefit, it has some limitations and therefore should not be
-unconditionally enabled</p>
-</div>
-<div class="sect4">
-<h5 id="some-known-limitations"><a class="anchor" href="#some-known-limitations"></a>Some known limitations</h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Guest OS is limited to ~200 MSI vectors. Each NIC queue requires a MSI
+unconditionally enabled
+
+Some known limitations
+++++++++++++++++++++++
+
+* Guest OS is limited to ~200 MSI vectors. Each NIC queue requires a MSI
 vector, as well as any virtio device or assigned PCI device. Defining an
 instance with multiple virtio NICs and vCPUs might lead to a possibility
-of hitting the guest MSI limit.</p>
-</li>
-<li>
-<p>virtio-net multiqueue works well for incoming traffic, but can
+of hitting the guest MSI limit.
+* virtio-net multiqueue works well for incoming traffic, but can
 occasionally cause a performance degradation, for outgoing traffic.
 Specifically, this may occur when sending packets under 1,500 bytes over
-the Transmission Control Protocol (TCP) stream.</p>
-</li>
-<li>
-<p>Enabling virtio-net multiqueue increases the total network throughput,
-but in parallel it also increases the CPU consumption.</p>
-</li>
-<li>
-<p>Enabling virtio-net multiqueue in the host QEMU config, does not
+the Transmission Control Protocol (TCP) stream.
+* Enabling virtio-net multiqueue increases the total network throughput,
+but in parallel it also increases the CPU consumption.
+* Enabling virtio-net multiqueue in the host QEMU config, does not
 enable the functionality in the guest OS. The guest OS administrator
 needs to manually turn it on for each guest NIC that requires this
-feature, using ethtool.</p>
-</li>
-<li>
-<p>MSI vectors would still be consumed (wasted), if multiqueue was
+feature, using ethtool.
+* MSI vectors would still be consumed (wasted), if multiqueue was
 enabled in the host, but has not been enabled in the guest OS by the
-administrator.</p>
-</li>
-<li>
-<p>In case the number of vNICs in a guest instance is proportional to the
-number of vCPUs, enabling the multiqueue feature is less important.</p>
-</li>
-<li>
-<p>Each virtio-net queue consumes 64 KB of kernel memory for the vhost
-driver.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><em>NOTE</em>: Virtio-net multiqueue should be enabled in the guest OS
+administrator.
+* In case the number of vNICs in a guest instance is proportional to the
+number of vCPUs, enabling the multiqueue feature is less important.
+* Each virtio-net queue consumes 64 KB of kernel memory for the vhost
+driver.
+
+_NOTE_: Virtio-net multiqueue should be enabled in the guest OS
 manually, using ethtool. For example:
-<code>ethtool -L &lt;NIC&gt; combined #num_of_queues</code></p>
-</div>
-<div class="paragraph">
-<p>More information please refer to
-<a href="http://www.linux-kvm.org/page/Multiqueue">KVM/QEMU MultiQueue</a>.</p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="sriov"><a class="anchor" href="#sriov"></a>sriov</h4>
-<div class="paragraph">
-<p>In <code>sriov</code> mode, virtual machines are directly exposed to an SR-IOV PCI device,
-usually allocated by <a href="https://github.com/intel/sriov-network-device-plugin">Intel
-SR-IOV device plugin</a>. The device is passed through into the guest operating
+`ethtool -L &lt;NIC&gt; combined #num_of_queues`
+
+More information please refer to
+http://www.linux-kvm.org/page/Multiqueue[KVM/QEMU MultiQueue].
+
+sriov
+^^^^^
+
+In `sriov` mode, virtual machines are directly exposed to an SR-IOV PCI device,
+usually allocated by https://github.com/intel/sriov-network-device-plugin[Intel
+SR-IOV device plugin]. The device is passed through into the guest operating
 system as a host device, using the
-<a href="https://www.kernel.org/doc/Documentation/vfio.txt">vfio</a> userspace interface, to
-maintain high networking performance.</p>
+https://www.kernel.org/doc/Documentation/vfio.txt[vfio] userspace interface, to
+maintain high networking performance.
+
+[source,yaml]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: sriov-net
+          sriov: {}
+  networks:
+  - name: sriov-net
+    multus:
+      networkName: sriov-net-crd</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VM</span></span>
-<span style="color:#606">spec</span>:
-  <span style="color:#606">domain</span>:
-    <span style="color:#606">devices</span>:
-      <span style="color:#606">interfaces</span>:
-        - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: sriov-net</span></span>
-          <span style="color:#606">sriov</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">{}</span></span>
-  <span style="color:#606">networks</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">name: sriov-net</span></span>
-    <span style="color:#606">multus</span>:
-      <span style="color:#606">networkName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">sriov-net-crd</span></span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Information on how to set up Intel SR-IOV device plugin can be found
-<a href="https://github.com/intel/sriov-network-device-plugin/blob/master/README.md">in
-their respective documentation</a>.</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p><strong>Note:</strong> while the <code>sriov</code> mode is validated and tested using the Intel SR-IOV
+<pre>Information on how to set up Intel SR-IOV device plugin can be found
+https://github.com/intel/sriov-network-device-plugin/blob/master/README.md[in
+their respective documentation].
+
+______________________________________________________________________________
+*Note:* while the `sriov` mode is validated and tested using the Intel SR-IOV
 device plugin, other plugins may add support for the same by setting the
-<code>PCIDEVICE_&lt;resourceName&gt;</code> environment variables inside pods to a list of
+`PCIDEVICE_&lt;resourceName&gt;` environment variables inside pods to a list of
 allocated PCI device IDs, as in:
-PCIDEVICE_VENDOR_COM_RESOURCE_NAME=0000:81:11.1,0000:81:11.2[,…]</p>
+PCIDEVICE_VENDOR_COM_RESOURCE_NAME=0000:81:11.1,0000:81:11.2[,…]
+______________________________________________________________________________</pre>
 </div>
-</blockquote>
 </div>
 </div>
 </div>
