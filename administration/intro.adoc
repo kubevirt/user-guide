@@ -4,7 +4,7 @@ Installation
 KubeVirt is a virtualization add-on to Kubernetes and this guide assumes
 that a Kubernetes cluster is already installed.
 
-If installed on OpenShift, the web console is extended for management of virtual machines.
+If installed on OKD, the web console is extended for management of virtual machines.
 
 Requirements
 ~~~~~~~~~~~~
@@ -80,7 +80,7 @@ To enable hugepages on Kubernetes, check the
 https://kubernetes.io/docs/tasks/manage-hugepages/scheduling-hugepages/[official
 documentation].
 
-To enable hugepages on OpenShift, check the
+To enable hugepages on OKD, check the
 https://docs.openshift.org/3.9/scaling_performance/managing_hugepages.html#huge-pages-prerequisites[official
 documentation].
 
@@ -143,7 +143,7 @@ a nodeSelector. For example, to restrict the DaemonSet to only nodes with the "r
 kubectl patch ds/virt-handler -n kubevirt -p '{"spec": {"template": {"spec": {"nodeSelector": {"region": "primary"}}}}}'
 ----
 
-Deploying on OpenShift
+Deploying on OKD
 ~~~~~~~~~~~~~~~~~~~~~~
 
 The following
@@ -157,10 +157,10 @@ $ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator
 
 Once privileges are granted, the KubeVirt can be deployed as described above.
 
-Web user interface on OpenShift
+Web user interface on OKD
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-No additional steps are required to extend OpenShift's web console for KubeVirt.
+No additional steps are required to extend OKD's web console for KubeVirt.
 
 The virtualization extension is automatically enabled when KubeVirt deployment is detected.
 
@@ -219,7 +219,7 @@ $ kubectl virt <command>...
 From Service Catalog as an APB
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can find KubeVirt in the OpenShift Service Catalog and install it
+You can find KubeVirt in the OKD Service Catalog and install it
 from there. In order to do that please follow the documentation in the
 https://github.com/ansibleplaybookbundle/kubevirt-apb[KubeVirt APB
 repository].
@@ -229,7 +229,7 @@ Using Ansible playbooks
 
 The https://github.com/kubevirt/kubevirt-ansible[kubevirt-ansible]
 project provides a collection of playbooks that installs KubeVirt and
-it’s related components on top of OpenShift or Kubernetes clusters.
+it’s related components on top of OKD or Kubernetes clusters.
 
 Deploying from Source
 ~~~~~~~~~~~~~~~~~~~~~
