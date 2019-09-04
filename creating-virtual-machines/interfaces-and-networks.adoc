@@ -409,15 +409,45 @@ spec:
   - name: red
     multus:
       networkName: red
------
+----
 
 At this time, `bridge` mode doesn’t support additional configuration
 fields.
 
 ______________________________________________________________________________
-*Note:* due to IPv4 address delagation, in `bridge` mode the pod doesn’t have
+*Note:* due to IPv4 address delegation, in `bridge` mode the pod doesn’t have
 an IP address configured, which may introduce issues with third-party solutions
 that may rely on it. For example, Istio may not work in this mode.
+______________________________________________________________________________
+
+______________________________________________________________________________
+*Note:* admin can forbid using `bridge` interface type for pod networks via a 
+designated configuration flag. 
+To achieve it, the admin should set the following option to `false`:
+______________________________________________________________________________
+
+
+[source,yaml]
+-----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  permitBridgeInterfaceOnPodNetwork: "false"
+-----  
+
+______________________________________________________________________________
+*Note:* binding the pod network using `bridge` interface type may cause issues.
+Other than the third-party issue mentioned in the above note, 
+live migration is not allowed with a pod network binding of `bridge` interface type,
+and also some CNI plugins might not allow to use a custom MAC address for your VM instances.
+If you think you may be affected by any of issues mentioned above, 
+consider changing the default interface type to `masquerade`, 
+and disabling the `bridge` type for pod network, as shown in the example above.
 ______________________________________________________________________________
 
 slirp
@@ -482,6 +512,9 @@ spec:
 
 ______________________________________________________________________________
 *Note:* Masquerade is only allowed to connect to the pod network.
+______________________________________________________________________________
+
+______________________________________________________________________________
 *Note:* The network CIDR can be configured in the pod network section using the
 `vmNetworkCIDR` attribute.
 ______________________________________________________________________________
