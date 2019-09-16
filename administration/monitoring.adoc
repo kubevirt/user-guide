@@ -61,45 +61,34 @@ The https://github.com/coreos/prometheus-operator[prometheus-operator]
 can make use of the `kubevirt-prometheus-metrics` service to
 automatically create the appropriate Prometheus config.
 
-First deploy the prometheus-operator, then create a prometheus instance:
+KubeVirt's `virt-operator` checks if the `ServiceMonitor` custom resource
+exists when creating an install strategy for deployment. KubeVirt will
+automatically create a `ServiceMonitor` resource in the `monitorNamespace`,
+as well as an appropriate role and rolebinding in KubeVirt's namespace.
+
+Two settings are exposed in the `KubeVirt` custom resource to direct KubeVirt
+to create these resources correctly:
+
+ * `monitorNamespace`: The namespace that prometheus-operator runs in.
+   Defaults to `openshift-monitoring`.
+ * `monitorAccount`: The serviceAccount that prometheus-operator runs with.
+   Defaults to `prometheus-k8s`.
+
+If the prometheus-operator for a given deployment uses these defaults, then
+these values can be omitted.
+
+An example of the KubeVirt resource depicting these default values:
 
 [source,yaml]
 ----
-apiVersion: monitoring.coreos.com/v1
-kind: Prometheus
-metadata:
-  name: prometheus
-spec:
-  serviceAccountName: prometheus
-  serviceMonitorSelector:
-    matchLabels:
-      prometheus.kubevirt.io: ""
-  resources:
-    requests:
-      memory: 400Mi
-----
-
-Then create a `ServiceMonitor` which references the
-`kubevirt-prometheus-metrics` via the `prometheus.kubevirt.io` label:
-
-[source,yaml]
-----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+apiVersion: kubevirt.io/v1alpha3
+kind: KubeVirt
 metadata:
   name: kubevirt
-  labels:
-    openshift.io/cluster-monitoring: ""
-    prometheus.kubevirt.io: ""
 spec:
-  selector:
-    matchLabels:
-      prometheus.kubevirt.io: ""
-  endpoints:
-  - port: metrics
-    scheme: https
-    tlsConfig:
-      insecureSkipVerify: true
+  AdditionalProperties:
+    monitorNamespace: openshift-monitoring
+    monitorAccount: prometheus-k8s
 ----
 
 Integrating with the OpenShift cluster-monitoring-operator
@@ -107,8 +96,8 @@ Integrating with the OpenShift cluster-monitoring-operator
 
 After the
 https://github.com/openshift/cluster-monitoring-operator[cluster-monitoring-operator]
-is up and running, deploy the `ServiceMonitor` definition from above.
-Because the definition contains the `openshift.io/cluster-monitoring`
+is up and running, KubeVirt will detect the existence of the `ServiceMonitor`
+resource. Because the definition contains the `openshift.io/cluster-monitoring`
 label, it will automatically be picked up by the cluster monitor.
 
 Metrics about Virtual Machines
