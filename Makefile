@@ -20,3 +20,7 @@ spellcheck:
 
 test:
 	test "$$(make -s find-unref) -eq 0"
+
+netlify: clean
+	asciibinder .
+	mv _package/community docs
