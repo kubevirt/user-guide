@@ -20,3 +20,20 @@ spellcheck:
 
 test:
 	test "$$(make -s find-unref) -eq 0"
+
+netlify: clean
+	git checkout -b current
+	echo '---' > _distro_map.yml
+	echo 'kubevirt-community:' >> _distro_map.yml
+	echo '    name: KubeVirt' >> _distro_map.yml
+	echo '    author: KubeVirt Documentation Team' >> _distro_map.yml
+	echo '    site: community' >> _distro_map.yml
+	echo '    site_name: Documentation' >> _distro_map.yml
+	echo '    site_url: https://kubevirt.io/docs' >> _distro_map.yml
+	echo '    branches:' >> _distro_map.yml
+	echo '        current:' >> _distro_map.yml
+	echo '            name: current' >> _distro_map.yml
+	echo '            dir: latest' >> _distro_map.yml
+
+	asciibinder package
+	mv _package/community docs
