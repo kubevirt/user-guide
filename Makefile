@@ -1,4 +1,5 @@
 docs: clean
+	scripts/generate_distro_map.sh
 	asciibinder package
 	mv _package/community docs
 
