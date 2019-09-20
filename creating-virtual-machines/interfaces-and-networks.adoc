@@ -575,14 +575,15 @@ spec:
       networkName: sriov-net-crd
 ----
 
-Information on how to set up Intel SR-IOV device plugin can be found
-https://github.com/intel/sriov-network-device-plugin/blob/master/README.md[in
-their respective documentation].
+To simplify procedure, please use
+https://github.com/openshift/sriov-network-operator[OpenShift SR-IOV operator]
+to deploy and configure SR-IOV components in your cluster. On how to use the
+operator, please refer to
+https://github.com/openshift/sriov-network-operator/blob/master/doc/quickstart.md[their
+respective documentation].
 
 ______________________________________________________________________________
-*Note:* while the `sriov` mode is validated and tested using the Intel SR-IOV
-device plugin, other plugins may add support for the same by setting the
-`PCIDEVICE_<resourceName>` environment variables inside pods to a list of
-allocated PCI device IDs, as in:
-PCIDEVICE_VENDOR_COM_RESOURCE_NAME=0000:81:11.1,0000:81:11.2[,…]
+*Note:* KubeVirt relies on VFIO userspace driver to pass PCI devices into VMI
+guest. Because of that, when configuring SR-IOV operator policies, make sure
+you define a pool of VF resources that uses `driver: vfio`.
 ______________________________________________________________________________
