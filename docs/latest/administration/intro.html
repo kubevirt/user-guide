@@ -158,6 +158,9 @@
 <p>KubeVirt is a virtualization add-on to Kubernetes and this guide assumes
 that a Kubernetes cluster is already installed.</p>
 </div>
+<div class="paragraph">
+<p>If installed on OKD, the web console is extended for management of virtual machines.</p>
+</div>
 <div class="sect2">
 <h3 id="requirements"><a class="anchor" href="#requirements"></a>Requirements</h3>
 <div class="paragraph">
@@ -257,7 +260,7 @@ virt-controller deployment has to be restarted.</p>
 documentation</a>.</p>
 </div>
 <div class="paragraph">
-<p>To enable hugepages on OpenShift, check the
+<p>To enable hugepages on OKD, check the
 <a href="https://docs.openshift.org/3.9/scaling_performance/managing_hugepages.html#huge-pages-prerequisites">official
 documentation</a>.</p>
 </div>
@@ -331,10 +334,10 @@ a nodeSelector. For example, to restrict the DaemonSet to only nodes with the "r
 <pre class="CodeRay highlight"><code data-lang="bash">kubectl patch ds/virt-handler -n kubevirt -p '{&quot;spec&quot;: {&quot;template&quot;: {&quot;spec&quot;: {&quot;nodeSelector&quot;: {&quot;region&quot;: &quot;primary&quot;}}}}}'</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Deploying on OKD
+<sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub><sub>~</sub>~</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="deploying-on-openshift"><a class="anchor" href="#deploying-on-openshift"></a>Deploying on OpenShift</h3>
 <div class="paragraph">
 <p>The following
 <a href="https://docs.openshift.com/container-platform/3.11/admin_guide/manage_scc.html">SCC</a>
@@ -347,6 +350,17 @@ needs to be added prior KubeVirt deployment:</p>
 </div>
 <div class="paragraph">
 <p>Once privileges are granted, the KubeVirt can be deployed as described above.</p>
+</div>
+<div class="paragraph">
+<p>Web user interface on OKD
+<sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup><sup>^</sup>^</p>
+</div>
+<div class="paragraph">
+<p>No additional steps are required to extend OKD&#8217;s web console for KubeVirt.</p>
+</div>
+<div class="paragraph">
+<p>The virtualization extension is automatically enabled when KubeVirt deployment is detected.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -429,7 +443,7 @@ If <code>krew</code> is installed, <code>virtctl</code> can be installed via <co
 <div class="sect3">
 <h4 id="from-service-catalog-as-an-apb"><a class="anchor" href="#from-service-catalog-as-an-apb"></a>From Service Catalog as an APB</h4>
 <div class="paragraph">
-<p>You can find KubeVirt in the OpenShift Service Catalog and install it
+<p>You can find KubeVirt in the OKD Service Catalog and install it
 from there. In order to do that please follow the documentation in the
 <a href="https://github.com/ansibleplaybookbundle/kubevirt-apb">KubeVirt APB
 repository</a>.</p>
@@ -440,7 +454,7 @@ repository</a>.</p>
 <div class="paragraph">
 <p>The <a href="https://github.com/kubevirt/kubevirt-ansible">kubevirt-ansible</a>
 project provides a collection of playbooks that installs KubeVirt and
-it’s related components on top of OpenShift or Kubernetes clusters.</p>
+it’s related components on top of OKD or Kubernetes clusters.</p>
 </div>
 </div>
 </div>
@@ -469,37 +483,6 @@ CNI installation guide</a>.</p>
 <p>Note: KubeVirt Ansible
 <a href="https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network">network
 playbook</a> installs these plugins by default.</p>
-</div>
-</blockquote>
-</div>
-</div>
-<div class="sect2">
-<h3 id="installing-web-user-interface-optional"><a class="anchor" href="#installing-web-user-interface-optional"></a>Installing Web User Interface (optional)</h3>
-<div class="paragraph">
-<p>When the KubeVirt is installed on OpenShift, the Web User Interface can be used to administer the virtual
-machines and other entities in the cluster in addition to the command line tools.</p>
-</div>
-<div class="paragraph">
-<p>The Web UI is installed by default within the kubevirt-ansible flow as described above.</p>
-</div>
-<div class="paragraph">
-<p>The Web UI URL can be retrieved from its Route object:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>$ oc get route console -n kubevirt-web-ui</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>For manual installation, see <a href="https://github.com/kubevirt/web-ui-operator/blob/master/README.md">the web-ui-operator README</a> file.</p>
-</div>
-<div class="paragraph">
-<p>For additional details, see the <a href="https://github.com/kubevirt/web-ui">Web User Interface project</a>.</p>
-</div>
-<div class="quoteblock">
-<blockquote>
-<div class="paragraph">
-<p>Note: Kubevirt Web UI ansible playbook can be found <a href="https://github.com/kubevirt/kubevirt-ansible/blob/master/playbooks/kubevirt_web_ui.yml">here</a>.</p>
 </div>
 </blockquote>
 </div>
