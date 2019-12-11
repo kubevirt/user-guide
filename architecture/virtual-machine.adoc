@@ -84,6 +84,30 @@ from the template in the VirtualMachine:
 kubectl delete virtualmachineinstance myvm
 ----
 
+To restart a VirtualMachine named myvm using virtctl:
+
+[source,bash]
+----
+$ virtctl restart myvm
+----
+
+This would perform a normal restart for the VirtualMachineInstance and would reschedule the VirtualMachineInstance on a new virt-launcher Pod
+
+To force restart a VirtualMachine named myvm using virtctl:
+
+[source,bash]
+----
+$ virtctl restart myvm --force --grace-period=0
+----
+
+This would try to perform a normal restart, and would also delete the virt-launcher Pod of the VirtualMachineInstance with setting GracePeriodSeconds to the seconds passed in the command.
+
+Currently, only setting grace-period=0 is supported.
+_______________________________________________________________________________________________________________________________________________
+Note: Force restart can cause data corruption, and should be used in cases of kernal panic or VirtualMachine being unresponsive to normal restarts.
+_______________________________________________________________________________________________________________________________________________
+
+
 Fencing considerations
 ^^^^^^^^^^^^^^^^^^^^^^
 
