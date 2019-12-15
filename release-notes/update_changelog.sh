@@ -1,4 +1,4 @@
-[[ -e kubevirt ]] || git clone git@github.com:kubevirt/kubevirt.git
+[[ -e kubevirt ]] || git clone https://github.com/kubevirt/kubevirt.git
 git -C kubevirt checkout master
 git -C kubevirt pull --tags
 
@@ -14,7 +14,7 @@ features_for() {
   echo -e  ""
   git -C kubevirt show $1 | grep Date: | head -n1 | sed "s/Date:\s\+/Released on: /"
   echo -e  ""
-  git -C kubevirt show $1 | sed -n "/changes$/,/Contributors/ p" | sed '1d;2d;3d;$d'
+  git -C kubevirt show $1 | sed -n "/changes$/,/Contributors/ p" | sed '1d;2d;$d' | sed '/^$/d'
 }
 
 gen_changelog() {
