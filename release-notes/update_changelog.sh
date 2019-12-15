@@ -1,4 +1,4 @@
-[[ -e kubevirt ]] || git clone https://github.com/kubevirt/kubevirt.git
+[[ -e kubevirt ]] || git clone git@github.com:kubevirt/kubevirt.git
 git -C kubevirt checkout master
 git -C kubevirt pull --tags
 
