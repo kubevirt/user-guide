@@ -14,7 +14,7 @@ features_for() {
   echo -e  ""
   git -C kubevirt show $1 | grep Date: | head -n1 | sed "s/Date:\s\+/Released on: /"
   echo -e  ""
-  git -C kubevirt show $1 | sed -n "/changes$/,/Contributors/ p" | egrep "^- " ;
+  git -C kubevirt show $1 | sed -n "/changes$/,/Contributors/ p" | sed '1d;2d;3d;$d'
 }
 
 gen_changelog() {
