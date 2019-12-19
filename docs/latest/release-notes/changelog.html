@@ -152,6 +152,147 @@
           <h2>Changelog</h2>
         </div>
         <div class="sect1">
+<h2 id="v0-24-0"><a class="anchor" href="#v0-24-0"></a>v0.24.0</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Released on: Tue Dec 3 15:34:34 2019 +0100</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CI: Support for Kubernetes 1.15</p>
+</li>
+<li>
+<p>CI: Support for Kubernetes 1.16</p>
+</li>
+<li>
+<p>Add and fix a couple of test cases</p>
+</li>
+<li>
+<p>Support for pause and unpausing VMs</p>
+</li>
+<li>
+<p>Update of libvirt to 5.6.0</p>
+</li>
+<li>
+<p>Fix bug related to parallel scraping of Prometheus endpoints</p>
+</li>
+<li>
+<p>Fix to reliably test VNC</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="v0-23-0"><a class="anchor" href="#v0-23-0"></a>v0.23.0</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Released on: Mon Nov 4 16:42:54 2019 +0100</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Guest OS Information is available under the VMI status now</p>
+</li>
+<li>
+<p>Updated to Go 1.12.8 and latest bazel</p>
+</li>
+<li>
+<p>Updated go-yaml to v2.2.4, which has a ddos vulnerability fixed</p>
+</li>
+<li>
+<p>Cleaned up and fixed CRD scheme registration</p>
+</li>
+<li>
+<p>Several bugfixes</p>
+</li>
+<li>
+<p>Many CI improvements (e.g. more logs in case of test failures)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="v0-22-0"><a class="anchor" href="#v0-22-0"></a>v0.22.0</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Released on: Thu Oct 10 18:55:08 2019 +0200</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Support for Nvidia GPUs and vGPUs exposed by Nvidia Kubevirt Device Plugin.</p>
+</li>
+<li>
+<p>VMIs now successfully start if they get a 0xfe prefixed MAC address assigned from the pod network</p>
+</li>
+<li>
+<p>Removed dependency on host semanage in SELinux Permissive mode</p>
+</li>
+<li>
+<p>Some changes as result of entering the CNCF sandbox (DCO check, FOSSA check, best practice badge)</p>
+</li>
+<li>
+<p>Many bug fixes and improvements in several areas</p>
+</li>
+<li>
+<p>CI: Introduced a OKD 4 test lane</p>
+</li>
+<li>
+<p>CI: Many improved tests, resulting in less flakyness</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="v0-21-0"><a class="anchor" href="#v0-21-0"></a>v0.21.0</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Released on: Mon Sep 9 09:59:08 2019 +0200</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CI: Support for Kubernetes 1.14</p>
+</li>
+<li>
+<p>Many bug fixes in several areas</p>
+</li>
+<li>
+<p>Support for <code>virtctl migrate</code></p>
+</li>
+<li>
+<p>Support configurable number of controller threads</p>
+</li>
+<li>
+<p>Support to opt-out of bridge binding for podnetwork</p>
+</li>
+<li>
+<p>Support for OpenShift Prometheus monitoring</p>
+</li>
+<li>
+<p>Support for setting more SMBIOS fields</p>
+</li>
+<li>
+<p>Improved containerDisk memory usage and speed</p>
+</li>
+<li>
+<p>Fix CRI-O memory limit</p>
+</li>
+<li>
+<p>Drop spc_t from launcher</p>
+</li>
+<li>
+<p>Add feature gates to security sensitive features</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="v0-20-0"><a class="anchor" href="#v0-20-0"></a>v0.20.0</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -160,10 +301,13 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Containerdisks are now secure and they are not copied anymore on every start.</p>
+<p>Containerdisks are now secure and they are not copied anymore on every start.
+Old containerdisks can still be used in the same secure way, but new
+containerdisks can&#8217;t be used on older kubevirt releases</p>
 </li>
 <li>
-<p>Create specific SecurityContextConstraints on OKD instead of using the</p>
+<p>Create specific SecurityContextConstraints on OKD instead of using the
+privileged SCC</p>
 </li>
 <li>
 <p>Added clone authorization check for DataVolumes with PVC source</p>
@@ -175,16 +319,20 @@
 <p>Use container image shasums instead of tags for KubeVirt deployments</p>
 </li>
 <li>
-<p>Protect control plane components against voluntary evictions with a</p>
+<p>Protect control plane components against voluntary evictions with a
+PodDisruptionBudget of MinAvailable=1</p>
 </li>
 <li>
-<p>Replaced hardcoded <code>virtctl</code> by using the basename of the call, this enables</p>
+<p>Replaced hardcoded <code>virtctl</code> by using the basename of the call, this enables
+nicer output when installed via krew plugin package manager</p>
 </li>
 <li>
-<p>Added RNG device to all Fedora VMs in tests and examples (newer kernels might</p>
+<p>Added RNG device to all Fedora VMs in tests and examples (newer kernels might
+block bootimg while waiting for entropy)</p>
 </li>
 <li>
-<p>The virtual memory is now set to match the memory limit, if memory limit is</p>
+<p>The virtual memory is now set to match the memory limit, if memory limit is
+specified and guest memory is not</p>
 </li>
 <li>
 <p>Support nftable for CoreOS</p>
@@ -202,16 +350,27 @@
 <p>Removed SR-IOV feature gate, it is enabled by default now</p>
 </li>
 <li>
-<p>VMI-related metrics have been renamed from <code>kubevirt_vm_</code> to <code>kubevirt_vmi_</code></p>
+<p>VMI-related metrics have been renamed from <code>kubevirt_vm_</code> to <code>kubevirt_vmi_</code>
+to better reflect their purpose</p>
 </li>
 <li>
 <p>Added metric to report the VMI count</p>
 </li>
 <li>
-<p>Improved integration with HCO by adding a CSV generator tool and modified</p>
+<p>Improved integration with HCO by adding a CSV generator tool and modified
+KubeVirt CR conditions</p>
 </li>
 <li>
 <p>CI Improvements:</p>
+</li>
+<li>
+<p>Added dedicated SR-IOV test lane</p>
+</li>
+<li>
+<p>Improved log gathering</p>
+</li>
+<li>
+<p>Reduced amount of flaky tests</p>
 </li>
 </ul>
 </div>
@@ -241,7 +400,8 @@
 <p>Additional testcases for updates, disk types, live migration with NFS</p>
 </li>
 <li>
-<p>Additional testcases for memory over-commit, block storage, cpu manager,</p>
+<p>Additional testcases for memory over-commit, block storage, cpu manager,
+headless mode</p>
 </li>
 <li>
 <p>Improvements around HyperV</p>
@@ -757,7 +917,8 @@
 <p>Hook improvements</p>
 </li>
 <li>
-<p>Update to use Fedora 28 (includes updates of dependencies like libvirt and</p>
+<p>Update to use Fedora 28 (includes updates of dependencies like libvirt and
+qemu)</p>
 </li>
 <li>
 <p>Move CI to support Kubernetes 1.11</p>
@@ -1076,6 +1237,15 @@
 </li>
 <li>
 <p>Drastically improve the deployment on non-vagrant setups</p>
+</li>
+<li>
+<p>Dropped nodeSelectors</p>
+</li>
+<li>
+<p>Separated inner component deployment from edge component deployment</p>
+</li>
+<li>
+<p>Created separate manifests for developer, test, and release deployments</p>
 </li>
 <li>
 <p>Moved komponents to kube-system namespace</p>
