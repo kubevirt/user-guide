@@ -293,11 +293,10 @@ add-on.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ export RELEASE=v0.17.0
-# creates KubeVirt operator
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
-# creates KubeVirt KV custom resource
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
+<pre class="CodeRay highlight"><code data-lang="bash"># Deploy the KubeVirt operator
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/v0.24.0/kubevirt-operator.yaml
+# Create the KubeVirt CR (instance deployment request)
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/v0.24.0/kubevirt-cr.yaml
 # wait until all KubeVirt components is up
 $ kubectl -n kubevirt wait kv kubevirt --for condition=Available</code></pre>
 </div>
@@ -447,14 +446,6 @@ If <code>krew</code> is installed, <code>virtctl</code> can be installed via <co
 from there. In order to do that please follow the documentation in the
 <a href="https://github.com/ansibleplaybookbundle/kubevirt-apb">KubeVirt APB
 repository</a>.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="using-ansible-playbooks"><a class="anchor" href="#using-ansible-playbooks"></a>Using Ansible playbooks</h4>
-<div class="paragraph">
-<p>The <a href="https://github.com/kubevirt/kubevirt-ansible">kubevirt-ansible</a>
-project provides a collection of playbooks that installs KubeVirt and
-it’s related components on top of OKD or Kubernetes clusters.</p>
 </div>
 </div>
 </div>
