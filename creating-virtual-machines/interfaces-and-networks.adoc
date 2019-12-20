@@ -328,7 +328,7 @@ spec:
 ----
 
 
-This approach may not work for all plugins. For example, OpenShift SDN is not
+This approach may not work for all plugins. For example, OKD SDN is not
 compatible with `tuning` plugin.
 
 * Plugins that handle custom MAC addresses natively: `ovs`.
@@ -409,15 +409,45 @@ spec:
   - name: red
     multus:
       networkName: red
------
+----
 
 At this time, `bridge` mode doesn’t support additional configuration
 fields.
 
 ______________________________________________________________________________
-*Note:* due to IPv4 address delagation, in `bridge` mode the pod doesn’t have
+*Note:* due to IPv4 address delegation, in `bridge` mode the pod doesn’t have
 an IP address configured, which may introduce issues with third-party solutions
 that may rely on it. For example, Istio may not work in this mode.
+______________________________________________________________________________
+
+______________________________________________________________________________
+*Note:* admin can forbid using `bridge` interface type for pod networks via a 
+designated configuration flag. 
+To achieve it, the admin should set the following option to `false`:
+______________________________________________________________________________
+
+
+[source,yaml]
+-----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  permitBridgeInterfaceOnPodNetwork: "false"
+-----  
+
+______________________________________________________________________________
+*Note:* binding the pod network using `bridge` interface type may cause issues.
+Other than the third-party issue mentioned in the above note, 
+live migration is not allowed with a pod network binding of `bridge` interface type,
+and also some CNI plugins might not allow to use a custom MAC address for your VM instances.
+If you think you may be affected by any of issues mentioned above, 
+consider changing the default interface type to `masquerade`, 
+and disabling the `bridge` type for pod network, as shown in the example above.
 ______________________________________________________________________________
 
 slirp
@@ -482,6 +512,9 @@ spec:
 
 ______________________________________________________________________________
 *Note:* Masquerade is only allowed to connect to the pod network.
+______________________________________________________________________________
+
+______________________________________________________________________________
 *Note:* The network CIDR can be configured in the pod network section using the
 `vmNetworkCIDR` attribute.
 ______________________________________________________________________________
@@ -575,14 +608,15 @@ spec:
       networkName: sriov-net-crd
 ----
 
-Information on how to set up Intel SR-IOV device plugin can be found
-https://github.com/intel/sriov-network-device-plugin/blob/master/README.md[in
-their respective documentation].
+To simplify procedure, please use
+https://github.com/openshift/sriov-network-operator[OpenShift SR-IOV operator]
+to deploy and configure SR-IOV components in your cluster. On how to use the
+operator, please refer to
+https://github.com/openshift/sriov-network-operator/blob/master/doc/quickstart.md[their
+respective documentation].
 
 ______________________________________________________________________________
-*Note:* while the `sriov` mode is validated and tested using the Intel SR-IOV
-device plugin, other plugins may add support for the same by setting the
-`PCIDEVICE_<resourceName>` environment variables inside pods to a list of
-allocated PCI device IDs, as in:
-PCIDEVICE_VENDOR_COM_RESOURCE_NAME=0000:81:11.1,0000:81:11.2[,…]
+*Note:* KubeVirt relies on VFIO userspace driver to pass PCI devices into VMI
+guest. Because of that, when configuring SR-IOV operator policies, make sure
+you define a pool of VF resources that uses `driver: vfio`.
 ______________________________________________________________________________

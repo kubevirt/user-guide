@@ -22,6 +22,7 @@ test:
 	test "$$(make -s find-unref) -eq 0"
 
 netlify: clean
+	git branch -D current
 	git checkout -b current
 	echo '---' > _distro_map.yml
 	echo 'kubevirt-community:' >> _distro_map.yml

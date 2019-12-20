@@ -221,56 +221,53 @@ can make use of the <code>kubevirt-prometheus-metrics</code> service to
 automatically create the appropriate Prometheus config.</p>
 </div>
 <div class="paragraph">
-<p>First deploy the prometheus-operator, then create a prometheus instance:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">monitoring.coreos.com/v1</span></span>
-<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">Prometheus</span></span>
-<span style="color:#606">metadata</span>:
-  <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">prometheus</span></span>
-<span style="color:#606">spec</span>:
-  <span style="color:#606">serviceAccountName</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">prometheus</span></span>
-  <span style="color:#606">serviceMonitorSelector</span>:
-    <span style="color:#606">matchLabels</span>:
-      <span style="color:#606">prometheus.kubevirt.io</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
-  <span style="color:#606">resources</span>:
-    <span style="color:#606">requests</span>:
-      <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">400Mi</span></span></code></pre>
-</div>
+<p>KubeVirt&#8217;s <code>virt-operator</code> checks if the <code>ServiceMonitor</code> custom resource
+exists when creating an install strategy for deployment. KubeVirt will
+automatically create a <code>ServiceMonitor</code> resource in the <code>monitorNamespace</code>,
+as well as an appropriate role and rolebinding in KubeVirt&#8217;s namespace.</p>
 </div>
 <div class="paragraph">
-<p>Then create a <code>ServiceMonitor</code> which references the
-<code>kubevirt-prometheus-metrics</code> via the <code>prometheus.kubevirt.io</code> label:</p>
+<p>Two settings are exposed in the <code>KubeVirt</code> custom resource to direct KubeVirt
+to create these resources correctly:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>monitorNamespace</code>: The namespace that prometheus-operator runs in.
+Defaults to <code>openshift-monitoring</code>.</p>
+</li>
+<li>
+<p><code>monitorAccount</code>: The serviceAccount that prometheus-operator runs with.
+Defaults to <code>prometheus-k8s</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the prometheus-operator for a given deployment uses these defaults, then
+these values can be omitted.</p>
+</div>
+<div class="paragraph">
+<p>An example of the KubeVirt resource depicting these default values:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">monitoring.coreos.com/v1</span></span>
-<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">ServiceMonitor</span></span>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">KubeVirt</span></span>
 <span style="color:#606">metadata</span>:
   <span style="color:#606">name</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt</span></span>
-  <span style="color:#606">labels</span>:
-    <span style="color:#606">openshift.io/cluster-monitoring</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
-    <span style="color:#606">prometheus.kubevirt.io</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
 <span style="color:#606">spec</span>:
-  <span style="color:#606">selector</span>:
-    <span style="color:#606">matchLabels</span>:
-      <span style="color:#606">prometheus.kubevirt.io</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#710">&quot;</span></span>
-  <span style="color:#606">endpoints</span>:
-  - <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">port: metrics</span></span>
-    <span style="color:#606">scheme</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">https</span></span>
-    <span style="color:#606">tlsConfig</span>:
-      <span style="color:#606">insecureSkipVerify</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span></code></pre>
+  <span style="color:#606">monitorNamespace</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">openshift-monitoring</span></span>
+  <span style="color:#606">monitorAccount</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">prometheus-k8s</span></span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="integrating-with-the-openshift-cluster-monitoring-operator"><a class="anchor" href="#integrating-with-the-openshift-cluster-monitoring-operator"></a>Integrating with the OpenShift cluster-monitoring-operator</h3>
+<h3 id="integrating-with-the-okd-cluster-monitoring-operator"><a class="anchor" href="#integrating-with-the-okd-cluster-monitoring-operator"></a>Integrating with the OKD cluster-monitoring-operator</h3>
 <div class="paragraph">
 <p>After the
 <a href="https://github.com/openshift/cluster-monitoring-operator">cluster-monitoring-operator</a>
-is up and running, deploy the <code>ServiceMonitor</code> definition from above.
-Because the definition contains the <code>openshift.io/cluster-monitoring</code>
+is up and running, KubeVirt will detect the existence of the <code>ServiceMonitor</code>
+resource. Because the definition contains the <code>openshift.io/cluster-monitoring</code>
 label, it will automatically be picked up by the cluster monitor.</p>
 </div>
 </div>
