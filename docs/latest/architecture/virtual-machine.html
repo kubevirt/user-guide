@@ -255,6 +255,38 @@ from the template in the VirtualMachine:</p>
 kubectl delete virtualmachineinstance myvm</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>To restart a VirtualMachine named myvm using virtctl:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ virtctl restart myvm</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This would perform a normal restart for the VirtualMachineInstance and would reschedule the VirtualMachineInstance on a new virt-launcher Pod</p>
+</div>
+<div class="paragraph">
+<p>To force restart a VirtualMachine named myvm using virtctl:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ virtctl restart myvm --force --grace-period=0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This would try to perform a normal restart, and would also delete the virt-launcher Pod of the VirtualMachineInstance with setting GracePeriodSeconds to the seconds passed in the command.</p>
+</div>
+<div class="paragraph">
+<p>Currently, only setting grace-period=0 is supported.</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Note: Force restart can cause data corruption, and should be used in cases of kernal panic or VirtualMachine being unresponsive to normal restarts.</p>
+</div>
+</blockquote>
+</div>
 </div>
 <div class="sect3">
 <h4 id="fencing-considerations"><a class="anchor" href="#fencing-considerations"></a>Fencing considerations</h4>
