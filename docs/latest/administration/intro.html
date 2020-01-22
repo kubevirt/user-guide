@@ -188,10 +188,18 @@ that a Kubernetes cluster is already installed.</p>
 <div class="paragraph">
 <p>In addition it can be that feature gates need to be opened.</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="cluster-configuration"><a class="anchor" href="#cluster-configuration"></a>Cluster Configuration</h4>
+<div class="paragraph">
+<p>The Kubernetes apiserver needs to be configured to allow privileged pods since
+we run a privileged Daemon Set on every node. The required flag is
+<code>--allow-privileged=true</code>.</p>
+</div>
 <div class="sect4">
 <h5 id="runtime"><a class="anchor" href="#runtime"></a>Runtime</h5>
 <div class="paragraph">
-<p>KubeVirt is currently support on the following container runtimes:</p>
+<p>KubeVirt is currently supported on the following container runtimes:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -202,6 +210,10 @@ that a Kubernetes cluster is already installed.</p>
 <p>crio (with runv)</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Other container runtimes, which do not use virtualization features, should work
+too. However, they are not tested.</p>
 </div>
 </div>
 </div>
@@ -549,20 +561,28 @@ See <a href="https://github.com/kubevirt/kubevirt/issues/2533">this issue for mo
 <div class="sect2">
 <h3 id="delete"><a class="anchor" href="#delete"></a>Delete</h3>
 <div class="paragraph">
-<p>To delete the KubeVirt you should first to delete <code>KubeVirt</code> custom resource and then delete the KubeVirt operator:</p>
+<p>To delete the KubeVirt you should first to delete <code>KubeVirt</code> custom resource and then delete the KubeVirt operator.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">$ export RELEASE=v0.17.0
-$ kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
-$ kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml</code></pre>
+$ kubectl delete -n kubevirt kubevirt kubevirt --wait=true # --wait=true should anyway be default
+$ kubectl delete apiservices v1alpha3.subresources.kubevirt.io # this needs to be deleted to avoid stuck terminating namespaces
+$ kubectl delete mutatingwebhookconfigurations virt-api-mutator # not blocking but would be left over
+$ kubectl delete validatingwebhookconfigurations virt-api-validator # not blocking but would be left over
+$ kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml --wait=false</code></pre>
 </div>
 </div>
 <div class="quoteblock">
 <blockquote>
 <div class="paragraph">
-<p>Note: If by mistake you deleted the operator first, the KV custom resource will stuck in the <code>Terminating</code> state,
-to fix it, delete manually finalizer from the resource.</p>
+<p>Note: If by mistake you deleted the operator first, the KV custom resource will
+get stuck in the <code>Terminating</code> state, to fix it, delete manually finalizer from
+the resource.</p>
+</div>
+<div class="paragraph">
+<p>Note: The <code>apiservice</code> and the <code>webhookconfigurations</code> need to be deleted manually
+due to a bug.</p>
 </div>
 <div class="listingblock">
 <div class="content">
