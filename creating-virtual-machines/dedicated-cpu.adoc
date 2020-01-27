@@ -95,6 +95,31 @@ spec:
 [...]
 ----
 
+Requesting dedicated CPU for QEMU emulator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A number of QEMU threads, such as QEMU main event loop, async I/O operation completion, etc., also execute on the same physical CPUs as the VMI's vCPUs. This may affect the expected latency of a vCPU.
+In order to enhance the real-time support in KubeVirt and provide improved latency, KubeVirt will allocate an additional dedicated CPU, exclusively for the emulator thread, to which it will be pinned. This will effectively "isolate" the emulator thread from the vCPUs of the VMI.
+
+This functionality can be enabled by specifying `isolateEmulatorThread: true` inside VMI spec's `Spec.Domain.CPU` section.
+Naturally, this setting has to be specified in a combination with a `dedicatedCpuPlacement: true`.
+
+Example:
+[source,yaml]
+----
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    cpu:
+      dedicatedCpuPlacement: true
+      isolateEmulatorThread: true
+    resources:
+      limits:
+        cpu: 2
+        memory: 2Gi
+----
+
 Identifying nodes with a running CPU manager
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
