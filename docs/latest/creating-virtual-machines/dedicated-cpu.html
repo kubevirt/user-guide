@@ -278,6 +278,35 @@ using <code>spec.domain.cpu.sockets</code> instead of <code>spec.domain.cpu.core
 </div>
 </div>
 <div class="sect2">
+<h3 id="requesting-dedicated-cpu-for-qemu-emulator"><a class="anchor" href="#requesting-dedicated-cpu-for-qemu-emulator"></a>Requesting dedicated CPU for QEMU emulator</h3>
+<div class="paragraph">
+<p>A number of QEMU threads, such as QEMU main event loop, async I/O operation completion, etc., also execute on the same physical CPUs as the VMI&#8217;s vCPUs. This may affect the expected latency of a vCPU.
+In order to enhance the real-time support in KubeVirt and provide improved latency, KubeVirt will allocate an additional dedicated CPU, exclusively for the emulator thread, to which it will be pinned. This will effectively "isolate" the emulator thread from the vCPUs of the VMI.</p>
+</div>
+<div class="paragraph">
+<p>This functionality can be enabled by specifying <code>isolateEmulatorThread: true</code> inside VMI spec&#8217;s <code>Spec.Domain.CPU</code> section.
+Naturally, this setting has to be specified in a combination with a <code>dedicatedCpuPlacement: true</code>.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span style="color:#606">apiVersion</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">kubevirt.io/v1alpha3</span></span>
+<span style="color:#606">kind</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">VirtualMachineInstance</span></span>
+<span style="color:#606">spec</span>:
+  <span style="color:#606">domain</span>:
+    <span style="color:#606">cpu</span>:
+      <span style="color:#606">dedicatedCpuPlacement</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
+      <span style="color:#606">isolateEmulatorThread</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">true</span></span>
+    <span style="color:#606">resources</span>:
+      <span style="color:#606">limits</span>:
+        <span style="color:#606">cpu</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">2</span></span>
+        <span style="color:#606">memory</span>: <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">2Gi</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="identifying-nodes-with-a-running-cpu-manager"><a class="anchor" href="#identifying-nodes-with-a-running-cpu-manager"></a>Identifying nodes with a running CPU manager</h3>
 <div class="paragraph">
 <p>At this time,
