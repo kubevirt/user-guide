@@ -32,6 +32,11 @@ data:
   feature-gates: "DataVolumes,LiveMigration"
 ....
 
+## Limitations
+
+- Virtual machines using a PersistentVolumeClaim (PVC) must have a shared ReadWriteMany (RWX) access mode to be live migrated.
+- Live migration is not allowed with a pod network binding of bridge interface type (https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/interfaces-and-networks.html)
+
 ## Initiate live migration
 
 Live migration is initiated by posting a VirtualMachineInstanceMigration (VMIM)
