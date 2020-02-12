@@ -197,6 +197,21 @@ data:
 </div>
 </div>
 <div class="sect1">
+<h2 id="limitations"><a class="anchor" href="#limitations"></a>Limitations</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Virtual machines using a PersistentVolumeClaim (PVC) must have a shared ReadWriteMany (RWX) access mode to be live migrated.</p>
+</li>
+<li>
+<p>Live migration is not allowed with a pod network binding of bridge interface type (<a href="https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/interfaces-and-networks.html" class="bare">https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/interfaces-and-networks.html</a>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="initiate-live-migration"><a class="anchor" href="#initiate-live-migration"></a>Initiate live migration</h2>
 <div class="sectionbody">
 <div class="paragraph">
