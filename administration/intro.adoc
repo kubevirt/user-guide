@@ -11,27 +11,12 @@ Requirements
 
 A few requirements need to be met before you can begin:
 
-* https://kubernetes.io[Kubernetes] cluster
-(https://github.com/openshift/origin[OpenShift], Tectonic)
+* https://kubernetes.io[Kubernetes] cluster or derivative (such as https://github.com/openshift/origin[OpenShift], Tectonic) based on Kubernetes 1.10 or greater
+* Kubernetes apiserver must have `--allow-privileged=true` in order to run KubeVirt's privileged DaemonSet.
 * `kubectl` client utility
-* `git`
 
-Minimum Cluster Requirements
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Kubernetes 1.10 or later is required to run KubeVirt.
-
-In addition it can be that feature gates need to be opened.
-
-Cluster Configuration
-^^^^^^^^^^^^^^^^^^^^^
-
-The Kubernetes apiserver needs to be configured to allow privileged pods since
-we run a privileged Daemon Set on every node. The required flag is
-`--allow-privileged=true`.
-
-Runtime
-+++++++
+Container Runtime Support
++++++++++++++++++++++++++
 
 KubeVirt is currently supported on the following container runtimes:
 
@@ -41,8 +26,8 @@ KubeVirt is currently supported on the following container runtimes:
 Other container runtimes, which do not use virtualization features, should work
 too. However, they are not tested.
 
-Validating Hardware Virtualization support
-^^^^^^^^^^^^^^^^^^^^^^
+Hardware Virtualization support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Hardware with virtualization support is recommended. You can use
 virt-host-validate to ensure that your hosts are capable of running
@@ -60,7 +45,7 @@ $ virt-host-validate qemu
 ----
 
 Enabling Software emulation
-++++++++++++++++++
++++++++++++++++++++++++++++
 
 If hardware virtualization is not available, then a
 https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md[software
@@ -75,50 +60,24 @@ $ kubectl create configmap -n kubevirt kubevirt-config \
 This ConfigMap needs to be created before deployment or the
 virt-controller deployment has to be restarted.
 
-Hugepages support
-^^^^^^^^^^^^^^^^^
-
-For hugepages support you need at least Kubernetes version `1.9`.
-
-Enable feature-gate
-+++++++++++++++++++
-
-To enable hugepages on Kubernetes, check the
-https://kubernetes.io/docs/tasks/manage-hugepages/scheduling-hugepages/[official
-documentation].
-
-To enable hugepages on OKD, check the
-https://docs.openshift.org/3.9/scaling_performance/managing_hugepages.html#huge-pages-prerequisites[official
-documentation].
-
-Pre-allocate hugepages on a node
-++++++++++++++++++++++++++++++++
-
-To pre-allocate hugepages on boot time, you will need to specify
-hugepages under kernel boot parameters `hugepagesz=2M hugepages=64` and
-restart your machine.
-
-You can find more about hugepages under
-https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt[official
-documentation].
-
 Deploying KubeVirt on Kubernetes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Core components
-^^^^^^^^^^^^^^^
+KubeVirt can be installed on a Kubernetes cluster using the KubeVirt operator.
 
-Once Kubernetes is deployed, you will need to deploy the KubeVirt
-add-on.
+The example below demonstrats how to install KubeVirt using the operator using
+a specific upstream version of KubeVirt.
 
 The installation uses the KubeVirt operator, which manages lifecycle of all KubeVirt core components:
 
 [source,bash]
 ----
+# Pick an upstream version of KubeVirt to install
+$ export VERSION=v0.26.0
 # Deploy the KubeVirt operator
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/v0.24.0/kubevirt-operator.yaml
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/kubevirt-operator.yaml
 # Create the KubeVirt CR (instance deployment request)
-$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/v0.24.0/kubevirt-cr.yaml
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/kubevirt-cr.yaml
 # wait until all KubeVirt components is up
 $ kubectl -n kubevirt wait kv kubevirt --for condition=Available
 ----
@@ -238,25 +197,8 @@ https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md[Develop
 Getting Started Guide] to understand how to build and deploy KubeVirt
 from source.
 
-Installing network plugins (optional)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-KubeVirt alone does not bring any additional network plugins, it just
-allows user to utilize them. If you want to attach your VMs to multiple
-networks (Multus CNI) or have full control over L2 (OVS CNI), you need
-to deploy respective network plugins. For more information, refer to
-https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitrary-cluster.md[OVS
-CNI installation guide].
-
-______________________________________________________________________________________________________________________________________________________
-Note: KubeVirt Ansible
-https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network[network
-playbook] installs these plugins by default.
-______________________________________________________________________________________________________________________________________________________
-
-
-Update
-~~~~~~
+Updating a KubeVirt Installation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Zero downtime rolling updates are supported starting with release `v0.17.0`
 onward. Updating from any release prior to the KubeVirt `v0.17.0` release is
@@ -305,8 +247,8 @@ because the virt-operator present in the cluster doesn't have these RBAC rules i
 In this case, you need to update the `virt-operator` first, and then proceed to update kubevirt.
 See https://github.com/kubevirt/kubevirt/issues/2533[this issue for more details].
 
-Delete
-~~~~~~
+Deleting a KubeVirt Installation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To delete the KubeVirt you should first to delete `KubeVirt` custom resource and then delete the KubeVirt operator.
 
@@ -333,3 +275,47 @@ due to a bug.
 $ kubectl -n kubevirt patch kv kubevirt --type=json -p '[{ "op": "remove", "path": "/metadata/finalizers" }]'
 ----
 ______________________________________________________________________________________________________________________________________________________
+
+Hugepages support
+~~~~~~~~~~~~~~~~~
+
+For hugepages support you need at least Kubernetes version `1.9`.
+
+Enable Hugepages feature-gate
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To enable hugepages on Kubernetes, check the
+https://kubernetes.io/docs/tasks/manage-hugepages/scheduling-hugepages/[official
+documentation].
+
+To enable hugepages on OKD, check the
+https://docs.openshift.org/3.9/scaling_performance/managing_hugepages.html#huge-pages-prerequisites[official
+documentation].
+
+Pre-allocate hugepages on a node
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To pre-allocate hugepages on boot time, you will need to specify
+hugepages under kernel boot parameters `hugepagesz=2M hugepages=64` and
+restart your machine.
+
+You can find more about hugepages under
+https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt[official
+documentation].
+
+Installing network plugins (optional)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+KubeVirt alone does not bring any additional network plugins, it just
+allows user to utilize them. If you want to attach your VMs to multiple
+networks (Multus CNI) or have full control over L2 (OVS CNI), you need
+to deploy respective network plugins. For more information, refer to
+https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitrary-cluster.md[OVS
+CNI installation guide].
+
+______________________________________________________________________________________________________________________________________________________
+Note: KubeVirt Ansible
+https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network[network
+playbook] installs these plugins by default.
+______________________________________________________________________________________________________________________________________________________
+
