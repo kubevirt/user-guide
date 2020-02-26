@@ -96,7 +96,10 @@ https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#cr
 classes in Kubernetes] for more details). The same eviction rules like
 for Pods apply to the VMI in case the node gets under memory pressure.
 
-Implicit memory overcommit is disabled by default. This means that when memory request is not specified, it is set to match `spec.domain.memory.guest`. However, it can be enabled using `memory-overcommit` in the `kubevirt-config`. For example, by setting `memory-overcommit: "150"` we define that when memory request is not explicitly set, it will be implicitly set to achieve memory overcommit of 150%. For instance, when `spec.domain.memory.guest: 3072M`, memory request is set to 2048M, if omitted. Note that the actual memory request depends on additional configuration options like OvercommitGuestOverhead.
+Implicit memory overcommit is disabled by default. This means that when memory request is not specified, it is set to match `spec.domain.memory.guest`.
+However, it can be enabled using `memory-overcommit` in the `kubevirt-config`. For example, by setting `memory-overcommit: "150"` we define that when
+memory request is not explicitly set, it will be implicitly set to achieve memory overcommit of 150%. For instance, when `spec.domain.memory.guest: 3072M`,
+memory request is set to 2048M, if omitted. Note that the actual memory request depends on additional configuration options like OvercommitGuestOverhead.
 
 Configuring the memory pressure behaviour of nodes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,11 +123,9 @@ Eviction Thresholds]
 Configuring Soft Eviction Thresholds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-__________________________________________________________________________________________________________________________________________________________________
-Note: Soft Eviction will effectively shutdown VirtualMachineInstances.
+IMPORTANT: Soft Eviction will effectively shutdown VirtualMachineInstances.
 They are not paused, hibernated or migrated. Further, Soft Eviction is
 disabled by default.
-__________________________________________________________________________________________________________________________________________________________________
 
 If configured, VirtualMachineInstances get evicted once the available
 memory falls below the threshold specified via `--eviction-soft` and the
@@ -142,10 +143,8 @@ overall memory-utilization.
 Configuring Hard Eviction Thresholds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-______________________________________________________________________________________________________________
-Note: If unspecified, the kubelet will do hard evictions for Pods once
+NOTE: If unspecified, the kubelet will do hard evictions for Pods once
 `memory.available` falls below `100Mi`.
-______________________________________________________________________________________________________________
 
 Limits set via `--eviction-hard` will lead to immediate eviction of
 VirtualMachineInstances or Pods. This stops VMIs without a grace period
@@ -201,13 +200,11 @@ scan).
 Enabling Swap
 ^^^^^^^^^^^^^
 
-___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-Note: This will definitely make sure that your VirtualMachines can’t
+NOTE: This will definitely make sure that your VirtualMachines can’t
 crash or get evicted from the node but it comes with the cost of pretty
 unpredictable performance once the node runs out of memory and the
 kubelet may not detect that it should evict Pods to increase the
 performance again.
-___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 Enabling swap is in general
 https://github.com/kubernetes/kubernetes/issues/53533[not recommended]

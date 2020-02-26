@@ -7,11 +7,9 @@ consoles it exposes. Usually there are two types of consoles:
 * Serial Console
 * Graphical Console (VNC)
 
-_______________________________________________________________________________________________________________________________________________
-Note: You need to have `virtctl`
+IMPORTANT: You need to have `virtctl`
 link:/installation/?id=client-side-virtctl-deployment[installed] to gain
 access to the VirtualMachineInstance.
-_______________________________________________________________________________________________________________________________________________
 
 Accessing the serial console
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -48,13 +46,11 @@ problem.
 $ virtctl vnc --kubeconfig=$KUBECONFIG testvmi -v 4
 ----
 
-____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-*Note:* If you are using virtctl via ssh on a remote machine, you need
+NOTE: If you are using virtctl via ssh on a remote machine, you need
 to forward the X session to your machine (Look up the -X and -Y flags of
 `ssh` if you are not familiar with that). As an alternative you can
 proxy the apiserver port with ssh to your machine (either direct or in
 combination with `kubectl proxy`)
-____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 RBAC Permissions for Console/VNC Access
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

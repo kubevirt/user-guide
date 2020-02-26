@@ -125,9 +125,8 @@ $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/v0.24.
 # wait until all KubeVirt components is up
 $ kubectl -n kubevirt wait kv kubevirt --for condition=Available
 ----
-_____________________________
-Note: Prior to release v0.20.0 the condition for the `kubectl wait` command was named "Ready" instead of "Available"
-_____________________________
+
+NOTE: Prior to release v0.20.0 the condition for the `kubectl wait` command was named "Ready" instead of "Available"
 
 All new components will be deployed under the `kubevirt` namespace:
 
@@ -153,7 +152,7 @@ kubectl patch ds/virt-handler -n kubevirt -p '{"spec": {"template": {"spec": {"n
 ----
 
 Deploying on OKD
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
 
 The following
 https://docs.openshift.com/container-platform/3.11/admin_guide/manage_scc.html[SCC]
@@ -167,7 +166,7 @@ $ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator
 Once privileges are granted, the KubeVirt can be deployed as described above.
 
 Web user interface on OKD
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 No additional steps are required to extend OKD's web console for KubeVirt.
 
@@ -251,12 +250,9 @@ to deploy respective network plugins. For more information, refer to
 https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitrary-cluster.md[OVS
 CNI installation guide].
 
-______________________________________________________________________________________________________________________________________________________
-Note: KubeVirt Ansible
+NOTE: KubeVirt Ansible
 https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network[network
 playbook] installs these plugins by default.
-______________________________________________________________________________________________________________________________________________________
-
 
 Update
 ~~~~~~
@@ -264,10 +260,8 @@ Update
 Zero downtime rolling updates are supported starting with release `v0.17.0`
 onward. Updating from any release prior to the KubeVirt `v0.17.0` release is
 not supported.
-______________________________________________________________________________________________________________________________________________________
-Note: Updating is only supported from N-1 to N release.
-______________________________________________________________________________________________________________________________________________________
 
+IMPORTANT: Updating is only supported from N-1 to N release.
  
 Updates are triggered one of two ways.
 
@@ -323,16 +317,14 @@ $ kubectl delete validatingwebhookconfigurations virt-api-validator # not blocki
 $ kubectl delete -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml --wait=false
 ----
 
-______________________________________________________________________________________________________________________________________________________
-Note: If by mistake you deleted the operator first, the KV custom resource will
-get stuck in the `Terminating` state, to fix it, delete manually finalizer from
-the resource.
+TIP: If by mistake you deleted the operator first, the KV custom resource will
+get stuck in the `Terminating` state. To fix it, delete the finalizer from
+the resource manually.
 
-Note: The `apiservice` and the `webhookconfigurations` need to be deleted manually
+NOTE: The `apiservice` and the `webhookconfigurations` need to be deleted manually
 due to a bug.
 
 [source,bash]
 ----
 $ kubectl -n kubevirt patch kv kubevirt --type=json -p '[{ "op": "remove", "path": "/metadata/finalizers" }]'
 ----
-______________________________________________________________________________________________________________________________________________________

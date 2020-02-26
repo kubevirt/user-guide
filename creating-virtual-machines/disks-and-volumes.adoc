@@ -121,10 +121,10 @@ spec:
 
 floppy
 ^^^^^^
-____________
-*Note*: Starting with version 0.16.0, floppy disks are deprecated and will be *rejected*. They will be removed from
+
+WARNING: Starting with version 0.16.0, floppy disks are deprecated and will be *rejected*. They will be removed from
 the API in a future version.
-____________
+
 A `floppy` disk will expose the volume as a floppy drive to the VM.
 
 A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
@@ -300,18 +300,18 @@ required to be in raw format. > *Important:* The `disk.img` image file
 needs to be owned by the user-id `107` in order to avoid permission
 issues.
 +
-____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-*Note:* If the `disk.img` image file has not been created manually
-before starting a VM then it will be created automatically with the
+NOTE: If the `disk.img` image file has not been created manually
+before starting a VM, it will be created automatically with the
 `PersistentVolumeClaim` size. Since not every storage provisioner
 provides volumes with the exact usable amount of space as requested
 (e.g. due to filesystem overhead), KubeVirt tolerates up to 10% less
 available space. This can be configured with the
 `pvc-tolerate-less-space-up-to-percent` value in the `kubevirt-config`
 ConfigMap.
-____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-* Block: Use a block volume for consuming raw block devices. Note: you
-need to enable the BlockVolume feature gate.
+
+* Block: Use a block volume for consuming raw block devices.
++
+NOTE: You need to enable the BlockVolume feature gate.
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk`
 may look like this:
@@ -418,10 +418,9 @@ that is consumable by the KubeVirt runtime. Disks must be placed into the
 Qcow2 is recommended in order to reduce the container image’s size.
 Containerdisks can and should be based on `scratch`. No content except the
 image is required.
-___________________________________________________________________________________________________________________________________________________
-*Note:* Prior to kubevirt 0.20, the containerDisk image needed to have
+
+WARNING: Prior to kubevirt 0.20, the containerDisk image needed to have
 *kubevirt/container-disk-v1alpha* as base image.
-___________________________________________________________________________________________________________________________________________________
 
 Example: Inject a VirtualMachineInstance disk into a container image.
 
@@ -779,17 +778,15 @@ mounted on a VM. To mount the `configMap` users can use `cloudInit` and
 the disks serial number. The `name` needs to be set for a reference to
 the created kubernetes `ConfigMap`.
 
-___________________________________________________________________________________________________________________________________________________
-*Note:* Currently, ConfigMap update propagation is not supported. If a
+[NOTE]
+====
+* Currently, ConfigMap update propagation is not supported. If a
 ConfigMap is updated, only a pod will be aware of changes, not running
 VMIs.
-___________________________________________________________________________________________________________________________________________________
-
-________________________________________________________________________________________________________________________________________________________________________________
-*Note:* Due to a Kubernetes CRD
+* Due to a Kubernetes CRD
 https://github.com/kubernetes/kubernetes/issues/68466[issue], you cannot
 control the paths within the volume where ConfigMap keys are projected.
-________________________________________________________________________________________________________________________________________________________________________________
+====
 
 Example: Attach the `configMap` to a VM and use `cloudInit` to mount the
 `iso` disk:
@@ -852,17 +849,14 @@ mounted on a VM. To mount the `secret` users can use `cloudInit` and the
 disks serial number. The `secretName` needs to be set for a reference to
 the created kubernetes `Secret`.
 
-_____________________________________________________________________________________________________________________________________________
-*Note:* Currently, Secret update propagation is not supported. If a
-Secret is updated, only a pod will be aware of changes, not running
-VMIs.
-_____________________________________________________________________________________________________________________________________________
-
-_____________________________________________________________________________________________________________________________________________________________________________
-*Note:* Due to a Kubernetes CRD
+[NOTE]
+====
+* Currently, Secret update propagation is not supported. If a
+Secret is updated, only a pod will be aware of changes, not running VMIs.
+* Due to a Kubernetes CRD
 https://github.com/kubernetes/kubernetes/issues/68466[issue], you cannot
 control the paths within the volume where Secret keys are projected.
-_____________________________________________________________________________________________________________________________________________________________________________
+====
 
 Example: Attach the `secret` to a VM and use `cloudInit` to mount the
 `iso` disk:
@@ -1224,7 +1218,7 @@ spec:
         name: mydisk
 ----
 
-*Note:* Due to the way KubeVirt implements CPU allocation,
+NOTE: Due to the way KubeVirt implements CPU allocation,
 blockMultiQueue can only be used if a specific CPU allocation is
 requested. If a specific number of CPUs hasn’t been allocated to a
 VirtualMachine, KubeVirt will use all CPU’s on the node on a best effort
@@ -1276,16 +1270,12 @@ best choice.
 * `writethrough` I/O from the guest is cached on the host but written
 through to the physical medium.
 
-___________________________________________________________________________________________________________________________
-*Important:* `none` cache mode is set as default if the file system
+IMPORTANT: `none` cache mode is set as default if the file system
 supports direct I/O, otherwise, `writethrough` is used.
-___________________________________________________________________________________________________________________________
 
-_____________________________________________________________________________________________________________________________________________________________________________________
-*Note:* It is possible to force a specific cache mode, although if
+NOTE: It is possible to force a specific cache mode, although if
 `none` mode has been chosen and the file system does not support direct
 I/O then started VMI will return an error.
-_____________________________________________________________________________________________________________________________________________________________________________________
 
 Example: force `writethrough` cache mode
 

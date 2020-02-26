@@ -7,12 +7,10 @@ VirtualMachineInstance. Currently, three types of service are supported:
 `ClusterIP`, `NodePort` and `LoadBalancer`. The default type is
 `ClusterIP`.
 
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-*Note*: Labels on a VirtualMachineInstance are passed through to the
+NOTE: Labels on a VirtualMachineInstance are passed through to the
 pod, so simply add your labels for service creation to the
 VirtualMachineInstance. From there on it works like exposing any other
 k8s resource, by referencing these labels in a service.
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 Expose VirtualMachineInstance as a ClusterIP Service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -76,10 +74,14 @@ Alternatively, the VirtualMachineInstance could be exposed using the
 $ virtctl expose virtualmachineinstance vmi-ephemeral --name vmiservice --port 27017 --target-port 22
 ----
 
-Notes: * If `--target-port` is not set, it will be take the same value
-as `--port` * The cluster IP is usually allocated automatically, but it
+[NOTE]
+====
+* If `--target-port` is not set, it will be take the same value
+as `--port`
+* The cluster IP is usually allocated automatically, but it
 may also be forced into a value using the `--cluster-ip` flag (assuming
 value is in the valid range and not taken)
+====
 
 Query the service object:
 
@@ -138,9 +140,13 @@ Alternatively, the VirtualMachineInstance could be exposed using the
 $ virtctl expose virtualmachineinstance vmi-ephemeral --name nodeport --type NodePort --port 27017 --target-port 22 --node-port 30000
 ----
 
-Notes: * If `--node-port` is not set, its value will be allocated
-dynamically (in the range above 30000) * If the `--node-port` value is
+[NOTE]
+====
+* If `--node-port` is not set, its value will be allocated
+dynamically (in the range above 30000)
+* If the `--node-port` value is
 set, it must be unique across all services
+====
 
 The service can be listed by querying for the service objects:
 

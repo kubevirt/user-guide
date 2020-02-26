@@ -290,17 +290,17 @@ spec:
     pod: {}
 ----
 
-______________________________________________________________________________
-**Note:** If a specific MAC address is configured for a virtual machine
+[NOTE]
+====
+* If a specific MAC address is configured for a virtual machine
 interface, it's passed to the underlying CNI plugin that is expected to
 configure the backend to allow for this particular MAC address. Not every
 plugin has native support for custom MAC addresses.
-______________________________________________________________________________
 
-______________________________________________________________________________
-**Note:**  For some CNI plugins without native support for custom MAC
+*  For some CNI plugins without native support for custom MAC
 addresses, there is a workaround, which is to use the `tuning` CNI plugin to
 adjust pod interface MAC address. This can be used as follows:
+====
 
 [source,yaml]
 ----
@@ -335,18 +335,14 @@ compatible with `tuning` plugin.
 * Plugins that are compatible with `tuning` plugin: `flannel`, `ptp`, `bridge`.
 * Plugins that don't need special MAC address treatment: `sriov` (in `vfio`
   mode).
-______________________________________________________________________________
-
 
 Ports
 ^^^^^
 
 Declare ports listen by the virtual machine
 
-______________________________________________________________________________
-*Note:* When using the slirp interface only the configured ports will be
+NOTE: When using the slirp interface only the configured ports will be
 forwarded to the virtual machine.
-______________________________________________________________________________
 
 [cols=",,,",options="header",]
 |============================================
@@ -356,16 +352,11 @@ ______________________________________________________________________________
 |`protocol` |TCP,UDP |no |Connection protocol
 |============================================
 
-______________________________________________________________________________
-*Tip:* Use `e1000` model if your guest image doesn’t ship with virtio
+TIP: Use `e1000` model if your guest image doesn’t ship with virtio
 drivers.
-______________________________________________________________________________
 
-______________________________________________________________________________
-*Note:* Windows machines need the latest virtio network driver to configure
+NOTE:  Windows machines need the latest virtio network driver to configure
 the correct MTU on the interface.
-______________________________________________________________________________
-
 
 If `spec.domain.devices.interfaces` is omitted, the virtual machine is
 connected using the default pod network interface of `bridge` type. If
@@ -389,12 +380,9 @@ through a linux ``bridge''. The pod network IPv4 address is delegated to
 the virtual machine via DHCPv4. The virtual machine should be configured
 to use DHCP to acquire IPv4 addresses.
 
-______________________________________________________________________________
-**Note:** If a specific MAC address is not configured in the virtual machine
+NOTE: If a specific MAC address is not configured in the virtual machine
 interface spec the MAC address from the relevant pod interface is delegated to
 the virtual machine.
-______________________________________________________________________________
-
 
 [source,yaml]
 ----
@@ -414,19 +402,16 @@ spec:
 At this time, `bridge` mode doesn’t support additional configuration
 fields.
 
-______________________________________________________________________________
-*Note:* due to IPv4 address delegation, in `bridge` mode the pod doesn’t have
+[NOTE]
+====
+* Due to IPv4 address delegation, in `bridge` mode the pod doesn’t have
 an IP address configured, which may introduce issues with third-party solutions
 that may rely on it. For example, Istio may not work in this mode.
-______________________________________________________________________________
 
-______________________________________________________________________________
-*Note:* admin can forbid using `bridge` interface type for pod networks via a 
+* Admins can forbid using `bridge` interface type for pod networks via a
 designated configuration flag. 
-To achieve it, the admin should set the following option to `false`:
-______________________________________________________________________________
-
-
+To achieve it, admins should set the following option to `false`:
++
 [source,yaml]
 -----
 apiVersion: v1
@@ -438,17 +423,15 @@ metadata:
     kubevirt.io: ""
 data:
   permitBridgeInterfaceOnPodNetwork: "false"
------  
-
-______________________________________________________________________________
-*Note:* binding the pod network using `bridge` interface type may cause issues.
+-----
+* Binding the pod network using `bridge` interface type may cause issues.
 Other than the third-party issue mentioned in the above note, 
 live migration is not allowed with a pod network binding of `bridge` interface type,
 and also some CNI plugins might not allow to use a custom MAC address for your VM instances.
 If you think you may be affected by any of issues mentioned above, 
 consider changing the default interface type to `masquerade`, 
 and disabling the `bridge` type for pod network, as shown in the example above.
-______________________________________________________________________________
+====
 
 slirp
 ^^^^^
@@ -474,10 +457,8 @@ spec:
 At this time, `slirp` mode doesn’t support additional configuration
 fields.
 
-______________________________________________________________________________
-*Note:* in `slirp` mode, the only supported protocols are TCP and UDP. ICMP is
+NOTE: In `slirp` mode, the only supported protocols are TCP and UDP. ICMP is
 _not_ supported.
-______________________________________________________________________________
 
 More information about SLIRP mode can be found in
 https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29[QEMU
@@ -510,14 +491,13 @@ spec:
     pod: {}
 ----
 
-______________________________________________________________________________
-*Note:* Masquerade is only allowed to connect to the pod network.
-______________________________________________________________________________
+[NOTE]
+====
+* Masquerade is only allowed to connect to the pod network.
 
-______________________________________________________________________________
-*Note:* The network CIDR can be configured in the pod network section using the
+* The network CIDR can be configured in the pod network section using the
 `vmNetworkCIDR` attribute.
-______________________________________________________________________________
+====
 
 virtio-net multiqueue
 ^^^^^^^^^^^^^^^^^^^^^
@@ -547,7 +527,7 @@ Without enabling the feature, network performance does not scale as the
 number of vCPUs increases. Guests cannot transmit or retrieve packets in
 parallel, as virtio-net has only one TX and RX queue.
 
-_NOTE_: Although the virtio-net multiqueue feature provides a
+NOTE: Although the virtio-net multiqueue feature provides a
 performance benefit, it has some limitations and therefore should not be
 unconditionally enabled
 
@@ -576,7 +556,7 @@ number of vCPUs, enabling the multiqueue feature is less important.
 * Each virtio-net queue consumes 64 KB of kernel memory for the vhost
 driver.
 
-_NOTE_: Virtio-net multiqueue should be enabled in the guest OS
+NOTE: Virtio-net multiqueue should be enabled in the guest OS
 manually, using ethtool. For example:
 `ethtool -L <NIC> combined #num_of_queues`
 
@@ -615,8 +595,6 @@ operator, please refer to
 https://github.com/openshift/sriov-network-operator/blob/master/doc/quickstart.md[their
 respective documentation].
 
-______________________________________________________________________________
-*Note:* KubeVirt relies on VFIO userspace driver to pass PCI devices into VMI
+NOTE: KubeVirt relies on VFIO userspace driver to pass PCI devices into VMI
 guest. Because of that, when configuring SR-IOV operator policies, make sure
 you define a pool of VF resources that uses `driver: vfio`.
-______________________________________________________________________________

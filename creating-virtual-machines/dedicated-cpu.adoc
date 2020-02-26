@@ -6,8 +6,7 @@ performance during its execution would benefit from obtaining dedicated
 CPU resources. KubeVirt, relying on the Kubernetes CPU manager, is able
 to pin guest’s vCPUs to the host’s pCPUs.
 
-https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/[Kubernetes
-CPU manager]
+https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/[Kubernetes CPU manager]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Kubernetes CPU manager is a mechanism that affects the scheduling of
@@ -48,16 +47,17 @@ or `spec.domain.resources.[requests/limits].cpu` to a whole number, integer (e.g
 as `sockets * cores * threads` or if `spec.domain.cpu` is empty then it takes value from 
 `spec.domain.resources.requests.cpu` or `spec.domain.resources.limits.cpu`.
 
-_______________________________________________________________________________________________________________
-*Note:* Users should not specify both `spec.domain.cpu` and
+[IMPORTANT]
+====
+* Users should not specify both `spec.domain.cpu` and
 `spec.domain.resources.[requests/limits].cpu`
 
-*Note:* `spec.domain.resources.requests.cpu` must be equal to
+* `spec.domain.resources.requests.cpu` must be equal to
 `spec.domain.resources.limits.cpu`
 
-*Note:* Multiple cpu-bound microbenchmarks show a significant performance advantage when 
+* Multiple cpu-bound microbenchmarks show a significant performance advantage when
 using `spec.domain.cpu.sockets` instead of `spec.domain.cpu.cores`. 
-_______________________________________________________________________________________________________________
+====
 
 All inconsistent requirements will be rejected.
 
@@ -175,7 +175,7 @@ data:
 Sidecar containers and CPU allocation overhead
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Note:* In order to run sidecar containers, KubeVirt requires the `Sidecar` feature gate to be enabled by adding `Sidecar`
+NOTE: In order to run sidecar containers, KubeVirt requires the `Sidecar` feature gate to be enabled by adding `Sidecar`
 to the `kubevirt-config` ConfigMap's `feature-gates` field.
 
 According to the Kubernetes CPU manager model, in order the POD would
@@ -184,7 +184,16 @@ must express CPU and memory requirements. At this time, Kubevirt often
 uses a sidecar container to mount VMI’s registry disk. It also uses a
 sidecar container of it’s hooking mechanism. These additional resources
 can be viewed as an overhead and should be taken into account when
-calculating a node capacity. > *Note:* The current defaults for
-sidecar’s resources: > * CPU: 200m > * Memory: 64M > As the CPU resource
-is not expressed as a whole number, CPU manager will not > attempt to
+calculating a node capacity.
+
+[NOTE]
+====
+The current defaults for
+sidecar’s resources:
+
+* CPU: 200m
+* Memory: 64M
+
+As the CPU resource is not expressed as a whole number, CPU manager will not attempt to
 pin the sidecar container to a host CPU.
+====

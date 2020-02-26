@@ -103,10 +103,8 @@ $ virtctl restart myvm --force --grace-period=0
 This would try to perform a normal restart, and would also delete the virt-launcher Pod of the VirtualMachineInstance with setting GracePeriodSeconds to the seconds passed in the command.
 
 Currently, only setting grace-period=0 is supported.
-_______________________________________________________________________________________________________________________________________________
-Note: Force restart can cause data corruption, and should be used in cases of kernal panic or VirtualMachine being unresponsive to normal restarts.
-_______________________________________________________________________________________________________________________________________________
 
+WARNING: Force restart can cause data corruption, and should be used in cases of kernal panic or `VirtualMachine` being unresponsive to normal restarts.
 
 Fencing considerations
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -157,8 +155,7 @@ If the VirtualMachineInstance configuration should be modifyable inside
 the cluster and these changes should be picked up on the next
 VirtualMachineInstance restart. This means that no hotplug is involved.
 
-When you want to let the cluster manage your individual
-VirtualMachineInstance
+When you want to let the cluster manage your individual VirtualMachineInstance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Kubernetes as a declarative system can help you to manage the
@@ -168,13 +165,10 @@ You tell it that you want this VirtualMachineInstance with your
 application running, the VirtualMachine will try to make sure it stays
 running.
 
-__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-*Note*: The current believe is that if it is defined that the
+NOTE: The current believe is that if it is defined that the
 VirtualMachineInstance should be running, it should be running. This is
 different to many classical virtualization platforms, where VMs stay
-down if they were switched off. Restart policies may be added if needed.
-Please provide your use-case if you need this!
-__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+down if they were switched off. These usecases are handled by <<../creating-virtual-machines/run-strategies.adoc#,run strategies>>.
 
 Example
 ~~~~~~~

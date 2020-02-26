@@ -8,12 +8,10 @@ namespace are accessible from other vmis and network endpoints. To
 isolate one or more vmis in a project, you can create NetworkPolicy
 objects in that namespace to indicate the allowed incoming connections.
 
-____________________________________________________________________________________________________________________________________________________________________________________________________________________________
-Note: vmis and pods are treated equally by network policies, since
+NOTE: VMIs and pods are treated equally by network policies, since
 labels are passed through to the pods which contain the running vmi.
 With other words, labels on vmis can be matched by `spec.podSelector` on
 the policy.
-____________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 Create NetworkPolicy to Deny All Traffic
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -31,8 +29,7 @@ spec:
   ingress: []
 ....
 
-Create NetworkPolicy to only Accept connections from vmis within
-namespaces
+Create NetworkPolicy to only Accept connections from vmis within namespaces
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To make vmis accept connections from other vmis in the same namespace,

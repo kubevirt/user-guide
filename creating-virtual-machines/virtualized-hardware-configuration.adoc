@@ -107,7 +107,7 @@ via `spec.firmware.serial`, as demonstrated above.
 CPU
 ~~~
 
-*Note*: This is not related to scheduling decisions or resource
+NOTE: This is not related to scheduling decisions or resource
 assignment.
 
 Topology
@@ -206,13 +206,16 @@ subtraction is: aes. So label will be created only with aes feature.
 Model
 ^^^^^
 
-*Note*: Be sure that node CPU model where you run a VM, has the same or
+[NOTE]
+====
+* Be sure that node CPU model where you run a VM, has the same or
 higher CPU family.
 
-*Note*: If CPU model wasn’t defined, the VM will have CPU model closest
+* If CPU model wasn’t defined, the VM will have CPU model closest
 to one that used on the node where the VM is running.
 
-*Note*: CPU model is case sensitive.
+* CPU model is case sensitive.
+====
 
 Setting the CPU model is possible via `spec.domain.cpu.model`. The
 following VM will have a CPU with the `Conroe` model:
@@ -320,9 +323,11 @@ spec:
 ...
 ----
 
-*Note*: Policy attribute can either be omitted or contain one of the following policies: force, require, optional, disable, forbid.
-
-*Note*: In case a policy is omitted for a feature, it will default to *require*.
+[NOTE]
+====
+* Policy attribute can either be omitted or contain one of the following policies: force, require, optional, disable, forbid.
+* In case a policy is omitted for a feature, it will default to *require*.
+====
 
 Behaviour according to Policies:
 
@@ -456,7 +461,7 @@ See the
 https://kubevirt.github.io/api-reference/master/definitions.html#_v1_timer[Timer
 API Reference] for all possible configuration options.
 
-*Note*: Timer can be part of a machine type. Thus it may be necessary to
+NOTE: Timer can be part of a machine type. Thus it may be necessary to
 explicitly disable them. We may in the future decide to add them via
 cluster-level defaulting, if they are part of a QEMU machine definition.
 
@@ -480,7 +485,7 @@ For Linux guests, the `virtio-rng` kernel module should be loaded early in the
 boot process to acquire access to the entropy source. Other systems may require
 similar adjustments to work with the `virtio` RNG device.
 
-*Note*: Some guest operating systems or user payloads may require the RNG
+NOTE: Some guest operating systems or user payloads may require the RNG
 device with enough entropy and may fail to boot without it. For example, fresh
 Fedora images with newer kernels (4.16.4+) may require the `virtio` RNG device
 to be present to boot to login.

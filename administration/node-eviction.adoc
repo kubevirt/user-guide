@@ -121,7 +121,7 @@ Behind the scenes a *PodDisruptionBudget* is created for each VMI which has an
 *evictionStrategy* defined. This ensures that evictions are be blocked on these
 VMIs and that we can guarantee that a VMI will be migrated instead of shut off.
 
-**Note:** While the *evictionStrategy* blocks the shutdown of VMIs during
+NOTE: While the *evictionStrategy* blocks the shutdown of VMIs during
 evictions, the live migration process is detached from the drain process
 itselve. Therefore it is necessary to add specified taints as part of the drain
 process explicitly, until we have a better integrated solution.

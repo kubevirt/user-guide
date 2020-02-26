@@ -63,13 +63,11 @@ VirtualMachineInstance] for more details.
 When to use a VirtualMachineInstanceReplicaSet
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-*Note:* The base assumption is that referenced disks are read-only or
+NOTE: The base assumption is that referenced disks are read-only or
 that the VMIs are writing internally to a tmpfs. The most obvious volume
 sources for VirtualMachineInstanceReplicaSets which KubeVirt supports
 are referenced below. If other types are used *data corruption* is
 possible.
-_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 Using VirtualMachineInstanceReplicaSet is the right choice when one
 wants many identical VMs and does not care about maintaining any disk
@@ -115,13 +113,11 @@ VirtualMachineInstances to different Nodes. A workload redistributor
 needs to be aware of KubeVirt and create migrations, instead of
 `evicting` VirtualMachineInstances by deletion.
 
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-*Note:* The simplest form of having a migratable ephemeral
+NOTE: The simplest form of having a migratable ephemeral
 VirtualMachineInstance, will be to use local storage based on
 `ContainerDisks` in combination with a file based backing store.
 However, migratable backing store support has not officially landed yet
 in KubeVirt and is untested.
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 Example
 ~~~~~~~
@@ -221,10 +217,9 @@ created, but only two are running and ready.
 
 Scaling via the Scale Subresource
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-*Note:* This requires the `CustomResourceSubresources` feature gate to be
+
+NOTE: This requires the `CustomResourceSubresources` feature gate to be
 enables for clusters prior to 1.11.
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 The `VirtualMachineInstanceReplicaSet` supports the `scale` subresource. As a
 consequence it is possible to scale it via `kubectl`:
@@ -236,9 +231,8 @@ $ kubectl scale vmirs myvmirs --replicas 5
 
 Using the Horizontal Pod Autoscaler
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
-*Note:* This requires at cluster newer or equal to 1.11.
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+NOTE: This requires at cluster newer or equal to 1.11.
 
 The https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/[HorizontalPodAutoscaler] (HPA) can be used with a
 `VirtualMachineInstanceReplicaSet`. Simply reference it in the spec of the
