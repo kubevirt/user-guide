@@ -1,5 +1,4 @@
-Templates
-=========
+# Templates
 
 !&gt; This only works on OpenShift so far (See [Installation
 Guide](/installation/README) for more information on how to deploy

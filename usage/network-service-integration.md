@@ -1,5 +1,4 @@
-Expose VirtualMachineInstances as a Services
-============================================
+# Expose VirtualMachineInstances as a Services
 
 Once the VirtualMachineInstance is started, in order to connect to a
 VirtualMachineInstance, you can create a `Service` object for a
@@ -12,8 +11,7 @@ VirtualMachineInstance. Currently, three types of service are supported:
 > VirtualMachineInstance. From there on it works like exposing any other
 > k8s resource, by referencing these labels in a service.
 
-Expose VirtualMachineInstance as a ClusterIP Service
-----------------------------------------------------
+## Expose VirtualMachineInstance as a ClusterIP Service
 
 Give a VirtualMachineInstance with the label `special: key`:
 
@@ -78,8 +76,7 @@ port inside the cluster network:
 
     $ ssh cirros@172.30.3.149 -p 27017
 
-Expose VirtualMachineInstance as a NodePort Service
----------------------------------------------------
+## Expose VirtualMachineInstance as a NodePort Service
 
 Expose the SSH port (22) of a VirtualMachineInstance running on KubeVirt
 by creating a `NodePort` service:
@@ -124,8 +121,7 @@ outside the cluster network:
 
     $ ssh cirros@$NODE_IP -p 30000
 
-Expose VirtualMachineInstance as a LoadBalancer Service
--------------------------------------------------------
+## Expose VirtualMachineInstance as a LoadBalancer Service
 
 Expose the RDP port (3389) of a VirtualMachineInstance running on
 KubeVirt by creating `LoadBalancer` service. Here is an example:

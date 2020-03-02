@@ -1,8 +1,6 @@
-Virtual machine templates
-=========================
+# Virtual machine templates
 
-What is a virtual machine template?
------------------------------------
+## What is a virtual machine template?
 
 The KubeVirt projects provides a set of
 [templates](https://docs.okd.io/latest/dev_guide/templates.html) to
@@ -11,23 +9,22 @@ combination of some key factors that could be further customized and
 processed to have a Virtual Machine object. The key factors which define
 a template are
 
--   Workload Most Virtual Machine should be *generic* to have maximum
-    flexibility; the *highperformance* workload trades some of this
-    flexibility to provide better performances.
+- Workload Most Virtual Machine should be _generic_ to have maximum
+  flexibility; the _highperformance_ workload trades some of this
+  flexibility to provide better performances.
 
--   Guest Operating System (OS) This allow to ensure that the emulated
-    hardware is compatible with the guest OS. Furthermore, it allows to
-    maximize the stability of the VM, and allows performance
-    optimizations.
+- Guest Operating System (OS) This allow to ensure that the emulated
+  hardware is compatible with the guest OS. Furthermore, it allows to
+  maximize the stability of the VM, and allows performance
+  optimizations.
 
--   Size (flavor) Defines the amount of resources (CPU, memory) to
-    allocate to the VM.
+- Size (flavor) Defines the amount of resources (CPU, memory) to
+  allocate to the VM.
 
 More documentation is available in the [common templates
 subproject](https://github.com/kubevirt/common-templates)
 
-Accessing the virtual machine templates
----------------------------------------
+## Accessing the virtual machine templates
 
 If you installed KubeVirt using a supported method you should find the
 common templates preinstalled in the cluster. Should you want to upgrade
@@ -40,8 +37,7 @@ To install the templates:
     $ export VERSION="v0.3.1"
     $ oc create -f https://github.com/kubevirt/common-templates/releases/download/$VERSION/common-templates-$VERSION.yaml
 
-Editable fields
----------------
+## Editable fields
 
 You can edit the fields of the templates which define the amount of
 resources which the VMs will receive.
@@ -84,8 +80,7 @@ the following minimal snippet highlights the fields which you can edit:
                   memory:
                     VALUE # this is editable
 
-Relationship between templates and VMs
---------------------------------------
+## Relationship between templates and VMs
 
 Once
 [processed](https://docs.openshift.com/enterprise/3.0/dev_guide/templates.html#creating-from-templates-using-the-cli),
@@ -167,8 +162,7 @@ objects have no relationship with each other besides the aforementioned
 label (e.g. changes in templates do not automatically affect VMs, or
 vice versa).
 
-common template customization
------------------------------
+## common template customization
 
 The templates provided by the kubevirt project provide a set of
 conventions and annotations that augment the basic feature of the

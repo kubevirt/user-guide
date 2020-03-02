@@ -1,5 +1,4 @@
-Installation
-============
+# Installation
 
 KubeVirt is a virtualization add-on to Kubernetes and this guide assumes
 that a Kubernetes cluster is already installed.
@@ -7,23 +6,22 @@ that a Kubernetes cluster is already installed.
 If installed on OKD, the web console is extended for management of
 virtual machines.
 
-Requirements
-------------
+## Requirements
 
 A few requirements need to be met before you can begin:
 
--   [Kubernetes](https://kubernetes.io) cluster or derivative
-    (such as [OpenShift](https://github.com/openshift/origin), Tectonic)
-    based on Kubernetes 1.10 or greater
--   Kubernetes apiserver must have `--allow-privileged=true` in order to run KubeVirt's privileged DaemonSet.
--   `kubectl` client utility
+- [Kubernetes](https://kubernetes.io) cluster or derivative
+  (such as [OpenShift](https://github.com/openshift/origin), Tectonic)
+  based on Kubernetes 1.10 or greater
+- Kubernetes apiserver must have `--allow-privileged=true` in order to run KubeVirt's privileged DaemonSet.
+- `kubectl` client utility
 
 ### Container Runtime Support
 
 KubeVirt is currently supported on the following container runtimes:
 
--   docker
--   crio (with runv)
+- docker
+- crio (with runv)
 
 Other container runtimes, which do not use virtualization features,
 should work too. However, they are not tested.
@@ -103,15 +101,13 @@ there. In order to do that please follow the documentation in the
 [KubeVirt APB
 repository](https://github.com/ansibleplaybookbundle/kubevirt-apb).
 
-Deploying from Source
----------------------
+## Deploying from Source
 
 See the [Developer Getting Started
 Guide](https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md)
 to understand how to build and deploy KubeVirt from source.
 
-Installing network plugins (optional)
--------------------------------------
+## Installing network plugins (optional)
 
 KubeVirt alone does not bring any additional network plugins, it just
 allows user to utilize them. If you want to attach your VMs to multiple
@@ -131,4 +127,3 @@ it to a specific subset of nodes with a nodeSelector. For example, to
 restrict the DaemonSet to only nodes with the "region=primary" label:
 
     kubectl patch ds/virt-handler -n kubevirt -p '{"spec": {"template": {"spec": {"nodeSelector": {"region": "primary"}}}}}'
-

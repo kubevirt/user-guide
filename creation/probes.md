@@ -1,5 +1,4 @@
-Configure Liveness and Readiness Probes
-=======================================
+# Configure Liveness and Readiness Probes
 
 It is possible to configure Liveness and Readiness Probes in a similar
 fashion like it is possible to configure [Liveness and Readiness Probes
@@ -16,8 +15,7 @@ VirtualMachineInstance is ready to receive traffic from Services. If
 Readiness Probes fail, the VirtualMachineInstance will be removed from
 the Endpoints which back services until the probe recovers.
 
-Define a HTTP Liveness Probe
-----------------------------
+## Define a HTTP Liveness Probe
 
 The following VirtualMachineInstance configures a HTTP Liveness Probe
 via `spec.livenessProbe.httpGet`, which will query port 1500 of the
@@ -66,8 +64,7 @@ port 1500 via cloud-init.
               - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
         name: cloudinitdisk
 
-Define a TCP Liveness Probe
----------------------------
+## Define a TCP Liveness Probe
 
 The following VirtualMachineInstance configures a TCP Liveness Probe via
 `spec.livenessProbe.tcpSocket`, which will query port 1500 of the
@@ -116,8 +113,7 @@ port 1500 via cloud-init.
               - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
         name: cloudinitdisk
 
-Define Readiness Probes
------------------------
+## Define Readiness Probes
 
 Readiness Probes are configured in a similar way like liveness probes.
 Instead of `spec.livenessProbe`, `spec.readinessProbe` needs to be

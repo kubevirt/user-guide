@@ -1,5 +1,4 @@
-Guest Operating System Information
-==================================
+# Guest Operating System Information
 
 Guest operating system identity for the VirtualMachineInstance will be
 provided by the label `kubevirt.io/os` :
@@ -41,8 +40,7 @@ are currently supported:
 </tbody>
 </table>
 
-Use with presets
-----------------
+## Use with presets
 
 A VirtualMachineInstancePreset representing an operating system with a
 `kubevirt.io/os` label could be applied on any given
@@ -159,8 +157,7 @@ Once the `VirtualMachineInstancePreset` is applied to the
 
 For more information see [VirtualMachineInstancePresets](presets.md)
 
-HyperV optimizations
---------------------
+## HyperV optimizations
 
 KubeVirt supports quite a lot of so-called "HyperV enlightenments",
 which are optimizations for Windows Guests. Some of these optimization

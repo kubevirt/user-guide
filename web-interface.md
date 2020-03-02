@@ -1,11 +1,8 @@
-Web Console Walkthrough
-=======================
+# Web Console Walkthrough
 
-Managing Virtual Machines
--------------------------
+## Managing Virtual Machines
 
-Creating a Virtual Machine with the Interactive Wizard
-======================================================
+# Creating a Virtual Machine with the Interactive Wizard
 
 The web console features an interactive wizard that guides you through
 [**Basic Settings**](#virtual-machine-wizard-fields),
@@ -18,7 +15,7 @@ the required fields have been completed.
 NICs and storage disks can be created and attached to virtual machines
 after they have been created.
 
-****Bootable Disk**.**
+\***\*Bootable Disk**.\*\*
 
 If either `URL` or `Container` are selected as the **Provision Source**
 in the [**Basic Settings**](#virtual-machine-wizard-fields) screen, a `rootdisk`
@@ -68,8 +65,7 @@ must select one as the **Bootable Disk**.
 The virtual machine should now be listed in **Workloads** → **Virtual
 Machines**.
 
-Creating a Virtual Machine Using a YAML Configuration File
-==========================================================
+# Creating a Virtual Machine Using a YAML Configuration File
 
 A virtual machine can also be created by writing or pasting a YAML
 configuration file in the web console in the **Workloads** → **Virtual
@@ -101,8 +97,7 @@ one error is shown at a time.
 The virtual machine should now be listed in **Workloads** → **Virtual
 Machines**.
 
-Editing a Virtual Machine
-=========================
+# Editing a Virtual Machine
 
 You can edit some values of a virtual machine in the web console, either
 by editing the [YAML directly](#editing-vm-yaml-web), or from the
@@ -124,8 +119,7 @@ machine must be **Off**.
 
 The updated values are shown after the operation is processed.
 
-Editing the YAML of a Virtual Machine
-=====================================
+# Editing the YAML of a Virtual Machine
 
 You can edit the YAML configuration of a virtual machine directly within
 the web console.
@@ -155,13 +149,12 @@ machine has been restarted.
 A confirmation message shows that the modification has been successful,
 including the updated version number for the object.
 
-Viewing the Events of a Virtual Machine
-=======================================
+# Viewing the Events of a Virtual Machine
 
 You can view the events stream for a running virtual machine from the
 **Virtual Machine Details** screen of the web console.
 
-The ▮▮ button pauses the events stream.  
+The ▮▮ button pauses the events stream.
 The ▶ button continues a paused events stream.
 
 1.  Click **Workloads** → **Virtual Machines** from the side menu.
@@ -170,8 +163,7 @@ The ▶ button continues a paused events stream.
 
 3.  Click **Events** to view all events for the virtual machine.
 
-Deleting a Virtual Machine
-==========================
+# Deleting a Virtual Machine
 
 Deleting a virtual machine permanently removes it from the cluster.
 
@@ -192,11 +184,9 @@ screen.
 3.  In the confirmation pop-up window, click **Delete** to permanently
     delete the virtual machine.
 
-Controlling Virtual Machines
-----------------------------
+## Controlling Virtual Machines
 
-Starting a Virtual Machine
-==========================
+# Starting a Virtual Machine
 
 Virtual machines can be [started](#vm-actions-web) from the ⋮ button
 found on each virtual machine in the **Workloads** → **Virtual
@@ -215,8 +205,7 @@ the **Virtual Machine Details** screen.
 3.  In the confirmation pop-up window, click **Start** to start the
     virtual machine.
 
-Stopping a Virtual Machine
-==========================
+# Stopping a Virtual Machine
 
 A running virtual machine can be [stopped](#vm-actions-web) using the ⋮
 button found on each virtual machine in the **Workloads** → **Virtual
@@ -235,8 +224,7 @@ the **Virtual Machine Details** screen.
 3.  In the confirmation pop-up window, click **Stop** to stop the
     virtual machine.
 
-Restarting a Virtual Machine
-============================
+# Restarting a Virtual Machine
 
 A running virtual machine can be [restarted](#vm-actions-web) from the ⋮
 button found on each virtual machine in the **Workloads** → **Virtual
@@ -260,8 +248,7 @@ the **Virtual Machine Details** screen.
 3.  In the confirmation pop-up window, click **Restart** to restart the
     virtual machine.
 
-Live Migrating a Virtual Machine
-================================
+# Live Migrating a Virtual Machine
 
 Virtual machines can be [live migrated](#vm-actions-web) to a different
 node from the ⋮ button found on each virtual machine in the
@@ -281,8 +268,7 @@ screen.
 3.  In the confirmation pop-up window, click **Migrate** to migrate the
     virtual machine.
 
-Cancelling a Virtual Machine Live Migration
-===========================================
+# Cancelling a Virtual Machine Live Migration
 
 A live migration of the virtual machine can be
 [cancelled](#vm-actions-web) using the ⋮ button found on each virtual
@@ -302,11 +288,9 @@ Migration** screen.
 3.  In the confirmation pop-up window, click **Cancel Migration** to
     cancel the virtual machine live migration.
 
-Accessing Virtual Machine Consoles
-----------------------------------
+## Accessing Virtual Machine Consoles
 
-Virtual Machine Console Sessions
-================================
+# Virtual Machine Console Sessions
 
 You can connect to the VNC, Serial, and RDP consoles of a running
 virtual machine from the **Consoles** tab in the **Virtual Machine
@@ -336,7 +320,7 @@ machine.
 **Options for the **Serial Console**.**
 
 Use the **Disconnect** button to manually disconnect the **Serial
-Console** session from the virtual machine.  
+Console** session from the virtual machine.
 Use the **Reconnect** button to manually open a **Serial Console**
 session to the virtual machine.
 
@@ -345,8 +329,7 @@ session to the virtual machine.
 The **Network Interface** drop-down allows you to choose the network
 interface for the VM to which you want to connect.
 
-Connecting to the Serial Console
-================================
+# Connecting to the Serial Console
 
 Connect to the **Serial Console** of a running virtual machine from the
 **Consoles** tab in the **Virtual Machine Details** screen of the web
@@ -361,8 +344,7 @@ console.
 4.  Click the **VNC Console** drop-down list and select **Serial
     Console**.
 
-Connecting to the VNC Console
-=============================
+# Connecting to the VNC Console
 
 Connect to the VNC console of a running virtual machine from the
 **Consoles** tab in the **Virtual Machine Details** screen of the web
@@ -374,8 +356,7 @@ console.
 
 3.  Click **Consoles**. The VNC console opens by default.
 
-Using Desktop Viewer to connect to RDP Console (Windows only)
-=============================================================
+# Using Desktop Viewer to connect to RDP Console (Windows only)
 
 The Desktop Viewer option can be used to connect to the RDP console of a
 running Windows virtual machine.
@@ -401,11 +382,9 @@ running Windows virtual machine.
 6.  Click **Launch Remote Desktop** to download the RDP file, which can
     then be opened in the RDP client of your choice.
 
-Managing Virtual Machine NICs
------------------------------
+## Managing Virtual Machine NICs
 
-Creating a NIC for a Virtual Machine
-====================================
+# Creating a NIC for a Virtual Machine
 
 Create and attach additional NICs to a virtual machine from the web
 console.
@@ -425,8 +404,7 @@ console.
 6.  Click the ✓ button to save and attach the NIC to the virtual
     machine.
 
-Deleting a NIC from a Virtual Machine
-=====================================
+# Deleting a NIC from a Virtual Machine
 
 Deleting a NIC from a virtual machine detaches and permanently deletes
 the NIC.
@@ -444,11 +422,9 @@ the NIC.
 5.  In the confirmation pop-up window, click **Delete** to detach and
     delete the NIC.
 
-Managing Virtual Machine Disks
-------------------------------
+## Managing Virtual Machine Disks
 
-Creating a Disk for a Virtual Machine
-=====================================
+# Creating a Disk for a Virtual Machine
 
 Create and attach additional storage disks to a virtual machine from the
 web console.
@@ -468,8 +444,7 @@ web console.
 6.  Click the ✓ button to save and attach the disk to the virtual
     machine.
 
-Deleting a Disk from a Virtual Machine
-======================================
+# Deleting a Disk from a Virtual Machine
 
 Deleting a disk from a virtual machine detaches and permanently deletes
 the disk.
@@ -486,11 +461,9 @@ the disk.
 
 5.  Click **Confirm** to detach and delete the disk.
 
-Virtual Machine Templates in the Web Console
---------------------------------------------
+## Virtual Machine Templates in the Web Console
 
-Creating a Virtual Machine Template with the Interactive Wizard
-===============================================================
+# Creating a Virtual Machine Template with the Interactive Wizard
 
 Virtual machine templates are an easy way to create multiple virtual
 machines with similar configuration. After a template is created,
@@ -508,7 +481,7 @@ screen until the required fields have been completed.
 NICs and storage disks can be created and attached to virtual machines
 after they have been created.
 
-****Bootable Disk**.**
+\***\*Bootable Disk**.\*\*
 
 If either `URL` or `Container` are selected as the **Provision Source**
 in the [**Basic Settings**](#template-wizard-fields-web) screen, a
@@ -561,8 +534,7 @@ must select one as the **Bootable Disk**.
 The template should now be listed in **Workloads** → **Virtual Machine
 Templates**.
 
-Editing the YAML of a Virtual Machine Template
-==============================================
+# Editing the YAML of a Virtual Machine Template
 
 You can edit the YAML configuration of a virtual machine template
 directly within the web console.
@@ -589,8 +561,7 @@ parameter that was not able to be updated.
 A confirmation message shows the modification has been successful,
 including the updated version number for the object.
 
-Deleting a Virtual Machine Template
-===================================
+# Deleting a Virtual Machine Template
 
 Deleting a virtual machine template permanently removes it from the
 cluster.
@@ -613,11 +584,9 @@ Details** screen.
 3.  In the confirmation pop-up window, click **Delete** to permanently
     delete the template.
 
-Reference
----------
+## Reference
 
-Virtual Machine Wizard Fields
-=============================
+# Virtual Machine Wizard Fields
 
 <table>
 <colgroup>
@@ -694,8 +663,7 @@ Virtual Machine Wizard Fields
 </tbody>
 </table>
 
-Virtual Machine Template Wizard Fields
-======================================
+# Virtual Machine Template Wizard Fields
 
 <table>
 <colgroup>
@@ -762,8 +730,7 @@ Virtual Machine Template Wizard Fields
 </tbody>
 </table>
 
-Cloud-init Fields
-=================
+# Cloud-init Fields
 
 <table>
 <colgroup>
@@ -790,8 +757,7 @@ Cloud-init Fields
 </tbody>
 </table>
 
-Networking Fields
-=================
+# Networking Fields
 
 <table>
 <colgroup>
@@ -830,8 +796,7 @@ Networking Fields
 </tbody>
 </table>
 
-Storage Fields
-==============
+# Storage Fields
 
 <table>
 <colgroup>
@@ -870,8 +835,7 @@ Storage Fields
 </tbody>
 </table>
 
-Virtual Machine Actions
-=======================
+# Virtual Machine Actions
 
 <table>
 <colgroup>
@@ -918,15 +882,14 @@ Virtual Machine Actions
 </tbody>
 </table>
 
-PXE Booting with a Specified MAC Address
-========================================
+# PXE Booting with a Specified MAC Address
 
 Network booting allows a computer to boot and load an operating system
 or other program without requiring a locally attached storage device.
 For example, you can use it to choose your desired OS image from a PXE
 server when deploying a new host.
 
--   -   A configured interface that allows PXE booting
+- - A configured interface that allows PXE booting
 
 1.  Configure a PXE network on the cluster:
 
@@ -1038,6 +1001,7 @@ server when deploying a new host.
     interface connected to the bridge has the specified MAC address. In
     this case, we used `eth1` for the PXE boot, without an IP address.
     The other
+
 
         $ ip addr
         ...

@@ -1,26 +1,24 @@
-VirtualMachine
-==============
+# VirtualMachine
 
 An `VirtualMachine` provides additional management capabilities to a
 VirtualMachineInstance inside the cluster. That includes:
 
--   ABI stability
+- ABI stability
 
--   Start/stop/restart capabilities on the controller level
+- Start/stop/restart capabilities on the controller level
 
--   Offline configuration change with propagation on
-    VirtualMachineInstance recreation
+- Offline configuration change with propagation on
+  VirtualMachineInstance recreation
 
--   Ensure that the VirtualMachineInstance is running if it should be
-    running
+- Ensure that the VirtualMachineInstance is running if it should be
+  running
 
 It focuses on a 1:1 relationship between the controller instance and a
 virtual machine instance. In many ways it is very similar to a
 [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
 with `spec.replica` set to `1`.
 
-How to use a VirtualMachine
----------------------------
+## How to use a VirtualMachine
 
 A VirtualMachine will make sure that a VirtualMachineInstance object
 with an identical name will be present in the cluster, if `spec.running`
@@ -121,8 +119,7 @@ apply to a VirtualMachine.
 
 See [Network Service Integration](usage/network-service-integration.md) for more details.
 
-When to use a VirtualMachine
-----------------------------
+## When to use a VirtualMachine
 
 ### When ABI stability is required between restarts
 
@@ -199,7 +196,7 @@ Saving this manifest into `vm.yaml` and submitting it to Kubernetes will
 create the controller instance:
 
 ```
-$ kubectl create -f vm.yaml 
+$ kubectl create -f vm.yaml
 virtualmachine "vm-cirros" created
 ```
 
@@ -227,7 +224,7 @@ Annotations:  <none>
 API Version:  kubevirt.io/v1alpha3
 Kind:         VirtualMachine
 Metadata:
-  Cluster Name:        
+  Cluster Name:
   Creation Timestamp:  2018-04-30T09:25:08Z
   Generation:          0
   Resource Version:    6418
@@ -253,7 +250,7 @@ Spec:
             Name:         cloudinitdisk
             Volume Name:  cloudinitdisk
         Machine:
-          Type:  
+          Type:
         Resources:
           Requests:
             Memory:                      64M

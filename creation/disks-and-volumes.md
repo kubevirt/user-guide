@@ -1,5 +1,4 @@
-Disks and Volumes
-=================
+# Disks and Volumes
 
 Making persistent storage in the cluster (**volumes**) accessible to VMs
 consists of three parts. First, volumes are specified in `spec.volumes`.
@@ -7,8 +6,7 @@ Second, disks are added to the VM by specifying them in
 `spec.domain.devices.disks`. Finally, a refererence to the specified
 volume is added to the disk specification by name.
 
-Disks
------
+## Disks
 
 Like all other vmi devices a `spec.domain.devices.disks` element has a
 mandatory `name`, and furthermore, the disk’s `name` must reference the
@@ -16,13 +14,13 @@ mandatory `name`, and furthermore, the disk’s `name` must reference the
 
 A disk can be made accessible via four different types:
 
--   [**lun**](#lun)
+- [**lun**](#lun)
 
--   [**disk**](#disk)
+- [**disk**](#disk)
 
--   [**cdrom**](#cdrom)
+- [**cdrom**](#cdrom)
 
--   [**floppy**](#floppy) *DEPRECATED*
+- [**floppy**](#floppy) _DEPRECATED_
 
 All possible configuration options are available in the [Disk API
 Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk).
@@ -171,32 +169,31 @@ as a `floppy` device to the VM:
           persistentVolumeClaim:
             claimName: mypvc
 
-Volumes
--------
+## Volumes
 
 Supported volume sources are
 
--   [**cloudInitNoCloud**](#cloudinitnocloud)
+- [**cloudInitNoCloud**](#cloudinitnocloud)
 
--   [**cloudInitConfigDrive**](#cloudinitconfigdrive)
+- [**cloudInitConfigDrive**](#cloudinitconfigdrive)
 
--   [**persistentVolumeClaim**](#persistentvolumeclaim)
+- [**persistentVolumeClaim**](#persistentvolumeclaim)
 
--   [**ephemeral**](#ephemeral)
+- [**ephemeral**](#ephemeral)
 
--   [**containerDisk**](#containerdisk)
+- [**containerDisk**](#containerdisk)
 
--   [**emptyDisk**](#emptydisk)
+- [**emptyDisk**](#emptydisk)
 
--   [**hostDisk**](#hostdisk)
+- [**hostDisk**](#hostdisk)
 
--   [**dataVolume**](#datavolume)
+- [**dataVolume**](#datavolume)
 
--   [**configMap**](#configmap)
+- [**configMap**](#configmap)
 
--   [**secret**](#secret)
+- [**secret**](#secret)
 
--   [**serviceAccount**](#serviceaccount)
+- [**serviceAccount**](#serviceaccount)
 
 All possible configuration options are available in the [Volume API
 Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume).
@@ -277,24 +274,24 @@ remain persistent between restarts.
 
 A `PersistentVolume` can be in “filesystem” or “block” mode:
 
--   Filesystem: For KubeVirt to be able to consume the disk present on a
-    PersistentVolume’s filesystem, the disk must be named `disk.img` and
-    be placed in the root path of the filesystem. Currently the disk is
-    also required to be in raw format. &gt; **Important:** The
-    `disk.img` image file needs to be owned by the user-id `107` in
-    order to avoid permission issues.
+- Filesystem: For KubeVirt to be able to consume the disk present on a
+  PersistentVolume’s filesystem, the disk must be named `disk.img` and
+  be placed in the root path of the filesystem. Currently the disk is
+  also required to be in raw format. &gt; **Important:** The
+  `disk.img` image file needs to be owned by the user-id `107` in
+  order to avoid permission issues.
 
-    > **Note:** If the `disk.img` image file has not been created
-    > manually before starting a VM then it will be created
-    > automatically with the `PersistentVolumeClaim` size. Since not
-    > every storage provisioner provides volumes with the exact usable
-    > amount of space as requested (e.g. due to filesystem overhead),
-    > KubeVirt tolerates up to 10% less available space. This can be
-    > configured with the `pvc-tolerate-less-space-up-to-percent` value
-    > in the `kubevirt-config` ConfigMap.
+  > **Note:** If the `disk.img` image file has not been created
+  > manually before starting a VM then it will be created
+  > automatically with the `PersistentVolumeClaim` size. Since not
+  > every storage provisioner provides volumes with the exact usable
+  > amount of space as requested (e.g. due to filesystem overhead),
+  > KubeVirt tolerates up to 10% less available space. This can be
+  > configured with the `pvc-tolerate-less-space-up-to-percent` value
+  > in the `kubevirt-config` ConfigMap.
 
--   Block: Use a block volume for consuming raw block devices. Note: you
-    need to enable the BlockVolume feature gate.
+- Block: Use a block volume for consuming raw block devices. Note: you
+  need to enable the BlockVolume feature gate.
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk`
 may look like this:
@@ -522,10 +519,10 @@ A `hostDisk` volume type provides the ability to create or use a disk
 image located somewhere on a node. It works similar to a `hostPath` in
 Kubernetes and provides two usage types:
 
--   `DiskOrCreate` if a disk image does not exist at a given location
-    then create one
+- `DiskOrCreate` if a disk image does not exist at a given location
+  then create one
 
--   `Disk` a disk image must exist at a given location
+- `Disk` a disk image must exist at a given location
 
 Example: Create a 1Gi disk image located at /data/disk.img and attach it
 to a VM.
@@ -632,7 +629,7 @@ DataVolume exists in the cluster. The VMI will consume the DataVolume,
 but the DataVolume’s life-cycle will not be tied to the VMI.
 
 Below is an example of a DataVolume being referenced by a VMI. It is
-expected that the DataVolume *alpine-datavolume* was created prior to
+expected that the DataVolume _alpine-datavolume_ was created prior to
 posting the VMI manifest to the cluster. It is okay to post the VMI
 manifest to the cluster while the DataVolume is still having data
 imported. KubeVirt knows not to start the VMI until all referenced
@@ -878,8 +875,7 @@ Example:
         serviceAccount:
           serviceAccountName: default
 
-High Performance Features
--------------------------
+## High Performance Features
 
 ### IOThreads
 
@@ -1162,12 +1158,12 @@ allocate 4 queues (to match the number of CPUs requested).
 
 KubeVirt supports `none` and `writethrough` KVM/QEMU cache modes.
 
--   `none` I/O from the guest is not cached on the host. Use this option
-    for guests with large I/O requirements. This option is generally the
-    best choice.
+- `none` I/O from the guest is not cached on the host. Use this option
+  for guests with large I/O requirements. This option is generally the
+  best choice.
 
--   `writethrough` I/O from the guest is cached on the host but written
-    through to the physical medium.
+- `writethrough` I/O from the guest is cached on the host but written
+  through to the physical medium.
 
 > **Important:** `none` cache mode is set as default if the file system
 > supports direct I/O, otherwise, `writethrough` is used.

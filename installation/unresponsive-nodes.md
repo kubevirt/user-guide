@@ -1,13 +1,11 @@
-Detecting and resolving Node issues
-===================================
+# Detecting and resolving Node issues
 
 KubeVirt has its own node daemon, called virt-handler. In addition to
 the usual k8s methods of detecting issues on nodes, the virt-handler
 daemon has its own heartbeat mechanism. This allows for fine-tuned error
 handling of VirtualMachineInstances.
 
-Heartbeat of virt-handler
--------------------------
+## Heartbeat of virt-handler
 
 `virt-handler` periodically tries to update the
 `kubevirt.io/schedulable` label and the `kubevirt.io/heartbeat`
@@ -55,8 +53,7 @@ the KubeVirt node-controller kicks in and sets the
 VMIs will be schedule to this node until virt-handler is connected
 again.
 
-Deleting stuck VMIs when virt-handler is unresponsive
------------------------------------------------------
+## Deleting stuck VMIs when virt-handler is unresponsive
 
 In cases where `virt-handler` has some issues but the node is in general
 fine, a `VirtualMachineInstance` can be deleted as usual via
@@ -68,8 +65,7 @@ meantime. If `virt-handler` could recover in the meantime,
 `virt-handler` will move the `VirtualMachineInstance` to failed state
 instead of the cluster-controllers.
 
-Deleting stuck VMIs when the whole node is unresponsive
--------------------------------------------------------
+## Deleting stuck VMIs when the whole node is unresponsive
 
 If the whole node is unresponsive, deleting a `VirtualMachineInstance`
 via `kubectl delete vmi <myvmi>` alone will never remove the
@@ -83,8 +79,7 @@ out, the VMIs will be moved to `Failed` state. If they were already
 marked for deletion they will simply disappear. If not, they can be
 deleted and will disappear almost immediately.
 
-Timing considerations
----------------------
+## Timing considerations
 
 It takes up to five minutes until the KubeVirt cluster components can
 detect that virt-handler is unhealthy. During that time-frame it is

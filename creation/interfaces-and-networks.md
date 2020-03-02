@@ -1,5 +1,4 @@
-Interfaces and Networks
-=======================
+# Interfaces and Networks
 
 Connecting a virtual machine to a network consists of two parts. First,
 networks are specified in `spec.networks`. Then, interfaces backed by
@@ -21,8 +20,7 @@ Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_interfa
 and [Network API
 Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_network).
 
-Backend
--------
+## Backend
 
 Network backends are configured in `spec.networks`. A network must have
 a unique name. Additional fields declare which logical or physical
@@ -134,14 +132,14 @@ Request](https://github.com/intel/multus-cni/pull/174) is required
 
 **Note the following:**
 
--   A multus default network and a pod network type are mutually
-    exclusive.
+- A multus default network and a pod network type are mutually
+  exclusive.
 
--   The virt-launcher pod that starts the VMI will **not** have the pod
-    network configured.
+- The virt-launcher pod that starts the VMI will **not** have the pod
+  network configured.
 
--   The multus delegate chosen as default **must** return at least one
-    IP address.
+- The multus delegate chosen as default **must** return at least one
+  IP address.
 
 Create a `NetworkAttachmentDefinition` with IPAM.
 
@@ -186,8 +184,7 @@ The following example defines a network which uses
 [Flannel](https://github.com/coreos/flannel-cni) as the main network
 provider and as the [ovs-cni
 plugin](https://github.com/kubevirt/ovs-cni) as the secondary one. The
-OVS CNI will connect the VMI to Open vSwitch’s bridge `br1` and VLAN
-100.
+OVS CNI will connect the VMI to Open vSwitch’s bridge `br1` and VLAN 100.
 
 Other CNI plugins such as ptp, bridge, macvlan might be used as well.
 For their installation and usage refer to the respective project
@@ -232,8 +229,7 @@ network and to the secondary Open vSwitch network.
         genie: # Secondary genie network
           networkName: ovs
 
-Frontend
---------
+## Frontend
 
 Network interfaces are configured in `spec.domain.devices.interfaces`.
 They describe properties of virtual interfaces as “seen” inside guest
@@ -371,14 +367,14 @@ properties “seen” inside guest instances, as listed below:
 > This approach may not work for all plugins. For example, OKD SDN is
 > not compatible with `tuning` plugin.
 >
-> -   Plugins that handle custom MAC addresses natively: `ovs`.
+> - Plugins that handle custom MAC addresses natively: `ovs`.
 >
-> -   Plugins that are compatible with `tuning` plugin: `flannel`,
->     `ptp`, `bridge`.
+> - Plugins that are compatible with `tuning` plugin: `flannel`,
+>   `ptp`, `bridge`.
 >
-> -   Plugins that don’t need special MAC address treatment: `sriov` (in
->     `vfio` mode).
->
+> - Plugins that don’t need special MAC address treatment: `sriov` (in
+>   `vfio` mode).
+
 ### Ports
 
 Declare ports listen by the virtual machine
@@ -515,7 +511,7 @@ At this time, `slirp` mode doesn’t support additional configuration
 fields.
 
 > **Note:** in `slirp` mode, the only supported protocols are TCP and
-> UDP. ICMP is *not* supported.
+> UDP. ICMP is _not_ supported.
 
 More information about SLIRP mode can be found in [QEMU
 Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29).
@@ -572,42 +568,42 @@ Without enabling the feature, network performance does not scale as the
 number of vCPUs increases. Guests cannot transmit or retrieve packets in
 parallel, as virtio-net has only one TX and RX queue.
 
-*NOTE*: Although the virtio-net multiqueue feature provides a
+_NOTE_: Although the virtio-net multiqueue feature provides a
 performance benefit, it has some limitations and therefore should not be
 unconditionally enabled
 
 #### Some known limitations
 
--   Guest OS is limited to ~200 MSI vectors. Each NIC queue requires a
-    MSI vector, as well as any virtio device or assigned PCI device.
-    Defining an instance with multiple virtio NICs and vCPUs might lead
-    to a possibility of hitting the guest MSI limit.
+- Guest OS is limited to ~200 MSI vectors. Each NIC queue requires a
+  MSI vector, as well as any virtio device or assigned PCI device.
+  Defining an instance with multiple virtio NICs and vCPUs might lead
+  to a possibility of hitting the guest MSI limit.
 
--   virtio-net multiqueue works well for incoming traffic, but can
-    occasionally cause a performance degradation, for outgoing traffic.
-    Specifically, this may occur when sending packets under 1,500 bytes
-    over the Transmission Control Protocol (TCP) stream.
+- virtio-net multiqueue works well for incoming traffic, but can
+  occasionally cause a performance degradation, for outgoing traffic.
+  Specifically, this may occur when sending packets under 1,500 bytes
+  over the Transmission Control Protocol (TCP) stream.
 
--   Enabling virtio-net multiqueue increases the total network
-    throughput, but in parallel it also increases the CPU consumption.
+- Enabling virtio-net multiqueue increases the total network
+  throughput, but in parallel it also increases the CPU consumption.
 
--   Enabling virtio-net multiqueue in the host QEMU config, does not
-    enable the functionality in the guest OS. The guest OS administrator
-    needs to manually turn it on for each guest NIC that requires this
-    feature, using ethtool.
+- Enabling virtio-net multiqueue in the host QEMU config, does not
+  enable the functionality in the guest OS. The guest OS administrator
+  needs to manually turn it on for each guest NIC that requires this
+  feature, using ethtool.
 
--   MSI vectors would still be consumed (wasted), if multiqueue was
-    enabled in the host, but has not been enabled in the guest OS by the
-    administrator.
+- MSI vectors would still be consumed (wasted), if multiqueue was
+  enabled in the host, but has not been enabled in the guest OS by the
+  administrator.
 
--   In case the number of vNICs in a guest instance is proportional to
-    the number of vCPUs, enabling the multiqueue feature is less
-    important.
+- In case the number of vNICs in a guest instance is proportional to
+  the number of vCPUs, enabling the multiqueue feature is less
+  important.
 
--   Each virtio-net queue consumes 64 KB of kernel memory for the vhost
-    driver.
+- Each virtio-net queue consumes 64 KB of kernel memory for the vhost
+  driver.
 
-*NOTE*: Virtio-net multiqueue should be enabled in the guest OS
+_NOTE_: Virtio-net multiqueue should be enabled in the guest OS
 manually, using ethtool. For example:
 `ethtool -L <NIC> combined #num_of_queues`
 

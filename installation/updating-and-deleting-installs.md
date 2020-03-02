@@ -61,5 +61,3 @@ resource and then delete the KubeVirt operator.
 > deleted manually due to a bug.
 >
 >     $ kubectl -n kubevirt patch kv kubevirt --type=json -p '[{ "op": "remove", "path": "/metadata/finalizers" }]'
-
-

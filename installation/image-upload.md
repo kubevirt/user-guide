@@ -1,5 +1,4 @@
-Creating Virtual Machines from local images with CDI and virtctl
-================================================================
+# Creating Virtual Machines from local images with CDI and virtctl
 
 The [Containerized Data
 Importer](https://github.com/kubevirt/containerized-data-importer) (CDI)
@@ -9,18 +8,17 @@ Claims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 [DataVolumes](https://github.com/kubevirt/containerized-data-importer/blob/master/doc/datavolumes.md).
 The three main CDI use cases are:
 
--   Import a disk image from a URL to a DataVolume (HTTP/S3)
+- Import a disk image from a URL to a DataVolume (HTTP/S3)
 
--   Clone an existing PVC to a DataVolume
+- Clone an existing PVC to a DataVolume
 
--   Upload a local disk image to a DataVolume
+- Upload a local disk image to a DataVolume
 
 This document deals with the third use case. So you should have CDI
 installed in your cluster, a VM disk that you’d like to upload, and
 virtctl in your path.
 
-Install CDI
------------
+## Install CDI
 
 Install the latest CDI release
 [here](https://github.com/kubevirt/containerized-data-importer/releases)
@@ -34,39 +32,37 @@ Install the latest CDI release
 The `cdi-uploadproxy` service must be accessible from outside the
 cluster. Here are some ways to do that:
 
--   [NodePort
-    Service](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport)
+- [NodePort
+  Service](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport)
 
--   [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+- [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 
--   [Route](https://docs.openshift.com/container-platform/3.9/architecture/networking/routes.html)
+- [Route](https://docs.openshift.com/container-platform/3.9/architecture/networking/routes.html)
 
--   [kubectl
-    port-forward](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/)
-    (not recommended for production clusters)
+- [kubectl
+  port-forward](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/)
+  (not recommended for production clusters)
 
 Look
 [here](https://github.com/kubevirt/containerized-data-importer/blob/master/doc/upload.md)
 for example manifests.
 
-Supported image formats
------------------------
+## Supported image formats
 
--   `.img`
+- `.img`
 
--   `.iso`
+- `.iso`
 
--   `.qcow2`
+- `.qcow2`
 
--   compressed `.tar`, `.gz`, and `.xz` versions of above supported as
-    well
+- compressed `.tar`, `.gz`, and `.xz` versions of above supported as
+  well
 
 Example in this doc uses
 [this](http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img)
 [CirrOS](https://launchpad.net/cirros) image
 
-virtctl image-upload
---------------------
+## virtctl image-upload
 
 virtctl has an image-upload command with the following options:
 
@@ -111,8 +107,7 @@ uploading the file to the `cdi-uploadproxy`.
 
     virtctl image-upload dv cirros-vm-disk --size=500Mi --image-path=/home/mhenriks/images/cirros-0.4.0-x86_64-disk.img --uploadproxy-url=<url to upload proxy service>
 
-Create a VirtualMachineInstance
--------------------------------
+## Create a VirtualMachineInstance
 
 To create a `VirtualMachinInstance` from a PVC, you can execute the
 following:
@@ -142,8 +137,7 @@ following:
     status: {}
     EOF
 
-Connect to VirtualMachineInstance console
------------------------------------------
+## Connect to VirtualMachineInstance console
 
 Use `virtctl` to connect to the newly create `VirtualMachinInstance`.
 

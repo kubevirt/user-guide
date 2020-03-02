@@ -1,8 +1,6 @@
-VMCTL
-=====
+# VMCTL
 
-Background
-----------
+## Background
 
 One remarkable difference between KubeVirt and other solutions that run
 Virtual Machine workloads in a container is the toplevel API. KubeVirt
@@ -19,8 +17,7 @@ some entities, e.g. VirtualMachineInstanceReplicaSet, but the KubeVirt
 project will always be one step behind. Any significant changes upstream
 would need to be implemented manually in KubeVirt.
 
-Overview
---------
+## Overview
 
 Vmctl is designed to address this delta by managing VirtualMachines from
 within a Pod. Vmctl will take an upstream VirtualMachine to act as a
@@ -31,11 +28,11 @@ clear, vmctl is not a VM instead it is controlling a VM close by. The
 derived VM will be similar to the prototype, but a few fields will be
 modified:
 
--   Name
+- Name
 
--   NodeSelector
+- NodeSelector
 
--   Running
+- Running
 
 ### Name
 
@@ -57,32 +54,30 @@ on, KubeVirt ensures the same behavior for VirtualMachines.
 The new VirtualMachine will be set to the running state regardless of
 the prototype VM’s state.
 
-Implementation
---------------
+## Implementation
 
 Vmctl is implemented as a go binary, deployed in a container, that takes
 the following parameters:
 
--   `namespace`: The namespace to create the derived VirtualMachine in.
-    The default namespace is `default`.
+- `namespace`: The namespace to create the derived VirtualMachine in.
+  The default namespace is `default`.
 
--   `proto-namespace`: The namespace the prototype VM is in. This
-    defaults to the value used for `namespace` if omitted.
+- `proto-namespace`: The namespace the prototype VM is in. This
+  defaults to the value used for `namespace` if omitted.
 
--   `hostname-override`: Mainly for testing–in order to make it possible
-    to run vmctl outside of a pod.
+- `hostname-override`: Mainly for testing–in order to make it possible
+  to run vmctl outside of a pod.
 
 vmctl has a single positional argument:
 
--   prototype VM name
+- prototype VM name
 
 When the vmctl container is deployed, it will locate the requested
 prototype VM, clone it, and watch wait. When the vmctl pod is deleted,
 vmctl will clean up the derived VirtualMachine. Consequently it is
 inadvisable to use a 0 length grace period for shutting down the pod.
 
-Services
---------
+## Services
 
 One note worth stressing is that from Kubernete’s perspective the vmctl
 Pod is entirely distinct from the VM it spawns. It is especially
@@ -93,8 +88,7 @@ Labels and Selectors. Applying a label to the prototype VM, and using
 that `matchLabel` on a service is sufficient to expose the service on
 all derived VM’s.
 
-PersistentVolumeClaims
-----------------------
+## PersistentVolumeClaims
 
 Another thing to consider with vmctl is the use of shared volumes. By
 nature vmctl is designed to spawn an arbitrary number of VirtualMachines
@@ -103,8 +97,7 @@ Because of this, using shared volumes in read-write mode should be
 avoided, or the PVC’s could be corrupted. To avoid this issue, ephemeral
 disks or ContainerDisks could be used.
 
-Examples
-========
+# Examples
 
 The following PodPreset applies to all examples below. This is done to
 remove lines that are related to the Kubernetes DownwardAPI in order to
@@ -129,8 +122,7 @@ make the examples more clear.
               fieldRef:
                 fieldPath: metadata.name
 
-Deployment
-----------
+## Deployment
 
 This is an example of using vmctl as a Deployment (Note: this example
 uses the `have-podinfo` PodPreset above):
@@ -162,8 +154,7 @@ uses the `have-podinfo` PodPreset above):
 This example would look for a VirtualMachine in the `default` namespace
 named `testvm`, and instantiate 3 replicas of it.
 
-Daemonset
----------
+## Daemonset
 
 This is an example of using vmctl as a Daemonset (Note: this example
 uses the `have-podinfo` PodPreset above):
@@ -195,8 +186,7 @@ This example would look for a VirtualMachine in the `default` namespace
 named `testvm`, and instantiate a VirtualMachine on every node in the
 Kubernetes cluster.
 
-Service
--------
+## Service
 
 Assuming a controller similar to the examples above, where a label
 `app: vmctl` is used, a service to expose the VM’s could look like this:

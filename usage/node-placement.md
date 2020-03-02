@@ -1,17 +1,15 @@
-Assigning VMs to Nodes
-======================
+# Assigning VMs to Nodes
 
 You can constrain the VM to only run on specific nodes or to prefer
 running on specific nodes:
 
--   **nodeSelector**
+- **nodeSelector**
 
--   **Affinity and anti-affinity**
+- **Affinity and anti-affinity**
 
--   **Taints and Tolerations**
+- **Taints and Tolerations**
 
-nodeSelector
-------------
+## nodeSelector
 
 Setting `spec.nodeSelector` requirements, constrains the scheduler to
 only schedule VMs on nodes, which contain the specified labels. In the
@@ -45,8 +43,7 @@ these labels in their metadata. It works exactly like the Pods
 Documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector)
 for more examples.
 
-Affinity and anti-affinity
---------------------------
+## Affinity and anti-affinity
 
 The `spec.affinity` field allows specifying hard- and soft-affinity for
 VMs. It is possible to write matching rules agains workloads (VMs and
@@ -103,8 +100,7 @@ includes `podAffinity`, `podAntiAffinity`, `nodeAffinity` and
 Documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity)
 for more examples and details.
 
-Taints and Tolerations
-----------------------
+## Taints and Tolerations
 
 Affinity as described above, is a property of VMs that attracts them to
 a set of nodes (either as a preference or a hard requirement). Taints

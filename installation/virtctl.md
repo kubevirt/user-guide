@@ -4,22 +4,22 @@ Basic VirtualMachineInstance operations can be performed with the stock
 `kubectl` utility. However, the `virtctl` binary utility is required to
 use advanced features such as:
 
--   Serial and graphical console access
+- Serial and graphical console access
 
 It also provides convenience commands for:
 
--   Starting and stopping VirtualMachineInstances
+- Starting and stopping VirtualMachineInstances
 
--   Live migrating VirtualMachineInstances
+- Live migrating VirtualMachineInstances
 
 There are two ways to get it:
 
--   the most recent version of the tool can be retrieved from the
-    [official release
-    page](https://github.com/kubevirt/kubevirt/releases)
+- the most recent version of the tool can be retrieved from the
+  [official release
+  page](https://github.com/kubevirt/kubevirt/releases)
 
--   it can be installed as a `kubectl` plugin using
-    [krew](https://krew.dev/)
+- it can be installed as a `kubectl` plugin using
+  [krew](https://krew.dev/)
 
 Example:
 
@@ -49,4 +49,3 @@ Every occurrence throughout this guide of
 should then be read as
 
     $ kubectl virt <command>...
-

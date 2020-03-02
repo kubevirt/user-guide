@@ -1,20 +1,17 @@
-Virtual Machines
-================
+# Virtual Machines
 
 The `VirtualMachineInstance` type conceptionally has two parts:
 
--   Information for making scheduling decisions
+- Information for making scheduling decisions
 
--   Information about the virtual machine ABI
+- Information about the virtual machine ABI
 
 Every `VirtualMachineInstance` object represents a single running
 virtual machine instance.
 
-Creation
-========
+# Creation
 
-API Overview
-------------
+## API Overview
 
 With the installation of KubeVirt, new types are added to the Kubernetes
 API to manage Virtual Machines.
@@ -22,8 +19,7 @@ API to manage Virtual Machines.
 You can interact with the new resources (via `kubectl`) as you would
 with any other API resource.
 
-VirtualMachineInstance API
---------------------------
+## VirtualMachineInstance API
 
 > Note: A full API reference is available at
 > <https://kubevirt.io/api-reference/>.
@@ -70,14 +66,13 @@ and an ephemeral empty disk with a capacity of `2Gi`. For the sake of
 simplicity, the volume sources in this example are ephemeral and don’t
 require a provisioner in your cluster.
 
-What’s next
-===========
+# What’s next
 
--   More information about persistent and ephemeral volumes:
-    [Disks and Volumes](creation/disks-and-volumes.md)
+- More information about persistent and ephemeral volumes:
+  [Disks and Volumes](creation/disks-and-volumes.md)
 
--   How to access a VirtualMachineInstance via `console` or `vnc`:
-    [Console Access](usage/graphical-and-console-access.md)
+- How to access a VirtualMachineInstance via `console` or `vnc`:
+  [Console Access](usage/graphical-and-console-access.md)
 
--   How to customize VirtualMachineInstances with `cloud-init`:
-    [Cloud Init] (creation/cloud-init.md)
+- How to customize VirtualMachineInstances with `cloud-init`:
+  [Cloud Init](creation/cloud-init.md)

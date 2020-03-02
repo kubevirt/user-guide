@@ -1,5 +1,4 @@
-Enabling NetworkPolicy for VirtualMachineInstance
-=================================================
+# Enabling NetworkPolicy for VirtualMachineInstance
 
 Before creating NetworkPolicy objects, make sure you are using a
 networking solution which supports NetworkPolicy. Network isolation is
@@ -13,8 +12,7 @@ objects in that namespace to indicate the allowed incoming connections.
 > With other words, labels on vmis can be matched by `spec.podSelector`
 > on the policy.
 
-Create NetworkPolicy to Deny All Traffic
-----------------------------------------
+## Create NetworkPolicy to Deny All Traffic
 
 To make a project “deny by default” add a NetworkPolicy object that
 matches all vmis but accepts no traffic.
@@ -63,8 +61,7 @@ object similar to:
         - protocol: TCP
           port: 8443
 
-Create NetworkPolicy to deny traffic by labels
-----------------------------------------------
+## Create NetworkPolicy to deny traffic by labels
 
 To make one specific vmi with a label `type: test` to reject all traffic
 from other vmis, create:

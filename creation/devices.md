@@ -1,16 +1,14 @@
-Virtualized Hardware Configuration
-==================================
+# Virtualized Hardware Configuration
 
 Fine-tuning different aspects of the hardware which are not device
 related (BIOS, mainboard, …) is sometimes necessary to allow guest
 operating systems to properly boot and reboot.
 
-Machine Type
-------------
+## Machine Type
 
-QEMU is able to work with two different classes of chipsets for x86\_64,
-so called machine types. The x86\_64 chipsets are i440fx (also called
-pc) and q35. They are versioned based on qemu-system-latexmath:$ARCH,
+QEMU is able to work with two different classes of chipsets for x86_64,
+so called machine types. The x86_64 chipsets are i440fx (also called
+pc) and q35. They are versioned based on qemu-system-latexmath:\$ARCH,
 following the format `pc-${machine_type}-${qemu_version}`,
 e.g.`pc-i440fx-2.10` and `pc-q35-2.10`.
 
@@ -39,8 +37,7 @@ type is desired, it is configurable through the following structure:
 Comparison of the machine types’ internals can be found [at QEMU
 wiki](https://wiki.qemu.org/Features/Q35).
 
-BIOS/UEFI
----------
+## BIOS/UEFI
 
 All virtual machines use BIOS by default for booting.
 
@@ -67,8 +64,7 @@ It is possible to utilize UEFI/OVMF by setting a value via
 
 SecureBoot is not yet supported.
 
-SMBIOS Firmware
----------------
+## SMBIOS Firmware
 
 In order to provide a consistent view on the virtualized hardware for
 the guest OS, the SMBIOS UUID can be set to a constant value via
@@ -97,8 +93,7 @@ the guest OS, the SMBIOS UUID can be set to a constant value via
 In addition, the SMBIOS serial number can be set to a constant value via
 `spec.firmware.serial`, as demonstrated above.
 
-CPU
----
+## CPU
 
 **Note**: This is not related to scheduling decisions or resource
 assignment.
@@ -261,7 +256,7 @@ As special cases you can set `spec.domain.cpu.model` equals to: -
           model: host-passthrough
     ...
 
--   `host-model` to get CPU on the VM close to the node one
+- `host-model` to get CPU on the VM close to the node one
 
 <!-- -->
 
@@ -304,16 +299,16 @@ following policies: force, require, optional, disable, forbid.
 
 Behaviour according to Policies:
 
--   All policies will be passed to libvirt during virtual machine
-    creation.
+- All policies will be passed to libvirt during virtual machine
+  creation.
 
--   In case the feature gate "CPUNodeDiscovery" is enabled and the
-    policy is omitted or has "require" value, then the virtual machine
-    could be scheduled only on nodes that support this feature.
+- In case the feature gate "CPUNodeDiscovery" is enabled and the
+  policy is omitted or has "require" value, then the virtual machine
+  could be scheduled only on nodes that support this feature.
 
--   In case the feature gate "CPUNodeDiscovery" is enabled and the
-    policy has "forbid" value, then the virtual machine would **not** be
-    scheduled on nodes that support this feature.
+- In case the feature gate "CPUNodeDiscovery" is enabled and the
+  policy has "forbid" value, then the virtual machine would **not** be
+  scheduled on nodes that support this feature.
 
 Full description about features and policies can be found
 [here](https://libvirt.org/formatdomain.html#elementsCPU).
@@ -324,17 +319,16 @@ selector from cpu features with format:
 `feature.node.kubernetes.io/cpu-feature-apic`. When VM doesn’t have cpu
 feature, then no node selector is created.
 
-Clock
------
+## Clock
 
 ### Guest time
 
 Sets the virtualized hardware clock inside the VM to a specific time.
 Available options are
 
--   **utc**
+- **utc**
 
--   **timezone**
+- **timezone**
 
 See the [Clock API
 Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_clock)
@@ -387,13 +381,13 @@ local time.
 
 ### Timers
 
--   **pit**
+- **pit**
 
--   **rtc**
+- **rtc**
 
--   **kvm**
+- **kvm**
 
--   **hyperv**
+- **hyperv**
 
 A pretty common timer configuration for VMs looks like this:
 
@@ -435,8 +429,7 @@ for all possible configuration options.
 to explicitly disable them. We may in the future decide to add them via
 cluster-level defaulting, if they are part of a QEMU machine definition.
 
-Random number generator (RNG)
------------------------------
+## Random number generator (RNG)
 
 You may want to use entropy collected by your cluster nodes inside your
 guest. KubeVirt allows to add a `virtio` RNG device to a virtual machine
@@ -459,8 +452,7 @@ RNG device with enough entropy and may fail to boot without it. For
 example, fresh Fedora images with newer kernels (4.16.4+) may require
 the `virtio` RNG device to be present to boot to login.
 
-Video and Graphics Device
--------------------------
+## Video and Graphics Device
 
 By default a minimal Video and Graphics device configuration will be
 applied to the VirtualMachineInstance. The video device is `vga`
@@ -490,18 +482,17 @@ VMIs without graphics and video devices are very often referenced as
 If using a huge amount of small VMs this can be helpful to increase the
 VMI density per node, since no memory needs to be reserved for video.
 
-Features
---------
+## Features
 
 KubeVirt supports a range of virtualization features which may be
 tweaked in order to allow non-Linux based operating systems to properly
 boot. Most noteworthy are
 
--   **acpi**
+- **acpi**
 
--   **apic**
+- **apic**
 
--   **hyperv**
+- **hyperv**
 
 A common feature configuration is shown by the following example:
 
@@ -536,8 +527,7 @@ See the [Features API
 Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_features)
 for all available features and configuration options.
 
-Resources Requests and Limits
------------------------------
+## Resources Requests and Limits
 
 An optional resource request can be specified by the users to allow the
 scheduler to make a better decision in finding the most suitable Node to
@@ -566,7 +556,7 @@ place the VM.
 
 ### CPU
 
-Specifying CPU limits will determine the amount of *cpu* *shares* set on
+Specifying CPU limits will determine the amount of _cpu_ _shares_ set on
 the control group the VM is running in, in other words, the amount of
 time the VM’s CPUs can execute on the assigned resources when there is a
 competition for CPU resources.
@@ -586,13 +576,12 @@ Please see [how Pods with resource requests are
 scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled)
 for additional information on resource requests and limits.
 
-Hugepages
----------
+## Hugepages
 
 KubeVirt give you possibility to use hugepages as backing memory for
 your VM. You will need to provide desired amount of memory
 `resources.requests.memory` and size of hugepages to use
-`memory.hugepages.pageSize`, for example for x86\_64 architecture it can
+`memory.hugepages.pageSize`, for example for x86_64 architecture it can
 be `2Mi`.
 
     apiVersion: kubevirt.io/v1alpha1
@@ -620,14 +609,13 @@ regular memory it will use node hugepages of the size of `2Mi`.
 
 ### Limitations
 
--   a node must have pre-allocated hugepages
+- a node must have pre-allocated hugepages
 
--   hugepages size cannot be bigger than requested memory
+- hugepages size cannot be bigger than requested memory
 
--   requested memory must be divisible by hugepages size
+- requested memory must be divisible by hugepages size
 
-Input Devices
--------------
+## Input Devices
 
 ### Tablet
 

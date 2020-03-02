@@ -33,12 +33,12 @@ Alternatively, existing kubevirt-config can be altered:
 
 ## Limitations
 
--   Virtual machines using a PersistentVolumeClaim (PVC) must have a
-    shared ReadWriteMany (RWX) access mode to be live migrated.
+- Virtual machines using a PersistentVolumeClaim (PVC) must have a
+  shared ReadWriteMany (RWX) access mode to be live migrated.
 
--   Live migration is not allowed with a pod network binding of bridge
-    interface type
-    (<https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/interfaces-and-networks.html>)
+- Live migration is not allowed with a pod network binding of bridge
+  interface type
+  (<https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/interfaces-and-networks.html>)
 
 ## Initiate live migration
 

@@ -1,27 +1,23 @@
-Graphical and Serial Console Access
-===================================
+# Graphical and Serial Console Access
 
 Once a virtual machine is started you are able to connect to the
 consoles it exposes. Usually there are two types of consoles:
 
--   Serial Console
+- Serial Console
 
--   Graphical Console (VNC)
+- Graphical Console (VNC)
 
-> Note: You need to have `virtctl`
-> [installed](/installation/?id=client-side-virtctl-deployment) to gain
+> Note: You need to have `virtctl` > [installed](/installation/?id=client-side-virtctl-deployment) to gain
 > access to the VirtualMachineInstance.
 
-Accessing the serial console
-----------------------------
+## Accessing the serial console
 
 The serial console of a virtual machine can be accessed by using the
 `console` command:
 
     $ virtctl console --kubeconfig=$KUBECONFIG testvmi
 
-Accessing the graphical console (VNC)
--------------------------------------
+## Accessing the graphical console (VNC)
 
 Accessing the graphical console of a virtual machine is usually done
 through VNC, which requires `remote-viewer`. Once the tool is installed
@@ -29,8 +25,7 @@ you can access the graphical console using:
 
     $ virtctl vnc --kubeconfig=$KUBECONFIG testvmi
 
-Debugging console access
-------------------------
+## Debugging console access
 
 Should the connection fail, you can use the `-v` flag to get more output
 from both `virtctl` and the `remote-viewer` tool, to troubleshoot the
@@ -44,8 +39,7 @@ problem.
 > you can proxy the apiserver port with ssh to your machine (either
 > direct or in combination with `kubectl proxy`)
 
-RBAC Permissions for Console/VNC Access
----------------------------------------
+## RBAC Permissions for Console/VNC Access
 
 ### Using Default RBAC ClusterRoles
 

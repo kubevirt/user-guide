@@ -1,11 +1,9 @@
-Windows driver disk usage
-=========================
+# Windows driver disk usage
 
 Purpose of this document is to explain how to install virtio drivers for
 Microsoft Windows running in a fully virtualized guest.
 
-Do I need virtio drivers?
--------------------------
+## Do I need virtio drivers?
 
 Yes. Without the virtio drivers, you cannot use
 [paravirtualized](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_getting_started_guide/sec-virtualization_getting_started-products-virtualized-hardware-devices#sec-Virtualization_Getting_Started-Products-paravirtdevices)
@@ -16,42 +14,41 @@ For more details on configuring your guest please refer to [Guest
 Virtual Machine Device
 Configuration](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/chap-guest_virtual_machine_device_configuration).
 
-Which drivers I need to install?
---------------------------------
+## Which drivers I need to install?
 
 There are usually up to 8 possible devices that are required to run
 Windows smoothly in a virtualized environment. KubeVirt currently
 supports only:
 
--   **viostor**, the block driver, applies to SCSI Controller in the
-    Other devices group.
+- **viostor**, the block driver, applies to SCSI Controller in the
+  Other devices group.
 
--   **viorng**, the entropy source driver, applies to PCI Device in the
-    Other devices group.
+- **viorng**, the entropy source driver, applies to PCI Device in the
+  Other devices group.
 
--   **NetKVM**, the network driver, applies to Ethernet Controller in
-    the Other devices group. Available only if a virtio NIC is
-    configured.
+- **NetKVM**, the network driver, applies to Ethernet Controller in
+  the Other devices group. Available only if a virtio NIC is
+  configured.
 
 Other virtio drivers, that exists and might be supported in the future:
 
--   Balloon, the balloon driver, applies to PCI Device in the Other
-    devices group
+- Balloon, the balloon driver, applies to PCI Device in the Other
+  devices group
 
--   vioserial, the paravirtual serial driver, applies to PCI Simple
-    Communications Controller in the Other devices group.
+- vioserial, the paravirtual serial driver, applies to PCI Simple
+  Communications Controller in the Other devices group.
 
--   viocsci, the SCSI block driver, applies to SCSI Controller in the
-    Other devices group.
+- viocsci, the SCSI block driver, applies to SCSI Controller in the
+  Other devices group.
 
--   qemupciserial, the emulated PCI serial driver, applies to PCI Serial
-    Port in the Other devices group.
+- qemupciserial, the emulated PCI serial driver, applies to PCI Serial
+  Port in the Other devices group.
 
--   qxl, the paravirtual video driver, applied to Microsoft Basic
-    Display Adapter in the Display adapters group.
+- qxl, the paravirtual video driver, applied to Microsoft Basic
+  Display Adapter in the Display adapters group.
 
--   pvpanic, the paravirtual panic driver, applies to Unknown device in
-    the Other devices group.
+- pvpanic, the paravirtual panic driver, applies to Unknown device in
+  the Other devices group.
 
 > **Note**
 >
@@ -106,8 +103,7 @@ For more details on how to choose a proper driver and how to install the
 driver, please refer to the [Windows Guest Virtual Machines on Red Hat
 Enterprise Linux 7](https://access.redhat.com/articles/2470791).
 
-How to obtain virtio drivers?
------------------------------
+## How to obtain virtio drivers?
 
 The virtio Windows drivers are distributed in a form of
 [containerDisk](https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/disks-and-volumes.html#containerDisk),
@@ -121,8 +117,7 @@ be pulled as any other docker container:
 However, pulling image manually is not required, it will be downloaded
 if not present by Kubernetes when deploying VirtualMachine.
 
-Attaching to VirtualMachine
----------------------------
+## Attaching to VirtualMachine
 
 KubeVirt distributes virtio drivers for Microsoft Windows in a form of
 container disk. The package contains the virtio drivers and QEMU guest

@@ -119,6 +119,7 @@ parameters:
   name: CPU_CORES
   value: "4"
 ```
+
 Note that the template above defines free parameters (`NAME` and
 `CPU_CORES`) and the `NAME` parameter does not have specified default
 value.
@@ -165,7 +166,7 @@ command:
 ```
 $ oc process -f cluster/examples/vmi-template-fedora.yaml --parameters
 NAME                DESCRIPTION           GENERATOR           VALUE
-NAME                Name for the new VM                       
+NAME                Name for the new VM
 MEMORY              Amount of memory                          4096Mi
 CPU_CORES           Amount of cores                           4
 ```
@@ -313,7 +314,9 @@ path
 ```bash
 /mnt/sda1/images/testvm/disk.img
 ```
+
 Avaible in the each OpenShift/Kubevirt compute nodes.
 
 ## Additional information You can follow [Virtual Machine Lifecycle
+
 Guide](usage/life-cycle.md) for further reference.

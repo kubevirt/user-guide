@@ -1,8 +1,6 @@
-DNS for Services and VirtualMachineInstances
-============================================
+# DNS for Services and VirtualMachineInstances
 
-Creating unique DNS entries per VirtualMachineInstance
-------------------------------------------------------
+## Creating unique DNS entries per VirtualMachineInstance
 
 In order to create unique DNS entries per VirtualMachineInstance, it is
 possible to set `spec.hostname` and `spec.subdomain`. If a subdomain is

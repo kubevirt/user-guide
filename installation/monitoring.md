@@ -1,11 +1,9 @@
-Monitoring KubeVirt components
-==============================
+# Monitoring KubeVirt components
 
 All KubeVirt system-components expose Prometheus metrics at their
 `/metrics` REST endpoint.
 
-Custom Service Discovery
-------------------------
+## Custom Service Discovery
 
 Prometheus supports service discovery based on
 [Pods](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod)
@@ -52,8 +50,7 @@ By watching this endpoint for added and removed IPs to
 `subsets.ports`, it is possible to always get a complete list of
 ready-to-be-scraped Prometheus targets.
 
-Integrating with the prometheus-operator
-----------------------------------------
+## Integrating with the prometheus-operator
 
 The [prometheus-operator](https://github.com/coreos/prometheus-operator)
 can make use of the `kubevirt-prometheus-metrics` service to
@@ -68,11 +65,11 @@ KubeVirt’s namespace.
 Two settings are exposed in the `KubeVirt` custom resource to direct
 KubeVirt to create these resources correctly:
 
--   `monitorNamespace`: The namespace that prometheus-operator runs in.
-    Defaults to `openshift-monitoring`.
+- `monitorNamespace`: The namespace that prometheus-operator runs in.
+  Defaults to `openshift-monitoring`.
 
--   `monitorAccount`: The serviceAccount that prometheus-operator runs
-    with. Defaults to `prometheus-k8s`.
+- `monitorAccount`: The serviceAccount that prometheus-operator runs
+  with. Defaults to `prometheus-k8s`.
 
 If the prometheus-operator for a given deployment uses these defaults,
 then these values can be omitted.
@@ -87,8 +84,7 @@ An example of the KubeVirt resource depicting these default values:
       monitorNamespace: openshift-monitoring
       monitorAccount: prometheus-k8s
 
-Integrating with the OKD cluster-monitoring-operator
-----------------------------------------------------
+## Integrating with the OKD cluster-monitoring-operator
 
 After the
 [cluster-monitoring-operator](https://github.com/openshift/cluster-monitoring-operator)
@@ -97,8 +93,7 @@ is up and running, KubeVirt will detect the existence of the
 `openshift.io/cluster-monitoring` label, it will automatically be picked
 up by the cluster monitor.
 
-Metrics about Virtual Machines
-------------------------------
+## Metrics about Virtual Machines
 
 The endpoints report metrics related to the runtime behaviour of the
 Virtual Machines. All the relevant metrics are prefixed with
@@ -121,8 +116,7 @@ Please note the `domain` label in the above example. This label is
 deprecated and it will be removed in a future release. You should
 identify the VMI using the `node`, `namespace`, `name` labels instead.
 
-Important Queries
------------------
+## Important Queries
 
 ### Detecting connection issues for the REST client
 

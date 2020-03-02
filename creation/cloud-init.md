@@ -1,8 +1,6 @@
-Startup Scripts
-===============
+# Startup Scripts
 
-Overview
---------
+## Overview
 
 KubeVirt supports the ability to assign a startup script to a
 VirtualMachineInstance instance which is executed automatically when the
@@ -42,8 +40,7 @@ is a feature the KubeVirt upstream community has shown interest in. As a
 result, it is likely Sysprep support will make its way into a future
 KubeVirt release.
 
-Cloud-init Examples
--------------------
+## Cloud-init Examples
 
 ### User Data
 
@@ -135,9 +132,9 @@ in the cloudInitNoCloud Volume’s userDataBase64 field. There is a
 corresponding disks entry that references the cloud-init volume and
 assigns it to the VM’s device.
 
-*Users also have the option of storing the startup script in a
+_Users also have the option of storing the startup script in a
 Kubernetes Secret and referencing the Secret in the VM’s spec. Examples
-further down in the document illustrate how that is done.*
+further down in the document illustrate how that is done._
 
     # Create a simple startup script
 
@@ -358,7 +355,7 @@ A cloud-init [network version
 configuration can be set to configure the network at boot.
 
 Cloud-init [user-data](#user-data) **must** be set for cloud-init to
-parse *network-config* even if it is just the user-data config header:
+parse _network-config_ even if it is just the user-data config header:
 
     #cloud-config
 
@@ -422,9 +419,9 @@ stored in the cloudInitNoCloud Volume’s networkDataBase64 field. There
 is a corresponding disks entry that references the cloud-init volume and
 assigns it to the VM’s device.
 
-*Users also have the option of storing the network-config in a
+_Users also have the option of storing the network-config in a
 Kubernetes Secret and referencing the Secret in the VM’s spec. Examples
-further down in the document illustrate how that is done.*
+further down in the document illustrate how that is done._
 
     # Create a simple network-config
 
@@ -542,8 +539,7 @@ network-config and reference that Secret in the VM’s spec.
     # Post the VM
     kubectl create -f my-vmi.yaml
 
-Debugging
----------
+## Debugging
 
 Depending on the operating system distribution in use, cloud-init output
 is often printed to the console output on boot up. When developing

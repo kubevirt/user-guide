@@ -1,8 +1,6 @@
-Run Strategies
-==============
+# Run Strategies
 
-Overview
---------
+## Overview
 
 VirtualMachines have a `Running` setting that determines whether or not
 there should be a guest running or not. Because KubeVirt will always
@@ -20,29 +18,28 @@ has been introduced. This is mutually exclusive with `Running` as they
 have somewhat overlapping conditions. There are currently four
 RunStrategies defined:
 
--   Always: A VirtualMachineInstance will always be present. If the
-    VirtualMachineInstance crashed, a new one will be spawned. This is
-    the same behavior as `spec.running: true`.
+- Always: A VirtualMachineInstance will always be present. If the
+  VirtualMachineInstance crashed, a new one will be spawned. This is
+  the same behavior as `spec.running: true`.
 
--   RerunOnFailure: A VirtualMachineInstance will be respawned if the
-    previous instance failed in an error state. It will not be
-    re-created if the guest stopped successfully (e.g. shut down from
-    inside guest).
+- RerunOnFailure: A VirtualMachineInstance will be respawned if the
+  previous instance failed in an error state. It will not be
+  re-created if the guest stopped successfully (e.g. shut down from
+  inside guest).
 
--   Manual: The presence of a VirtualMachineInstance or lack thereof is
-    controlled exclusively by the start/stop/restart VirtualMachint
-    subresource endpoints.
+- Manual: The presence of a VirtualMachineInstance or lack thereof is
+  controlled exclusively by the start/stop/restart VirtualMachint
+  subresource endpoints.
 
--   Halted: No VirtualMachineInstance will be present. If a guest is
-    already running, it will be stopped. This is the same behavior as
-    `spec.running: false`.
+- Halted: No VirtualMachineInstance will be present. If a guest is
+  already running, it will be stopped. This is the same behavior as
+  `spec.running: false`.
 
-*Note*: RunStrategy and Running are mutually exclusive, because they can
+_Note_: RunStrategy and Running are mutually exclusive, because they can
 be contradictory. The API server will reject VirtualMachine resources
 that define both.
 
-Virtctl
--------
+## Virtctl
 
 The `start`, `stop` and `restart` methods of virtctl will invoke their
 respective subresources of VirtualMachines. This can have an effect on
@@ -94,8 +91,7 @@ the runStrategy of the VirtualMachine as below:
 Table entries marked with `-` don’t make sense, so won’t have an effect
 on RunStrategy.
 
-RunStrategy Examples
---------------------
+## RunStrategy Examples
 
 ### Always
 

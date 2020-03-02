@@ -1,5 +1,4 @@
-VirtualMachineInstance with dedicated CPU resources
-===================================================
+# VirtualMachineInstance with dedicated CPU resources
 
 Certain workloads, requiring a predictable latency and enhanced
 performance during its execution would benefit from obtaining dedicated
@@ -88,8 +87,7 @@ OR
             memory: 2Gi
     [...]
 
-Requesting dedicated CPU for QEMU emulator
-------------------------------------------
+## Requesting dedicated CPU for QEMU emulator
 
 A number of QEMU threads, such as QEMU main event loop, async I/O
 operation completion, etc., also execute on the same physical CPUs as
@@ -118,8 +116,7 @@ Example:
             cpu: 2
             memory: 2Gi
 
-Identifying nodes with a running CPU manager
---------------------------------------------
+## Identifying nodes with a running CPU manager
 
 At this time, [Kubernetes doesn’t label the
 nodes](https://github.com/kubernetes/kubernetes/issues/66525) that has
@@ -137,10 +134,10 @@ When automatic identification is disabled, cluster administrator may
 manually add the above label to all the nodes when CPU Manager is
 running.
 
--   Nodes’ labels are view-able: `kubectl describe nodes`
+- Nodes’ labels are view-able: `kubectl describe nodes`
 
--   Administrators may manually label a missing node:
-    `kubectl label node [node_name] cpumanager=true`
+- Administrators may manually label a missing node:
+  `kubectl label node [node_name] cpumanager=true`
 
 ### Enabling the CPU Manager automatic identification feature gate
 
@@ -166,8 +163,7 @@ Alternatively, users can edit an existing kubevirt-config:
     data:
       feature-gates: "DataVolumes,CPUManager"
 
-Sidecar containers and CPU allocation overhead
-----------------------------------------------
+## Sidecar containers and CPU allocation overhead
 
 **Note:** In order to run sidecar containers, KubeVirt requires the
 `Sidecar` feature gate to be enabled by adding `Sidecar` to the

@@ -1,26 +1,23 @@
-VirtualMachineInstanceReplicaSet
-================================
+# VirtualMachineInstanceReplicaSet
 
-VirtualMachineInstanceReplicaSet
---------------------------------
+## VirtualMachineInstanceReplicaSet
 
-A *VirtualMachineInstanceReplicaSet* tries to ensures that a specified
+A _VirtualMachineInstanceReplicaSet_ tries to ensures that a specified
 number of VirtualMachineInstance replicas are running at any time. In
-other words, a *VirtualMachineInstanceReplicaSet* makes sure that a
+other words, a _VirtualMachineInstanceReplicaSet_ makes sure that a
 VirtualMachineInstance or a homogeneous set of VirtualMachineInstances
 is always up and ready. It is very similar to a [Kubernetes
 ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/).
 
 No state is kept and no guarantees about the maximum number of
 VirtualMachineInstance replicas which are up are given. For example, the
-*VirtualMachineInstanceReplicaSet* may decide to create new replicas if
+_VirtualMachineInstanceReplicaSet_ may decide to create new replicas if
 possibly still running VMs are entering an unknown state.
 
-How to use a VirtualMachineInstanceReplicaSet
----------------------------------------------
+## How to use a VirtualMachineInstanceReplicaSet
 
-The *VirtualMachineInstanceReplicaSet* allows us to specify a
-*VirtualMachineInstanceTemplate* in `spec.template`. It consists of
+The _VirtualMachineInstanceReplicaSet_ allows us to specify a
+_VirtualMachineInstanceTemplate_ in `spec.template`. It consists of
 `ObjectMetadata` in `spec.template.metadata`, and a
 `VirtualMachineInstanceSpec` in `spec.template.spec`. The specification
 of the virtual machine is equal to the specification of the virtual
@@ -36,11 +33,10 @@ virtual machine labels as specified in `spec.template.metadata.labels`.
 If the selector does not match these labels, or they are empty, the
 controller will simply do nothing except from logging an error. The user
 is responsible for not creating other virtual machines or
-*VirtualMachineInstanceReplicaSets* which conflict with the selector and
+_VirtualMachineInstanceReplicaSets_ which conflict with the selector and
 the template labels.
 
-Exposing a VirtualMachineInstanceReplicaSet as a Service
---------------------------------------------------------
+## Exposing a VirtualMachineInstanceReplicaSet as a Service
 
 A VirtualMachineInstanceReplicaSet could be exposed as a service. When
 this is done, one of the VirtualMachineInstances replicas will be picked
@@ -56,8 +52,7 @@ apply to a VirtualMachineInstanceReplicaSet. See [Exposing
 VirtualMachineInstance](http://kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service)
 for more details.
 
-When to use a VirtualMachineInstanceReplicaSet
-----------------------------------------------
+## When to use a VirtualMachineInstanceReplicaSet
 
 > **Note:** The base assumption is that referenced disks are read-only
 > or that the VMIs are writing internally to a tmpfs. The most obvious
@@ -72,19 +67,19 @@ state after the VMs are terminated.
 [Volume types](workloads/virtual-machines/disks-and-volumes.md) which
 work well in combination with a VirtualMachineInstanceReplicaSet are:
 
--   **cloudInitNoCloud**
+- **cloudInitNoCloud**
 
--   **ephemeral**
+- **ephemeral**
 
--   **containerDisk**
+- **containerDisk**
 
--   **emptyDisk**
+- **emptyDisk**
 
--   **configMap**
+- **configMap**
 
--   **secret**
+- **secret**
 
--   any other type, if the VMI writes internally to a tmpfs
+- any other type, if the VMI writes internally to a tmpfs
 
 ### Fast starting ephemeral Virtual Machines
 
@@ -119,8 +114,7 @@ needs to be aware of KubeVirt and create migrations, instead of
 > However, migratable backing store support has not officially landed
 > yet in KubeVirt and is untested.
 
-Example
--------
+## Example
 
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstanceReplicaSet
@@ -209,8 +203,7 @@ Kubernetes will create three virtual machines based on the template.
 moment when showing the status, three Virtual Machines were already
 created, but only two are running and ready.
 
-Scaling via the Scale Subresource
----------------------------------
+## Scaling via the Scale Subresource
 
 > **Note:** This requires the `CustomResourceSubresources` feature gate
 > to be enables for clusters prior to 1.11.
@@ -220,8 +213,7 @@ As a consequence it is possible to scale it via `kubectl`:
 
     $ kubectl scale vmirs myvmirs --replicas 5
 
-Using the Horizontal Pod Autoscaler
------------------------------------
+## Using the Horizontal Pod Autoscaler
 
 > **Note:** This requires at cluster newer or equal to 1.11.
 
@@ -245,5 +237,4 @@ reference it in the spec of the autoscaler:
 
 Right now `kubectl autoscale` does not work with Custom Resources. Only
 the declarative form of writing the HPA yaml manually and posting it via
-`kubectl
-create` is supported.
+`kubectl create` is supported.

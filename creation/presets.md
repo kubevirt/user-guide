@@ -1,8 +1,6 @@
-Presets
-=======
+# Presets
 
-What is a VirtualMachineInstancePreset?
----------------------------------------
+## What is a VirtualMachineInstancePreset?
 
 `VirtualMachineInstancePresets` are an extension to general
 `VirtualMachineInstance` configuration behaving much like `PodPresets`
@@ -12,8 +10,7 @@ existing spec for the `VirtualMachineInstance`. This allows for re-use
 of common settings that should apply to multiple
 `VirtualMachineInstances`.
 
-Create a VirtualMachineInstancePreset
--------------------------------------
+## Create a VirtualMachineInstancePreset
 
 You can describe a `VirtualMachineInstancePreset` in a YAML file. For
 example, the `vmi-preset.yaml` file below describes a
@@ -33,7 +30,7 @@ be created with a resource request for 64M of RAM.
           requests:
             memory: 64M
 
--   Create a `VirtualMachineInstancePreset` based on that YAML file:
+- Create a `VirtualMachineInstancePreset` based on that YAML file:
 
 <!-- -->
 
@@ -77,7 +74,7 @@ general rule of thumb is to use os/shortname, e.g.
 
 ### Updating a VirtualMachineInstancePreset
 
-If a `VirtualMachineInstancePreset` is modified, changes will *not* be
+If a `VirtualMachineInstancePreset` is modified, changes will _not_ be
 applied to existing `VirtualMachineInstances`. This applies to both the
 `Selector` indicating which `VirtualMachineInstances` should be matched,
 and also the `Domain` section which lists the settings that should be
@@ -161,13 +158,13 @@ re-usable settings that can be applied across various machines. Multiple
 methods are available to match the labels of a `VirtualMachineInstance`
 using selectors.
 
--   matchLabels: Each `VirtualMachineInstance` can use a specific label
-    shared by all
+- matchLabels: Each `VirtualMachineInstance` can use a specific label
+  shared by all
 
-    instances. \* matchExpressions: Logical operators for sets can be
-    used to match multiple
+  instances. \* matchExpressions: Logical operators for sets can be
+  used to match multiple
 
-    labels.
+  labels.
 
 Using matchLabels, the label used in the `VirtualMachineInstancePreset`
 must match one of the labels of the `VirtualMachineInstance`:
@@ -227,8 +224,7 @@ annotation:
         virtualmachineinstancepresets.admission.kubevirt.io/exclude: "true"
       ...
 
-Examples
---------
+## Examples
 
 ### Simple `VirtualMachineInstancePreset` Example
 

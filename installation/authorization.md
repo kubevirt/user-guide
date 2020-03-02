@@ -1,5 +1,4 @@
-Authorization
-=============
+# Authorization
 
 KubeVirt authorization is performed using Kubernete’s Resource Based
 Authorization Control system (RBAC). RBAC allows cluster admins to grant
@@ -13,8 +12,7 @@ required to launch a VirtualMachineInstance.
 With RBAC roles, admins can grant users targeted access to various
 KubeVirt features.
 
-KubeVirt Default RBAC ClusterRoles
-----------------------------------
+## KubeVirt Default RBAC ClusterRoles
 
 KubeVirt comes with a set of predefined RBAC ClusterRoles that can be
 used to grant users permissions to access KubeVirt Resources.
@@ -46,7 +44,7 @@ runtime config. This config exists within a configmap called
 **kubevirt-config** in the namespace the KubeVirt components are
 running.
 
-> *NOTE* Users are only guaranteed the ability to modify the kubevirt
+> _NOTE_ Users are only guaranteed the ability to modify the kubevirt
 > runtime configuration if a ClusterRoleBinding is used. A RoleBinding
 > will work to provide kubevirt-config access only if the RoleBinding
 > targets the same namespace the kubevirt-config exists in.
@@ -66,8 +64,7 @@ role across all namespaces.
 With a RoleBinding, users receive the permissions granted by the role
 only within a targeted namespace.
 
-Extending Kubernetes Default Roles with KubeVirt permissions
-------------------------------------------------------------
+## Extending Kubernetes Default Roles with KubeVirt permissions
 
 The aggregated ClusterRole Kubernetes feature facilitates combining
 multiple ClusterRoles into a single aggregated ClusterRole. This feature
@@ -89,8 +86,7 @@ automatically gain access to the equivalent KubeVirt roles as well.
 More information about aggregated cluster roles can be found
 [here](https://kubernetes.io/docs/admin/authorization/rbac/#aggregated-clusterroles)
 
-Creating Custom RBAC Roles
---------------------------
+## Creating Custom RBAC Roles
 
 If the default KubeVirt ClusterRoles are not expressive enough, admins
 can create their own custom RBAC roles to grant user access to KubeVirt

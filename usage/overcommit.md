@@ -1,5 +1,4 @@
-Increasing the VirtualMachineInstance Density on Nodes
-======================================================
+# Increasing the VirtualMachineInstance Density on Nodes
 
 KubeVirt does not yet support classical Memory Overcommit Management or
 Memory Ballooning. In other words VirtualMachineInstances can’t give
@@ -7,8 +6,7 @@ back memory they have allocated. However, a few other things can be
 tweaked to reduce the memory footprint and overcommit the per-VMI memory
 overhead.
 
-Remove the Graphical Devices
-----------------------------
+## Remove the Graphical Devices
 
 First the safest option to reduce the memory footprint, is removing the
 graphical device from the VMI by setting
@@ -20,8 +18,7 @@ for further details and examples.
 This will save a constant amount of `16MB` per VirtualMachineInstance
 but also disable VNC access.
 
-Overcommit the Guest Overhead
------------------------------
+## Overcommit the Guest Overhead
 
 Before you continue, make sure you make yourself comfortable with the
 [Out of Resource
@@ -58,8 +55,7 @@ VirtualMachineInstances or do extremely memory intensive tasks inside
 the VirtualMachineInstance, your VMIs will use all memory they are
 granted sooner or later.
 
-Overcommit Guest Memory
------------------------
+## Overcommit Guest Memory
 
 The third option is real memory overcommit on the VMI. In this scenario
 the VMI is explicitly told that it has more memory available than what
@@ -102,27 +98,26 @@ request is set to 2048M, if omitted. Note that the actual memory request
 depends on additional configuration options like
 OvercommitGuestOverhead.
 
-Configuring the memory pressure behaviour of nodes
---------------------------------------------------
+## Configuring the memory pressure behaviour of nodes
 
 If the node gets under memory pressure, depending on the `kubelet`
 configuration the virtual machines may get killed by the OOM handler or
 by the `kubelet` itself. It is possible to tweak that behaviour based on
 the requirements of your VirtualMachineInstances by:
 
--   Configuring [Soft Eviction
-    Thresholds](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#soft-eviction-thresholds)
+- Configuring [Soft Eviction
+  Thresholds](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#soft-eviction-thresholds)
 
--   Configuring [Hard Eviction
-    Thresholds](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#hard-eviction-thresholds)
+- Configuring [Hard Eviction
+  Thresholds](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#hard-eviction-thresholds)
 
--   Requesting the right QoS class for VirtualMachineInstances
+- Requesting the right QoS class for VirtualMachineInstances
 
--   Setting `--system-reserved` and `--kubelet-reserved`
+- Setting `--system-reserved` and `--kubelet-reserved`
 
--   Enabling KSM
+- Enabling KSM
 
--   Enabling swap
+- Enabling swap
 
 ### Configuring Soft Eviction Thresholds
 
@@ -168,14 +163,14 @@ are evicted before `Guaranteed` VMIs.
 
 This allows creating two classes of VMIs:
 
--   One type can have equal `requests.memory` and `limits.memory` set
-    and therefore gets the `Guaranteed` class assigned. This one will
-    not get evicted and should never run into memory issues, but is more
-    demanding.
+- One type can have equal `requests.memory` and `limits.memory` set
+  and therefore gets the `Guaranteed` class assigned. This one will
+  not get evicted and should never run into memory issues, but is more
+  demanding.
 
--   One type can have no `limits.memory` or a `limits.memory` which is
-    greater than `requests.memory` and therefore gets the `Burstable`
-    class assigned. These VMIs will be evicted first.
+- One type can have no `limits.memory` or a `limits.memory` which is
+  greater than `requests.memory` and therefore gets the `Burstable`
+  class assigned. These VMIs will be evicted first.
 
 ### Setting `--system-reserved` and `--kubelet-reserved`
 

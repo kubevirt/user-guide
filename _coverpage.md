@@ -4,9 +4,9 @@
 
 > Reference documentation
 
-* Installation
-* Life-cycle management
-* Additional resources
+- Installation
+- Life-cycle management
+- Additional resources
 
 [GitHub](https://github.com/kubevirt)
 [Start reading](#Introduction)
