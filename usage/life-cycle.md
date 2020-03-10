@@ -50,3 +50,27 @@ corresponding `VirtualMachineInstance` object using `kubectl`.
 > Note: Stopping a VirtualMachineInstance implies that it will be
 > deleted from the cluster. You will not be able to start this
 > VirtualMachineInstance object again.
+
+Pausing and unpausing a virtual machine
+---------------------------------------
+
+> Note: Pausing in this context refers to libvirt's `virDomainSuspend` command:  
+> "The process is frozen without further access to CPU resources and I/O but the memory used by the domain at the hypervisor level will stay allocated"
+
+To pause a virtual machine, you need the `virtctl` command line tool. Its `pause` command works on either `VirtualMachine` s
+or `VirtualMachinesInstance` s:
+
+    $ virtctl pause vm testvm
+    # OR
+    $ virtctl pause vmi testvm
+
+Paused VMIs have a `Paused` condition in their status:
+
+    $ kubectl get vmi testvm -o=jsonpath='{.status.conditions[?(@.type=="Paused")].message}'
+    VMI was paused by user
+
+Unpausing works similar to pausing:
+
+    $ virtctl unpause vm testvm
+    # OR
+    $ virtctl unpause vmi testvm

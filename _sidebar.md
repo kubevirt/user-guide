@@ -26,7 +26,7 @@
   * [Probes](creation/probes.md)
   * [Run Strategies](creation/run-strategies.md)
 * [Using Virtual Machines](usage/usage.md)
-  * [Starting and Stopping](usage/life-cycle.md)
+  * [Lifecycle](usage/life-cycle.md)
   * [Console Access (Serial and Graphical)](usage/graphical-and-console-access.md)
   * [Node Placement](usage/node-placement.md)
   * [DNS Integration](usage/dns.md)
