@@ -6,6 +6,14 @@ Zero downtime rolling updates are supported starting with release
 
 > Note: Updating is only supported from N-1 to N release.
 
+Examples:
+
+v0.17.0 to v0.18.0, 
+v0.17.1 to v0.18.2,
+v0.17.2 to v0.17.4
+
+are all valid update paths.
+
 Updates are triggered one of two ways.
 
 1.  By changing the imageTag value in the KubeVirt CR’s spec.
