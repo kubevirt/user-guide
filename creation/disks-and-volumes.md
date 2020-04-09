@@ -940,6 +940,15 @@ them. In case there are more IOThreads than CPUs, each IOThread will be
 pinned to a CPU, in a round-robin fashion. Otherwise, when there are
 fewer IOThreads than CPU, each IOThread will be pinned to a set of CPUs.
 
+#### IOThreads with QEMU Emulator thread and Dedicated (pinned) CPUs
+
+To further improve the vCPUs latency, KubeVirt can allocate an
+additional dedicated physical CPU[1](creation/dedicated-cpu.md), exclusively for the emulator thread, to which it will
+be pinned. This will effectively "isolate" the emulator thread from the vCPUs
+of the VMI. When `ioThreadsPolicy` is set to `auto` IOThreads will also be
+"isolated" from the vCPUs and placed on the same physical CPU as the QEMU
+emulator thread.
+
 ### Examples
 
 #### Shared IOThreads

@@ -98,6 +98,8 @@ order to enhance the real-time support in KubeVirt and provide improved
 latency, KubeVirt will allocate an additional dedicated CPU, exclusively
 for the emulator thread, to which it will be pinned. This will
 effectively "isolate" the emulator thread from the vCPUs of the VMI.
+In case `ioThreadsPolicy` is set to `auto` IOThreads will also be
+"isolated" and placed on the same physical CPU as the QEMU emulator thread.
 
 This functionality can be enabled by specifying
 `isolateEmulatorThread: true` inside VMI spec’s `Spec.Domain.CPU`
