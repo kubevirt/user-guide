@@ -553,3 +553,65 @@ to debug.
 Example of connecting to console using virtctl:
 
     virtctl console <name of vmi>
+
+### Device Role Tagging
+
+KubeVirt provides a mechanism for users to tag devices such as Network
+Interfaces with a specific role. The tag will be matched to the hardware
+address of the device and this mapping exposed to the guest OS via
+cloud-init.
+
+This additional metadata will help the guest OS users with multiple networks
+interfaces to identify the devices that may have a specific role, such as a
+network device dedicated to a specific service or a disk intended to be used by
+a specific application (database, webcache, etc.)
+
+This functionality already exists in platforms such as OpenStack. KubeVirt will
+provide the data in a similar format, known to users and services like cloud-init.
+
+For example:
+```
+kind: VirtualMachineInstance
+spec:
+  domain:
+    devices:
+      interfaces:
+      - masquerade: {}
+        name: default
+      - bridge: {}
+        name: ptp
+	tag: ptp
+      - name: sriov-net
+        sriov: {}
+        tag: nfvfunc
+  networks:
+  - name: default
+    pod: {}
+  - multus:
+      networkName: ptp-conf
+    name: ptp
+      networkName: sriov/sriov-network
+    name: sriov-net
+
+The metadata will be available in the guests config drive `openstack/latest/meta_data.json`
+
+{
+  "devices": [
+    {
+        "type": "nic",
+        "bus": "pci",
+        "address": "0000:00:02.0",
+        "mac": "01:22:22:42:22:21",
+        "tags": ["ptp"]
+    },
+    {
+        "type": "nic",
+        "bus": "pci",
+        "address": "0000:81:10.1",
+        "mac": "01:22:22:42:22:22",
+        "tags": ["nfvfunc"]
+    },
+  ]
+}
+```
+
