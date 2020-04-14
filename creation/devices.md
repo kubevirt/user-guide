@@ -586,6 +586,25 @@ Please see [how Pods with resource requests are
 scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled)
 for additional information on resource requests and limits.
 
+#### Adjustable memory overhead
+
+In some cases, manual adjustment of the calculated guest memory overhead is required.
+However, until now this option was blocked.
+
+The guest's memory can be set to a different value than the container requested
+memory. This will effectively allow the container to allocate more memory than
+the VMI and manually control the guest's memory overhead.
+
+```
+spec:
+  domain:
+    memory:
+      guest: "2G"
+    resources:
+      requests:
+        memory: "3G"
+```
+
 Hugepages
 ---------
 
@@ -618,13 +637,15 @@ be `2Mi`.
 In the above example the VM will have `64Mi` of memory, but instead of
 regular memory it will use node hugepages of the size of `2Mi`.
 
+When `memory.guest` is being being provided and different from
+`resources.requests.memory`, hugepages will be calculated according to the
+provided `memory.guest`
+
 ### Limitations
 
 -   a node must have pre-allocated hugepages
 
--   hugepages size cannot be bigger than requested memory
-
--   requested memory must be divisible by hugepages size
+-   requested memory and/or guest memory must be divisible by hugepages size
 
 Input Devices
 -------------
