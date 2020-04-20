@@ -150,46 +150,42 @@ be scheduled on the node which can support VM cpu model and features.
 
 ### Labeling nodes with cpu models and cpu features
 
-To properly label the node, user can use (only for cpu models and cpu
-features) [node-labeller](https://github.com/kubevirt/node-labeller) in
-combination with
-[cpu-nfd-plugin](https://github.com/kubevirt/cpu-nfd-plugin) or create
-node labels by himself.
+To properly label the node, user can use Kubevirt Node-labeller, which creates all 
+neccessary labels or create node labels by himself.
 
-To install node-labeller to cluster, user can use
-([kubevirt-ssp-operator](https://github.com/MarSik/kubevirt-ssp-operator)),
-which will install node-labeller + all available plugins.
-
-Cpu-nfd-plugin uses libvirt to get all supported cpu models and cpu
-features on host and Node-labeller create labels from cpu models. Then
-Kubevirt can schedule VM on node which has support for VM cpu model and
+Kubevirt node-labeller creates 3 types of labels: cpu models, cpu features, kvm info.
+It uses libvirt to get all supported cpu models and cpu
+features on host and then Node-labeller creates labels from cpu models. 
+Kubevirt can then schedule VM on node which has support for VM cpu model and
 features.
 
-Cpu-nfd-plugin supports black list of cpu models and minimal baseline
-cpu model for features. Both features can be set via config map:
+Node-labeller supports black list of cpu models and minimal baseline
+cpu model for features. Both features can be set via kubevirt-config map:
 
     apiVersion: v1
     kind: ConfigMap
     metadata:
-      name: cpu-plugin-configmap
+      name: kubevirt-config
+      namespace: kubevirt
+      labels:
+        kubevirt.io: ""
     data:
-      cpu-plugin-configmap.yaml: |-
-        obsoleteCPUs:
-          - "486"
-          - "pentium"
-        minCPU: "Penryn"
+      obsolete-cpus: "486, pentium"
+      min-cpu: "Penryn"
 
-This config map has to be created before node-labeller is created,
-otherwise plugin will show all cpu models. Plugin will not reload when
-config map is changed.
-
-Obsolete cpus will not be inserted in labels. In minCPU user can set
-baseline cpu model. CPU features, which have this model, are used as
-basic features. These basic features are not in the label list. Feature
+Obsolete cpus will not be inserted in labels. If kubevirt-config doesn't 
+contain `obsolete-cpus` or `min-cpu` variables Labeller sets default values 
+(for `obsolete-cpus` "486, pentium, pentium2, pentium3, pentiumpro, coreduo, 
+n270, core2duo, Conroe, athlon, phenom" and for `min-cpu` "Penryn"). In 
+minCPU user can set baseline cpu model. CPU features, which have this model, 
+are used as basic features. These basic features are not in the label list. Feature
 labels are created as subtraction between set of newer cpu features and
 set of basic cpu features, e.g.: Haswell has: aes, apic, clflush Penryr
 has: apic, clflush subtraction is: aes. So label will be created only
 with aes feature.
+
+User can change obsoleteCPUs or minCPU by adding / removing cpu model in config map.
+Kubevirt then update nodes with new labels.
 
 ### Model
 
