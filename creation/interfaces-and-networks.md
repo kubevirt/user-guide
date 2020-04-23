@@ -548,6 +548,52 @@ the interface should be configured as follows.
 > **Note:** The network CIDR can be configured in the pod network
 > section using the `vmNetworkCIDR` attribute.
 
+#### masquerade - IPv6 support
+It is currently experimental, but `masquerade` mode can be used in IPv6 clusters
+(not dual stack - IPv6 only).
+
+As with the IPv4 `masquerade` mode, the VM can be contacted using the pod's IP
+address - which will be an IPv6 one. Outgoing traffic is also "NAT'ed" to the
+pod's IPv6 address.
+
+Unlike in IPv4, the configuration of the IP address, default route, and DNS is
+not automatic; it should be configured via cloud init, as shown below:
+
+<pre>
+    kind: VM
+    spec:
+      domain:
+        devices:
+          disks:
+            - disk:
+              bus: virtio
+              name: cloudinitdisk
+          interfaces:
+            - name: red
+              masquerade: {} # connect using masquerade mode
+              ports:
+                - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+      networks:
+      - name: red
+        pod: {}
+      volumes:
+      - cloudInitNoCloud:
+          userData: |-
+            #!/bin/bash
+            echo "fedora" |passwd fedora --stdin
+            <b>ip -6 addr add fd2e:f1fe:9490:a8ff::2/120 dev eth0 </b>
+            sleep 5
+            <b>ip -6 route add default via fd2e:f1fe:9490:a8ff::1 src fd2e:f1fe:9490:a8ff::2
+            echo "nameserver <i>dns_server_ip</i>" >> /etc/resolv.conf</b>
+</pre>
+
+> **Note:** The IP address for the VM and default gateway **must** be the ones
+> shown above.
+
+> **Note:** DNS must also be manually configured. To know which DNS server to
+> use, run the following query:
+> `kubectl get service -n kube-system kube-dns -o=custom-columns=IP:.spec.clusterIP`
+
 ### virtio-net multiqueue
 
 Setting the `networkInterfaceMultiqueue` to `true` will enable the
