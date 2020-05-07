@@ -581,9 +581,9 @@ not automatic; it should be configured via cloud init, as shown below:
           userData: |-
             #!/bin/bash
             echo "fedora" |passwd fedora --stdin
-            <b>ip -6 addr add fd2e:f1fe:9490:a8ff::2/120 dev eth0 </b>
+            <b>ip -6 addr add fd10:0:2::2/120 dev eth0 </b>
             sleep 5
-            <b>ip -6 route add default via fd2e:f1fe:9490:a8ff::1 src fd2e:f1fe:9490:a8ff::2
+            <b>ip -6 route add default via fd10:0:2::1 src fd10:0:2::2
             echo "nameserver <i>dns_server_ip</i>" >> /etc/resolv.conf</b>
 </pre>
 
