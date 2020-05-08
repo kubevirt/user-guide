@@ -394,14 +394,24 @@ content except the image is required.
 > **Note:** Prior to kubevirt 0.20, the containerDisk image needed to
 > have **kubevirt/container-disk-v1alpha** as base image.
 
-Example: Inject a VirtualMachineInstance disk into a container image.
+> **Note:** The containerDisk needs to be readable for the user with the UID
+> 107 (qemu).
+
+Example: Inject a local VirtualMachineInstance disk into a container image.
 
     cat << END > Dockerfile
     FROM scratch
-    ADD fedora25.qcow2 /disk/
+    ADD --chown=107:107 fedora25.qcow2 /disk/
     END
 
     docker build -t vmidisks/fedora25:latest .
+
+Example: Inject a remote VirtualMachineInstance disk into a container image.
+
+    cat << END > Dockerfile
+    FROM scratch
+    ADD --chown=107:107 https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2 /disk/
+    END
 
 Example: Upload the ContainerDisk container image to a registry.
 
@@ -442,8 +452,7 @@ for disk images in default location: `/disk`.
 Example: Build container disk image:
 
     cat << END > Dockerfile
-    FROM kubevirt/container-disk-v1alpha
-    RUN mkdir /custom-disk-path
+    FROM scratch
     ADD fedora25.qcow2 /custom-disk-path/fedora25.qcow2
     END
 
