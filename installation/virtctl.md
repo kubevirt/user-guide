@@ -12,6 +12,8 @@ It also provides convenience commands for:
 
 -   Live migrating VirtualMachineInstances
 
+-   Uploading virtual machine disk images
+
 There are two ways to get it:
 
 -   the most recent version of the tool can be retrieved from the
