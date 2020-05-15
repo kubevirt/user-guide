@@ -10,7 +10,7 @@ Machine Type
 
 QEMU is able to work with two different classes of chipsets for x86\_64,
 so called machine types. The x86\_64 chipsets are i440fx (also called
-pc) and q35. They are versioned based on qemu-system-latexmath:$ARCH,
+pc) and q35. They are versioned based on qemu-system-${ARCH},
 following the format `pc-${machine_type}-${qemu_version}`,
 e.g.`pc-i440fx-2.10` and `pc-q35-2.10`.
 
