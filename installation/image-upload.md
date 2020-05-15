@@ -9,7 +9,7 @@ Claims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 [DataVolumes](https://github.com/kubevirt/containerized-data-importer/blob/master/doc/datavolumes.md).
 The three main CDI use cases are:
 
--   Import a disk image from a URL to a DataVolume (HTTP/S3)
+-   Import a disk image from a web server or container registry to a DataVolume
 
 -   Clone an existing PVC to a DataVolume
 
@@ -52,16 +52,12 @@ for example manifests.
 Supported image formats
 -----------------------
 
--   `.img`
+CDI supports the `raw` and `qcow2` image formats which are supported by qemu.
+See the [qemu documentation](https://www.qemu.org/docs/master/system/images.html#disk-image-file-formats) for more details.  Bootable ISO images can also be
+used and are treated like `raw` images.  Images may be compressed with either
+the `gz` or `xz` format.
 
--   `.iso`
-
--   `.qcow2`
-
--   compressed `.tar`, `.gz`, and `.xz` versions of above supported as
-    well
-
-Example in this doc uses
+The example in this document uses
 [this](http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img)
 [CirrOS](https://launchpad.net/cirros) image
 
@@ -114,7 +110,7 @@ uploading the file to the `cdi-uploadproxy`.
 Create a VirtualMachineInstance
 -------------------------------
 
-To create a `VirtualMachinInstance` from a PVC, you can execute the
+To create a `VirtualMachinInstance` from a DataVolume, you can execute the
 following:
 
     cat <<EOF | kubectl apply -f -
@@ -128,7 +124,7 @@ following:
           disks:
           - disk:
               bus: virtio
-            name: pvcdisk
+            name: dvdisk
         machine:
           type: ""
         resources:
@@ -136,9 +132,9 @@ following:
             memory: 64M
       terminationGracePeriodSeconds: 0
       volumes:
-      - name: pvcdisk
-        persistentVolumeClaim:
-          claimName: cirros-vm-disk
+      - name: dvdisk
+        dataVolume:
+          name: cirros-vm-disk
     status: {}
     EOF
 
