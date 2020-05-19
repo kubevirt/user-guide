@@ -670,18 +670,7 @@ device, using the
 [vfio](https://www.kernel.org/doc/Documentation/vfio.txt) userspace
 interface, to maintain high networking performance.
 
-    kind: VM
-    spec:
-      domain:
-        devices:
-          interfaces:
-            - name: sriov-net
-              sriov: {}
-      networks:
-      - name: sriov-net
-        multus:
-          networkName: sriov-net-crd
-
+#### How to expose SR-IOV VFs to KubeVirt
 To simplify procedure, please use [OpenShift SR-IOV
 operator](https://github.com/openshift/sriov-network-operator) to deploy
 and configure SR-IOV components in your cluster. On how to use the
@@ -692,3 +681,114 @@ documentation](https://github.com/openshift/sriov-network-operator/blob/master/d
 > into VMI guest. Because of that, when configuring SR-IOV operator
 > policies, make sure you define a pool of VF resources that uses
 > `driver: vfio`.
+
+Once the operator is deployed, an [SriovNetworkNodePolicy
+](https://github.com/openshift/sriov-network-operator#sriovnetworknodeconfigpolicy)
+must be provisioned, in which the list of SR-IOV devices to expose (with
+respective configurations) is defined.
+
+Please refer to the following `SriovNetworkNodePolicy` for an example:
+
+```yaml
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: policy-1
+  namespace: sriov-network-operator
+spec:
+  deviceType: vfio-pci
+  mtu: 9000
+  nicSelector:
+    pfNames:
+    - ens1f0
+  nodeSelector:
+    sriov: "true"
+  numVfs: 8
+  priority: 90
+  resourceName: sriov-nic
+```
+
+The policy above will configure the `SR-IOV` device plugin, allowing the
+PF named `ens1f0` to be exposed in the SRIOV capable nodes as a resource named
+`sriov-nic`.
+
+#### Start an SR-IOV VM
+
+Once all the SR-IOV components are deployed, it is needed to indicate how to
+configure the SR-IOV network. Refer to the following
+`SriovNetwork` for an example:
+
+```yaml
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetwork
+metadata:
+  name: sriov-net
+  namespace: sriov-network-operator
+spec:
+  ipam: |
+    {}
+  networkNamespace: default
+  resourceName: sriov-nic
+  spoofChk: "off"
+```
+
+Finally, to create a VM that will attach to the aforementioned Network, refer
+to the following VMI spec:
+
+```yaml
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-perf
+  name: vmi-perf
+spec:
+  domain:
+    cpu:
+      sockets: 2
+      cores: 1
+      threads: 1
+      dedicatedCpuPlacement: true
+    resources:
+      requests:
+        memory: "4Gi"
+      limits:
+        memory: "4Gi"
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      interfaces:
+      - masquerade: {}
+        name: default
+      - name: sriov-net
+        sriov: {}
+      rng: {}
+    machine:
+      type: ""
+  networks:
+  - name: default
+    pod: {}
+  - multus:
+      networkName: default/sriov-net
+    name: sriov-net
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - containerDisk:
+      image: docker.io/kubevirt/fedora-cloud-container-disk-demo:latest
+    name: containerdisk
+  - cloudInitNoCloud:
+      userData: |
+        #!/bin/bash
+        echo "centos" |passwd centos --stdin
+        dhclient eth1
+    name: cloudinitdisk
+```
+
+> **Note:** for some NICs (e.g. Mellanox), the kernel module needs to be
+> installed in the guest VM.
