@@ -17,15 +17,14 @@ identifying the node from the list of cluster nodes.
 `kubectl get nodes`
 
 The following command will gracefully terminate all VMs on a specific
-node. Replace \*\* with the target node you want the eviction to occur
-on.
+node. Replace `<node-name>` with the name of the node where the eviction should occur.
 
-`kubectl drain <node name> --delete-local-data --ignore-daemonsets=true --force --pod-selector=kubevirt.io=virt-launcher`
+`kubectl drain <node-name> --delete-local-data --ignore-daemonsets=true --force --pod-selector=kubevirt.io=virt-launcher`
 
 Below is a break down of why each argument passed to the drain command
 is required.
 
--   `kubectl drain <node name>` is selecting a specific node as a target
+-   `kubectl drain <node-name>` is selecting a specific node as a target
     for the eviction
 
 -   `--delete-local-data` is a required flag that is necessary for
@@ -122,11 +121,11 @@ be migrated instead of shut off.
 
 **Note:** While the **evictionStrategy** blocks the shutdown of VMIs
 during evictions, the live migration process is detached from the drain
-process itselve. Therefore it is necessary to add specified taints as
+process itself. Therefore it is necessary to add specified taints as
 part of the drain process explicitly, until we have a better integrated
 solution.
 
-By default KubeVirt will rewact with live migrations if the taint
+By default KubeVirt will trigger live migrations if the taint
 `kubevirt.io/drain:NoSchedule` is added to the node. It is possible to
 configure a different key in the `kubevirt-config` config map, by
 setting in the migration options the `nodeDrainTaintKey`:
@@ -180,7 +179,7 @@ Shutting down a Node after Eviction
 
 From KubeVirt’s perspective, a node is safe to shutdown once all
 VirtualMachineInstances have been evicted from the node. In a multi-use
-cluster where VirtualMachineInstances are being scheduled along side
+cluster where VirtualMachineInstances are being scheduled alongside
 other containerized workloads, it is up to the cluster admin to ensure
 all other pods have been safely evicted before powering down the node.
 

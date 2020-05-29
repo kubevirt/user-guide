@@ -110,9 +110,8 @@ A VirtualMachine can be exposed as a service. The actual service will be
 available once the VirtualMachineInstance starts without additional
 interaction.
 
-For example, exposing SSH port (22) as a `ClusterIP` service using
-`virtctl` after the OfflineVirtualMAchine was created, but before it
-started:
+For example, exposing SSH port (22) as a `ClusterIP` service using `virtctl`
+after the VirtualMachine was created, but before it started:
 
     $ virtctl expose virtualmachine vmi-ephemeral --name vmiservice --port 27017 --target-port 22
 

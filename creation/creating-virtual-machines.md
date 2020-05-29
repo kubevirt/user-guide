@@ -80,4 +80,4 @@ What’s next
     [Console Access](usage/graphical-and-console-access.md)
 
 -   How to customize VirtualMachineInstances with `cloud-init`:
-    [Cloud Init] (creation/cloud-init.md)
+    [Cloud Init](creation/cloud-init.md)
