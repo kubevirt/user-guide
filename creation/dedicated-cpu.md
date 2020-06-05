@@ -127,7 +127,7 @@ At this time, [Kubernetes doesn’t label the
 nodes](https://github.com/kubernetes/kubernetes/issues/66525) that has
 CPU manager running on it.
 
-KubeVirt has a mechansim to identify which nodes has the CPU manager
+KubeVirt has a mechanism to identify which nodes has the CPU manager
 running and manually add a `cpumanager=true` label. This label will be
 removed when KubeVirt will identify that CPU manager is no longer
 running on the node. This automatic identification should be viewed as a
@@ -146,34 +146,44 @@ running.
 
 ### Enabling the CPU Manager automatic identification feature gate
 
-To enable the automatic idetification, user may expand the
-`feature-gates` field in the kubevirt-config config map by adding the
+To enable the automatic identification, user may expand the
+`featureGates` field in the KubeVirt CR by adding the
 `CPUManager` to it.
 
-    apiVersion: v1
-    kind: ConfigMap
+```
+    apiVersion: kubevirt.io/v1alpha3
+    kind: Kubevirt
     metadata:
-      name: kubevirt-config
+      name: kubevirt
       namespace: kubevirt
-      labels:
-        kubevirt.io: ""
-    data:
-      feature-gates: "CPUManager"
+    spec:
+      ...
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - "CPUManager"
+```
 
-Alternatively, users can edit an existing kubevirt-config:
+Alternatively, users can edit an existing kubevirt:
 
-`kubectl edit configmap kubevirt-config -n kubevirt`
+`kubectl edit kubevirt kubevirt -n kubevirt`
 
+```
     ...
-    data:
-      feature-gates: "DataVolumes,CPUManager"
+    spec:
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - "DataVolumes"
+            - "CPUManager"
+```
 
 Sidecar containers and CPU allocation overhead
 ----------------------------------------------
 
 **Note:** In order to run sidecar containers, KubeVirt requires the
 `Sidecar` feature gate to be enabled by adding `Sidecar` to the
-`kubevirt-config` ConfigMap’s `feature-gates` field.
+`kubevirt` CR's `configuration.developerConfiguration.featureGates` field.
 
 According to the Kubernetes CPU manager model, in order the POD would
 reach the required QOS level `Guaranteed`, all containers in the POD

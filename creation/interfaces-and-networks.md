@@ -416,15 +416,15 @@ fields.
 > networks via a designated configuration flag. To achieve it, the admin
 > should set the following option to `false`:
 
-    apiVersion: v1
-    kind: ConfigMap
+    apiVersion: kubevirt.io/v1alpha3
+    kind: Kubevirt
     metadata:
-      name: kubevirt-config
+      name: kubevirt
       namespace: kubevirt
-      labels:
-        kubevirt.io: ""
-    data:
-      permitBridgeInterfaceOnPodNetwork: "false"
+    spec:
+      configuration:
+        networkConfiguration:
+          permitBridgeInterfaceOnPodNetwork: "false"
 
 > **Note:** binding the pod network using `bridge` interface type may
 > cause issues. Other than the third-party issue mentioned in the above

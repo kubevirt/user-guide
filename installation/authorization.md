@@ -42,14 +42,13 @@ all KubeVirt resources, including the ability to delete collections of
 resources.
 
 The admin role also grants users access to view and modify the KubeVirt
-runtime config. This config exists within a configmap called
-**kubevirt-config** in the namespace the KubeVirt components are
-running.
+runtime config. This config exists within the Kubevirt Custom Resource under
+the `configuration` key in the namespace the KubeVirt operator is running.
 
 > *NOTE* Users are only guaranteed the ability to modify the kubevirt
 > runtime configuration if a ClusterRoleBinding is used. A RoleBinding
-> will work to provide kubevirt-config access only if the RoleBinding
-> targets the same namespace the kubevirt-config exists in.
+> will work to provide kubevirt CR access only if the RoleBinding
+> targets the same namespace that the kubevirt CR exists in.
 
 ### Binding Default ClusterRoles to Users
 
@@ -131,12 +130,3 @@ this example role.
           - list
           - watch
           - deletecollection
-      - apiGroups: [""]
-        resources:
-          - configmaps
-        resourceNames:
-          - kubevirt-config
-        verbs:
-          - update
-          - get
-          - patch

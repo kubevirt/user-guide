@@ -127,20 +127,21 @@ solution.
 
 By default KubeVirt will trigger live migrations if the taint
 `kubevirt.io/drain:NoSchedule` is added to the node. It is possible to
-configure a different key in the `kubevirt-config` config map, by
-setting in the migration options the `nodeDrainTaintKey`:
+configure a different key in the `kubevirt` CR, by
+setting the migration option `nodeDrainTaintKey`:
 
-    apiVersion: v1
-    kind: ConfigMap
+    apiVersion: kubevirt.io/v1alpha3
+    kind: Kubevirt
     metadata:
-      name: kubevirt-config
+      name: kubevirt
       namespace: kubevirt
-      labels:
-        kubevirt.io: ""
-    data:
-      feature-gates: "LiveMigration"
-      migrations: |-
-        nodeDrainTaintKey: mytaint/drain
+    spec:
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - "LiveMigration"
+        migrationConfiguration:
+          nodeDrainTaintKey: mytaint/drain
 
 The default value is `kubevirt.io/drain`. With the change above
 migrations can be triggered with

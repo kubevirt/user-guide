@@ -175,23 +175,33 @@ backward compatibility and because they depend on the
 [node-feature-discovery](https://github.com/kubernetes-sigs/node-feature-discovery)
 and on extra configuration.
 
-To enable strict host checking, the user may expand the `feature-gates`
-field in the kubevirt-config config map by adding the
-`HypervStrictCheck` to it.
+To enable strict host checking, the user may expand the `featureGates`
+field in the KubeVirt CR by adding the `HypervStrictCheck` to it.
 
-    apiVersion: v1
-    kind: ConfigMap
+```
+    apiVersion: kubevirt.io/v1alpha3
+    kind: Kubevirt
     metadata:
-      name: kubevirt-config
+      name: kubevirt
       namespace: kubevirt
-      labels:
-        kubevirt.io: ""
-    data:
-      feature-gates: "HypervStrictCheck"
+    spec:
+      ...
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - "HypervStrictCheck"
+```
 
-Alternatively, users can edit an existing kubevirt-config:
+Alternatively, users can edit an existing kubevirt CR:
 
-`kubectl edit configmap kubevirt-config -n kubevirt`
+`kubectl edit kubevirt kubevirt -n kubevirt`
 
-    data:
-      feature-gates: "HypervStrictCheck,CPUManager"
+```
+    ...
+    spec:
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - "HypervStrictCheck"
+            - "CPUManager"
+```      
