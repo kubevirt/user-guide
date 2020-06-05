@@ -561,6 +561,8 @@ not automatic; it should be configured via cloud init, as shown below:
 
 <pre>
     kind: VM
+    metadata:
+      namespace: <i>your-favorite-namespace</i>
     spec:
       domain:
         devices:
@@ -578,13 +580,21 @@ not automatic; it should be configured via cloud init, as shown below:
         pod: {}
       volumes:
       - cloudInitNoCloud:
+          networkData: |
+            version: 2
+            ethernets:
+              eth0:
+                addresses: [ fd10:0:2::2/120 ]
+                gateway6: fd10:0:2::1
+                nameservers:
+                  addresses: [ <i>dns_server_ip</i> ]
+                  search:
+                    - <i>your-favorite-namespace</i>.svc.cluster.local
+                    - svc.cluster.local
+                    - cluster.local
           userData: |-
             #!/bin/bash
             echo "fedora" |passwd fedora --stdin
-            <b>ip -6 addr add fd10:0:2::2/120 dev eth0 </b>
-            sleep 5
-            <b>ip -6 route add default via fd10:0:2::1 src fd10:0:2::2
-            echo "nameserver <i>dns_server_ip</i>" >> /etc/resolv.conf</b>
 </pre>
 
 > **Note:** The IP address for the VM and default gateway **must** be the ones
@@ -593,6 +603,9 @@ not automatic; it should be configured via cloud init, as shown below:
 > **Note:** DNS must also be manually configured. To know which DNS server to
 > use, run the following query:
 > `kubectl get service -n kube-system kube-dns -o=custom-columns=IP:.spec.clusterIP`
+
+> **Note:** The DNS search domain namespace must match with the namespace where
+> the VM is being created. It defaults to *default*.
 
 ### virtio-net multiqueue
 
