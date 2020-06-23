@@ -2,43 +2,45 @@
 
 Live migration is a process during which a running Virtual Machine
 Instance moves to another compute node while the guest workload
-continues to run and remain accessable.
+continues to run and remain accessible.
 
 ## Enabling the live-migration support
 
-Live migration must be eabled in the featue gates to be supported. The
+Live migration must be enabled in the feature gates to be supported. The
 `feature-gates` field in the kubevirt-config config map can be expanded
 by adding the `LiveMigration` to it.
 
-```
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: kubevirt-config
-      namespace: kubevirt
-      labels:
-        kubevirt.io: ""
-    data:
-      feature-gates: "LiveMigration"
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  feature-gates: "LiveMigration"
 ```
 
 Alternatively, existing kubevirt-config can be altered:
 
-```kubectl edit configmap kubevirt-config -n kubevirt`
-
+```sh
+kubectl edit configmap kubevirt-config -n kubevirt
 ```
-    data:
-      feature-gates: "DataVolumes,LiveMigration"
+
+```yaml
+data:
+  feature-gates: "DataVolumes,LiveMigration"
 ```
 
 ## Limitations
 
--   Virtual machines using a PersistentVolumeClaim (PVC) must have a
-    shared ReadWriteMany (RWX) access mode to be live migrated.
+- Virtual machines using a PersistentVolumeClaim (PVC) must have a
+  shared ReadWriteMany (RWX) access mode to be live migrated.
 
--   Live migration is not allowed with a pod network binding of bridge
-    interface type
-    (<https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/interfaces-and-networks.html>)
+- Live migration is not allowed with a pod network binding of bridge
+  interface type
+  (<https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/interfaces-and-networks.html>)
 
 ## Initiate live migration
 
@@ -46,7 +48,7 @@ Live migration is initiated by posting a VirtualMachineInstanceMigration
 (VMIM) object to the cluster. The example below starts a migration
 process for a virtual machine instance `vmi-fedora`
 
-```
+```yaml
 apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachineInstanceMigration
 metadata:
@@ -72,12 +74,12 @@ start. `BlockMigration` indicates that some of the VMI disks require
 copying from the source to the destination. `LiveMigration` means that
 only the instance memory will be copied.
 
-```
+```yaml
 Status:
   Conditions:
-    Status:                True
-    Type:                  LiveMigratable
-  Migration Method:  BlockMigration
+    Status: True
+    Type: LiveMigratable
+  Migration Method: BlockMigration
 ```
 
 # Migration Status
@@ -142,29 +144,29 @@ Migration State:
 ## Changing Cluster Wide Migration Limits
 
 KubeVirt puts some limits in place, so that migrations don’t overwhelm
-the cluster. By default it is configured to only run `5` migrations in
+the cluster. By default, it is configured to only run `5` migrations in
 parallel with an additional limit of a maximum of `2` outbound
-migrations per node. Finally every migration is limited to a bandwidth
+migrations per node. Finally, every migration is limited to a bandwidth
 of `64MiB/s`.
 
 These values can be change in the `kubevirt-config`:
 
-```
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: kubevirt-config
-      namespace: kubevirt
-      labels:
-        kubevirt.io: ""
-    data:
-      feature-gates: "LiveMigration"
-      migrations: |-
-        parallelMigrationsPerCluster: 5
-        parallelOutboundMigrationsPerNode: 2
-        bandwidthPerMigration: 64Mi
-        completionTimeoutPerGiB: 800
-        progressTimeout: 150
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  feature-gates: "LiveMigration"
+  migrations: |-
+    parallelMigrationsPerCluster: 5
+    parallelOutboundMigrationsPerNode: 2
+    bandwidthPerMigration: 64Mi
+    completionTimeoutPerGiB: 800
+    progressTimeout: 150
 ```
 
 # Migration timeouts
@@ -182,10 +184,10 @@ In some cases the virtual machine can write to different memory pages /
 disk blocks at a higher rate than these can be copied, which will
 prevent the migration process from completing in a reasonable amount of
 time. In this case, live migration will be aborted if it is running for
-a long perioud of time. The timeout is calculated base on the size of
+a long period of time. The timeout is calculated base on the size of
 the VMI, it’s memory and the ephemeral disks that are needed to be
 copied. The configurable parameter `completionTimeoutPerGiB`, which
-deafults to 800s is the time for GiB of data to wait for the migration
+defaults to 800s is the time for GiB of data to wait for the migration
 to be completed before aborting it. A VMI with 8Gib of memory will time
 out after 6400 seconds.
 
