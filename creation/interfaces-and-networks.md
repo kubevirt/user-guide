@@ -51,10 +51,6 @@ fields:
 <td><p><code>multus</code></p></td>
 <td><p>Secondary network provided using Multus</p></td>
 </tr>
-<tr class="odd">
-<td><p><code>genie</code></p></td>
-<td><p>Secondary network provided using Genie</p></td>
-</tr>
 </tbody>
 </table>
 
