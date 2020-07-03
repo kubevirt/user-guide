@@ -103,6 +103,25 @@ there. In order to do that please follow the documentation in the
 [KubeVirt APB
 repository](https://github.com/ansibleplaybookbundle/kubevirt-apb).
 
+Installing the Daily Developer Builds
+-------------------------------------
+
+KubeVirt releases daily a developer build from current master. One can see
+when the last release happened by looking at our
+[nightly-build-jobs](https://prow.apps.ovirt.org/?job=periodic-kubevirt-push-nightly-build-master).
+
+To install the latest developer build, run the following commands:
+
+    $ LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest)
+    $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator.yaml
+    $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-cr.yaml
+
+To find out which commit this build is based on, run:
+
+    $ LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest)
+    $ curl https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/commit
+    d358cf085b5a86cc4fa516215f8b757a4e61def2
+
 Deploying from Source
 ---------------------
 
