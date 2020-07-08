@@ -300,10 +300,10 @@ demonstrating how to do it.
     # Restart the virtual machine (you delete the instance!):
     kubectl delete virtualmachineinstance myvm
 
-    # Implicit cascade delete (first deletes the virtual machine and then the virtual machine)
+    # Implicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
     kubectl delete virtualmachine myvm
 
-    # Explicit cascade delete (first deletes the virtual machine and then the virtual machine)
+    # Explicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
     kubectl delete virtualmachine myvm --cascade=true
 
     # Orphan delete (The running virtual machine is only detached, not deleted)
