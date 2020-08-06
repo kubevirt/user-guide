@@ -59,13 +59,13 @@ KubeVirt can be installed using the KubeVirt operator, which manages the
 lifecycle of all the KubeVirt core components. Below is an example of
 how to install KubeVirt using an official release.
 
-    # Pick an upstream version of KubeVirt to install
-    $ export VERSION=v0.26.0
+    # Pick an upstream release of KubeVirt to install
+    $ export RELEASE=v0.26.0
     # Deploy the KubeVirt operator
-    $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/kubevirt-operator.yaml
+    $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
     # Create the KubeVirt CR (instance deployment request)
-    $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/kubevirt-cr.yaml
-    # wait until all KubeVirt components is up
+    $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
+    # wait until all KubeVirt components are up
     $ kubectl -n kubevirt wait kv kubevirt --for condition=Available
 
 > Note: Prior to release v0.20.0 the condition for the `kubectl wait`
