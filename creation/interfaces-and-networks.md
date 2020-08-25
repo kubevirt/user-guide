@@ -492,64 +492,52 @@ the interface should be configured as follows.
 > **Note:** The network CIDR can be configured in the pod network
 > section using the `vmNetworkCIDR` attribute.
 
-#### masquerade - IPv6 support
-It is currently experimental, but `masquerade` mode can be used in IPv6 clusters
-(not dual stack - IPv6 only).
+#### masquerade - IPv4 and IPv6 dual-stack support
+
+It is currently experimental, but `masquerade` mode can be used in IPv4 and IPv6
+dual-stack clusters to provide a VM with an IP connectivity over both protocols.
 
 As with the IPv4 `masquerade` mode, the VM can be contacted using the pod's IP
-address - which will be an IPv6 one. Outgoing traffic is also "NAT'ed" to the
-pod's IPv6 address.
+address - which will be in this case two IP addresses, one IPv4 and one
+IPv6. Outgoing traffic is also "NAT'ed" to the pod's respective IP address
+from the given family.
 
-Unlike in IPv4, the configuration of the IP address, default route, and DNS is
+Unlike in IPv4, the configuration of the IPv6 address and the default route is
 not automatic; it should be configured via cloud init, as shown below:
 
-<pre>
-    kind: VM
-    metadata:
-      namespace: <i>your-favorite-namespace</i>
-    spec:
-      domain:
-        devices:
-          disks:
-            - disk:
-              bus: virtio
-              name: cloudinitdisk
-          interfaces:
-            - name: red
-              masquerade: {} # connect using masquerade mode
-              ports:
-                - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
-      networks:
-      - name: red
-        pod: {}
-      volumes:
-      - cloudInitNoCloud:
-          networkData: |
-            version: 2
-            ethernets:
-              eth0:
-                addresses: [ fd10:0:2::2/120 ]
-                gateway6: fd10:0:2::1
-                nameservers:
-                  addresses: [ <i>dns_server_ip</i> ]
-                  search:
-                    - <i>your-favorite-namespace</i>.svc.cluster.local
-                    - svc.cluster.local
-                    - cluster.local
-          userData: |-
-            #!/bin/bash
-            echo "fedora" |passwd fedora --stdin
-</pre>
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      disks:
+        - disk:
+          bus: virtio
+          name: cloudinitdisk
+      interfaces:
+        - name: red
+          masquerade: {} # connect using masquerade mode
+          ports:
+            - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+  networks:
+  - name: red
+    pod: {}
+  volumes:
+  - cloudInitNoCloud:
+      networkData: |
+        version: 2
+        ethernets:
+          eth0:
+            dhcp4: true
+            addresses: [ fd10:0:2::2/120 ]
+            gateway6: fd10:0:2::1
+      userData: |-
+        #!/bin/bash
+        echo "fedora" |passwd fedora --stdin
+```
 
-> **Note:** The IP address for the VM and default gateway **must** be the ones
+> **Note:** The IPv6 address for the VM and default gateway **must** be the ones
 > shown above.
-
-> **Note:** DNS must also be manually configured. To know which DNS server to
-> use, run the following query:
-> `kubectl get service -n kube-system kube-dns -o=custom-columns=IP:.spec.clusterIP`
-
-> **Note:** The DNS search domain namespace must match with the namespace where
-> the VM is being created. It defaults to *default*.
 
 ### virtio-net multiqueue
 
