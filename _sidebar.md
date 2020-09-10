@@ -28,6 +28,7 @@
 * [Using Virtual Machines](usage/usage.md)
   * [Lifecycle](usage/life-cycle.md)
   * [Console Access (Serial and Graphical)](usage/graphical-and-console-access.md)
+  * [Guest Agent](usage/guest-agent.md)
   * [Node Placement](usage/node-placement.md)
   * [DNS Integration](usage/dns.md)
   * [Network Service Integration](usage/network-service-integration.md)
