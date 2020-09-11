@@ -40,7 +40,7 @@ data:
 
 - Live migration is not allowed with a pod network binding of bridge
   interface type
-  (<https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/interfaces-and-networks.html>)
+  (</#/creation/interfaces-and-networks>)
 
 ## Initiate live migration
 
