@@ -41,3 +41,5 @@
   * [Using Templates](templates/using-templates.md)
 * [Web Interface](web-interface.md)
 * [Latest Release Notes](changelog.md)
+* [Appendix](appendix/appendix.md)
+  * [Contributing](appendix/contributing.md)
