@@ -63,7 +63,7 @@ port 1500 via cloud-init.
             bootcmd:
               - setenforce 0
               - dnf install -y nmap-ncat
-              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
+              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!'
         name: cloudinitdisk
 
 Define a TCP Liveness Probe
@@ -113,7 +113,7 @@ port 1500 via cloud-init.
             bootcmd:
               - setenforce 0
               - dnf install -y nmap-ncat
-              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
+              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!'
         name: cloudinitdisk
 
 Define Readiness Probes
