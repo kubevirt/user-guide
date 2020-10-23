@@ -738,17 +738,14 @@ spec:
 
 ### macvtap
 
-In `macvtap` mode, virtual machines are directly exposed to an host networking
-interface, and are connected directly to the L2 network connecting the hosts.
-The device is then passed through into the guest operating system as a char
-device.
+In `macvtap` mode, virtual machines are directly exposed to the Kubernetes
+nodes L2 network. This is achieved by 'extending' an existing network interface
+with a virtual device that has its own MAC address.
 
 #### How to expose host interface to the macvtap device plugin
 To simplify the procedure, please use the
 [Cluster Network Addons Operator](https://github.com/kubevirt/cluster-network-addons-operator)
-to deploy and configure the macvtap components in your cluster. On how to use
-the operator, please refer to [their respective
-documentation](https://github.com/openshift/sriov-network-operator/blob/master/doc/quickstart.md).
+to deploy and configure the macvtap components in your cluster.
 
 The aforementioned operator effectively deploys the
 [macvtap-cni](https://github.com/kubevirt/macvtap-cni) cni / device plugin
@@ -762,6 +759,37 @@ exposed to the user, enabling them to create macvtap interfaces on top of;
 Both options are configured via the `macvtap-deviceplugin-config` ConfigMap,
 and more information on how to configure it can be found in the
 [macvtap-cni](https://github.com/kubevirt/macvtap-cni#deployment) repo.
+
+You can find a minimal example, in which the `eth0` interface of the Kubernetes
+nodes is exposed, via the `master` attribute.
+```yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: macvtap-deviceplugin-config
+data:
+  DP_MACVTAP_CONF: |
+    [
+        {
+            "name"     : "dataplane",
+            "master"   : "eth0",
+            "mode"     : "bridge",
+            "capacity" : 50
+        },
+    ]
+```
+
+This step can be omitted, since the default configuration of the aforementioned
+`ConfigMap` is to expose all host interfaces (which is represented by the
+following configuration):
+```yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: macvtap-deviceplugin-config
+data:
+  DP_MACVTAP_CONF: '[]'
+```
 
 #### Start a VM with macvtap interfaces
 
@@ -785,6 +813,9 @@ spec:
       "mtu": 1500
     }'
 ```
+The requested `k8s.v1.cni.cncf.io/resourceName` annotation must point to an
+exposed host interface (via the `master` attribute, on the
+`macvtap-deviceplugin-config` `ConfigMap`).
 
 Finally, to create a VM that will attach to the aforementioned Network, refer
 to the following VMI spec:
@@ -831,4 +862,9 @@ spec:
         echo "fedora" |passwd fedora --stdin
     name: cloudinitdisk
 ```
+The requested `multus` `networkName` - i.e. `macvtapnetwork` - must match the
+name of the provisioned `NetworkAttachmentDefinition`.
+
+> **Note:** VMIs with Macvtap interfaces can be migrated, but their MAC
+> addresses **must** be statically set.
 
