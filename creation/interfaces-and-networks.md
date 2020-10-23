@@ -735,3 +735,100 @@ spec:
 
 > **Note:** for some NICs (e.g. Mellanox), the kernel module needs to be
 > installed in the guest VM.
+
+### macvtap
+
+In `macvtap` mode, virtual machines are directly exposed to an host networking
+interface, and are connected directly to the L2 network connecting the hosts.
+The device is then passed through into the guest operating system as a char
+device.
+
+#### How to expose host interface to the macvtap device plugin
+To simplify the procedure, please use the
+[Cluster Network Addons Operator](https://github.com/kubevirt/cluster-network-addons-operator)
+to deploy and configure the macvtap components in your cluster. On how to use
+the operator, please refer to [their respective
+documentation](https://github.com/openshift/sriov-network-operator/blob/master/doc/quickstart.md).
+
+The aforementioned operator effectively deploys the
+[macvtap-cni](https://github.com/kubevirt/macvtap-cni) cni / device plugin
+combo.
+
+There are two different alternatives to configure which host interfaces get
+exposed to the user, enabling them to create macvtap interfaces on top of;
+  - select the host interfaces: indicates which host interfaces are exposed.
+  - expose all interfaces: all interfaces of all hosts are exposed.
+
+Both options are configured via the `macvtap-deviceplugin-config` ConfigMap,
+and more information on how to configure it can be found in the
+[macvtap-cni](https://github.com/kubevirt/macvtap-cni#deployment) repo.
+
+#### Start a VM with macvtap interfaces
+
+Once the macvtap components are deployed, it is needed to indicate how to
+configure the macvtap network. Refer to the following
+`NetworkAttachmentDefinition` for a simple example:
+
+```yaml
+---
+kind: NetworkAttachmentDefinition
+apiVersion: k8s.cni.cncf.io/v1
+metadata:
+  name: macvtapnetwork
+  annotations:
+    k8s.v1.cni.cncf.io/resourceName: macvtap.network.kubevirt.io/eth0
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "name": "macvtapnetwork",
+      "type": "macvtap"
+      "mtu": 1500
+    }'
+```
+
+Finally, to create a VM that will attach to the aforementioned Network, refer
+to the following VMI spec:
+
+```yaml
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-host-network
+  name: vmi-host-network
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      interfaces:
+      - macvtap: {}
+        name: hostnetwork
+      rng: {}
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  networks:
+  - multus:
+      networkName: macvtapnetwork
+    name: hostnetwork
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - containerDisk:
+      image: docker.io/kubevirt/fedora-cloud-container-disk-demo:devel
+    name: containerdisk
+  - cloudInitNoCloud:
+      userData: |-
+        #!/bin/bash
+        echo "fedora" |passwd fedora --stdin
+    name: cloudinitdisk
+```
+
