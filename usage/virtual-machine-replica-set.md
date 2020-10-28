@@ -243,7 +243,7 @@ reference it in the spec of the autoscaler:
       maxReplicas: 10
       targetCPUUtilizationPercentage: 50
 
-Right now `kubectl autoscale` does not work with Custom Resources. Only
-the declarative form of writing the HPA yaml manually and posting it via
-`kubectl
-create` is supported.
+
+or use `kubectl autoscale` to define the HPA via the commandline:
+
+    $ kubectl autoscale vmirs vmi-replicaset-cirros --min=3 --max=10
