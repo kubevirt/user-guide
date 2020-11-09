@@ -109,9 +109,10 @@ network and to the secondary Open vSwitch network.
           interfaces:
             - name: default
               masquerade: {}
-              bootFileName: default_image.bin
-              tftpServerName: tftp.example.com
               bootOrder: 1   # attempt to boot from an external tftp server
+              dhcpOptions:
+                bootFileName: default_image.bin
+                tftpServerName: tftp.example.com
             - name: ovs-net
               bridge: {}
               bootOrder: 2   # if first attempt failed, try to PXE-boot from this L2 networks
