@@ -109,9 +109,10 @@ network and to the secondary Open vSwitch network.
           interfaces:
             - name: default
               masquerade: {}
-              bootFileName: default_image.bin
-              tftpServerName: tftp.example.com
               bootOrder: 1   # attempt to boot from an external tftp server
+              dhcpOptions:
+                bootFileName: default_image.bin
+                tftpServerName: tftp.example.com
             - name: ovs-net
               bridge: {}
               bootOrder: 2   # if first attempt failed, try to PXE-boot from this L2 networks
@@ -464,11 +465,12 @@ Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29
 
 In `masquerade` mode, KubeVirt allocates internal IP addresses to
 virtual machines and hides them behind NAT. All the traffic exiting
-virtual machines is "NAT’ed" using pod IP addresses. A virtual machine
+virtual machines is "NAT’ed" using pod IP addresses. A guest operating system
 should be configured to use DHCP to acquire IPv4 addresses.
 
-To allow traffic into virtual machines, the template `ports` section of
-the interface should be configured as follows.
+To allow traffic of specific ports into virtual machines, the template `ports` section of
+the interface should be configured as follows. If the `ports` section is missing,
+all ports forwarded into the VM.
 
     kind: VM
     spec:
