@@ -18,8 +18,7 @@ Getting help
 Developer
 =========
 
--   Start contributing:
-    <https://github.com/kubevirt/kubevirt/blob/master/CONTRIBUTING.md>
+-   Start contributing: [Appendix/Contributing](/Appendix/Contributing)
 
 -   API Reference: <http://kubevirt.io/api-reference/>
 
