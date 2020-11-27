@@ -4,7 +4,7 @@ Disks and Volumes
 Making persistent storage in the cluster (**volumes**) accessible to VMs
 consists of three parts. First, volumes are specified in `spec.volumes`.
 Second, disks are added to the VM by specifying them in
-`spec.domain.devices.disks`. Finally, a refererence to the specified
+`spec.domain.devices.disks`. Finally, a reference to the specified
 volume is added to the disk specification by name.
 
 Disks

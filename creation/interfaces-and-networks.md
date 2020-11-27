@@ -51,10 +51,6 @@ fields:
 <td><p><code>multus</code></p></td>
 <td><p>Secondary network provided using Multus</p></td>
 </tr>
-<tr class="odd">
-<td><p><code>genie</code></p></td>
-<td><p>Secondary network provided using Genie</p></td>
-</tr>
 </tbody>
 </table>
 
@@ -113,9 +109,10 @@ network and to the secondary Open vSwitch network.
           interfaces:
             - name: default
               masquerade: {}
-              bootFileName: default_image.bin
-              tftpServerName: tftp.example.com
               bootOrder: 1   # attempt to boot from an external tftp server
+              dhcpOptions:
+                bootFileName: default_image.bin
+                tftpServerName: tftp.example.com
             - name: ovs-net
               bridge: {}
               bootOrder: 2   # if first attempt failed, try to PXE-boot from this L2 networks
@@ -175,62 +172,6 @@ network as the default.
         multus: # Multus network as default
           default: true
           networkName: macvlan-test
-
-### genie
-
-It is also possible to connect VMIs to multiple networks using
-[Genie](https://github.com/Huawei-PaaS/CNI-Genie). This assumes that
-genie is installed across your cluster.
-
-The following example defines a network which uses
-[Flannel](https://github.com/coreos/flannel-cni) as the main network
-provider and as the [ovs-cni
-plugin](https://github.com/kubevirt/ovs-cni) as the secondary one. The
-OVS CNI will connect the VMI to Open vSwitch’s bridge `br1` and VLAN
-100.
-
-Other CNI plugins such as ptp, bridge, macvlan might be used as well.
-For their installation and usage refer to the respective project
-documentation.
-
-Genie does not use the `NetworkAttachmentDefinition` CRD. Instead it
-uses the name of the underlying CNI in order to find the required
-configuration. It does that by looking into the configuration files
-under `/etc/cni/net.d/` and finding the file that has that network name
-as the CNI type. Therefore, for the case described above, the following
-configuration file should exist, for example,
-`/etc/cni/net.d/99-ovs-cni.conf` file would be:
-
-    {
-      "cniVersion": "0.3.1",
-      "type": "ovs",
-      "bridge": "br1",
-      "vlan": 100
-    }
-
-Similarly to Multus, Genie’s configuration file must be the first one in
-the `/etc/cni/net.d/` directory. This also means that Genie cannot be
-used together with Multus on the same cluster.
-
-With following definition, the VMI will be connected to the default pod
-network and to the secondary Open vSwitch network.
-
-    kind: VM
-    spec:
-      domain:
-        devices:
-          interfaces:
-            - name: default
-              bridge: {}
-            - name: ovs-net
-              bridge: {}
-      networks:
-      - name: default
-        genie: # Stock pod network
-          networkName: flannel
-      - name: ovs-net
-        genie: # Secondary genie network
-          networkName: ovs
 
 Frontend
 --------
@@ -524,11 +465,12 @@ Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29
 
 In `masquerade` mode, KubeVirt allocates internal IP addresses to
 virtual machines and hides them behind NAT. All the traffic exiting
-virtual machines is "NAT’ed" using pod IP addresses. A virtual machine
+virtual machines is "NAT’ed" using pod IP addresses. A guest operating system
 should be configured to use DHCP to acquire IPv4 addresses.
 
-To allow traffic into virtual machines, the template `ports` section of
-the interface should be configured as follows.
+To allow traffic of specific ports into virtual machines, the template `ports` section of
+the interface should be configured as follows. If the `ports` section is missing,
+all ports forwarded into the VM.
 
     kind: VM
     spec:
@@ -548,64 +490,52 @@ the interface should be configured as follows.
 > **Note:** The network CIDR can be configured in the pod network
 > section using the `vmNetworkCIDR` attribute.
 
-#### masquerade - IPv6 support
-It is currently experimental, but `masquerade` mode can be used in IPv6 clusters
-(not dual stack - IPv6 only).
+#### masquerade - IPv4 and IPv6 dual-stack support
+
+It is currently experimental, but `masquerade` mode can be used in IPv4 and IPv6
+dual-stack clusters to provide a VM with an IP connectivity over both protocols.
 
 As with the IPv4 `masquerade` mode, the VM can be contacted using the pod's IP
-address - which will be an IPv6 one. Outgoing traffic is also "NAT'ed" to the
-pod's IPv6 address.
+address - which will be in this case two IP addresses, one IPv4 and one
+IPv6. Outgoing traffic is also "NAT'ed" to the pod's respective IP address
+from the given family.
 
-Unlike in IPv4, the configuration of the IP address, default route, and DNS is
+Unlike in IPv4, the configuration of the IPv6 address and the default route is
 not automatic; it should be configured via cloud init, as shown below:
 
-<pre>
-    kind: VM
-    metadata:
-      namespace: <i>your-favorite-namespace</i>
-    spec:
-      domain:
-        devices:
-          disks:
-            - disk:
-              bus: virtio
-              name: cloudinitdisk
-          interfaces:
-            - name: red
-              masquerade: {} # connect using masquerade mode
-              ports:
-                - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
-      networks:
-      - name: red
-        pod: {}
-      volumes:
-      - cloudInitNoCloud:
-          networkData: |
-            version: 2
-            ethernets:
-              eth0:
-                addresses: [ fd10:0:2::2/120 ]
-                gateway6: fd10:0:2::1
-                nameservers:
-                  addresses: [ <i>dns_server_ip</i> ]
-                  search:
-                    - <i>your-favorite-namespace</i>.svc.cluster.local
-                    - svc.cluster.local
-                    - cluster.local
-          userData: |-
-            #!/bin/bash
-            echo "fedora" |passwd fedora --stdin
-</pre>
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      disks:
+        - disk:
+          bus: virtio
+          name: cloudinitdisk
+      interfaces:
+        - name: red
+          masquerade: {} # connect using masquerade mode
+          ports:
+            - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+  networks:
+  - name: red
+    pod: {}
+  volumes:
+  - cloudInitNoCloud:
+      networkData: |
+        version: 2
+        ethernets:
+          eth0:
+            dhcp4: true
+            addresses: [ fd10:0:2::2/120 ]
+            gateway6: fd10:0:2::1
+      userData: |-
+        #!/bin/bash
+        echo "fedora" |passwd fedora --stdin
+```
 
-> **Note:** The IP address for the VM and default gateway **must** be the ones
+> **Note:** The IPv6 address for the VM and default gateway **must** be the ones
 > shown above.
-
-> **Note:** DNS must also be manually configured. To know which DNS server to
-> use, run the following query:
-> `kubectl get service -n kube-system kube-dns -o=custom-columns=IP:.spec.clusterIP`
-
-> **Note:** The DNS search domain namespace must match with the namespace where
-> the VM is being created. It defaults to *default*.
 
 ### virtio-net multiqueue
 
