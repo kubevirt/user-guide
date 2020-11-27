@@ -63,7 +63,7 @@ port 1500 via cloud-init.
             bootcmd:
               - setenforce 0
               - dnf install -y nmap-ncat
-              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
+              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!'
         name: cloudinitdisk
 
 Define a TCP Liveness Probe
@@ -113,7 +113,7 @@ port 1500 via cloud-init.
             bootcmd:
               - setenforce 0
               - dnf install -y nmap-ncat
-              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
+              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!'
         name: cloudinitdisk
 
 Define Readiness Probes
@@ -169,3 +169,26 @@ filled:
 Note that in the case of Readiness Probes, it is also possible to set a
 `failureThreshold` and a `successThreashold` to only flip between ready
 and non-ready state if the probe succeeded or failed multiple times.
+
+Dual-stack considerations
+-------------------------
+
+Some context is needed to understand the limitations imposed by a dual-stack
+network configuration on readiness - or liveness - probes. Users must be
+fully aware that a dual-stack configuration is currently only available when
+using a masquerade binding type. Furthermore, it must be recalled that
+accessing a VM using masquerade binding type is performed via the pod IP
+address; in dual-stack mode, both IPv4 and IPv6 addresses can be used to reach
+the VM.
+
+Dual-stack networking configurations have a limitation when using HTTP / TCP
+probes - you **cannot probe the VMI by its IPv6 address**. The reason for this
+is the `host` field for both the
+[HTTP](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#httpgetaction-v1-core)
+and
+[TCP](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#tcpsocketaction-v1-core)
+probe actions default to the pod's IP address, which is currently always the
+IPv4 address.
+
+Since the pod's IP address is not known before creating the VMI, it is not
+possible to pre-provision the probe's host field.
