@@ -736,6 +736,9 @@ spec:
 > **Note:** for some NICs (e.g. Mellanox), the kernel module needs to be
 > installed in the guest VM.
 
+> **Note:** Placement on dedicated CPUs can only be achieved if the Kubernetes CPU manager is running on the SR-IOV capable workers.
+> For further details please refer to the [dedicated cpu resources documentation](https://kubevirt.io/user-guide/#/creation/dedicated-cpu).
+
 ### macvtap
 
 In `macvtap` mode, virtual machines are directly exposed to the Kubernetes
