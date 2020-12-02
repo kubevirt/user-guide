@@ -30,7 +30,7 @@ RunStrategies defined:
     inside guest).
 
 -   Manual: The presence of a VirtualMachineInstance or lack thereof is
-    controlled exclusively by the start/stop/restart VirtualMachint
+    controlled exclusively by the start/stop/restart VirtualMachine
     subresource endpoints.
 
 -   Halted: No VirtualMachineInstance will be present. If a guest is

@@ -95,7 +95,7 @@ GracePeriodSeconds to the seconds passed in the command.
 Currently, only setting grace-period=0 is supported.
 
 > Note: Force restart can cause data corruption, and should be used in
-> cases of kernal panic or VirtualMachine being unresponsive to normal
+> cases of kernel panic or VirtualMachine being unresponsive to normal
 > restarts.
 
 ### Fencing considerations
