@@ -7,30 +7,37 @@ continues to run and remain accessible.
 ## Enabling the live-migration support
 
 Live migration must be enabled in the feature gates to be supported. The
-`feature-gates` field in the kubevirt-config config map can be expanded
+`featureGates` field in the KubeVirt CR can be expanded
 by adding the `LiveMigration` to it.
 
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kubevirt-config
-  namespace: kubevirt
-  labels:
-    kubevirt.io: ""
-data:
-  feature-gates: "LiveMigration"
+```
+    apiVersion: kubevirt.io/v1alpha3
+    kind: Kubevirt
+    metadata:
+      name: kubevirt
+      namespace: kubevirt
+    spec:
+      ...
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - "LiveMigration"
 ```
 
-Alternatively, existing kubevirt-config can be altered:
+Alternatively, the existing kubevirt CR can be altered:
 
 ```sh
-kubectl edit configmap kubevirt-config -n kubevirt
+kubectl edit kubevirt kubevirt -n kubevirt
 ```
 
-```yaml
-data:
-  feature-gates: "DataVolumes,LiveMigration"
+```
+    ...
+    spec:
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - "DataVolumes"
+            - "LiveMigration"
 ```
 
 ## Limitations
@@ -149,24 +156,25 @@ parallel with an additional limit of a maximum of `2` outbound
 migrations per node. Finally, every migration is limited to a bandwidth
 of `64MiB/s`.
 
-These values can be change in the `kubevirt-config`:
+These values can be change in the `kubevirt` CR:
 
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kubevirt-config
-  namespace: kubevirt
-  labels:
-    kubevirt.io: ""
-data:
-  feature-gates: "LiveMigration"
-  migrations: |-
-    parallelMigrationsPerCluster: 5
-    parallelOutboundMigrationsPerNode: 2
-    bandwidthPerMigration: 64Mi
-    completionTimeoutPerGiB: 800
-    progressTimeout: 150
+```
+    apiVersion: kubevirt.io/v1alpha3
+    kind: Kubevirt
+    metadata:
+      name: kubevirt
+      namespace: kubevirt
+    spec:
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - "LiveMigration"
+        migrationConfiguration:
+          parallelMigrationsPerCluster: 5
+          parallelOutboundMigrationsPerNode: 2
+          bandwidthPerMigration: 64Mi
+          completionTimeoutPerGiB: 800
+          progressTimeout: 150
 ```
 
 # Migration timeouts

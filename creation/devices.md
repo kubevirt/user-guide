@@ -129,20 +129,24 @@ The following VM will have a CPU with `3` cores:
 
 ### Enabling cpu compatibility enforcement
 
-To enable the cpu compatibility enforcement, user may expand the
-`feature-gates` field in the kubevirt-config config map by adding the
+To enable the CPU compatibility enforcement, user may expand the
+`featureGates` field in the KubeVirt CR by adding the
 `CPUNodeDiscovery` to it.
 
-    apiVersion: v1
-    kind: ConfigMap
+```
+    apiVersion: kubevirt.io/v1alpha3
+    kind: Kubevirt
     metadata:
-      name: kubevirt-config
+      name: kubevirt
       namespace: kubevirt
-      labels:
-        kubevirt.io: ""
-    data:
-      feature-gates: "CPUNodeDiscovery"
+    spec:
+      ...
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - "CPUNodeDiscovery"
     ...
+```
 
 This feature-gate allows kubevirt to take VM cpu model and cpu features
 and create node selectors from them. With these node selectors, VM can
@@ -226,19 +230,21 @@ model, then no node selector is created.
 
 #### Enabling default cluster cpu model
 
-To enable the default cpu model, user may add the `default-cpu-model`
-field in the kubevirt-config config map.
+To enable the default cpu model, user may add the `cpuModel`
+field in the KubeVirt CR.
 
-    apiVersion: v1
-    kind: ConfigMap
+```
+    apiVersion: kubevirt.io/v1alpha3
+    kind: KubeVirt
     metadata:
-      name: kubevirt-config
+      name: kubevirt
       namespace: kubevirt
-      labels:
-        kubevirt.io: ""
-    data:
-      default-cpu-model: "EPYC"
+    spec:
+      ...
+      configuration:
+        cpuModel: "EPYC"
     ...
+```
 
 Default CPU model is set when vmi doesn’t have any cpu model. When vmi
 has cpu model set, then vmi’s cpu model is preferred. When default cpu

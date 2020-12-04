@@ -290,8 +290,8 @@ A `PersistentVolume` can be in “filesystem” or “block” mode:
     > every storage provisioner provides volumes with the exact usable
     > amount of space as requested (e.g. due to filesystem overhead),
     > KubeVirt tolerates up to 10% less available space. This can be
-    > configured with the `pvc-tolerate-less-space-up-to-percent` value
-    > in the `kubevirt-config` ConfigMap.
+    > configured with the `configuration.developmentConfiguration.pvcTolerateLessSpaceUpToPercent` value
+    > in the `kubevirt` custom resource.
 
 -   Block: Use a block volume for consuming raw block devices. Note: you
     need to enable the BlockVolume feature gate.
@@ -427,12 +427,7 @@ DataVolumes have finished their clone and import phases.
 A DataVolume is a custom resource provided by the Containerized Data
 Importer (CDI) project. KubeVirt integrates with CDI in order to provide
 users a workflow for dynamically creating PVCs and importing data into
-those PVCs.
-
-In order to take advantage of the DataVolume volume source on a VM or
-VMI, the **DataVolumes** feature gate must be enabled in the
-**kubevirt-config** config map before KubeVirt is installed. CDI must
-also be installed.
+those PVCs. CDI is required to be installed.
 
 **Installing CDI**
 
@@ -441,29 +436,6 @@ page](https://github.com/kubevirt/containerized-data-importer/releases)
 
 Pick the latest stable release and post the corresponding
 cdi-controller-deployment.yaml manifest to your cluster.
-
-**Enabling the DataVolumes feature gate**
-
-Below is an example of how to enable DataVolume support using the
-kubevirt-config config map.
-
-    cat <<EOF | kubectl create -f -
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: kubevirt-config
-      namespace: kubevirt
-      labels:
-        kubevirt.io: ""
-    data:
-      feature-gates: "DataVolumes"
-    EOF
-
-This config map assumes KubeVirt will be installed in the kubevirt
-namespace. Change the namespace to suite your installation.
-
-First post the ConfigMap above, then install KubeVirt. At that point
-DataVolume integration will be enabled.
 
 ### ephemeral
 

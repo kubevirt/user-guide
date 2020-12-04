@@ -42,34 +42,45 @@ virtualization workloads:
       QEMU: Checking if device /dev/net/tun exists                               : PASS
     ...
 
-If hardware virtualization is not available, then a [software emulation
-fallback](https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md)
-can be enabled using:
-
-    $ kubectl create namespace kubevirt
-    $ kubectl create configmap -n kubevirt kubevirt-config \
-        --from-literal debug.useEmulation=true
-
-This ConfigMap needs to be created before deployment or the
-virt-controller deployment has to be restarted.
-
 ## Installing KubeVirt on Kubernetes
 
 KubeVirt can be installed using the KubeVirt operator, which manages the
 lifecycle of all the KubeVirt core components. Below is an example of
 how to install KubeVirt using an official release.
 
-    # Pick an upstream release of KubeVirt to install
-    $ export RELEASE=v0.26.0
+    # Pick an upstream version of KubeVirt to install
+    $ export RELEASE=v0.35.0
     # Deploy the KubeVirt operator
     $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
-    # Create the KubeVirt CR (instance deployment request)
+    # Create the KubeVirt CR (instance deployment request) which triggers the actual installation
     $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
     # wait until all KubeVirt components are up
     $ kubectl -n kubevirt wait kv kubevirt --for condition=Available
 
+If hardware virtulization is not available, then a
+[software emulation fallback](https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md)
+can be enabled using by setting in the KubeVirt CR `spec.configuration.developerConfiguration.useEmulation` to `true` as follows:
+
+    $ kubectl edit -n kubevirt kubevirt kubevirt
+
+Add the following to the `kubevirt.yaml` file
+
+```yaml
+    spec:
+      ...
+      configuration:
+        developerConfiguration:
+          useEmulation: true
+```
+
 > Note: Prior to release v0.20.0 the condition for the `kubectl wait`
 > command was named "Ready" instead of "Available"
+
+> Note: Prior to KubeVirt 0.34.2 a ConfigMap called `kubevirt-config` in the
+> install-namespace was used to configure KubeVirt. Since 0.34.2 this method is
+> deprecated. The configmap still has precedence over `configuration` on the
+> CR exists, but it will not receive future updates and you should migrate any
+> custom configurations to `spec.configuration` on the KubeVirt CR.
 
 All new components will be deployed under the `kubevirt` namespace:
 
@@ -150,4 +161,3 @@ it to a specific subset of nodes with a nodeSelector. For example, to
 restrict the DaemonSet to only nodes with the "region=primary" label:
 
     kubectl patch ds/virt-handler -n kubevirt -p '{"spec": {"template": {"spec": {"nodeSelector": {"region": "primary"}}}}}'
-
