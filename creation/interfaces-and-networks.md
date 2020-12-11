@@ -1,5 +1,4 @@
-Interfaces and Networks
-=======================
+# Interfaces and Networks
 
 Connecting a virtual machine to a network consists of two parts. First,
 networks are specified in `spec.networks`. Then, interfaces backed by
@@ -21,8 +20,7 @@ Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_interfa
 and [Network API
 Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_network).
 
-Backend
--------
+## Backend
 
 Network backends are configured in `spec.networks`. A network must have
 a unique name. Additional fields declare which logical or physical
@@ -59,16 +57,18 @@ fields:
 A `pod` network represents the default pod `eth0` interface configured
 by cluster network solution that is present in each pod.
 
-    kind: VM
-    spec:
-      domain:
-        devices:
-          interfaces:
-            - name: default
-              masquerade: {}
-      networks:
-      - name: default
-        pod: {} # Stock pod network
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: default
+          masquerade: {}
+  networks:
+  - name: default
+    pod: {} # Stock pod network
+```
 
 ### multus
 
@@ -87,41 +87,45 @@ First the `NetworkAttachmentDefinition` needs to be created. That is
 usually done by an administrator. Users can then reference the
 definition.
 
-    apiVersion: "k8s.cni.cncf.io/v1"
-    kind: NetworkAttachmentDefinition
-    metadata:
-      name: ovs-vlan-100
-    spec:
-      config: '{
-          "cniVersion": "0.3.1",
-          "type": "ovs",
-          "bridge": "br1",
-          "vlan": 100
-        }'
+```yaml
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: ovs-vlan-100
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "type": "ovs",
+      "bridge": "br1",
+      "vlan": 100
+    }'
+```
 
 With following definition, the VMI will be connected to the default pod
 network and to the secondary Open vSwitch network.
 
-    kind: VM
-    spec:
-      domain:
-        devices:
-          interfaces:
-            - name: default
-              masquerade: {}
-              bootOrder: 1   # attempt to boot from an external tftp server
-              dhcpOptions:
-                bootFileName: default_image.bin
-                tftpServerName: tftp.example.com
-            - name: ovs-net
-              bridge: {}
-              bootOrder: 2   # if first attempt failed, try to PXE-boot from this L2 networks
-      networks:
-      - name: default
-        pod: {} # Stock pod network
-      - name: ovs-net
-        multus: # Secondary multus network
-          networkName: ovs-vlan-100
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: default
+          masquerade: {}
+          bootOrder: 1   # attempt to boot from an external tftp server
+          dhcpOptions:
+            bootFileName: default_image.bin
+            tftpServerName: tftp.example.com
+        - name: ovs-net
+          bridge: {}
+          bootOrder: 2   # if first attempt failed, try to PXE-boot from this L2 networks
+  networks:
+  - name: default
+    pod: {} # Stock pod network
+  - name: ovs-net
+    multus: # Secondary multus network
+      networkName: ovs-vlan-100
+```
 
 It is also possible to define a multus network as the default pod
 network with [Multus](https://github.com/intel/multus-cni). A version of
@@ -142,39 +146,42 @@ Request](https://github.com/intel/multus-cni/pull/174) is required
 
 Create a `NetworkAttachmentDefinition` with IPAM.
 
-    apiVersion: "k8s.cni.cncf.io/v1"
-    kind: NetworkAttachmentDefinition
-    metadata:
-      name: macvlan-test
-    spec:
-      config: '{
-          "type": "macvlan",
-          "master": "eth0",
-          "mode": "bridge",
-          "ipam": {
-            "type": "host-local",
-                  "subnet": "10.250.250.0/24"
-          }
-        }'
+```yaml
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: macvlan-test
+spec:
+  config: '{
+      "type": "macvlan",
+      "master": "eth0",
+      "mode": "bridge",
+      "ipam": {
+        "type": "host-local",
+        "subnet": "10.250.250.0/24"
+      }
+    }'
+```
 
 Define a VMI with a [Multus](https://github.com/intel/multus-cni)
 network as the default.
 
-    kind: VM
-    spec:
-      domain:
-        devices:
-          interfaces:
-            - name: test1
-              bridge: {}
-      networks:
-      - name: test1
-        multus: # Multus network as default
-          default: true
-          networkName: macvlan-test
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: test1
+          bridge: {}
+  networks:
+  - name: test1
+    multus: # Multus network as default
+      default: true
+      networkName: macvlan-test
+```
 
-Frontend
---------
+## Frontend
 
 Network interfaces are configured in `spec.domain.devices.interfaces`.
 They describe properties of virtual interfaces as “seen” inside guest
@@ -262,20 +269,22 @@ properties “seen” inside guest instances, as listed below:
 </tbody>
 </table>
 
-    kind: VM
-    spec:
-      domain:
-        devices:
-          interfaces:
-            - name: default
-              model: e1000 # expose e1000 NIC to the guest
-              masquerade: {} # connect through a masquerade
-              ports:
-               - name: http
-                 port: 80
-      networks:
-      - name: default
-        pod: {}
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: default
+          model: e1000 # expose e1000 NIC to the guest
+          masquerade: {} # connect through a masquerade
+          ports:
+           - name: http
+             port: 80
+  networks:
+  - name: default
+    pod: {}
+```
 
 > **Note:** If a specific MAC address is configured for a virtual
 > machine interface, it’s passed to the underlying CNI plugin that is
@@ -287,27 +296,29 @@ properties “seen” inside guest instances, as listed below:
 > plugin to adjust pod interface MAC address. This can be used as
 > follows:
 >
->     apiVersion: "k8s.cni.cncf.io/v1"
->     kind: NetworkAttachmentDefinition
->     metadata:
->       name: ptp-mac
->     spec:
->       config: '{
->           "cniVersion": "0.3.1",
->           "name": "ptp-mac",
->           "plugins": [
->             {
->               "type": "ptp",
->               "ipam": {
->                 "type": "host-local",
->                 "subnet": "10.1.1.0/24"
->               }
->             },
->             {
->               "type": "tuning"
->             }
->           ]
->         }'
+> ```yaml
+> apiVersion: "k8s.cni.cncf.io/v1"
+> kind: NetworkAttachmentDefinition
+> metadata:
+>   name: ptp-mac
+> spec:
+>   config: '{
+>       "cniVersion": "0.3.1",
+>       "name": "ptp-mac",
+>       "plugins": [
+>         {
+>           "type": "ptp",
+>           "ipam": {
+>             "type": "host-local",
+>             "subnet": "10.1.1.0/24"
+>           }
+>         },
+>         {
+>           "type": "tuning"
+>         }
+>       ]
+>     }'
+> ```
 >
 > This approach may not work for all plugins. For example, OKD SDN is
 > not compatible with `tuning` plugin.
@@ -375,11 +386,13 @@ connected using the default pod network interface of `bridge` type. If
 you’d like to have a virtual machine instance without any network
 connectivity, you can use the `autoattachPodInterface` field as follows:
 
-    kind: VM
-    spec:
-      domain:
-        devices:
-          autoattachPodInterface: false
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      autoattachPodInterface: false
+```
 
 ### bridge
 
@@ -392,17 +405,19 @@ to use DHCP to acquire IPv4 addresses.
 > machine interface spec the MAC address from the relevant pod interface
 > is delegated to the virtual machine.
 
-    kind: VM
-    spec:
-      domain:
-        devices:
-          interfaces:
-            - name: red
-              bridge: {} # connect through a bridge
-      networks:
-      - name: red
-        multus:
-          networkName: red
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          bridge: {} # connect through a bridge
+  networks:
+  - name: red
+    multus:
+      networkName: red
+```
 
 At this time, `bridge` mode doesn’t support additional configuration
 fields.
@@ -416,15 +431,17 @@ fields.
 > networks via a designated configuration flag. To achieve it, the admin
 > should set the following option to `false`:
 
-    apiVersion: kubevirt.io/v1alpha3
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      configuration:
-        networkConfiguration:
-          permitBridgeInterfaceOnPodNetwork: "false"
+```yaml
+apiVersion: kubevirt.io/v1alpha3
+kind: Kubevirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    networkConfiguration:
+      permitBridgeInterfaceOnPodNetwork: "false"
+```
 
 > **Note:** binding the pod network using `bridge` interface type may
 > cause issues. Other than the third-party issue mentioned in the above
@@ -441,16 +458,18 @@ In `slirp` mode, virtual machines are connected to the network backend
 using QEMU user networking mode. In this mode, QEMU allocates internal
 IP addresses to virtual machines and hides them behind NAT.
 
-    kind: VM
-    spec:
-      domain:
-        devices:
-          interfaces:
-            - name: red
-              slirp: {} # connect using SLIRP mode
-      networks:
-      - name: red
-        pod: {}
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          slirp: {} # connect using SLIRP mode
+  networks:
+  - name: red
+    pod: {}
+```
 
 At this time, `slirp` mode doesn’t support additional configuration
 fields.
@@ -472,18 +491,20 @@ To allow traffic of specific ports into virtual machines, the template `ports` s
 the interface should be configured as follows. If the `ports` section is missing,
 all ports forwarded into the VM.
 
-    kind: VM
-    spec:
-      domain:
-        devices:
-          interfaces:
-            - name: red
-              masquerade: {} # connect using masquerade mode
-              ports:
-                - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
-      networks:
-      - name: red
-        pod: {}
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          masquerade: {} # connect using masquerade mode
+          ports:
+            - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+  networks:
+  - name: red
+    pod: {}
+```
 
 > **Note:** Masquerade is only allowed to connect to the pod network.
 
@@ -543,11 +564,13 @@ Setting the `networkInterfaceMultiqueue` to `true` will enable the
 multi-queue functionality, increasing the number of vhost queue, for
 interfaces configured with a `virtio` model.
 
-    kind: VM
-    spec:
-      domain:
-        devices:
-          networkInterfaceMultiqueue: true
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      networkInterfaceMultiqueue: true
+```
 
 Users of a Virtual Machine with multiple vCPUs may benefit of increased
 network throughput and performance.
