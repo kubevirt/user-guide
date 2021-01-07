@@ -1,1 +1,1 @@
-  * [Contributing](appendix/contributing.md)
+  * [Contributing](contributing.md)
