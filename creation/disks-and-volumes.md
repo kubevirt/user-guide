@@ -410,7 +410,7 @@ DataVolumes have finished their clone and import phases.
           disks:
           - disk:
               bus: virtio
-            name: disk1
+            name: volume1
         machine:
           type: ""
         resources:
