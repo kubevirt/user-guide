@@ -19,13 +19,13 @@ features_for() {
 
 gen_changelog() {
   {
-  echo "# Changelog"
+  echo "# Latest release notes"
   for REL in $(releases);
   do
     echo -e "\n## $REL" ;
     features_for $REL
   done
-  } > changelog.md
+} > docs/latest_release_notes.md
 }
 
 gen_changelog
