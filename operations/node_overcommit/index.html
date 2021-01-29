@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/operations/node_overcommit/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Node overcommit - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Node overcommit";
+    var mkdocs_page_input_path = "operations/node_overcommit.md";
+    var mkdocs_page_url = "/docs/operations/node_overcommit/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../component_monitoring/">Component monitoring</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../authorization/">Authorization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_maintenance/">Node maintenance</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Node overcommit</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#remove-the-graphical-devices">Remove the Graphical Devices</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#overcommit-the-guest-overhead">Overcommit the Guest Overhead</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#overcommit-guest-memory">Overcommit Guest Memory</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuring-the-memory-pressure-behavior-of-nodes">Configuring the memory pressure behavior of nodes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#requesting-the-right-qos-class-for-virtualmachineinstances">Requesting the right QoS Class for VirtualMachineInstances</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#setting-system-reserved-and-kubelet-reserved">Setting --system-reserved and --kubelet-reserved</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#enabling-ksm">Enabling KSM</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#enabling-swap">Enabling Swap</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/presets/">Presets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Operations &raquo;</li>
+        
+      
+    
+    <li>Node overcommit</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/operations/node_overcommit.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="node-overcommit">Node overcommit<a class="headerlink" href="#node-overcommit" title="Permanent link">&para;</a></h1>
+<p>KubeVirt does not yet support classical Memory Overcommit Management or
+Memory Ballooning. In other words VirtualMachineInstances can’t give
+back memory they have allocated. However, a few other things can be
+tweaked to reduce the memory footprint and overcommit the per-VMI memory
+overhead.</p>
+<h2 id="remove-the-graphical-devices">Remove the Graphical Devices<a class="headerlink" href="#remove-the-graphical-devices" title="Permanent link">&para;</a></h2>
+<p>First the safest option to reduce the memory footprint, is removing the
+graphical device from the VMI by setting
+<code>spec.domain.devices.autottachGraphicsDevice</code> to <code>false</code>. See the video
+and graphics device
+<a href="/workloads/virtual-machines/virtualized-hardware-configuration#video-and-graphics-device">documentation</a>
+for further details and examples.</p>
+<p>This will save a constant amount of <code>16MB</code> per VirtualMachineInstance
+but also disable VNC access.</p>
+<h2 id="overcommit-the-guest-overhead">Overcommit the Guest Overhead<a class="headerlink" href="#overcommit-the-guest-overhead" title="Permanent link">&para;</a></h2>
+<p>Before you continue, make sure you make yourself comfortable with the
+<a href="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/">Out of Resource
+Managment</a>
+of Kubernetes.</p>
+<p>Every VirtualMachineInstance requests slightly more memory from
+Kubernetes than what was requested by the user for the Operating System.
+The additional memory is used for the per-VMI overhead consisting of our
+infrastructure which is wrapping the actual VirtualMachineInstance
+process.</p>
+<p>In order to increase the VMI density on the node, it is possible to not
+request the additional overhead by setting
+<code>spec.domain.resources.overcommitGuestOverhead</code> to <code>true</code>:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 30
+  domain:
+    resources:
+      overcommitGuestOverhead: true
+      requests:
+        memory: 1024M
+[...]
+</code></pre>
+<p>This will work fine for as long as most of the VirtualMachineInstances
+will not request the whole memory. That is especially the case if you
+have short-lived VMIs. But if you have long-lived
+VirtualMachineInstances or do extremely memory intensive tasks inside
+the VirtualMachineInstance, your VMIs will use all memory they are
+granted sooner or later.</p>
+<h2 id="overcommit-guest-memory">Overcommit Guest Memory<a class="headerlink" href="#overcommit-guest-memory" title="Permanent link">&para;</a></h2>
+<p>The third option is real memory overcommit on the VMI. In this scenario
+the VMI is explicitly told that it has more memory available than what
+is requested from the cluster by setting <code>spec.domain.memory.guest</code> to a
+value higher than <code>spec.domain.resources.requests.memory</code>.</p>
+<p>The following definition requests <code>1024MB</code> from the cluster but tells
+the VMI that it has <code>2048MB</code> of memory available:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 30
+  domain:
+    resources:
+      overcommitGuestOverhead: true
+      requests:
+        memory: 1024M
+    memory:
+      guest: 2048M
+[...]
+</code></pre>
+<p>For as long as there is enough free memory available on the node, the
+VMI can happily consume up to <code>2048MB</code>. This VMI will get the
+<code>Burstable</code> resource class assigned by Kubernetes (See <a href="https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-burstable">QoS classes in
+Kubernetes</a>
+for more details). The same eviction rules like for Pods apply to the
+VMI in case the node gets under memory pressure.</p>
+<p>Implicit memory overcommit is disabled by default. This means that when
+memory request is not specified, it is set to match
+<code>spec.domain.memory.guest</code>. However, it can be enabled using
+<code>spec.configuration.developerConfiguration.memoryOvercommit</code> in the <code>kubevirt</code> CR. For example, by setting
+<code>memoryOvercommit: "150"</code> we define that when memory request is not
+explicitly set, it will be implicitly set to achieve memory overcommit
+of 150%. For instance, when <code>spec.domain.memory.guest: 3072M</code>, memory
+request is set to 2048M, if omitted. Note that the actual memory request
+depends on additional configuration options like
+OvercommitGuestOverhead.</p>
+<h2 id="configuring-the-memory-pressure-behavior-of-nodes">Configuring the memory pressure behavior of nodes<a class="headerlink" href="#configuring-the-memory-pressure-behavior-of-nodes" title="Permanent link">&para;</a></h2>
+<p>If the node gets under memory pressure, depending on the <code>kubelet</code>
+configuration the virtual machines may get killed by the OOM handler or
+by the <code>kubelet</code> itself. It is possible to tweak that behaviour based on
+the requirements of your VirtualMachineInstances by:</p>
+<ul>
+<li>
+<p>Configuring <a href="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#soft-eviction-thresholds">Soft Eviction
+    Thresholds</a></p>
+</li>
+<li>
+<p>Configuring <a href="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#hard-eviction-thresholds">Hard Eviction
+    Thresholds</a></p>
+</li>
+<li>
+<p>Requesting the right QoS class for VirtualMachineInstances</p>
+</li>
+<li>
+<p>Setting <code>--system-reserved</code> and <code>--kubelet-reserved</code></p>
+</li>
+<li>
+<p>Enabling KSM</p>
+</li>
+<li>
+<p>Enabling swap</p>
+</li>
+</ul>
+<h3 id="configuring-soft-eviction-thresholds">Configuring Soft Eviction Thresholds<a class="headerlink" href="#configuring-soft-eviction-thresholds" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Note: Soft Eviction will effectively shutdown VirtualMachineInstances.
+They are not paused, hibernated or migrated. Further, Soft Eviction is
+disabled by default.</p>
+</blockquote>
+<p>If configured, VirtualMachineInstances get evicted once the available
+memory falls below the threshold specified via <code>--eviction-soft</code> and the
+VirtualmachineInstance is given the chance to perform a shutdown of the
+VMI within a timespan specified via <code>--eviction-max-pod-grace-period</code>.
+The flag <code>--eviction-soft-grace-period</code> specifies for how long a soft
+eviction condition must be held before soft evictions are triggered.</p>
+<p>If set properly according to the demands of the VMIs, overcommitting
+should only lead to soft evictions in rare cases for some VMIs. They may
+even get re-scheduled to the same node with less initial memory demand.
+For some workload types, this can be perfectly fine and lead to better
+overall memory-utilization.</p>
+<h3 id="configuring-hard-eviction-thresholds">Configuring Hard Eviction Thresholds<a class="headerlink" href="#configuring-hard-eviction-thresholds" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Note: If unspecified, the kubelet will do hard evictions for Pods once
+<code>memory.available</code> falls below <code>100Mi</code>.</p>
+</blockquote>
+<p>Limits set via <code>--eviction-hard</code> will lead to immediate eviction of
+VirtualMachineInstances or Pods. This stops VMIs without a grace period
+and is comparable with power-loss on a real computer.</p>
+<p>If the hard limit is hit, VMIs may from time to time simply be killed.
+They may be re-scheduled to the same node immediately again, since they
+start with less memory consumption again. This can be a simple option,
+if the memory threshold is only very seldom hit and the work performed
+by the VMIs is reproducible or it can be resumed from some checkpoints.</p>
+<h2 id="requesting-the-right-qos-class-for-virtualmachineinstances">Requesting the right QoS Class for VirtualMachineInstances<a class="headerlink" href="#requesting-the-right-qos-class-for-virtualmachineinstances" title="Permanent link">&para;</a></h2>
+<p>Different QoS classes get <a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy">assigned to Pods and
+VirtualMachineInstances</a>
+based on the <code>requests.memory</code> and <code>limits.memory</code>. KubeVirt right now
+supports the QoS classes <code>Burstable</code> and <code>Guaranteed</code>. <code>Burstable</code> VMIs
+are evicted before <code>Guaranteed</code> VMIs.</p>
+<p>This allows creating two classes of VMIs:</p>
+<ul>
+<li>
+<p>One type can have equal <code>requests.memory</code> and <code>limits.memory</code> set
+    and therefore gets the <code>Guaranteed</code> class assigned. This one will
+    not get evicted and should never run into memory issues, but is more
+    demanding.</p>
+</li>
+<li>
+<p>One type can have no <code>limits.memory</code> or a <code>limits.memory</code> which is
+    greater than <code>requests.memory</code> and therefore gets the <code>Burstable</code>
+    class assigned. These VMIs will be evicted first.</p>
+</li>
+</ul>
+<h2 id="setting-system-reserved-and-kubelet-reserved">Setting <code>--system-reserved</code> and <code>--kubelet-reserved</code><a class="headerlink" href="#setting-system-reserved-and-kubelet-reserved" title="Permanent link">&para;</a></h2>
+<p>It may be important to reserve some memory for other daemons (not
+DaemonSets) which are running on the same node (e.g. ssh, dhcp servers,
+…). The reservation can be done with the <code>--system-reserved</code> switch.
+Further for the Kubelet and Docker a special flag called
+<code>--kubelet-reserved</code> exists.</p>
+<h2 id="enabling-ksm">Enabling KSM<a class="headerlink" href="#enabling-ksm" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://www.linux-kvm.org/page/KSM">KSM</a> (Kernel same-page merging)
+daemon can be started on the node. Depending on its tuning parameters it
+can more or less aggressively try to merge identical pages between
+applications and VirtualMachineInstances. The more aggressive it is
+configured the more CPU it will use itself, so the memory overcommit
+advantages comes with a slight CPU performance hit.</p>
+<p>Config file tuning allows changes to scanning frequency (how often will
+KSM activate) and aggressiveness (how many pages per second will it
+scan).</p>
+<h2 id="enabling-swap">Enabling Swap<a class="headerlink" href="#enabling-swap" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Note: This will definitely make sure that your VirtualMachines can’t
+crash or get evicted from the node but it comes with the cost of
+pretty unpredictable performance once the node runs out of memory and
+the kubelet may not detect that it should evict Pods to increase the
+performance again.</p>
+</blockquote>
+<p>Enabling swap is in general <a href="https://github.com/kubernetes/kubernetes/issues/53533">not
+recommended</a> on
+Kubernetes right now. However, it can be useful in combination with KSM,
+since KSM merges identical pages over time. Swap allows the VMIs to
+successfuly allocate memory which will then effectively never be used
+because of the later de-duplication done by KSM.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../unresponsive_nodes/" class="btn btn-neutral float-right" title="Unresponsive nodes">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../node_maintenance/" class="btn btn-neutral" title="Node maintenance"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../node_maintenance/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../unresponsive_nodes/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

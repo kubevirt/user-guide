@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/virtual_machines/disks_and_volumes/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Disks and Volumes - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Disks and Volumes";
+    var mkdocs_page_input_path = "virtual_machines/disks_and_volumes.md";
+    var mkdocs_page_url = "/docs/virtual_machines/disks_and_volumes/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/component_monitoring/">Component monitoring</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/authorization/">Authorization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/node_maintenance/">Node maintenance</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/node_overcommit/">Node overcommit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../presets/">Presets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_hardware/">Virtual hardware</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Disks and Volumes</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#disks">Disks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#volumes">Volumes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#high-performance-features">High Performance Features</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Virtual machines &raquo;</li>
+        
+      
+    
+    <li>Disks and Volumes</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/disks_and_volumes.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="disks-and-volumes">Disks and Volumes<a class="headerlink" href="#disks-and-volumes" title="Permanent link">&para;</a></h1>
+<p>Making persistent storage in the cluster (<strong>volumes</strong>) accessible to VMs
+consists of three parts. First, volumes are specified in <code>spec.volumes</code>.
+Second, disks are added to the VM by specifying them in
+<code>spec.domain.devices.disks</code>. Finally, a refererence to the specified
+volume is added to the disk specification by name.</p>
+<h2 id="disks">Disks<a class="headerlink" href="#disks" title="Permanent link">&para;</a></h2>
+<p>Like all other vmi devices a <code>spec.domain.devices.disks</code> element has a
+mandatory <code>name</code>, and furthermore, the disk’s <code>name</code> must reference the
+<code>name</code> of a volume inside <code>spec.volumes</code>.</p>
+<p>A disk can be made accessible via four different types:</p>
+<ul>
+<li>
+<p><a href="#lun"><strong>lun</strong></a></p>
+</li>
+<li>
+<p><a href="#disk"><strong>disk</strong></a></p>
+</li>
+<li>
+<p><a href="#cdrom"><strong>cdrom</strong></a></p>
+</li>
+<li>
+<p><a href="#floppy"><strong>floppy</strong></a> <em>DEPRECATED</em></p>
+</li>
+</ul>
+<p>All possible configuration options are available in the <a href="https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk">Disk API
+Reference</a>.</p>
+<p>All types, with the exception of <strong>floppy</strong>, allow you to specify the
+<code>bus</code> attribute. The <code>bus</code> attribute determines how the disk will be
+presented to the guest operating system. <strong>floppy</strong> disks don’t support
+the <code>bus</code> attribute: they are always attached to the <code>fdc</code> bus.</p>
+<h3 id="lun">lun<a class="headerlink" href="#lun" title="Permanent link">&para;</a></h3>
+<p>A <code>lun</code> disk will expose the volume as a LUN device to the VM. This
+allows the VM to execute arbitrary iSCSI command passthrough.</p>
+<p>A minimal example which attaches a <code>PersistentVolumeClaim</code> named <code>mypvc</code>
+as a <code>lun</code> device to the VM:</p>
+<pre><code>metadata:
+  name: testvmi-lun
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        # This makes it a lun device
+        lun: {}
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+</code></pre>
+<h3 id="disk">disk<a class="headerlink" href="#disk" title="Permanent link">&para;</a></h3>
+<p>A <code>disk</code> disk will expose the volume as an ordinary disk to the VM.</p>
+<p>A minimal example which attaches a <code>PersistentVolumeClaim</code> named <code>mypvc</code>
+as a <code>disk</code> device to the VM:</p>
+<pre><code>metadata:
+  name: testvmi-disk
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        # This makes it a disk
+        disk: {}
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+</code></pre>
+<p>You can set the disk <code>bus</code> type, overriding the defaults, which in turn
+depends on the chipset the VM is configured to use:</p>
+<pre><code>metadata:
+  name: testvmi-disk
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        # This makes it a disk
+        disk:
+          # This makes it exposed as /dev/vda, being the only and thus first
+          # disk attached to the VM
+          bus: virtio
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+</code></pre>
+<h3 id="floppy">floppy<a class="headerlink" href="#floppy" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Note</strong>: Starting with version 0.16.0, floppy disks are deprecated
+and will be <strong>rejected</strong>. They will be removed from the API in a
+future version.</p>
+</blockquote>
+<p>A <code>floppy</code> disk will expose the volume as a floppy drive to the VM.</p>
+<p>A minimal example which attaches a <code>PersistentVolumeClaim</code> named <code>mypvc</code>
+as a <code>floppy</code> device to the VM:</p>
+<pre><code>metadata:
+  name: testvmi-floppy
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        # This makes it a floppy
+        floppy: {}
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+</code></pre>
+<h3 id="cdrom">cdrom<a class="headerlink" href="#cdrom" title="Permanent link">&para;</a></h3>
+<p>A <code>cdrom</code> disk will expose the volume as a cdrom drive to the VM. It is
+read-only by default.</p>
+<p>A minimal example which attaches a <code>PersistentVolumeClaim</code> named <code>mypvc</code>
+as a <code>floppy</code> device to the VM:</p>
+<pre><code>metadata:
+  name: testvmi-cdrom
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        # This makes it a cdrom
+        cdrom:
+          # This makes the cdrom writeable
+          readOnly: false
+          # This makes the cdrom be exposed as SATA device
+          bus: sata
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+</code></pre>
+<h2 id="volumes">Volumes<a class="headerlink" href="#volumes" title="Permanent link">&para;</a></h2>
+<p>Supported volume sources are</p>
+<ul>
+<li>
+<p><a href="#cloudinitnocloud"><strong>cloudInitNoCloud</strong></a></p>
+</li>
+<li>
+<p><a href="#cloudinitconfigdrive"><strong>cloudInitConfigDrive</strong></a></p>
+</li>
+<li>
+<p><a href="#persistentvolumeclaim"><strong>persistentVolumeClaim</strong></a></p>
+</li>
+<li>
+<p><a href="#datavolume"><strong>dataVolume</strong></a></p>
+</li>
+<li>
+<p><a href="#ephemeral"><strong>ephemeral</strong></a></p>
+</li>
+<li>
+<p><a href="#containerdisk"><strong>containerDisk</strong></a></p>
+</li>
+<li>
+<p><a href="#emptydisk"><strong>emptyDisk</strong></a></p>
+</li>
+<li>
+<p><a href="#hostdisk"><strong>hostDisk</strong></a></p>
+</li>
+<li>
+<p><a href="#configmap"><strong>configMap</strong></a></p>
+</li>
+<li>
+<p><a href="#secret"><strong>secret</strong></a></p>
+</li>
+<li>
+<p><a href="#serviceaccount"><strong>serviceAccount</strong></a></p>
+</li>
+</ul>
+<p>All possible configuration options are available in the <a href="https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume">Volume API
+Reference</a>.</p>
+<h3 id="cloudinitnocloud">cloudInitNoCloud<a class="headerlink" href="#cloudinitnocloud" title="Permanent link">&para;</a></h3>
+<p>Allows attaching <code>cloudInitNoCloud</code> data-sources to the VM. If the VM
+contains a proper cloud-init setup, it will pick up the disk as a
+user-data source.</p>
+<p>A simple example which attaches a <code>Secret</code> as a cloud-init <code>disk</code>
+datasource may look like this:</p>
+<pre><code>metadata:
+  name: testvmi-cloudinitnocloud
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mybootdisk
+        lun: {}
+      - name: mynoclouddisk
+        disk: {}
+  volumes:
+    - name: mybootdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+    - name: mynoclouddisk
+      cloudInitNoCloud:
+        secretRef:
+          name: testsecret
+</code></pre>
+<h3 id="cloudinitconfigdrive">cloudInitConfigDrive<a class="headerlink" href="#cloudinitconfigdrive" title="Permanent link">&para;</a></h3>
+<p>Allows attaching <code>cloudInitConfigDrive</code> data-sources to the VM. If the
+VM contains a proper cloud-init setup, it will pick up the disk as a
+user-data source.</p>
+<p>A simple example which attaches a <code>Secret</code> as a cloud-init <code>disk</code>
+datasource may look like this:</p>
+<pre><code>metadata:
+  name: testvmi-cloudinitconfigdrive
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mybootdisk
+        lun: {}
+      - name: myconfigdrivedisk
+        disk: {}
+  volumes:
+    - name: mybootdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+    - name: myconfigdrivedisk
+      cloudInitConfigDrive:
+        secretRef:
+          name: testsecret
+</code></pre>
+<h3 id="persistentvolumeclaim">persistentVolumeClaim<a class="headerlink" href="#persistentvolumeclaim" title="Permanent link">&para;</a></h3>
+<p>Allows connecting a <code>PersistentVolumeClaim</code> to a VM disk.</p>
+<p>Use a PersistentVolumeClaim when the VirtualMachineInstance’s disk needs
+to persist after the VM terminates. This allows for the VM’s data to
+remain persistent between restarts.</p>
+<p>A <code>PersistentVolume</code> can be in “filesystem” or “block” mode:</p>
+<ul>
+<li>
+<p>Filesystem: For KubeVirt to be able to consume the disk present on a
+    PersistentVolume’s filesystem, the disk must be named <code>disk.img</code> and
+    be placed in the root path of the filesystem. Currently the disk is
+    also required to be in raw format. &gt; <strong>Important:</strong> The
+    <code>disk.img</code> image file needs to be owned by the user-id <code>107</code> in
+    order to avoid permission issues.</p>
+<blockquote>
+<p><strong>Note:</strong> If the <code>disk.img</code> image file has not been created
+manually before starting a VM then it will be created
+automatically with the <code>PersistentVolumeClaim</code> size. Since not
+every storage provisioner provides volumes with the exact usable
+amount of space as requested (e.g. due to filesystem overhead),
+KubeVirt tolerates up to 10% less available space. This can be
+configured with the <code>pvc-tolerate-less-space-up-to-percent</code> value
+in the <code>kubevirt-config</code> ConfigMap.</p>
+</blockquote>
+</li>
+<li>
+<p>Block: Use a block volume for consuming raw block devices. Note: you
+    need to enable the BlockVolume feature gate.</p>
+</li>
+</ul>
+<p>A simple example which attaches a <code>PersistentVolumeClaim</code> as a <code>disk</code>
+may look like this:</p>
+<pre><code>metadata:
+  name: testvmi-pvc
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        lun: {}
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+</code></pre>
+<h4 id="datavolume">dataVolume<a class="headerlink" href="#datavolume" title="Permanent link">&para;</a></h4>
+<p>DataVolumes are a way to automate importing virtual machine disks onto
+PVCs during the virtual machine’s launch flow. Without using a
+DataVolume, users have to prepare a PVC with a disk image before
+assigning it to a VM or VMI manifest. With a DataVolume, both the PVC
+creation and import is automated on behalf of the user.</p>
+<h4 id="datavolume-vm-behavior">DataVolume VM Behavior<a class="headerlink" href="#datavolume-vm-behavior" title="Permanent link">&para;</a></h4>
+<p>DataVolumes can be defined in the VM spec directly by adding the
+DataVolumes to the <code>dataVolumeTemplates</code> list. Below is an example.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-alpine-datavolume
+  name: vm-alpine-datavolume
+spec:
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-alpine-datavolume
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: datavolumedisk1
+        resources:
+          requests:
+            memory: 64M
+      volumes:
+      - dataVolume:
+          name: alpine-dv
+        name: datavolumedisk1
+  dataVolumeTemplates:
+  - metadata:
+      name: alpine-dv
+    spec:
+      pvc:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
+      source:
+        http:
+          url: http://cdi-http-import-server.kubevirt/images/alpine.iso
+</code></pre>
+<p>You can see the DataVolume defined in the dataVolumeTemplates section
+has two parts. The <strong>source</strong> and <strong>pvc</strong></p>
+<p>The <strong>source</strong> part declares that there is a disk image living on an
+http server that we want to use as a volume for this VM. The <strong>pvc</strong>
+part declares the spec that should be used to create the PVC that hosts
+the <strong>source</strong> data.</p>
+<p>When this VM manifest is posted to the cluster, as part of the launch
+flow a PVC will be created using the spec provided and the source data
+will be automatically imported into that PVC before the VM starts. When
+the VM is deleted, the storage provisioned by the DataVolume will
+automatically be deleted as well.</p>
+<h4 id="datavolume-vmi-behavior">DataVolume VMI Behavior<a class="headerlink" href="#datavolume-vmi-behavior" title="Permanent link">&para;</a></h4>
+<p>For a VMI object, DataVolumes can be referenced as a volume source for
+the VMI. When this is done, it is expected that the referenced
+DataVolume exists in the cluster. The VMI will consume the DataVolume,
+but the DataVolume’s life-cycle will not be tied to the VMI.</p>
+<p>Below is an example of a DataVolume being referenced by a VMI. It is
+expected that the DataVolume <em>alpine-datavolume</em> was created prior to
+posting the VMI manifest to the cluster. It is okay to post the VMI
+manifest to the cluster while the DataVolume is still having data
+imported. KubeVirt knows not to start the VMI until all referenced
+DataVolumes have finished their clone and import phases.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-alpine-datavolume
+  name: vmi-alpine-datavolume
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: disk1
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: volume1
+    dataVolume:
+      name: alpine-datavolume
+</code></pre>
+<h4 id="enabling-datavolume-support">Enabling DataVolume support.<a class="headerlink" href="#enabling-datavolume-support" title="Permanent link">&para;</a></h4>
+<p>A DataVolume is a custom resource provided by the Containerized Data
+Importer (CDI) project. KubeVirt integrates with CDI in order to provide
+users a workflow for dynamically creating PVCs and importing data into
+those PVCs.</p>
+<p>In order to take advantage of the DataVolume volume source on a VM or
+VMI, the <strong>DataVolumes</strong> feature gate must be enabled in the
+<strong>kubevirt-config</strong> config map before KubeVirt is installed. CDI must
+also be installed.</p>
+<p><strong>Installing CDI</strong></p>
+<p>Go to the <a href="https://github.com/kubevirt/containerized-data-importer/releases">CDI release
+page</a></p>
+<p>Pick the latest stable release and post the corresponding
+cdi-controller-deployment.yaml manifest to your cluster.</p>
+<p><strong>Enabling the DataVolumes feature gate</strong></p>
+<p>Below is an example of how to enable DataVolume support using the
+kubevirt-config config map.</p>
+<pre><code>cat &lt;&lt;EOF | kubectl create -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevirt-config
+  namespace: kubevirt
+  labels:
+    kubevirt.io: ""
+data:
+  feature-gates: "DataVolumes"
+EOF
+</code></pre>
+<p>This config map assumes KubeVirt will be installed in the kubevirt
+namespace. Change the namespace to suite your installation.</p>
+<p>First post the ConfigMap above, then install KubeVirt. At that point
+DataVolume integration will be enabled.</p>
+<h3 id="ephemeral">ephemeral<a class="headerlink" href="#ephemeral" title="Permanent link">&para;</a></h3>
+<p>An ephemeral volume is a local COW (copy on write) image that uses a
+network volume as a read-only backing store. With an ephemeral volume,
+the network backing store is never mutated. Instead all writes are
+stored on the ephemeral image which exists on local storage. KubeVirt
+dynamically generates the ephemeral images associated with a VM when the
+VM starts, and discards the ephemeral images when the VM stops.</p>
+<p>Ephemeral volumes are useful in any scenario where disk persistence is
+not desired. The COW image is discarded when VM reaches a final state
+(e.g., succeeded, failed).</p>
+<p>Currently, only <code>PersistentVolumeClaim</code> may be used as a backing store
+of the ephemeral volume.</p>
+<p>Up-to-date information on supported backing stores can be found in the
+<a href="http://kubevirt.io/api-reference/master/definitions.html#_v1_ephemeralvolumesource">KubeVirt
+API</a>.</p>
+<pre><code>metadata:
+  name: testvmi-ephemeral-pvc
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        lun: {}
+  volumes:
+    - name: mypvcdisk
+      ephemeral:
+        persistentVolumeClaim:
+          claimName: mypvc
+</code></pre>
+<h3 id="containerdisk">containerDisk<a class="headerlink" href="#containerdisk" title="Permanent link">&para;</a></h3>
+<p><strong>containerDisk was originally registryDisk, please update your code
+when needed.</strong></p>
+<p>The <code>containerDisk</code> feature provides the ability to store and distribute
+VM disks in the container image registry. <code>containerDisks</code> can be
+assigned to VMs in the disks section of the VirtualMachineInstance spec.</p>
+<p>No network shared storage devices are utilized by <code>containerDisks</code>. The
+disks are pulled from the container registry and reside on the local
+node hosting the VMs that consume the disks.</p>
+<h4 id="when-to-use-a-containerdisk">When to use a containerDisk<a class="headerlink" href="#when-to-use-a-containerdisk" title="Permanent link">&para;</a></h4>
+<p><code>containerDisks</code> are ephemeral storage devices that can be assigned to
+any number of active VirtualMachineInstances. This makes them an ideal
+tool for users who want to replicate a large number of VM workloads that
+do not require persistent data. <code>containerDisks</code> are commonly used in
+conjunction with VirtualMachineInstanceReplicaSets.</p>
+<h4 id="when-not-to-use-a-containerdisk">When Not to use a containerDisk<a class="headerlink" href="#when-not-to-use-a-containerdisk" title="Permanent link">&para;</a></h4>
+<p><code>containerDisks</code> are not a good solution for any workload that requires
+persistent root disks across VM restarts.</p>
+<h4 id="containerdisk-workflow-example">containerDisk Workflow Example<a class="headerlink" href="#containerdisk-workflow-example" title="Permanent link">&para;</a></h4>
+<p>Users can inject a VirtualMachineInstance disk into a container image in
+a way that is consumable by the KubeVirt runtime. Disks must be placed
+into the <code>/disk</code> directory inside the container. Raw and qcow2 formats
+are supported. Qcow2 is recommended in order to reduce the container
+image’s size. Containerdisks can and should be based on <code>scratch</code>. No
+content except the image is required.</p>
+<blockquote>
+<p><strong>Note:</strong> Prior to kubevirt 0.20, the containerDisk image needed to
+have <strong>kubevirt/container-disk-v1alpha</strong> as base image.</p>
+<p><strong>Note:</strong> The containerDisk needs to be readable for the user with the UID
+107 (qemu).</p>
+</blockquote>
+<p>Example: Inject a local VirtualMachineInstance disk into a container image.</p>
+<pre><code>cat &lt;&lt; END &gt; Dockerfile
+FROM scratch
+ADD --chown=107:107 fedora25.qcow2 /disk/
+END
+
+docker build -t vmidisks/fedora25:latest .
+</code></pre>
+<p>Example: Inject a remote VirtualMachineInstance disk into a container image.</p>
+<pre><code>cat &lt;&lt; END &gt; Dockerfile
+FROM scratch
+ADD --chown=107:107 https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2 /disk/
+END
+</code></pre>
+<p>Example: Upload the ContainerDisk container image to a registry.</p>
+<pre><code>docker push vmidisks/fedora25:latest
+</code></pre>
+<p>Example: Attach the ContainerDisk as an ephemeral disk to a VM.</p>
+<pre><code>metadata:
+  name: testvmi-containerdisk
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        disk: {}
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: vmidisks/fedora25:latest
+</code></pre>
+<p>Note that a <code>containerDisk</code> is file-based and therefore cannot be
+attached as a <code>lun</code> device to the VM.</p>
+<h4 id="custom-disk-image-path">Custom disk image path<a class="headerlink" href="#custom-disk-image-path" title="Permanent link">&para;</a></h4>
+<p>ContainerDisk also allows to store disk images in any folder, when
+required. The process is the same as previous. The main difference is,
+that in custom location, kubevirt does not scan for any image. It is
+your responsibility to provide full path for the disk image. Providing
+image <code>path</code> is optional. When no <code>path</code> is provided, kubevirt searches
+for disk images in default location: <code>/disk</code>.</p>
+<p>Example: Build container disk image:</p>
+<pre><code>cat &lt;&lt; END &gt; Dockerfile
+FROM scratch
+ADD fedora25.qcow2 /custom-disk-path/fedora25.qcow2
+END
+
+docker build -t vmidisks/fedora25:latest .
+docker push vmidisks/fedora25:latest
+</code></pre>
+<p>Create VMI with container disk pointing to the custom location:</p>
+<pre><code>metadata:
+  name: testvmi-containerdisk
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        disk: {}
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: vmidisks/fedora25:latest
+        path: /custom-disk-path/fedora25.qcow2
+</code></pre>
+<h3 id="emptydisk">emptyDisk<a class="headerlink" href="#emptydisk" title="Permanent link">&para;</a></h3>
+<p>An <code>emptyDisk</code> works similar to an <code>emptyDir</code> in Kubernetes. An extra
+sparse <code>qcow2</code> disk will be allocated and it will live as long as the
+VM. Thus it will survive guest side VM reboots, but not a VM
+re-creation. The disk <code>capacity</code> needs to be specified.</p>
+<p>Example: Boot cirros with an extra <code>emptyDisk</code> with a size of <code>2GiB</code>:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        disk:
+          bus: virtio
+      - name: emptydisk
+        disk:
+          bus: virtio
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: kubevirt/cirros-registry-disk-demo:latest
+    - name: emptydisk
+      emptyDisk:
+        capacity: 2Gi
+</code></pre>
+<h4 id="when-to-use-an-emptydisk">When to use an emptyDisk<a class="headerlink" href="#when-to-use-an-emptydisk" title="Permanent link">&para;</a></h4>
+<p>Ephemeral VMs very often come with read-only root images and limited
+tmpfs space. In many cases this is not enough to install application
+dependencies and provide enough disk space for the application data.
+While this data is not critical and thus can be lost, it is still needed
+for the application to function properly during its lifetime. This is
+where an <code>emptyDisk</code> can be useful. An emptyDisk is often used and
+mounted somewhere in <code>/var/lib</code> or <code>/var/run</code>.</p>
+<h3 id="hostdisk">hostDisk<a class="headerlink" href="#hostdisk" title="Permanent link">&para;</a></h3>
+<p>A <code>hostDisk</code> volume type provides the ability to create or use a disk
+image located somewhere on a node. It works similar to a <code>hostPath</code> in
+Kubernetes and provides two usage types:</p>
+<ul>
+<li>
+<p><code>DiskOrCreate</code> if a disk image does not exist at a given location
+    then create one</p>
+</li>
+<li>
+<p><code>Disk</code> a disk image must exist at a given location</p>
+</li>
+</ul>
+<p>Example: Create a 1Gi disk image located at /data/disk.img and attach it
+to a VM.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-host-disk
+  name: vmi-host-disk
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: host-disk
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - hostDisk:
+      capacity: 1Gi
+      path: /data/disk.img
+      type: DiskOrCreate
+    name: host-disk
+status: {}
+</code></pre>
+<h3 id="configmap">configMap<a class="headerlink" href="#configmap" title="Permanent link">&para;</a></h3>
+<p>A <code>configMap</code> is a reference to a
+<a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/">ConfigMap</a>
+in Kubernetes. An extra <code>iso</code> disk will be allocated which has to be
+mounted on a VM. To mount the <code>configMap</code> users can use <code>cloudInit</code> and
+the disks serial number. The <code>name</code> needs to be set for a reference to
+the created kubernetes <code>ConfigMap</code>.</p>
+<blockquote>
+<p><strong>Note:</strong> Currently, ConfigMap update propagation is not supported. If
+a ConfigMap is updated, only a pod will be aware of changes, not
+running VMIs.</p>
+<p><strong>Note:</strong> Due to a Kubernetes CRD
+<a href="https://github.com/kubernetes/kubernetes/issues/68466">issue</a>, you
+cannot control the paths within the volume where ConfigMap keys are
+projected.</p>
+</blockquote>
+<p>Example: Attach the <code>configMap</code> to a VM and use <code>cloudInit</code> to mount the
+<code>iso</code> disk:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      - disk: {}
+        name: app-config-disk
+        # set serial
+        serial: CVLY623300HK240D
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          # mount the ConfigMap
+          - "mkdir /mnt/app-config"
+          - "mount /dev/$(lsblk --nodeps -no name,serial | grep CVLY623300HK240D | cut -f1 -d' ') /mnt/app-config"
+    name: cloudinitdisk
+  - configMap:
+      name: app-config
+    name: app-config-disk
+status: {}
+</code></pre>
+<h3 id="secret">secret<a class="headerlink" href="#secret" title="Permanent link">&para;</a></h3>
+<p>A <code>secret</code> is a reference to a
+<a href="https://kubernetes.io/docs/concepts/configuration/secret/">Secret</a> in
+Kubernetes. An extra <code>iso</code> disk will be allocated which has to be
+mounted on a VM. To mount the <code>secret</code> users can use <code>cloudInit</code> and the
+disks serial number. The <code>secretName</code> needs to be set for a reference to
+the created kubernetes <code>Secret</code>.</p>
+<blockquote>
+<p><strong>Note:</strong> Currently, Secret update propagation is not supported. If a
+Secret is updated, only a pod will be aware of changes, not running
+VMIs.</p>
+<p><strong>Note:</strong> Due to a Kubernetes CRD
+<a href="https://github.com/kubernetes/kubernetes/issues/68466">issue</a>, you
+cannot control the paths within the volume where Secret keys are
+projected.</p>
+</blockquote>
+<p>Example: Attach the <code>secret</code> to a VM and use <code>cloudInit</code> to mount the
+<code>iso</code> disk:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      - disk: {}
+        name: app-secret-disk
+        # set serial
+        serial: D23YZ9W6WA5DJ487
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          # mount the Secret
+          - "mkdir /mnt/app-secret"
+          - "mount /dev/$(lsblk --nodeps -no name,serial | grep D23YZ9W6WA5DJ487 | cut -f1 -d' ') /mnt/app-secret"
+    name: cloudinitdisk
+  - secret:
+      secretName: app-secret
+    name: app-secret-disk
+status: {}
+</code></pre>
+<h3 id="serviceaccount">serviceAccount<a class="headerlink" href="#serviceaccount" title="Permanent link">&para;</a></h3>
+<p>A <code>serviceAccount</code> volume references a Kubernetes
+<a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/"><code>ServiceAccount</code></a>.
+A new <code>iso</code> disk will be allocated with the content of the service
+account (<code>namespace</code>, <code>token</code> and <code>ca.crt</code>), which needs to be mounted
+in the VM. For automatic mounting, see the <code>configMap</code> and <code>secret</code>
+examples above.</p>
+<p>Example:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: serviceaccountdisk
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - name: serviceaccountdisk
+    serviceAccount:
+      serviceAccountName: default
+</code></pre>
+<h2 id="high-performance-features">High Performance Features<a class="headerlink" href="#high-performance-features" title="Permanent link">&para;</a></h2>
+<h3 id="iothreads">IOThreads<a class="headerlink" href="#iothreads" title="Permanent link">&para;</a></h3>
+<p>Libvirt has the ability to use IOThreads for dedicated disk access (for
+supported devices). These are dedicated event loop threads that perform
+block I/O requests and improve scalability on SMP systems. KubeVirt
+exposes this libvirt feature through the <code>ioThreadsPolicy</code> setting.
+Additionaly, each <code>Disk</code> device exposes a <code>dedicatedIOThread</code> setting.
+This is a boolean that indicates the specified disk should be allocated
+an exclusive IOThread that will never be shared with other disks.</p>
+<p>Currently valid policies are <code>shared</code> and <code>auto</code>. If <code>ioThreadsPolicy</code>
+is omitted entirely, use of IOThreads will be disabled. However, if any
+disk requests a dedicated IOThread, <code>ioThreadsPolicy</code> will be enabled
+and default to <code>shared</code>.</p>
+<h4 id="shared">Shared<a class="headerlink" href="#shared" title="Permanent link">&para;</a></h4>
+<p>An <code>ioThreadsPolicy</code> of <code>shared</code> indicates that KubeVirt should use one
+thread that will be shared by all disk devices. This policy stems from
+the fact that large numbers of IOThreads is generally not useful as
+additional context switching is incurred for each thread.</p>
+<p>Disks with <code>dedicatedIOThread</code> set to <code>true</code> will not use the shared
+thread, but will instead be allocated an exclusive thread. This is
+generally useful if a specific Disk is expected to have heavy I/O
+traffic, e.g. a database spindle.</p>
+<h4 id="auto">Auto<a class="headerlink" href="#auto" title="Permanent link">&para;</a></h4>
+<p><code>auto</code> IOThreads indicates that KubeVirt should use a pool of IOThreads
+and allocate disks to IOThreads in a round-robin fashion. The pool size
+is generally limited to twice the number of VCPU’s allocated to the VM.
+This essentially attempts to dedicate disks to separate IOThreads, but
+only up to a reasonable limit. This would come in to play for systems
+with a large number of disks and a smaller number of CPU’s for instance.</p>
+<p>As a caveat to the size of the IOThread pool, disks with
+<code>dedicatedIOThread</code> will always be guaranteed their own thread. This
+effectively diminishes the upper limit of the number of threads
+allocated to the rest of the disks. For example, a VM with 2 CPUs would
+normally use 4 IOThreads for all disks. However if one disk had
+<code>dedicatedIOThread</code> set to true, then KubeVirt would only use 3
+IOThreads for the shared pool.</p>
+<p>There is always guaranteed to be at least one thread for disks that will
+use the shared IOThreads pool. Thus if a sufficiently large number of
+disks have dedicated IOThreads assigned, <code>auto</code> and <code>shared</code> policies
+would essentially result in the same layout.</p>
+<h4 id="iothreads-with-dedicated-pinned-cpus">IOThreads with Dedicated (pinned) CPUs<a class="headerlink" href="#iothreads-with-dedicated-pinned-cpus" title="Permanent link">&para;</a></h4>
+<p>When guest’s vCPUs are pinned to a host’s physical CPUs, it is also best
+to pin the IOThreads to specific CPUs to prevent these from floating
+between the CPUs. KubeVirt will automatically calculate and pin each
+IOThread to a CPU or a set of CPUs, depending on the ration between
+them. In case there are more IOThreads than CPUs, each IOThread will be
+pinned to a CPU, in a round-robin fashion. Otherwise, when there are
+fewer IOThreads than CPU, each IOThread will be pinned to a set of CPUs.</p>
+<h4 id="iothreads-with-qemu-emulator-thread-and-dedicated-pinned-cpus">IOThreads with QEMU Emulator thread and Dedicated (pinned) CPUs<a class="headerlink" href="#iothreads-with-qemu-emulator-thread-and-dedicated-pinned-cpus" title="Permanent link">&para;</a></h4>
+<p>To further improve the vCPUs latency, KubeVirt can allocate an
+additional dedicated physical CPU<a href="creation/dedicated-cpu.md">1</a>, exclusively for the emulator thread, to which it will
+be pinned. This will effectively "isolate" the emulator thread from the vCPUs
+of the VMI. When <code>ioThreadsPolicy</code> is set to <code>auto</code> IOThreads will also be
+"isolated" from the vCPUs and placed on the same physical CPU as the QEMU
+emulator thread.</p>
+<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
+<h4 id="shared-iothreads">Shared IOThreads<a class="headerlink" href="#shared-iothreads" title="Permanent link">&para;</a></h4>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-shared
+  name: vmi-shared
+spec:
+  domain:
+    ioThreadsPolicy: shared
+    cpu:
+      cores: 2
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: mydisk
+      - disk:
+          bus: virtio
+        name: emptydisk
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
+        name: emptydisk2
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
+        name: emptydisk3
+      - disk:
+          bus: virtio
+        name: emptydisk4
+      - disk:
+          bus: virtio
+        name: emptydisk5
+      - disk:
+          bus: virtio
+        name: emptydisk6
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  volumes:
+  - name: mydisk
+    persistentVolumeClaim:
+      claimName: mypvc
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk2
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk3
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk4
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk5
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk6
+</code></pre>
+<p>In this example, emptydisk and emptydisk2 both request a dedicated
+IOThread. mydisk, and emptydisk 3 through 6 will all shared one
+IOThread.</p>
+<pre><code>mypvc:        1
+emptydisk:    2
+emptydisk2:   3
+emptydisk3:   1
+emptydisk4:   1
+emptydisk5:   1
+emptydisk6:   1
+</code></pre>
+<h4 id="auto-iothreads">Auto IOThreads<a class="headerlink" href="#auto-iothreads" title="Permanent link">&para;</a></h4>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-shared
+  name: vmi-shared
+spec:
+  domain:
+    ioThreadsPolicy: auto
+    cpu:
+      cores: 2
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: mydisk
+      - disk:
+          bus: virtio
+        name: emptydisk
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
+        name: emptydisk2
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
+        name: emptydisk3
+      - disk:
+          bus: virtio
+        name: emptydisk4
+      - disk:
+          bus: virtio
+        name: emptydisk5
+      - disk:
+          bus: virtio
+        name: emptydisk6
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  volumes:
+  - name: mydisk
+    persistentVolumeClaim:
+      claimName: mypvc
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk2
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk3
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk4
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk5
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk6
+</code></pre>
+<p>This VM is identical to the first, except it requests auto IOThreads.
+<code>emptydisk</code> and <code>emptydisk2</code> will still be allocated individual
+IOThreads, but the rest of the disks will be split across 2 separate
+iothreads (twice the number of CPU cores is 4).</p>
+<p>Disks will be assigned to IOThreads like this:</p>
+<pre><code>mypvc:        1
+emptydisk:    3
+emptydisk2:   4
+emptydisk3:   2
+emptydisk4:   1
+emptydisk5:   2
+emptydisk6:   1
+</code></pre>
+<h3 id="virtio-block-multi-queue">Virtio Block Multi-Queue<a class="headerlink" href="#virtio-block-multi-queue" title="Permanent link">&para;</a></h3>
+<p>Block Multi-Queue is a framework for the Linux block layer that maps
+Device I/O queries to multiple queues. This splits I/O processing up
+across multiple threads, and therefor multiple CPUs. libvirt recommends
+that the number of queues used should match the number of CPUs allocated
+for optimal performance.</p>
+<p>This feature is enabled by the <code>BlockMultiQueue</code> setting under
+<code>Devices</code>:</p>
+<pre><code>spec:
+  domain:
+    devices:
+      blockMultiQueue: true
+      disks:
+      - disk:
+          bus: virtio
+        name: mydisk
+</code></pre>
+<p><strong>Note:</strong> Due to the way KubeVirt implements CPU allocation,
+blockMultiQueue can only be used if a specific CPU allocation is
+requested. If a specific number of CPUs hasn’t been allocated to a
+VirtualMachine, KubeVirt will use all CPU’s on the node on a best effort
+basis. In that case the amount of CPU allocation to a VM at the host
+level could change over time. If blockMultiQueue were to request a
+number of queues to match all the CPUs on a node, that could lead to
+over-allocation scenarios. To avoid this, KubeVirt enforces that a
+specific slice of CPU resources is requested in order to take advantage
+of this feature.</p>
+<h4 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h4>
+<pre><code>metadata:
+  name: testvmi-disk
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+        cpu: 4
+    devices:
+      blockMultiQueue: true
+      disks:
+      - name: mypvcdisk
+        disk:
+          bus: virtio
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+</code></pre>
+<p>This example will enable Block Multi-Queue for the disk <code>mypvcdisk</code> and
+allocate 4 queues (to match the number of CPUs requested).</p>
+<h3 id="disk-device-cache">Disk device cache<a class="headerlink" href="#disk-device-cache" title="Permanent link">&para;</a></h3>
+<p>KubeVirt supports <code>none</code> and <code>writethrough</code> KVM/QEMU cache modes.</p>
+<ul>
+<li>
+<p><code>none</code> I/O from the guest is not cached on the host. Use this option
+    for guests with large I/O requirements. This option is generally the
+    best choice.</p>
+</li>
+<li>
+<p><code>writethrough</code> I/O from the guest is cached on the host but written
+    through to the physical medium.</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>Important:</strong> <code>none</code> cache mode is set as default if the file system
+supports direct I/O, otherwise, <code>writethrough</code> is used.</p>
+<p><strong>Note:</strong> It is possible to force a specific cache mode, although if
+<code>none</code> mode has been chosen and the file system does not support
+direct I/O then started VMI will return an error.</p>
+</blockquote>
+<p>Example: force <code>writethrough</code> cache mode</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-pvc
+  name: vmi-pvc
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: pvcdisk
+        cache: writethrough
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: pvcdisk
+    persistentVolumeClaim:
+      claimName: disk-alpine
+status: {}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../interfaces_and_networks/" class="btn btn-neutral float-right" title="Interfaces and Networks">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../dedicated_cpu_resources/" class="btn btn-neutral" title="Dedicated CPU resources"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../dedicated_cpu_resources/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../interfaces_and_networks/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

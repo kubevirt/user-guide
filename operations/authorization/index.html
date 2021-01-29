@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/operations/authorization/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Authorization - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Authorization";
+    var mkdocs_page_input_path = "operations/authorization.md";
+    var mkdocs_page_url = "/docs/operations/authorization/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../component_monitoring/">Component monitoring</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Authorization</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#kubevirt-default-rbac-clusterroles">KubeVirt Default RBAC ClusterRoles</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#extending-kubernetes-default-roles-with-kubevirt-permissions">Extending Kubernetes Default Roles with KubeVirt permissions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#creating-custom-rbac-roles">Creating Custom RBAC Roles</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_maintenance/">Node maintenance</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_overcommit/">Node overcommit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/presets/">Presets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Operations &raquo;</li>
+        
+      
+    
+    <li>Authorization</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/operations/authorization.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="authorization">Authorization<a class="headerlink" href="#authorization" title="Permanent link">&para;</a></h1>
+<p>KubeVirt authorization is performed using Kubernete’s Resource Based
+Authorization Control system (RBAC). RBAC allows cluster admins to grant
+access to cluster resources by binding RBAC roles to users.</p>
+<p>For example, an admin creates an RBAC role that represents the
+permissions required to create a VirtualMachineInstance. The admin can
+then bind that role to users in order to grant them the permissions
+required to launch a VirtualMachineInstance.</p>
+<p>With RBAC roles, admins can grant users targeted access to various
+KubeVirt features.</p>
+<h2 id="kubevirt-default-rbac-clusterroles">KubeVirt Default RBAC ClusterRoles<a class="headerlink" href="#kubevirt-default-rbac-clusterroles" title="Permanent link">&para;</a></h2>
+<p>KubeVirt comes with a set of predefined RBAC ClusterRoles that can be
+used to grant users permissions to access KubeVirt Resources.</p>
+<h3 id="default-view-role">Default View Role<a class="headerlink" href="#default-view-role" title="Permanent link">&para;</a></h3>
+<p>The <strong>kubevirt.io:view</strong> ClusterRole gives users permissions to view all
+KubeVirt resources in the cluster. The permissions to create, delete,
+modify or access any KubeVirt resources beyond viewing the resource’s
+spec are not included in this role. This means a user with this role
+could see that a VirtualMachineInstance is running, but neither shutdown
+nor gain access to that VirtualMachineInstance via console/VNC.</p>
+<h3 id="default-edit-role">Default Edit Role<a class="headerlink" href="#default-edit-role" title="Permanent link">&para;</a></h3>
+<p>The <strong>kubevirt.io:edit</strong> ClusterRole gives users permissions to modify
+all KubeVirt resources in the cluster. For example, a user with this
+role can create new VirtualMachineInstances, delete
+VirtualMachineInstances, and gain access to both console and VNC.</p>
+<h3 id="default-admin-role">Default Admin Role<a class="headerlink" href="#default-admin-role" title="Permanent link">&para;</a></h3>
+<p>The <strong>kubevirt.io:admin</strong> ClusterRole grants users full permissions to
+all KubeVirt resources, including the ability to delete collections of
+resources.</p>
+<p>The admin role also grants users access to view and modify the KubeVirt
+runtime config. This config exists within the Kubevirt Custom Resource under
+the <code>configuration</code> key in the namespace the KubeVirt operator is running.</p>
+<blockquote>
+<p><em>NOTE</em> Users are only guaranteed the ability to modify the kubevirt
+runtime configuration if a ClusterRoleBinding is used. A RoleBinding
+will work to provide kubevirt CR access only if the RoleBinding
+targets the same namespace that the kubevirt CR exists in.</p>
+</blockquote>
+<h3 id="binding-default-clusterroles-to-users">Binding Default ClusterRoles to Users<a class="headerlink" href="#binding-default-clusterroles-to-users" title="Permanent link">&para;</a></h3>
+<p>The KubeVirt default ClusterRoles are granted to users by creating
+either a ClusterRoleBinding or RoleBinding object.</p>
+<h4 id="binding-within-all-namespaces">Binding within All Namespaces<a class="headerlink" href="#binding-within-all-namespaces" title="Permanent link">&para;</a></h4>
+<p>With a ClusterRoleBinding, users receive the permissions granted by the
+role across all namespaces.</p>
+<h4 id="binding-within-single-namespace">Binding within Single Namespace<a class="headerlink" href="#binding-within-single-namespace" title="Permanent link">&para;</a></h4>
+<p>With a RoleBinding, users receive the permissions granted by the role
+only within a targeted namespace.</p>
+<h2 id="extending-kubernetes-default-roles-with-kubevirt-permissions">Extending Kubernetes Default Roles with KubeVirt permissions<a class="headerlink" href="#extending-kubernetes-default-roles-with-kubevirt-permissions" title="Permanent link">&para;</a></h2>
+<p>The aggregated ClusterRole Kubernetes feature facilitates combining
+multiple ClusterRoles into a single aggregated ClusterRole. This feature
+is commonly used to extend the default Kubernetes roles with permissions
+to access custom resources that do not exist in the Kubernetes core.</p>
+<p>In order to extend the default Kubernetes roles to provide permission to
+access KubeVirt resources, we need to add the following labels to the
+KubeVirt ClusterRoles.</p>
+<pre><code>kubectl label clusterrole kubevirt.io:admin rbac.authorization.k8s.io/aggregate-to-admin=true
+kubectl label clusterrole kubevirt.io:edit rbac.authorization.k8s.io/aggregate-to-edit=true
+kubectl label clusterrole kubevirt.io:view rbac.authorization.k8s.io/aggregate-to-view=true
+</code></pre>
+<p>By adding these labels, any user with a RoleBinding or
+ClusterRoleBinding involving one of the default Kubernetes roles will
+automatically gain access to the equivalent KubeVirt roles as well.</p>
+<p>More information about aggregated cluster roles can be found
+<a href="https://kubernetes.io/docs/admin/authorization/rbac/#aggregated-clusterroles">here</a></p>
+<h2 id="creating-custom-rbac-roles">Creating Custom RBAC Roles<a class="headerlink" href="#creating-custom-rbac-roles" title="Permanent link">&para;</a></h2>
+<p>If the default KubeVirt ClusterRoles are not expressive enough, admins
+can create their own custom RBAC roles to grant user access to KubeVirt
+resources. The creation of a RBAC role is inclusive only, meaning
+there’s no way to deny access. Instead access is only granted.</p>
+<p>Below is an example of what KubeVirt’s default admin ClusterRole looks
+like. A custom RBAC role can be created by reducing the permissions in
+this example role.</p>
+<pre><code>apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: my-custom-rbac-role
+  labels:
+    kubevirt.io: ""
+rules:
+  - apiGroups:
+      - subresources.kubevirt.io
+    resources:
+      - virtualmachineinstances/console
+      - virtualmachineinstances/vnc
+    verbs:
+      - get
+  - apiGroups:
+      - kubevirt.io
+    resources:
+      - virtualmachineinstances
+      - virtualmachines
+      - virtualmachineinstancepresets
+      - virtualmachineinstancereplicasets
+    verbs:
+      - get
+      - delete
+      - create
+      - update
+      - patch
+      - list
+      - watch
+      - deletecollection
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../annotations_and_labels/" class="btn btn-neutral float-right" title="Annotations and labels">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../component_monitoring/" class="btn btn-neutral" title="Component monitoring"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../component_monitoring/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../annotations_and_labels/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

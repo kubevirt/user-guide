@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/operations/installation/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Installation - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Installation";
+    var mkdocs_page_input_path = "operations/installation.md";
+    var mkdocs_page_url = "/docs/operations/installation/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Installation</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installing-kubevirt-on-kubernetes">Installing KubeVirt on Kubernetes</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installing-kubevirt-on-okd">Installing KubeVirt on OKD</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installing-the-daily-developer-builds">Installing the Daily Developer Builds</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deploying-from-source">Deploying from Source</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installing-network-plugins-optional">Installing network plugins (optional)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#restricting-virt-handler-daemonset">Restricting virt-handler DaemonSet</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../component_monitoring/">Component monitoring</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../authorization/">Authorization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_maintenance/">Node maintenance</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_overcommit/">Node overcommit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/presets/">Presets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Operations &raquo;</li>
+        
+      
+    
+    <li>Installation</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/operations/installation.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h1>
+<p>KubeVirt is a virtualization add-on to Kubernetes and this guide assumes
+that a Kubernetes cluster is already installed.</p>
+<p>If installed on OKD, the web console is extended for management of
+virtual machines.</p>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
+<p>A few requirements need to be met before you can begin:</p>
+<ul>
+<li><a href="https://kubernetes.io">Kubernetes</a> cluster or derivative
+    (such as <a href="https://github.com/openshift/origin">OpenShift</a>, Tectonic)
+    based on Kubernetes 1.10 or greater</li>
+<li>Kubernetes apiserver must have <code>--allow-privileged=true</code> in order to run KubeVirt's privileged DaemonSet.</li>
+<li><code>kubectl</code> client utility</li>
+</ul>
+<h3 id="container-runtime-support">Container Runtime Support<a class="headerlink" href="#container-runtime-support" title="Permanent link">&para;</a></h3>
+<p>KubeVirt is currently supported on the following container runtimes:</p>
+<ul>
+<li>docker</li>
+<li>crio (with runv)</li>
+</ul>
+<p>Other container runtimes, which do not use virtualization features,
+should work too. However, they are not tested.</p>
+<h3 id="validate-hardware-virtualization-support">Validate Hardware Virtualization Support<a class="headerlink" href="#validate-hardware-virtualization-support" title="Permanent link">&para;</a></h3>
+<p>Hardware with virtualization support is recommended. You can use
+virt-host-validate to ensure that your hosts are capable of running
+virtualization workloads:</p>
+<pre><code>$ virt-host-validate qemu
+  QEMU: Checking for hardware virtualization                                 : PASS
+  QEMU: Checking if device /dev/kvm exists                                   : PASS
+  QEMU: Checking if device /dev/kvm is accessible                            : PASS
+  QEMU: Checking if device /dev/vhost-net exists                             : PASS
+  QEMU: Checking if device /dev/net/tun exists                               : PASS
+...
+</code></pre>
+<h2 id="installing-kubevirt-on-kubernetes">Installing KubeVirt on Kubernetes<a class="headerlink" href="#installing-kubevirt-on-kubernetes" title="Permanent link">&para;</a></h2>
+<p>KubeVirt can be installed using the KubeVirt operator, which manages the
+lifecycle of all the KubeVirt core components. Below is an example of
+how to install KubeVirt using an official release.</p>
+<pre><code># Pick an upstream version of KubeVirt to install
+$ export RELEASE=v0.35.0
+# Deploy the KubeVirt operator
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
+# Create the KubeVirt CR (instance deployment request) which triggers the actual installation
+$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
+# wait until all KubeVirt components are up
+$ kubectl -n kubevirt wait kv kubevirt --for condition=Available
+</code></pre>
+<p>If hardware virtulization is not available, then a
+<a href="https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md">software emulation fallback</a>
+can be enabled using by setting in the KubeVirt CR <code>spec.configuration.developerConfiguration.useEmulation</code> to <code>true</code> as follows:</p>
+<pre><code>$ kubectl edit -n kubevirt kubevirt kubevirt
+</code></pre>
+<p>Add the following to the <code>kubevirt.yaml</code> file</p>
+<pre><code class="language-yaml">    spec:
+      ...
+      configuration:
+        developerConfiguration:
+          useEmulation: true
+</code></pre>
+<blockquote>
+<p>Note: Prior to release v0.20.0 the condition for the <code>kubectl wait</code>
+command was named "Ready" instead of "Available"</p>
+<p>Note: Prior to KubeVirt 0.34.2 a ConfigMap called <code>kubevirt-config</code> in the
+install-namespace was used to configure KubeVirt. Since 0.34.2 this method is
+deprecated. The configmap still has precedence over <code>configuration</code> on the
+CR exists, but it will not receive future updates and you should migrate any
+custom configurations to <code>spec.configuration</code> on the KubeVirt CR.</p>
+</blockquote>
+<p>All new components will be deployed under the <code>kubevirt</code> namespace:</p>
+<pre><code>kubectl get pods -n kubevirt
+NAME                                           READY     STATUS        RESTARTS   AGE
+virt-api-6d4fc3cf8a-b2ere                      1/1       Running       0          1m
+virt-controller-5d9fc8cf8b-n5trt               1/1       Running       0          1m
+virt-handler-vwdjx                             1/1       Running       0          1m
+...
+</code></pre>
+<h2 id="installing-kubevirt-on-okd">Installing KubeVirt on OKD<a class="headerlink" href="#installing-kubevirt-on-okd" title="Permanent link">&para;</a></h2>
+<p>The following
+<a href="https://docs.openshift.com/container-platform/3.11/admin_guide/manage_scc.html">SCC</a>
+needs to be added prior KubeVirt deployment:</p>
+<pre><code>$ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator
+</code></pre>
+<p>Once privileges are granted, the KubeVirt can be deployed as described above.</p>
+<h3 id="web-user-interface-on-okd">Web user interface on OKD<a class="headerlink" href="#web-user-interface-on-okd" title="Permanent link">&para;</a></h3>
+<p>No additional steps are required to extend OKD's web console for KubeVirt.</p>
+<p>The virtualization extension is automatically enabled when KubeVirt deployment is detected.</p>
+<h3 id="from-service-catalog-as-an-apb">From Service Catalog as an APB<a class="headerlink" href="#from-service-catalog-as-an-apb" title="Permanent link">&para;</a></h3>
+<p>You can find KubeVirt in the OKD Service Catalog and install it from
+there. In order to do that please follow the documentation in the
+<a href="https://github.com/ansibleplaybookbundle/kubevirt-apb">KubeVirt APB
+repository</a>.</p>
+<h2 id="installing-the-daily-developer-builds">Installing the Daily Developer Builds<a class="headerlink" href="#installing-the-daily-developer-builds" title="Permanent link">&para;</a></h2>
+<p>KubeVirt releases daily a developer build from current master. One can see
+when the last release happened by looking at our
+<a href="https://prow.apps.ovirt.org/?job=periodic-kubevirt-push-nightly-build-master">nightly-build-jobs</a>.</p>
+<p>To install the latest developer build, run the following commands:</p>
+<pre><code>$ LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest)
+$ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator.yaml
+$ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-cr.yaml
+</code></pre>
+<p>To find out which commit this build is based on, run:</p>
+<pre><code>$ LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest)
+$ curl https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/commit
+d358cf085b5a86cc4fa516215f8b757a4e61def2
+</code></pre>
+<h2 id="deploying-from-source">Deploying from Source<a class="headerlink" href="#deploying-from-source" title="Permanent link">&para;</a></h2>
+<p>See the <a href="https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md">Developer Getting Started
+Guide</a>
+to understand how to build and deploy KubeVirt from source.</p>
+<h2 id="installing-network-plugins-optional">Installing network plugins (optional)<a class="headerlink" href="#installing-network-plugins-optional" title="Permanent link">&para;</a></h2>
+<p>KubeVirt alone does not bring any additional network plugins, it just
+allows user to utilize them. If you want to attach your VMs to multiple
+networks (Multus CNI) or have full control over L2 (OVS CNI), you need
+to deploy respective network plugins. For more information, refer to
+<a href="https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitrary-cluster.md">OVS CNI installation
+guide</a>.</p>
+<blockquote>
+<p>Note: KubeVirt Ansible <a href="https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network">network
+playbook</a>
+installs these plugins by default.</p>
+</blockquote>
+<h2 id="restricting-virt-handler-daemonset">Restricting virt-handler DaemonSet<a class="headerlink" href="#restricting-virt-handler-daemonset" title="Permanent link">&para;</a></h2>
+<p>You can patch the <code>virt-handler</code> DaemonSet post-deployment to restrict
+it to a specific subset of nodes with a nodeSelector. For example, to
+restrict the DaemonSet to only nodes with the "region=primary" label:</p>
+<pre><code>kubectl patch ds/virt-handler -n kubevirt -p '{"spec": {"template": {"spec": {"nodeSelector": {"region": "primary"}}}}}'
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../updating_and_deletion/" class="btn btn-neutral float-right" title="Updating and deletion">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../architecture/" class="btn btn-neutral" title="Architecture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../../architecture/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../updating_and_deletion/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

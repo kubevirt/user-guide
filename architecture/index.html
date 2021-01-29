@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/architecture/">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Architecture - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Architecture";
+    var mkdocs_page_input_path = "architecture.md";
+    var mkdocs_page_url = "/docs/architecture/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Welcome</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Architecture</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#virtualmachine">VirtualMachine</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#how-to-use-a-virtualmachine">How to use a VirtualMachine</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#when-to-use-a-virtualmachine">When to use a VirtualMachine</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/component_monitoring/">Component monitoring</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/authorization/">Authorization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/node_maintenance/">Node maintenance</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/node_overcommit/">Node overcommit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/presets/">Presets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../web_console/">Web Console</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Architecture</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/architecture.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
+<h2 id="virtualmachine">VirtualMachine<a class="headerlink" href="#virtualmachine" title="Permanent link">&para;</a></h2>
+<p>A <code>VirtualMachine</code> provides additional management capabilities to a
+VirtualMachineInstance inside the cluster. That includes:</p>
+<ul>
+<li>
+<p>ABI stability</p>
+</li>
+<li>
+<p>Start/stop/restart capabilities on the controller level</p>
+</li>
+<li>
+<p>Offline configuration change with propagation on
+    VirtualMachineInstance recreation</p>
+</li>
+<li>
+<p>Ensure that the VirtualMachineInstance is running if it should be
+    running</p>
+</li>
+</ul>
+<p>It focuses on a 1:1 relationship between the controller instance and a
+virtual machine instance. In many ways it is very similar to a
+<a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/">StatefulSet</a>
+with <code>spec.replica</code> set to <code>1</code>.</p>
+<h2 id="how-to-use-a-virtualmachine">How to use a VirtualMachine<a class="headerlink" href="#how-to-use-a-virtualmachine" title="Permanent link">&para;</a></h2>
+<p>A VirtualMachine will make sure that a VirtualMachineInstance object
+with an identical name will be present in the cluster, if <code>spec.running</code>
+is set to <code>true</code>. Further it will make sure that a
+VirtualMachineInstance will be removed from the cluster if
+<code>spec.running</code> is set to <code>false</code>.</p>
+<p>There exists a field <code>spec.runStrategy</code> which can also be used to
+control the state of the associated VirtualMachineInstance object. To
+avoid confusing and contradictory states, these fields are mutually
+exclusive.</p>
+<p>An extended explanation of <code>spec.runStrategy</code> vs <code>spec.running</code> can be
+found in <a href="creation/run-strategies.md">Run Strategies</a></p>
+<h3 id="starting-and-stopping">Starting and stopping<a class="headerlink" href="#starting-and-stopping" title="Permanent link">&para;</a></h3>
+<p>After creating a VirtualMachine it can be switched on or off like this:</p>
+<pre><code># Start the virtual machine:
+virtctl start myvm
+
+# Stop the virtual machine:
+virtctl stop myvm
+</code></pre>
+<p><code>kubectl</code> can be used too:</p>
+<pre><code># Start the virtual machine:
+kubectl patch virtualmachine myvm --type merge -p \
+    '{"spec":{"running":true}}'
+
+# Stop the virtual machine:
+kubectl patch virtualmachine myvm --type merge -p \
+    '{"spec":{"running":false}}'
+</code></pre>
+<h3 id="controller-status">Controller status<a class="headerlink" href="#controller-status" title="Permanent link">&para;</a></h3>
+<p>Once a VirtualMachineInstance is created, its state will be tracked via
+<code>status.created</code> and <code>status.ready</code>. If a VirtualMachineInstance exists
+in the cluster, <code>status.created</code> will equal to <code>true</code>. If the
+VirtualMachineInstance is also ready, <code>status.ready</code> will equal <code>true</code>
+too.</p>
+<p>If a VirtualMachineInstance reaches a final state but the <code>spec.running</code>
+equals <code>true</code>, the VirtualMachine controller will set <code>status.ready</code> to
+<code>false</code> and re-create the VirtualMachineInstance.</p>
+<h3 id="restarting">Restarting<a class="headerlink" href="#restarting" title="Permanent link">&para;</a></h3>
+<p>A VirtualMachineInstance restart can be triggered by deleting the
+VirtualMachineInstance. This will also propagate configuration changes
+from the template in the VirtualMachine:</p>
+<pre><code># Restart the virtual machine (you delete the instance!):
+kubectl delete virtualmachineinstance myvm
+</code></pre>
+<p>To restart a VirtualMachine named myvm using virtctl:</p>
+<pre><code>$ virtctl restart myvm
+</code></pre>
+<p>This would perform a normal restart for the VirtualMachineInstance and
+would reschedule the VirtualMachineInstance on a new virt-launcher Pod</p>
+<p>To force restart a VirtualMachine named myvm using virtctl:</p>
+<pre><code>$ virtctl restart myvm --force --grace-period=0
+</code></pre>
+<p>This would try to perform a normal restart, and would also delete the
+virt-launcher Pod of the VirtualMachineInstance with setting
+GracePeriodSeconds to the seconds passed in the command.</p>
+<p>Currently, only setting grace-period=0 is supported.</p>
+<blockquote>
+<p>Note: Force restart can cause data corruption, and should be used in
+cases of kernel panic or VirtualMachine being unresponsive to normal
+restarts.</p>
+</blockquote>
+<h3 id="fencing-considerations">Fencing considerations<a class="headerlink" href="#fencing-considerations" title="Permanent link">&para;</a></h3>
+<p>A VirtualMachine will never restart or re-create a
+VirtualMachineInstance until the current instance of the
+VirtualMachineInstance is deleted from the cluster.</p>
+<h3 id="exposing-as-a-service">Exposing as a Service<a class="headerlink" href="#exposing-as-a-service" title="Permanent link">&para;</a></h3>
+<p>A VirtualMachine can be exposed as a service. The actual service will be
+available once the VirtualMachineInstance starts without additional
+interaction.</p>
+<p>For example, exposing SSH port (22) as a <code>ClusterIP</code> service using <code>virtctl</code>
+after the VirtualMachine was created, but before it started:</p>
+<pre><code>$ virtctl expose virtualmachine vmi-ephemeral --name vmiservice --port 27017 --target-port 22
+</code></pre>
+<p>All service exposure options that apply to a VirtualMachineInstance
+apply to a VirtualMachine.</p>
+<p>See <a href="usage/network-service-integration.md">Network Service Integration</a> for more details.</p>
+<h2 id="when-to-use-a-virtualmachine">When to use a VirtualMachine<a class="headerlink" href="#when-to-use-a-virtualmachine" title="Permanent link">&para;</a></h2>
+<h3 id="when-abi-stability-is-required-between-restarts">When ABI stability is required between restarts<a class="headerlink" href="#when-abi-stability-is-required-between-restarts" title="Permanent link">&para;</a></h3>
+<p>A <code>VirtualMachine</code> makes sure that VirtualMachineInstance ABI
+configurations are consistent between restarts. A classical example are
+licenses which are bound to the firmware UUID of a virtual machine. The
+<code>VirtualMachine</code> makes sure that the UUID will always stay the same
+without the user having to take care of it.</p>
+<p>One of the main benefits is that a user can still make use of defaulting
+logic, although a stable ABI is needed.</p>
+<h3 id="when-config-updates-should-be-picked-up-on-the-next-restart">When config updates should be picked up on the next restart<a class="headerlink" href="#when-config-updates-should-be-picked-up-on-the-next-restart" title="Permanent link">&para;</a></h3>
+<p>If the VirtualMachineInstance configuration should be modifyable inside
+the cluster and these changes should be picked up on the next
+VirtualMachineInstance restart. This means that no hotplug is involved.</p>
+<p>When you want to let the cluster manage your individual
+VirtualMachineInstance</p>
+<p>Kubernetes as a declarative system can help you to manage the
+VirtualMachineInstance. You tell it that you want this
+VirtualMachineInstance with your application running, the VirtualMachine
+will try to make sure it stays running.</p>
+<blockquote>
+<p>Note: The current believe is that if it is defined that the
+VirtualMachineInstance should be running, it should be running. This is
+different to many classical virtualization platforms, where VMs stay
+down if they were switched off. Restart policies may be added if needed.
+Please provide your use-case if you need this!</p>
+</blockquote>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-cirros
+  name: vm-cirros
+spec:
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-cirros
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+        machine:
+          type: &quot;&quot;
+        resources:
+          requests:
+            memory: 64M
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: containerdisk
+        containerDisk:
+          image: kubevirt/cirros-container-disk-demo:latest
+      - cloudInitNoCloud:
+          userDataBase64: IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK
+        name: cloudinitdisk
+</code></pre>
+<p>Saving this manifest into <code>vm.yaml</code> and submitting it to Kubernetes will
+create the controller instance:</p>
+<pre><code>$ kubectl create -f vm.yaml
+virtualmachine &quot;vm-cirros&quot; created
+</code></pre>
+<p>Since <code>spec.running</code> is set to <code>false</code>, no vmi will be created:</p>
+<pre><code>$ kubectl get vmis
+No resources found.
+</code></pre>
+<p>Let’s start the VirtualMachine:</p>
+<pre><code>$ virtctl start omv vm-cirros
+</code></pre>
+<p>As expected, a VirtualMachineInstance called <code>vm-cirros</code> got created:</p>
+<pre><code>$ kubectl describe vm vm-cirros
+Name:         vm-cirros
+Namespace:    default
+Labels:       kubevirt.io/vm=vm-cirros
+Annotations:  &lt;none&gt;
+API Version:  kubevirt.io/v1alpha3
+Kind:         VirtualMachine
+Metadata:
+  Cluster Name:        
+  Creation Timestamp:  2018-04-30T09:25:08Z
+  Generation:          0
+  Resource Version:    6418
+  Self Link:           /apis/kubevirt.io/v1alpha3/namespaces/default/virtualmachines/vm-cirros
+  UID:                 60043358-4c58-11e8-8653-525500d15501
+Spec:
+  Running:  true
+  Template:
+    Metadata:
+      Creation Timestamp:  &lt;nil&gt;
+      Labels:
+        Kubevirt . Io / Ovmi:  vm-cirros
+    Spec:
+      Domain:
+        Devices:
+          Disks:
+            Disk:
+              Bus:        virtio
+            Name:         containerdisk
+            Volume Name:  containerdisk
+            Disk:
+              Bus:        virtio
+            Name:         cloudinitdisk
+            Volume Name:  cloudinitdisk
+        Machine:
+          Type:  
+        Resources:
+          Requests:
+            Memory:                      64M
+      Termination Grace Period Seconds:  0
+      Volumes:
+        Name:  containerdisk
+        Registry Disk:
+          Image:  kubevirt/cirros-registry-disk-demo:latest
+        Cloud Init No Cloud:
+          User Data Base 64:  IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK
+        Name:                 cloudinitdisk
+Status:
+  Created:  true
+  Ready:    true
+Events:
+  Type    Reason            Age   From                              Message
+  ----    ------            ----  ----                              -------
+  Normal  SuccessfulCreate  15s   virtualmachine-controller  Created virtual machine: vm-cirros
+</code></pre>
+<h3 id="kubectl-commandline-interactions">Kubectl commandline interactions<a class="headerlink" href="#kubectl-commandline-interactions" title="Permanent link">&para;</a></h3>
+<p>Whenever you want to manipulate the VirtualMachine through the
+commandline you can use the kubectl command. The following are examples
+demonstrating how to do it.</p>
+<pre><code>    # Define a virtual machine:
+    kubectl create -f myvm.yaml
+
+    # Start the virtual machine:
+    kubectl patch virtualmachine myvm --type merge -p \
+        '{&quot;spec&quot;:{&quot;running&quot;:true}}'
+
+    # Look at virtual machine status and associated events:
+    kubectl describe virtualmachine myvm
+
+    # Look at the now created virtual machine instance status and associated events:
+    kubectl describe virtualmachineinstance myvm
+
+    # Stop the virtual machine instance:
+    kubectl patch virtualmachine myvm --type merge -p \
+        '{&quot;spec&quot;:{&quot;running&quot;:false}}'
+
+    # Restart the virtual machine (you delete the instance!):
+    kubectl delete virtualmachineinstance myvm
+
+    # Implicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
+    kubectl delete virtualmachine myvm
+
+    # Explicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
+    kubectl delete virtualmachine myvm --cascade=true
+
+    # Orphan delete (The running virtual machine is only detached, not deleted)
+    # Recreating the virtual machine would lead to the adoption of the virtual machine instance
+    kubectl delete virtualmachine myvm --cascade=false
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../operations/installation/" class="btn btn-neutral float-right" title="Installation">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Welcome"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../operations/installation/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

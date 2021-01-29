@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/operations/component_monitoring/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Component monitoring - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Component monitoring";
+    var mkdocs_page_input_path = "operations/component_monitoring.md";
+    var mkdocs_page_url = "/docs/operations/component_monitoring/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Component monitoring</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#custom-service-discovery">Custom Service Discovery</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#integrating-with-the-prometheus-operator">Integrating with the prometheus-operator</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#integrating-with-the-okd-cluster-monitoring-operator">Integrating with the OKD cluster-monitoring-operator</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#metrics-about-virtual-machines">Metrics about Virtual Machines</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#important-queries">Important Queries</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../authorization/">Authorization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_maintenance/">Node maintenance</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_overcommit/">Node overcommit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/presets/">Presets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Operations &raquo;</li>
+        
+      
+    
+    <li>Component monitoring</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/operations/component_monitoring.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="component-monitoring">Component monitoring<a class="headerlink" href="#component-monitoring" title="Permanent link">&para;</a></h1>
+<p>All KubeVirt system-components expose Prometheus metrics at their
+<code>/metrics</code> REST endpoint.</p>
+<h2 id="custom-service-discovery">Custom Service Discovery<a class="headerlink" href="#custom-service-discovery" title="Permanent link">&para;</a></h2>
+<p>Prometheus supports service discovery based on
+<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod">Pods</a>
+and
+<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#endpoints">Endpoints</a>
+out of the box. Both can be used to discover KubeVirt services.</p>
+<p>All Pods which expose metrics are labeled with <code>prometheus.kubevirt.io</code>
+and contain a port-definition which is called <code>metrics</code>. In the KubeVirt
+release-manifests, the default <code>metrics</code> port is <code>8443</code>.</p>
+<p>The above labels and port informations are collected by a <code>Service</code>
+called <code>kubevirt-prometheus-metrics</code>. Kuberentes automatically creates a
+corresponding <code>Endpoint</code> with an equal name:</p>
+<pre><code>$ kubectl get endpoints -n kubevirt kubevirt-prometheus-metrics -o yaml
+apiVersion: v1
+kind: Endpoints
+metadata:
+  labels:
+    kubevirt.io: ""
+    prometheus.kubevirt.io: ""
+  name: kubevirt-prometheus-metrics
+  namespace: kubevirt
+subsets:
+- addresses:
+  - ip: 10.244.0.5
+    nodeName: node01
+    targetRef:
+      kind: Pod
+      name: virt-handler-cjzg6
+      namespace: kubevirt
+      resourceVersion: "4891"
+      uid: c67331f9-bfcf-11e8-bc54-525500d15501
+  - ip: 10.244.0.6
+  [...]
+  ports:
+  - name: metrics
+    port: 8443
+    protocol: TCP
+</code></pre>
+<p>By watching this endpoint for added and removed IPs to
+<code>subsets.addresses</code> and appending the <code>metrics</code> port from
+<code>subsets.ports</code>, it is possible to always get a complete list of
+ready-to-be-scraped Prometheus targets.</p>
+<h2 id="integrating-with-the-prometheus-operator">Integrating with the prometheus-operator<a class="headerlink" href="#integrating-with-the-prometheus-operator" title="Permanent link">&para;</a></h2>
+<p>The <a href="https://github.com/coreos/prometheus-operator">prometheus-operator</a>
+can make use of the <code>kubevirt-prometheus-metrics</code> service to
+automatically create the appropriate Prometheus config.</p>
+<p>KubeVirt’s <code>virt-operator</code> checks if the <code>ServiceMonitor</code> custom
+resource exists when creating an install strategy for deployment.
+KubeVirt will automatically create a <code>ServiceMonitor</code> resource in the
+<code>monitorNamespace</code>, as well as an appropriate role and rolebinding in
+KubeVirt’s namespace.</p>
+<p>Two settings are exposed in the <code>KubeVirt</code> custom resource to direct
+KubeVirt to create these resources correctly:</p>
+<ul>
+<li>
+<p><code>monitorNamespace</code>: The namespace that prometheus-operator runs in.
+    Defaults to <code>openshift-monitoring</code>.</p>
+</li>
+<li>
+<p><code>monitorAccount</code>: The serviceAccount that prometheus-operator runs
+    with. Defaults to <code>prometheus-k8s</code>.</p>
+</li>
+</ul>
+<p>If the prometheus-operator for a given deployment uses these defaults,
+then these values can be omitted.</p>
+<p>An example of the KubeVirt resource depicting these default values:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: KubeVirt
+metadata:
+  name: kubevirt
+spec:
+  monitorNamespace: openshift-monitoring
+  monitorAccount: prometheus-k8s
+</code></pre>
+<h2 id="integrating-with-the-okd-cluster-monitoring-operator">Integrating with the OKD cluster-monitoring-operator<a class="headerlink" href="#integrating-with-the-okd-cluster-monitoring-operator" title="Permanent link">&para;</a></h2>
+<p>After the
+<a href="https://github.com/openshift/cluster-monitoring-operator">cluster-monitoring-operator</a>
+is up and running, KubeVirt will detect the existence of the
+<code>ServiceMonitor</code> resource. Because the definition contains the
+<code>openshift.io/cluster-monitoring</code> label, it will automatically be picked
+up by the cluster monitor.</p>
+<h2 id="metrics-about-virtual-machines">Metrics about Virtual Machines<a class="headerlink" href="#metrics-about-virtual-machines" title="Permanent link">&para;</a></h2>
+<p>The endpoints report metrics related to the runtime behaviour of the
+Virtual Machines. All the relevant metrics are prefixed with
+<code>kubevirt_vmi</code>.</p>
+<p>The metrics have labels that allow to connect to the VMI objects they
+refer to. At minimum, the labels will expose <code>node</code>, <code>name</code> and
+<code>namespace</code> of the related VMI object.</p>
+<p>For example, reported metrics could look like</p>
+<pre><code>kubevirt_vmi_memory_resident_bytes{domain=&quot;default_vm-test-01&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;} 2.5595904e+07
+kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;rx&quot;} 8431
+kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;tx&quot;} 1835
+kubevirt_vmi_vcpu_seconds{domain=&quot;default_vm-test-01&quot;,id=&quot;0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,state=&quot;1&quot;} 19
+</code></pre>
+<p>Please note the <code>domain</code> label in the above example. This label is
+deprecated and it will be removed in a future release. You should
+identify the VMI using the <code>node</code>, <code>namespace</code>, <code>name</code> labels instead.</p>
+<h2 id="important-queries">Important Queries<a class="headerlink" href="#important-queries" title="Permanent link">&para;</a></h2>
+<h3 id="detecting-connection-issues-for-the-rest-client">Detecting connection issues for the REST client<a class="headerlink" href="#detecting-connection-issues-for-the-rest-client" title="Permanent link">&para;</a></h3>
+<p>Use the following query to get a counter for all REST call which
+indicate connection issues:</p>
+<pre><code>rest_client_requests_total{code="&lt;error&gt;"}
+</code></pre>
+<p>If this counter is continuously increasing, it is an indicator that the
+corresponding KubeVirt component has general issues to connect to the
+apiserver</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../authorization/" class="btn btn-neutral float-right" title="Authorization">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../hugepages/" class="btn btn-neutral" title="Hugepages support"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../hugepages/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../authorization/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

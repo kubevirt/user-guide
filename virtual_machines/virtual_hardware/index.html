@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/virtual_machines/virtual_hardware/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Virtual hardware - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Virtual hardware";
+    var mkdocs_page_input_path = "virtual_machines/virtual_hardware.md";
+    var mkdocs_page_url = "/docs/virtual_machines/virtual_hardware/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/component_monitoring/">Component monitoring</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/authorization/">Authorization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/node_maintenance/">Node maintenance</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/node_overcommit/">Node overcommit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../presets/">Presets</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Virtual hardware</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#machine-type">Machine Type</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#resources-requests-and-limits">Resources Requests and Limits</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#input-devices">Input Devices</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../disks_and_volumes/">Disks and Volumes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Virtual machines &raquo;</li>
+        
+      
+    
+    <li>Virtual hardware</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/virtual_hardware.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="virtual-hardware">Virtual hardware<a class="headerlink" href="#virtual-hardware" title="Permanent link">&para;</a></h1>
+<p>Fine-tuning different aspects of the hardware which are not device
+related (BIOS, mainboard, …) is sometimes necessary to allow guest
+operating systems to properly boot and reboot.</p>
+<h2 id="machine-type">Machine Type<a class="headerlink" href="#machine-type" title="Permanent link">&para;</a></h2>
+<p>QEMU is able to work with two different classes of chipsets for x86_64,
+so called machine types. The x86_64 chipsets are i440fx (also called
+pc) and q35. They are versioned based on qemu-system-${ARCH},
+following the format <code>pc-${machine_type}-${qemu_version}</code>,
+e.g.<code>pc-i440fx-2.10</code> and <code>pc-q35-2.10</code>.</p>
+<p>KubeVirt defaults to QEMU’s newest q35 machine type. If a custom machine
+type is desired, it is configurable through the following structure:</p>
+<pre><code>metadata:
+  name: myvmi
+spec:
+  domain:
+    machine:
+      # This value indicates QEMU machine type.
+      type: pc-q35-2.10
+    resources:
+      requests:
+        memory: 512M
+    devices:
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimName: myclaim
+</code></pre>
+<p>Comparison of the machine types’ internals can be found <a href="https://wiki.qemu.org/Features/Q35">at QEMU
+wiki</a>.</p>
+<h3 id="biosuefi">BIOS/UEFI<a class="headerlink" href="#biosuefi" title="Permanent link">&para;</a></h3>
+<p>All virtual machines use BIOS by default for booting.</p>
+<p>It is possible to utilize UEFI/OVMF by setting a value via
+<code>spec.firmware.bootloader</code>:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-alpine-efi
+  name: vmi-alpine-efi
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+    firmware:
+      # this sets the bootloader type
+      bootloader:
+        efi: {}
+</code></pre>
+<p>SecureBoot is not yet supported.</p>
+<h3 id="smbios-firmware">SMBIOS Firmware<a class="headerlink" href="#smbios-firmware" title="Permanent link">&para;</a></h3>
+<p>In order to provide a consistent view on the virtualized hardware for
+the guest OS, the SMBIOS UUID can be set to a constant value via
+<code>spec.firmware.uuid</code>:</p>
+<pre><code>metadata:
+  name: myvmi
+spec:
+  domain:
+    firmware:
+      # this sets the UUID
+      uuid: 5d307ca9-b3ef-428c-8861-06e72d69f223
+      serial: e4686d2c-6e8d-4335-b8fd-81bee22f4815
+    resources:
+      requests:
+        memory: 512M
+    devices:
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimName: myclaim
+</code></pre>
+<p>In addition, the SMBIOS serial number can be set to a constant value via
+<code>spec.firmware.serial</code>, as demonstrated above.</p>
+<h3 id="cpu">CPU<a class="headerlink" href="#cpu" title="Permanent link">&para;</a></h3>
+<p><strong>Note</strong>: This is not related to scheduling decisions or resource
+assignment.</p>
+<h4 id="topology">Topology<a class="headerlink" href="#topology" title="Permanent link">&para;</a></h4>
+<p>Setting the number of CPU cores is possible via <code>spec.domain.cpu.cores</code>.
+The following VM will have a CPU with <code>3</code> cores:</p>
+<pre><code>metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      # this sets the cores
+      cores: 3
+    resources:
+      requests:
+        memory: 512M
+    devices:
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimName: myclaim
+</code></pre>
+<h4 id="enabling-cpu-compatibility-enforcement">Enabling cpu compatibility enforcement<a class="headerlink" href="#enabling-cpu-compatibility-enforcement" title="Permanent link">&para;</a></h4>
+<p>To enable the CPU compatibility enforcement, user may expand the
+<code>featureGates</code> field in the KubeVirt CR by adding the
+<code>CPUNodeDiscovery</code> to it.</p>
+<pre><code>    apiVersion: kubevirt.io/v1alpha3
+    kind: Kubevirt
+    metadata:
+      name: kubevirt
+      namespace: kubevirt
+    spec:
+      ...
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - &quot;CPUNodeDiscovery&quot;
+    ...
+</code></pre>
+<p>This feature-gate allows kubevirt to take VM cpu model and cpu features
+and create node selectors from them. With these node selectors, VM can
+be scheduled on the node which can support VM cpu model and features.</p>
+<h4 id="labeling-nodes-with-cpu-models-and-cpu-features">Labeling nodes with cpu models and cpu features<a class="headerlink" href="#labeling-nodes-with-cpu-models-and-cpu-features" title="Permanent link">&para;</a></h4>
+<p>To properly label the node, user can use (only for cpu models and cpu
+features) <a href="https://github.com/kubevirt/node-labeller">node-labeller</a> in
+combination with
+<a href="https://github.com/kubevirt/cpu-nfd-plugin">cpu-nfd-plugin</a> or create
+node labels by himself.</p>
+<p>To install node-labeller to cluster, user can use
+(<a href="https://github.com/MarSik/kubevirt-ssp-operator">kubevirt-ssp-operator</a>),
+which will install node-labeller + all available plugins.</p>
+<p>Cpu-nfd-plugin uses libvirt to get all supported cpu models and cpu
+features on host and Node-labeller create labels from cpu models. Then
+Kubevirt can schedule VM on node which has support for VM cpu model and
+features.</p>
+<p>Cpu-nfd-plugin supports black list of cpu models and minimal baseline
+cpu model for features. Both features can be set via config map:</p>
+<pre><code>apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cpu-plugin-configmap
+data:
+  cpu-plugin-configmap.yaml: |-
+    obsoleteCPUs:
+      - "486"
+      - "pentium"
+    minCPU: "Penryn"
+</code></pre>
+<p>This config map has to be created before node-labeller is created,
+otherwise plugin will show all cpu models. Plugin will not reload when
+config map is changed.</p>
+<p>Obsolete cpus will not be inserted in labels. In minCPU user can set
+baseline cpu model. CPU features, which have this model, are used as
+basic features. These basic features are not in the label list. Feature
+labels are created as subtraction between set of newer cpu features and
+set of basic cpu features, e.g.: Haswell has: aes, apic, clflush Penryr
+has: apic, clflush subtraction is: aes. So label will be created only
+with aes feature.</p>
+<h4 id="model">Model<a class="headerlink" href="#model" title="Permanent link">&para;</a></h4>
+<p><strong>Note</strong>: Be sure that node CPU model where you run a VM, has the same
+or higher CPU family.</p>
+<p><strong>Note</strong>: If CPU model wasn’t defined, the VM will have CPU model
+closest to one that used on the node where the VM is running.</p>
+<p><strong>Note</strong>: CPU model is case sensitive.</p>
+<p>Setting the CPU model is possible via <code>spec.domain.cpu.model</code>. The
+following VM will have a CPU with the <code>Conroe</code> model:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      # this sets the CPU model
+      model: Conroe
+...
+</code></pre>
+<p>You can check list of available models
+<a href="https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml">here</a>.</p>
+<p>When CPUNodeDiscovery feature-gate is enabled and VM has cpu model,
+Kubevirt creates node selector with format:
+<code>feature.node.kubernetes.io/cpu-model-&lt;cpuModel&gt;</code>, e.g.
+<code>feature.node.kubernetes.io/cpu-model-Conroe</code>. When VM doesn’t have cpu
+model, then no node selector is created.</p>
+<h4 id="enabling-default-cluster-cpu-model">Enabling default cluster cpu model<a class="headerlink" href="#enabling-default-cluster-cpu-model" title="Permanent link">&para;</a></h4>
+<p>To enable the default cpu model, user may add the <code>cpuModel</code>
+field in the KubeVirt CR.</p>
+<pre><code>    apiVersion: kubevirt.io/v1alpha3
+    kind: KubeVirt
+    metadata:
+      name: kubevirt
+      namespace: kubevirt
+    spec:
+      ...
+      configuration:
+        cpuModel: &quot;EPYC&quot;
+    ...
+</code></pre>
+<p>Default CPU model is set when vmi doesn’t have any cpu model. When vmi
+has cpu model set, then vmi’s cpu model is preferred. When default cpu
+model is not set and vmi’s cpu model is not set too, <code>host-model</code> will
+be set. Default cpu model can be changed when kubevirt is running. When
+CPUNodeDiscovery feature gate is enabled Kubevirt creates node selector
+with default cpu model.</p>
+<h4 id="cpu-model-special-cases">CPU model special cases<a class="headerlink" href="#cpu-model-special-cases" title="Permanent link">&para;</a></h4>
+<p>As special cases you can set <code>spec.domain.cpu.model</code> equals to: -
+<code>host-passthrough</code> to passthrough CPU from the node to the VM</p>
+<pre><code>metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      # this passthrough the node CPU to the VM
+      model: host-passthrough
+...
+</code></pre>
+<ul>
+<li><code>host-model</code> to get CPU on the VM close to the node one</li>
+</ul>
+<!-- -->
+
+<pre><code>metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      # this set the VM CPU close to the node one
+      model: host-model
+...
+</code></pre>
+<p>See the <a href="https://libvirt.org/formatdomain.html#elementsCPU">CPU API
+reference</a> for more
+details.</p>
+<h3 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h3>
+<p>Setting CPU features is possible via <code>spec.domain.cpu.features</code> and can
+contain zero or more CPU features :</p>
+<pre><code>metadata:
+  name: myvmi
+spec:
+  domain:
+    cpu:
+      # this sets the CPU features
+      features:
+      # this is the feature's name
+      - name: "apic"
+      # this is the feature's policy
+       policy: "require"
+...
+</code></pre>
+<p><strong>Note</strong>: Policy attribute can either be omitted or contain one of the
+following policies: force, require, optional, disable, forbid.</p>
+<p><strong>Note</strong>: In case a policy is omitted for a feature, it will default to
+<strong>require</strong>.</p>
+<p>Behaviour according to Policies:</p>
+<ul>
+<li>All policies will be passed to libvirt during virtual machine
+    creation.</li>
+<li>In case the feature gate "CPUNodeDiscovery" is enabled and the
+    policy is omitted or has "require" value, then the virtual machine
+    could be scheduled only on nodes that support this feature.</li>
+<li>In case the feature gate "CPUNodeDiscovery" is enabled and the
+    policy has "forbid" value, then the virtual machine would <strong>not</strong> be
+    scheduled on nodes that support this feature.</li>
+</ul>
+<p>Full description about features and policies can be found
+<a href="https://libvirt.org/formatdomain.html#elementsCPU">here</a>.</p>
+<p>When CPUNodeDiscovery feature-gate is enabled Kubevirt creates node
+selector from cpu features with format:
+<code>feature.node.kubernetes.io/cpu-feature-&lt;cpuFeature&gt;</code>, e.g.
+<code>feature.node.kubernetes.io/cpu-feature-apic</code>. When VM doesn’t have cpu
+feature, then no node selector is created.</p>
+<h3 id="clock">Clock<a class="headerlink" href="#clock" title="Permanent link">&para;</a></h3>
+<h4 id="guest-time">Guest time<a class="headerlink" href="#guest-time" title="Permanent link">&para;</a></h4>
+<p>Sets the virtualized hardware clock inside the VM to a specific time.
+Available options are</p>
+<ul>
+<li>
+<p><strong>utc</strong></p>
+</li>
+<li>
+<p><strong>timezone</strong></p>
+</li>
+</ul>
+<p>See the <a href="https://kubevirt.github.io/api-reference/master/definitions.html#_v1_clock">Clock API
+Reference</a>
+for all possible configuration options.</p>
+<h4 id="utc">utc<a class="headerlink" href="#utc" title="Permanent link">&para;</a></h4>
+<p>If <code>utc</code> is specified, the VM’s clock will be set to UTC.</p>
+<pre><code>metadata:
+  name: myvmi
+spec:
+  domain:
+    clock:
+      utc: {}
+    resources:
+      requests:
+        memory: 512M
+    devices:
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimName: myclaim
+</code></pre>
+<h4 id="timezone">timezone<a class="headerlink" href="#timezone" title="Permanent link">&para;</a></h4>
+<p>If <code>timezone</code> is specified, the VM’s clock will be set to the specified
+local time.</p>
+<pre><code>metadata:
+  name: myvmi
+spec:
+  domain:
+    clock:
+      timezone: "America/New York"
+    resources:
+      requests:
+        memory: 512M
+    devices:
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimName: myclaim
+</code></pre>
+<h4 id="timers">Timers<a class="headerlink" href="#timers" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><strong>pit</strong></p>
+</li>
+<li>
+<p><strong>rtc</strong></p>
+</li>
+<li>
+<p><strong>kvm</strong></p>
+</li>
+<li>
+<p><strong>hyperv</strong></p>
+</li>
+</ul>
+<p>A pretty common timer configuration for VMs looks like this:</p>
+<pre><code>metadata:
+  name: myvmi
+spec:
+  domain:
+    clock:
+      utc: {}
+      # here are the timer
+      timer:
+        hpet:
+          present: false
+        pit:
+          tickPolicy: delay
+        rtc:
+          tickPolicy: catchup
+        hyperv: {}
+    resources:
+      requests:
+        memory: 512M
+    devices:
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimName: myclaim
+</code></pre>
+<p><code>hpet</code> is disabled,<code>pit</code> and <code>rtc</code> are configured to use a specific
+<code>tickPolicy</code>. Finally, <code>hyperv</code> is made available too.</p>
+<p>See the <a href="https://kubevirt.github.io/api-reference/master/definitions.html#_v1_timer">Timer API
+Reference</a>
+for all possible configuration options.</p>
+<p><strong>Note</strong>: Timer can be part of a machine type. Thus it may be necessary
+to explicitly disable them. We may in the future decide to add them via
+cluster-level defaulting, if they are part of a QEMU machine definition.</p>
+<h3 id="random-number-generator-rng">Random number generator (RNG)<a class="headerlink" href="#random-number-generator-rng" title="Permanent link">&para;</a></h3>
+<p>You may want to use entropy collected by your cluster nodes inside your
+guest. KubeVirt allows to add a <code>virtio</code> RNG device to a virtual machine
+as follows.</p>
+<pre><code>metadata:
+  name: vmi-with-rng
+spec:
+  domain:
+    devices:
+      rng: {}
+</code></pre>
+<p>For Linux guests, the <code>virtio-rng</code> kernel module should be loaded early
+in the boot process to acquire access to the entropy source. Other
+systems may require similar adjustments to work with the <code>virtio</code> RNG
+device.</p>
+<p><strong>Note</strong>: Some guest operating systems or user payloads may require the
+RNG device with enough entropy and may fail to boot without it. For
+example, fresh Fedora images with newer kernels (4.16.4+) may require
+the <code>virtio</code> RNG device to be present to boot to login.</p>
+<h3 id="video-and-graphics-device">Video and Graphics Device<a class="headerlink" href="#video-and-graphics-device" title="Permanent link">&para;</a></h3>
+<p>By default a minimal Video and Graphics device configuration will be
+applied to the VirtualMachineInstance. The video device is <code>vga</code>
+compatible and comes with a memory size of 16 MB. This device allows
+connecting to the OS via <code>vnc</code>.</p>
+<p>It is possible not attach it by setting
+<code>spec.domain.devices.autoattachGraphicsDevice</code> to <code>false</code>:</p>
+<pre><code>metadata:
+  name: myvmi
+spec:
+  domain:
+    devices:
+      autoattachGraphicsDevice: false
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimName: myclaim
+</code></pre>
+<p>VMIs without graphics and video devices are very often referenced as
+<code>headless</code> VMIs.</p>
+<p>If using a huge amount of small VMs this can be helpful to increase the
+VMI density per node, since no memory needs to be reserved for video.</p>
+<h3 id="features_1">Features<a class="headerlink" href="#features_1" title="Permanent link">&para;</a></h3>
+<p>KubeVirt supports a range of virtualization features which may be
+tweaked in order to allow non-Linux based operating systems to properly
+boot. Most noteworthy are</p>
+<ul>
+<li>
+<p><strong>acpi</strong></p>
+</li>
+<li>
+<p><strong>apic</strong></p>
+</li>
+<li>
+<p><strong>hyperv</strong></p>
+</li>
+</ul>
+<p>A common feature configuration is shown by the following example:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: myvmi
+spec:
+  domain:
+    # typical features
+    features:
+      acpi: {}
+      apic: {}
+      hyperv:
+        relaxed: {}
+        vapic: {}
+        spinlocks:
+          spinlocks: 8191
+    resources:
+      requests:
+        memory: 512M
+    devices:
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimname: myclaim
+</code></pre>
+<p>See the <a href="https://kubevirt.github.io/api-reference/master/definitions.html#_v1_features">Features API
+Reference</a>
+for all available features and configuration options.</p>
+<h2 id="resources-requests-and-limits">Resources Requests and Limits<a class="headerlink" href="#resources-requests-and-limits" title="Permanent link">&para;</a></h2>
+<p>An optional resource request can be specified by the users to allow the
+scheduler to make a better decision in finding the most suitable Node to
+place the VM.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: myvmi
+spec:
+  domain:
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "2"
+      limits:
+        memory: "2Gi"
+        cpu: "1"
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimname: myclaim
+</code></pre>
+<h3 id="cpu_1">CPU<a class="headerlink" href="#cpu_1" title="Permanent link">&para;</a></h3>
+<p>Specifying CPU limits will determine the amount of <em>cpu</em> <em>shares</em> set on
+the control group the VM is running in, in other words, the amount of
+time the VM’s CPUs can execute on the assigned resources when there is a
+competition for CPU resources.</p>
+<p>For more information please refer to <a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-limits-are-run">how Pods with resource limits are
+run</a>.</p>
+<h3 id="memory-overhead">Memory Overhead<a class="headerlink" href="#memory-overhead" title="Permanent link">&para;</a></h3>
+<p>Various VM resources, such as a video adapter, IOThreads, and
+supplementary system software, consume additional memory from the Node,
+beyond the requested memory intended for the guest OS consumption. In
+order to provide a better estimate for the scheduler, this memory
+overhead will be calculated and added to the requested memory.</p>
+<p>Please see <a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled">how Pods with resource requests are
+scheduled</a>
+for additional information on resource requests and limits.</p>
+<h3 id="hugepages">Hugepages<a class="headerlink" href="#hugepages" title="Permanent link">&para;</a></h3>
+<p>KubeVirt give you possibility to use hugepages as backing memory for
+your VM. You will need to provide desired amount of memory
+<code>resources.requests.memory</code> and size of hugepages to use
+<code>memory.hugepages.pageSize</code>, for example for x86_64 architecture it can
+be <code>2Mi</code>.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: myvm
+spec:
+  domain:
+    resources:
+      requests:
+        memory: "64Mi"
+    memory:
+      hugepages:
+        pageSize: "2Mi"
+    disks:
+    - name: myimage
+      disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimname: myclaim
+</code></pre>
+<p>In the above example the VM will have <code>64Mi</code> of memory, but instead of
+regular memory it will use node hugepages of the size of <code>2Mi</code>.</p>
+<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>a node must have pre-allocated hugepages</p>
+</li>
+<li>
+<p>hugepages size cannot be bigger than requested memory</p>
+</li>
+<li>
+<p>requested memory must be divisible by hugepages size</p>
+</li>
+</ul>
+<h2 id="input-devices">Input Devices<a class="headerlink" href="#input-devices" title="Permanent link">&para;</a></h2>
+<h3 id="tablet">Tablet<a class="headerlink" href="#tablet" title="Permanent link">&para;</a></h3>
+<p>Kubevirt supports input devices. The only type which is supported is
+<code>tablet</code>. Tablet input device supports only <code>virtio</code> and <code>usb</code> bus. Bus
+can be empty. In that case, <code>usb</code> will be selected.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  name: myvm
+spec:
+  domain:
+    devices:
+      inputs:
+      - type: tablet
+        bus: virtio
+        name: tablet1
+      disks:
+      - name: myimage
+        disk: {}
+  volumes:
+    - name: myimage
+      persistentVolumeClaim:
+        claimname: myclaim
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../dedicated_cpu_resources/" class="btn btn-neutral float-right" title="Dedicated CPU resources">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../presets/" class="btn btn-neutral" title="Presets"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../presets/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../dedicated_cpu_resources/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

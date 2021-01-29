@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/operations/node_maintenance/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Node maintenance - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Node maintenance";
+    var mkdocs_page_input_path = "operations/node_maintenance.md";
+    var mkdocs_page_url = "/docs/operations/node_maintenance/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../component_monitoring/">Component monitoring</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../authorization/">Authorization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Node maintenance</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#evict-all-vms-from-a-node">Evict all VMs from a Node</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#evict-all-vms-and-pods-from-a-node">Evict all VMs and Pods from a Node</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#evacuate-vmis-via-live-migration-from-a-node">Evacuate VMIs via Live Migration from a Node</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#re-enabling-a-node-after-eviction">Re-enabling a Node after Eviction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#shutting-down-a-node-after-eviction">Shutting down a Node after Eviction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#virtualmachine-evictions">VirtualMachine Evictions</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../node_overcommit/">Node overcommit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/presets/">Presets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Operations &raquo;</li>
+        
+      
+    
+    <li>Node maintenance</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/operations/node_maintenance.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="node-maintenance">Node maintenance<a class="headerlink" href="#node-maintenance" title="Permanent link">&para;</a></h1>
+<p>Before removing a kubernetes node from the cluster, users will want to
+ensure that VirtualMachineInstances have been gracefully terminated
+before powering down the node. Since all VirtualMachineInstances are
+backed by a Pod, the recommended method of evicting
+VirtualMachineInstances is to use the <strong>kubectl drain</strong> command, or in
+the case of OKD the <strong>oc adm drain</strong> command.</p>
+<h2 id="evict-all-vms-from-a-node">Evict all VMs from a Node<a class="headerlink" href="#evict-all-vms-from-a-node" title="Permanent link">&para;</a></h2>
+<p>Select the node you’d like to evict VirtualMachineInstances from by
+identifying the node from the list of cluster nodes.</p>
+<p><code>kubectl get nodes</code></p>
+<p>The following command will gracefully terminate all VMs on a specific
+node. Replace <code>&lt;node-name&gt;</code> with the name of the node where the eviction should occur.</p>
+<p><code>kubectl drain &lt;node-name&gt; --delete-local-data --ignore-daemonsets=true --force --pod-selector=kubevirt.io=virt-launcher</code></p>
+<p>Below is a break down of why each argument passed to the drain command
+is required.</p>
+<ul>
+<li>
+<p><code>kubectl drain &lt;node-name&gt;</code> is selecting a specific node as a target
+    for the eviction</p>
+</li>
+<li>
+<p><code>--delete-local-data</code> is a required flag that is necessary for
+    removing any pod that utilizes an emptyDir volume. The
+    VirtualMachineInstance Pod does use emptryDir volumes, however the
+    data in those volumes are ephemeral which means it is safe to delete
+    after termination.</p>
+</li>
+<li>
+<p><code>--ignore-daemonsets=true</code> is a required flag because every node
+    running a VirtualMachineInstance will also be running our helper
+    DaemonSet called virt-handler. DaemonSets are not allowed to be
+    evicted using <strong>kubectl drain</strong>. By default, if this command
+    encounters a DaemonSet on the target node, the command will fail.
+    This flag tells the command it is safe to proceed with the eviction
+    and to just ignore DaemonSets.</p>
+</li>
+<li>
+<p><code>--force</code> is a required flag because VirtualMachineInstance pods are
+    not owned by a ReplicaSet or DaemonSet controller. This means
+    kubectl can’t guarantee that the pods being terminated on the target
+    node will get re-scheduled replacements placed else where in the
+    cluster after the pods are evicted. KubeVirt has its own controllers
+    which manage the underlying VirtualMachineInstance pods. Each
+    controller behaves differently to a VirtualMachineInstance being
+    evicted. That behavior is outlined futher down in this document.</p>
+</li>
+<li>
+<p><code>--pod-selector=kubevirt.io=virt-launcher</code> means only
+    VirtualMachineInstance pods managed by KubeVirt will be removed from
+    the node.</p>
+</li>
+</ul>
+<h2 id="evict-all-vms-and-pods-from-a-node">Evict all VMs and Pods from a Node<a class="headerlink" href="#evict-all-vms-and-pods-from-a-node" title="Permanent link">&para;</a></h2>
+<p>By removing the <strong>–pod-selector</strong> argument from the previous command, we
+can issue the eviction of all Pods on a node. This command ensures Pods
+associated with VMs as well as all other Pods are evicted from the
+target node.</p>
+<p><code>kubectl drain &lt;node name&gt; --delete-local-data --ignore-daemonsets=true --force</code></p>
+<h2 id="evacuate-vmis-via-live-migration-from-a-node">Evacuate VMIs via Live Migration from a Node<a class="headerlink" href="#evacuate-vmis-via-live-migration-from-a-node" title="Permanent link">&para;</a></h2>
+<p>If the <strong>LiveMigration</strong> feature gate is enabled, it is possible to
+specify an <code>evictionStrategy</code> on VMIs which will react with
+live-migrations on specific taints on nodes. The following snipped on a
+VMI ensures that the VMI is migrated if the
+<code>kubevirt.io/drain:NoSchedule</code> taint is added to a nodes:</p>
+<pre><code>spec:
+  evictionStrategy: LiveMigrate
+</code></pre>
+<p>Here a full VMI:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 30
+  evictionStrategy: LiveMigrate
+  domain:
+    resources:
+      requests:
+        memory: 1024M
+    devices:
+      disks:
+      - name: containerdisk
+        disk:
+          bus: virtio
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - name: cloudinitdisk
+    cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+</code></pre>
+<p>Once the VMI is created, taint the node with</p>
+<pre><code>kubectl taint nodes foo kubevirt.io/drain=draining:NoSchedule
+</code></pre>
+<p>which will trigger a migration.</p>
+<p>Behind the scenes a <strong>PodDisruptionBudget</strong> is created for each VMI
+which has an <strong>evictionStrategy</strong> defined. This ensures that evictions
+are be blocked on these VMIs and that we can guarantee that a VMI will
+be migrated instead of shut off.</p>
+<p><strong>Note:</strong> While the <strong>evictionStrategy</strong> blocks the shutdown of VMIs
+during evictions, the live migration process is detached from the drain
+process itself. Therefore it is necessary to add specified taints as
+part of the drain process explicitly, until we have a better integrated
+solution.</p>
+<p>By default KubeVirt will trigger live migrations if the taint
+<code>kubevirt.io/drain:NoSchedule</code> is added to the node. It is possible to
+configure a different key in the <code>kubevirt</code> CR, by
+setting the migration option <code>nodeDrainTaintKey</code>:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: Kubevirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - "LiveMigration"
+    migrationConfiguration:
+      nodeDrainTaintKey: mytaint/drain
+</code></pre>
+<p>The default value is <code>kubevirt.io/drain</code>. With the change above
+migrations can be triggered with</p>
+<pre><code>kubectl taint nodes foo mytaint/drain=draining:NoSchedule
+</code></pre>
+<p>Here a full drain flow for nodes which includes VMI live migrations with
+the default setting:</p>
+<pre><code>kubectl taint nodes foo kubevirt.io/drain=draining:NoSchedule
+kubectl drain foo --delete-local-data --ignore-daemonsets=true --force
+</code></pre>
+<p>To make the node schedulable again, run</p>
+<pre><code>kubectl taint nodes foo kubevirt.io/drain-
+kubectl uncordon foo
+</code></pre>
+<h2 id="re-enabling-a-node-after-eviction">Re-enabling a Node after Eviction<a class="headerlink" href="#re-enabling-a-node-after-eviction" title="Permanent link">&para;</a></h2>
+<p>The <strong>kubectl drain</strong> will result in the target node being marked as
+unschedulable. This means the node will not be eligible for running new
+VirtualMachineInstances or Pods.</p>
+<p>If it is decided that the target node should become schedulable again,
+the following command must be run.</p>
+<p><code>kubectl uncordon &lt;node name&gt;</code></p>
+<p>or in the case of OKD.</p>
+<p><code>oc adm uncordon &lt;node name&gt;</code></p>
+<h2 id="shutting-down-a-node-after-eviction">Shutting down a Node after Eviction<a class="headerlink" href="#shutting-down-a-node-after-eviction" title="Permanent link">&para;</a></h2>
+<p>From KubeVirt’s perspective, a node is safe to shutdown once all
+VirtualMachineInstances have been evicted from the node. In a multi-use
+cluster where VirtualMachineInstances are being scheduled alongside
+other containerized workloads, it is up to the cluster admin to ensure
+all other pods have been safely evicted before powering down the node.</p>
+<h2 id="virtualmachine-evictions">VirtualMachine Evictions<a class="headerlink" href="#virtualmachine-evictions" title="Permanent link">&para;</a></h2>
+<p>The eviction of any VirtualMachineInstance that is owned by a
+VirtualMachine set to <strong>running=true</strong> will result in the
+VirtualMachineInstance being re-scheduled to another node.</p>
+<p>The VirtualMachineInstance in this case will be forced to power down and
+restart on another node. In the future once KubeVirt introduces live
+migration support, the VM will be able to seamlessly migrate to another
+node during eviction.</p>
+<h3 id="virtualmachineinstancereplicaset-eviction-behavior">VirtualMachineInstanceReplicaSet Eviction Behavior<a class="headerlink" href="#virtualmachineinstancereplicaset-eviction-behavior" title="Permanent link">&para;</a></h3>
+<p>The eviction of VirtualMachineInstances owned by a
+VirtualMachineInstanceReplicaSet will result in the
+VirtualMachineInstanceReplicaSet scheduling replacements for the evicted
+VirtualMachineInstances on other nodes in the cluster.</p>
+<h3 id="virtualmachineinstance-eviction-behavior">VirtualMachineInstance Eviction Behavior<a class="headerlink" href="#virtualmachineinstance-eviction-behavior" title="Permanent link">&para;</a></h3>
+<p>VirtualMachineInstances not backed by either a
+VirtualMachineInstanceReplicaSet or an VirtualMachine object will not be
+re-scheduled after eviction.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../node_overcommit/" class="btn btn-neutral float-right" title="Node overcommit">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../node_assignment/" class="btn btn-neutral" title="Node assignment"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../node_assignment/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../node_overcommit/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

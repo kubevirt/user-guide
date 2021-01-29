@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/latest_release_notes/">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Latest release notes - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Latest release notes";
+    var mkdocs_page_input_path = "latest_release_notes.md";
+    var mkdocs_page_url = "/docs/latest_release_notes/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Welcome</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/component_monitoring/">Component monitoring</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/authorization/">Authorization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/node_maintenance/">Node maintenance</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/node_overcommit/">Node overcommit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/presets/">Presets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../web_console/">Web Console</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Latest release notes</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/latest_release_notes.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="latest-release-notes">Latest release notes<a class="headerlink" href="#latest-release-notes" title="Permanent link">&para;</a></h1>
+<h2 id="v0350">v0.35.0<a class="headerlink" href="#v0350" title="Permanent link">&para;</a></h2>
+<p>Released on: Mon Nov 9 13:08:27 2020 +0000</p>
+<ul>
+<li>[PR #4409][vladikr] Increase the static memory overhead by 10Mi</li>
+<li>[PR #4272][maiqueb] Add <code>ip-family</code> to the <code>virtctl expose</code> command.</li>
+<li>[PR #4398][rmohr] VMIs reflect deleted stuck virt-launcher pods with the "PodTerminating" Reason in the ready condition. The VMIRS detects this reason and immediately creates replacement VMIs.</li>
+<li>[PR #4393][salanki] Disable legacy service links in <code>virt-launcher</code> Pods to speed up Pod instantiation and decrease Kubelet load in namespaces with many services.</li>
+<li>[PR #2935][maiqueb] Add the macvtap BindMechanism.</li>
+<li>[PR #4132][mstarostik] fixes a bug that prevented unique device name allocation when configuring both scsi and sata drives</li>
+<li>[PR #3257][xpivarc] Added support of <code>kubectl explain</code> for Kubevirt resources.</li>
+<li>[PR #4288][ezrasilvera] Adding DownwardAPI volumes type</li>
+<li>[PR #4233][maya-r] Update base image used for pods to Fedora 31.</li>
+<li>[PR #4192][xpivarc] We now run gosec in Kubevirt</li>
+<li>[PR #4328][stu-gott] Version 2.x QEMU guest agents are supported.</li>
+<li>[PR #4289][AlonaKaplan] Masquerade binding - set the virt-launcher pod interface MTU on the bridge.</li>
+<li>[PR #4300][maiqueb] Update the NetworkInterfaceMultiqueue openAPI documentation to better specify its semantics within KubeVirt.</li>
+<li>[PR #4277][awels] PVCs populated by DVs are now allowed as volumes.</li>
+<li>[PR #4265][dhiller] Fix virtctl help text when running as a plugin</li>
+<li>[PR #4273][dhiller] Only run Travis build for PRs against release branches</li>
+</ul>
+<h2 id="v0340">v0.34.0<a class="headerlink" href="#v0340" title="Permanent link">&para;</a></h2>
+<p>Released on: Wed Oct 7 13:59:50 2020 +0300</p>
+<ul>
+<li>[PR #4315][kubevirt-bot] PVCs populated by DVs are now allowed as volumes.</li>
+<li>[PR #3837][jean-edouard] VM interfaces with no <code>bootOrder</code> will no longer be candidates for boot when using the BIOS bootloader, as documented</li>
+<li>[PR #3879][ashleyschuett] KubeVirt should now be configured through the KubeVirt CR <code>configuration</code> key. The usage of the kubevirt-confg ConfigMap will be deprecated in the future.</li>
+<li>[PR #4074][stu-gott] Fixed bug preventing non-admin users from pausing/unpausing VMs</li>
+<li>[PR #4252][rhrazdil] Fixes https://bugzilla.redhat.com/show_bug.cgi?id=1853911</li>
+<li>[PR #4016][ashleyschuett] Allow for post copy VMI migrations</li>
+<li>[PR #4235][davidvossel] Fixes timeout failure that occurs when pulling large containerDisk images</li>
+<li>[PR #4263][rmohr] Add readiness and liveness probes to virt-handler, to clearly indicate readiness</li>
+<li>[PR #4248][maiqueb] always compile KubeVirt with selinux support on pure go builds.</li>
+<li>[PR #4012][danielBelenky] Added support for the eviction API for VMIs with eviction strategy. This enables VMIs to be live-migrated when the node is drained or when the descheduler wants to move a VMI to a different node.</li>
+<li>[PR #4075][ArthurSens] Metric kubevirt_vmi_vcpu_seconds' state label is now exposed as a human-readable state instead of an integer</li>
+<li>[PR #4162][vladikr] introduce a cpuAllocationRatio config parameter to normalize the number of CPUs requested for a pod, based on the number of vCPUs</li>
+<li>[PR #4177][maiqueb] Use vishvananda/netlink instead of songgao/water to create tap devices.</li>
+<li>[PR #4092][stu-gott] Allow specifying nodeSelectors, affinity and tolerations to control where KubeVirt components will run</li>
+<li>[PR #3927][ArthurSens] Adds new metric kubevirt_vmi_memory_unused_bytes</li>
+<li>[PR #3493][vladikr] virtIO-FS is being added as experimental, protected by a feature-gate that needs to be enabled in the kubevirt config by the administrator</li>
+<li>[PR #4193][mhenriks] Add snapshot.kubevirt.io to admin/edit/view roles</li>
+<li>[PR #4149][qinqon] Bump kubevirtci to k8s-1.19</li>
+<li>[PR #3471][crobinso] Allow hiding that the VM is running on KVM, so that Nvidia graphics cards can be passed through</li>
+<li>[PR #4115][phoracek] Add conformance automation and manifest publishing</li>
+<li>[PR #3733][davidvossel] each PRs description.</li>
+<li>[PR #4082][mhenriks] VirtualMachineRestore API and implementation</li>
+<li>[PR #4154][davidvossel] Fixes issue with Serivce endpoints not being updated properly in place during KubeVirt updates.</li>
+<li>[PR #3289][vatsalparekh] Add option to run only VNC Proxy in virtctl</li>
+<li>[PR #4027][alicefr] Added memfd as default memory backend for hugepages. This introduces the new annotation kubevirt.io/memfd to disable memfd as default and fallback to the previous behavior.</li>
+<li>[PR #3612][ashleyschuett] Adds <code>customizeComponents</code> to the kubevirt api</li>
+<li>[PR #4029][cchengleo] Fix an issue which prevented virt-operator from installing monitoring resources in custom namespaces.</li>
+<li>[PR #4031][rmohr] Initial support for sonobuoy for conformance testing</li>
+</ul>
+<h2 id="v0330">v0.33.0<a class="headerlink" href="#v0330" title="Permanent link">&para;</a></h2>
+<p>Released on: Tue Sep 15 14:46:00 2020 +0000</p>
+<ul>
+<li>[PR #3226][vatsalparekh] Added tests to verify custom pciAddress slots and function</li>
+<li>[PR #4048][davidvossel] Improved reliability for failed migration retries</li>
+<li>[PR #3585][mhenriks] "virtctl image-upload pvc ..." will create the PVC if it does not exist</li>
+<li>[PR #3945][xpivarc] KubeVirt is now being built with Go1.13.14</li>
+<li>[PR #3845][ArthurSens] action required: The domain label from VMI metrics is being removed and may break dashboards that use the domain label to identify VMIs. Use name and namespace labels instead</li>
+<li>[PR #4011][dhiller] ppc64le arch has been disabled for the moment, see https://github.com/kubevirt/kubevirt/issues/4037</li>
+<li>[PR #3875][stu-gott] Resources created by KubeVirt are now labelled more clearly in terms of relationship and role.</li>
+<li>[PR #3791][ashleyschuett] make node as kubevirt.io/schedulable=false on virt-handler restart</li>
+<li>[PR #3998][vladikr] the local provider is usable again.</li>
+<li>[PR #3290][maiqueb] Have virt-handler (KubeVirt agent) create the tap devices on behalf of the virt-launchers.</li>
+<li>[PR #3957][AlonaKaplan] virt-launcher support Ipv6 on dual stack cluster.</li>
+<li>[PR #3952][davidvossel] Fixes rare situation where vmi may not properly terminate if failure occurs before domain starts.</li>
+<li>[PR #3973][xpivarc] Fixes VMs with clock.timezone set.</li>
+<li>[PR #3923][danielBelenky] Add support to configure QEMU I/O mode for VMIs</li>
+<li>[PR #3889][rmohr] The status fields for our CRDs are now protected on normal PATCH and PUT operations.The /status subresource is now used where possible for status updates.</li>
+<li>[PR #3568][xpivarc] Guest swap metrics available</li>
+</ul>
+<h2 id="v0320">v0.32.0<a class="headerlink" href="#v0320" title="Permanent link">&para;</a></h2>
+<p>Released on: Tue Aug 11 19:21:56 2020 +0000</p>
+<ul>
+<li>[PR #3921][vladikr] use correct memory units in libvirt xml</li>
+<li>[PR #3893][davidvossel] Adds recurring period that resyncs virt-launcher domains with virt-handler</li>
+<li>[PR #3880][sgarbour] Better error message when input parameters are not the expected number of parameters for each argument. Help menu will popup in case the number of parameters is incorrect.</li>
+<li>[PR #3785][xpivarc] Vcpu wait metrics available</li>
+<li>[PR #3642][vatsalparekh] Add a way to update VMI Status with latest Pod IP for Masquerade bindings</li>
+<li>[PR #3636][ArthurSens] Adds kubernetes metadata.labels as VMI metrics' label</li>
+<li>[PR #3825][awels] Virtctl now prints error messages from the response body on upload errors.</li>
+<li>[PR #3830][davidvossel] Fixes re-establishing domain notify client connections when domain notify server restarts due to an error event.</li>
+<li>[PR #3778][danielBelenky] Do not emit a SyncFailed event if we fail to sync a VMI in a final state</li>
+<li>[PR #3803][andreabolognani] Not sure what to write here (see above)</li>
+<li>[PR #2694][rmohr] Use native go libraries for selinux to not rely on python-selinux tools like semanage, which are not always present.</li>
+<li>[PR #3692][victortoso] QEMU logs can now be fetched from outside the pod</li>
+<li>[PR #3738][enp0s3] Restrict creation of VMI if it has labels that are used internally by Kubevirt components.</li>
+<li>[PR #3725][danielBelenky] The tests binary is now part of the release and can be consumed from the GitHub release page.</li>
+<li>[PR #3684][rmohr] Log if critical devices, like kvm, which virt-handler wants to expose are not present on the node.</li>
+<li>[PR #3166][petrkotas] Introduce new virtctl commands:</li>
+<li>[PR #3708][andreabolognani] Make qemu work on GCE by pulling in a fix for https://bugzilla.redhat.com/show_bug.cgi?id=1822682</li>
+</ul>
+<h2 id="v0310">v0.31.0<a class="headerlink" href="#v0310" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Jul 9 16:08:18 2020 +0300</p>
+<ul>
+<li>[PR 3690][davidvossel] Update go-grpc dependency to v1.30.0 in order to improve stability</li>
+<li>[PR 3628][AlonaKaplan] Avoid virt-handler crash in case of virt-launcher network configuration error</li>
+<li>[PR 3635][jean-edouard] The "HostDisk" feature gate has to be enabled to use hostDisks</li>
+<li>[PR 3641][vatsalparekh] Reverts kubevirt/kubevirt#3488 because CI seems to have merged it without all tests passing</li>
+<li>[PR 3488][vatsalparekh] Add a way to update VMI Status with latest Pod IP for Masquerade bindings</li>
+<li>[PR 3406][tomob] If a PVC was created by a DataVolume, it cannot be used as a Volume Source for a VM. The owning DataVolume has to be used instead.</li>
+<li>[PR 3566][kraxel] added: tigervnc support for linux &amp; windows</li>
+<li>[PR 3529][jean-edouard] Enabling EFI will also enable Secure Boot, which requires SMM to be enabled.</li>
+<li>[PR 3455][ashleyschuett] Add KubevirtConfiguration, MigrationConfiguration, DeveloperConfiguration and NetworkConfiguration to API-types</li>
+<li>[PR 3520][rmohr] Fix hot-looping on the  VMI sync-condition if errors happen during the Scheduled phase of a VMI</li>
+<li>[PR 3220][mhenriks] API and controller/webhook for VirtualMachineSnapshots</li>
+</ul>
+<h2 id="v0300">v0.30.0<a class="headerlink" href="#v0300" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri Jun 5 12:19:57 2020 +0200</p>
+<ul>
+<li>Tests: Many more test fixes</li>
+<li>Security: Introduce a custom SELinux policy for virt-launcher</li>
+<li>More user friendly IPv6 default CIDR for IPv6 addresses</li>
+<li>Fix OpenAPI compatibility issues by switching to openapi-gen</li>
+<li>Improved support for EFI boot (configurable OVMF path and test fixes)</li>
+<li>Improved VMI IP reporting</li>
+<li>Support propagation of annotations from VMI to pods</li>
+<li>Support for more fine grained (NET_RAW( capability granting to virt-launcher</li>
+<li>Support for eventual consistency with DataVolumes</li>
+</ul>
+<h2 id="v0290">v0.29.0<a class="headerlink" href="#v0290" title="Permanent link">&para;</a></h2>
+<p>Released on: Wed May 6 15:01:57 2020 +0200</p>
+<ul>
+<li>Tests: Many many test fixes</li>
+<li>Tests: Many more test fixes</li>
+<li>CI: Add lane with SELinux enabled</li>
+<li>CI: Drop PPC64 support for now</li>
+<li>Drop Genie support</li>
+<li>Drop the use of hostPaths in the virt-launcher for improved security</li>
+<li>Support priority classes for important componenets</li>
+<li>Support IPv6 over masquerade binding</li>
+<li>Support certificate rotations based on shared secrets</li>
+<li>Support for VM ready condition</li>
+<li>Support for advanced node labelling (supported CPU Families and machine types)</li>
+</ul>
+<h2 id="v0280">v0.28.0<a class="headerlink" href="#v0280" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Apr 9 23:01:29 2020 +0200</p>
+<ul>
+<li>CI: Try to discover flaky tests before merge</li>
+<li>Fix the use of priorityClasses</li>
+<li>Fix guest memory overhead calculation</li>
+<li>Fix SR-IOV device overhead requirements</li>
+<li>Fix loading of tun module during virt-handler initialization</li>
+<li>Fixes for several test cases</li>
+<li>Fixes to support running with container_t</li>
+<li>Support for renaming a vM</li>
+<li>Support ioEmulator thread pinning</li>
+<li>Support a couple of alerts for virt-handler</li>
+<li>Support for filesystem listing using the guest agent</li>
+<li>Support for retrieving data from the guest agent</li>
+<li>Support for device role tagging</li>
+<li>Support for assigning devices to the PCI root bus</li>
+<li>Support for guest overhead override</li>
+<li>Rewrite container-disk in C to in order to reduce it's memory footprint</li>
+</ul>
+<h2 id="v0270">v0.27.0<a class="headerlink" href="#v0270" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri Mar 6 22:40:34 2020 +0100</p>
+<ul>
+<li>Support for more guest agent informations in the API</li>
+<li>Support setting priorityClasses on VMs</li>
+<li>Support for additional control plane alerts via prometheus</li>
+<li>Support for io and emulator thread pinning</li>
+<li>Support setting a custom SELinux type for the launcher</li>
+<li>Support to perform network configurations from handler instead of launcher</li>
+<li>Support to opt-out of auto attaching the serial console</li>
+<li>Support for different uninstallStaretgies for data protection</li>
+<li>Fix to let qemu run in the qemu group</li>
+<li>Fix guest agen connectivity check after i.e. live migrations</li>
+</ul>
+<h2 id="v0260">v0.26.0<a class="headerlink" href="#v0260" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri Feb 7 09:40:07 2020 +0100</p>
+<ul>
+<li>Fix incorrect ownerReferences to avoid VMs getting GCed</li>
+<li>Fixes for several tests</li>
+<li>Fix greedy permissions around Secrets by delegating them to kubelet</li>
+<li>Fix OOM infra pod by increasing it's memory request</li>
+<li>Clarify device support around live migrations</li>
+<li>Support for an uninstall strategy to protect workloads during uninstallation</li>
+<li>Support for more prometheus metrics and alert rules</li>
+<li>Support for testing SRIOV connectivity in functional tests</li>
+<li>Update Kubernetes client-go to 1.16.4</li>
+<li>FOSSA fixes and status</li>
+</ul>
+<h2 id="v0250">v0.25.0<a class="headerlink" href="#v0250" title="Permanent link">&para;</a></h2>
+<p>Released on: Mon Jan 13 20:37:15 2020 +0100</p>
+<ul>
+<li>CI: Support for Kubernetes 1.17</li>
+<li>Support emulator thread pinning</li>
+<li>Support virtctl restart --force</li>
+<li>Support virtctl migrate to trigger live migrations from the CLI</li>
+</ul>
+<h2 id="v0240">v0.24.0<a class="headerlink" href="#v0240" title="Permanent link">&para;</a></h2>
+<p>Released on: Tue Dec 3 15:34:34 2019 +0100</p>
+<ul>
+<li>CI: Support for Kubernetes 1.15</li>
+<li>CI: Support for Kubernetes 1.16</li>
+<li>Add and fix a couple of test cases</li>
+<li>Support for pause and unpausing VMs</li>
+<li>Update of libvirt to 5.6.0</li>
+<li>Fix bug related to parallel scraping of Prometheus endpoints</li>
+<li>Fix to reliably test VNC</li>
+</ul>
+<h2 id="v0230">v0.23.0<a class="headerlink" href="#v0230" title="Permanent link">&para;</a></h2>
+<p>Released on: Mon Nov 4 16:42:54 2019 +0100</p>
+<ul>
+<li>Guest OS Information is available under the VMI status now</li>
+<li>Updated to Go 1.12.8 and latest bazel</li>
+<li>Updated go-yaml to v2.2.4, which has a ddos vulnerability fixed</li>
+<li>Cleaned up and fixed CRD scheme registration</li>
+<li>Several bugfixes</li>
+<li>Many CI improvements (e.g. more logs in case of test failures)</li>
+</ul>
+<h2 id="v0220">v0.22.0<a class="headerlink" href="#v0220" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Oct 10 18:55:08 2019 +0200</p>
+<ul>
+<li>Support for Nvidia GPUs and vGPUs exposed by Nvidia Kubevirt Device Plugin.</li>
+<li>VMIs now successfully start if they get a 0xfe prefixed MAC address assigned from the pod network</li>
+<li>Removed dependency on host semanage in SELinux Permissive mode</li>
+<li>Some changes as result of entering the CNCF sandbox (DCO check, FOSSA check, best practice badge)</li>
+<li>Many bug fixes and improvements in several areas</li>
+<li>CI: Introduced a OKD 4 test lane</li>
+<li>CI: Many improved tests, resulting in less flakyness</li>
+</ul>
+<h2 id="v0210">v0.21.0<a class="headerlink" href="#v0210" title="Permanent link">&para;</a></h2>
+<p>Released on: Mon Sep 9 09:59:08 2019 +0200</p>
+<ul>
+<li>CI: Support for Kubernetes 1.14</li>
+<li>Many bug fixes in several areas</li>
+<li>Support for <code>virtctl migrate</code></li>
+<li>Support configurable number of controller threads</li>
+<li>Support to opt-out of bridge binding for podnetwork</li>
+<li>Support for OpenShift Prometheus monitoring</li>
+<li>Support for setting more SMBIOS fields</li>
+<li>Improved containerDisk memory usage and speed</li>
+<li>Fix CRI-O memory limit</li>
+<li>Drop spc_t from launcher</li>
+<li>Add feature gates to security sensitive features</li>
+</ul>
+<h2 id="v0200">v0.20.0<a class="headerlink" href="#v0200" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri Aug 9 16:42:41 2019 +0200</p>
+<ul>
+<li>Containerdisks are now secure and they are not copied anymore on every start.
+Old containerdisks can still be used in the same secure way, but new
+containerdisks can't be used on older kubevirt releases</li>
+<li>Create specific SecurityContextConstraints on OKD instead of using the
+privileged SCC</li>
+<li>Added clone authorization check for DataVolumes with PVC source</li>
+<li>The sidecar feature is feature-gated now</li>
+<li>Use container image shasums instead of tags for KubeVirt deployments</li>
+<li>Protect control plane components against voluntary evictions with a
+PodDisruptionBudget of MinAvailable=1</li>
+<li>Replaced hardcoded <code>virtctl</code> by using the basename of the call, this enables
+nicer output when installed via krew plugin package manager</li>
+<li>Added RNG device to all Fedora VMs in tests and examples (newer kernels might
+block bootimg while waiting for entropy)</li>
+<li>The virtual memory is now set to match the memory limit, if memory limit is
+specified and guest memory is not</li>
+<li>Support nftable for CoreOS</li>
+<li>Added a block-volume flag to the virtctl image-upload command</li>
+<li>Improved virtctl console/vnc data flow</li>
+<li>Removed DataVolumes feature gate in favor of auto-detecting CDI support</li>
+<li>Removed SR-IOV feature gate, it is enabled by default now</li>
+<li>VMI-related metrics have been renamed from <code>kubevirt_vm_</code> to <code>kubevirt_vmi_</code>
+to better reflect their purpose</li>
+<li>Added metric to report the VMI count</li>
+<li>Improved integration with HCO by adding a CSV generator tool and modified
+KubeVirt CR conditions</li>
+<li>CI Improvements:</li>
+<li>Added dedicated SR-IOV test lane</li>
+<li>Improved log gathering</li>
+<li>Reduced amount of flaky tests</li>
+</ul>
+<h2 id="v0190">v0.19.0<a class="headerlink" href="#v0190" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri Jul 5 12:52:16 2019 +0200</p>
+<ul>
+<li>Fixes when run on kind</li>
+<li>Fixes for sub-resource RBAC</li>
+<li>Limit pod network interface bindings</li>
+<li>Many additional bug fixes in many areas</li>
+<li>Additional testcases for updates, disk types, live migration with NFS</li>
+<li>Additional testcases for memory over-commit, block storage, cpu manager,
+headless mode</li>
+<li>Improvements around HyperV</li>
+<li>Improved error handling for runStartegies</li>
+<li>Improved update procedure</li>
+<li>Improved network metrics reporting (packets and errors)</li>
+<li>Improved guest overhead calculation</li>
+<li>Improved SR-IOV testsuite</li>
+<li>Support for live migration auto-converge</li>
+<li>Support for config-drive disks</li>
+<li>Support for setting a pullPolicy con containerDisks</li>
+<li>Support for unprivileged VMs when using SR-IOV</li>
+<li>Introduction of a project security policy</li>
+</ul>
+<h2 id="v0180">v0.18.0<a class="headerlink" href="#v0180" title="Permanent link">&para;</a></h2>
+<p>Released on: Wed Jun 5 22:25:09 2019 +0200</p>
+<ul>
+<li>Build: Use of go modules</li>
+<li>CI: Support for Kubernetes 1.13</li>
+<li>Countless testcase fixes and additions</li>
+<li>Several smaller bug fixes</li>
+<li>Improved upgrade documentation</li>
+</ul>
+<h2 id="v0170">v0.17.0<a class="headerlink" href="#v0170" title="Permanent link">&para;</a></h2>
+<p>Released on: Mon May 6 16:18:01 2019 +0200</p>
+<ul>
+<li>Several testcase additions</li>
+<li>Improved virt-controller node distribution</li>
+<li>Improved support between version migrations</li>
+<li>Support for a configurable MachineType default</li>
+<li>Support for live-migration of a VM on node taints</li>
+<li>Support for VM swap metrics</li>
+<li>Support for versioned virt-launcher / virt-handler communication</li>
+<li>Support for HyperV flags</li>
+<li>Support for different VM run strategies (i.e manual and rerunOnFailure)</li>
+<li>Several fixes for live-migration (TLS support, protected pods)</li>
+</ul>
+<h2 id="v0160">v0.16.0<a class="headerlink" href="#v0160" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri Apr 5 23:18:22 2019 +0200</p>
+<ul>
+<li>Bazel fixes</li>
+<li>Initial work to support upgrades (not finalized)</li>
+<li>Initial support for HyperV features</li>
+<li>Support propagation of MAC addresses to multus</li>
+<li>Support live migration cancellation</li>
+<li>Support for table input devices</li>
+<li>Support for generating OLM metadata</li>
+<li>Support for triggering VM live migration on node taints</li>
+</ul>
+<h2 id="v0150">v0.15.0<a class="headerlink" href="#v0150" title="Permanent link">&para;</a></h2>
+<p>Released on: Tue Mar 5 10:35:08 2019 +0100</p>
+<ul>
+<li>CI: Several fixes</li>
+<li>Fix configurable number of KVM devices</li>
+<li>Narrow virt-handler permissions</li>
+<li>Use bazel for development builds</li>
+<li>Support for live migration with shared and non-shared disks</li>
+<li>Support for live migration progress tracking</li>
+<li>Support for EFI boot</li>
+<li>Support for libvirt 5.0</li>
+<li>Support for extra DHCP options</li>
+<li>Support for a hook to manipualte cloud-init metadata</li>
+<li>Support setting a VM serial number</li>
+<li>Support for exposing infra and VM metrics</li>
+<li>Support for a tablet input device</li>
+<li>Support for extra CPU flags</li>
+<li>Support for ignition metadata</li>
+<li>Support to set a default CPU model</li>
+<li>Update to go 1.11.5</li>
+</ul>
+<h2 id="v0140">v0.14.0<a class="headerlink" href="#v0140" title="Permanent link">&para;</a></h2>
+<p>Released on: Mon Feb 4 22:04:14 2019 +0100</p>
+<ul>
+<li>CI: Several stabilizing fixes</li>
+<li>docs: Document the KubeVirt Razor</li>
+<li>build: golang update</li>
+<li>Update to Kubernetes 1.12</li>
+<li>Update CDI</li>
+<li>Support for Ready and Created Operator conditions</li>
+<li>Support (basic) EFI</li>
+<li>Support for generating cloud-init network-config</li>
+</ul>
+<h2 id="v0130">v0.13.0<a class="headerlink" href="#v0130" title="Permanent link">&para;</a></h2>
+<p>Released on: Tue Jan 15 08:26:25 2019 +0100</p>
+<ul>
+<li>CI: Fix virt-api race</li>
+<li>API: Remove volumeName from disks</li>
+</ul>
+<h2 id="v0120">v0.12.0<a class="headerlink" href="#v0120" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri Jan 11 22:22:02 2019 +0100</p>
+<ul>
+<li>Introduce a KubeVirt Operator for KubeVirt life-cycle management</li>
+<li>Introduce dedicated kubevirt namespace</li>
+<li>Support VMI ready conditions</li>
+<li>Support vCPU threads and sockets</li>
+<li>Support scale and HPA for VMIRS</li>
+<li>Support to pass NTP related DHCP options</li>
+<li>Support guest IP address reporting via qemu guest agent</li>
+<li>Support for live migration with shared storage</li>
+<li>Support scheduling of VMs based on CPU family</li>
+<li>Support masquerade network interface binding</li>
+</ul>
+<h2 id="v0110">v0.11.0<a class="headerlink" href="#v0110" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Dec 6 10:15:51 2018 +0100</p>
+<ul>
+<li>API: registryDisk got renamed to containreDisk</li>
+<li>CI: User OKD 3.11</li>
+<li>Fix: Tolerate if the PVC has less capacity than expected</li>
+<li>Aligned to use ownerReferences</li>
+<li>Update to libvirt-4.10.0</li>
+<li>Support for VNC on MAC OSX</li>
+<li>Support for network SR-IOV interfaces</li>
+<li>Support for custom DHCP options</li>
+<li>Support for VM restarts via a custom endpoint</li>
+<li>Support for liveness and readiness probes</li>
+</ul>
+<h2 id="v0100">v0.10.0<a class="headerlink" href="#v0100" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Nov 8 15:21:34 2018 +0100</p>
+<ul>
+<li>Support for vhost-net</li>
+<li>Support for block multi-queue</li>
+<li>Support for custom PCI addresses for virtio devices</li>
+<li>Support for deploying KubeVirt to a custom namespace</li>
+<li>Support for ServiceAccount token disks</li>
+<li>Support for multus backed networks</li>
+<li>Support for genie backed networks</li>
+<li>Support for kuryr backed networks</li>
+<li>Support for block PVs</li>
+<li>Support for configurable disk device caches</li>
+<li>Support for pinned IO threads</li>
+<li>Support for virtio net multi-queue</li>
+<li>Support for image upload (depending on CDI)</li>
+<li>Support for custom entity lists with more VM details (cusomt columns)</li>
+<li>Support for IP and MAC address reporting of all vNICs</li>
+<li>Basic support for guest agent status reporting</li>
+<li>More structured logging</li>
+<li>Better libvirt error reporting</li>
+<li>Stricter CR validation</li>
+<li>Better ownership references</li>
+<li>Several test improvements</li>
+</ul>
+<h2 id="v090">v0.9.0<a class="headerlink" href="#v090" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Oct 4 14:42:28 2018 +0200</p>
+<ul>
+<li>CI: NetworkPolicy tests</li>
+<li>CI: Support for an external provider (use a preconfigured cluster for tests)</li>
+<li>Fix virtctl console issues with CRI-O</li>
+<li>Support to initialize empty PVs</li>
+<li>Support for basic CPU pinning</li>
+<li>Support for setting IO Threads</li>
+<li>Support for block volumes</li>
+<li>Move preset logic to mutating webhook</li>
+<li>Introduce basic metrics reporting using prometheus metrics</li>
+<li>Many stabilizing fixes in many places</li>
+</ul>
+<h2 id="v080">v0.8.0<a class="headerlink" href="#v080" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Sep 6 14:25:22 2018 +0200</p>
+<ul>
+<li>Support for DataVolume</li>
+<li>Support for a subprotocol for webbrowser terminals</li>
+<li>Support for virtio-rng</li>
+<li>Support disconnected VMs</li>
+<li>Support for setting host model</li>
+<li>Support for host CPU passthrough</li>
+<li>Support setting a vNICs mac and PCI address</li>
+<li>Support for memory over-commit</li>
+<li>Support booting from network devices</li>
+<li>Use less devices by default, aka disable unused ones</li>
+<li>Improved VMI shutdown status</li>
+<li>More logging to improve debugability</li>
+<li>A lot of small fixes, including typos and documentation fixes</li>
+<li>Race detection in tests</li>
+<li>Hook improvements</li>
+<li>Update to use Fedora 28 (includes updates of dependencies like libvirt and
+  qemu)</li>
+<li>Move CI to support Kubernetes 1.11</li>
+</ul>
+<h2 id="v070">v0.7.0<a class="headerlink" href="#v070" title="Permanent link">&para;</a></h2>
+<p>Released on: Wed Jul 4 17:41:33 2018 +0200</p>
+<ul>
+<li>CI: Move test storage to hostPath</li>
+<li>CI: Add support for Kubernetes 1.10.4</li>
+<li>CI: Improved network tests for multiple-interfaces</li>
+<li>CI: Drop Origin 3.9 support</li>
+<li>CI: Add test for testing templates on Origin</li>
+<li>VM to VMI rename</li>
+<li>VM affinity and anti-affinity</li>
+<li>Add awareness for multiple networks</li>
+<li>Add hugepage support</li>
+<li>Add device-plugin based kvm</li>
+<li>Add support for setting the network interface model</li>
+<li>Add (basic and inital) Kubernetes compatible networking approach (SLIRP)</li>
+<li>Add role aggregation for our roles</li>
+<li>Add support for setting a disks serial number</li>
+<li>Add support for specyfing the CPU model</li>
+<li>Add support for setting an network intefraces MAC address</li>
+<li>Relocate binaries for FHS conformance</li>
+<li>Logging improvements</li>
+<li>Template fixes</li>
+<li>Fix OpenShift CRD validation</li>
+<li>virtctl: Improve vnc logging improvements</li>
+<li>virtctl: Add expose</li>
+<li>virtctl: Use PATCH instead of PUT</li>
+</ul>
+<h2 id="v060">v0.6.0<a class="headerlink" href="#v060" title="Permanent link">&para;</a></h2>
+<p>Released on: Mon Jun 11 09:30:28 2018 +0200</p>
+<ul>
+<li>A range of flakyness reducing test fixes</li>
+<li>Vagrant setup got deprectated</li>
+<li>Updated Docker and CentOS versions</li>
+<li>Add Kubernetes 1.10.3 to test matrix</li>
+<li>A couple of ginkgo concurrency fixes</li>
+<li>A couple of spelling fixes</li>
+<li>A range if infra updates</li>
+<li>Use /dev/kvm if possible, otherwise fallback to emulation</li>
+<li>Add default view/edit/admin RBAC Roles</li>
+<li>Network MTU fixes</li>
+<li>CDRom drives are now read-only</li>
+<li>Secrets can now be correctly referenced on VMs</li>
+<li>Add disk boot ordering</li>
+<li>Add virtctl version</li>
+<li>Add virtctl expose</li>
+<li>Fix virtual machine memory calculations</li>
+<li>Add basic virtual machine Network API</li>
+</ul>
+<h2 id="v050">v0.5.0<a class="headerlink" href="#v050" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri May 4 18:25:32 2018 +0200</p>
+<ul>
+<li>Better controller health signaling</li>
+<li>Better virtctl error messages</li>
+<li>Improvements to enable CRI-O support</li>
+<li>Run CI on stable OpenShift</li>
+<li>Add test coverage for multiple PVCs</li>
+<li>Improved controller life-cycle guarantees</li>
+<li>Add Webhook validation</li>
+<li>Add tests coverage for node eviction</li>
+<li>OfflineVirtualMachine status improvements</li>
+<li>RegistryDisk API update</li>
+</ul>
+<h2 id="v040">v0.4.0<a class="headerlink" href="#v040" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri Apr 6 16:40:31 2018 +0200</p>
+<ul>
+<li>Fix several networking issues</li>
+<li>Add and enable OpenShift support to CI</li>
+<li>Add conditional Windows tests (if an image is present)</li>
+<li>Add subresources for console access</li>
+<li>virtctl config alignmnet with kubectl</li>
+<li>Fix API reference generation</li>
+<li>Stable UUIDs for OfflineVirtualMachines</li>
+<li>Build virtctl for MacOS and Windows</li>
+<li>Set default architecture to x86_64</li>
+<li>Major improvement to the CI infrastructure (all containerized)</li>
+<li>virtctl convenience functions for starting and stopping a VM</li>
+</ul>
+<h2 id="v030">v0.3.0<a class="headerlink" href="#v030" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Mar 8 10:21:57 2018 +0100</p>
+<ul>
+<li>Kubernetes compatible networking</li>
+<li>Kubernetes compatible PV based storage</li>
+<li>VirtualMachinePresets support</li>
+<li>OfflineVirtualMachine support</li>
+<li>RBAC improvements</li>
+<li>Switch to q35 machien type by default</li>
+<li>A large number of test and CI fixes</li>
+<li>Ephemeral disk support</li>
+</ul>
+<h2 id="v020">v0.2.0<a class="headerlink" href="#v020" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri Jan 5 16:30:45 2018 +0100</p>
+<ul>
+<li>VM launch and shutdown flow improvements</li>
+<li>VirtualMachine API redesign</li>
+<li>Removal of HAProxy</li>
+<li>Redesign of VNC/Console access</li>
+<li>Initial support for different vagrant providers</li>
+</ul>
+<h2 id="v010">v0.1.0<a class="headerlink" href="#v010" title="Permanent link">&para;</a></h2>
+<p>Released on: Fri Dec 8 20:43:06 2017 +0100</p>
+<ul>
+<li>Many API improvements for a proper OpenAPI reference</li>
+<li>Add watchdog support</li>
+<li>Drastically improve the deployment on non-vagrant setups</li>
+<li>Dropped nodeSelectors</li>
+<li>Separated inner component deployment from edge component deployment</li>
+<li>Created separate manifests for developer, test, and release deployments</li>
+<li>Moved komponents to kube-system namespace</li>
+<li>Improved and unified flag parsing</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../web_console/" class="btn btn-neutral float-right" title="Web Console">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../architecture/" class="btn btn-neutral" title="Architecture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../architecture/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../web_console/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

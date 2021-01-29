@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/web_console/">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Web Console - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Web Console";
+    var mkdocs_page_input_path = "web_console.md";
+    var mkdocs_page_url = "/docs/web_console/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Welcome</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/component_monitoring/">Component monitoring</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/authorization/">Authorization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/node_maintenance/">Node maintenance</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/node_overcommit/">Node overcommit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../operations/containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/presets/">Presets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Web Console</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#managing-virtual-machines">Managing Virtual Machines</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deleting-a-virtual-machine">Deleting a Virtual Machine</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#controlling-virtual-machines">Controlling Virtual Machines</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#accessing-virtual-machine-consoles">Accessing Virtual Machine Consoles</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#managing-virtual-machine-nics">Managing Virtual Machine NICs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#managing-virtual-machine-disks">Managing Virtual Machine Disks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#virtual-machine-templates-in-the-web-console">Virtual Machine Templates in the Web Console</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Web Console</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/web_console.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="web-console">Web Console<a class="headerlink" href="#web-console" title="Permanent link">&para;</a></h1>
+<h2 id="managing-virtual-machines">Managing Virtual Machines<a class="headerlink" href="#managing-virtual-machines" title="Permanent link">&para;</a></h2>
+<h3 id="creating-a-virtual-machine-with-the-interactive-wizard">Creating a Virtual Machine with the Interactive Wizard<a class="headerlink" href="#creating-a-virtual-machine-with-the-interactive-wizard" title="Permanent link">&para;</a></h3>
+<p>The web console features an interactive wizard that guides you through
+<a href="#virtual-machine-wizard-fields"><strong>Basic Settings</strong></a>,
+<a href="#networking-fields"><strong>Networking</strong></a>, and
+<a href="#storage-fields"><strong>Storage</strong></a> screens to simplify the
+process of creating virtual machines. All required fields are marked
+with a <code>*</code>. The wizard prevents you from moving to the next screen until
+the required fields have been completed.</p>
+<p>NICs and storage disks can be created and attached to virtual machines
+after they have been created.</p>
+<p><strong><em>*Bootable Disk</em>*.</strong></p>
+<p>If either <code>URL</code> or <code>Container</code> are selected as the <strong>Provision Source</strong>
+in the <a href="#virtual-machine-wizard-fields"><strong>Basic Settings</strong></a> screen, a <code>rootdisk</code>
+disk is created and attached to the virtual machine as the <strong>Bootable
+Disk</strong>. You can modify the <code>rootdisk</code> but you cannot remove it.</p>
+<p>A <strong>Bootable Disk</strong> is not required for virtual machines provisioned
+from a <strong>PXE</strong> source if there are no disks attached to the virtual
+machine. If one or more disks are attached to the virtual machine, you
+must select one as the <strong>Bootable Disk</strong>.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Click <strong>Create Virtual Machine</strong> and select <strong>Create with Wizard</strong>.</p>
+</li>
+<li>
+<p>Fill in all required <a href="#virtual-machine-wizard-fields"><strong>Basic Settings</strong></a>.
+    Selecting a <strong>Template</strong> automatically fills in these fields.</p>
+</li>
+<li>
+<p>Click <strong>Next</strong> to progress to the
+    <a href="#networking-fields"><strong>Networking</strong></a> screen. A <code>nic0</code> NIC
+    is attached by default.</p>
+<ol>
+<li>
+<p>(Optional) Click <strong>Create NIC</strong> to create additional NICs.</p>
+</li>
+<li>
+<p>(Optional) You can remove any or all NICs by clicking the ⋮
+    button and selecting <strong>Remove NIC</strong>. A virtual machine does not
+    need a NIC attached to be created. NICs can be
+    <a href="#vm-create-nic-web">created</a> after the virtual machine has been
+    created.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Click <strong>Next</strong> to progress to the
+    <a href="#storage-fields"><strong>Storage</strong></a> screen.</p>
+<ol>
+<li>
+<p>(Optional) Click <strong>Create Disk</strong> to create additional disks.
+    These disks can be removed by clicking the ⋮ button and
+    selecting <strong>Remove Disk</strong>.</p>
+</li>
+<li>
+<p>(Optional) Click on a disk to modify available fields. Click the
+    ✓ button to save the update.</p>
+</li>
+<li>
+<p>(Optional) Click <strong>Attach Disk</strong> to choose an available disk
+    from the <strong>Select Storage</strong> drop-down list.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Click <strong>Create Virtual Machine &gt;</strong>. The <strong>Results</strong> screen
+    displays the JSON configuration file for the virtual machine.</p>
+</li>
+</ol>
+<p>The virtual machine should now be listed in <strong>Workloads</strong> → <strong>Virtual
+Machines</strong>.</p>
+<h3 id="creating-a-virtual-machine-using-a-yaml-configuration-file">Creating a Virtual Machine Using a YAML Configuration File<a class="headerlink" href="#creating-a-virtual-machine-using-a-yaml-configuration-file" title="Permanent link">&para;</a></h3>
+<p>A virtual machine can also be created by writing or pasting a YAML
+configuration file in the web console in the <strong>Workloads</strong> → <strong>Virtual
+Machines</strong> screen. A valid <code>example</code> virtual machine configuration is
+provided by default whenever you open the YAML edit screen.</p>
+<p>If your YAML configuration is invalid when you click <strong>Create</strong>, an
+error message indicates the parameter in which the error occurs. Only
+one error is shown at a time.</p>
+<blockquote>
+<p>Note: Navigating away from the YAML screen while editing cancels any
+changes to the configuration you have made.</p>
+</blockquote>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Click <strong>Create Virtual Machine</strong> and select <strong>Create from YAML</strong>.</p>
+</li>
+<li>
+<p>Write or paste your virtual machine configuration in the editable
+    window.</p>
+<ol>
+<li>Alternatively, use the <code>example</code> virtual machine provided by
+    default in the YAML screen.</li>
+</ol>
+</li>
+<li>
+<p>(Optional) Click <strong>Download</strong> to download the YAML configuration
+    file to your local machine in its present state.</p>
+</li>
+<li>
+<p>Click <strong>Create</strong> to create the virtual machine.</p>
+</li>
+</ol>
+<p>The virtual machine should now be listed in <strong>Workloads</strong> → <strong>Virtual
+Machines</strong>.</p>
+<h3 id="editing-a-virtual-machine">Editing a Virtual Machine<a class="headerlink" href="#editing-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>You can edit some values of a virtual machine in the web console, either
+by editing the <a href="#editing-vm-yaml-web">YAML directly</a>, or from the
+<strong>Virtual Machine Overview</strong> screen.</p>
+<p>When editing from the <strong>Virtual Machine Overview</strong> screen, the virtual
+machine must be <strong>Off</strong>.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a Virtual Machine.</p>
+</li>
+<li>
+<p>Click <strong>Edit</strong> to make editable fields available.</p>
+</li>
+<li>
+<p>You can change the <strong>Flavor</strong>, but only to <strong>Custom</strong>, which
+    provides additional fields for <strong>CPU</strong> and <strong>Memory</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+</ol>
+<p>The updated values are shown after the operation is processed.</p>
+<h3 id="editing-the-yaml-of-a-virtual-machine">Editing the YAML of a Virtual Machine<a class="headerlink" href="#editing-the-yaml-of-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>You can edit the YAML configuration of a virtual machine directly within
+the web console.</p>
+<p>Not all parameters can be updated. If you edit values that cannot be
+changed and click <strong>Save</strong>, an error message indicates the parameter
+that was not able to be updated.</p>
+<p>The YAML configuration can be edited while the virtual machine is
+<strong>Running</strong>, however the changes will only take effect after the virtual
+machine has been restarted.</p>
+<blockquote>
+<p>Note: Navigating away from the YAML screen while editing cancels any
+changes to the configuration you have made.</p>
+</blockquote>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machine</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a virtual machine.</p>
+</li>
+<li>
+<p>Click the <strong>YAML</strong> tab to display the editable configuration.</p>
+<ol>
+<li>(Optional) You can click <strong>Download</strong> to download the YAML file
+    to your local machine in its current state.</li>
+</ol>
+</li>
+<li>
+<p>Edit the file and click <strong>Save</strong>.</p>
+</li>
+</ol>
+<p>A confirmation message shows that the modification has been successful,
+including the updated version number for the object.</p>
+<h3 id="viewing-the-events-of-a-virtual-machine">Viewing the Events of a Virtual Machine<a class="headerlink" href="#viewing-the-events-of-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>You can view the events stream for a running virtual machine from the
+<strong>Virtual Machine Details</strong> screen of the web console.</p>
+<p>The ▮▮ button pauses the events stream.<br />
+The ▶ button continues a paused events stream.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a virtual machine.</p>
+</li>
+<li>
+<p>Click <strong>Events</strong> to view all events for the virtual machine.</p>
+</li>
+</ol>
+<h2 id="deleting-a-virtual-machine">Deleting a Virtual Machine<a class="headerlink" href="#deleting-a-virtual-machine" title="Permanent link">&para;</a></h2>
+<p>Deleting a virtual machine permanently removes it from the cluster.</p>
+<p>Delete a virtual machine using the ⋮ button of the virtual machine in
+the <strong>Workloads</strong> → <strong>Virtual Machines</strong> list, or using the
+<a href="#vm-actions-web"><strong>Actions</strong></a> button of the <strong>Virtual Machine Details</strong>
+screen.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Click the ⋮ button of the virtual machine you wish to delete and
+    select <strong>Delete Virtual Machine</strong>.</p>
+<ol>
+<li>Alternatively, click the virtual machine name to open the
+    <strong>Virtual Machine Details</strong> screen and click <strong>Actions</strong> →
+    <strong>Delete Virtual Machine</strong>.</li>
+</ol>
+</li>
+<li>
+<p>In the confirmation pop-up window, click <strong>Delete</strong> to permanently
+    delete the virtual machine.</p>
+</li>
+</ol>
+<h2 id="controlling-virtual-machines">Controlling Virtual Machines<a class="headerlink" href="#controlling-virtual-machines" title="Permanent link">&para;</a></h2>
+<h3 id="starting-a-virtual-machine">Starting a Virtual Machine<a class="headerlink" href="#starting-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>Virtual machines can be <a href="#vm-actions-web">started</a> from the ⋮ button
+found on each virtual machine in the <strong>Workloads</strong> → <strong>Virtual
+Machines</strong> list, or from the <a href="#vm-actions-web"><strong>Actions</strong></a> button on
+the <strong>Virtual Machine Details</strong> screen.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machine</strong> from the side menu.</p>
+</li>
+<li>
+<p>Click the ⋮ button of the virtual machine and select <strong>Start Virtual
+    Machine</strong>.</p>
+<ol>
+<li>Alternatively, click the virtual machine name to open the
+    <strong>Virtual Machine Details</strong> screen and click <strong>Actions</strong> and
+    select <strong>Start Virtual Machine</strong>.</li>
+</ol>
+</li>
+<li>
+<p>In the confirmation pop-up window, click <strong>Start</strong> to start the
+    virtual machine.</p>
+</li>
+</ol>
+<h3 id="stopping-a-virtual-machine">Stopping a Virtual Machine<a class="headerlink" href="#stopping-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>A running virtual machine can be <a href="#vm-actions-web">stopped</a> using the ⋮
+button found on each virtual machine in the <strong>Workloads</strong> → <strong>Virtual
+Machines</strong> list, or from the <a href="#vm-actions-web"><strong>Actions</strong></a> button on
+the <strong>Virtual Machine Details</strong> screen.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machine</strong> from the side menu.</p>
+</li>
+<li>
+<p>Click the ⋮ button of the virtual machine and select <strong>Stop Virtual
+    Machine</strong>.</p>
+<ol>
+<li>Alternatively, click the virtual machine name to open the
+    <strong>Virtual Machine Details</strong> screen and click <strong>Actions</strong> and
+    select <strong>Stop Virtual Machine</strong>.</li>
+</ol>
+</li>
+<li>
+<p>In the confirmation pop-up window, click <strong>Stop</strong> to stop the
+    virtual machine.</p>
+</li>
+</ol>
+<h3 id="restarting-a-virtual-machine">Restarting a Virtual Machine<a class="headerlink" href="#restarting-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>A running virtual machine can be <a href="#vm-actions-web">restarted</a> from the ⋮
+button found on each virtual machine in the <strong>Workloads</strong> → <strong>Virtual
+Machines</strong> list, or from the <a href="#vm-actions-web"><strong>Actions</strong></a> button on
+the <strong>Virtual Machine Details</strong> screen.</p>
+<blockquote>
+<p>Important: Do not restart a virtual machine while it has a status of
+<strong>Importing</strong>. This will result in an error for the virtual machine
+and is a <a href="#../cnv_release_notes/cnv_release_notes.adoc#RN_known_issues">known
+issue</a>.</p>
+</blockquote>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machine</strong> from the side menu.</p>
+</li>
+<li>
+<p>Click the ⋮ button of the virtual machine and select <strong>Restart
+    Virtual Machine</strong>.</p>
+<ol>
+<li>Alternatively, click the virtual machine name to open the
+    <strong>Virtual Machine Details</strong> screen, click <strong>Actions</strong>, and
+    select <strong>Restart Virtual Machine</strong>.</li>
+</ol>
+</li>
+<li>
+<p>In the confirmation pop-up window, click <strong>Restart</strong> to restart the
+    virtual machine.</p>
+</li>
+</ol>
+<h3 id="live-migrating-a-virtual-machine">Live Migrating a Virtual Machine<a class="headerlink" href="#live-migrating-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>Virtual machines can be <a href="#vm-actions-web">live migrated</a> to a different
+node from the ⋮ button found on each virtual machine in the
+<strong>Workloads</strong> → <strong>Virtual Machines</strong> list, or from the
+<a href="#vm-actions-web"><strong>Actions</strong></a> button on the <strong>Virtual Machine Details</strong>
+screen.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machine</strong> from the side menu.</p>
+</li>
+<li>
+<p>Click the ⋮ button of the virtual machine and select <strong>Migrate
+    Virtual Machine</strong>.</p>
+<ol>
+<li>Alternatively, click the virtual machine name to open the
+    <strong>Virtual Machine Details</strong> screen and click <strong>Actions</strong> and
+    select <strong>Migrate Virtual Machine</strong>.</li>
+</ol>
+</li>
+<li>
+<p>In the confirmation pop-up window, click <strong>Migrate</strong> to migrate the
+    virtual machine.</p>
+</li>
+</ol>
+<h3 id="cancelling-a-virtual-machine-live-migration">Cancelling a Virtual Machine Live Migration<a class="headerlink" href="#cancelling-a-virtual-machine-live-migration" title="Permanent link">&para;</a></h3>
+<p>A live migration of the virtual machine can be
+<a href="#vm-actions-web">cancelled</a> using the ⋮ button found on each virtual
+machine in the <strong>Workloads</strong> → <strong>Virtual Machines</strong> list, or from the
+<a href="#vm-actions-web"><strong>Actions</strong></a> button on the <strong>Cancel Virtual Machine
+Migration</strong> screen.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machine</strong> from the side menu.</p>
+</li>
+<li>
+<p>Click the ⋮ button of the virtual machine and select <strong>Cancel
+    Virtual Machine Migration</strong>.</p>
+<ol>
+<li>Alternatively, click the virtual machine name to open the
+    <strong>Virtual Machine Details</strong> screen and click <strong>Actions</strong> and
+    select <strong>Cancel Virtual Machine Migration</strong>.</li>
+</ol>
+</li>
+<li>
+<p>In the confirmation pop-up window, click <strong>Cancel Migration</strong> to
+    cancel the virtual machine live migration.</p>
+</li>
+</ol>
+<h2 id="accessing-virtual-machine-consoles">Accessing Virtual Machine Consoles<a class="headerlink" href="#accessing-virtual-machine-consoles" title="Permanent link">&para;</a></h2>
+<h3 id="virtual-machine-console-sessions">Virtual Machine Console Sessions<a class="headerlink" href="#virtual-machine-console-sessions" title="Permanent link">&para;</a></h3>
+<p>You can connect to the VNC, Serial, and RDP consoles of a running
+virtual machine from the <strong>Consoles</strong> tab in the <strong>Virtual Machine
+Details</strong> screen of the web console.</p>
+<p>There are three choices available: the graphical <strong>VNC Console</strong>, the
+<strong>Serial Console</strong>, and <strong>Desktop Viewer</strong> which can be used to connect
+to the <strong>RDP Console</strong> (Windows only). The <strong>VNC Console</strong> opens by
+default whenever you navigate to the <strong>Consoles</strong> tab. You can switch
+between the consoles using the <a href="#vm-vnc-console-web"><strong>VNC
+Console</strong></a>|<a href="#vm-serial-console-web"><strong>Serial
+Console</strong></a>|<a href="#vm-desktop-viewer-web"><strong>Desktop
+Viewer</strong></a> drop-down list.</p>
+<p>Console sessions remain active in the background unless they are
+disconnected. When the <strong>Disconnect before switching</strong> checkbox is
+active and you switch consoles, the current console session is
+disconnected and a new session with the selected console connects to the
+virtual machine. This ensures only one console session is open at a
+time.</p>
+<p><strong>Options for the </strong>VNC Console<strong>.</strong></p>
+<p>The <strong>Send Key</strong> button lists key combinations to send to the virtual
+machine.</p>
+<p><strong>Options for the </strong>Serial Console<strong>.</strong></p>
+<p>Use the <strong>Disconnect</strong> button to manually disconnect the <strong>Serial
+Console</strong> session from the virtual machine.<br />
+Use the <strong>Reconnect</strong> button to manually open a <strong>Serial Console</strong>
+session to the virtual machine.</p>
+<p><strong>Options for the </strong>Desktop Viewer<strong>.</strong></p>
+<p>The <strong>Network Interface</strong> drop-down allows you to choose the network
+interface for the VM to which you want to connect.</p>
+<h3 id="connecting-to-the-serial-console">Connecting to the Serial Console<a class="headerlink" href="#connecting-to-the-serial-console" title="Permanent link">&para;</a></h3>
+<p>Connect to the <strong>Serial Console</strong> of a running virtual machine from the
+<strong>Consoles</strong> tab in the <strong>Virtual Machine Details</strong> screen of the web
+console.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a virtual machine.</p>
+</li>
+<li>
+<p>Click <strong>Consoles</strong>. The VNC console opens by default.</p>
+</li>
+<li>
+<p>Click the <strong>VNC Console</strong> drop-down list and select <strong>Serial
+    Console</strong>.</p>
+</li>
+</ol>
+<h3 id="connecting-to-the-vnc-console">Connecting to the VNC Console<a class="headerlink" href="#connecting-to-the-vnc-console" title="Permanent link">&para;</a></h3>
+<p>Connect to the VNC console of a running virtual machine from the
+<strong>Consoles</strong> tab in the <strong>Virtual Machine Details</strong> screen of the web
+console.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a virtual machine.</p>
+</li>
+<li>
+<p>Click <strong>Consoles</strong>. The VNC console opens by default.</p>
+</li>
+</ol>
+<h3 id="using-desktop-viewer-to-connect-to-rdp-console-windows-only">Using Desktop Viewer to connect to RDP Console (Windows only)<a class="headerlink" href="#using-desktop-viewer-to-connect-to-rdp-console-windows-only" title="Permanent link">&para;</a></h3>
+<p>The Desktop Viewer option can be used to connect to the RDP console of a
+running Windows virtual machine.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a virtual machine.</p>
+</li>
+<li>
+<p>Click <strong>Consoles</strong>. The VNC console opens by default.</p>
+</li>
+<li>
+<p>Select <strong>Desktop Viewer</strong> in the drop-down list.</p>
+</li>
+<li>
+<p>Choose the nework interface you want to connect to from the
+    <strong>Network Interface</strong> drop-down.</p>
+<ol>
+<li>
+<p>If the L2 network interface is chosen, you will need to install
+    qemu-guest-agent on the VM.</p>
+</li>
+<li>
+<p>If the pod network interface is chosen, you will need to create
+    a service to expose port 3389 (RDP) on the VM. Follow the
+    on-screen instructions to do so.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Click <strong>Launch Remote Desktop</strong> to download the RDP file, which can
+    then be opened in the RDP client of your choice.</p>
+</li>
+</ol>
+<h2 id="managing-virtual-machine-nics">Managing Virtual Machine NICs<a class="headerlink" href="#managing-virtual-machine-nics" title="Permanent link">&para;</a></h2>
+<h3 id="creating-a-nic-for-a-virtual-machine">Creating a NIC for a Virtual Machine<a class="headerlink" href="#creating-a-nic-for-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>Create and attach additional NICs to a virtual machine from the web
+console.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a virtual machine.</p>
+</li>
+<li>
+<p>Click <strong>Network Interfaces</strong> to display the NICs already attached to
+    the virtual machine.</p>
+</li>
+<li>
+<p>Click <strong>Create NIC</strong> to create a new slot in the list.</p>
+</li>
+<li>
+<p>Fill in the <strong>NAME</strong>, <strong>NETWORK</strong>, <strong>MAC ADDRESS</strong>, and <strong>BINDING
+    METHOD</strong> <a href="#networking-fields">details</a> for the new NIC.</p>
+</li>
+<li>
+<p>Click the ✓ button to save and attach the NIC to the virtual
+    machine.</p>
+</li>
+</ol>
+<h3 id="deleting-a-nic-from-a-virtual-machine">Deleting a NIC from a Virtual Machine<a class="headerlink" href="#deleting-a-nic-from-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>Deleting a NIC from a virtual machine detaches and permanently deletes
+the NIC.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a virtual machine.</p>
+</li>
+<li>
+<p>Click <strong>Network Interfaces</strong> to display the NICs already attached to
+    the virtual machine.</p>
+</li>
+<li>
+<p>Click the ⋮ button of the NIC you wish to delete and select
+    <strong>Delete</strong>.</p>
+</li>
+<li>
+<p>In the confirmation pop-up window, click <strong>Delete</strong> to detach and
+    delete the NIC.</p>
+</li>
+</ol>
+<h2 id="managing-virtual-machine-disks">Managing Virtual Machine Disks<a class="headerlink" href="#managing-virtual-machine-disks" title="Permanent link">&para;</a></h2>
+<h3 id="creating-a-disk-for-a-virtual-machine">Creating a Disk for a Virtual Machine<a class="headerlink" href="#creating-a-disk-for-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>Create and attach additional storage disks to a virtual machine from the
+web console.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a virtual machine.</p>
+</li>
+<li>
+<p>Click <strong>Disks</strong> to display the disks already attached to the virtual
+    machine.</p>
+</li>
+<li>
+<p>Click <strong>Create Disk</strong> to create a new slot in the list.</p>
+</li>
+<li>
+<p>Fill in the <strong>NAME</strong>, <strong>SIZE</strong>, and optional <strong>STORAGE CLASS</strong>
+    <a href="#storage-fields">details</a> for the new disk.</p>
+</li>
+<li>
+<p>Click the ✓ button to save and attach the disk to the virtual
+    machine.</p>
+</li>
+</ol>
+<h3 id="deleting-a-disk-from-a-virtual-machine">Deleting a Disk from a Virtual Machine<a class="headerlink" href="#deleting-a-disk-from-a-virtual-machine" title="Permanent link">&para;</a></h3>
+<p>Deleting a disk from a virtual machine detaches and permanently deletes
+the disk.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machines</strong> from the side menu.</p>
+</li>
+<li>
+<p>Select a virtual machine.</p>
+</li>
+<li>
+<p>Click <strong>Disks</strong> to display the disks already attached to the virtual
+    machine.</p>
+</li>
+<li>
+<p>Click the ⋮ button of the disk you wish to delete and select
+    <strong>Delete</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Confirm</strong> to detach and delete the disk.</p>
+</li>
+</ol>
+<h2 id="virtual-machine-templates-in-the-web-console">Virtual Machine Templates in the Web Console<a class="headerlink" href="#virtual-machine-templates-in-the-web-console" title="Permanent link">&para;</a></h2>
+<h3 id="creating-a-virtual-machine-template-with-the-interactive-wizard">Creating a Virtual Machine Template with the Interactive Wizard<a class="headerlink" href="#creating-a-virtual-machine-template-with-the-interactive-wizard" title="Permanent link">&para;</a></h3>
+<p>Virtual machine templates are an easy way to create multiple virtual
+machines with similar configuration. After a template is created,
+reference the template when <a href="#creating-vm-wizard-web">creating virtual
+machines</a>.</p>
+<p>The web console features an interactive wizard that guides you through
+<a href="#template-wizard-fields-web"><strong>Basic Settings</strong></a>,
+<a href="#networking-fields"><strong>Networking</strong></a>, and
+<a href="#storage-fields"><strong>Storage</strong></a> screens to simplify the
+process of creating virtual machine templates. All required fields are
+marked with a <code>*</code>. The wizard prevents you from moving to the next
+screen until the required fields have been completed.</p>
+<p>NICs and storage disks can be created and attached to virtual machines
+after they have been created.</p>
+<p><strong><em>*Bootable Disk</em>*.</strong></p>
+<p>If either <code>URL</code> or <code>Container</code> are selected as the <strong>Provision Source</strong>
+in the <a href="#template-wizard-fields-web"><strong>Basic Settings</strong></a> screen, a
+<code>rootdisk</code> disk is created and attached to virtual machines as the
+<strong>Bootable Disk</strong>. You can modify the <code>rootdisk</code> but you cannot remove
+it.</p>
+<p>A <strong>Bootable Disk</strong> is not required for virtual machines provisioned
+from a <strong>PXE</strong> source if there are no disks attached to the virtual
+machine. If one or more disks are attached to the virtual machine, you
+must select one as the <strong>Bootable Disk</strong>.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machine Templates</strong> from the side
+    menu.</p>
+</li>
+<li>
+<p>Click <strong>Create Template</strong> and select <strong>Create with Wizard</strong>.</p>
+</li>
+<li>
+<p>Fill in all required <a href="#template-wizard-fields-web"><strong>Basic
+    Settings</strong></a>.</p>
+</li>
+<li>
+<p>Click <strong>Next</strong> to progress to the
+    <a href="#networking-fields"><strong>Networking</strong></a> screen. An <code>nic0</code>
+    NIC is attached by default.</p>
+<ol>
+<li>
+<p>(Optional) Click <strong>Create NIC</strong> to create additional NICs.</p>
+</li>
+<li>
+<p>(Optional) You can remove any or all NICs by clicking the ⋮
+    button and selecting <strong>Remove NIC</strong>. Virtual machines created
+    from a template do not need a NIC attached. NICs can be
+    <a href="#vm-create-nic-web">created</a> after a virtual machine has been
+    created.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Click <strong>Next</strong> to progress to the
+    <a href="#storage-fields"><strong>Storage</strong></a> screen.</p>
+<ol>
+<li>
+<p>(Optional) Click <strong>Create Disk</strong> to create additional disks.
+    These disks can be removed by clicking the ⋮ button and
+    selecting <strong>Remove Disk</strong>.</p>
+</li>
+<li>
+<p>(Optional) Click on a disk to modify available fields. Click the
+    ✓ button to save the update.</p>
+</li>
+<li>
+<p>(Optional) Click <strong>Attach Disk</strong> to choose an available disk
+    from the <strong>Select Storage</strong> drop-down list.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Click <strong>Create Virtual Machine Template &gt;</strong>. The <strong>Results</strong>
+    screen displays the JSON configuration file for the virtual machine
+    template.</p>
+</li>
+</ol>
+<p>The template should now be listed in <strong>Workloads</strong> → <strong>Virtual Machine
+Templates</strong>.</p>
+<h3 id="editing-the-yaml-of-a-virtual-machine-template">Editing the YAML of a Virtual Machine Template<a class="headerlink" href="#editing-the-yaml-of-a-virtual-machine-template" title="Permanent link">&para;</a></h3>
+<p>You can edit the YAML configuration of a virtual machine template
+directly within the web console.</p>
+<p>Not all parameters can be updated. If you edit values that cannot be
+changed and click <strong>Save</strong>, an error message shows, indicating the
+parameter that was not able to be updated.</p>
+<blockquote>
+<p>Note: Navigating away from the YAML screen while editing cancels any
+changes to the configuration you have made.</p>
+</blockquote>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machine Template</strong> from the side
+    menu.</p>
+</li>
+<li>
+<p>Select a template.</p>
+</li>
+<li>
+<p>Click the <strong>YAML</strong> tab to display the editable configuration.</p>
+<ol>
+<li>(Optional) You can click <strong>Download</strong> to download the YAML file
+    to your local machine in its current state.</li>
+</ol>
+</li>
+<li>
+<p>Edit the file and click <strong>Save</strong>.</p>
+</li>
+</ol>
+<p>A confirmation message shows the modification has been successful,
+including the updated version number for the object.</p>
+<h3 id="deleting-a-virtual-machine-template">Deleting a Virtual Machine Template<a class="headerlink" href="#deleting-a-virtual-machine-template" title="Permanent link">&para;</a></h3>
+<p>Deleting a virtual machine template permanently removes it from the
+cluster.</p>
+<p>Delete a virtual machine template using the ⋮ button found on each
+template in the <strong>Workloads</strong> → <strong>Virtual Machines Templates</strong> list, or
+using the <strong>Actions</strong> button of the <strong>Virtual Machine Templates
+Details</strong> screen.</p>
+<ol>
+<li>
+<p>Click <strong>Workloads</strong> → <strong>Virtual Machine Templates</strong> from the side
+    menu.</p>
+</li>
+<li>
+<p>Click the ⋮ button of the template you wish to delete and select
+    <strong>Delete Template</strong>.</p>
+<ol>
+<li>Alternatively, click the template name to open the <strong>Virtual
+    Machine Template Details</strong> screen and click <strong>Actions</strong> →
+    <strong>Delete Template</strong>.</li>
+</ol>
+</li>
+<li>
+<p>In the confirmation pop-up window, click <strong>Delete</strong> to permanently
+    delete the template.</p>
+</li>
+</ol>
+<h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
+<h3 id="virtual-machine-wizard-fields">Virtual Machine Wizard Fields<a class="headerlink" href="#virtual-machine-wizard-fields" title="Permanent link">&para;</a></h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>Name</p></td>
+<td><p>Parameter</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="even">
+<td><p>Name</p></td>
+<td></td>
+<td><p>Name of the virtual machine. Alphanumeric characters only (63 characters max).</p></td>
+</tr>
+<tr class="odd">
+<td><p>Description</p></td>
+<td></td>
+<td><p>Optional description field.</p></td>
+</tr>
+<tr class="even">
+<td><p>Template</p></td>
+<td></td>
+<td><p>Template from which to create the virtual machine. Selecting a template will automatically fill other fields.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Provision Source</p></td>
+<td><p>PXE</p></td>
+<td><p>Provision virtual machine from PXE menu. Requires a <a href="#pxebooting">PXE-capable NIC</a> in the cluster.</p></td>
+</tr>
+<tr class="even">
+<td><p>URL</p></td>
+<td><p>Provision virtual machine from an image available from an <strong>HTTP</strong> or <strong>S3</strong> endpoint.</p></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><p>Container</p></td>
+<td><p>Provision virtual machine from a bootable operating system container located in a registry accessible from the cluster. Example: <code>_kubevirt/cirros-registry-disk-demo_</code></p></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><p>Operating System</p></td>
+<td></td>
+<td><p>A list of operating systems available in the cluster. This is the primary operating system for the virtual machine.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Flavor</p></td>
+<td><p>small, medium, large, tiny, Custom</p></td>
+<td><p>Presets that determine the amount of CPU and memory allocated to the virtual machine.</p></td>
+</tr>
+<tr class="even">
+<td><p>Workload Profile</p></td>
+<td><p>generic</p></td>
+<td><p>A general configuration that balances performance and compatibility for a broad range of workloads.</p></td>
+</tr>
+<tr class="odd">
+<td><p>highperformance</p></td>
+<td><p>The virtual machine has a more efficient configuration optimized for high performance loads.</p></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><p>Start virtual machine on creation</p></td>
+<td></td>
+<td><p>Select this checkbox to automatically start the virtual machine upon creation.</p></td>
+</tr>
+<tr class="odd">
+<td><p>cloud-init</p></td>
+<td></td>
+<td><p>Select this checkbox to enable the <a href="#cloud-init-fields-web">cloud-init fields</a>.</p></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="virtual-machine-template-wizard-fields">Virtual Machine Template Wizard Fields<a class="headerlink" href="#virtual-machine-template-wizard-fields" title="Permanent link">&para;</a></h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>Name</p></td>
+<td><p>Parameter</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="even">
+<td><p>Name</p></td>
+<td></td>
+<td><p>Name of the virtual machine template. Alphanumeric characters only (64 characters max).</p></td>
+</tr>
+<tr class="odd">
+<td><p>Description</p></td>
+<td></td>
+<td><p>Optional description field.</p></td>
+</tr>
+<tr class="even">
+<td><p>Provision Source</p></td>
+<td><p>PXE</p></td>
+<td><p>Provision virtual machines from PXE menu. Requires a <a href="#pxebooting">PXE-capable NIC</a> in the cluster.</p></td>
+</tr>
+<tr class="odd">
+<td><p>URL</p></td>
+<td><p>Provision virtual machines from an image available from a <strong>HTTP</strong> or <strong>S3</strong> endpoint.</p></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><p>Container</p></td>
+<td><p>Provision virtual machines from a bootable operating system container located in a registry accessible from the cluster. Example: <code>_kubevirt/cirros-registry-disk-demo_</code></p></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><p>Operating System</p></td>
+<td></td>
+<td><p>A list of operating systems available in the cluster. This is the primary operating system for the virtual machine.</p></td>
+</tr>
+<tr class="even">
+<td><p>Flavor</p></td>
+<td><p>small, medium, large, tiny, Custom</p></td>
+<td><p>Presets that determine the amount of CPU and memory allocated to the virtual machines.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Workload Profile</p></td>
+<td><p>generic</p></td>
+<td><p>A general configuration that balances performance and compatibility for a broad range of workloads.</p></td>
+</tr>
+<tr class="even">
+<td><p>highperformance</p></td>
+<td><p>Virtual machines have a more efficient configuration optimized for high performance loads.</p></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><p>cloud-init</p></td>
+<td></td>
+<td><p>Select this checkbox to enable the <a href="#cloud-init-fields-web">cloud-init fields</a>.</p></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="cloud-init-fields">Cloud-init Fields<a class="headerlink" href="#cloud-init-fields" title="Permanent link">&para;</a></h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>Name</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="even">
+<td><p>Hostname</p></td>
+<td><p>Sets a specific hostname for the virtual machine.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Authenticated SSH Keys</p></td>
+<td><p>The user’s public key. This will be copied to <strong><em>~/.ssh/authorized_keys</em></strong> on the virtual machine.</p></td>
+</tr>
+<tr class="even">
+<td><p>Use custom script</p></td>
+<td><p>Replaces other options with a textbox into which you can paste a custom cloud-init script.</p></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="networking-fields">Networking Fields<a class="headerlink" href="#networking-fields" title="Permanent link">&para;</a></h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>Name</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="even">
+<td><p>Create NIC</p></td>
+<td><p>Create a new NIC for the virtual machine.</p></td>
+</tr>
+<tr class="odd">
+<td><p>NIC NAME</p></td>
+<td><p>Name for the NIC.</p></td>
+</tr>
+<tr class="even">
+<td><p>MAC ADDRESS</p></td>
+<td><p>MAC address for the network interface. If a MAC address is not specified, an ephemeral address is generated for the session.</p></td>
+</tr>
+<tr class="odd">
+<td><p>NETWORK CONFIGURATION</p></td>
+<td><p>List of available <strong>NetworkAttachmentDefinition</strong> objects.</p></td>
+</tr>
+<tr class="even">
+<td><p>BINDING METHOD</p></td>
+<td><p>List of available <a href="../creating-virtual-machines/interfaces-and-networks.html#frontend">binding methods</a>. For pod networking, the possible values are <code>masquerade</code>, <code>bridge</code>, and <code>sriov</code>. For other networks, the possible values are bridge and sriov.</p></td>
+</tr>
+<tr class="odd">
+<td><p>PXE NIC</p></td>
+<td><p>List of PXE-capable networks. Only visible if <code>PXE</code> has been selected as the <code>Provision Source</code>.</p></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="storage-fields">Storage Fields<a class="headerlink" href="#storage-fields" title="Permanent link">&para;</a></h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>Name</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="even">
+<td><p>Create Disk</p></td>
+<td><p>Create a new disk for the virtual machine.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Attach Disk</p></td>
+<td><p>Select an existing disk, from a list of available PVCs, to attach to the virtual machine.</p></td>
+</tr>
+<tr class="even">
+<td><p>DISK NAME</p></td>
+<td><p>Name of the disk.</p></td>
+</tr>
+<tr class="odd">
+<td><p>SIZE (GB)</p></td>
+<td><p>Size, in GB, of the disk.</p></td>
+</tr>
+<tr class="even">
+<td><p>STORAGE CLASS</p></td>
+<td><p>Name of the underlying <code>StorageClass</code>.</p></td>
+</tr>
+<tr class="odd">
+<td><p>Bootable Disk</p></td>
+<td><p>List of available disks from which the virtual machine will boot. This is locked to <code>rootdisk</code> if the <strong>Provision Source</strong> of the virtual machine is <code>URL</code> or <code>Container</code>.</p></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="virtual-machine-actions">Virtual Machine Actions<a class="headerlink" href="#virtual-machine-actions" title="Permanent link">&para;</a></h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>Action</p></td>
+<td><p>Available in state</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Start Virtual Machine</strong></p></td>
+<td><p><em>Off</em></p></td>
+<td><p>Start the virtual machine.</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Stop Virtual Machine</strong></p></td>
+<td><p><em>Running</em> or <em>Other</em></p></td>
+<td><p>Stop the virtual machine.</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Restart Virtual Machine</strong></p></td>
+<td><p><em>Running</em> or <em>Other</em></p></td>
+<td><p>Restart the running virtual machine.</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Delete Virtual Machine</strong></p></td>
+<td><p><em>All</em></p></td>
+<td><p>Permanently delete the virtual machine from the cluster.</p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Migrate Virtual Machine</strong></p></td>
+<td><p><em>Running</em></p></td>
+<td><p>Live migrates the virtual machine to an another node.</p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Cancel Virtual Machine Migration</strong></p></td>
+<td><p><em>Migrating</em></p></td>
+<td><p>Cancels the migration of the virtual machine.</p></td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="pxe-booting-with-a-specified-mac-address">PXE Booting with a Specified MAC Address<a class="headerlink" href="#pxe-booting-with-a-specified-mac-address" title="Permanent link">&para;</a></h3>
+<p>Network booting allows a computer to boot and load an operating system
+or other program without requiring a locally attached storage device.
+For example, you can use it to choose your desired OS image from a PXE
+server when deploying a new host.</p>
+<ul>
+<li>
+<ul>
+<li>A configured interface that allows PXE booting</li>
+</ul>
+</li>
+<li>
+<p>Configure a PXE network on the cluster:</p>
+<ol>
+<li>
+<p>Create <strong>NetworkAttachmentDefinition</strong> of PXE network
+    <code>pxe-net-conf</code>:</p>
+<pre><code>apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: pxe-net-conf
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "type": "ovs",
+      "bridge": "br1"
+    }'
+</code></pre>
+<blockquote>
+<p>Note: In this example, the virtual machine instance (VMI) will
+be attached through a trunk port to the Open vSwitch bridge
+<code>&lt;br1&gt;</code>.</p>
+</blockquote>
+</li>
+<li>
+<p>Create Open vSwitch bridge <code>&lt;br1&gt;</code> and connect it to interface
+    <code>&lt;eth1&gt;</code>, which is connected to a network that allows for PXE
+    booting:</p>
+<pre><code>$ ovs-vsctl add-br br1
+$ ovs-vsctl add-port br1 eth1
+$ ovs-vsctl show
+8d004495-ea9a-44e1-b00c-3b65648dae5f
+    Bridge br1
+        Port br1
+            Interface br1
+                type: internal
+        Port "eth1"
+            Interface "eth1"
+    ovs_version: "2.8.1"
+</code></pre>
+<blockquote>
+<p>Note: This bridge must be configured on all nodes. If it is
+only available on a subset of nodes, make sure that VMIs have
+<strong>nodeSelector</strong> constraints in place.</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li>
+<p>Edit the virtual machine instance configuration file to include the
+    details of the interface and network.</p>
+<ol>
+<li>
+<p>Specify the network and MAC address if required by the PXE
+    server. A value is assigned automatically if the MAC address is
+    not specified; however, note that at this time, MAC addresses
+    that are assigned automatically are not persistent.</p>
+<p>Ensure that <code>bootOrder</code> is set to <code>1</code> so that the interface
+boots first. In this example, the interface is connected to a
+network called <code>&lt;pxe-net&gt;</code>:</p>
+<pre><code>interfaces:
+- masquerade: {}
+  name: default
+- bridge: {}
+  name: pxe-net
+  macAddress: de:00:00:00:00:de
+  bootOrder: 1
+</code></pre>
+<blockquote>
+<p>Note: Boot order is global for interfaces and disks.</p>
+</blockquote>
+</li>
+<li>
+<p>Assign a boot device number to the disk to ensure proper booting
+    after OS provisioning.</p>
+<p>Set the disk <code>bootOrder</code> value to <code>2</code>:</p>
+<pre><code>devices:
+  disks:
+  - disk:
+      bus: virtio
+    name: containerdisk
+    bootOrder: 2
+</code></pre>
+</li>
+<li>
+<p>Specify that the network is connected to the previously created
+    <strong>NetworkAttachmentDefinition</strong>. In this scenario, <code>&lt;pxe-net&gt;</code>
+    is connected to the <strong>NetworkAttachmentDefinition</strong> called
+    <code>&lt;pxe-net-conf&gt;</code>:</p>
+<pre><code>networks:
+- name: default
+  pod: {}
+- name: pxe-net
+  multus:
+    networkName: pxe-net-conf
+</code></pre>
+</li>
+</ol>
+</li>
+<li>
+<p>Create the virtual machine instance:</p>
+<pre><code>$ oc create -f vmi-pxe-boot.yaml
+virtualmachineinstance.kubevirt.io "vmi-pxe-boot" created
+</code></pre>
+</li>
+<li>
+<p>Wait for the virtual machine instance to run:</p>
+<pre><code>$ oc get vmi vmi-pxe-boot -o yaml | grep -i phase
+  phase: Running
+</code></pre>
+</li>
+<li>
+<p>View the virtual machine instance using VNC:</p>
+<pre><code>$ virtctl vnc vmi-pxe-boot
+</code></pre>
+</li>
+<li>
+<p>Watch the boot screen to verify that the PXE boot is successful.</p>
+</li>
+<li>
+<p>Log in to the VMI:</p>
+<pre><code>$ virtctl console vmi-pxe-boot
+</code></pre>
+</li>
+<li>
+<p>Verify the interfaces and MAC address on the VM, and that the
+    interface connected to the bridge has the specified MAC address. In
+    this case, we used <code>eth1</code> for the PXE boot, without an IP address.
+    The other</p>
+<pre><code>$ ip addr
+...
+3. eth1: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN group default qlen 1000
+   link/ether de:00:00:00:00:de brd ff:ff:ff:ff:ff:ff
+</code></pre>
+</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../appendix/contributing/" class="btn btn-neutral float-right" title="Contributing">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../virtual_machines/dns/" class="btn btn-neutral" title="DNS records"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../virtual_machines/dns/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../appendix/contributing/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

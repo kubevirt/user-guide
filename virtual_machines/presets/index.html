@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://kubevirt.io/docs/virtual_machines/presets/">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Presets - KubeVirt User-Guide</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Presets";
+    var mkdocs_page_input_path = "virtual_machines/presets.md";
+    var mkdocs_page_url = "/docs/virtual_machines/presets/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> KubeVirt User-Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Operations</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/installation/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/updating_and_deletion/">Updating and deletion</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/basic_use/">Basic use</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/api_validation/">API Validation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/virtctl_client_tool/">virtctl Client Tool</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/live_migration/">Live Migration</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/hugepages/">Hugepages support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/component_monitoring/">Component monitoring</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/authorization/">Authorization</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/annotations_and_labels/">Annotations and labels</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/node_assignment/">Node assignment</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/node_maintenance/">Node maintenance</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/node_overcommit/">Node overcommit</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/unresponsive_nodes/">Unresponsive nodes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/virtualmachineinstance_node_eviction/">VirtualMachineInstance Node Eviction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/vmctl/">Vmctl</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/containerized_data_importer/">Containerized Data Importer</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Virtual machines</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machine_instances/">Virtual Machines Instances</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../lifecycle/">Lifecycle</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../run_strategies/">Run Strategies</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Presets</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#create-a-virtualmachineinstancepreset">Create a VirtualMachineInstancePreset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#updating-a-virtualmachineinstancepreset">Updating a VirtualMachineInstancePreset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#overrides">Overrides</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#conflicts">Conflicts</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#matching-multiple-virtualmachineinstances">Matching Multiple VirtualMachineInstances</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#exclusions">Exclusions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_hardware/">Virtual hardware</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dedicated_cpu_resources/">Dedicated CPU resources</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../disks_and_volumes/">Disks and Volumes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../interfaces_and_networks/">Interfaces and Networks</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../windows_wirtio_drivers/">Windows virtio drivers</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../guest_operating_system_information/">Guest Operating System Information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../guest_agent_information/">Guest Agent information</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../graphical_and_console_access/">Graphical and Serial Console Access</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../startup_scripts/">Startup Scripts</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../service_objects/">Service object</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../templates/">Templates</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../replicaset/">VirtualMachineInstanceReplicaSet</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dns/">DNS records</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Appendix</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">KubeVirt User-Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Virtual machines &raquo;</li>
+        
+      
+    
+    <li>Presets</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/presets.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="presets">Presets<a class="headerlink" href="#presets" title="Permanent link">&para;</a></h1>
+<p><code>VirtualMachineInstancePresets</code> are an extension to general
+<code>VirtualMachineInstance</code> configuration behaving much like <code>PodPresets</code>
+from Kubernetes. When a <code>VirtualMachineInstance</code> is created, any
+applicable <code>VirtualMachineInstancePresets</code> will be applied to the
+existing spec for the <code>VirtualMachineInstance</code>. This allows for re-use
+of common settings that should apply to multiple
+<code>VirtualMachineInstances</code>.</p>
+<h2 id="create-a-virtualmachineinstancepreset">Create a VirtualMachineInstancePreset<a class="headerlink" href="#create-a-virtualmachineinstancepreset" title="Permanent link">&para;</a></h2>
+<p>You can describe a <code>VirtualMachineInstancePreset</code> in a YAML file. For
+example, the <code>vmi-preset.yaml</code> file below describes a
+<code>VirtualMachineInstancePreset</code> that requests a <code>VirtualMachineInstance</code>
+be created with a resource request for 64M of RAM.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstancePreset
+metadata:
+  name: small-qemu
+spec:
+  selector:
+    matchLabels:
+      kubevirt.io/size: small
+  domain:
+    resources:
+      requests:
+        memory: 64M
+</code></pre>
+<ul>
+<li>Create a <code>VirtualMachineInstancePreset</code> based on that YAML file:</li>
+</ul>
+<!-- -->
+
+<pre><code>kubectl create -f vmipreset.yaml
+</code></pre>
+<h3 id="required-fields">Required Fields<a class="headerlink" href="#required-fields" title="Permanent link">&para;</a></h3>
+<p>As with most Kubernetes resources, a <code>VirtualMachineInstancePreset</code>
+requires <code>apiVersion</code>, <code>kind</code> and <code>metadata</code> fields.</p>
+<p>Additionally <code>VirtualMachineInstancePresets</code> also need a <code>spec</code> section.
+While not technically required to satisfy syntax, it is strongly
+recommended to include a <code>Selector</code> in the <code>spec</code> section, otherwise a
+<code>VirtualMachineInstancePreset</code> will match all <code>VirtualMachineInstances</code>
+in a namespace.</p>
+<h3 id="virtualmachine-selector">VirtualMachine Selector<a class="headerlink" href="#virtualmachine-selector" title="Permanent link">&para;</a></h3>
+<p>KubeVirt uses Kubernetes <code>Labels</code> and <code>Selectors</code> to determine which
+<code>VirtualMachineInstancePresets</code> apply to a given
+<code>VirtualMachineInstance</code>, similarly to how <code>PodPresets</code> work in
+Kubernetes. If a setting from a <code>VirtualMachineInstancePreset</code> is
+applied to a <code>VirtualMachineInstance</code>, the <code>VirtualMachineInstance</code> will
+be marked with an Annotation upon completion.</p>
+<p>Any domain structure can be listed in the <code>spec</code> of a
+<code>VirtualMachineInstancePreset</code>, e.g. Clock, Features, Memory, CPU, or
+Devices such as network interfaces. All elements of the <code>spec</code> section
+of a <code>VirtualMachineInstancePreset</code> will be applied to the
+<code>VirtualMachineInstance</code>.</p>
+<p>Once a <code>VirtualMachineInstancePreset</code> is successfully applied to a
+<code>VirtualMachineInstance</code>, the <code>VirtualMachineInstance</code> will be marked
+with an annotation to indicate that it was applied. If a conflict occurs
+while a <code>VirtualMachineInstancePreset</code> is being applied, that portion of
+the <code>VirtualMachineInstancePreset</code> will be skipped.</p>
+<p>Any valid <code>Label</code> can be matched against, but it is suggested that a
+general rule of thumb is to use os/shortname, e.g.
+<code>kubevirt.io/os: rhel7</code>.</p>
+<h2 id="updating-a-virtualmachineinstancepreset">Updating a VirtualMachineInstancePreset<a class="headerlink" href="#updating-a-virtualmachineinstancepreset" title="Permanent link">&para;</a></h2>
+<p>If a <code>VirtualMachineInstancePreset</code> is modified, changes will <em>not</em> be
+applied to existing <code>VirtualMachineInstances</code>. This applies to both the
+<code>Selector</code> indicating which <code>VirtualMachineInstances</code> should be matched,
+and also the <code>Domain</code> section which lists the settings that should be
+applied to a <code>VirtualMachine</code>.</p>
+<h2 id="overrides">Overrides<a class="headerlink" href="#overrides" title="Permanent link">&para;</a></h2>
+<p><code>VirtualMachineInstancePresets</code> use a similar conflict resolution
+strategy to Kubernetes <code>PodPresets</code>. If a portion of the domain spec is
+present in both a <code>VirtualMachineInstance</code> and a
+<code>VirtualMachineInstancePreset</code> and both resources have the identical
+information, then creation of the <code>VirtualMachineInstance</code> will continue
+normally. If however there is a difference between the resources, an
+Event will be created indicating which <code>DomainSpec</code> element of which
+<code>VirtualMachineInstancePreset</code> was overridden. For example: If both the
+<code>VirtualMachineInstance</code> and <code>VirtualMachineInstancePreset</code> define a
+<code>CPU</code>, but use a different number of <code>Cores</code>, KubeVirt will note the
+difference.</p>
+<p>If any settings from the <code>VirtualMachineInstancePreset</code> were
+successfully applied, the <code>VirtualMachineInstance</code> will be annotated.</p>
+<p>In the event that there is a difference between the <code>Domains</code> of a
+<code>VirtualMachineInstance</code> and <code>VirtualMachineInstancePreset</code>, KubeVirt
+will create an <code>Event</code>. <code>kubectl get events</code> can be used to show all
+<code>Events</code>. For example:</p>
+<pre><code>$ kubectl get events
+....
+Events:
+  FirstSeen                         LastSeen                        Count From                              SubobjectPath                Reason    Message
+  2m          2m           1         myvmi.1515bbb8d397f258                       VirtualMachineInstance                                     Warning   Conflict                  virtualmachineinstance-preset-controller   Unable to apply VirtualMachineInstancePreset 'example-preset': spec.cpu: &amp;{6} != &amp;{4}
+</code></pre>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<p><code>VirtualMachineInstancePresets</code> are namespaced resources, so should be
+created in the same namespace as the <code>VirtualMachineInstances</code> that will
+use them:</p>
+<p><code>kubectl create -f &lt;preset&gt;.yaml [--namespace &lt;namespace&gt;]</code></p>
+<p>KubeVirt will determine which <code>VirtualMachineInstancePresets</code> apply to a
+Particular <code>VirtualMachineInstance</code> by matching <code>Labels</code>. For example:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstancePreset
+metadata:
+  name: example-preset
+  selector:
+    matchLabels:
+      kubevirt.io/os: win10
+  ...
+</code></pre>
+<p>would match any <code>VirtualMachineInstance</code> in the same namespace with a
+<code>Label</code> of <code>flavor: foo</code>. For example:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+version: v1
+metadata:
+  name: myvmi
+  labels:
+    kubevirt.io/os: win10
+  ...
+</code></pre>
+<h2 id="conflicts">Conflicts<a class="headerlink" href="#conflicts" title="Permanent link">&para;</a></h2>
+<p>When multiple <code>VirtualMachineInstancePresets</code> match a particular
+<code>VirtualMachineInstance</code>, if they specify the same settings within a
+Domain, those settings must match. If two
+<code>VirtualMachineInstancePresets</code> have conflicting settings (e.g. for the
+number of CPU cores requested), an error will occur, and the
+<code>VirtualMachineInstance</code> will enter the <code>Failed</code> state, and a <code>Warning</code>
+event will be emitted explaining which settings of which
+<code>VirtualMachineInstancePresets</code> were problematic.</p>
+<h2 id="matching-multiple-virtualmachineinstances">Matching Multiple <code>VirtualMachineInstances</code><a class="headerlink" href="#matching-multiple-virtualmachineinstances" title="Permanent link">&para;</a></h2>
+<p>The main use case for <code>VirtualMachineInstancePresets</code> is to create
+re-usable settings that can be applied across various machines. Multiple
+methods are available to match the labels of a <code>VirtualMachineInstance</code>
+using selectors.</p>
+<ul>
+<li>
+<p>matchLabels: Each <code>VirtualMachineInstance</code> can use a specific label
+    shared by all</p>
+<p>instances. * matchExpressions: Logical operators for sets can be
+used to match multiple</p>
+<p>labels.</p>
+</li>
+</ul>
+<p>Using matchLabels, the label used in the <code>VirtualMachineInstancePreset</code>
+must match one of the labels of the <code>VirtualMachineInstance</code>:</p>
+<pre><code>selector:
+  matchLabels:
+    kubevirt.io/memory: large
+</code></pre>
+<p>would match</p>
+<pre><code>metadata:
+  labels:
+    kubevirt.io/memory: large
+    kubevirt.io/os: win10
+</code></pre>
+<p>or</p>
+<pre><code>metadata:
+  labels:
+    kubevirt.io/memory: large
+    kubevirt.io/os: fedora27
+</code></pre>
+<p>Using matchExpressions allows for matching multiple labels of
+<code>VirtualMachineInstances</code> without needing to explicity list a label.</p>
+<pre><code>selector:
+  matchExpressions:
+    - {key: kubevirt.io/os, operator: In, values: [fedora27, fedora26]}
+</code></pre>
+<p>would match both:</p>
+<pre><code>metadata:
+  labels:
+    kubevirt.io/os: fedora26
+
+metadata:
+  labels:
+    kubevirt.io/os: fedora27
+</code></pre>
+<p>The Kubernetes
+<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">documentation</a>
+has a detailed explanation. Examples are provided below.</p>
+<h2 id="exclusions">Exclusions<a class="headerlink" href="#exclusions" title="Permanent link">&para;</a></h2>
+<p>Since <code>VirtualMachineInstancePresets</code> use <code>Selectors</code> that indicate
+which <code>VirtualMachineInstances</code> their settings should apply to, there
+needs to exist a mechanism by which <code>VirtualMachineInstances</code> can opt
+out of <code>VirtualMachineInstancePresets</code> altogether. This is done using an
+annotation:</p>
+<pre><code>kind: VirtualMachineInstance
+version: v1
+metadata:
+  name: myvmi
+  annotations:
+    virtualmachineinstancepresets.admission.kubevirt.io/exclude: "true"
+  ...
+</code></pre>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<h3 id="simple-virtualmachineinstancepreset-example">Simple <code>VirtualMachineInstancePreset</code> Example<a class="headerlink" href="#simple-virtualmachineinstancepreset-example" title="Permanent link">&para;</a></h3>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstancePreset
+version: v1alpha3
+metadata:
+  name: example-preset
+spec:
+  selector:
+    matchLabels:
+      kubevirt.io/os: win10
+  domain:
+    features:
+      acpi: {}
+      apic: {}
+      hyperv:
+        relaxed: {}
+        vapic: {}
+        spinlocks:
+          spinlocks: 8191
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+version: v1
+metadata:
+  name: myvmi
+  labels:
+    kubevirt.io/os: win10
+spec:
+  domain:
+    firmware:
+      uuid: c8f99fc8-20f5-46c4-85e5-2b841c547cef
+</code></pre>
+<p>Once the <code>VirtualMachineInstancePreset</code> is applied to the
+<code>VirtualMachineInstance</code>, the resulting resource would look like this:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  annotations:
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+    virtualmachineinstancepreset.kubevirt.io/example-preset: kubevirt.io/v1alpha3
+  labels:
+    kubevirt.io/os: win10
+    kubevirt.io/nodeName: master
+  name: myvmi
+  namespace: default
+spec:
+  domain:
+    devices: {}
+    features:
+      acpi:
+        enabled: true
+      apic:
+        enabled: true
+      hyperv:
+        relaxed:
+          enabled: true
+        spinlocks:
+          enabled: true
+          spinlocks: 8191
+        vapic:
+          enabled: true
+    firmware:
+      uuid: c8f99fc8-20f5-46c4-85e5-2b841c547cef
+    machine:
+      type: q35
+    resources:
+      requests:
+        memory: 8Mi
+</code></pre>
+<h3 id="conflict-example">Conflict Example<a class="headerlink" href="#conflict-example" title="Permanent link">&para;</a></h3>
+<p>This is an example of a merge conflict. In this case both the
+<code>VirtualMachineInstance</code> and <code>VirtualMachineInstancePreset</code> request
+different number of CPU’s.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstancePreset
+version: v1alpha3
+metadata:
+  name: example-preset
+spec:
+  selector:
+    matchLabels:
+      kubevirt.io/flavor: default-features
+  domain:
+    cpu:
+      cores: 4
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+version: v1
+metadata:
+  name: myvmi
+  labels:
+    kubevirt.io/flavor: default-features
+spec:
+  domain:
+    cpu:
+      cores: 6
+</code></pre>
+<p>In this case the <code>VirtualMachineInstance</code> Spec will remain unmodified.
+Use <code>kubectl get events</code> to show events.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  annotations:
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+  generation: 0
+  labels:
+    kubevirt.io/flavor: default-features
+  name: myvmi
+  namespace: default
+spec:
+  domain:
+    cpu:
+      cores: 6
+    devices: {}
+    machine:
+      type: ""
+    resources: {}
+status: {}
+</code></pre>
+<p>Calling ‘kubectl get events` would have a line like: 2m 2m 1
+myvmi.1515bbb8d397f258 VirtualMachineInstance Warning Conflict
+virtualmachineinstance-preset-controller Unable to apply
+VirtualMachineInstancePreset `example-preset’: spec.cpu: &amp;{6} != &amp;{4}</p>
+<h3 id="matching-multiple-virtualmachineinstances-using-matchlabels">Matching Multiple VirtualMachineInstances Using MatchLabels<a class="headerlink" href="#matching-multiple-virtualmachineinstances-using-matchlabels" title="Permanent link">&para;</a></h3>
+<p>These <code>VirtualMachineInstances</code> have multiple labels, one that is unique
+and one that is shared.</p>
+<p>Note: This example breaks from the convention of using os-shortname as a
+<code>Label</code> for demonstration purposes.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstancePreset
+metadata:
+  name: twelve-cores
+spec:
+  selector:
+    matchLabels:
+      kubevirt.io/cpu: dodecacore
+  domain:
+    cpu:
+      cores: 12
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: windows-10
+  labels:
+    kubevirt.io/os: win10
+    kubevirt.io/cpu: dodecacore
+spec:
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: windows-7
+  labels:
+    kubevirt.io/os: win7
+    kubevirt.io/cpu: dodecacore
+spec:
+  terminationGracePeriodSeconds: 0
+</code></pre>
+<p>Adding this <code>VirtualMachineInstancePreset</code> and these
+<code>VirtualMachineInstances</code> will result in:</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  annotations:
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+    virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha3
+  labels:
+    kubevirt.io/cpu: dodecacore
+    kubevirt.io/os: win10
+  name: windows-10
+spec:
+  domain:
+    cpu:
+      cores: 12
+    devices: {}
+    resources:
+      requests:
+        memory: 4Gi
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  annotations:
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+    virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha3
+  labels:
+    kubevirt.io/cpu: dodecacore
+    kubevirt.io/os: win7
+  name: windows-7
+spec:
+  domain:
+    cpu:
+      cores: 12
+    devices: {}
+    resources:
+      requests:
+        memory: 4Gi
+  terminationGracePeriodSeconds: 0
+</code></pre>
+<h3 id="matching-multiple-virtualmachineinstances-using-matchexpressions">Matching Multiple VirtualMachineInstances Using MatchExpressions<a class="headerlink" href="#matching-multiple-virtualmachineinstances-using-matchexpressions" title="Permanent link">&para;</a></h3>
+<p>This <code>VirtualMachineInstancePreset</code> has a matchExpression that will
+match two labels: <code>kubevirt.io/os: win10</code> and <code>kubevirt.io/os: win7</code>.</p>
+<pre><code>apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstancePreset
+metadata:
+  name: windows-vmis
+spec:
+  selector:
+    matchExpressions:
+      - {key: kubevirt.io/os, operator: In, values: [win10, win7]}
+  domain:
+    resources:
+      requests:
+        memory: 128M
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: smallvmi
+  labels:
+    kubevirt.io/os: win10
+spec:
+  terminationGracePeriodSeconds: 60
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: largevmi
+  labels:
+    kubevirt.io/os: win7
+spec:
+  terminationGracePeriodSeconds: 120
+</code></pre>
+<p>Applying the preset to both VM’s will result in:</p>
+<pre><code>apiVersion: v1
+items:
+- apiVersion: kubevirt.io/v1alpha3
+  kind: VirtualMachineInstance
+  metadata:
+    annotations:
+      presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+      virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1alpha3
+    labels:
+      kubevirt.io/os: win7
+    name: largevmi
+  spec:
+    domain:
+      resources:
+        requests:
+          memory: 128M
+    terminationGracePeriodSeconds: 120
+- apiVersion: kubevirt.io/v1alpha3
+  kind: VirtualMachineInstance
+  metadata:
+    annotations:
+      presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+      virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1alpha3
+    labels:
+      kubevirt.io/os: win10
+    name: smallvmi
+  spec:
+    domain:
+      resources:
+        requests:
+          memory: 128M
+    terminationGracePeriodSeconds: 60
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../virtual_hardware/" class="btn btn-neutral float-right" title="Virtual hardware">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../run_strategies/" class="btn btn-neutral" title="Run Strategies"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../run_strategies/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../virtual_hardware/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
