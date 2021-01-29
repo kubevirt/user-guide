@@ -1,5 +1,5 @@
-Configure Liveness and Readiness Probes
-=======================================
+Configure Liveness Probes, Readiness Probes and Watchdogs
+=========================================================
 
 It is possible to configure Liveness and Readiness Probes in a similar
 fashion like it is possible to configure [Liveness and Readiness Probes
@@ -15,6 +15,11 @@ Readiness Probes are an indicator for Services and Endpoints if the
 VirtualMachineInstance is ready to receive traffic from Services. If
 Readiness Probes fail, the VirtualMachineInstance will be removed from
 the Endpoints which back services until the probe recovers.
+
+Watchdogs focus on ensuring that an Operating System is still responsive. They
+complement the probes which are more workload centric. Watchdogs require kernel
+support from the guest and additional tooling like the commonly used `watchdog`
+binary.
 
 Define a HTTP Liveness Probe
 ----------------------------
@@ -192,3 +197,55 @@ IPv4 address.
 
 Since the pod's IP address is not known before creating the VMI, it is not
 possible to pre-provision the probe's host field.
+
+Defining a Watchdog
+-------------------
+
+A watchdog is a more VM centric approach where the responsiveness of the
+Operating System is focused on. One can configure the `i6300esb` watchdog
+device:
+
+```yaml
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-with-watchdog
+  name: vmi-with-watchdog
+spec:
+  domain:
+    devices:
+      watchdog:
+        name: mywatchdog
+        i6300esb:
+          action: "poweroff"
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 512M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - containerDisk:
+      image: quay.io/kubevirt/alpine-container-disk-demo
+    name: containerdisk
+```
+
+The example above configures it with the `poweroff` action. It defines what will
+happen if the OS can't respond anymore. Other possible actions are `reset`
+and `shutdown`. The Apline VM in this example will have the device exposed
+as `/dev/watchdog`. This device can then be used by the `watchdog`
+binary. For example, if root executes this command inside the VM:
+
+```bash
+watchdog -t 2000ms -T 4000ms /dev/watchdog
+```
+
+the watchdog will send a heartbeat every two seconds to `/dev/watchdog` and
+after four seconds without a heartbeat the defined action will be executed. In
+this case a hard `poweroff`.
