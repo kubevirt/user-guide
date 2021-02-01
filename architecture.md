@@ -1,7 +1,7 @@
 VirtualMachine
 ==============
 
-An `VirtualMachine` provides additional management capabilities to a
+A `VirtualMachine` provides additional management capabilities to a
 VirtualMachineInstance inside the cluster. That includes:
 
 -   ABI stability
