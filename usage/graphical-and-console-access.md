@@ -29,6 +29,13 @@ you can access the graphical console using:
 
     $ virtctl vnc --kubeconfig=$KUBECONFIG testvmi
 
+If you need to open only a vnc-proxy without executing the `remote-viewer` command, it can be done using:
+
+    $ virtctl vnc --kubeconfig=$KUBECONFIG --proxy-only testvmi
+
+this would print the port number on your machine where you can manually connect using any of the vnc viewers
+
+
 Debugging console access
 ------------------------
 
