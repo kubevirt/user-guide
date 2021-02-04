@@ -119,7 +119,7 @@ device.
         - name: cloudinitdisk
           cloudInitNoCloud:
             userData: |
-              ssh-authorized-keys:
+              ssh_authorized_keys:
                 - ssh-rsa AAAAB3NzaK8L93bWxnyp test@test.com
 
     END
