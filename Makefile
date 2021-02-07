@@ -112,7 +112,7 @@ check_spelling: | envvar stop
 			if [[ "$${i}" =~ "✗" ]]; then \
 				RETVAL=1; \
 			fi; \
-	  echo "$${i}"; \
+	  echo "$${i}" | sed -e 's/\/srv\//\.\//g'; \
 		done; \
 	else \
 		echo "yaspeller dictionary file does not exist or is invalid json"; \
