@@ -98,18 +98,28 @@ check_links: | envvar stop
 	@echo
 
 
-## Check spelling on site content
+## Check spelling on content
 check_spelling: | envvar stop
 	@echo "${GREEN}Makefile: Check spelling on site content${RESET}"
-	@echo "Dictionary file: ${GIT_REPO_DIR}/project-infra/images/yaspeller/.yaspeller.json"
+	@echo "Dictionary file: https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"
 	${DEBUG}export IFS=$$'\n'; \
-	for i in `${CONTAINER_ENGINE} run -it --rm --name yaspeller -v ./docs:/srv/docs:ro${SELINUX_ENABLED} -v ${GIT_REPO_DIR}/project-infra/images/yaspeller/.yaspeller.json:/srv/.yaspeller.json:ro${SELINUX_ENABLED} -v /dev/null:/srv/Gemfile.lock yaspeller /bin/bash -c 'echo; yaspeller -c /srv/.yaspeller.json --only-errors --ignore-tags iframe,img,code,kbd,object,samp,script,style,var /srv/docs'`; do \
-		if [[ "$${i}" =~ "✗" ]]; then \
-			export RETVAL=1; \
-		fi; \
-		echo "$${i}"; \
-	done; \
-	if [ "$${RETVAL}" ]; then exit 1; fi && echo && echo "Complete!"
+  if [ "`curl https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json -o yaspeller.json -w '%{http_code}\n' -s`" != "200" ]; then \
+		echo "Unable to curl yaspeller dictionary file"; \
+		RETVAL=1; \
+	fi; \
+	if `cat ./yaspeller.json 2>&1 | jq > /dev/null 2>&1`; then \
+		for i in `${CONTAINER_ENGINE} run -it --rm --name yaspeller -v ${PWD}:/srv:ro${SELINUX_ENABLED} -v /dev/null:/srv/Gemfile.lock -v ./yaspeller.json:/srv/yaspeller.json:ro${SELINUX_ENABLED} yaspeller /bin/bash -c 'echo; yaspeller -c /srv/yaspeller.json --only-errors --ignore-tags iframe,img,code,kbd,object,samp,script,style,var /srv'`; do \
+			if [[ "$${i}" =~ "✗" ]]; then \
+				RETVAL=1; \
+			fi; \
+	  echo "$${i}"; \
+		done; \
+	else \
+		echo "yaspeller dictionary file does not exist or is invalid json"; \
+		RETVAL=1; \
+	fi; \
+	rm -rf yaspeller.json > /dev/null 2>&1; \
+	if [ "$${RETVAL}" ]; then exit 1; else echo "Complete!"; fi
 
 
 ## Build image: userguide
