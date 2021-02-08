@@ -101,24 +101,33 @@ check_links: | envvar stop
 ## Check spelling on content
 check_spelling: | envvar stop
 	@echo "${GREEN}Makefile: Check spelling on site content${RESET}"
-	@echo "Dictionary file: https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"
-	${DEBUG}export IFS=$$'\n'; \
-  if [ "`curl https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json -o yaspeller.json -w '%{http_code}\n' -s`" != "200" ]; then \
-		echo "Unable to curl yaspeller dictionary file"; \
-		RETVAL=1; \
+	${DEBUG}if [ ! -e "./yaspeller.json" ]; then \
+		echo "Dictionary file: https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"; \
+	  if [ "`curl https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json -o yaspeller.json -w '%{http_code}\n' -s`" != "200" ]; then \
+			echo "Unable to curl yaspeller dictionary file"; \
+			RETVAL=1; \
+		fi; \
+		REMOTE=1; \
+	else \
+		echo "Using local dictionary file"; \
+	  echo "Dictionary file: yasspeller.json"; \
+		echo "Be sure to add changes to upstream: kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"; \
 	fi; \
+	export IFS=$$'\n'; \
 	if `cat ./yaspeller.json 2>&1 | jq > /dev/null 2>&1`; then \
 		for i in `${CONTAINER_ENGINE} run -it --rm --name yaspeller -v ${PWD}:/srv:ro${SELINUX_ENABLED} -v /dev/null:/srv/Gemfile.lock -v ./yaspeller.json:/srv/yaspeller.json:ro${SELINUX_ENABLED} yaspeller /bin/bash -c 'echo; yaspeller -c /srv/yaspeller.json --only-errors --ignore-tags iframe,img,code,kbd,object,samp,script,style,var /srv'`; do \
 			if [[ "$${i}" =~ "✗" ]]; then \
 				RETVAL=1; \
 			fi; \
-	  echo "$${i}" | sed -e 's/\/srv\//\.\//g'; \
+		echo "$${i}" | sed -e 's/\/srv\//\.\//g'; \
 		done; \
 	else \
 		echo "yaspeller dictionary file does not exist or is invalid json"; \
 		RETVAL=1; \
 	fi; \
-	rm -rf yaspeller.json > /dev/null 2>&1; \
+	if [ "$${REMOTE}" ]; then \
+		rm -rf yaspeller.json > /dev/null 2>&1; \
+	fi; \
 	if [ "$${RETVAL}" ]; then exit 1; else echo "Complete!"; fi
 
 
