@@ -110,7 +110,7 @@ check_spelling: | envvar stop
 		REMOTE=1; \
 	else \
 		echo "Using local dictionary file"; \
-	  echo "Dictionary file: yasspeller.json"; \
+	  echo "Dictionary file: yaspeller.json"; \
 		echo "Be sure to add changes to upstream: kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"; \
 	fi; \
 	export IFS=$$'\n'; \
