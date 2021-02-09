@@ -46,7 +46,7 @@ for more examples.
 ## Affinity and anti-affinity
 
 The `spec.affinity` field allows specifying hard- and soft-affinity for
-VMs. It is possible to write matching rules agains workloads (VMs and
+VMs. It is possible to write matching rules against workloads (VMs and
 Pods) and Nodes. Since VMs are a workload type based on Pods,
 Pod-affinity affects VMs as well.
 

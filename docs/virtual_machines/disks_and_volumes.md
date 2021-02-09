@@ -1,10 +1,6 @@
 # Disks and Volumes
 
-Making persistent storage in the cluster (**volumes**) accessible to VMs
-consists of three parts. First, volumes are specified in `spec.volumes`.
-Second, disks are added to the VM by specifying them in
-`spec.domain.devices.disks`. Finally, a refererence to the specified
-volume is added to the disk specification by name.
+Making persistent storage in the cluster (**volumes**) accessible to VMs consists of three parts. First, volumes are specified in `spec.volumes`. Second, disks are added to the VM by specifying them in `spec.domain.devices.disks`. Finally, a reference to the specified volume is added to the disk specification by name.
 
 ## Disks
 
@@ -533,7 +529,7 @@ Users can inject a VirtualMachineInstance disk into a container image in
 a way that is consumable by the KubeVirt runtime. Disks must be placed
 into the `/disk` directory inside the container. Raw and qcow2 formats
 are supported. Qcow2 is recommended in order to reduce the container
-image’s size. Containerdisks can and should be based on `scratch`. No
+image’s size. `containerdisks` can and should be based on `scratch`. No
 content except the image is required.
 
 > **Note:** Prior to kubevirt 0.20, the containerDisk image needed to
@@ -892,7 +888,7 @@ Libvirt has the ability to use IOThreads for dedicated disk access (for
 supported devices). These are dedicated event loop threads that perform
 block I/O requests and improve scalability on SMP systems. KubeVirt
 exposes this libvirt feature through the `ioThreadsPolicy` setting.
-Additionaly, each `Disk` device exposes a `dedicatedIOThread` setting.
+Additionally, each `Disk` device exposes a `dedicatedIOThread` setting.
 This is a boolean that indicates the specified disk should be allocated
 an exclusive IOThread that will never be shared with other disks.
 
@@ -973,7 +969,7 @@ emulator thread.
           disks:
           - disk:
               bus: virtio
-            name: mydisk
+            name: vmi-shared_disk
           - disk:
               bus: virtio
             name: emptydisk
@@ -1000,9 +996,9 @@ emulator thread.
           requests:
             memory: 64M
       volumes:
-      - name: mydisk
+      - name: vmi-shared_disk
         persistentVolumeClaim:
-          claimName: mypvc
+          claimName: vmi-shared_pvc
       - emptyDisk:
           capacity: 1Gi
         name: emptydisk
@@ -1022,9 +1018,7 @@ emulator thread.
           capacity: 1Gi
         name: emptydisk6
 
-In this example, emptydisk and emptydisk2 both request a dedicated
-IOThread. mydisk, and emptydisk 3 through 6 will all shared one
-IOThread.
+In this example, emptydisk and emptydisk2 both request a dedicated IOThread. vmi-shared_disk, and emptydisk 3 through 6 will all shared one IOThread.
 
     mypvc:        1
     emptydisk:    2

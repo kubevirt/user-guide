@@ -27,7 +27,7 @@ is required.
 
 -   `--delete-local-data` is a required flag that is necessary for
     removing any pod that utilizes an emptyDir volume. The
-    VirtualMachineInstance Pod does use emptryDir volumes, however the
+    VirtualMachineInstance Pod does use emptyDir volumes, however the
     data in those volumes are ephemeral which means it is safe to delete
     after termination.
 
@@ -46,7 +46,7 @@ is required.
     cluster after the pods are evicted. KubeVirt has its own controllers
     which manage the underlying VirtualMachineInstance pods. Each
     controller behaves differently to a VirtualMachineInstance being
-    evicted. That behavior is outlined futher down in this document.
+    evicted. That behavior is outlined further down in this document.
 
 -   `--pod-selector=kubevirt.io=virt-launcher` means only
     VirtualMachineInstance pods managed by KubeVirt will be removed from

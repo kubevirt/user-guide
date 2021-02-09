@@ -616,7 +616,7 @@ unconditionally enabled
     the number of vCPUs, enabling the multiqueue feature is less
     important.
 
--   Each virtio-net queue consumes 64 KB of kernel memory for the vhost
+-   Each virtio-net queue consumes 64 KiB of kernel memory for the vhost
     driver.
 
 *NOTE*: Virtio-net multiqueue should be enabled in the guest OS
@@ -762,7 +762,7 @@ spec:
 > **Note:** Placement on dedicated CPUs can only be achieved if the Kubernetes CPU manager is running on the SR-IOV capable workers.
 > For further details please refer to the [dedicated cpu resources documentation](https://kubevirt.io/user-guide/#/creation/dedicated-cpu).
 
-### macvtap
+### Macvtap
 
 In `macvtap` mode, virtual machines are directly exposed to the Kubernetes
 nodes L2 network. This is achieved by 'extending' an existing network interface
@@ -891,5 +891,5 @@ spec:
 The requested `multus` `networkName` - i.e. `macvtapnetwork` - must match the
 name of the provisioned `NetworkAttachmentDefinition`.
 
-> **Note:** VMIs with Macvtap interfaces can be migrated, but their MAC
+> **Note:** VMIs with macvtap interfaces can be migrated, but their MAC
 > addresses **must** be statically set.

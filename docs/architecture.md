@@ -41,19 +41,19 @@ found in [Run Strategies](creation/run-strategies.md)
 After creating a VirtualMachine it can be switched on or off like this:
 
     # Start the virtual machine:
-    virtctl start myvm
+    virtctl start vm
 
     # Stop the virtual machine:
-    virtctl stop myvm
+    virtctl stop vm
 
 `kubectl` can be used too:
 
     # Start the virtual machine:
-    kubectl patch virtualmachine myvm --type merge -p \
+    kubectl patch virtualmachine vm --type merge -p \
         '{"spec":{"running":true}}'
 
     # Stop the virtual machine:
-    kubectl patch virtualmachine myvm --type merge -p \
+    kubectl patch virtualmachine vm --type merge -p \
         '{"spec":{"running":false}}'
 
 ### Controller status
@@ -75,18 +75,18 @@ VirtualMachineInstance. This will also propagate configuration changes
 from the template in the VirtualMachine:
 
     # Restart the virtual machine (you delete the instance!):
-    kubectl delete virtualmachineinstance myvm
+    kubectl delete virtualmachineinstance vm
 
-To restart a VirtualMachine named myvm using virtctl:
+To restart a VirtualMachine named vm using virtctl:
 
-    $ virtctl restart myvm
+    $ virtctl restart vm
 
 This would perform a normal restart for the VirtualMachineInstance and
 would reschedule the VirtualMachineInstance on a new virt-launcher Pod
 
-To force restart a VirtualMachine named myvm using virtctl:
+To force restart a VirtualMachine named vm using virtctl:
 
-    $ virtctl restart myvm --force --grace-period=0
+    $ virtctl restart vm --force --grace-period=0
 
 This would try to perform a normal restart, and would also delete the
 virt-launcher Pod of the VirtualMachineInstance with setting
@@ -135,7 +135,7 @@ logic, although a stable ABI is needed.
 
 ### When config updates should be picked up on the next restart
 
-If the VirtualMachineInstance configuration should be modifyable inside
+If the VirtualMachineInstance configuration should be modifiable inside
 the cluster and these changes should be picked up on the next
 VirtualMachineInstance restart. This means that no hotplug is involved.
 
@@ -280,32 +280,32 @@ demonstrating how to do it.
 
 ```
     # Define a virtual machine:
-    kubectl create -f myvm.yaml
+    kubectl create -f vm.yaml
 
     # Start the virtual machine:
-    kubectl patch virtualmachine myvm --type merge -p \
+    kubectl patch virtualmachine vm --type merge -p \
         '{"spec":{"running":true}}'
 
     # Look at virtual machine status and associated events:
-    kubectl describe virtualmachine myvm
+    kubectl describe virtualmachine vm
 
     # Look at the now created virtual machine instance status and associated events:
-    kubectl describe virtualmachineinstance myvm
+    kubectl describe virtualmachineinstance vm
 
     # Stop the virtual machine instance:
-    kubectl patch virtualmachine myvm --type merge -p \
+    kubectl patch virtualmachine vm --type merge -p \
         '{"spec":{"running":false}}'
 
     # Restart the virtual machine (you delete the instance!):
-    kubectl delete virtualmachineinstance myvm
+    kubectl delete virtualmachineinstance vm
 
     # Implicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
-    kubectl delete virtualmachine myvm
+    kubectl delete virtualmachine vm
 
     # Explicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
-    kubectl delete virtualmachine myvm --cascade=true
+    kubectl delete virtualmachine vm --cascade=true
 
     # Orphan delete (The running virtual machine is only detached, not deleted)
     # Recreating the virtual machine would lead to the adoption of the virtual machine instance
-    kubectl delete virtualmachine myvm --cascade=false
+    kubectl delete virtualmachine vm --cascade=false
 ```

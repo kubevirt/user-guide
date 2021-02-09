@@ -164,7 +164,7 @@ And the output:
     kind: List
     metadata: {}
 
-You can add add the VM from the template to the cluster in one go
+You can add the VM from the template to the cluster in one go
 
     oc process rhel7-server-tiny PVCNAME=mydisk NAME=rheltinyvm | oc apply -f -
 
@@ -209,7 +209,7 @@ the actual annotations you should use will look like
         defaults.template.kubevirt.io/network: default-network
 
 Unless otherwise specified, all annotations are meant to be safe
-defaults, both for performance and compability, and hints for the
+defaults, both for performance and compatibility, and hints for the
 CNV-aware UI and tooling.
 
 #### disk
@@ -386,14 +386,14 @@ Kubevirt project has [the official UI](https://github.com/kubevirt/web-ui).
 This UI supports creation VM using templates and templates
 features - flavors and workload profiles. To create VM from template, choose
 WorkLoads in the left panel >> press to the "Create Virtual Machine"
-blue button >> choose "Create from Wizzard". Next, you have to see
+blue button >> choose "Create from wizard". Next, you have to see
 "Create Virtual Machine" window
 
 ### Common-templates
 
 There is the [common-templates
 subproject](https://github.com/kubevirt/common-templates/)
-subproject. It provides official prepaired and useful templates.
+subproject. It provides official prepared and useful templates.
 [Additional doc available](templates/common-templates.md).
 You can also create templates by hand. You can find an example below, in
 the "Example template" section.
@@ -546,14 +546,14 @@ virtualmachine.kubevirt.io/testvm patched
 ```
 
 Do not forget about virtctl tool. Using it in the real cases instead of
-using kubernetes API can be more convinient. Example:
+using kubernetes API can be more convenient. Example:
 
 ```
 $ virtctl start testvm
 VM testvm was scheduled to start
 ```
 
-As soon as VM starts, kubernates creates new type of object -
+As soon as VM starts, Kubernetes creates new type of object -
 VirtualMachineInstance. It has similar name to VirtualMachine. Example
 (not full output, it’s too big):
 
@@ -679,4 +679,4 @@ path
 Available in the each OpenShift/Kubevirt compute nodes.
 
 ## Additional information
-You can follow [Virtual Machine LifecycleGuide](usage/life-cycle.md) for further reference.
+You can follow [Virtual Machine Lifecycle Guide](usage/life-cycle.md) for further reference.

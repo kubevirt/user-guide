@@ -55,7 +55,7 @@ how to install KubeVirt using an official release.
     # wait until all KubeVirt components are up
     $ kubectl -n kubevirt wait kv kubevirt --for condition=Available
 
-If hardware virtulization is not available, then a
+If hardware virtualization is not available, then a
 [software emulation fallback](https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md)
 can be enabled using by setting in the KubeVirt CR `spec.configuration.developerConfiguration.useEmulation` to `true` as follows:
 

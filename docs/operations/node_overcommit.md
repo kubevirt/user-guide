@@ -22,7 +22,7 @@ but also disable VNC access.
 
 Before you continue, make sure you make yourself comfortable with the
 [Out of Resource
-Managment](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/)
+Management](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/)
 of Kubernetes.
 
 Every VirtualMachineInstance requests slightly more memory from
@@ -205,5 +205,5 @@ Enabling swap is in general [not
 recommended](https://github.com/kubernetes/kubernetes/issues/53533) on
 Kubernetes right now. However, it can be useful in combination with KSM,
 since KSM merges identical pages over time. Swap allows the VMIs to
-successfuly allocate memory which will then effectively never be used
+successfully allocate memory which will then effectively never be used
 because of the later de-duplication done by KSM.

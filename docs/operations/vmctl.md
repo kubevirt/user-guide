@@ -75,7 +75,7 @@ inadvisable to use a 0 length grace period for shutting down the pod.
 
 ## Services
 
-One note worth stressing is that from Kubernete’s perspective the vmctl
+One note worth stressing is that from Kubernetes's perspective the vmctl
 Pod is entirely distinct from the VM it spawns. It is especially
 important to be mindful of this when creating services. From an end
 user’s perspective, there’s nothing useful running on the vmctl Pod

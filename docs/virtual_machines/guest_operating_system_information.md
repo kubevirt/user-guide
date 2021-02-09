@@ -44,7 +44,7 @@ are currently supported:
 
 A VirtualMachineInstancePreset representing an operating system with a
 `kubevirt.io/os` label could be applied on any given
-VirtualMachineInstance that have and match the\`kubevirt.io/os\` label.
+VirtualMachineInstance that have and match the `kubevirt.io/os` label.
 
 Default presets for the OS identifiers above are included in the current
 release.

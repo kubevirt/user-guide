@@ -16,7 +16,7 @@ and contain a port-definition which is called `metrics`. In the KubeVirt
 release-manifests, the default `metrics` port is `8443`.
 
 The above labels and port informations are collected by a `Service`
-called `kubevirt-prometheus-metrics`. Kuberentes automatically creates a
+called `kubevirt-prometheus-metrics`. Kubernetes automatically creates a
 corresponding `Endpoint` with an equal name:
 
     $ kubectl get endpoints -n kubevirt kubevirt-prometheus-metrics -o yaml

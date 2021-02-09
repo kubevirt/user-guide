@@ -6,10 +6,10 @@ Released on: Mon Nov 9 13:08:27 2020 +0000
 
 - [PR #4409][vladikr] Increase the static memory overhead by 10Mi
 - [PR #4272][maiqueb] Add `ip-family` to the `virtctl expose` command.
-- [PR #4398][rmohr] VMIs reflect deleted stuck virt-launcher pods with the "PodTerminating" Reason in the ready condition. The VMIRS detects this reason and immediately creates replacement VMIs.
+- [PR #4398][rmohr] VMIs reflect deleted stuck virt-launcher pods with the "PodTerminating" reason in the ready condition. The VMIRs detects this reason and immediately creates replacement VMIs.
 - [PR #4393][salanki] Disable legacy service links in `virt-launcher` Pods to speed up Pod instantiation and decrease Kubelet load in namespaces with many services.
-- [PR #2935][maiqueb] Add the macvtap BindMechanism.
-- [PR #4132][mstarostik] fixes a bug that prevented unique device name allocation when configuring both scsi and sata drives
+- [PR #2935][maiqueb] Add the macvtap bind mechanism.
+- [PR #4132][mstarostik] fixes a bug that prevented unique device name allocation when configuring both SCSI and SATA drives
 - [PR #3257][xpivarc] Added support of `kubectl explain` for Kubevirt resources.
 - [PR #4288][ezrasilvera] Adding DownwardAPI volumes type
 - [PR #4233][maya-r] Update base image used for pods to Fedora 31.
@@ -27,7 +27,7 @@ Released on: Wed Oct 7 13:59:50 2020 +0300
 
 - [PR #4315][kubevirt-bot] PVCs populated by DVs are now allowed as volumes.
 - [PR #3837][jean-edouard] VM interfaces with no `bootOrder` will no longer be candidates for boot when using the BIOS bootloader, as documented
-- [PR #3879][ashleyschuett] KubeVirt should now be configured through the KubeVirt CR `configuration` key. The usage of the kubevirt-confg ConfigMap will be deprecated in the future.
+- [PR #3879][ashleyschuett] KubeVirt should now be configured through the KubeVirt CR `configuration` key. The usage of the kubevirt-config configMap will be deprecated in the future.
 - [PR #4074][stu-gott] Fixed bug preventing non-admin users from pausing/unpausing VMs
 - [PR #4252][rhrazdil] Fixes https://bugzilla.redhat.com/show_bug.cgi?id=1853911
 - [PR #4016][ashleyschuett] Allow for post copy VMI migrations
@@ -40,14 +40,14 @@ Released on: Wed Oct 7 13:59:50 2020 +0300
 - [PR #4177][maiqueb] Use vishvananda/netlink instead of songgao/water to create tap devices.
 - [PR #4092][stu-gott] Allow specifying nodeSelectors, affinity and tolerations to control where KubeVirt components will run
 - [PR #3927][ArthurSens] Adds new metric kubevirt_vmi_memory_unused_bytes
-- [PR #3493][vladikr] virtIO-FS is being added as experimental, protected by a feature-gate that needs to be enabled in the kubevirt config by the administrator
+- [PR #3493][vladikr] virtio-fs is being added as experimental, protected by a feature-gate that needs to be enabled in the kubevirt config by the administrator
 - [PR #4193][mhenriks] Add snapshot.kubevirt.io to admin/edit/view roles
 - [PR #4149][qinqon] Bump kubevirtci to k8s-1.19
 - [PR #3471][crobinso] Allow hiding that the VM is running on KVM, so that Nvidia graphics cards can be passed through
 - [PR #4115][phoracek] Add conformance automation and manifest publishing
 - [PR #3733][davidvossel] each PRs description.
 - [PR #4082][mhenriks] VirtualMachineRestore API and implementation
-- [PR #4154][davidvossel] Fixes issue with Serivce endpoints not being updated properly in place during KubeVirt updates.
+- [PR #4154][davidvossel] Fixes issue with Service endpoints not being updated properly in place during KubeVirt updates.
 - [PR #3289][vatsalparekh] Add option to run only VNC Proxy in virtctl
 - [PR #4027][alicefr] Added memfd as default memory backend for hugepages. This introduces the new annotation kubevirt.io/memfd to disable memfd as default and fallback to the previous behavior.
 - [PR #3612][ashleyschuett] Adds `customizeComponents` to the kubevirt api
@@ -80,7 +80,7 @@ Released on: Tue Sep 15 14:46:00 2020 +0000
 Released on: Tue Aug 11 19:21:56 2020 +0000
 
 - [PR #3921][vladikr] use correct memory units in libvirt xml
-- [PR #3893][davidvossel] Adds recurring period that resyncs virt-launcher domains with virt-handler
+- [PR #3893][davidvossel] Adds recurring period that rsyncs virt-launcher domains with virt-handler
 - [PR #3880][sgarbour] Better error message when input parameters are not the expected number of parameters for each argument. Help menu will popup in case the number of parameters is incorrect.
 - [PR #3785][xpivarc] Vcpu wait metrics available
 - [PR #3642][vatsalparekh] Add a way to update VMI Status with latest Pod IP for Masquerade bindings
@@ -107,7 +107,7 @@ Released on: Thu Jul 9 16:08:18 2020 +0300
 - [PR 3641][vatsalparekh] Reverts kubevirt/kubevirt#3488 because CI seems to have merged it without all tests passing
 - [PR 3488][vatsalparekh] Add a way to update VMI Status with latest Pod IP for Masquerade bindings
 - [PR 3406][tomob] If a PVC was created by a DataVolume, it cannot be used as a Volume Source for a VM. The owning DataVolume has to be used instead.
-- [PR 3566][kraxel] added: tigervnc support for linux & windows
+- [PR 3566][kraxel] added: TigerVNC support for linux & windows
 - [PR 3529][jean-edouard] Enabling EFI will also enable Secure Boot, which requires SMM to be enabled.
 - [PR 3455][ashleyschuett] Add KubevirtConfiguration, MigrationConfiguration, DeveloperConfiguration and NetworkConfiguration to API-types
 - [PR 3520][rmohr] Fix hot-looping on the  VMI sync-condition if errors happen during the Scheduled phase of a VMI
@@ -137,7 +137,7 @@ Released on: Wed May 6 15:01:57 2020 +0200
 - CI: Drop PPC64 support for now
 - Drop Genie support
 - Drop the use of hostPaths in the virt-launcher for improved security
-- Support priority classes for important componenets
+- Support priority classes for important components
 - Support IPv6 over masquerade binding
 - Support certificate rotations based on shared secrets
 - Support for VM ready condition
@@ -154,7 +154,7 @@ Released on: Thu Apr 9 23:01:29 2020 +0200
 - Fix loading of tun module during virt-handler initialization
 - Fixes for several test cases
 - Fixes to support running with container_t
-- Support for renaming a vM
+- Support for renaming a VM
 - Support ioEmulator thread pinning
 - Support a couple of alerts for virt-handler
 - Support for filesystem listing using the guest agent
@@ -175,9 +175,9 @@ Released on: Fri Mar 6 22:40:34 2020 +0100
 - Support setting a custom SELinux type for the launcher
 - Support to perform network configurations from handler instead of launcher
 - Support to opt-out of auto attaching the serial console
-- Support for different uninstallStaretgies for data protection
+- Support for different uninstall strategies for data protection
 - Fix to let qemu run in the qemu group
-- Fix guest agen connectivity check after i.e. live migrations
+- Fix guest agent connectivity check after i.e. live migrations
 
 ## v0.26.0
 
@@ -223,7 +223,7 @@ Released on: Mon Nov 4 16:42:54 2019 +0100
 - Updated to Go 1.12.8 and latest bazel
 - Updated go-yaml to v2.2.4, which has a ddos vulnerability fixed
 - Cleaned up and fixed CRD scheme registration
-- Several bugfixes
+- Several bug fixes
 - Many CI improvements (e.g. more logs in case of test failures)
 
 ## v0.22.0
@@ -236,7 +236,7 @@ Released on: Thu Oct 10 18:55:08 2019 +0200
 - Some changes as result of entering the CNCF sandbox (DCO check, FOSSA check, best practice badge)
 - Many bug fixes and improvements in several areas
 - CI: Introduced a OKD 4 test lane
-- CI: Many improved tests, resulting in less flakyness
+- CI: Many improved tests resulting in less flakiness
 
 ## v0.21.0
 
@@ -246,7 +246,7 @@ Released on: Mon Sep 9 09:59:08 2019 +0200
 - Many bug fixes in several areas
 - Support for `virtctl migrate`
 - Support configurable number of controller threads
-- Support to opt-out of bridge binding for podnetwork
+- Support to opt-out of bridge binding for podNetwork
 - Support for OpenShift Prometheus monitoring
 - Support for setting more SMBIOS fields
 - Improved containerDisk memory usage and speed
@@ -258,20 +258,20 @@ Released on: Mon Sep 9 09:59:08 2019 +0200
 
 Released on: Fri Aug 9 16:42:41 2019 +0200
 
-- Containerdisks are now secure and they are not copied anymore on every start.
-Old containerdisks can still be used in the same secure way, but new
-containerdisks can't be used on older kubevirt releases
+- containerDisks are now secure and they are not copied anymore on every start.
+Old containerDisks can still be used in the same secure way, but new
+containerDisks can't be used on older kubevirt releases
 - Create specific SecurityContextConstraints on OKD instead of using the
 privileged SCC
 - Added clone authorization check for DataVolumes with PVC source
 - The sidecar feature is feature-gated now
-- Use container image shasums instead of tags for KubeVirt deployments
+- Use container image shasum's instead of tags for KubeVirt deployments
 - Protect control plane components against voluntary evictions with a
 PodDisruptionBudget of MinAvailable=1
 - Replaced hardcoded `virtctl` by using the basename of the call, this enables
 nicer output when installed via krew plugin package manager
 - Added RNG device to all Fedora VMs in tests and examples (newer kernels might
-block bootimg while waiting for entropy)
+block boot img while waiting for entropy)
 - The virtual memory is now set to match the memory limit, if memory limit is
 specified and guest memory is not
 - Support nftable for CoreOS
@@ -297,15 +297,15 @@ Released on: Fri Jul 5 12:52:16 2019 +0200
 - Fixes for sub-resource RBAC
 - Limit pod network interface bindings
 - Many additional bug fixes in many areas
-- Additional testcases for updates, disk types, live migration with NFS
-- Additional testcases for memory over-commit, block storage, cpu manager,
+- Additional test cases for updates, disk types, live migration with NFS
+- Additional test cases for memory over-commit, block storage, cpu manager,
 headless mode
 - Improvements around HyperV
-- Improved error handling for runStartegies
+- Improved error handling for runStrategies
 - Improved update procedure
 - Improved network metrics reporting (packets and errors)
 - Improved guest overhead calculation
-- Improved SR-IOV testsuite
+- Improved SR-IOV test suite
 - Support for live migration auto-converge
 - Support for config-drive disks
 - Support for setting a pullPolicy con containerDisks
@@ -318,7 +318,7 @@ Released on: Wed Jun 5 22:25:09 2019 +0200
 
 - Build: Use of go modules
 - CI: Support for Kubernetes 1.13
-- Countless testcase fixes and additions
+- Countless test cases fixes and additions
 - Several smaller bug fixes
 - Improved upgrade documentation
 
@@ -326,7 +326,7 @@ Released on: Wed Jun 5 22:25:09 2019 +0200
 
 Released on: Mon May 6 16:18:01 2019 +0200
 
-- Several testcase additions
+- Several test case additions
 - Improved virt-controller node distribution
 - Improved support between version migrations
 - Support for a configurable MachineType default
@@ -363,7 +363,7 @@ Released on: Tue Mar 5 10:35:08 2019 +0100
 - Support for EFI boot
 - Support for libvirt 5.0
 - Support for extra DHCP options
-- Support for a hook to manipualte cloud-init metadata
+- Support for a hook to manipulate cloud-init metadata
 - Support setting a VM serial number
 - Support for exposing infra and VM metrics
 - Support for a tablet input device
@@ -400,7 +400,7 @@ Released on: Fri Jan 11 22:22:02 2019 +0100
 - Introduce dedicated kubevirt namespace
 - Support VMI ready conditions
 - Support vCPU threads and sockets
-- Support scale and HPA for VMIRS
+- Support scale and HPA for VMIRs
 - Support to pass NTP related DHCP options
 - Support guest IP address reporting via qemu guest agent
 - Support for live migration with shared storage
@@ -411,7 +411,7 @@ Released on: Fri Jan 11 22:22:02 2019 +0100
 
 Released on: Thu Dec 6 10:15:51 2018 +0100
 
-- API: registryDisk got renamed to containreDisk
+- API: registryDisk got renamed to containerDisk
 - CI: User OKD 3.11
 - Fix: Tolerate if the PVC has less capacity than expected
 - Aligned to use ownerReferences
@@ -439,7 +439,7 @@ Released on: Thu Nov 8 15:21:34 2018 +0100
 - Support for pinned IO threads
 - Support for virtio net multi-queue
 - Support for image upload (depending on CDI)
-- Support for custom entity lists with more VM details (cusomt columns)
+- Support for custom entity lists with more VM details (custom columns)
 - Support for IP and MAC address reporting of all vNICs
 - Basic support for guest agent status reporting
 - More structured logging
@@ -468,7 +468,7 @@ Released on: Thu Oct 4 14:42:28 2018 +0200
 Released on: Thu Sep 6 14:25:22 2018 +0200
 
 - Support for DataVolume
-- Support for a subprotocol for webbrowser terminals
+- Support for a subprotocol for web browser terminals
 - Support for virtio-rng
 - Support disconnected VMs
 - Support for setting host model
@@ -501,11 +501,11 @@ Released on: Wed Jul 4 17:41:33 2018 +0200
 - Add hugepage support
 - Add device-plugin based kvm
 - Add support for setting the network interface model
-- Add (basic and inital) Kubernetes compatible networking approach (SLIRP)
+- Add (basic and initial) Kubernetes compatible networking approach (SLIRP)
 - Add role aggregation for our roles
 - Add support for setting a disks serial number
-- Add support for specyfing the CPU model
-- Add support for setting an network intefraces MAC address
+- Add support for specifying the CPU model
+- Add support for setting an network interfaces MAC address
 - Relocate binaries for FHS conformance
 - Logging improvements
 - Template fixes
@@ -518,8 +518,8 @@ Released on: Wed Jul 4 17:41:33 2018 +0200
 
 Released on: Mon Jun 11 09:30:28 2018 +0200
 
-- A range of flakyness reducing test fixes
-- Vagrant setup got deprectated
+- A range of flakiness reducing test fixes
+- Vagrant setup got deprecated
 - Updated Docker and CentOS versions
 - Add Kubernetes 1.10.3 to test matrix
 - A couple of ginkgo concurrency fixes
@@ -528,7 +528,7 @@ Released on: Mon Jun 11 09:30:28 2018 +0200
 - Use /dev/kvm if possible, otherwise fallback to emulation
 - Add default view/edit/admin RBAC Roles
 - Network MTU fixes
-- CDRom drives are now read-only
+- CD-ROM drives are now read-only
 - Secrets can now be correctly referenced on VMs
 - Add disk boot ordering
 - Add virtctl version
@@ -559,7 +559,7 @@ Released on: Fri Apr 6 16:40:31 2018 +0200
 - Add and enable OpenShift support to CI
 - Add conditional Windows tests (if an image is present)
 - Add subresources for console access
-- virtctl config alignmnet with kubectl
+- virtctl config alignment with kubectl
 - Fix API reference generation
 - Stable UUIDs for OfflineVirtualMachines
 - Build virtctl for MacOS and Windows
@@ -576,7 +576,7 @@ Released on: Thu Mar 8 10:21:57 2018 +0100
 - VirtualMachinePresets support
 - OfflineVirtualMachine support
 - RBAC improvements
-- Switch to q35 machien type by default
+- Switch to q35 machine type by default
 - A large number of test and CI fixes
 - Ephemeral disk support
 
@@ -600,5 +600,5 @@ Released on: Fri Dec 8 20:43:06 2017 +0100
   - Dropped nodeSelectors
   - Separated inner component deployment from edge component deployment
   - Created separate manifests for developer, test, and release deployments
-- Moved komponents to kube-system namespace
+- Moved components to kube-system namespace
 - Improved and unified flag parsing

@@ -38,7 +38,7 @@ Other virtio drivers, that exists and might be supported in the future:
 -   vioserial, the paravirtual serial driver, applies to PCI Simple
     Communications Controller in the Other devices group.
 
--   viocsci, the SCSI block driver, applies to SCSI Controller in the
+-   vioscsi, the SCSI block driver, applies to SCSI Controller in the
     Other devices group.
 
 -   qemupciserial, the emulated PCI serial driver, applies to PCI Serial
@@ -55,7 +55,7 @@ Other virtio drivers, that exists and might be supported in the future:
 > Some drivers are required in the installation phase. When you are
 > installing Windows onto the virtio block storage you have to provide
 > an appropriate virtio driver. Namely, choose viostor driver for your
-> version of Microsoft Windows, eg does not install XP driver when you
+> version of Microsoft Windows, eg. does not install XP driver when you
 > run Windows 10.
 >
 > Other drivers can be installed after the successful windows

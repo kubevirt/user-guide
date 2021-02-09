@@ -232,7 +232,7 @@ spec:
 
 The example above configures it with the `poweroff` action. It defines what will
 happen if the OS can't respond anymore. Other possible actions are `reset`
-and `shutdown`. The Apline VM in this example will have the device exposed
+and `shutdown`. The Alpine VM in this example will have the device exposed
 as `/dev/watchdog`. This device can then be used by the `watchdog`
 binary. For example, if root executes this command inside the VM:
 
