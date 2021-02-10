@@ -114,6 +114,21 @@ there. In order to do that please follow the documentation in the
 [KubeVirt APB
 repository](https://github.com/ansibleplaybookbundle/kubevirt-apb).
 
+## Installing KubeVirt on k3OS
+
+The following
+[configuration](https://github.com/rancher/k3os#configuration)
+needs to be added to all nodes prior KubeVirt deployment:
+
+```yaml
+k3os:
+  modules:
+  - kvm
+  - vhost_net
+```
+
+Once nodes are restarted with this configuration, the KubeVirt can be deployed as described above.
+
 Installing the Daily Developer Builds
 -------------------------------------
 
