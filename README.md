@@ -1,6 +1,6 @@
 # KubeVirt User-Guide
 
-[![Build Status](https://travis-ci.org/kubevirt/kubevirt.github.io.svg?branch=master)](https://travis-ci.org/kubevirt/kubevirt.github.io)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2430a4f6-4a28-4e60-853d-f0cc395e13bb/deploy-status)](https://app.netlify.com/sites/kubevirt-user-guide/deploys)
 
 ## Contributing contents
 
