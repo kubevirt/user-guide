@@ -19,7 +19,7 @@ features_for() {
 
 gen_changelog() {
   {
-  echo "# Latest release notes"
+  echo "# Release notes"
   for REL in $(releases);
   do
     echo -e "\n## $REL" ;
