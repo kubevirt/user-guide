@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -65,6 +65,8 @@
     <li class="toctree-l2"><a class="reference internal" href="#installing-kubevirt-on-kubernetes">Installing KubeVirt on Kubernetes</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#installing-kubevirt-on-okd">Installing KubeVirt on OKD</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installing-kubevirt-on-k3os">Installing KubeVirt on k3OS</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#installing-the-daily-developer-builds">Installing the Daily Developer Builds</a>
     </li>
@@ -128,6 +130,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/host-devices/">Host Devices Assignment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
@@ -245,7 +249,7 @@ $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELE
 # wait until all KubeVirt components are up
 $ kubectl -n kubevirt wait kv kubevirt --for condition=Available
 </code></pre>
-<p>If hardware virtulization is not available, then a
+<p>If hardware virtualization is not available, then a
 <a href="https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md">software emulation fallback</a>
 can be enabled using by setting in the KubeVirt CR <code>spec.configuration.developerConfiguration.useEmulation</code> to <code>true</code> as follows:</p>
 <pre><code>$ kubectl edit -n kubevirt kubevirt kubevirt
@@ -289,6 +293,16 @@ needs to be added prior KubeVirt deployment:</p>
 there. In order to do that please follow the documentation in the
 <a href="https://github.com/ansibleplaybookbundle/kubevirt-apb">KubeVirt APB
 repository</a>.</p>
+<h2 id="installing-kubevirt-on-k3os">Installing KubeVirt on k3OS<a class="headerlink" href="#installing-kubevirt-on-k3os" title="Permanent link">&para;</a></h2>
+<p>The following
+<a href="https://github.com/rancher/k3os#configuration">configuration</a>
+needs to be added to all nodes prior KubeVirt deployment:</p>
+<pre><code class="language-yaml">k3os:
+  modules:
+  - kvm
+  - vhost_net
+</code></pre>
+<p>Once nodes are restarted with this configuration, the KubeVirt can be deployed as described above.</p>
 <h2 id="installing-the-daily-developer-builds">Installing the Daily Developer Builds<a class="headerlink" href="#installing-the-daily-developer-builds" title="Permanent link">&para;</a></h2>
 <p>KubeVirt releases daily a developer build from current master. One can see
 when the last release happened by looking at our

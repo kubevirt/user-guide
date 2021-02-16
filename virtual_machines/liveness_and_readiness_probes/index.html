@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -113,6 +113,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../host-devices/">Host Devices Assignment</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../guest_operating_system_information/">Guest Operating System Information</a>
@@ -128,6 +130,8 @@
     <li class="toctree-l2"><a class="reference internal" href="#define-readiness-probes">Define Readiness Probes</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#dual-stack-considerations">Dual-stack considerations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#defining-a-watchdog">Defining a Watchdog</a>
     </li>
     </ul>
                     </li>
@@ -205,6 +209,10 @@ hopefully be responsive again.</p>
 VirtualMachineInstance is ready to receive traffic from Services. If
 Readiness Probes fail, the VirtualMachineInstance will be removed from
 the Endpoints which back services until the probe recovers.</p>
+<p>Watchdogs focus on ensuring that an Operating System is still responsive. They
+complement the probes which are more workload centric. Watchdogs require kernel
+support from the guest and additional tooling like the commonly used <code>watchdog</code>
+binary.</p>
 <h2 id="define-a-http-liveness-probe">Define a HTTP Liveness Probe<a class="headerlink" href="#define-a-http-liveness-probe" title="Permanent link">&para;</a></h2>
 <p>The following VirtualMachineInstance configures a HTTP Liveness Probe
 via <code>spec.livenessProbe.httpGet</code>, which will query port 1500 of the
@@ -367,6 +375,49 @@ probe actions default to the pod's IP address, which is currently always the
 IPv4 address.</p>
 <p>Since the pod's IP address is not known before creating the VMI, it is not
 possible to pre-provision the probe's host field.</p>
+<h2 id="defining-a-watchdog">Defining a Watchdog<a class="headerlink" href="#defining-a-watchdog" title="Permanent link">&para;</a></h2>
+<p>A watchdog is a more VM centric approach where the responsiveness of the
+Operating System is focused on. One can configure the <code>i6300esb</code> watchdog
+device:</p>
+<pre><code class="language-yaml">---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-with-watchdog
+  name: vmi-with-watchdog
+spec:
+  domain:
+    devices:
+      watchdog:
+        name: mywatchdog
+        i6300esb:
+          action: &quot;poweroff&quot;
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+    machine:
+      type: &quot;&quot;
+    resources:
+      requests:
+        memory: 512M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - containerDisk:
+      image: quay.io/kubevirt/alpine-container-disk-demo
+    name: containerdisk
+</code></pre>
+<p>The example above configures it with the <code>poweroff</code> action. It defines what will
+happen if the OS can't respond anymore. Other possible actions are <code>reset</code>
+and <code>shutdown</code>. The Alpine VM in this example will have the device exposed
+as <code>/dev/watchdog</code>. This device can then be used by the <code>watchdog</code>
+binary. For example, if root executes this command inside the VM:</p>
+<pre><code class="language-bash">watchdog -t 2000ms -T 4000ms /dev/watchdog
+</code></pre>
+<p>the watchdog will send a heartbeat every two seconds to <code>/dev/watchdog</code> and
+after four seconds without a heartbeat the defined action will be executed. In
+this case a hard <code>poweroff</code>.</p>
               
             </div>
           </div>

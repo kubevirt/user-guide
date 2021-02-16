@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -121,6 +121,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../host-devices/">Host Devices Assignment</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../guest_operating_system_information/">Guest Operating System Information</a>
@@ -191,11 +193,7 @@
             <div class="section">
               
                 <h1 id="disks-and-volumes">Disks and Volumes<a class="headerlink" href="#disks-and-volumes" title="Permanent link">&para;</a></h1>
-<p>Making persistent storage in the cluster (<strong>volumes</strong>) accessible to VMs
-consists of three parts. First, volumes are specified in <code>spec.volumes</code>.
-Second, disks are added to the VM by specifying them in
-<code>spec.domain.devices.disks</code>. Finally, a refererence to the specified
-volume is added to the disk specification by name.</p>
+<p>Making persistent storage in the cluster (<strong>volumes</strong>) accessible to VMs consists of three parts. First, volumes are specified in <code>spec.volumes</code>. Second, disks are added to the VM by specifying them in <code>spec.domain.devices.disks</code>. Finally, a reference to the specified volume is added to the disk specification by name.</p>
 <h2 id="disks">Disks<a class="headerlink" href="#disks" title="Permanent link">&para;</a></h2>
 <p>Like all other vmi devices a <code>spec.domain.devices.disks</code> element has a
 mandatory <code>name</code>, and furthermore, the disk’s <code>name</code> must reference the
@@ -682,7 +680,7 @@ persistent root disks across VM restarts.</p>
 a way that is consumable by the KubeVirt runtime. Disks must be placed
 into the <code>/disk</code> directory inside the container. Raw and qcow2 formats
 are supported. Qcow2 is recommended in order to reduce the container
-image’s size. Containerdisks can and should be based on <code>scratch</code>. No
+image’s size. <code>containerdisks</code> can and should be based on <code>scratch</code>. No
 content except the image is required.</p>
 <blockquote>
 <p><strong>Note:</strong> Prior to kubevirt 0.20, the containerDisk image needed to
@@ -1016,7 +1014,7 @@ spec:
 supported devices). These are dedicated event loop threads that perform
 block I/O requests and improve scalability on SMP systems. KubeVirt
 exposes this libvirt feature through the <code>ioThreadsPolicy</code> setting.
-Additionaly, each <code>Disk</code> device exposes a <code>dedicatedIOThread</code> setting.
+Additionally, each <code>Disk</code> device exposes a <code>dedicatedIOThread</code> setting.
 This is a boolean that indicates the specified disk should be allocated
 an exclusive IOThread that will never be shared with other disks.</p>
 <p>Currently valid policies are <code>shared</code> and <code>auto</code>. If <code>ioThreadsPolicy</code>
@@ -1082,7 +1080,7 @@ spec:
       disks:
       - disk:
           bus: virtio
-        name: mydisk
+        name: vmi-shared_disk
       - disk:
           bus: virtio
         name: emptydisk
@@ -1109,9 +1107,9 @@ spec:
       requests:
         memory: 64M
   volumes:
-  - name: mydisk
+  - name: vmi-shared_disk
     persistentVolumeClaim:
-      claimName: mypvc
+      claimName: vmi-shared_pvc
   - emptyDisk:
       capacity: 1Gi
     name: emptydisk
@@ -1131,9 +1129,7 @@ spec:
       capacity: 1Gi
     name: emptydisk6
 </code></pre>
-<p>In this example, emptydisk and emptydisk2 both request a dedicated
-IOThread. mydisk, and emptydisk 3 through 6 will all shared one
-IOThread.</p>
+<p>In this example, emptydisk and emptydisk2 both request a dedicated IOThread. vmi-shared_disk, and emptydisk 3 through 6 will all shared one IOThread.</p>
 <pre><code>mypvc:        1
 emptydisk:    2
 emptydisk2:   3

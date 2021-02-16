@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -112,6 +112,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../host-devices/">Host Devices Assignment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
@@ -213,6 +215,10 @@ through VNC, which requires <code>remote-viewer</code>. Once the tool is install
 you can access the graphical console using:</p>
 <pre><code>$ virtctl vnc --kubeconfig=$KUBECONFIG testvmi
 </code></pre>
+<p>If you need to open only a vnc-proxy without executing the <code>remote-viewer</code> command, it can be done using:</p>
+<pre><code>$ virtctl vnc --kubeconfig=$KUBECONFIG --proxy-only testvmi
+</code></pre>
+<p>this would print the port number on your machine where you can manually connect using any of the vnc viewers</p>
 <h2 id="debugging-console-access">Debugging console access<a class="headerlink" href="#debugging-console-access" title="Permanent link">&para;</a></h2>
 <p>Should the connection fail, you can use the <code>-v</code> flag to get more output
 from both <code>virtctl</code> and the <code>remote-viewer</code> tool, to troubleshoot the

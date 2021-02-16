@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul class="current">
@@ -120,6 +120,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/host-devices/">Host Devices Assignment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
@@ -225,18 +227,18 @@ found in <a href="creation/run-strategies.md">Run Strategies</a></p>
 <h3 id="starting-and-stopping">Starting and stopping<a class="headerlink" href="#starting-and-stopping" title="Permanent link">&para;</a></h3>
 <p>After creating a VirtualMachine it can be switched on or off like this:</p>
 <pre><code># Start the virtual machine:
-virtctl start myvm
+virtctl start vm
 
 # Stop the virtual machine:
-virtctl stop myvm
+virtctl stop vm
 </code></pre>
 <p><code>kubectl</code> can be used too:</p>
 <pre><code># Start the virtual machine:
-kubectl patch virtualmachine myvm --type merge -p \
+kubectl patch virtualmachine vm --type merge -p \
     '{"spec":{"running":true}}'
 
 # Stop the virtual machine:
-kubectl patch virtualmachine myvm --type merge -p \
+kubectl patch virtualmachine vm --type merge -p \
     '{"spec":{"running":false}}'
 </code></pre>
 <h3 id="controller-status">Controller status<a class="headerlink" href="#controller-status" title="Permanent link">&para;</a></h3>
@@ -253,15 +255,15 @@ equals <code>true</code>, the VirtualMachine controller will set <code>status.re
 VirtualMachineInstance. This will also propagate configuration changes
 from the template in the VirtualMachine:</p>
 <pre><code># Restart the virtual machine (you delete the instance!):
-kubectl delete virtualmachineinstance myvm
+kubectl delete virtualmachineinstance vm
 </code></pre>
-<p>To restart a VirtualMachine named myvm using virtctl:</p>
-<pre><code>$ virtctl restart myvm
+<p>To restart a VirtualMachine named vm using virtctl:</p>
+<pre><code>$ virtctl restart vm
 </code></pre>
 <p>This would perform a normal restart for the VirtualMachineInstance and
 would reschedule the VirtualMachineInstance on a new virt-launcher Pod</p>
-<p>To force restart a VirtualMachine named myvm using virtctl:</p>
-<pre><code>$ virtctl restart myvm --force --grace-period=0
+<p>To force restart a VirtualMachine named vm using virtctl:</p>
+<pre><code>$ virtctl restart vm --force --grace-period=0
 </code></pre>
 <p>This would try to perform a normal restart, and would also delete the
 virt-launcher Pod of the VirtualMachineInstance with setting
@@ -297,7 +299,7 @@ without the user having to take care of it.</p>
 <p>One of the main benefits is that a user can still make use of defaulting
 logic, although a stable ABI is needed.</p>
 <h3 id="when-config-updates-should-be-picked-up-on-the-next-restart">When config updates should be picked up on the next restart<a class="headerlink" href="#when-config-updates-should-be-picked-up-on-the-next-restart" title="Permanent link">&para;</a></h3>
-<p>If the VirtualMachineInstance configuration should be modifyable inside
+<p>If the VirtualMachineInstance configuration should be modifiable inside
 the cluster and these changes should be picked up on the next
 VirtualMachineInstance restart. This means that no hotplug is involved.</p>
 <p>When you want to let the cluster manage your individual
@@ -422,34 +424,34 @@ Events:
 commandline you can use the kubectl command. The following are examples
 demonstrating how to do it.</p>
 <pre><code>    # Define a virtual machine:
-    kubectl create -f myvm.yaml
+    kubectl create -f vm.yaml
 
     # Start the virtual machine:
-    kubectl patch virtualmachine myvm --type merge -p \
+    kubectl patch virtualmachine vm --type merge -p \
         '{&quot;spec&quot;:{&quot;running&quot;:true}}'
 
     # Look at virtual machine status and associated events:
-    kubectl describe virtualmachine myvm
+    kubectl describe virtualmachine vm
 
     # Look at the now created virtual machine instance status and associated events:
-    kubectl describe virtualmachineinstance myvm
+    kubectl describe virtualmachineinstance vm
 
     # Stop the virtual machine instance:
-    kubectl patch virtualmachine myvm --type merge -p \
+    kubectl patch virtualmachine vm --type merge -p \
         '{&quot;spec&quot;:{&quot;running&quot;:false}}'
 
     # Restart the virtual machine (you delete the instance!):
-    kubectl delete virtualmachineinstance myvm
+    kubectl delete virtualmachineinstance vm
 
     # Implicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
-    kubectl delete virtualmachine myvm
+    kubectl delete virtualmachine vm
 
     # Explicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
-    kubectl delete virtualmachine myvm --cascade=true
+    kubectl delete virtualmachine vm --cascade=true
 
     # Orphan delete (The running virtual machine is only detached, not deleted)
     # Recreating the virtual machine would lead to the adoption of the virtual machine instance
-    kubectl delete virtualmachine myvm --cascade=false
+    kubectl delete virtualmachine vm --cascade=false
 </code></pre>
               
             </div>
@@ -461,7 +463,7 @@ demonstrating how to do it.</p>
         <a href="../operations/installation/" class="btn btn-neutral float-right" title="Installation">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href=".." class="btn btn-neutral" title="Welcome"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../welcome/" class="btn btn-neutral" title="Welcome"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -489,7 +491,7 @@ demonstrating how to do it.</p>
           <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../welcome/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../operations/installation/" style="color: #fcfcfc">Next &raquo;</a></span>

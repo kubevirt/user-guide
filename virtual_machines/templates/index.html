@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -112,6 +112,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../host-devices/">Host Devices Assignment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
@@ -353,7 +355,7 @@ items:
 kind: List
 metadata: {}
 </code></pre>
-<p>You can add add the VM from the template to the cluster in one go</p>
+<p>You can add the VM from the template to the cluster in one go</p>
 <pre><code>oc process rhel7-server-tiny PVCNAME=mydisk NAME=rheltinyvm | oc apply -f -
 </code></pre>
 <p>Please note that, after the generation step, VM objects and template
@@ -392,7 +394,7 @@ metadata:
     defaults.template.kubevirt.io/network: default-network
 </code></pre>
 <p>Unless otherwise specified, all annotations are meant to be safe
-defaults, both for performance and compability, and hints for the
+defaults, both for performance and compatibility, and hints for the
 CNV-aware UI and tooling.</p>
 <h4 id="disk">disk<a class="headerlink" href="#disk" title="Permanent link">&para;</a></h4>
 <p>See the section <code>references</code> below.</p>
@@ -542,12 +544,12 @@ resources (CPU, memory) to allocate to the VM.</p>
 This UI supports creation VM using templates and templates
 features - flavors and workload profiles. To create VM from template, choose
 WorkLoads in the left panel &gt;&gt; press to the "Create Virtual Machine"
-blue button &gt;&gt; choose "Create from Wizzard". Next, you have to see
+blue button &gt;&gt; choose "Create from wizard". Next, you have to see
 "Create Virtual Machine" window</p>
 <h3 id="common-templates">Common-templates<a class="headerlink" href="#common-templates" title="Permanent link">&para;</a></h3>
 <p>There is the <a href="https://github.com/kubevirt/common-templates/">common-templates
 subproject</a>
-subproject. It provides official prepaired and useful templates.
+subproject. It provides official prepared and useful templates.
 <a href="templates/common-templates.md">Additional doc available</a>.
 You can also create templates by hand. You can find an example below, in
 the "Example template" section.</p>
@@ -677,11 +679,11 @@ use <code>oc patch</code> command.</p>
 virtualmachine.kubevirt.io/testvm patched
 </code></pre>
 <p>Do not forget about virtctl tool. Using it in the real cases instead of
-using kubernetes API can be more convinient. Example:</p>
+using kubernetes API can be more convenient. Example:</p>
 <pre><code>$ virtctl start testvm
 VM testvm was scheduled to start
 </code></pre>
-<p>As soon as VM starts, kubernates creates new type of object -
+<p>As soon as VM starts, Kubernetes creates new type of object -
 VirtualMachineInstance. It has similar name to VirtualMachine. Example
 (not full output, it’s too big):</p>
 <pre><code>$ kubectl describe vm testvm
@@ -785,7 +787,7 @@ path</p>
 </code></pre>
 <p>Available in the each OpenShift/Kubevirt compute nodes.</p>
 <h2 id="additional-information">Additional information<a class="headerlink" href="#additional-information" title="Permanent link">&para;</a></h2>
-<p>You can follow <a href="usage/life-cycle.md">Virtual Machine LifecycleGuide</a> for further reference.</p>
+<p>You can follow <a href="usage/life-cycle.md">Virtual Machine Lifecycle Guide</a> for further reference.</p>
               
             </div>
           </div>

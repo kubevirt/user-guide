@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -130,6 +130,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/host-devices/">Host Devices Assignment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
@@ -218,7 +220,7 @@ but also disable VNC access.</p>
 <h2 id="overcommit-the-guest-overhead">Overcommit the Guest Overhead<a class="headerlink" href="#overcommit-the-guest-overhead" title="Permanent link">&para;</a></h2>
 <p>Before you continue, make sure you make yourself comfortable with the
 <a href="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/">Out of Resource
-Managment</a>
+Management</a>
 of Kubernetes.</p>
 <p>Every VirtualMachineInstance requests slightly more memory from
 Kubernetes than what was requested by the user for the Operating System.
@@ -390,7 +392,7 @@ performance again.</p>
 recommended</a> on
 Kubernetes right now. However, it can be useful in combination with KSM,
 since KSM merges identical pages over time. Swap allows the VMIs to
-successfuly allocate memory which will then effectively never be used
+successfully allocate memory which will then effectively never be used
 because of the later de-duplication done by KSM.</p>
               
             </div>

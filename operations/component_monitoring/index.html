@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -124,6 +124,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/host-devices/">Host Devices Assignment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
@@ -207,7 +209,7 @@ out of the box. Both can be used to discover KubeVirt services.</p>
 and contain a port-definition which is called <code>metrics</code>. In the KubeVirt
 release-manifests, the default <code>metrics</code> port is <code>8443</code>.</p>
 <p>The above labels and port informations are collected by a <code>Service</code>
-called <code>kubevirt-prometheus-metrics</code>. Kuberentes automatically creates a
+called <code>kubevirt-prometheus-metrics</code>. Kubernetes automatically creates a
 corresponding <code>Endpoint</code> with an equal name:</p>
 <pre><code>$ kubectl get endpoints -n kubevirt kubevirt-prometheus-metrics -o yaml
 apiVersion: v1

@@ -9,7 +9,7 @@
   
   <link rel="canonical" href="https://kubevirt.io/docs/virtual_machines/host-devices/">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Host devices - KubeVirt User-Guide</title>
+  <title>Host Devices Assignment - KubeVirt User-Guide</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,7 +18,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Host devices";
+    var mkdocs_page_name = "Host Devices Assignment";
     var mkdocs_page_input_path = "virtual_machines/host-devices.md";
     var mkdocs_page_url = "/docs/virtual_machines/host-devices/";
   </script>
@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -113,6 +113,20 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
                     </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Host Devices Assignment</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#host-preparation-for-pci-passthrough">Host preparation for PCI Passthrough</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#preparation-of-pci-devices-for-passthrough">Preparation of PCI devices for passthrough</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#preparation-of-mediated-devices-such-as-vgpu">Preparation of mediated devices such as vGPU</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#listing-permitted-devices">Listing permitted devices</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#staring-a-virtual-machine">Staring a Virtual Machine</a>
+    </li>
+    </ul>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../guest_operating_system_information/">Guest Operating System Information</a>
@@ -168,7 +182,7 @@
         
       
     
-    <li>Host devices</li>
+    <li>Host Devices Assignment</li>
     <li class="wy-breadcrumbs-aside">
       
         <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/host-devices.md"
@@ -191,12 +205,11 @@ same mechanism.</p>
 <h2 id="host-preparation-for-pci-passthrough">Host preparation for PCI Passthrough<a class="headerlink" href="#host-preparation-for-pci-passthrough" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
-<p>Host Devices passthough requires virtualization extension and IOMMU extension
+<p>Host Devices passthrough requires virtualization extension and IOMMU extension
 (Intel VT-d or AMD IOMMU) to be enabled in the BIOS.</p>
 </li>
 <li>
-<p>To enable IOMMU, depending on the CPU type, a host shuold be booted with
-with an additional kernel parameter, intel_iommu=on for Intel and amd_iommu=on
+<p>To enable IOMMU, depending on the CPU type, a host should be booted with an additional kernel parameter, <code>intel_iommu=on</code> for Intel and <code>amd_iommu=on</code>
 for AMD.</p>
 </li>
 </ul>
@@ -216,32 +229,26 @@ GRUB_CMDLINE_LINUX=&quot;nofb splash=quiet console=tty0 ... intel_iommu=on
 </ul>
 <pre><code># modprobe vfio-pci
 </code></pre>
-<h2 id="preparation-of-pci-devices-for-passthrough">Preparation of PCI devices for Passthrough<a class="headerlink" href="#preparation-of-pci-devices-for-passthrough" title="Permanent link">&para;</a></h2>
-<p>At this time, KubeVirt is able to assign PCI devices that are using the
-<code>vfio-pci</code> driver. 
-To prepare a desired device for device assignment, it should first be unbound
-from its original driver and bound to <code>vfio-pci</code></p>
+<h2 id="preparation-of-pci-devices-for-passthrough">Preparation of PCI devices for passthrough<a class="headerlink" href="#preparation-of-pci-devices-for-passthrough" title="Permanent link">&para;</a></h2>
+<p>At this time, KubeVirt is able to assign PCI devices that are using the <code>vfio-pci</code> driver. To prepare a desired device for device assignment, it should first be unbound from its original driver and bound to <code>vfio-pci</code></p>
 <ul>
-<li>Find PCI address of a device </li>
+<li>Find PCI address of a device</li>
 </ul>
 <pre><code>$ lspci -DD|grep NVIDIA
 0000.65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)
 </code></pre>
 <ul>
-<li>bind the device to vfio-pci driver</li>
+<li>Bind the device to vfio-pci driver</li>
 </ul>
 <pre><code>echo 0000:65:00.0 &gt; /sys/bus/pci/drivers/nvidia/unbind
 echo &quot;vfio-pci&quot; &gt; /sys/bus/pci/devices/0000\:65\:00.0/driver_override
 echo 0000:65:00.0 &gt; /sys/bus/pci/drivers/vfio-pci/bind
 </code></pre>
-<h2 id="preparation-of-mediated-devices-such-as-vgpu">Preparation of Mediated devices such as vGPU<a class="headerlink" href="#preparation-of-mediated-devices-such-as-vgpu" title="Permanent link">&para;</a></h2>
-<p>At this time, configuration of Mediated devices (MDEVs) should be done according to the vendor
-directions. Once MDEVs are configured, KubeVirt will be able to dicover and use it for device assignment. </p>
-<h2 id="listing-permitted-devices">Listing Permitted Devices<a class="headerlink" href="#listing-permitted-devices" title="Permanent link">&para;</a></h2>
+<h2 id="preparation-of-mediated-devices-such-as-vgpu">Preparation of mediated devices such as vGPU<a class="headerlink" href="#preparation-of-mediated-devices-such-as-vgpu" title="Permanent link">&para;</a></h2>
+<p>At this time, configuration of a mediated device (mdev) should be done according to the vendor directions. Once the mdev is configured, KubeVirt will be able to discover and use it for device assignment.</p>
+<h2 id="listing-permitted-devices">Listing permitted devices<a class="headerlink" href="#listing-permitted-devices" title="Permanent link">&para;</a></h2>
 <p>Administrators can control which host devices are exposed and permitted to be used in the
-cluster.
-Permitted host devices in the cluster will need to be allowlisted in KubeVirt
-CR by its <code>vendor:product</code> selector for PCI devices or mediated device names </p>
+cluster. Permitted host devices in the cluster will need to be allowlisted in KubeVirt CR by its <code>vendor:product</code> selector for PCI devices or mediated device names.</p>
 <pre><code>configuration:
   permittedHostDevices:
     pciHostDevices:
@@ -256,23 +263,23 @@ CR by its <code>vendor:product</code> selector for PCI devices or mediated devic
 </code></pre>
 <ul>
 <li>
-<p><code>pciVendorSelector</code>is a combination of a <code>vendor_id:product_id</code>, required for a device identification on a host. 
-    This identifier <code>10de:1eb8</code> can be found using <code>lspci</code></p>
+<p><code>pciVendorSelector</code> is a combination of a <code>vendor_id:product_id</code> required for a device identification on a host. This identifier <code>10de:1eb8</code> can be found using <code>lspci</code>.</p>
 <p><code>lspci -nnv|grep -i nvidia
-65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)</code>
- * <code>mdevNameSelector</code> is a name of a Mediated device type, required for a device identification on a host.
-<code>For example: mdev type nvidia-226 represents GRID T4-2A
-    The selector is matched against the content of /sys/class/mdev_bus/$mdevUUID/mdev_type/name</code>
- * External providers:
-<code>externalResourceProvider</code> field indicates that this resource is being provided
-by an external device plugging. 
-KubeVirt in this case will only permit the usage of this device in the cluster
-but will leave the allocation and monitoring to an external device plugin.</p>
+65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)</code></p>
+</li>
+<li>
+<p><code>mdevNameSelector</code> is a name of a mediated device type required for a device identification on a host.
+    <code>For example: mdev type nvidia-226 represents GRID T4-2A
+        The selector is matched against the content of /sys/class/mdev_bus/$mdevUUID/mdev_type/name</code></p>
+</li>
+<li>
+<p>External providers:
+<code>externalResourceProvider</code> field indicates that this resource is being provided by an external device plugin. KubeVirt in this case will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.</p>
 </li>
 </ul>
 <h2 id="staring-a-virtual-machine">Staring a Virtual Machine<a class="headerlink" href="#staring-a-virtual-machine" title="Permanent link">&para;</a></h2>
 <p>HostDevices, as well as the existing GPUs field, will be able to reference both
-PCI and Mediated devices</p>
+PCI and mediated devices</p>
 <pre><code>kind: VirtualMachineInstance
 spec:
   domain:
@@ -293,10 +300,10 @@ spec:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../interfaces_and_networks/" class="btn btn-neutral float-right" title="Interfaces and Networks">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../windows_wirtio_drivers/" class="btn btn-neutral float-right" title="Windows virtio drivers">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../guest_operating_system_information/" class="btn btn-neutral" title="Guest Operating System Information"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../networkpolicy/" class="btn btn-neutral" title="NetworkPolicy"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -324,10 +331,10 @@ spec:
           <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../guest_operating_system_information/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../networkpolicy/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../interfaces_and_networks/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../windows_wirtio_drivers/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

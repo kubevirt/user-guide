@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -112,6 +112,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/host-devices/">Host Devices Assignment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
@@ -184,10 +186,10 @@
 <ul>
 <li>[PR #4409][vladikr] Increase the static memory overhead by 10Mi</li>
 <li>[PR #4272][maiqueb] Add <code>ip-family</code> to the <code>virtctl expose</code> command.</li>
-<li>[PR #4398][rmohr] VMIs reflect deleted stuck virt-launcher pods with the "PodTerminating" Reason in the ready condition. The VMIRS detects this reason and immediately creates replacement VMIs.</li>
+<li>[PR #4398][rmohr] VMIs reflect deleted stuck virt-launcher pods with the "PodTerminating" reason in the ready condition. The VMIRs detects this reason and immediately creates replacement VMIs.</li>
 <li>[PR #4393][salanki] Disable legacy service links in <code>virt-launcher</code> Pods to speed up Pod instantiation and decrease Kubelet load in namespaces with many services.</li>
-<li>[PR #2935][maiqueb] Add the macvtap BindMechanism.</li>
-<li>[PR #4132][mstarostik] fixes a bug that prevented unique device name allocation when configuring both scsi and sata drives</li>
+<li>[PR #2935][maiqueb] Add the macvtap bind mechanism.</li>
+<li>[PR #4132][mstarostik] fixes a bug that prevented unique device name allocation when configuring both SCSI and SATA drives</li>
 <li>[PR #3257][xpivarc] Added support of <code>kubectl explain</code> for Kubevirt resources.</li>
 <li>[PR #4288][ezrasilvera] Adding DownwardAPI volumes type</li>
 <li>[PR #4233][maya-r] Update base image used for pods to Fedora 31.</li>
@@ -204,7 +206,7 @@
 <ul>
 <li>[PR #4315][kubevirt-bot] PVCs populated by DVs are now allowed as volumes.</li>
 <li>[PR #3837][jean-edouard] VM interfaces with no <code>bootOrder</code> will no longer be candidates for boot when using the BIOS bootloader, as documented</li>
-<li>[PR #3879][ashleyschuett] KubeVirt should now be configured through the KubeVirt CR <code>configuration</code> key. The usage of the kubevirt-confg ConfigMap will be deprecated in the future.</li>
+<li>[PR #3879][ashleyschuett] KubeVirt should now be configured through the KubeVirt CR <code>configuration</code> key. The usage of the kubevirt-config configMap will be deprecated in the future.</li>
 <li>[PR #4074][stu-gott] Fixed bug preventing non-admin users from pausing/unpausing VMs</li>
 <li>[PR #4252][rhrazdil] Fixes https://bugzilla.redhat.com/show_bug.cgi?id=1853911</li>
 <li>[PR #4016][ashleyschuett] Allow for post copy VMI migrations</li>
@@ -217,14 +219,14 @@
 <li>[PR #4177][maiqueb] Use vishvananda/netlink instead of songgao/water to create tap devices.</li>
 <li>[PR #4092][stu-gott] Allow specifying nodeSelectors, affinity and tolerations to control where KubeVirt components will run</li>
 <li>[PR #3927][ArthurSens] Adds new metric kubevirt_vmi_memory_unused_bytes</li>
-<li>[PR #3493][vladikr] virtIO-FS is being added as experimental, protected by a feature-gate that needs to be enabled in the kubevirt config by the administrator</li>
+<li>[PR #3493][vladikr] virtio-fs is being added as experimental, protected by a feature-gate that needs to be enabled in the kubevirt config by the administrator</li>
 <li>[PR #4193][mhenriks] Add snapshot.kubevirt.io to admin/edit/view roles</li>
 <li>[PR #4149][qinqon] Bump kubevirtci to k8s-1.19</li>
 <li>[PR #3471][crobinso] Allow hiding that the VM is running on KVM, so that Nvidia graphics cards can be passed through</li>
 <li>[PR #4115][phoracek] Add conformance automation and manifest publishing</li>
 <li>[PR #3733][davidvossel] each PRs description.</li>
 <li>[PR #4082][mhenriks] VirtualMachineRestore API and implementation</li>
-<li>[PR #4154][davidvossel] Fixes issue with Serivce endpoints not being updated properly in place during KubeVirt updates.</li>
+<li>[PR #4154][davidvossel] Fixes issue with Service endpoints not being updated properly in place during KubeVirt updates.</li>
 <li>[PR #3289][vatsalparekh] Add option to run only VNC Proxy in virtctl</li>
 <li>[PR #4027][alicefr] Added memfd as default memory backend for hugepages. This introduces the new annotation kubevirt.io/memfd to disable memfd as default and fallback to the previous behavior.</li>
 <li>[PR #3612][ashleyschuett] Adds <code>customizeComponents</code> to the kubevirt api</li>
@@ -255,7 +257,7 @@
 <p>Released on: Tue Aug 11 19:21:56 2020 +0000</p>
 <ul>
 <li>[PR #3921][vladikr] use correct memory units in libvirt xml</li>
-<li>[PR #3893][davidvossel] Adds recurring period that resyncs virt-launcher domains with virt-handler</li>
+<li>[PR #3893][davidvossel] Adds recurring period that rsyncs virt-launcher domains with virt-handler</li>
 <li>[PR #3880][sgarbour] Better error message when input parameters are not the expected number of parameters for each argument. Help menu will popup in case the number of parameters is incorrect.</li>
 <li>[PR #3785][xpivarc] Vcpu wait metrics available</li>
 <li>[PR #3642][vatsalparekh] Add a way to update VMI Status with latest Pod IP for Masquerade bindings</li>
@@ -281,7 +283,7 @@
 <li>[PR 3641][vatsalparekh] Reverts kubevirt/kubevirt#3488 because CI seems to have merged it without all tests passing</li>
 <li>[PR 3488][vatsalparekh] Add a way to update VMI Status with latest Pod IP for Masquerade bindings</li>
 <li>[PR 3406][tomob] If a PVC was created by a DataVolume, it cannot be used as a Volume Source for a VM. The owning DataVolume has to be used instead.</li>
-<li>[PR 3566][kraxel] added: tigervnc support for linux &amp; windows</li>
+<li>[PR 3566][kraxel] added: TigerVNC support for linux &amp; windows</li>
 <li>[PR 3529][jean-edouard] Enabling EFI will also enable Secure Boot, which requires SMM to be enabled.</li>
 <li>[PR 3455][ashleyschuett] Add KubevirtConfiguration, MigrationConfiguration, DeveloperConfiguration and NetworkConfiguration to API-types</li>
 <li>[PR 3520][rmohr] Fix hot-looping on the  VMI sync-condition if errors happen during the Scheduled phase of a VMI</li>
@@ -309,7 +311,7 @@
 <li>CI: Drop PPC64 support for now</li>
 <li>Drop Genie support</li>
 <li>Drop the use of hostPaths in the virt-launcher for improved security</li>
-<li>Support priority classes for important componenets</li>
+<li>Support priority classes for important components</li>
 <li>Support IPv6 over masquerade binding</li>
 <li>Support certificate rotations based on shared secrets</li>
 <li>Support for VM ready condition</li>
@@ -325,7 +327,7 @@
 <li>Fix loading of tun module during virt-handler initialization</li>
 <li>Fixes for several test cases</li>
 <li>Fixes to support running with container_t</li>
-<li>Support for renaming a vM</li>
+<li>Support for renaming a VM</li>
 <li>Support ioEmulator thread pinning</li>
 <li>Support a couple of alerts for virt-handler</li>
 <li>Support for filesystem listing using the guest agent</li>
@@ -345,9 +347,9 @@
 <li>Support setting a custom SELinux type for the launcher</li>
 <li>Support to perform network configurations from handler instead of launcher</li>
 <li>Support to opt-out of auto attaching the serial console</li>
-<li>Support for different uninstallStaretgies for data protection</li>
+<li>Support for different uninstall strategies for data protection</li>
 <li>Fix to let qemu run in the qemu group</li>
-<li>Fix guest agen connectivity check after i.e. live migrations</li>
+<li>Fix guest agent connectivity check after i.e. live migrations</li>
 </ul>
 <h2 id="v0260">v0.26.0<a class="headerlink" href="#v0260" title="Permanent link">&para;</a></h2>
 <p>Released on: Fri Feb 7 09:40:07 2020 +0100</p>
@@ -389,7 +391,7 @@
 <li>Updated to Go 1.12.8 and latest bazel</li>
 <li>Updated go-yaml to v2.2.4, which has a ddos vulnerability fixed</li>
 <li>Cleaned up and fixed CRD scheme registration</li>
-<li>Several bugfixes</li>
+<li>Several bug fixes</li>
 <li>Many CI improvements (e.g. more logs in case of test failures)</li>
 </ul>
 <h2 id="v0220">v0.22.0<a class="headerlink" href="#v0220" title="Permanent link">&para;</a></h2>
@@ -401,7 +403,7 @@
 <li>Some changes as result of entering the CNCF sandbox (DCO check, FOSSA check, best practice badge)</li>
 <li>Many bug fixes and improvements in several areas</li>
 <li>CI: Introduced a OKD 4 test lane</li>
-<li>CI: Many improved tests, resulting in less flakyness</li>
+<li>CI: Many improved tests resulting in less flakiness</li>
 </ul>
 <h2 id="v0210">v0.21.0<a class="headerlink" href="#v0210" title="Permanent link">&para;</a></h2>
 <p>Released on: Mon Sep 9 09:59:08 2019 +0200</p>
@@ -410,7 +412,7 @@
 <li>Many bug fixes in several areas</li>
 <li>Support for <code>virtctl migrate</code></li>
 <li>Support configurable number of controller threads</li>
-<li>Support to opt-out of bridge binding for podnetwork</li>
+<li>Support to opt-out of bridge binding for podNetwork</li>
 <li>Support for OpenShift Prometheus monitoring</li>
 <li>Support for setting more SMBIOS fields</li>
 <li>Improved containerDisk memory usage and speed</li>
@@ -421,20 +423,20 @@
 <h2 id="v0200">v0.20.0<a class="headerlink" href="#v0200" title="Permanent link">&para;</a></h2>
 <p>Released on: Fri Aug 9 16:42:41 2019 +0200</p>
 <ul>
-<li>Containerdisks are now secure and they are not copied anymore on every start.
-Old containerdisks can still be used in the same secure way, but new
-containerdisks can't be used on older kubevirt releases</li>
+<li>containerDisks are now secure and they are not copied anymore on every start.
+Old containerDisks can still be used in the same secure way, but new
+containerDisks can't be used on older kubevirt releases</li>
 <li>Create specific SecurityContextConstraints on OKD instead of using the
 privileged SCC</li>
 <li>Added clone authorization check for DataVolumes with PVC source</li>
 <li>The sidecar feature is feature-gated now</li>
-<li>Use container image shasums instead of tags for KubeVirt deployments</li>
+<li>Use container image shasum's instead of tags for KubeVirt deployments</li>
 <li>Protect control plane components against voluntary evictions with a
 PodDisruptionBudget of MinAvailable=1</li>
 <li>Replaced hardcoded <code>virtctl</code> by using the basename of the call, this enables
 nicer output when installed via krew plugin package manager</li>
 <li>Added RNG device to all Fedora VMs in tests and examples (newer kernels might
-block bootimg while waiting for entropy)</li>
+block boot img while waiting for entropy)</li>
 <li>The virtual memory is now set to match the memory limit, if memory limit is
 specified and guest memory is not</li>
 <li>Support nftable for CoreOS</li>
@@ -459,15 +461,15 @@ KubeVirt CR conditions</li>
 <li>Fixes for sub-resource RBAC</li>
 <li>Limit pod network interface bindings</li>
 <li>Many additional bug fixes in many areas</li>
-<li>Additional testcases for updates, disk types, live migration with NFS</li>
-<li>Additional testcases for memory over-commit, block storage, cpu manager,
+<li>Additional test cases for updates, disk types, live migration with NFS</li>
+<li>Additional test cases for memory over-commit, block storage, cpu manager,
 headless mode</li>
 <li>Improvements around HyperV</li>
-<li>Improved error handling for runStartegies</li>
+<li>Improved error handling for runStrategies</li>
 <li>Improved update procedure</li>
 <li>Improved network metrics reporting (packets and errors)</li>
 <li>Improved guest overhead calculation</li>
-<li>Improved SR-IOV testsuite</li>
+<li>Improved SR-IOV test suite</li>
 <li>Support for live migration auto-converge</li>
 <li>Support for config-drive disks</li>
 <li>Support for setting a pullPolicy con containerDisks</li>
@@ -479,14 +481,14 @@ headless mode</li>
 <ul>
 <li>Build: Use of go modules</li>
 <li>CI: Support for Kubernetes 1.13</li>
-<li>Countless testcase fixes and additions</li>
+<li>Countless test cases fixes and additions</li>
 <li>Several smaller bug fixes</li>
 <li>Improved upgrade documentation</li>
 </ul>
 <h2 id="v0170">v0.17.0<a class="headerlink" href="#v0170" title="Permanent link">&para;</a></h2>
 <p>Released on: Mon May 6 16:18:01 2019 +0200</p>
 <ul>
-<li>Several testcase additions</li>
+<li>Several test case additions</li>
 <li>Improved virt-controller node distribution</li>
 <li>Improved support between version migrations</li>
 <li>Support for a configurable MachineType default</li>
@@ -521,7 +523,7 @@ headless mode</li>
 <li>Support for EFI boot</li>
 <li>Support for libvirt 5.0</li>
 <li>Support for extra DHCP options</li>
-<li>Support for a hook to manipualte cloud-init metadata</li>
+<li>Support for a hook to manipulate cloud-init metadata</li>
 <li>Support setting a VM serial number</li>
 <li>Support for exposing infra and VM metrics</li>
 <li>Support for a tablet input device</li>
@@ -555,7 +557,7 @@ headless mode</li>
 <li>Introduce dedicated kubevirt namespace</li>
 <li>Support VMI ready conditions</li>
 <li>Support vCPU threads and sockets</li>
-<li>Support scale and HPA for VMIRS</li>
+<li>Support scale and HPA for VMIRs</li>
 <li>Support to pass NTP related DHCP options</li>
 <li>Support guest IP address reporting via qemu guest agent</li>
 <li>Support for live migration with shared storage</li>
@@ -565,7 +567,7 @@ headless mode</li>
 <h2 id="v0110">v0.11.0<a class="headerlink" href="#v0110" title="Permanent link">&para;</a></h2>
 <p>Released on: Thu Dec 6 10:15:51 2018 +0100</p>
 <ul>
-<li>API: registryDisk got renamed to containreDisk</li>
+<li>API: registryDisk got renamed to containerDisk</li>
 <li>CI: User OKD 3.11</li>
 <li>Fix: Tolerate if the PVC has less capacity than expected</li>
 <li>Aligned to use ownerReferences</li>
@@ -592,7 +594,7 @@ headless mode</li>
 <li>Support for pinned IO threads</li>
 <li>Support for virtio net multi-queue</li>
 <li>Support for image upload (depending on CDI)</li>
-<li>Support for custom entity lists with more VM details (cusomt columns)</li>
+<li>Support for custom entity lists with more VM details (custom columns)</li>
 <li>Support for IP and MAC address reporting of all vNICs</li>
 <li>Basic support for guest agent status reporting</li>
 <li>More structured logging</li>
@@ -619,7 +621,7 @@ headless mode</li>
 <p>Released on: Thu Sep 6 14:25:22 2018 +0200</p>
 <ul>
 <li>Support for DataVolume</li>
-<li>Support for a subprotocol for webbrowser terminals</li>
+<li>Support for a subprotocol for web browser terminals</li>
 <li>Support for virtio-rng</li>
 <li>Support disconnected VMs</li>
 <li>Support for setting host model</li>
@@ -651,11 +653,11 @@ headless mode</li>
 <li>Add hugepage support</li>
 <li>Add device-plugin based kvm</li>
 <li>Add support for setting the network interface model</li>
-<li>Add (basic and inital) Kubernetes compatible networking approach (SLIRP)</li>
+<li>Add (basic and initial) Kubernetes compatible networking approach (SLIRP)</li>
 <li>Add role aggregation for our roles</li>
 <li>Add support for setting a disks serial number</li>
-<li>Add support for specyfing the CPU model</li>
-<li>Add support for setting an network intefraces MAC address</li>
+<li>Add support for specifying the CPU model</li>
+<li>Add support for setting an network interfaces MAC address</li>
 <li>Relocate binaries for FHS conformance</li>
 <li>Logging improvements</li>
 <li>Template fixes</li>
@@ -667,8 +669,8 @@ headless mode</li>
 <h2 id="v060">v0.6.0<a class="headerlink" href="#v060" title="Permanent link">&para;</a></h2>
 <p>Released on: Mon Jun 11 09:30:28 2018 +0200</p>
 <ul>
-<li>A range of flakyness reducing test fixes</li>
-<li>Vagrant setup got deprectated</li>
+<li>A range of flakiness reducing test fixes</li>
+<li>Vagrant setup got deprecated</li>
 <li>Updated Docker and CentOS versions</li>
 <li>Add Kubernetes 1.10.3 to test matrix</li>
 <li>A couple of ginkgo concurrency fixes</li>
@@ -677,7 +679,7 @@ headless mode</li>
 <li>Use /dev/kvm if possible, otherwise fallback to emulation</li>
 <li>Add default view/edit/admin RBAC Roles</li>
 <li>Network MTU fixes</li>
-<li>CDRom drives are now read-only</li>
+<li>CD-ROM drives are now read-only</li>
 <li>Secrets can now be correctly referenced on VMs</li>
 <li>Add disk boot ordering</li>
 <li>Add virtctl version</li>
@@ -706,7 +708,7 @@ headless mode</li>
 <li>Add and enable OpenShift support to CI</li>
 <li>Add conditional Windows tests (if an image is present)</li>
 <li>Add subresources for console access</li>
-<li>virtctl config alignmnet with kubectl</li>
+<li>virtctl config alignment with kubectl</li>
 <li>Fix API reference generation</li>
 <li>Stable UUIDs for OfflineVirtualMachines</li>
 <li>Build virtctl for MacOS and Windows</li>
@@ -722,7 +724,7 @@ headless mode</li>
 <li>VirtualMachinePresets support</li>
 <li>OfflineVirtualMachine support</li>
 <li>RBAC improvements</li>
-<li>Switch to q35 machien type by default</li>
+<li>Switch to q35 machine type by default</li>
 <li>A large number of test and CI fixes</li>
 <li>Ephemeral disk support</li>
 </ul>
@@ -744,7 +746,7 @@ headless mode</li>
 <li>Dropped nodeSelectors</li>
 <li>Separated inner component deployment from edge component deployment</li>
 <li>Created separate manifests for developer, test, and release deployments</li>
-<li>Moved komponents to kube-system namespace</li>
+<li>Moved components to kube-system namespace</li>
 <li>Improved and unified flag parsing</li>
 </ul>
               

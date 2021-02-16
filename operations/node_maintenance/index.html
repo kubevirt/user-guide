@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -126,6 +126,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/host-devices/">Host Devices Assignment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
@@ -220,7 +222,7 @@ is required.</p>
 <li>
 <p><code>--delete-local-data</code> is a required flag that is necessary for
     removing any pod that utilizes an emptyDir volume. The
-    VirtualMachineInstance Pod does use emptryDir volumes, however the
+    VirtualMachineInstance Pod does use emptyDir volumes, however the
     data in those volumes are ephemeral which means it is safe to delete
     after termination.</p>
 </li>
@@ -241,7 +243,7 @@ is required.</p>
     cluster after the pods are evicted. KubeVirt has its own controllers
     which manage the underlying VirtualMachineInstance pods. Each
     controller behaves differently to a VirtualMachineInstance being
-    evicted. That behavior is outlined futher down in this document.</p>
+    evicted. That behavior is outlined further down in this document.</p>
 </li>
 <li>
 <p><code>--pod-selector=kubevirt.io=virt-launcher</code> means only

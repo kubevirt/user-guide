@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -132,6 +132,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/host-devices/">Host Devices Assignment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
@@ -266,7 +268,7 @@ prototype VM, clone it, and watch wait. When the vmctl pod is deleted,
 vmctl will clean up the derived VirtualMachine. Consequently it is
 inadvisable to use a 0 length grace period for shutting down the pod.</p>
 <h2 id="services">Services<a class="headerlink" href="#services" title="Permanent link">&para;</a></h2>
-<p>One note worth stressing is that from Kubernete’s perspective the vmctl
+<p>One note worth stressing is that from Kubernetes's perspective the vmctl
 Pod is entirely distinct from the VM it spawns. It is especially
 important to be mindful of this when creating services. From an end
 user’s perspective, there’s nothing useful running on the vmctl Pod

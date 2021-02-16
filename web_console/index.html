@@ -49,7 +49,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="..">Welcome</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../welcome/">Welcome</a>
                     </li>
                 </ul>
                 <ul>
@@ -112,6 +112,8 @@
                     <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/host-devices/">Host Devices Assignment</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/windows_wirtio_drivers/">Windows virtio drivers</a>
                     </li>
@@ -611,7 +613,7 @@ running Windows virtual machine.</p>
 <p>Select <strong>Desktop Viewer</strong> in the drop-down list.</p>
 </li>
 <li>
-<p>Choose the nework interface you want to connect to from the
+<p>Choose the network interface you want to connect to from the
     <strong>Network Interface</strong> drop-down.</p>
 <ol>
 <li>
@@ -870,305 +872,289 @@ Details</strong> screen.</p>
 <h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
 <h3 id="virtual-machine-wizard-fields">Virtual Machine Wizard Fields<a class="headerlink" href="#virtual-machine-wizard-fields" title="Permanent link">&para;</a></h3>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
+<thead>
+<tr>
+<th>Name</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
 <tbody>
-<tr class="odd">
-<td><p>Name</p></td>
-<td><p>Parameter</p></td>
-<td><p>Description</p></td>
-</tr>
-<tr class="even">
-<td><p>Name</p></td>
+<tr>
+<td>Name</td>
 <td></td>
-<td><p>Name of the virtual machine. Alphanumeric characters only (63 characters max).</p></td>
+<td>The name of the virtual machine<br><br>* Alphanumeric characters only (63 characters max)</td>
 </tr>
-<tr class="odd">
-<td><p>Description</p></td>
+<tr>
+<td>Description</td>
 <td></td>
-<td><p>Optional description field.</p></td>
+<td>Optional description field</td>
 </tr>
-<tr class="even">
-<td><p>Template</p></td>
+<tr>
+<td>Template</td>
 <td></td>
-<td><p>Template from which to create the virtual machine. Selecting a template will automatically fill other fields.</p></td>
+<td>Template from which to create the virtual machine<br><br>* Selecting a template will automatically fill other fields</td>
 </tr>
-<tr class="odd">
-<td><p>Provision Source</p></td>
-<td><p>PXE</p></td>
-<td><p>Provision virtual machine from PXE menu. Requires a <a href="#pxebooting">PXE-capable NIC</a> in the cluster.</p></td>
-</tr>
-<tr class="even">
-<td><p>URL</p></td>
-<td><p>Provision virtual machine from an image available from an <strong>HTTP</strong> or <strong>S3</strong> endpoint.</p></td>
+<tr>
+<td>Provision Source</td>
+<td>PXE</td>
 <td></td>
 </tr>
-<tr class="odd">
-<td><p>Container</p></td>
-<td><p>Provision virtual machine from a bootable operating system container located in a registry accessible from the cluster. Example: <code>_kubevirt/cirros-registry-disk-demo_</code></p></td>
+<tr>
+<td>URL</td>
+<td>Provision virtual machine from an image available from an <em>HTTP</em> or <em>S3</em> endpoint</td>
 <td></td>
 </tr>
-<tr class="even">
-<td><p>Operating System</p></td>
-<td></td>
-<td><p>A list of operating systems available in the cluster. This is the primary operating system for the virtual machine.</p></td>
-</tr>
-<tr class="odd">
-<td><p>Flavor</p></td>
-<td><p>small, medium, large, tiny, Custom</p></td>
-<td><p>Presets that determine the amount of CPU and memory allocated to the virtual machine.</p></td>
-</tr>
-<tr class="even">
-<td><p>Workload Profile</p></td>
-<td><p>generic</p></td>
-<td><p>A general configuration that balances performance and compatibility for a broad range of workloads.</p></td>
-</tr>
-<tr class="odd">
-<td><p>highperformance</p></td>
-<td><p>The virtual machine has a more efficient configuration optimized for high performance loads.</p></td>
+<tr>
+<td>Container</td>
+<td>Provision virtual machine from a bootable operating system container located in a registry accessible from the cluster<br><br>* Example: <code>_kubevirt/cirros-registry-disk-demo_</code></td>
 <td></td>
 </tr>
-<tr class="even">
-<td><p>Start virtual machine on creation</p></td>
+<tr>
+<td>Operating System</td>
 <td></td>
-<td><p>Select this checkbox to automatically start the virtual machine upon creation.</p></td>
+<td>A list of operating systems available in the cluster<br><br>* This is the primary operating system for the virtual machine</td>
 </tr>
-<tr class="odd">
-<td><p>cloud-init</p></td>
+<tr>
+<td>Flavor</td>
 <td></td>
-<td><p>Select this checkbox to enable the <a href="#cloud-init-fields-web">cloud-init fields</a>.</p></td>
+<td>Presets that determine the amount of CPU and memory allocated to the virtual machine</td>
+</tr>
+<tr>
+<td>Workload Profile</td>
+<td></td>
+<td>A general configuration that balances performance and compatibility for a broad range of workloads</td>
+</tr>
+<tr>
+<td>highperformance</td>
+<td>The virtual machine has a more efficient configuration optimized for high performance loads</td>
+<td></td>
+</tr>
+<tr>
+<td>Start virtual machine on creation</td>
+<td></td>
+<td>Select this checkbox to automatically start the virtual machine upon creation</td>
+</tr>
+<tr>
+<td>cloud-init</td>
+<td></td>
+<td>Select this checkbox to enable the <a href="https://kubevirt.io/user-guide/web_console/#cloud-init-fields-web">cloud-init fields</a></td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="virtual-machine-template-wizard-fields">Virtual Machine Template Wizard Fields<a class="headerlink" href="#virtual-machine-template-wizard-fields" title="Permanent link">&para;</a></h3>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
+<thead>
+<tr>
+<th>Name</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
 <tbody>
-<tr class="odd">
-<td><p>Name</p></td>
-<td><p>Parameter</p></td>
-<td><p>Description</p></td>
-</tr>
-<tr class="even">
-<td><p>Name</p></td>
+<tr>
+<td>Name</td>
 <td></td>
-<td><p>Name of the virtual machine template. Alphanumeric characters only (64 characters max).</p></td>
+<td>The name of the virtual machine<br><br>* Alphanumeric characters only (63 characters max)</td>
 </tr>
-<tr class="odd">
-<td><p>Description</p></td>
+<tr>
+<td>Description</td>
 <td></td>
-<td><p>Optional description field.</p></td>
+<td>Optional description field</td>
 </tr>
-<tr class="even">
-<td><p>Provision Source</p></td>
-<td><p>PXE</p></td>
-<td><p>Provision virtual machines from PXE menu. Requires a <a href="#pxebooting">PXE-capable NIC</a> in the cluster.</p></td>
-</tr>
-<tr class="odd">
-<td><p>URL</p></td>
-<td><p>Provision virtual machines from an image available from a <strong>HTTP</strong> or <strong>S3</strong> endpoint.</p></td>
+<tr>
+<td>Provision Source</td>
+<td>PXE</td>
 <td></td>
 </tr>
-<tr class="even">
-<td><p>Container</p></td>
-<td><p>Provision virtual machines from a bootable operating system container located in a registry accessible from the cluster. Example: <code>_kubevirt/cirros-registry-disk-demo_</code></p></td>
+<tr>
+<td>Template</td>
+<td></td>
+<td>Template from which to create the virtual machine<br><br>* Selecting a template will automatically fill other fields.</td>
+</tr>
+<tr>
+<td>Provision Source</td>
+<td></td>
+<td>Provision virtual machine from PXE menu<br><br>* Requires a PXE-capable NIC in the cluster</td>
+</tr>
+<tr>
+<td>URL</td>
+<td>Provision virtual machines from an image available from a <em>HTTP</em> or <em>S3</em> endpoint.</td>
 <td></td>
 </tr>
-<tr class="odd">
-<td><p>Operating System</p></td>
-<td></td>
-<td><p>A list of operating systems available in the cluster. This is the primary operating system for the virtual machine.</p></td>
-</tr>
-<tr class="even">
-<td><p>Flavor</p></td>
-<td><p>small, medium, large, tiny, Custom</p></td>
-<td><p>Presets that determine the amount of CPU and memory allocated to the virtual machines.</p></td>
-</tr>
-<tr class="odd">
-<td><p>Workload Profile</p></td>
-<td><p>generic</p></td>
-<td><p>A general configuration that balances performance and compatibility for a broad range of workloads.</p></td>
-</tr>
-<tr class="even">
-<td><p>highperformance</p></td>
-<td><p>Virtual machines have a more efficient configuration optimized for high performance loads.</p></td>
+<tr>
+<td>Container</td>
+<td>Provision virtual machines from a bootable operating system container located in a registry accessible from the cluster<br><br>* Example: <code>_kubevirt/cirros-registry-disk-demo_</code></td>
 <td></td>
 </tr>
-<tr class="odd">
-<td><p>cloud-init</p></td>
+<tr>
+<td>Operating System</td>
 <td></td>
-<td><p>Select this checkbox to enable the <a href="#cloud-init-fields-web">cloud-init fields</a>.</p></td>
+<td>A list of operating systems available in the cluster. This is the primary operating system for the virtual machine.</td>
+</tr>
+<tr>
+<td>Flavor</td>
+<td>small, medium, large, tiny, Custom</td>
+<td>Presets that determine the amount of CPU and memory allocated to the virtual machine</td>
+</tr>
+<tr>
+<td>Workload Profile</td>
+<td>generic</td>
+<td>A general configuration that balances performance and compatibility for a broad range of workloads</td>
+</tr>
+<tr>
+<td>highperformance</td>
+<td>Virtual machines have a more efficient configuration optimized for high performance loads</td>
+<td></td>
+</tr>
+<tr>
+<td>cloud-init</td>
+<td></td>
+<td>Select this checkbox to enable the <a href="https://kubevirt.io/user-guide/web_console/#cloud-init-fields-web">cloud-init fields</a></td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="cloud-init-fields">Cloud-init Fields<a class="headerlink" href="#cloud-init-fields" title="Permanent link">&para;</a></h3>
 <table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
 <tbody>
-<tr class="odd">
-<td><p>Name</p></td>
-<td><p>Description</p></td>
+<tr>
+<td>Hostname</td>
+<td>Sets a specific hostname for the virtual machine</td>
 </tr>
-<tr class="even">
-<td><p>Hostname</p></td>
-<td><p>Sets a specific hostname for the virtual machine.</p></td>
+<tr>
+<td>Authenticated SSH Keys</td>
+<td>The user’s public key<br><br>* This will be copied to <code>~/.ssh/authorized_keys</code> on the virtual machine</td>
 </tr>
-<tr class="odd">
-<td><p>Authenticated SSH Keys</p></td>
-<td><p>The user’s public key. This will be copied to <strong><em>~/.ssh/authorized_keys</em></strong> on the virtual machine.</p></td>
-</tr>
-<tr class="even">
-<td><p>Use custom script</p></td>
-<td><p>Replaces other options with a textbox into which you can paste a custom cloud-init script.</p></td>
+<tr>
+<td>Use custom script</td>
+<td>Replaces other options with a textbox into which you can paste a custom cloud-init script</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="networking-fields">Networking Fields<a class="headerlink" href="#networking-fields" title="Permanent link">&para;</a></h3>
 <table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
 <tbody>
-<tr class="odd">
-<td><p>Name</p></td>
-<td><p>Description</p></td>
+<tr>
+<td>Create NIC</td>
+<td>Create a new NIC for the virtual machine</td>
 </tr>
-<tr class="even">
-<td><p>Create NIC</p></td>
-<td><p>Create a new NIC for the virtual machine.</p></td>
+<tr>
+<td>NIC NAME</td>
+<td>Name for the NIC</td>
 </tr>
-<tr class="odd">
-<td><p>NIC NAME</p></td>
-<td><p>Name for the NIC.</p></td>
+<tr>
+<td>MAC ADDRESS</td>
+<td>MAC address for the network interface<br><br>* If a MAC address is not specified an ephemeral address is generated for the session</td>
 </tr>
-<tr class="even">
-<td><p>MAC ADDRESS</p></td>
-<td><p>MAC address for the network interface. If a MAC address is not specified, an ephemeral address is generated for the session.</p></td>
+<tr>
+<td>NETWORK CONFIGURATION</td>
+<td>List of available NetworkAttachmentDefinition objects</td>
 </tr>
-<tr class="odd">
-<td><p>NETWORK CONFIGURATION</p></td>
-<td><p>List of available <strong>NetworkAttachmentDefinition</strong> objects.</p></td>
+<tr>
+<td>BINDING METHOD</td>
+<td>List of available binding methods<br><br><em> For pod networking, the possible values are masquerade, bridge, and sriov<br></em> For other networks, the possible values are bridge and sriov</td>
 </tr>
-<tr class="even">
-<td><p>BINDING METHOD</p></td>
-<td><p>List of available <a href="../creating-virtual-machines/interfaces-and-networks.html#frontend">binding methods</a>. For pod networking, the possible values are <code>masquerade</code>, <code>bridge</code>, and <code>sriov</code>. For other networks, the possible values are bridge and sriov.</p></td>
-</tr>
-<tr class="odd">
-<td><p>PXE NIC</p></td>
-<td><p>List of PXE-capable networks. Only visible if <code>PXE</code> has been selected as the <code>Provision Source</code>.</p></td>
+<tr>
+<td>PXE NIC</td>
+<td>List of PXE-capable networks<br><br>* Only visible if PXE has been selected as the Provision Source</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="storage-fields">Storage Fields<a class="headerlink" href="#storage-fields" title="Permanent link">&para;</a></h3>
 <table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
 <tbody>
-<tr class="odd">
-<td><p>Name</p></td>
-<td><p>Description</p></td>
+<tr>
+<td>Create Disk</td>
+<td>Create a new disk for the virtual machine</td>
 </tr>
-<tr class="even">
-<td><p>Create Disk</p></td>
-<td><p>Create a new disk for the virtual machine.</p></td>
+<tr>
+<td>Attach Disk</td>
+<td>Select an existing disk from a list of available PVCs to attach to the virtual machine</td>
 </tr>
-<tr class="odd">
-<td><p>Attach Disk</p></td>
-<td><p>Select an existing disk, from a list of available PVCs, to attach to the virtual machine.</p></td>
+<tr>
+<td>DISK NAME</td>
+<td>Name of the disk</td>
 </tr>
-<tr class="even">
-<td><p>DISK NAME</p></td>
-<td><p>Name of the disk.</p></td>
+<tr>
+<td>SIZE (GiB)</td>
+<td>Size in GiB of the disk</td>
 </tr>
-<tr class="odd">
-<td><p>SIZE (GB)</p></td>
-<td><p>Size, in GB, of the disk.</p></td>
+<tr>
+<td>STORAGE CLASS</td>
+<td>Name of the underlying <code>StorageClass</code></td>
 </tr>
-<tr class="even">
-<td><p>STORAGE CLASS</p></td>
-<td><p>Name of the underlying <code>StorageClass</code>.</p></td>
-</tr>
-<tr class="odd">
-<td><p>Bootable Disk</p></td>
-<td><p>List of available disks from which the virtual machine will boot. This is locked to <code>rootdisk</code> if the <strong>Provision Source</strong> of the virtual machine is <code>URL</code> or <code>Container</code>.</p></td>
+<tr>
+<td>Bootable Disk</td>
+<td>List of available disks from which the virtual machine will boot<br><br>* This is locked to rootdisk if the Provision Source of the virtual machine is URL or Container</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="virtual-machine-actions">Virtual Machine Actions<a class="headerlink" href="#virtual-machine-actions" title="Permanent link">&para;</a></h3>
 <table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
+<thead>
+<tr>
+<th>Action</th>
+<th>Available in state</th>
+<th>Description</th>
+</tr>
+</thead>
 <tbody>
-<tr class="odd">
-<td><p>Action</p></td>
-<td><p>Available in state</p></td>
-<td><p>Description</p></td>
+<tr>
+<td>Start Virtual Machine</td>
+<td>Off</td>
+<td>Start the virtual machine</td>
 </tr>
-<tr class="even">
-<td><p><strong>Start Virtual Machine</strong></p></td>
-<td><p><em>Off</em></p></td>
-<td><p>Start the virtual machine.</p></td>
+<tr>
+<td>Stop Virtual Machine</td>
+<td>Running or Other</td>
+<td>Stop the virtual machine</td>
 </tr>
-<tr class="odd">
-<td><p><strong>Stop Virtual Machine</strong></p></td>
-<td><p><em>Running</em> or <em>Other</em></p></td>
-<td><p>Stop the virtual machine.</p></td>
+<tr>
+<td>Restart Virtual Machine</td>
+<td>Running or Other</td>
+<td>Restart the running virtual machine</td>
 </tr>
-<tr class="even">
-<td><p><strong>Restart Virtual Machine</strong></p></td>
-<td><p><em>Running</em> or <em>Other</em></p></td>
-<td><p>Restart the running virtual machine.</p></td>
+<tr>
+<td>Delete Virtual Machine</td>
+<td>All</td>
+<td>Permanently delete the virtual machine from the cluster</td>
 </tr>
-<tr class="odd">
-<td><p><strong>Delete Virtual Machine</strong></p></td>
-<td><p><em>All</em></p></td>
-<td><p>Permanently delete the virtual machine from the cluster.</p></td>
+<tr>
+<td>Migrate Virtual Machine</td>
+<td>Running</td>
+<td>Live migrates the virtual machine to an another node</td>
 </tr>
-<tr class="even">
-<td><p><strong>Migrate Virtual Machine</strong></p></td>
-<td><p><em>Running</em></p></td>
-<td><p>Live migrates the virtual machine to an another node.</p></td>
-</tr>
-<tr class="odd">
-<td><p><strong>Cancel Virtual Machine Migration</strong></p></td>
-<td><p><em>Migrating</em></p></td>
-<td><p>Cancels the migration of the virtual machine.</p></td>
+<tr>
+<td>Cancel Virtual Machine Migration</td>
+<td>Migrating</td>
+<td>Cancels the migration of the virtual machine</td>
 </tr>
 </tbody>
 </table>
-
 <h3 id="pxe-booting-with-a-specified-mac-address">PXE Booting with a Specified MAC Address<a class="headerlink" href="#pxe-booting-with-a-specified-mac-address" title="Permanent link">&para;</a></h3>
 <p>Network booting allows a computer to boot and load an operating system
 or other program without requiring a locally attached storage device.
 For example, you can use it to choose your desired OS image from a PXE
 server when deploying a new host.</p>
-<ul>
-<li>
-<ul>
-<li>A configured interface that allows PXE booting</li>
-</ul>
-</li>
+<ol>
 <li>
 <p>Configure a PXE network on the cluster:</p>
 <ol>
@@ -1303,7 +1289,7 @@ virtualmachineinstance.kubevirt.io "vmi-pxe-boot" created
    link/ether de:00:00:00:00:de brd ff:ff:ff:ff:ff:ff
 </code></pre>
 </li>
-</ul>
+</ol>
               
             </div>
           </div>
