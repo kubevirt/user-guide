@@ -24,13 +24,9 @@ upstream	git@github.com:kubevirt/user-guide.git (fetch)
 upstream	git@github.com:kubevirt/user-guide.git (push)
 ```
 
-<<<<<<< HEAD
--   Start contributing: [Appendix/Contributing](appendix/contributing.md)
-=======
 - We use [mkdocs](https://www.mkdocs.org/) markdown engine with [mkdocs-awesome-pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin/) plugin
   - mkdocs config file
   - Each subdirectory of `./docs` contains a `.pages` file.  We use this to force the ordering of pages.  Alphabetical ordering is not ideal for technical documentation.
->>>>>>> 9bcee5e... Initial commit for migration to mkdocs
 
 - Markdown lives under `./docs`.  Do your work here.
 
@@ -58,7 +54,6 @@ Usage:
 Env Variables:
   CONTAINER_ENGINE	Set container engine, [*podman*, docker]
   BUILD_ENGINE		Set build engine, [*podman*, buildah, docker]
-  GIT_REPO_DIR		Set path to git repos, [*~/git*, /path/to/git/repos]
   SELINUX_ENABLED	Enable SELinux on containers, [*False*, True]
 
 Targets:
