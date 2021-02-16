@@ -159,21 +159,18 @@ endif
 	${BUILD_ENGINE} ${TAG}
 
 
-## Build site. This target should only be used by Prow jobs.
+## Build site. This target should only be used by Netlify and Prow
 build: envvar
-	@echo "${GREEN}Makefile: Build mkdocs site.  This should only be used by a Prow job.${RESET}"
-	if [ `which python3.7` ]; then \
-		python3.7 -m venv /tmp/venv; \
-		. /tmp/venv/bin/activate; \
-		pip3 install mkdocs mkdocs-awesome-pages-plugin mkdocs-htmlproofer-plugin; \
-		echo '*** BEGIN mkdocs.yml ***'; \
-		cat mkdocs.yml; \
-		echo '*** END mkdocs.yml ***'; \
-		mkdocs build -f mkdocs.yml -d site; \
-	else \
-		echo 'python3.7 not found.  exiting...'; \
-		exit 2; \
-	fi; echo
+	@echo "${GREEN}Makefile: Build mkdocs site${RESET}"
+	which python3.7
+	python3.7 -m venv /tmp/venv
+	. /tmp/venv/bin/activate
+	pip3 install mkdocs mkdocs-awesome-pages-plugin mkdocs-htmlproofer-plugin
+	@echo
+	@echo '*** BEGIN cat mkdocs.yml ***'
+	@cat mkdocs.yml
+	@echo '*** END cat mkdocs.yml ***'
+	mkdocs build -f mkdocs.yml -d site
 
 ## Run site.  App available @ http://0.0.0.0:8000
 run: | envvar stop
