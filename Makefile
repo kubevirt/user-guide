@@ -22,7 +22,6 @@ help:
 	@echo 'Env Variables:'
 	@printf "  ${YELLOW}CONTAINER_ENGINE${RESET}\tSet container engine, [*podman*, docker]\n"
 	@printf "  ${YELLOW}BUILD_ENGINE${RESET}\t\tSet build engine, [*podman*, buildah, docker]\n"
-	@printf "  ${YELLOW}GIT_REPO_DIR${RESET}\t\tSet path to git repos, [*~/git*, /path/to/git/repos]\n"
 	@printf "  ${YELLOW}SELINUX_ENABLED${RESET}\tEnable SELinux on containers, [*False*, True]\n"
 	@echo ''
 	@echo 'Targets:'
@@ -77,10 +76,6 @@ else
 endif
 endif
 
-ifndef GIT_REPO_DIR
-	@$(eval GIT_REPO_DIR=~/git)
-endif
-
 ifdef SELINUX_ENABLED
 ifeq ($(shell test "$(SELINUX_ENABLED)" = True  -o  \
                    "$(SELINUX_ENABLED)" = true && printf "true"), true)
@@ -133,30 +128,42 @@ check_spelling: | envvar stop
 
 ## Build image: userguide
 build_image_userguide: stop
-	${DEBUG}$(eval export DIR=${GIT_REPO_DIR}/project-infra/images/kubevirt-userguide)
 	${DEBUG}$(eval export TAG=localhost/userguide:latest)
 	${DEBUG}$(MAKE) build_image
 	@echo
 
 
 ## Build image: yaspeller
+## Build image: yaspeller
 build_image_yaspeller: stop_yaspeller
-	${DEBUG}$(eval export DIR=${GIT_REPO_DIR}/project-infra/images/yaspeller)
-	${DEBUG}$(eval export TAG=localhost/yaspeller:latest)
+	${DEBUG}$(eval export TAG='localhost/yaspeller:latest')
 	${DEBUG}$(MAKE) build_image
 	@echo
 
 
 build_image: envvar
 	@echo "${GREEN}Makefile: Building image: ${TAG}${RESET}"
-ifeq ($(DIR),)
+ifeq ($(TAG),)
 	@echo "This is a sourced target!"
 	@echo "Do not run this target directly... exitting!"
-	exit 1
+	@exit 1
 endif
-	cd ${DIR} && \
-	(${CONTAINER_ENGINE} rmi ${TAG} || echo -n) && \
-	${BUILD_ENGINE} ${TAG}
+	${DEBUG}if [ ! -e "./Dockerfile" ]; then \
+		IMAGE="`echo $${TAG} | sed -e s#\'##g -e s#localhost\/## -e s#:latest##`"; \
+		if [ "`curl https://raw.githubusercontent.com/kubevirt/project-infra/master/images/$${IMAGE}/Dockerfile -o Dockerfile -w '%{http_code}\n' -s`" != "200" ]; then \
+			echo "curl Dockerfile failed... exitting!"; \
+			exit 2; \
+		else \
+			REMOTE=1; \
+		fi; \
+	else \
+		IMAGE="`echo $${TAG} | sed -e s#\'##g -e s#localhost\/## -e s#:latest##`"; \
+		echo "DOCKERFILE file: ./Dockerfile"; \
+		echo "Be sure to add changes to upstream: kubevirt/project-infra/master/images/$${IMAGE}/Dockerfile"; \
+	fi; \
+	${CONTAINER_ENGINE} rmi ${TAG} 2> /dev/null || echo -n; \
+	${BUILD_ENGINE} ${TAG}; \
+	if [ "$${REMOTE}" ]; then rm -f Dockerfile > /dev/null 2>&1; fi
 
 
 ## Build site. This target should only be used by Netlify and Prow
