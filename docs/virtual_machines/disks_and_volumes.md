@@ -411,7 +411,7 @@ DataVolumes have finished their clone and import phases.
             memory: 64M
       terminationGracePeriodSeconds: 0
       volumes:
-      - name: volume1
+      - name: disk1
         dataVolume:
           name: alpine-datavolume
 
