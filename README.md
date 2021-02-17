@@ -70,13 +70,11 @@ Targets:
 ```
 
 #### Environment Variables
-* CONTAINER_ENGINE: Some of us use docker. Some of use use podman.
+* CONTAINER_ENGINE: Some of us use docker. Some of us use podman.
 
-* Build_ENGINE: Some of use docker. Some of us user podman or buildah.
+* BUILD_ENGINE: Some of us use docker. Some of us use podman or buildah.
 
-* GIT_REPO_DIR: Default path for KubeVirt git repos is `~/git/*`.  Use this var if you store repos in a dir like `/opt/git/kubevirt`.
-
-* SELINUX_ENABLED: Some of us run SELinux enabled. Set to to `True` to enable container mount labelling.
+* SELINUX_ENABLED: Some of us run SELinux enabled. Set to `True` to enable container mount labelling.
 
 * DEBUG: This is normally hidden. Set to `True` to echo target commands to terminal.
 
