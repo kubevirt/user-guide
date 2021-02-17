@@ -25,7 +25,7 @@ gen_changelog() {
     echo -e "\n## $REL" ;
     features_for $REL
   done
-} > docs/latest_release_notes.md
+  } > docs/latest_release_notes.md
 }
 
 gen_changelog
