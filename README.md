@@ -82,11 +82,13 @@ Targets:
 
 * check_links: HTMLProofer is used to check any links to external websites as we as any cross-page links
 
-* check_spelling: yaspeller is used to check spelling.  If you see a failure here please feel free to make an update to  
+* check_spelling: yaspeller is used to check spelling.  Feel free to update to the dictionary file as needed (`kubevirt/project-infra/images/yaspeller/.yaspeller.json`).
 
-* build_image_userguide: Build image packed with python and mkdocs app.  ./docs will be mounted.  ./site will be mounted as tmpfs...changes here are lost.
+* build_image_userguide: mkdocs project does not provide a container image.  Use this target to build an image packed with python and mkdocs app.  ./docs will be mounted.  ./site will be mounted as tmpfs...changes here are lost.
 
-* status: Basically `${BUILD_ENGINE} ps` easy way to see what's running.
+* build_image_yaspeller: yaspeller project does not provide a container image.  User this target to Build an image packed with nodejs and yaspeller app.  ./docs will be mounted.  yasspeller will check content for spelling and other bad forms of English.
+
+* status: Basically `${BUILD_ENGINE} ps` for an easy way to see what's running.
 
 * stop: Stop container and app
 
