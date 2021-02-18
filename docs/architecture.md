@@ -34,7 +34,7 @@ avoid confusing and contradictory states, these fields are mutually
 exclusive.
 
 An extended explanation of `spec.runStrategy` vs `spec.running` can be
-found in [Run Strategies](creation/run-strategies.md)
+found in [Run Strategies](virtual_machines/run_strategies.md)
 
 ### Starting and stopping
 
@@ -115,10 +115,9 @@ after the VirtualMachine was created, but before it started:
 
     $ virtctl expose virtualmachine vmi-ephemeral --name vmiservice --port 27017 --target-port 22
 
-All service exposure options that apply to a VirtualMachineInstance
-apply to a VirtualMachine.
+All service exposure options that apply to a VirtualMachineInstance apply to a VirtualMachine.
 
-See [Network Service Integration](usage/network-service-integration.md) for more details.
+See [Service Objects](virtual_machines/service_objects.md) for more details.
 
 ## When to use a VirtualMachine
 

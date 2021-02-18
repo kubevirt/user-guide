@@ -1,4 +1,4 @@
-# Service object
+# Service objects
 
 Once the VirtualMachineInstance is started, in order to connect to a
 VirtualMachineInstance, you can create a `Service` object for a

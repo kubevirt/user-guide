@@ -391,12 +391,7 @@ blue button >> choose "Create from wizard". Next, you have to see
 
 ### Common-templates
 
-There is the [common-templates
-subproject](https://github.com/kubevirt/common-templates/)
-subproject. It provides official prepared and useful templates.
-[Additional doc available](templates/common-templates.md).
-You can also create templates by hand. You can find an example below, in
-the "Example template" section.
+There is the [common-templates](https://github.com/kubevirt/common-templates/) subproject. It provides official prepared and useful templates. You can also create templates by hand. You can find an example below, in the "Example template" section.
 
 ### Example template
 
@@ -679,4 +674,4 @@ path
 Available in the each OpenShift/Kubevirt compute nodes.
 
 ## Additional information
-You can follow [Virtual Machine Lifecycle Guide](usage/life-cycle.md) for further reference.
+You can follow [Virtual Machine Lifecycle Guide](lifecycle.md) for further reference.
