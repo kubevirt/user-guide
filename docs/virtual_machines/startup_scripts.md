@@ -243,8 +243,7 @@ More cloud-config examples can be found here: [Cloud-init
 Examples](https://cloudinit.readthedocs.io/en/latest/topics/examples.html)
 
 Below is an example of using cloud-config to inject an SSH key for the
-default user (fedora in this case) of a [Fedora
-Atomic](https://getfedora.org/en/atomic/download/) disk image.
+default user (fedora in this case) of a [Fedora Atomic](https://www.projectatomic.io/) disk image.
 
     # Create the cloud-init cloud-config userdata.
     cat << END > startup-script

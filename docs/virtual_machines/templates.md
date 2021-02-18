@@ -6,7 +6,7 @@ KubeVirt on OpenShift).
 
 By deploying KubeVirt on top of OpenShift the user can benefit from the
 [OpenShift
-Template](https://docs.openshift.org/latest/dev_guide/templates.html)
+Template](https://docs.openshift.com/container-platform/4.6/virt/vm_templates/virt-creating-vm-template.html)
 functionality.
 
 ## Virtual machine templates
@@ -14,7 +14,7 @@ functionality.
 ### What is a virtual machine template?
 
 The KubeVirt projects provides a set of
-[templates](https://docs.okd.io/latest/dev_guide/templates.html) to
+[templates](https://docs.okd.io/latest/openshift_images/using-templates.html) to
 create VMs to handle common usage scenarios. These templates provide a
 combination of some key factors that could be further customized and
 processed to have a Virtual Machine object. The key factors which define
@@ -93,9 +93,7 @@ the following minimal snippet highlights the fields which you can edit:
 
 ### Relationship between templates and VMs
 
-Once
-[processed](https://docs.openshift.com/enterprise/3.0/dev_guide/templates.html#creating-from-templates-using-the-cli),
-the templates produce VM objects to be used in the cluster. The VMs
+Once processed the templates produce VM objects to be used in the cluster. The VMs
 produced from templates will have a `vm.kubevirt.io/template` label,
 whose value will be the name of the parent template, for example
 `fedora-desktop-medium`:
@@ -178,7 +176,7 @@ vice versa).
 The templates provided by the kubevirt project provide a set of
 conventions and annotations that augment the basic feature of the
 [openshift
-templates](https://docs.okd.io/latest/dev_guide/templates.html). You can
+templates](https://docs.okd.io/latest/openshift_images/using-templates.html). You can
 customize your kubevirt-provided templates editing these annotations, or
 you can add them to your existing templates to make them consumable by
 the kubevirt services.
@@ -366,7 +364,7 @@ spec:
 ### Overview
 
 The KubeVirt projects provides a set of
-[templates](https://docs.okd.io/latest/dev_guide/templates.html) to
+[templates](https://github.com/kubevirt/kubevirt/tree/master/examples) to
 create VMs to handle common usage scenarios. These templates provide a
 combination of some key factors that could be further customized and
 processed to have a Virtual Machine object.
@@ -486,7 +484,7 @@ An OpenShift template has to be converted into the JSON file via
 parameters.
 
 A complete example can be found in the [KubeVirt
-repository](https://github.com/kubevirt/kubevirt/blob/master/cluster/examples/vm-template-fedora.yaml).
+repository](https://raw.githubusercontent.com/kubevirt/kubevirt/master/examples/vm-template-fedora.yaml).
 
 !> You need to be logged in by `oc login` command.
 
