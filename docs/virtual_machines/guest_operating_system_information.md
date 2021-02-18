@@ -155,7 +155,7 @@ Once the `VirtualMachineInstancePreset` is applied to the
           persistentVolumeClaim:
             claimName: my-windows-image
 
-For more information see [VirtualMachineInstancePresets](presets.md)
+For more information see [VirtualMachineInstancePresets](../presets)
 
 ### HyperV optimizations
 

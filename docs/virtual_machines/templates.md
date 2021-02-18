@@ -672,4 +672,4 @@ path
 Available in the each OpenShift/Kubevirt compute nodes.
 
 ## Additional information
-You can follow [Virtual Machine Lifecycle Guide](lifecycle.md) for further reference.
+You can follow [Virtual Machine Lifecycle Guide](../lifecycle) for further reference.

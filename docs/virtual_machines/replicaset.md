@@ -65,7 +65,7 @@ Using VirtualMachineInstanceReplicaSet is the right choice when one
 wants many identical VMs and does not care about maintaining any disk
 state after the VMs are terminated.
 
-[Volume types](disks_and_volumes.md) which
+[Volume types](../disks_and_volumes) which
 work well in combination with a VirtualMachineInstanceReplicaSet are:
 
 -   **cloudInitNoCloud**

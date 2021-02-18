@@ -944,7 +944,7 @@ fewer IOThreads than CPU, each IOThread will be pinned to a set of CPUs.
 #### IOThreads with QEMU Emulator thread and Dedicated (pinned) CPUs
 
 To further improve the vCPUs latency, KubeVirt can allocate an
-additional dedicated physical CPU[1](virtual_machines/virtual_hardware/#cpu), exclusively for the emulator thread, to which it will
+additional dedicated physical CPU<sup>[1](../virtual_hardware#cpu)</sup>, exclusively for the emulator thread, to which it will
 be pinned. This will effectively "isolate" the emulator thread from the vCPUs
 of the VMI. When `ioThreadsPolicy` is set to `auto` IOThreads will also be
 "isolated" from the vCPUs and placed on the same physical CPU as the QEMU
