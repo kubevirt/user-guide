@@ -299,7 +299,7 @@ uploading the file to the <code>cdi-uploadproxy</code>.</p>
 <pre><code>virtctl image-upload dv cirros-vm-disk --size=500Mi --image-path=/home/mhenriks/images/cirros-0.4.0-x86_64-disk.img --uploadproxy-url=&lt;url to upload proxy service&gt;
 </code></pre>
 <h2 id="create-a-virtualmachineinstance">Create a VirtualMachineInstance<a class="headerlink" href="#create-a-virtualmachineinstance" title="Permanent link">&para;</a></h2>
-<p>To create a <code>VirtualMachinInstance</code> from a DataVolume, you can execute the
+<p>To create a <code>VirtualMachineInstance</code> from a DataVolume, you can execute the
 following:</p>
 <pre><code>cat &lt;&lt;EOF | kubectl apply -f -
 apiVersion: kubevirt.io/v1alpha3
@@ -327,7 +327,7 @@ status: {}
 EOF
 </code></pre>
 <h2 id="connect-to-virtualmachineinstance-console">Connect to VirtualMachineInstance console<a class="headerlink" href="#connect-to-virtualmachineinstance-console" title="Permanent link">&para;</a></h2>
-<p>Use <code>virtctl</code> to connect to the newly create <code>VirtualMachinInstance</code>.</p>
+<p>Use <code>virtctl</code> to connect to the newly create <code>VirtualMachineInstance</code>.</p>
 <pre><code>virtctl console cirros-vm
 </code></pre>
               
