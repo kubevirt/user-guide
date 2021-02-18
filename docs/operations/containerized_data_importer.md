@@ -103,7 +103,7 @@ uploading the file to the `cdi-uploadproxy`.
 
 ## Create a VirtualMachineInstance
 
-To create a `VirtualMachinInstance` from a DataVolume, you can execute the
+To create a `VirtualMachineInstance` from a DataVolume, you can execute the
 following:
 
     cat <<EOF | kubectl apply -f -
@@ -133,6 +133,6 @@ following:
 
 ## Connect to VirtualMachineInstance console
 
-Use `virtctl` to connect to the newly create `VirtualMachinInstance`.
+Use `virtctl` to connect to the newly create `VirtualMachineInstance`.
 
     virtctl console cirros-vm
