@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  <link rel="canonical" href="https://kubevirt.io/docs/virtual_machines/templates/">
+  <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/templates/">
   <link rel="shortcut icon" href="../../img/favicon.ico">
   <title>Templates - KubeVirt User-Guide</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
@@ -20,7 +20,7 @@
     // Current page data
     var mkdocs_page_name = "Templates";
     var mkdocs_page_input_path = "virtual_machines/templates.md";
-    var mkdocs_page_url = "/docs/virtual_machines/templates/";
+    var mkdocs_page_url = "/user-guide/virtual_machines/templates/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -119,7 +119,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../host-devices/">Host Devices Assignment</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../windows_wirtio_drivers/">Windows virtio drivers</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../windows_virtio_drivers/">Windows virtio drivers</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../guest_operating_system_information/">Guest Operating System Information</a>
                     </li>
@@ -131,7 +131,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../startup_scripts/">Startup Scripts</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../service_objects/">Service object</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../service_objects/">Service objects</a>
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Templates</a>
     <ul class="current">
@@ -215,13 +215,13 @@
 Guide</a> for more information on how to deploy
 KubeVirt on OpenShift).</p>
 <p>By deploying KubeVirt on top of OpenShift the user can benefit from the
-<a href="https://docs.openshift.org/latest/dev_guide/templates.html">OpenShift
+<a href="https://docs.openshift.com/container-platform/4.6/virt/vm_templates/virt-creating-vm-template.html">OpenShift
 Template</a>
 functionality.</p>
 <h2 id="virtual-machine-templates">Virtual machine templates<a class="headerlink" href="#virtual-machine-templates" title="Permanent link">&para;</a></h2>
 <h3 id="what-is-a-virtual-machine-template">What is a virtual machine template?<a class="headerlink" href="#what-is-a-virtual-machine-template" title="Permanent link">&para;</a></h3>
 <p>The KubeVirt projects provides a set of
-<a href="https://docs.okd.io/latest/dev_guide/templates.html">templates</a> to
+<a href="https://docs.okd.io/latest/openshift_images/using-templates.html">templates</a> to
 create VMs to handle common usage scenarios. These templates provide a
 combination of some key factors that could be further customized and
 processed to have a Virtual Machine object. The key factors which define
@@ -294,9 +294,7 @@ the following minimal snippet highlights the fields which you can edit:</p>
                 VALUE # this is editable
 </code></pre>
 <h3 id="relationship-between-templates-and-vms">Relationship between templates and VMs<a class="headerlink" href="#relationship-between-templates-and-vms" title="Permanent link">&para;</a></h3>
-<p>Once
-<a href="https://docs.openshift.com/enterprise/3.0/dev_guide/templates.html#creating-from-templates-using-the-cli">processed</a>,
-the templates produce VM objects to be used in the cluster. The VMs
+<p>Once processed the templates produce VM objects to be used in the cluster. The VMs
 produced from templates will have a <code>vm.kubevirt.io/template</code> label,
 whose value will be the name of the parent template, for example
 <code>fedora-desktop-medium</code>:</p>
@@ -369,7 +367,7 @@ vice versa).</p>
 <h3 id="common-template-customization">common template customization<a class="headerlink" href="#common-template-customization" title="Permanent link">&para;</a></h3>
 <p>The templates provided by the kubevirt project provide a set of
 conventions and annotations that augment the basic feature of the
-<a href="https://docs.okd.io/latest/dev_guide/templates.html">openshift
+<a href="https://docs.okd.io/latest/openshift_images/using-templates.html">openshift
 templates</a>. You can
 customize your kubevirt-provided templates editing these annotations, or
 you can add them to your existing templates to make them consumable by
@@ -531,7 +529,7 @@ spec:
 <h2 id="virtual-machine-creation">Virtual machine creation<a class="headerlink" href="#virtual-machine-creation" title="Permanent link">&para;</a></h2>
 <h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>
 <p>The KubeVirt projects provides a set of
-<a href="https://docs.okd.io/latest/dev_guide/templates.html">templates</a> to
+<a href="https://github.com/kubevirt/kubevirt/tree/master/examples">templates</a> to
 create VMs to handle common usage scenarios. These templates provide a
 combination of some key factors that could be further customized and
 processed to have a Virtual Machine object.</p>
@@ -551,12 +549,7 @@ WorkLoads in the left panel &gt;&gt; press to the "Create Virtual Machine"
 blue button &gt;&gt; choose "Create from wizard". Next, you have to see
 "Create Virtual Machine" window</p>
 <h3 id="common-templates">Common-templates<a class="headerlink" href="#common-templates" title="Permanent link">&para;</a></h3>
-<p>There is the <a href="https://github.com/kubevirt/common-templates/">common-templates
-subproject</a>
-subproject. It provides official prepared and useful templates.
-<a href="templates/common-templates.md">Additional doc available</a>.
-You can also create templates by hand. You can find an example below, in
-the "Example template" section.</p>
+<p>There is the <a href="https://github.com/kubevirt/common-templates/">common-templates</a> subproject. It provides official prepared and useful templates. You can also create templates by hand. You can find an example below, in the "Example template" section.</p>
 <h3 id="example-template">Example template<a class="headerlink" href="#example-template" title="Permanent link">&para;</a></h3>
 <p>In order to create a virtual machine via OpenShift CLI, you need to
 provide a template defining the corresponding object and its metadata.</p>
@@ -642,7 +635,7 @@ value.</p>
 <p>An OpenShift template has to be converted into the JSON file via
 <code>oc process</code> command, that also allows you to set the template
 parameters.</p>
-<p>A complete example can be found in the <a href="https://github.com/kubevirt/kubevirt/blob/master/cluster/examples/vm-template-fedora.yaml">KubeVirt
+<p>A complete example can be found in the <a href="https://raw.githubusercontent.com/kubevirt/kubevirt/master/examples/vm-template-fedora.yaml">KubeVirt
 repository</a>.</p>
 <p>!&gt; You need to be logged in by <code>oc login</code> command.</p>
 <pre><code>$ oc process -f cluster/vmi-template-fedora.yaml\
@@ -791,7 +784,7 @@ path</p>
 </code></pre>
 <p>Available in the each OpenShift/Kubevirt compute nodes.</p>
 <h2 id="additional-information">Additional information<a class="headerlink" href="#additional-information" title="Permanent link">&para;</a></h2>
-<p>You can follow <a href="usage/life-cycle.md">Virtual Machine Lifecycle Guide</a> for further reference.</p>
+<p>You can follow <a href="../lifecycle">Virtual Machine Lifecycle Guide</a> for further reference.</p>
               
             </div>
           </div>
@@ -802,7 +795,7 @@ path</p>
         <a href="../replicaset/" class="btn btn-neutral float-right" title="VirtualMachineInstanceReplicaSet">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../service_objects/" class="btn btn-neutral" title="Service object"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../service_objects/" class="btn btn-neutral" title="Service objects"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
