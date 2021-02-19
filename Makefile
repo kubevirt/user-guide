@@ -89,7 +89,7 @@ endif
 check_links: | envvar stop
 	@echo "${GREEN}Makefile: Check external and internal links${RESET}"
 	${DEBUG}export IFS=$$'\n'; \
-	${CONTAINER_ENGINE} run -it --rm --name userguide -v ${PWD}:/srv:ro${SELINUX_ENABLED} --mount type=tmpfs,destination=/srv/site userguide /bin/bash -c 'cd /srv; bundle install --quiet; rake -- -u'
+	${CONTAINER_ENGINE} run -it --rm --name userguide -v ${PWD}:/srv:ro${SELINUX_ENABLED} --mount type=tmpfs,destination=/srv/site kubevirt-userguide /bin/bash -c 'cd /srv; bundle install --quiet; rake -- -u'
 	@echo
 
 
@@ -128,7 +128,7 @@ check_spelling: | envvar stop
 
 ## Build image: userguide
 build_image_userguide: stop
-	${DEBUG}$(eval export TAG=localhost/userguide:latest)
+	${DEBUG}$(eval export TAG=localhost/kubevirt-userguide:latest)
 	${DEBUG}$(MAKE) build_image
 	@echo
 
@@ -182,7 +182,7 @@ build: envvar
 ## Run site.  App available @ http://0.0.0.0:8000
 run: | envvar stop
 	@echo "${GREEN}Makefile: Run site${RESET}"
-	${CONTAINER_ENGINE} run -d --name userguide --net=host -v ./:/srv:ro${SELINUX_ENABLED} --mount type=tmpfs,destination=/srv/site localhost/userguide:latest /bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
+	${CONTAINER_ENGINE} run -d --name userguide --net=host -v ./:/srv:ro${SELINUX_ENABLED} --mount type=tmpfs,destination=/srv/site kubevirt-userguide:latest /bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
 	@echo
 
 
