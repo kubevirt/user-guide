@@ -20,34 +20,34 @@ There are usually up to 8 possible devices that are required to run
 Windows smoothly in a virtualized environment. KubeVirt currently
 supports only:
 
--   **viostor**, the block driver, applies to SCSI Controller in the
+- **viostor**, the block driver, applies to SCSI Controller in the
     Other devices group.
 
--   **viorng**, the entropy source driver, applies to PCI Device in the
+- **viorng**, the entropy source driver, applies to PCI Device in the
     Other devices group.
 
--   **NetKVM**, the network driver, applies to Ethernet Controller in
+- **NetKVM**, the network driver, applies to Ethernet Controller in
     the Other devices group. Available only if a virtio NIC is
     configured.
 
 Other virtio drivers, that exists and might be supported in the future:
 
--   Balloon, the balloon driver, applies to PCI Device in the Other
+- Balloon, the balloon driver, applies to PCI Device in the Other
     devices group
 
--   vioserial, the paravirtual serial driver, applies to PCI Simple
+- vioserial, the paravirtual serial driver, applies to PCI Simple
     Communications Controller in the Other devices group.
 
--   vioscsi, the SCSI block driver, applies to SCSI Controller in the
+- vioscsi, the SCSI block driver, applies to SCSI Controller in the
     Other devices group.
 
--   qemupciserial, the emulated PCI serial driver, applies to PCI Serial
+- qemupciserial, the emulated PCI serial driver, applies to PCI Serial
     Port in the Other devices group.
 
--   qxl, the paravirtual video driver, applied to Microsoft Basic
+- qxl, the paravirtual video driver, applied to Microsoft Basic
     Display Adapter in the Display adapters group.
 
--   pvpanic, the paravirtual panic driver, applies to Unknown device in
+- pvpanic, the paravirtual panic driver, applies to Unknown device in
     the Other devices group.
 
 > **Note**
@@ -106,7 +106,7 @@ Enterprise Linux 7](https://access.redhat.com/articles/2470791).
 ## How to obtain virtio drivers?
 
 The virtio Windows drivers are distributed in a form of
-[containerDisk](https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/disks-and-volumes.html#containerDisk),
+[containerDisk](../disks_and_volumes/#containerdisk),
 which can be simply mounted to the VirtualMachine. The container image,
 containing the disk is located at:
 <https://hub.docker.com/r/kubevirt/virtio-container-disk> and the image

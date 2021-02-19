@@ -35,7 +35,7 @@ are currently supported:
 <td><p>Microsoft Windows Server 2012 R2</p></td>
 <td><p>6.3</p></td>
 <td><p>winnt</p></td>
-<td><p><a href="http://microsoft.com/win/2k12r2">http://microsoft.com/win/2k12r2</a></p></td>
+<td><p><a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2012-r2">https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2012-r2</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -155,7 +155,7 @@ Once the `VirtualMachineInstancePreset` is applied to the
           persistentVolumeClaim:
             claimName: my-windows-image
 
-For more information see [VirtualMachineInstancePresets](presets.md)
+For more information see [VirtualMachineInstancePresets](../presets)
 
 ### HyperV optimizations
 
