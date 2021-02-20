@@ -138,15 +138,14 @@ If the VirtualMachineInstance configuration should be modifiable inside
 the cluster and these changes should be picked up on the next
 VirtualMachineInstance restart. This means that no hotplug is involved.
 
-When you want to let the cluster manage your individual
-VirtualMachineInstance
+### When you want to let the cluster manage your individual VirtualMachineInstance
 
 Kubernetes as a declarative system can help you to manage the
 VirtualMachineInstance. You tell it that you want this
 VirtualMachineInstance with your application running, the VirtualMachine
 will try to make sure it stays running.
 
-> Note: The current believe is that if it is defined that the
+> Note: The current belief is that if it is defined that the
 > VirtualMachineInstance should be running, it should be running. This is
 > different to many classical virtualization platforms, where VMs stay
 > down if they were switched off. Restart policies may be added if needed.
@@ -210,7 +209,7 @@ No resources found.
 Let’s start the VirtualMachine:
 
 ```
-$ virtctl start omv vm-cirros
+$ virtctl start vm vm-cirros
 ```
 
 As expected, a VirtualMachineInstance called `vm-cirros` got created:
@@ -224,7 +223,7 @@ Annotations:  <none>
 API Version:  kubevirt.io/v1alpha3
 Kind:         VirtualMachine
 Metadata:
-  Cluster Name:        
+  Cluster Name:
   Creation Timestamp:  2018-04-30T09:25:08Z
   Generation:          0
   Resource Version:    6418
@@ -250,7 +249,7 @@ Spec:
             Name:         cloudinitdisk
             Volume Name:  cloudinitdisk
         Machine:
-          Type:  
+          Type:
         Resources:
           Requests:
             Memory:                      64M
