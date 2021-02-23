@@ -7,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/graphical_and_console_access/">
+  <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/accessing_virtual_machines/">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Graphical and Serial Console Access - KubeVirt User-Guide</title>
+  <title>Accessing Virtual Machines - KubeVirt User-Guide</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Graphical and Serial Console Access";
-    var mkdocs_page_input_path = "virtual_machines/graphical_and_console_access.md";
-    var mkdocs_page_url = "/user-guide/virtual_machines/graphical_and_console_access/";
+    var mkdocs_page_name = "Accessing Virtual Machines";
+    var mkdocs_page_input_path = "virtual_machines/accessing_virtual_machines.md";
+    var mkdocs_page_url = "/user-guide/virtual_machines/accessing_virtual_machines/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -125,13 +125,11 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Graphical and Serial Console Access</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Accessing Virtual Machines</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#accessing-the-serial-console">Accessing the serial console</a>
+    <li class="toctree-l2"><a class="reference internal" href="#graphical-and-serial-console-access">Graphical and Serial Console Access</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#accessing-the-graphical-console-vnc">Accessing the graphical console (VNC)</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#debugging-console-access">Debugging console access</a>
+    <li class="toctree-l2"><a class="reference internal" href="#ssh-access">SSH Access</a>
     </li>
     </ul>
                     </li>
@@ -180,10 +178,10 @@
         
       
     
-    <li>Graphical and Serial Console Access</li>
+    <li>Accessing Virtual Machines</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/graphical_and_console_access.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/accessing_virtual_machines.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -194,7 +192,8 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="graphical-and-serial-console-access">Graphical and Serial Console Access<a class="headerlink" href="#graphical-and-serial-console-access" title="Permanent link">&para;</a></h1>
+                <h1 id="accessing-virtual-machines">Accessing Virtual Machines<a class="headerlink" href="#accessing-virtual-machines" title="Permanent link">&para;</a></h1>
+<h2 id="graphical-and-serial-console-access">Graphical and Serial Console Access<a class="headerlink" href="#graphical-and-serial-console-access" title="Permanent link">&para;</a></h2>
 <p>Once a virtual machine is started you are able to connect to the
 consoles it exposes. Usually there are two types of consoles:</p>
 <ul>
@@ -206,12 +205,12 @@ consoles it exposes. Usually there are two types of consoles:</p>
 <a href="/installation/?id=client-side-virtctl-deployment">installed</a> to gain
 access to the VirtualMachineInstance.</p>
 </blockquote>
-<h2 id="accessing-the-serial-console">Accessing the serial console<a class="headerlink" href="#accessing-the-serial-console" title="Permanent link">&para;</a></h2>
+<h3 id="accessing-the-serial-console">Accessing the serial console<a class="headerlink" href="#accessing-the-serial-console" title="Permanent link">&para;</a></h3>
 <p>The serial console of a virtual machine can be accessed by using the
 <code>console</code> command:</p>
 <pre><code>$ virtctl console --kubeconfig=$KUBECONFIG testvmi
 </code></pre>
-<h2 id="accessing-the-graphical-console-vnc">Accessing the graphical console (VNC)<a class="headerlink" href="#accessing-the-graphical-console-vnc" title="Permanent link">&para;</a></h2>
+<h3 id="accessing-the-graphical-console-vnc">Accessing the graphical console (VNC)<a class="headerlink" href="#accessing-the-graphical-console-vnc" title="Permanent link">&para;</a></h3>
 <p>Accessing the graphical console of a virtual machine is usually done
 through VNC, which requires <code>remote-viewer</code>. Once the tool is installed
 you can access the graphical console using:</p>
@@ -221,7 +220,7 @@ you can access the graphical console using:</p>
 <pre><code>$ virtctl vnc --kubeconfig=$KUBECONFIG --proxy-only testvmi
 </code></pre>
 <p>this would print the port number on your machine where you can manually connect using any of the vnc viewers</p>
-<h2 id="debugging-console-access">Debugging console access<a class="headerlink" href="#debugging-console-access" title="Permanent link">&para;</a></h2>
+<h3 id="debugging-console-access">Debugging console access<a class="headerlink" href="#debugging-console-access" title="Permanent link">&para;</a></h3>
 <p>Should the connection fail, you can use the <code>-v</code> flag to get more output
 from both <code>virtctl</code> and the <code>remote-viewer</code> tool, to troubleshoot the
 problem.</p>
@@ -265,6 +264,203 @@ rules:
 namespaces.</p>
 <p>In order to reduce the scope to a single namespace, bind this
 ClusterRole using a RoleBinding that targets a single namespace.</p>
+<h2 id="ssh-access">SSH Access<a class="headerlink" href="#ssh-access" title="Permanent link">&para;</a></h2>
+<p>A common operational pattern used when managing virtual machines is to inject
+public ssh keys into the virtual machines at boot. This allows automation tools
+(like ansible) to provision the virtual machine. It also gives operators a way
+of gaining secure passwordless access to a virtual machine.</p>
+<p>KubeVirt provides multiple ways to inject ssh public keys into a virtual
+machine. In general, these methods fall into two categories. <a href="/virtual_machines/accessing_virtual_machines/#static-ssh-key-injection-via-cloud-init">Static key injection</a>,
+ which places keys on the virtual machine the first time it is
+booted, and <a href="/virtual_machines/accessing_virtual_machines/#dynamic-ssh-key-injection-via-qemu-user-agent">dynamic injection</a>, which allows keys to be dynamically updated
+both at boot and during runtime.</p>
+<h3 id="static-ssh-key-injection-via-cloud-init">Static SSH Key Injection via Cloud Init<a class="headerlink" href="#static-ssh-key-injection-via-cloud-init" title="Permanent link">&para;</a></h3>
+<p>Users creating virtual machines have the ability to provide startup scripts to
+their virtual machines which allow any number of custom operations to take place.
+Placing public ssh keys into a <a href="/virtual_machines/startup_scripts/#cloud-init">cloud-init startup script</a> is one option people
+have for getting their public keys into the virtual machine, however there are
+some other options that grant more flexibility.</p>
+<p>The VM's access credential api allows statically injecting ssh public keys at creation
+time independently of the cloud-init user data by placing the ssh public key
+in a Kubernetes secret. This is useful because it allows people creating virtual
+machines to separate the application data in their cloud-init user data from the
+credentials used to access the virtual machine.</p>
+<p>For example, someone can put their ssh key into a Kubernetes secret like this.</p>
+<pre><code># Place ssh key into a secret
+
+kubectl create secret generic my-pub-key --from-file=key1=/id_rsa.pub
+</code></pre>
+<p>Then assign that key to the virtual machine with the access credentials api
+using the configDrive propagation method. Note here how the cloud-init user
+data is not touched. KubeVirt is injecting the ssh key into the virtual machine
+using the machine generated cloud-init metadata, and not the user data. This
+keeps the application user date separate from credentials.</p>
+<pre><code>#Create a vm yaml that references the secret in using the access credentials api.
+
+
+cat &lt;&lt; END &gt; my-vm.yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: my-vm
+  name: my-vm
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: fedora-dv
+    spec:
+      pvc:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+        storageClassName: local
+      source:
+        registry:
+          url: docker://quay.io/kubevirt/fedora-cloud-container-disk-demo
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: my-vm
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: disk0
+          - disk:
+              bus: virtio
+            name: disk1
+        machine:
+          type: &quot;&quot;
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 1G
+      terminationGracePeriodSeconds: 0
+      accessCredentials:
+      - sshPublicKey:
+          source:
+            secret:
+              secretName: my-pub-key 
+          propagationMethod:
+            configDrive: {}
+      volumes:
+      - dataVolume:
+          name: fedora-dv
+        name: disk0
+      - cloudInitConfigDrive:
+          userData: |
+            #!/bin/bash
+            echo &quot;Application setup goes here&quot;
+        name: disk1
+END
+
+kubectl create -f my-vm.yaml
+
+</code></pre>
+<h3 id="dynamic-ssh-key-injection-via-qemu-user-agent">Dynamic SSH Key Injection via Qemu User Agent<a class="headerlink" href="#dynamic-ssh-key-injection-via-qemu-user-agent" title="Permanent link">&para;</a></h3>
+<p>KubeVirt supports dynamically injecting public ssh keys at run time through the
+use of the qemu guest agent. This is achieved through the access credentials
+api by using the qemuGuestAgent propagation method. </p>
+<blockquote>
+<p>Note: This requires the qemu guest agent to be installed within the guest</p>
+<p>Note: When using qemuGuestAgent propagation, the <code>/home/$USER/.ssh/authorized_keys</code>
+file will be owned by the guest agent. Changes to that file that are made
+outside of the qemu guest agent's control will get deleted.</p>
+<p>Note: More information about the motivation behind the access credentials
+api can be found in the <a href="https://github.com/kubevirt/kubevirt/pull/4195">pull request description</a> that introduced this api.</p>
+</blockquote>
+<p>In the example below, a secret contains an ssh key. When attached to the 
+VM via the access credential api with the qemuGuestAgent propagation method,
+the contents of the secret can be updated at any time which will automatically
+get applied to a running VM. The secret can contain multiple public keys.</p>
+<pre><code># Place ssh key into a secret
+
+kubectl create secret generic my-pub-key --from-file=key1=/id_rsa.pub
+</code></pre>
+<p>Now reference this secret on the VM with the access credentials api using
+qemuGuestAgent propagation. This example installs and starts the qemu guest
+agent using a cloud-init script in order to ensure the agent is available.</p>
+<pre><code># Create a vm yaml that references the secret in using the access credentials api.
+
+
+cat &lt;&lt; END &gt; my-vm.yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: my-vm
+  name: my-vm
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: fedora-dv
+    spec:
+      pvc:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
+        storageClassName: local
+      source:
+        registry:
+          url: docker://quay.io/kubevirt/fedora-cloud-container-disk-demo
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: my-vm
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: disk0
+          - disk:
+              bus: virtio
+            name: disk1
+        machine:
+          type: &quot;&quot;
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 1G
+      terminationGracePeriodSeconds: 0
+      accessCredentials:
+      - sshPublicKey:
+          source:
+            secret:
+              secretName: my-pub-key 
+          propagationMethod:
+            qemuGuestAgent:
+              users:
+              - &quot;fedora&quot;
+      volumes:
+      - dataVolume:
+          name: fedora-dv
+        name: disk0
+      - cloudInitConfigDrive:
+          userData: |
+            #!/bin/bash
+
+            sudo setenforce Permissive
+            sudo yum install -y qemu-guest-agent
+            sudo systemctl start qemu-guest-agent 
+        name: disk1
+END
+
+kubectl create -f my-vm.yaml
+
+</code></pre>
               
             </div>
           </div>
