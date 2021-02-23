@@ -135,6 +135,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#cloud-init-examples">Cloud-init Examples</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sysprep-examples">Sysprep Examples</a>
+    </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../service_objects/">Service objects</a>
@@ -219,10 +221,22 @@ detect the ephemeral disk and execute custom userdata scripts at boot.</p>
 <h2 id="sysprep">Sysprep<a class="headerlink" href="#sysprep" title="Permanent link">&para;</a></h2>
 <p>Sysprep is an automation tool for Windows that automates Windows
 installation, setup, and custom software provisioning.</p>
-<p><strong>Sysprep support is currently not implemented by KubeVirt.</strong> However it
-is a feature the KubeVirt upstream community has shown interest in. As a
-result, it is likely Sysprep support will make its way into a future
-KubeVirt release.</p>
+<p>The general flow is:</p>
+<ol>
+<li>
+<p>Seal the vm image with the Sysprep tool, for example by running:
+    <code>console
+    %WINDIR%\system32\sysprep\sysprep.exe /generalize /shutdown /oobe /mode:vm</code></p>
+<p>More information can be found here: 
+* <a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep-process-overview">Sysprep Process Overview</a>
+* <a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation">Sysprep (Generalize) a Windows installation</a></p>
+</li>
+<li>
+<p>Providing an Answer file named <code>autounattend.xml</code> in an attached media. The answer file can be provided in a ConfigMap or a Secret with the key <code>autounattend.xml</code></p>
+<p>More information can be found here: <a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs">Answer files (unattend.xml)</a></p>
+<p>Note that there are also many easy to find online tools available for creating an answer file.</p>
+</li>
+</ol>
 <h2 id="cloud-init-examples">Cloud-init Examples<a class="headerlink" href="#cloud-init-examples" title="Permanent link">&para;</a></h2>
 <h3 id="user-data">User Data<a class="headerlink" href="#user-data" title="Permanent link">&para;</a></h3>
 <p>KubeVirt supports the cloud-init NoCloud and ConfigDrive data sources
@@ -745,6 +759,108 @@ The metadata will be available in the guests config drive `openstack/latest/meta
     },
   ]
 }
+</code></pre>
+<h2 id="sysprep-examples">Sysprep Examples<a class="headerlink" href="#sysprep-examples" title="Permanent link">&para;</a></h2>
+<h3 id="sysprep-in-a-configmap">Sysprep in a ConfigMap<a class="headerlink" href="#sysprep-in-a-configmap" title="Permanent link">&para;</a></h3>
+<p>The answer file can be provided in a ConfigMap:</p>
+<pre><code class="language-console">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sysprep-config
+data:
+  autounattend.xml: |
+    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+    &lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;
+    ...
+    &lt;/unattend&gt;
+</code></pre>
+<p>And attached to the VM like so:</p>
+<pre><code class="language-console">kind: VirtualMachine
+metadata:
+  name: windows-with-sysprep
+spec:
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: windows-with-sysprep
+    spec:
+      domain:
+        cpu:
+          cores: 3
+        devices:
+          disks:
+          - bootOrder: 1
+            disk:
+              bus: virtio
+            name: harddrive
+          - name: sysprep
+            cdrom:
+              bus: sata
+        machine:
+          type: q35
+        resources:
+          requests:
+            memory: 6G
+      volumes:
+      - name: harddrive
+        persistentVolumeClaim:
+          claimName: windows_pvc
+      - name: sysprep
+        sysprep:
+          configMap:
+            name: sysprep-config
+</code></pre>
+<h3 id="sysprep-in-a-secret">Sysprep in a Secret<a class="headerlink" href="#sysprep-in-a-secret" title="Permanent link">&para;</a></h3>
+<p>The answer file can be provided in a Secret:</p>
+<pre><code class="language-console">apiVersion: v1
+kind: Secret
+metadata:
+  name: sysprep-config
+stringData:
+data:
+  autounattend.xml: |
+    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+    &lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;
+    ...
+    &lt;/unattend&gt;
+</code></pre>
+<p>And attached to the VM like so:</p>
+<pre><code class="language-console">kind: VirtualMachine
+metadata:
+  name: windows-with-sysprep
+spec:
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: windows-with-sysprep
+    spec:
+      domain:
+        cpu:
+          cores: 3
+        devices:
+          disks:
+          - bootOrder: 1
+            disk:
+              bus: virtio
+            name: harddrive
+          - name: sysprep
+            cdrom:
+              bus: sata
+        machine:
+          type: q35
+        resources:
+          requests:
+            memory: 6G
+      volumes:
+      - name: harddrive
+        persistentVolumeClaim:
+          claimName: windows_pvc
+      - name: sysprep
+        sysprep:
+          secret:
+            name: sysprep-secret
 </code></pre>
               
             </div>
