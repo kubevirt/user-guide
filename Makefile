@@ -1,7 +1,7 @@
 .PHONY: help envvar \
-        check_links check_spelling \
-        build build_image_userguide build_image_yaspeller \
-        status run stop stop_yaspeller
+				check_links check_spelling \
+				build build_image_userguide build_image_yaspeller \
+				status run stop stop_yaspeller
 
 # COLORS
 RED    := $(shell tput -Txterm setaf 1)
@@ -20,6 +20,7 @@ PIP ?= pip3
 
 LOCAL_SERVER_PORT ?= 8000
 
+
 ## Show help
 help:
 	@echo ''
@@ -32,7 +33,6 @@ help:
 	@printf "  ${YELLOW}CONTAINER_ENGINE${RESET}\tSet container engine, [*podman*, docker]\n"
 	@printf "  ${YELLOW}BUILD_ENGINE${RESET}\t\tSet build engine, [*podman*, buildah, docker]\n"
 	@printf "  ${YELLOW}SELINUX_ENABLED${RESET}\tEnable SELinux on containers, [*False*, True]\n"
-	@printf "  ${YELLOW}PIP${RESET}\t\t\tPip executable, [*pip3*, pip]\n"
 	@printf "  ${YELLOW}LOCAL_SERVER_PORT${RESET}\tPort on which the local mkdocs server will run, [*8000*]\n"
 	@echo ''
 	@echo 'Targets:'
@@ -80,7 +80,7 @@ ifndef DEBUG
 	@$(eval export DEBUG=@)
 else
 ifeq ($(shell test "$(DEBUG)" = True  -o  \
-                   "$(DEBUG)" = true && printf "true"), true)
+									 "$(DEBUG)" = true && printf "true"), true)
 	@$(eval export DEBUG=)
 else
 	@$(eval export DEBUG=@)
@@ -89,7 +89,7 @@ endif
 
 ifdef SELINUX_ENABLED
 ifeq ($(shell test "$(SELINUX_ENABLED)" = True  -o  \
-                   "$(SELINUX_ENABLED)" = true && printf "true"), true)
+									 "$(SELINUX_ENABLED)" = true && printf "true"), true)
 		@$(eval export SELINUX_ENABLED=,Z)
 endif
 endif
@@ -101,13 +101,13 @@ check_links: | envvar stop
 	@echo "${GREEN}Makefile: Check external and internal links${RESET}"
 	${DEBUG}export IFS=$$'\n'; \
 	${CONTAINER_ENGINE} run \
-        -it \
-        --rm \
-        --name userguide \
-        -v ${PWD}:/srv:ro${SELINUX_ENABLED} \
-        --mount type=tmpfs,destination=/srv/site \
-        kubevirt-userguide \
-        /bin/bash -c 'cd /srv; bundle install --quiet; rake -- -u'
+				-it \
+				--rm \
+				--name userguide \
+				-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
+				--mount type=tmpfs,destination=/srv/site \
+				kubevirt-userguide \
+				/bin/bash -c 'cd /srv; bundle install --quiet; rake -- -u'
 	@echo
 
 
@@ -203,16 +203,17 @@ build: envvar
 run: | envvar stop
 	@echo "${GREEN}Makefile: Run site${RESET}"
 	${CONTAINER_ENGINE} run \
-        -d \
-        --name userguide \
-        -p ${LOCAL_SERVER_PORT}:8000 \
-        -v ${PWD}:/srv:ro${SELINUX_ENABLED} \
-        --mount type=tmpfs,destination=/srv/site \
-        kubevirt-userguide:latest \
-        /bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
+				-d \
+				--name userguide \
+				-p ${LOCAL_SERVER_PORT}:8000 \
+				-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
+				--mount type=tmpfs,destination=/srv/site \
+				kubevirt-userguide:latest \
+				/bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
 	@echo
 	@echo "${AQUA}Makefile: Server now running at [https://localhost:$(LOCAL_SERVER_PORT)]${RESET}"
 	@echo
+
 
 ## Container status
 status: | envvar
