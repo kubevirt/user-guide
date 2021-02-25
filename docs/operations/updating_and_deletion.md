@@ -1,6 +1,6 @@
 # Updating and deletion
 
-## Updating KubeVirt
+## Updating KubeVirt Control Plane
 
 Zero downtime rolling updates are supported starting with release
 `v0.17.0` onward. Updating from any release prior to the KubeVirt
@@ -42,6 +42,99 @@ in the cluster doesn’t have these RBAC rules itself. In this case, you
 need to update the `virt-operator` first, and then proceed to update
 kubevirt. See [this issue for more
 details](https://github.com/kubevirt/kubevirt/issues/2533).
+
+## Updating KubeVirt Workloads
+
+Workload updates are supported as an opt in feature starting with `v0.39.0`
+
+By default, when KubeVirt is updated this only involves the control plane
+components. Any existing VirtualMachineInstance (VMI) workloads that are
+running before an update occurs remain 100% untouched. The workloads
+continue to run and are not interrupted as part of the default update process.
+
+It's important to note that these VMI workloads do involve components such as
+libvirt, qemu, and virt-launcher, which can optionally be updated during the
+KubeVirt update process as well. However that requires opting in to having
+virt-operator perform automated actions on workloads.
+
+Opting in to VMI updates involves configuring the ```workloadUpdateStrategy```
+field on the KubeVirt CR. This field controls the methods virt-operator will
+use to when updating the VMI workload pods.
+
+There are two methods supported.
+
+**LiveMigrate:** Which results in VMIs being updated by live migrating the
+virtual machine guest into a new pod with all the updated components enabled.
+
+**Evict: ** Which results in the VMI's pod being shutdown. If the VMI is
+controlled by a higher level VirtualMachine object with `runStrategy: always`,
+then a new VMI will spin up in a new pod with updated components.
+
+The least disruptive way to update VMI workloads is to use LiveMigrate. Any
+VMI workload that is not live migratable will be left untouched. If live
+migration is not enabled in the cluster, then the only option available for
+virt-operator managed VMI updates is the Evict method.
+
+
+**Example: Enabling VMI workload updates via LiveMigration**
+
+```console
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  imagePullPolicy: IfNotPresent
+  workloadUpdateStrategy:
+    workloadUpdateMethods:
+      - LiveMigrate
+```
+
+**Example: Enabling VMI workload updates via Evict with batch tunings**
+
+The batch tunings allow configuring how quickly VMI's are evicted. In large
+clusters, it's desirable to ensure that VMI's are evicted in batches in order
+to distribute load.
+
+```console
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  imagePullPolicy: IfNotPresent
+  workloadUpdateStrategy:
+    workloadUpdateMethods:
+      - Evict
+    batchEvictSize: 10
+    batchEvictInterval: "1m"
+```
+
+
+**Example: Enabling VMI workload updates with both LiveMigrate and Evict**
+
+When both LiveMigrate and Evict are specified, then any workloads which are
+live migratable will be guaranteed to be live migrated. Only workloads which
+are not live migratable will be evicted.
+
+
+```console
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  imagePullPolicy: IfNotPresent
+  workloadUpdateStrategy:
+    workloadUpdateMethods:
+      - LiveMigrate
+      - Evict
+    batchEvictSize: 10
+    batchEvictInterval: "1m"
+```
 
 ## Deleting KubeVirt
 
