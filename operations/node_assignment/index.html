@@ -90,6 +90,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#taints-and-tolerations">Taints and Tolerations</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#node-balancing-with-descheduler">Node balancing with Descheduler</a>
+    </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../node_maintenance/">Node maintenance</a>
@@ -321,6 +323,22 @@ spec:
     value: "value"
     effect: "NoSchedule"
 </code></pre>
+<h2 id="node-balancing-with-descheduler">Node balancing with Descheduler<a class="headerlink" href="#node-balancing-with-descheduler" title="Permanent link">&para;</a></h2>
+<p>In some cases we might need to rebalance the cluster on current scheduling policy 
+and load conditions. <a href="https://github.com/kubernetes-sigs/descheduler">Descheduler</a> 
+can find pods, which violates e.g. scheduling decisions and evict them based on descheduler 
+policies. Kubevirt VMs are handled as pods with local storage, so by default, 
+descheduler will not evict them. But it can be easily overridden by adding special 
+annotation to the VMI template in the VM:</p>
+<pre><code class="language-console">spec:
+  template:
+    metadata:
+      annotations:
+        descheduler.alpha.kubernetes.io/evict: true
+</code></pre>
+<p>This annotation will cause, that the descheduler will be able to evict the VM's pod which can then be 
+scheduled by scheduler on different nodes. A VirtualMachine will never restart or re-create a 
+VirtualMachineInstance until the current instance of the VirtualMachineInstance is deleted from the cluster.</p>
               
             </div>
           </div>
