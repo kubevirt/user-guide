@@ -70,7 +70,7 @@ require a provisioner in your cluster.
     [Disks and Volumes](../disks_and_volumes)
 
 -   How to access a VirtualMachineInstance via `console` or `vnc`:
-    [Console Access](../graphical_and_console_access)
+    [Console Access](../accessing_virtual_machines)
 
 -   How to customize VirtualMachineInstances with `cloud-init`:
     [Cloud Init](../startup_scripts#cloud-init)
