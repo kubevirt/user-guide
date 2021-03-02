@@ -1,3 +1,8 @@
+.PHONY: help envvar \
+				check_links check_spelling \
+				build build_image_userguide build_image_yaspeller \
+				status run stop stop_yaspeller
+
 # COLORS
 RED    := $(shell tput -Txterm setaf 1)
 GREEN  := $(shell tput -Txterm setaf 2)
@@ -9,6 +14,11 @@ RESET  := $(shell tput -Txterm sgr0)
 
 
 TARGET_MAX_CHAR_NUM=20
+
+PYTHON ?= python3.7
+PIP ?= pip3
+
+LOCAL_SERVER_PORT ?= 8000
 
 
 ## Show help
@@ -23,6 +33,7 @@ help:
 	@printf "  ${YELLOW}CONTAINER_ENGINE${RESET}\tSet container engine, [*podman*, docker]\n"
 	@printf "  ${YELLOW}BUILD_ENGINE${RESET}\t\tSet build engine, [*podman*, buildah, docker]\n"
 	@printf "  ${YELLOW}SELINUX_ENABLED${RESET}\tEnable SELinux on containers, [*False*, True]\n"
+	@printf "  ${YELLOW}LOCAL_SERVER_PORT${RESET}\tPort on which the local mkdocs server will run, [*8000*]\n"
 	@echo ''
 	@echo 'Targets:'
 	@awk '/^[a-zA-Z\-_0-9]+:/ { \
@@ -69,7 +80,7 @@ ifndef DEBUG
 	@$(eval export DEBUG=@)
 else
 ifeq ($(shell test "$(DEBUG)" = True  -o  \
-	                 "$(DEBUG)" = true && printf "true"), true)
+									 "$(DEBUG)" = true && printf "true"), true)
 	@$(eval export DEBUG=)
 else
 	@$(eval export DEBUG=@)
@@ -78,7 +89,7 @@ endif
 
 ifdef SELINUX_ENABLED
 ifeq ($(shell test "$(SELINUX_ENABLED)" = True  -o  \
-                   "$(SELINUX_ENABLED)" = true && printf "true"), true)
+									 "$(SELINUX_ENABLED)" = true && printf "true"), true)
 		@$(eval export SELINUX_ENABLED=,Z)
 endif
 endif
@@ -89,7 +100,14 @@ endif
 check_links: | envvar stop
 	@echo "${GREEN}Makefile: Check external and internal links${RESET}"
 	${DEBUG}export IFS=$$'\n'; \
-	${CONTAINER_ENGINE} run -it --rm --name userguide -v ${PWD}:/srv:ro${SELINUX_ENABLED} --mount type=tmpfs,destination=/srv/site kubevirt-userguide /bin/bash -c 'cd /srv; bundle install --quiet; rake -- -u'
+	${CONTAINER_ENGINE} run \
+				-it \
+				--rm \
+				--name userguide \
+				-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
+				--mount type=tmpfs,destination=/srv/site \
+				kubevirt-userguide \
+				/bin/bash -c 'cd /srv; bundle install --quiet; rake -- -u'
 	@echo
 
 
@@ -98,14 +116,14 @@ check_spelling: | envvar stop
 	@echo "${GREEN}Makefile: Check spelling on site content${RESET}"
 	${DEBUG}if [ ! -e "./yaspeller.json" ]; then \
 		echo "Dictionary file: https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"; \
-	  if [ "`curl https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json -o yaspeller.json -w '%{http_code}\n' -s`" != "200" ]; then \
+		if [ "`curl https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json -o yaspeller.json -w '%{http_code}\n' -s`" != "200" ]; then \
 			echo "Unable to curl yaspeller dictionary file"; \
 			RETVAL=1; \
 		fi; \
 		REMOTE=1; \
 	else \
 		echo "Using local dictionary file"; \
-	  echo "Dictionary file: yaspeller.json"; \
+		echo "Dictionary file: yaspeller.json"; \
 		echo "Be sure to add changes to upstream: kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"; \
 	fi; \
 	export IFS=$$'\n'; \
@@ -134,7 +152,6 @@ build_image_userguide: stop
 
 
 ## Build image: yaspeller
-## Build image: yaspeller
 build_image_yaspeller: stop_yaspeller
 	${DEBUG}$(eval export TAG='localhost/yaspeller:latest')
 	${DEBUG}$(MAKE) build_image
@@ -145,13 +162,15 @@ build_image: envvar
 	@echo "${GREEN}Makefile: Building image: ${TAG}${RESET}"
 ifeq ($(TAG),)
 	@echo "This is a sourced target!"
-	@echo "Do not run this target directly... exitting!"
+	@echo "Do not run this target directly... exiting!"
 	@exit 1
 endif
 	${DEBUG}if [ ! -e "./Dockerfile" ]; then \
 		IMAGE="`echo $${TAG} | sed -e s#\'##g -e s#localhost\/## -e s#:latest##`"; \
-		if [ "`curl https://raw.githubusercontent.com/kubevirt/project-infra/master/images/$${IMAGE}/Dockerfile -o Dockerfile -w '%{http_code}\n' -s`" != "200" ]; then \
-			echo "curl Dockerfile failed... exitting!"; \
+		DOCKERFILE_URL="https://raw.githubusercontent.com/kubevirt/project-infra/master/images/$${IMAGE}/Dockerfile" \
+		DOCKERFILE_GET_RESULT="`curl $${DOCKERFILE_URL} -o Dockerfile -w '%{http_code}\n' -s`"; \
+		if [ "$${DOCKERFILE_GET_RESULT}" != "200" ]; then \
+			echo "Download of Dockerfile from [$${DOCKERFILE_URL}] failed... exiting!"; \
 			exit 2; \
 		else \
 			REMOTE=1; \
@@ -169,20 +188,30 @@ endif
 ## Build site. This target should only be used by Netlify and Prow
 build: envvar
 	@echo "${GREEN}Makefile: Build mkdocs site${RESET}"
-	which python3.7
-	python3.7 -m venv /tmp/venv
+	which $(PYTHON)
+	$(PYTHON) -m venv /tmp/venv
 	. /tmp/venv/bin/activate
-	pip3 install mkdocs mkdocs-awesome-pages-plugin mkdocs-htmlproofer-plugin
+	$(PIP) install mkdocs mkdocs-awesome-pages-plugin mkdocs-htmlproofer-plugin
 	@echo
 	@echo '*** BEGIN cat mkdocs.yml ***'
 	@cat mkdocs.yml
 	@echo '*** END cat mkdocs.yml ***'
 	mkdocs build -f mkdocs.yml -d site
 
+
 ## Run site.  App available @ http://0.0.0.0:8000
 run: | envvar stop
 	@echo "${GREEN}Makefile: Run site${RESET}"
-	${CONTAINER_ENGINE} run -d --name userguide --net=host -v ./:/srv:ro${SELINUX_ENABLED} --mount type=tmpfs,destination=/srv/site kubevirt-userguide:latest /bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
+	${CONTAINER_ENGINE} run \
+				-d \
+				--name userguide \
+				-p ${LOCAL_SERVER_PORT}:8000 \
+				-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
+				--mount type=tmpfs,destination=/srv/site \
+				kubevirt-userguide:latest \
+				/bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
+	@echo
+	@echo "${AQUA}Makefile: Server now running at [https://localhost:$(LOCAL_SERVER_PORT)]${RESET}"
 	@echo
 
 

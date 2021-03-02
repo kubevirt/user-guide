@@ -6,79 +6,108 @@
 
 We more than welcome contributions to KubeVirt documentation. Please reach out if you happen to have an idea or find an issue with our contents!
 
-### Get started
+## Get started
 
-- Create fork of GitHub user-guide repo
+### Fork this repository
 
-- Clone repository, check out source branch and prepare the Jekyll site
-  ```console
-  git clone -b master https://github.com/mygithubname/user-guide.git && cd user-guide
-  ```
+### Make changes to your fork
 
-- Set up your git repo remotes like the following:
-```
-$ git remote -v
-origin	git@github.com:mygithubname/user-guide.git (fetch)
-origin	git@github.com:mygithubname/user-guide.git (push)
-upstream	git@github.com:kubevirt/user-guide.git (fetch)
-upstream	git@github.com:kubevirt/user-guide.git (push)
-```
+You can find the markdown that powers the user guide in `./docs`, most commits are to that area.
 
-- We use [mkdocs](https://www.mkdocs.org/) markdown engine with [mkdocs-awesome-pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin/) plugin
+We use [mkdocs](https://www.mkdocs.org/) markdown engine with [mkdocs-awesome-pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin/) plugin
   - mkdocs config file
   - Each subdirectory of `./docs` contains a `.pages` file.  We use this to force the ordering of pages.  Alphabetical ordering is not ideal for technical documentation.
 
-- Markdown lives under `./docs`.  Do your work here.
+#### Sign your commits
 
-- When finished check your work by running:
- - `make check_spelling`
- - `make check_links`
- - `make run`
+Signature verification on commits are required -- you may sign your commits by running:
 
-- Web browse to http://0.0.0.0:8000 and validate page rendering
-
-- Commit your code
- - We do commit with signature verification so please do:
- `git commit -s -m "The commit message" file1 file 2 ...`
-
-- Create GitHub pull request to master branch
-
-#### Make Help
 ```console
+$ git commit -s -m "The commit message" file1 file 2 ...
+```
 
+If you need to sign all commits from a certain point (for example, `master`), you may run:
+
+```console
+git rebase --exec 'git commit --amend --no-edit -n -s' -i master
+```
+
+Signed commit messages generally take the following form:
+
+```
+<your commit message>
+
+Signed-off-by: <your configured git identity>
+```
+
+
+### Test your changes locally:
+
+```console
+$ make check_spelling
+$ make check_links
+$ make build_image_userguide
+$ make run
+```
+
+**NOTE** If you use `docker` you may need to set `CONTAINER_ENGINE` and `BUILD_ENGINE`:
+
+```console
+$ export CONTAINER_ENGINE=docker
+$ export BUILD_ENGINE=docker
+$ make run
+```
+
+Open your web browser to http://0.0.0.0:8000 and validate page rendering
+
+### Create a pull request to `kubevirt/user-guide`
+
+After you have vetted your changes, make a PR to `kubevirt/user-guide` so that others can review.
+
+## Makefile Help
+
+```console
 Makefile for user-guide mkdocs application
 
 Usage:
   make <target>
 
 Env Variables:
-  CONTAINER_ENGINE	Set container engine, [*podman*, docker]
-  BUILD_ENGINE		Set build engine, [*podman*, buildah, docker]
-  SELINUX_ENABLED	Enable SELinux on containers, [*False*, True]
+  CONTAINER_ENGINE      Set container engine, [*podman*, docker]
+  BUILD_ENGINE          Set build engine, [*podman*, buildah, docker]
+  SELINUX_ENABLED       Enable SELinux on containers, [*False*, True]
+  LOCAL_SERVER_PORT     Port on which the local mkdocs server will run, [*8000*]
 
 Targets:
-  help                	 Show help
-  check_links         	 Check external and internal links
-  check_spelling      	 Check spelling on site content
-  build_image_userguide	 Build image: userguide
-  build_image_yaspeller	 Build image: yaspeller
-  build               	 Build site. This target should only be used by Prow jobs.
-  run                 	 Run site.  App available @ http://0.0.0.0:8000
-  status              	 Container status
-  stop                	 Stop site
-  stop_yaspeller      	 Stop yaspeller image
+  help                   Show help
+  check_links            Check external and internal links
+  check_spelling         Check spelling on site content
+  build_image_userguide  Build image: userguide
+  build_image_yaspeller  Build image: yaspeller
+  build                  Build site. This target should only be used by Prow jobs.
+  run                    Run site.  App available @ http://0.0.0.0:8000
+  status                 Container status
+  stop                   Stop site
+  stop_yaspeller         Stop yaspeller image
 ```
 
-#### Environment Variables
-* CONTAINER_ENGINE: Some of us use docker. Some of us use podman.
+### Environment Variables
 
-* BUILD_ENGINE: Some of us use docker. Some of us use podman or buildah.
+* `CONTAINER_ENGINE`: Some of us use `docker`. Some of us use `podman` (default: `podman`).
 
-* SELINUX_ENABLED: Some of us run SELinux enabled. Set to `True` to enable container mount labelling.
+* `BUILD_ENGINE`: Some of us use `docker`. Some of us use `podman` or `buildah` (default: `podman`).
 
-* DEBUG: This is normally hidden. Set to `True` to echo target commands to terminal.
+* `SELINUX_ENABLED`: Some of us run SELinux enabled. Set to `True` to enable container mount labelling.
 
-#### Targets:
+* `PYTHON`: Change the `python` executable used (default: `python3.7`).
+
+* `PIP`: Change the `pip` executable used (default: `pip3`).
+
+* `LOCAL_SERVER_PORT`: Port on which the local `mkdocs` server will run, i.e. `http://localhost:<port>` (default: `8000`).
+
+* `DEBUG`: This is normally hidden. Set to `True` to echo target commands to terminal.
+
+### Targets:
 
 * check_links: HTMLProofer is used to check any links to external websites as we as any cross-page links
 
@@ -102,7 +131,7 @@ Targets:
 
 - Slack: <https://kubernetes.slack.com/messages/virtualization>
 
-# Developer
+## Developer
 
 - Start contributing: [Appendix/Contributing](appendix/contributing.md)
 
