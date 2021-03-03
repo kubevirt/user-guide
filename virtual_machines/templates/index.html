@@ -141,15 +141,9 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#cloud-init-script-and-parameters">Cloud-init script and parameters</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#using-registry-images">Using registry images</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#hack-use-pre-downloaded-image">Hack - use pre-downloaded image</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#cloud-init-script-and-parameters_1">Cloud-init script and parameters</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#using-container-images">Using container images</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#hack-use-pre-downloaded-image_1">Hack - use pre-downloaded image</a>
+    <li class="toctree-l2"><a class="reference internal" href="#using-datavolumes">Using DataVolumes</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#additional-information">Additional information</a>
     </li>
@@ -226,8 +220,8 @@ processed to have a Virtual Machine object. The key factors which define
 a template are</p>
 <ul>
 <li>
-<p>Workload Most Virtual Machine should be <em>generic</em> to have maximum
-    flexibility; the <em>highperformance</em> workload trades some of this
+<p>Workload Most Virtual Machine should be <strong>server</strong> or <strong>desktop</strong> to have maximum
+    flexibility; the <strong>highperformance</strong> workload trades some of this
     flexibility to provide better performances.</p>
 </li>
 <li>
@@ -250,8 +244,8 @@ the templates, or install them from scratch, you can use one of the
 <a href="https://github.com/kubevirt/common-templates/releases">supported
 releases</a></p>
 <p>To install the templates:</p>
-<pre><code>$ export VERSION="v0.3.1"
-$ oc create -f https://github.com/kubevirt/common-templates/releases/download/$VERSION/common-templates-$VERSION.yaml
+<pre><code class="language-console">    $ export VERSION=$(curl -s https://api.github.com/repos/kubevirt/common-templates/releases | grep tag_name | grep -v -- '-rc' | head -1 | awk -F': ' '{print $2}' | sed 's/,//' | xargs)
+    $ oc create -f https://github.com/kubevirt/common-templates/releases/download/$VERSION/common-templates-$VERSION.yaml
 </code></pre>
 <h4 id="editable-fields">Editable fields<a class="headerlink" href="#editable-fields" title="Permanent link">&para;</a></h4>
 <p>You can edit the fields of the templates which define the amount of
@@ -261,102 +255,149 @@ considered editable. The fields are used as hints for the user
 interface, and also for other components in the cluster.</p>
 <p>The editable fields are taken from annotations in the template. Here is
 a snippet presenting a couple of most commonly found editable fields:</p>
-<pre><code>metadata:
-  annotations:
-    template.kubevirt.io/editable: |
-      /objects[0].spec.template.spec.domain.cpu.sockets
-      /objects[0].spec.template.spec.domain.cpu.cores
-      /objects[0].spec.template.spec.domain.cpu.threads
-      /objects[0].spec.template.spec.domain.resources.requests.memory
+<pre><code class="language-console">    metadata:
+      annotations:
+        template.kubevirt.io/editable: |
+          /objects[0].spec.template.spec.domain.cpu.sockets
+          /objects[0].spec.template.spec.domain.cpu.cores
+          /objects[0].spec.template.spec.domain.cpu.threads
+          /objects[0].spec.template.spec.domain.resources.requests.memory
 </code></pre>
 <p>Each entry in the editable field list must be a
 <a href="https://kubernetes.io/docs/reference/kubectl/jsonpath/">jsonpath</a>. The
 jsonpath root is the objects: element of the template. The actually
 editable field is the last entry (the “leaf”) of the path. For example,
 the following minimal snippet highlights the fields which you can edit:</p>
-<pre><code>objects:
-  spec:
-    template:
+<pre><code class="language-console">    objects:
       spec:
-        domain:
-          cpu:
-            sockets:
-              VALUE # this is editable
-            cores:
-              VALUE # this is editable
-            threads:
-              VALUE # this is editable
-          resources:
-            requests:
-              memory:
-                VALUE # this is editable
+        template:
+          spec:
+            domain:
+              cpu:
+                sockets:
+                  VALUE # this is editable
+                cores:
+                  VALUE # this is editable
+                threads:
+                  VALUE # this is editable
+              resources:
+                requests:
+                  memory:
+                    VALUE # this is editable
 </code></pre>
 <h3 id="relationship-between-templates-and-vms">Relationship between templates and VMs<a class="headerlink" href="#relationship-between-templates-and-vms" title="Permanent link">&para;</a></h3>
 <p>Once processed the templates produce VM objects to be used in the cluster. The VMs
 produced from templates will have a <code>vm.kubevirt.io/template</code> label,
 whose value will be the name of the parent template, for example
 <code>fedora-desktop-medium</code>:</p>
-<pre><code>  metadata:
-    labels:
-      vm.kubevirt.io/template: fedora-desktop-medium
+<pre><code class="language-console">      metadata:
+        labels:
+          vm.kubevirt.io/template: fedora-desktop-medium
 </code></pre>
 <p>In addition, these VMs can include an optional label
 <code>vm.kubevirt.io/template-namespace</code>, whose value will be the namespace
 of the parent template, for example:</p>
-<pre><code>  metadata:
-    labels:
-      vm.kubevirt.io/template-namespace: openshift
+<pre><code class="language-console">      metadata:
+        labels:
+          vm.kubevirt.io/template-namespace: openshift
 </code></pre>
 <p>If this label is not defined, the template is expected to belong to the
 same namespace as the VM.</p>
 <p>This make it possible to query for all the VMs built from any template.</p>
 <p>Example:</p>
-<pre><code>oc process -o yaml rhel7-server-tiny PVCNAME=mydisk NAME=rheltinyvm
+<pre><code class="language-console">    oc process -o yaml -f dist/templates/rhel8-server-tiny.yaml NAME=rheltinyvm SRC_PVC_NAME=rhel SRC_PVC_NAMESPACE=kubevirt
 </code></pre>
 <p>And the output:</p>
-<pre><code>apiversion: v1
-items:
-- apiVersion: kubevirt.io/v1alpha3
-  kind: VirtualMachine
-  metadata:
-    labels:
-      vm.kubevirt.io/template: rhel7-server-tiny
-    name: rheltinyvm
-    osinfoname: rhel7.0
-  spec:
-    running: false
-    template:
+<pre><code class="language-console">    apiVersion: v1
+    items:
+    - apiVersion: kubevirt.io/v1alpha3
+      kind: VirtualMachine
+      metadata:
+        annotations:
+          vm.kubevirt.io/flavor: tiny
+          vm.kubevirt.io/os: rhel8
+          vm.kubevirt.io/validations: |
+            [
+              {
+                &quot;name&quot;: &quot;minimal-required-memory&quot;,
+                &quot;path&quot;: &quot;jsonpath::.spec.domain.resources.requests.memory&quot;,
+                &quot;rule&quot;: &quot;integer&quot;,
+                &quot;message&quot;: &quot;This VM requires more memory.&quot;,
+                &quot;min&quot;: 1610612736
+              }
+            ]
+          vm.kubevirt.io/workload: server
+        labels:
+          app: rheltinyvm
+          vm.kubevirt.io/template: rhel8-server-tiny
+          vm.kubevirt.io/template.revision: &quot;45&quot;
+          vm.kubevirt.io/template.version: 0.11.3
+        name: rheltinyvm
       spec:
-        domain:
-          cpu:
-            sockets: 1
-            cores: 1
-            threads: 1
-          devices:
-            disks:
-            - disk:
-                bus: virtio
-              name: rootdisk
-            rng: {}
-          resources:
-            requests:
-              memory: 1G
-        terminationGracePeriodSeconds: 0
-        volumes:
-        - name: rootdisk
-          persistentVolumeClaim:
-            claimName: mydisk
-        - cloudInitNoCloud:
-            userData: |-
-              #cloud-config
-              password: redhat
-              chpasswd: { expire: False }
-          name: cloudinitdisk
-kind: List
-metadata: {}
+        dataVolumeTemplates:
+        - apiVersion: cdi.kubevirt.io/v1beta1
+          kind: DataVolume
+          metadata:
+            name: rheltinyvm
+          spec:
+            pvc:
+              accessModes:
+              - ReadWriteMany
+              resources:
+                requests:
+                  storage: 30Gi
+            source:
+              pvc:
+                name: rhel
+                namespace: kubevirt
+        running: false
+        template:
+          metadata:
+            labels:
+              kubevirt.io/domain: rheltinyvm
+              kubevirt.io/size: tiny
+          spec:
+            domain:
+              cpu:
+                cores: 1
+                sockets: 1
+                threads: 1
+              devices:
+                disks:
+                - disk:
+                    bus: virtio
+                  name: rheltinyvm
+                - disk:
+                    bus: virtio
+                  name: cloudinitdisk
+                interfaces:
+                - masquerade: {}
+                  name: default
+                networkInterfaceMultiqueue: true
+                rng: {}
+              resources:
+                requests:
+                  memory: 1.5Gi
+            networks:
+            - name: default
+              pod: {}
+            terminationGracePeriodSeconds: 180
+            volumes:
+            - dataVolume:
+                name: rheltinyvm
+              name: rheltinyvm
+            - cloudInitNoCloud:
+                userData: |-
+                  #cloud-config
+                  user: cloud-user
+                  password: lymp-fda4-m1cv
+                  chpasswd: { expire: False }
+              name: cloudinitdisk
+    kind: List
+    metadata: {}
 </code></pre>
 <p>You can add the VM from the template to the cluster in one go</p>
-<pre><code>oc process rhel7-server-tiny PVCNAME=mydisk NAME=rheltinyvm | oc apply -f -
+<pre><code class="language-console">    oc process rhel8-server-tiny NAME=rheltinyvm SRC_PVC_NAME=rhel SRC_PVC_NAMESPACE=kubevirt | oc apply -f -
 </code></pre>
 <p>Please note that, after the generation step, VM objects and template
 objects have no relationship with each other besides the aforementioned
@@ -373,25 +414,25 @@ the kubevirt services.</p>
 <p>Here’s a description of the kubevirt annotations. Unless otherwise
 specified, the following keys are meant to be top-level entries of the
 template metadata, like</p>
-<pre><code>apiVersion: v1
-kind: Template
-metadata:
-  name: windows-10
-  annotations:
-    openshift.io/display-name: "Generic demo template"
+<pre><code class="language-console">    apiVersion: v1
+    kind: Template
+    metadata:
+      name: windows-10
+      annotations:
+        openshift.io/display-name: &quot;Generic demo template&quot;
 </code></pre>
 <p>All the following annotations are prefixed with
 <code>defaults.template.kubevirt.io</code>, which is omitted below for brevity. So
 the actual annotations you should use will look like</p>
-<pre><code>apiVersion: v1
-kind: Template
-metadata:
-  name: windows-10
-  annotations:
-    defaults.template.kubevirt.io/disk: default-disk
-    defaults.template.kubevirt.io/volume: default-volume
-    defaults.template.kubevirt.io/nic: default-nic
-    defaults.template.kubevirt.io/network: default-network
+<pre><code class="language-console">    apiVersion: v1
+    kind: Template
+    metadata:
+      name: windows-10
+      annotations:
+        defaults.template.kubevirt.io/disk: default-disk
+        defaults.template.kubevirt.io/volume: default-volume
+        defaults.template.kubevirt.io/nic: default-nic
+        defaults.template.kubevirt.io/network: default-network
 </code></pre>
 <p>Unless otherwise specified, all annotations are meant to be safe
 defaults, both for performance and compatibility, and hints for the
@@ -399,42 +440,42 @@ CNV-aware UI and tooling.</p>
 <h4 id="disk">disk<a class="headerlink" href="#disk" title="Permanent link">&para;</a></h4>
 <p>See the section <code>references</code> below.</p>
 <p>Example:</p>
-<pre><code>apiVersion: v1
-kind: Template
-metadata:
-  name: Linux
-  annotations:
-    defaults.template.kubevirt.io/disk: rhel-disk
+<pre><code class="language-console">    apiVersion: v1
+    kind: Template
+    metadata:
+      name: Linux
+      annotations:
+        defaults.template.kubevirt.io/disk: rhel-disk
 </code></pre>
 <h4 id="nic">nic<a class="headerlink" href="#nic" title="Permanent link">&para;</a></h4>
 <p>See the section <code>references</code> below.</p>
 <p>Example:</p>
-<pre><code>apiVersion: v1
-kind: Template
-metadata:
-  name: Windows
-  annotations:
-    defaults.template.kubevirt.io/nic: my-nic
+<pre><code class="language-console">    apiVersion: v1
+    kind: Template
+    metadata:
+      name: Windows
+      annotations:
+        defaults.template.kubevirt.io/nic: my-nic
 </code></pre>
 <h4 id="volume">volume<a class="headerlink" href="#volume" title="Permanent link">&para;</a></h4>
 <p>See the section <code>references</code> below.</p>
 <p>Example:</p>
-<pre><code>apiVersion: v1
-kind: Template
-metadata:
-  name: Linux
-  annotations:
-    defaults.template.kubevirt.io/volume: custom-volume
+<pre><code class="language-console">    apiVersion: v1
+    kind: Template
+    metadata:
+      name: Linux
+      annotations:
+        defaults.template.kubevirt.io/volume: custom-volume
 </code></pre>
 <h4 id="network">network<a class="headerlink" href="#network" title="Permanent link">&para;</a></h4>
 <p>See the section <code>references</code> below.</p>
 <p>Example:</p>
-<pre><code>apiVersion: v1
-kind: Template
-metadata:
-  name: Linux
-  annotations:
-    defaults.template.kubevirt.io/network: fast-net
+<pre><code class="language-console">    apiVersion: v1
+    kind: Template
+    metadata:
+      name: Linux
+      annotations:
+        defaults.template.kubevirt.io/network: fast-net
 </code></pre>
 <h4 id="references">references<a class="headerlink" href="#references" title="Permanent link">&para;</a></h4>
 <p>The default values for network, nic, volume, disk are meant to be the
@@ -448,7 +489,7 @@ they are legal for kubernetes and consistent with the content of the
 document.</p>
 <h4 id="complete-example">complete example<a class="headerlink" href="#complete-example" title="Permanent link">&para;</a></h4>
 <p><code>demo-template.yaml</code></p>
-<pre><code>apiversion: v1
+<pre><code class="language-console">apiversion: v1
 items:
 - apiversion: kubevirt.io/v1alpha3
   kind: virtualmachine
@@ -487,7 +528,7 @@ metadata: {}
 </code></pre>
 <p>once processed becomes:
 <code>demo-vm.yaml</code></p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code class="language-console">apiVersion: kubevirt.io/v1alpha3
 kind: VirtualMachine
 metadata:
   labels:
@@ -539,11 +580,11 @@ ensure that the emulated hardware is compatible with the guest OS.
 Furthermore, it allows to maximize the stability of the VM, and allows
 performance optimizations. - Size (flavor) Defines the amount of
 resources (CPU, memory) to allocate to the VM.</p>
-<h3 id="webui">WebUI<a class="headerlink" href="#webui" title="Permanent link">&para;</a></h3>
-<p>Kubevirt project has <a href="https://github.com/kubevirt/web-ui">the official UI</a>.
+<h3 id="openshift-console">Openshift Console<a class="headerlink" href="#openshift-console" title="Permanent link">&para;</a></h3>
+<p>VMs can be created through <a href="https://github.com/openshift/console">OpenShift Cluster Console UI </a>. 
 This UI supports creation VM using templates and templates
 features - flavors and workload profiles. To create VM from template, choose
-WorkLoads in the left panel &gt;&gt; press to the "Create Virtual Machine"
+WorkLoads in the left panel &gt;&gt; choose Virtualization &gt;&gt; press to the "Create Virtual Machine"
 blue button &gt;&gt; choose "Create from wizard". Next, you have to see
 "Create Virtual Machine" window</p>
 <h3 id="common-templates">Common-templates<a class="headerlink" href="#common-templates" title="Permanent link">&para;</a></h3>
@@ -554,91 +595,163 @@ provide a template defining the corresponding object and its metadata.</p>
 <p><strong>NOTE</strong> Only <code>VirtualMachine</code> object is currently supported.</p>
 <p>Here is an example template that defines an instance of the
 <code>VirtualMachine</code> object:</p>
-<pre><code>apiVersion: v1
+<pre><code class="language-console">apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
+  name: fedora-desktop-large
   annotations:
-    description: OCP KubeVirt Fedora 27 VM template
-    iconClass: icon-fedora
-    tags: kubevirt,ocp,template,linux,virtualmachine
+    openshift.io/display-name: &quot;Fedora 32+ VM&quot;
+    description: &gt;-
+      Template for Fedora 32 VM or newer.
+      A PVC with the Fedora disk image must be available.
+      Recommended disk image:
+      https://download.fedoraproject.org/pub/fedora/linux/releases/32/Cloud/x86_64/images/Fedora-Cloud-Base-32-1.6.x86_64.qcow2
+    tags: &quot;hidden,kubevirt,virtualmachine,fedora&quot;
+    iconClass: &quot;icon-fedora&quot;
+    openshift.io/provider-display-name: &quot;KubeVirt&quot;
+    openshift.io/documentation-url: &quot;https://github.com/kubevirt/common-templates&quot;
+    openshift.io/support-url: &quot;https://github.com/kubevirt/common-templates/issues&quot;
+    template.openshift.io/bindable: &quot;false&quot;
+    template.kubevirt.io/version: v1alpha1
+    defaults.template.kubevirt.io/disk: rootdisk
+    template.kubevirt.io/editable: |
+      /objects[0].spec.template.spec.domain.cpu.sockets
+      /objects[0].spec.template.spec.domain.cpu.cores
+      /objects[0].spec.template.spec.domain.cpu.threads
+      /objects[0].spec.template.spec.domain.resources.requests.memory
+      /objects[0].spec.template.spec.domain.devices.disks
+      /objects[0].spec.template.spec.volumes
+      /objects[0].spec.template.spec.networks
+    name.os.template.kubevirt.io/fedora32: Fedora 32 or higher
+    name.os.template.kubevirt.io/fedora33: Fedora 32 or higher
+    name.os.template.kubevirt.io/silverblue32: Fedora 32 or higher
+    name.os.template.kubevirt.io/silverblue33: Fedora 32 or higher
   labels:
-    kubevirt.io/os: fedora27
-    miq.github.io/kubevirt-is-vm-template: &quot;true&quot;
-  name: vm-template-fedora
+    os.template.kubevirt.io/fedora32: &quot;true&quot;
+    os.template.kubevirt.io/fedora33: &quot;true&quot;
+    os.template.kubevirt.io/silverblue32: &quot;true&quot;
+    os.template.kubevirt.io/silverblue33: &quot;true&quot;
+    workload.template.kubevirt.io/desktop: &quot;true&quot;
+    flavor.template.kubevirt.io/large: &quot;true&quot;
+    template.kubevirt.io/type: &quot;base&quot;
+    template.kubevirt.io/version: &quot;0.11.3&quot;
 objects:
 - apiVersion: kubevirt.io/v1alpha3
   kind: VirtualMachine
   metadata:
-    labels:
-      kubevirt-vm: vm-${NAME}
-      kubevirt.io/os: fedora27
     name: ${NAME}
+    labels:
+      vm.kubevirt.io/template: fedora-desktop-large
+      vm.kubevirt.io/template.version: &quot;0.11.3&quot;
+      vm.kubevirt.io/template.revision: &quot;45&quot;
+      app: ${NAME}
+    annotations:
+      vm.kubevirt.io/os: &quot;fedora&quot;
+      vm.kubevirt.io/workload: &quot;desktop&quot;
+      vm.kubevirt.io/flavor: &quot;large&quot;
+      vm.kubevirt.io/validations: |
+        [
+          {
+            &quot;name&quot;: &quot;minimal-required-memory&quot;,
+            &quot;path&quot;: &quot;jsonpath::.spec.domain.resources.requests.memory&quot;,
+            &quot;rule&quot;: &quot;integer&quot;,
+            &quot;message&quot;: &quot;This VM requires more memory.&quot;,
+            &quot;min&quot;: 1073741824
+          }
+        ]
   spec:
+    dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: ${NAME}
+      spec:
+        pvc:
+          accessModes:
+            - ReadWriteMany
+          resources:
+            requests:
+              storage: 30Gi
+        source:
+          pvc:
+            name: ${SRC_PVC_NAME}
+            namespace: ${SRC_PVC_NAMESPACE}
     running: false
     template:
       metadata:
-        creationTimestamp: null
         labels:
-          kubevirt-vm: vm-${NAME}
-          kubevirt.io/os: fedora27
+          kubevirt.io/domain: ${NAME}
+          kubevirt.io/size: large
       spec:
         domain:
           cpu:
-            cores: ${{CPU_CORES}}
+            sockets: 2
+            cores: 1
+            threads: 1
+          resources:
+            requests:
+              memory: 8Gi
           devices:
+            rng: {}
+            networkInterfaceMultiqueue: true
+            inputs:
+              - type: tablet
+                bus: virtio
+                name: tablet
             disks:
-              - name: disk0
-        volumes:
-          - name: disk0
-            persistentVolumeClaim:
-              claimName: myroot
             - disk:
                 bus: virtio
-              name: registrydisk
-              volumeName: registryvolume
+              name: ${NAME}
             - disk:
                 bus: virtio
               name: cloudinitdisk
-              volumeName: cloudinitvolume
-          machine:
-            type: &quot;&quot;
-          resources:
-            requests:
-              memory: ${MEMORY}
-        terminationGracePeriodSeconds: 0
+            interfaces:
+            - masquerade: {}
+              name: default
+        terminationGracePeriodSeconds: 180
+        networks:
+        - name: default
+          pod: {}
         volumes:
-        - name: registryvolume
-          registryDisk:
-            image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
+        - dataVolume:
+            name: ${NAME}
+          name: ${NAME}
         - cloudInitNoCloud:
             userData: |-
               #cloud-config
-              password: fedora
+              user: fedora
+              password: ${CLOUD_USER_PASSWORD}
               chpasswd: { expire: False }
-          name: cloudinitvolume
-  status: {}
+          name: cloudinitdisk
 parameters:
-- description: Name for the new VM
+- description: VM name
+  from: 'fedora-[a-z0-9]{16}'
+  generate: expression
   name: NAME
-- description: Amount of memory
-  name: MEMORY
-  value: 4096Mi
-- description: Amount of cores
-  name: CPU_CORES
-  value: &quot;4&quot;
+- name: SRC_PVC_NAME
+  description: Name of the PVC to clone
+  value: 'fedora'
+- name: SRC_PVC_NAMESPACE
+  description: Namespace of the source PVC
+  value: kubevirt-os-images
+- description: Randomized password for the cloud-init user fedora
+  from: '[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}'
+  generate: expression
+  name: CLOUD_USER_PASSWORD
 </code></pre>
-<p>Note that the template above defines free parameters (<code>NAME</code> and
-<code>CPU_CORES</code>) and the <code>NAME</code> parameter does not have specified default
-value.</p>
+<p>Note that the template above defines free parameters (<code>NAME</code>,
+<code>SRC_PVC_NAME</code>, <code>SRC_PVC_NAMESPACE</code>, <code>CLOUD_USER_PASSWORD</code>) and the <code>NAME</code> 
+parameter does not have specified default value.</p>
 <p>An OpenShift template has to be converted into the JSON file via
 <code>oc process</code> command, that also allows you to set the template
 parameters.</p>
 <p>A complete example can be found in the <a href="https://raw.githubusercontent.com/kubevirt/kubevirt/master/examples/vm-template-fedora.yaml">KubeVirt
 repository</a>.</p>
 <p>!&gt; You need to be logged in by <code>oc login</code> command.</p>
-<pre><code>$ oc process -f cluster/vmi-template-fedora.yaml\
+<pre><code class="language-console">$ oc process -f cluster/vmi-template-fedora.yaml\
     -p NAME=testvmi \
-    -p CPU_CORES=2
+    -p SRC_PVC_NAME=fedora \
+    -p SRC_PVC_NAMESPACE=kubevirt \
 {
     &quot;kind&quot;: &quot;List&quot;,
     &quot;apiVersion&quot;: &quot;v1&quot;,
@@ -648,9 +761,10 @@ repository</a>.</p>
 </code></pre>
 <p>The JSON file is usually applied directly by piping the processed output
 to <code>oc create</code> command.</p>
-<pre><code>$ oc process -f cluster/examples/vm-template-fedora.yaml \
+<pre><code class="language-console">$ oc process -f cluster/examples/vm-template-fedora.yaml \
     -p NAME=testvm \
-    -p CPU_CORES=2 \
+    -p SRC_PVC_NAME=fedora \
+    -p SRC_PVC_NAMESPACE=kubevirt \
     | oc create -f -
 virtualmachine.kubevirt.io/testvm created
 </code></pre>
@@ -659,44 +773,41 @@ the specification given by the template \(in this example it is an
 instance of the VirtualMachine object\).</p>
 <p>It’s possible to get list of available parameters using the following
 command:</p>
-<pre><code>$ oc process -f cluster/examples/vmi-template-fedora.yaml --parameters
-NAME                DESCRIPTION           GENERATOR           VALUE
-NAME                Name for the new VM                       
-MEMORY              Amount of memory                          4096Mi
-CPU_CORES           Amount of cores                           4
+<pre><code class="language-console">$ oc process -f dist/templates/fedora-desktop-large.yaml --parameters
+NAME                  DESCRIPTION                                          GENERATOR           VALUE
+NAME                  VM name                                              expression          fedora-[a-z0-9]{16}
+SRC_PVC_NAME          Name of the PVC to clone                                                 fedora
+SRC_PVC_NAMESPACE     Namespace of the source PVC                                              kubevirt-os-images
+CLOUD_USER_PASSWORD   Randomized password for the cloud-init user fedora   expression          [a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}
 </code></pre>
 <h2 id="starting-virtual-machine-from-the-created-object">Starting virtual machine from the created object<a class="headerlink" href="#starting-virtual-machine-from-the-created-object" title="Permanent link">&para;</a></h2>
 <p>The created object is now a regular VirtualMachine object and from now
 it can be controlled by accessing Kubernetes API resources. The
 preferred way how to do this from within the OpenShift environment is to
 use <code>oc patch</code> command.</p>
-<pre><code>$ oc patch virtualmachine testvm --type merge -p '{&quot;spec&quot;:{&quot;running&quot;:true}}'
+<pre><code class="language-console">$ oc patch virtualmachine testvm --type merge -p '{&quot;spec&quot;:{&quot;running&quot;:true}}'
 virtualmachine.kubevirt.io/testvm patched
 </code></pre>
 <p>Do not forget about virtctl tool. Using it in the real cases instead of
 using kubernetes API can be more convenient. Example:</p>
-<pre><code>$ virtctl start testvm
+<pre><code class="language-console">$ virtctl start testvm
 VM testvm was scheduled to start
 </code></pre>
 <p>As soon as VM starts, Kubernetes creates new type of object -
 VirtualMachineInstance. It has similar name to VirtualMachine. Example
 (not full output, it’s too big):</p>
-<pre><code>$ kubectl describe vm testvm
+<pre><code class="language-console">$ kubectl describe vm testvm
 name:         testvm
 Namespace:    myproject
 Labels:       kubevirt-vm=vm-testvm
-              kubevirt.io/os=fedora27
+              kubevirt.io/os=fedora33
 Annotations:  &lt;none&gt;
-API Version:  kubevirt.io/v1alpha2
+API Version:  kubevirt.io/v1alpha3
 Kind:         VirtualMachine
 </code></pre>
 <h2 id="cloud-init-script-and-parameters">Cloud-init script and parameters<a class="headerlink" href="#cloud-init-script-and-parameters" title="Permanent link">&para;</a></h2>
 <p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, supports
 <a href="https://cloudinit.readthedocs.io/en/latest/">cloud-init scripts</a></p>
-<h2 id="using-registry-images">Using registry images<a class="headerlink" href="#using-registry-images" title="Permanent link">&para;</a></h2>
-<p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, supports
-creating VM’s disks from registry. ContainerDisk is a special type volume
-which supports downloading images from user-defined registry server.</p>
 <h2 id="hack-use-pre-downloaded-image"><strong>Hack</strong> - use pre-downloaded image<a class="headerlink" href="#hack-use-pre-downloaded-image" title="Permanent link">&para;</a></h2>
 <p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, can use
 pre-downloaded VM image, which can be a useful feature especially in the
@@ -704,7 +815,7 @@ debug/development/testing cases. No special parameters required in the
 VM template or VM/VMI yaml config. The main idea is to create Kubernetes
 PersistentVolume and PersistentVolumeClaim corresponding to existing
 image in the file system. Example:</p>
-<pre><code>---
+<pre><code class="language-console">---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
@@ -733,54 +844,35 @@ spec:
       storage: 10G
 
 </code></pre>
-<h2 id="cloud-init-script-and-parameters_1">Cloud-init script and parameters<a class="headerlink" href="#cloud-init-script-and-parameters_1" title="Permanent link">&para;</a></h2>
-<p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, supports
-<a href="https://cloudinit.readthedocs.io/en/latest/">cloud-init scripts</a></p>
-<h2 id="using-container-images">Using container images<a class="headerlink" href="#using-container-images" title="Permanent link">&para;</a></h2>
-<p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, supports
-creating VM’s disks from registry. ContainerDisk is a special type volume
-which supports downloading images from user-defined registry server.</p>
-<h2 id="hack-use-pre-downloaded-image_1"><strong>Hack</strong> - use pre-downloaded image<a class="headerlink" href="#hack-use-pre-downloaded-image_1" title="Permanent link">&para;</a></h2>
-<p>Kubevirt VM templates, just like kubevirt VM/VMI yaml configs, can use
-pre-downloaded VM image, which can be a useful feature especially in the
-debug/development/testing cases. No special parameters required in the
-VM template or VM/VMI yaml config. The main idea is to create Kubernetes
-PersistentVolume and PersistentVolumeClaim corresponding to existing
-image in the file system. Example:</p>
-<pre><code>---
-kind: PersistentVolume
-apiVersion: v1
+<h2 id="using-datavolumes">Using DataVolumes<a class="headerlink" href="#using-datavolumes" title="Permanent link">&para;</a></h2>
+<p>Kubevirt VM templates are using dataVolumeTemplates. 
+Before using dataVolumes, CDI has to be installed in 
+cluster. After that, source Datavolume can be created.</p>
+<pre><code class="language-console">---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
 metadata:
-  name: mypv
-  labels:
-    type: local
+  name: fedora-datavolume-original
+  namespace: kubevirt
 spec:
-  storageClassName: manual
-  capacity:
-    storage: 10G
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: &quot;/mnt/sda1/images/testvm&quot;
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: mypvc
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10G
-
+  source:
+    registry:
+      url: &quot;image_url&quot;
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 30Gi
 </code></pre>
-<p>If you create this PV/PVC, then you have to put VM image in the file
-path</p>
-<pre><code class="language-bash">/mnt/sda1/images/testvm/disk.img
+<p>After import is completed, VM can be created:</p>
+<pre><code class="language-console">$ oc process -f cluster/examples/vm-template-fedora.yaml \
+    -p NAME=testvmi \
+    -p SRC_PVC_NAME=fedora-datavolume-original \
+    -p SRC_PVC_NAMESPACE=kubevirt \
+    | oc create -f -
+virtualmachine.kubevirt.io/testvm created
 </code></pre>
-<p>Available in the each OpenShift/Kubevirt compute nodes.</p>
 <h2 id="additional-information">Additional information<a class="headerlink" href="#additional-information" title="Permanent link">&para;</a></h2>
 <p>You can follow <a href="../lifecycle">Virtual Machine Lifecycle Guide</a> for further reference.</p>
               
