@@ -3,22 +3,14 @@ set -e
 
 [[ -e kubevirt ]] || git clone https://github.com/kubevirt/kubevirt.git kubevirt
 git -C kubevirt checkout master
-git -C kubevirt fetch --all --tags --prune
+git -C kubevirt fetch --tags
 
 releases() {
   # I'm sure some one can do better here
   if [ $# -eq 1 ]; then
-    git -C kubevirt tag | sort -rV | while read TAG;
-    do
-      [[ "$TAG" =~ [0-9].0$ ]] || continue;
-      echo "$TAG" ;
-    done | grep "$1"
+    git -C kubevirt tag | sort -rV | egrep -v "alpha|rc|cnv" | grep "$1"
   else
-    git -C kubevirt tag | sort -rV | while read TAG;
-    do
-      [[ "$TAG" =~ [0-9].0$ ]] || continue;
-      echo "$TAG" ;
-    done | head -1
+    git -C kubevirt tag | sort -rV | egrep -v "alpha|rc|cnv" | head -1
   fi
 }
 
@@ -30,8 +22,7 @@ features_for() {
 gen_changelog() {
   IFS=$'\n'
   sed -i -e "s/# Latest release notes//" ./docs/latest_release_notes.md
-  REL_NOTES=$(for REL in `releases $1`;
-  do
+  REL_NOTES=$(for REL in `releases $1`; do
     echo -e "## $REL\n" ;
     features_for $REL
   done)
