@@ -115,7 +115,7 @@ Targets:
 
 * build_image_userguide: mkdocs project does not provide a container image.  Use this target to build an image packed with python and mkdocs app.  ./docs will be mounted.  ./site will be mounted as tmpfs...changes here are lost.
 
-* build_image_yaspeller: yaspeller project does not provide a container image.  User this target to Build an image packed with nodejs and yaspeller app.  ./docs will be mounted.  yasspeller will check content for spelling and other bad forms of English.
+* build_image_yaspeller: yaspeller project does not provide a container image.  User this target to Build an image packed with nodejs and yaspeller app.  ./docs will be mounted.  yaspeller will check content for spelling and other bad forms of English.
 
 * status: Basically `${BUILD_ENGINE} ps` for an easy way to see what's running.
 
