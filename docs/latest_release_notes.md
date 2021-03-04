@@ -1,5 +1,60 @@
 # Latest release notes
 
+## v0.38.0
+
+Released on: Mon Feb 8 13:15:32 2021 +0000
+
+- [PR #4870][qinqon] Bump k8s deps to 0.20.2
+- [PR #4571][yuvalturg] Added os, workflow and flavor labels to the kubevirt_vmi_phase_count metric
+- [PR #4659][salanki] Fixed an issue where non-root users inside a guest could not write to a Virtio-FS mount.
+- [PR #4844][xpivarc] Fixed limits/requests to accept int again
+- [PR #4850][rmohr] virtio-scsi now respects the useTransitionalVirtio flag instead of assigning a virtio version depending on the machine layout
+- [PR #4672][vladikr] allow increasing logging verbosity of infra components in KubeVirt CR
+- [PR #4838][rmohr] Fix an issue where it may not be able to update the KubeVirt CR after creation for up to minutes due to certificate propagation delays
+- [PR #4806][rmohr] Make the mutating webhooks for VMIs and VMs  required to avoid letting entities into the cluster which are not properly defaulted
+- [PR #4779][brybacki] Error messsge on virtctl image-upload to WaitForFirstConsumer DV
+- [PR #4749][davidvossel] KUBEVIRT_CLIENT_GO_SCHEME_REGISTRATION_VERSION env var for specifying exactly what client-go scheme version is registered
+- [PR #4772][jean-edouard] Faster VMI phase transitions thanks to an increased number of VMI watch threads in virt-controller
+- [PR #4730][rmohr] Add spec.domain.devices.useVirtioTransitional boolean to support virtio-transitional for old guests
+
+## v0.37.0
+
+Released on: Mon Jan 18 17:57:03 2021 +0000
+
+- [PR #4654][AlonaKaplan] Introduce virt-launcher DHCPv6 server.
+- [PR #4669][kwiesmueller] Add nodeSelector to kubevirt components restricting them to run on linux nodes only.
+- [PR #4648][davidvossel] Update libvirt base container to be based of packages in rhel-av 8.3
+- [PR #4653][qinqon] Allow configure cloud-init with networkData only.
+- [PR #4644][ashleyschuett] Operator validation webhook will deny updates to the workloads object of the KubeVirt CR if there are running VMIs
+- [PR #3349][davidvossel] KubeVirt v1 GA api
+- [PR #4645][maiqueb] Re-introduce the CAP_NET_ADMIN, to allow migration of VMs already having it.
+- [PR #4546][yuhaohaoyu] Failure detection and handling for VM with EFI Insecure Boot in KubeVirt environments where EFI Insecure Boot is not supported by design.
+- [PR #4625][awels] virtctl upload now shows error when specifying access mode of ReadOnlyMany
+- [PR #4396][xpivarc] KubeVirt is now explainable!
+- [PR #4517][danielBelenky] Fix guest agent reporting.
+
+## v0.36.0
+
+Released on: Wed Dec 16 14:30:37 2020 +0000
+
+- [PR #4667][kubevirt-bot] Update libvirt base container to be based of packages in rhel-av 8.3
+- [PR #4634][kubevirt-bot] Failure detection and handling for VM with EFI Insecure Boot in KubeVirt environments where EFI Insecure Boot is not supported by design.
+- [PR #4647][kubevirt-bot] Re-introduce the CAP_NET_ADMIN, to allow migration of VMs already having it.
+- [PR #4627][kubevirt-bot] Fix guest agent reporting.
+- [PR #4458][awels] It is now possible to hotplug DataVolume and PVC volumes into a running Virtual Machine.
+- [PR #4025][brybacki] Adds a special handling for DataVolumes in WaitForFirstConsumer state to support CDI's delayed binding mode.
+- [PR #4217][mfranczy] Set only an IP address for interfaces reported by qemu-guest-agent. Previously that was CIDR.
+- [PR #4195][davidvossel] AccessCredentials API for dynamic user/password and ssh public key injection
+- [PR #4335][oshoval] VMI status displays SRIOV interfaces with their network name only when they have originally
+- [PR #4408][andreabolognani] This version of KubeVirt includes upgraded virtualization technology based on libvirt 6.6.0 and QEMU 5.1.0.
+- [PR #4514][ArthurSens] `domain` label removed from metric `kubevirt_vmi_memory_unused_bytes`
+- [PR #4542][danielBelenky] Fix double migration on node evacuation
+- [PR #4506][maiqueb] Remove CAP_NET_ADMIN from the virt-launcher pod.
+- [PR #4501][AlonaKaplan] CAP_NET_RAW removed from virt-launcher.
+- [PR #4488][salanki] Disable Virtio-FS metadata cache to prevent OOM conditions on the host.
+- [PR #3937][vladikr] Generalize host devices assignment. Provides an interface between kubevirt and external device plugins. Provides a mechanism for whitelisting host devices.
+- [PR #4443][rmohr] All kubevirt webhooks support now dry-runs.
+
 ## v0.35.0
 
 Released on: Mon Nov 9 13:08:27 2020 +0000
