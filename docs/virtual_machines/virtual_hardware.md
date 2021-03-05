@@ -1,7 +1,7 @@
 # Virtual hardware
 
 Fine-tuning different aspects of the hardware which are not device
-related (BIOS, mainboard, etc) is sometimes necessary to allow guest
+related (BIOS, mainboard, etc.) is sometimes necessary to allow guest
 operating systems to properly boot and reboot.
 
 ## Machine Type

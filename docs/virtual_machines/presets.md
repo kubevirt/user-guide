@@ -57,8 +57,8 @@ applied to a `VirtualMachineInstance`, the `VirtualMachineInstance` will
 be marked with an Annotation upon completion.
 
 Any domain structure can be listed in the `spec` of a
-`VirtualMachineInstancePreset` (Clock, Features, Memory, CPU, or
-Devices such as network interfaces). All elements of the `spec` section
+`VirtualMachineInstancePreset`, e.g. Clock, Features, Memory, CPU, or
+Devices such as network interfaces. All elements of the `spec` section
 of a `VirtualMachineInstancePreset` will be applied to the
 `VirtualMachineInstance`.
 

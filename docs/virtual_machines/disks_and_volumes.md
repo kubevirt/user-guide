@@ -906,8 +906,8 @@ additional context switching is incurred for each thread.
 
 Disks with `dedicatedIOThread` set to `true` will not use the shared
 thread, but will instead be allocated an exclusive thread. This is
-generally useful if a specific Disk is expected to have heavy I/O traffic
-ie. a database spindle.
+generally useful if a specific Disk is expected to have heavy I/O
+traffic, e.g. a database spindle.
 
 #### Auto
 
