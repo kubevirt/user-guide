@@ -56,11 +56,11 @@ The [prometheus-operator](https://github.com/coreos/prometheus-operator)
 can make use of the `kubevirt-prometheus-metrics` service to
 automatically create the appropriate Prometheus config.
 
-KubeVirt’s `virt-operator` checks if the `ServiceMonitor` custom
+KubeVirt's `virt-operator` checks if the `ServiceMonitor` custom
 resource exists when creating an install strategy for deployment.
 KubeVirt will automatically create a `ServiceMonitor` resource in the
 `monitorNamespace`, as well as an appropriate role and rolebinding in
-KubeVirt’s namespace.
+KubeVirt's namespace.
 
 Two settings are exposed in the `KubeVirt` custom resource to direct
 KubeVirt to create these resources correctly:

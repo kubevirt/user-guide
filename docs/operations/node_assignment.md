@@ -105,7 +105,7 @@ for more examples and details.
 
 Affinity as described above, is a property of VMs that attracts them to
 a set of nodes (either as a preference or a hard requirement). Taints
-are the opposite – they allow a node to repel a set of VMs.
+are the opposite - they allow a node to repel a set of VMs.
 
 Taints and tolerations work together to ensure that VMs are not
 scheduled onto inappropriate nodes. One or more taints are applied to a
@@ -143,11 +143,11 @@ An example for `tolerations` may look like this:
 
 ## Node balancing with Descheduler
 
-In some cases we might need to rebalance the cluster on current scheduling policy 
-and load conditions. [Descheduler](https://github.com/kubernetes-sigs/descheduler) 
-can find pods, which violates e.g. scheduling decisions and evict them based on descheduler 
-policies. Kubevirt VMs are handled as pods with local storage, so by default, 
-descheduler will not evict them. But it can be easily overridden by adding special 
+In some cases we might need to rebalance the cluster on current scheduling policy
+and load conditions. [Descheduler](https://github.com/kubernetes-sigs/descheduler)
+can find pods, which violates e.g. scheduling decisions and evict them based on descheduler
+policies. Kubevirt VMs are handled as pods with local storage, so by default,
+descheduler will not evict them. But it can be easily overridden by adding special
 annotation to the VMI template in the VM:
 
 ```console
@@ -158,6 +158,6 @@ spec:
         descheduler.alpha.kubernetes.io/evict: true
 ```
 
-This annotation will cause, that the descheduler will be able to evict the VM's pod which can then be 
-scheduled by scheduler on different nodes. A VirtualMachine will never restart or re-create a 
+This annotation will cause, that the descheduler will be able to evict the VM's pod which can then be
+scheduled by scheduler on different nodes. A VirtualMachine will never restart or re-create a
 VirtualMachineInstance until the current instance of the VirtualMachineInstance is deleted from the cluster.

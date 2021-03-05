@@ -1,7 +1,7 @@
 # Virtual hardware
 
 Fine-tuning different aspects of the hardware which are not device
-related (BIOS, mainboard, …) is sometimes necessary to allow guest
+related (BIOS, mainboard, etc.) is sometimes necessary to allow guest
 operating systems to properly boot and reboot.
 
 ## Machine Type
@@ -12,7 +12,7 @@ pc) and q35. They are versioned based on qemu-system-${ARCH},
 following the format `pc-${machine_type}-${qemu_version}`,
 e.g.`pc-i440fx-2.10` and `pc-q35-2.10`.
 
-KubeVirt defaults to QEMU’s newest q35 machine type. If a custom machine
+KubeVirt defaults to QEMU's newest q35 machine type. If a custom machine
 type is desired, it is configurable through the following structure:
 
     metadata:
@@ -34,7 +34,7 @@ type is desired, it is configurable through the following structure:
           persistentVolumeClaim:
             claimName: myclaim
 
-Comparison of the machine types’ internals can be found [at QEMU
+Comparison of the machine types' internals can be found [at QEMU
 wiki](https://wiki.qemu.org/Features/Q35).
 
 ### BIOS/UEFI
@@ -195,7 +195,7 @@ with aes feature.
 **Note**: Be sure that node CPU model where you run a VM, has the same
 or higher CPU family.
 
-**Note**: If CPU model wasn’t defined, the VM will have CPU model
+**Note**: If CPU model wasn't defined, the VM will have CPU model
 closest to one that used on the node where the VM is running.
 
 **Note**: CPU model is case sensitive.
@@ -220,7 +220,7 @@ You can check list of available models
 When CPUNodeDiscovery feature-gate is enabled and VM has cpu model,
 Kubevirt creates node selector with format:
 `feature.node.kubernetes.io/cpu-model-<cpuModel>`, e.g.
-`feature.node.kubernetes.io/cpu-model-Conroe`. When VM doesn’t have cpu
+`feature.node.kubernetes.io/cpu-model-Conroe`. When VM doesn't have cpu
 model, then no node selector is created.
 
 #### Enabling default cluster cpu model
@@ -241,9 +241,9 @@ field in the KubeVirt CR.
     ...
 ```
 
-Default CPU model is set when vmi doesn’t have any cpu model. When vmi
-has cpu model set, then vmi’s cpu model is preferred. When default cpu
-model is not set and vmi’s cpu model is not set too, `host-model` will
+Default CPU model is set when vmi doesn't have any cpu model. When vmi
+has cpu model set, then vmi's cpu model is preferred. When default cpu
+model is not set and vmi's cpu model is not set too, `host-model` will
 be set. Default cpu model can be changed when kubevirt is running. When
 CPUNodeDiscovery feature gate is enabled Kubevirt creates node selector
 with default cpu model.
@@ -320,7 +320,7 @@ Full description about features and policies can be found
 When CPUNodeDiscovery feature-gate is enabled Kubevirt creates node
 selector from cpu features with format:
 `feature.node.kubernetes.io/cpu-feature-<cpuFeature>`, e.g.
-`feature.node.kubernetes.io/cpu-feature-apic`. When VM doesn’t have cpu
+`feature.node.kubernetes.io/cpu-feature-apic`. When VM doesn't have cpu
 feature, then no node selector is created.
 
 ### Clock
@@ -340,7 +340,7 @@ for all possible configuration options.
 
 #### utc
 
-If `utc` is specified, the VM’s clock will be set to UTC.
+If `utc` is specified, the VM's clock will be set to UTC.
 
     metadata:
       name: myvmi
@@ -362,7 +362,7 @@ If `utc` is specified, the VM’s clock will be set to UTC.
 
 #### timezone
 
-If `timezone` is specified, the VM’s clock will be set to the specified
+If `timezone` is specified, the VM's clock will be set to the specified
 local time.
 
     metadata:
@@ -562,7 +562,7 @@ place the VM.
 
 Specifying CPU limits will determine the amount of *cpu* *shares* set on
 the control group the VM is running in, in other words, the amount of
-time the VM’s CPUs can execute on the assigned resources when there is a
+time the VM's CPUs can execute on the assigned resources when there is a
 competition for CPU resources.
 
 For more information please refer to [how Pods with resource limits are

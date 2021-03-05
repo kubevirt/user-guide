@@ -1,6 +1,6 @@
 # Authorization
 
-KubeVirt authorization is performed using Kubernetes’s Resource Based
+KubeVirt authorization is performed using Kubernetes's Resource Based
 Authorization Control system (RBAC). RBAC allows cluster admins to grant
 access to cluster resources by binding RBAC roles to users.
 
@@ -21,7 +21,7 @@ used to grant users permissions to access KubeVirt Resources.
 
 The **kubevirt.io:view** ClusterRole gives users permissions to view all
 KubeVirt resources in the cluster. The permissions to create, delete,
-modify or access any KubeVirt resources beyond viewing the resource’s
+modify or access any KubeVirt resources beyond viewing the resource's
 spec are not included in this role. This means a user with this role
 could see that a VirtualMachineInstance is running, but neither shutdown
 nor gain access to that VirtualMachineInstance via console/VNC.
@@ -90,9 +90,9 @@ More information about aggregated cluster roles can be found
 If the default KubeVirt ClusterRoles are not expressive enough, admins
 can create their own custom RBAC roles to grant user access to KubeVirt
 resources. The creation of a RBAC role is inclusive only, meaning
-there’s no way to deny access. Instead access is only granted.
+there's no way to deny access. Instead access is only granted.
 
-Below is an example of what KubeVirt’s default admin ClusterRole looks
+Below is an example of what KubeVirt's default admin ClusterRole looks
 like. A custom RBAC role can be created by reducing the permissions in
 this example role.
 

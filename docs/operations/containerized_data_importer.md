@@ -13,7 +13,7 @@ The three main CDI use cases are:
 -   Upload a local disk image to a DataVolume
 
 This document deals with the third use case. So you should have CDI
-installed in your cluster, a VM disk that you’d like to upload, and
+installed in your cluster, a VM disk that you'd like to upload, and
 virtctl in your path.
 
 ## Install CDI
@@ -95,7 +95,7 @@ virtctl has an image-upload command with the following options:
 
     Use "virtctl options" for a list of global command-line options (applies to all commands).
 
-“virtctl image-upload” works by creating a DataVolume of the requested
+`virtctl image-upload` works by creating a DataVolume of the requested
 size, sending an `UploadTokenRequest` to the `cdi-apiserver`, and
 uploading the file to the `cdi-uploadproxy`.
 

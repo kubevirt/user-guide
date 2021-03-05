@@ -150,7 +150,7 @@ Migration State:
 
 ## Changing Cluster Wide Migration Limits
 
-KubeVirt puts some limits in place, so that migrations don’t overwhelm
+KubeVirt puts some limits in place, so that migrations don't overwhelm
 the cluster. By default, it is configured to only run `5` migrations in
 parallel with an additional limit of a maximum of `2` outbound
 migrations per node. Finally, every migration is limited to a bandwidth
@@ -193,7 +193,7 @@ disk blocks at a higher rate than these can be copied, which will
 prevent the migration process from completing in a reasonable amount of
 time. In this case, live migration will be aborted if it is running for
 a long period of time. The timeout is calculated base on the size of
-the VMI, it’s memory and the ephemeral disks that are needed to be
+the VMI, it's memory and the ephemeral disks that are needed to be
 copied. The configurable parameter `completionTimeoutPerGiB`, which
 defaults to 800s is the time for GiB of data to wait for the migration
 to be completed before aborting it. A VMI with 8Gib of memory will time
@@ -202,6 +202,6 @@ out after 6400 seconds.
 ## Progress timeout
 
 Live migration will also be aborted when it will be noticed that copying
-memory doesn’t make any progress. The time to wait for live migration to
+memory doesn't make any progress. The time to wait for live migration to
 make progress in transferring data is configurable by `progressTimeout`
 parameter, which defaults to 150s

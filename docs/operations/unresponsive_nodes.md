@@ -46,7 +46,7 @@ seen when looking on the corresponding pod of a
       [...]
 
 In case there is a communication issue or the host goes down,
-`virt-handler` can’t update its labels and annotations any-more. Once
+`virt-handler` can't update its labels and annotations any-more. Once
 the last `kubevirt.io/heartbeat` timestamp is older than five minutes,
 the KubeVirt node-controller kicks in and sets the
 `kubevirt.io/schedulable` label to `false`. As a consequence no more
@@ -60,7 +60,7 @@ fine, a `VirtualMachineInstance` can be deleted as usual via
 `kubectl delete vmi <myvm>`. Pods of a `VirtualMachineInstance` will be
 told by the cluster-controllers they should shut down. As soon as the
 Pod is gone, the `VirtualMachineInstance` will be moved to `Failed`
-state, if `virt-handler` did not manage to update it’s heartbeat in the
+state, if `virt-handler` did not manage to update it's heartbeat in the
 meantime. If `virt-handler` could recover in the meantime,
 `virt-handler` will move the `VirtualMachineInstance` to failed state
 instead of the cluster-controllers.

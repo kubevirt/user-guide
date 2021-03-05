@@ -5,7 +5,7 @@ Making persistent storage in the cluster (**volumes**) accessible to VMs consist
 ## Disks
 
 Like all other vmi devices a `spec.domain.devices.disks` element has a
-mandatory `name`, and furthermore, the disk’s `name` must reference the
+mandatory `name`, and furthermore, the disk's `name` must reference the
 `name` of a volume inside `spec.volumes`.
 
 A disk can be made accessible via four different types:
@@ -23,7 +23,7 @@ Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_
 
 All types, with the exception of **floppy**, allow you to specify the
 `bus` attribute. The `bus` attribute determines how the disk will be
-presented to the guest operating system. **floppy** disks don’t support
+presented to the guest operating system. **floppy** disks don't support
 the `bus` attribute: they are always attached to the `fdc` bus.
 
 ### lun
@@ -264,16 +264,16 @@ datasource may look like this:
 
 Allows connecting a `PersistentVolumeClaim` to a VM disk.
 
-Use a PersistentVolumeClaim when the VirtualMachineInstance’s disk needs
-to persist after the VM terminates. This allows for the VM’s data to
+Use a PersistentVolumeClaim when the VirtualMachineInstance's disk needs
+to persist after the VM terminates. This allows for the VM's data to
 remain persistent between restarts.
 
-A `PersistentVolume` can be in “filesystem” or “block” mode:
+A `PersistentVolume` can be in "filesystem" or "block" mode:
 
 -   Filesystem: For KubeVirt to be able to consume the disk present on a
-    PersistentVolume’s filesystem, the disk must be named `disk.img` and
+    PersistentVolume's filesystem, the disk must be named `disk.img` and
     be placed in the root path of the filesystem. Currently the disk is
-    also required to be in raw format. &gt; **Important:** The
+    also required to be in raw format. **> Important:** The
     `disk.img` image file needs to be owned by the user-id `107` in
     order to avoid permission issues.
 
@@ -281,7 +281,7 @@ A `PersistentVolume` can be in “filesystem” or “block” mode:
     > manually before starting a VM then it will be created
     > automatically with the `PersistentVolumeClaim` size. Since not
     > every storage provisioner provides volumes with the exact usable
-    > amount of space as requested (e.g. due to filesystem overhead),
+    > amount of space as requested (e.g. due to filesystem overhead),
     > KubeVirt tolerates up to 10% less available space. This can be
     > configured with the `pvc-tolerate-less-space-up-to-percent` value
     > in the `kubevirt-config` ConfigMap.
@@ -313,7 +313,7 @@ may look like this:
 #### dataVolume
 
 DataVolumes are a way to automate importing virtual machine disks onto
-PVCs during the virtual machine’s launch flow. Without using a
+PVCs during the virtual machine's launch flow. Without using a
 DataVolume, users have to prepare a PVC with a disk image before
 assigning it to a VM or VMI manifest. With a DataVolume, both the PVC
 creation and import is automated on behalf of the user.
@@ -382,7 +382,7 @@ automatically be deleted as well.
 For a VMI object, DataVolumes can be referenced as a volume source for
 the VMI. When this is done, it is expected that the referenced
 DataVolume exists in the cluster. The VMI will consume the DataVolume,
-but the DataVolume’s life-cycle will not be tied to the VMI.
+but the DataVolume's life-cycle will not be tied to the VMI.
 
 Below is an example of a DataVolume being referenced by a VMI. It is
 expected that the DataVolume *alpine-datavolume* was created prior to
@@ -529,7 +529,7 @@ Users can inject a VirtualMachineInstance disk into a container image in
 a way that is consumable by the KubeVirt runtime. Disks must be placed
 into the `/disk` directory inside the container. Raw and qcow2 formats
 are supported. Qcow2 is recommended in order to reduce the container
-image’s size. `containerdisks` can and should be based on `scratch`. No
+image's size. `containerdisks` can and should be based on `scratch`. No
 content except the image is required.
 
 > **Note:** Prior to kubevirt 0.20, the containerDisk image needed to
@@ -907,16 +907,16 @@ additional context switching is incurred for each thread.
 Disks with `dedicatedIOThread` set to `true` will not use the shared
 thread, but will instead be allocated an exclusive thread. This is
 generally useful if a specific Disk is expected to have heavy I/O
-traffic, e.g. a database spindle.
+traffic, e.g. a database spindle.
 
 #### Auto
 
 `auto` IOThreads indicates that KubeVirt should use a pool of IOThreads
 and allocate disks to IOThreads in a round-robin fashion. The pool size
-is generally limited to twice the number of VCPU’s allocated to the VM.
+is generally limited to twice the number of VCPU's allocated to the VM.
 This essentially attempts to dedicate disks to separate IOThreads, but
 only up to a reasonable limit. This would come in to play for systems
-with a large number of disks and a smaller number of CPU’s for instance.
+with a large number of disks and a smaller number of CPU's for instance.
 
 As a caveat to the size of the IOThread pool, disks with
 `dedicatedIOThread` will always be guaranteed their own thread. This
@@ -933,7 +933,7 @@ would essentially result in the same layout.
 
 #### IOThreads with Dedicated (pinned) CPUs
 
-When guest’s vCPUs are pinned to a host’s physical CPUs, it is also best
+When guest's vCPUs are pinned to a host's physical CPUs, it is also best
 to pin the IOThreads to specific CPUs to prevent these from floating
 between the CPUs. KubeVirt will automatically calculate and pin each
 IOThread to a CPU or a set of CPUs, depending on the ration between
@@ -1131,8 +1131,8 @@ This feature is enabled by the `BlockMultiQueue` setting under
 
 **Note:** Due to the way KubeVirt implements CPU allocation,
 blockMultiQueue can only be used if a specific CPU allocation is
-requested. If a specific number of CPUs hasn’t been allocated to a
-VirtualMachine, KubeVirt will use all CPU’s on the node on a best effort
+requested. If a specific number of CPUs hasn't been allocated to a
+VirtualMachine, KubeVirt will use all CPU's on the node on a best effort
 basis. In that case the amount of CPU allocation to a VM at the host
 level could change over time. If blockMultiQueue were to request a
 number of queues to match all the CPUs on a node, that could lead to

@@ -61,7 +61,7 @@ Here is an example of a VirtualMachineInstance object:
 
 This example uses a fedora cloud image in combination with cloud-init
 and an ephemeral empty disk with a capacity of `2Gi`. For the sake of
-simplicity, the volume sources in this example are ephemeral and don’t
+simplicity, the volume sources in this example are ephemeral and don't
 require a provisioner in your cluster.
 
 ## Additional Information

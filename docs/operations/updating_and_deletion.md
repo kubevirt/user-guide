@@ -10,7 +10,7 @@ Zero downtime rolling updates are supported starting with release
 
 Updates are triggered one of two ways.
 
-1.  By changing the imageTag value in the KubeVirt CR’s spec.
+1.  By changing the imageTag value in the KubeVirt CR's spec.
 
 For example, updating from `v0.17.0-alpha.1` to `v0.17.0` is as simple
 as patching the KubeVirt CR with the `imageTag: v0.17.0` value. From
@@ -38,7 +38,7 @@ version.
 
 Newer KubeVirt may require additional or extended RBAC rules. In this
 case, the #1 update method may fail, because the virt-operator present
-in the cluster doesn’t have these RBAC rules itself. In this case, you
+in the cluster doesn't have these RBAC rules itself. In this case, you
 need to update the `virt-operator` first, and then proceed to update
 kubevirt. See [this issue for more
 details](https://github.com/kubevirt/kubevirt/issues/2533).
