@@ -1,7 +1,7 @@
 # Node overcommit
 
 KubeVirt does not yet support classical Memory Overcommit Management or
-Memory Ballooning. In other words VirtualMachineInstances can’t give
+Memory Ballooning. In other words VirtualMachineInstances can't give
 back memory they have allocated. However, a few other things can be
 tweaked to reduce the memory footprint and overcommit the per-VMI memory
 overhead.
@@ -35,6 +35,7 @@ In order to increase the VMI density on the node, it is possible to not
 request the additional overhead by setting
 `spec.domain.resources.overcommitGuestOverhead` to `true`:
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstance
     metadata:
@@ -47,6 +48,7 @@ request the additional overhead by setting
           requests:
             memory: 1024M
     [...]
+```
 
 This will work fine for as long as most of the VirtualMachineInstances
 will not request the whole memory. That is especially the case if you
@@ -65,6 +67,7 @@ value higher than `spec.domain.resources.requests.memory`.
 The following definition requests `1024MB` from the cluster but tells
 the VMI that it has `2048MB` of memory available:
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstance
     metadata:
@@ -79,6 +82,7 @@ the VMI that it has `2048MB` of memory available:
         memory:
           guest: 2048M
     [...]
+```
 
 For as long as there is enough free memory available on the node, the
 VMI can happily consume up to `2048MB`. This VMI will get the
@@ -105,19 +109,14 @@ configuration the virtual machines may get killed by the OOM handler or
 by the `kubelet` itself. It is possible to tweak that behaviour based on
 the requirements of your VirtualMachineInstances by:
 
--   Configuring [Soft Eviction
+* Configuring [Soft Eviction
     Thresholds](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#soft-eviction-thresholds)
-
--   Configuring [Hard Eviction
+* Configuring [Hard Eviction
     Thresholds](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#hard-eviction-thresholds)
-
--   Requesting the right QoS class for VirtualMachineInstances
-
--   Setting `--system-reserved` and `--kubelet-reserved`
-
--   Enabling KSM
-
--   Enabling swap
+* Requesting the right QoS class for VirtualMachineInstances
+* Setting `--system-reserved` and `--kubelet-reserved`
+* Enabling KSM
+* Enabling swap
 
 ### Configuring Soft Eviction Thresholds
 
@@ -163,22 +162,20 @@ are evicted before `Guaranteed` VMIs.
 
 This allows creating two classes of VMIs:
 
--   One type can have equal `requests.memory` and `limits.memory` set
+* One type can have equal `requests.memory` and `limits.memory` set
     and therefore gets the `Guaranteed` class assigned. This one will
     not get evicted and should never run into memory issues, but is more
     demanding.
-
--   One type can have no `limits.memory` or a `limits.memory` which is
+* One type can have no `limits.memory` or a `limits.memory` which is
     greater than `requests.memory` and therefore gets the `Burstable`
     class assigned. These VMIs will be evicted first.
 
 ## Setting `--system-reserved` and `--kubelet-reserved`
 
-It may be important to reserve some memory for other daemons (not
-DaemonSets) which are running on the same node (e.g. ssh, dhcp servers,
-…). The reservation can be done with the `--system-reserved` switch.
-Further for the Kubelet and Docker a special flag called
-`--kubelet-reserved` exists.
+It may be important to reserve some memory for other daemons (not DaemonSets)
+which are running on the same node (ssh, dhcp servers, etc). The reservation
+can be done with the `--system reserved` switch. Further for the Kubelet and
+Docker a special flag called `--kubelet-reserved` exists.
 
 ## Enabling KSM
 
@@ -195,7 +192,7 @@ scan).
 
 ## Enabling Swap
 
-> Note: This will definitely make sure that your VirtualMachines can’t
+> Note: This will definitely make sure that your VirtualMachines can't
 > crash or get evicted from the node but it comes with the cost of
 > pretty unpredictable performance once the node runs out of memory and
 > the kubelet may not detect that it should evict Pods to increase the

@@ -75,7 +75,7 @@ a snippet presenting a couple of most commonly found editable fields:
 Each entry in the editable field list must be a
 [jsonpath](https://kubernetes.io/docs/reference/kubectl/jsonpath/). The
 jsonpath root is the objects: element of the template. The actually
-editable field is the last entry (the “leaf”) of the path. For example,
+editable field is the last entry (the "leaf") of the path. For example,
 the following minimal snippet highlights the fields which you can edit:
 
 ```console
@@ -229,10 +229,7 @@ You can add the VM from the template to the cluster in one go
     oc process rhel8-server-tiny NAME=rheltinyvm SRC_PVC_NAME=rhel SRC_PVC_NAMESPACE=kubevirt | oc apply -f -
 ```
 
-Please note that, after the generation step, VM objects and template
-objects have no relationship with each other besides the aforementioned
-label (e.g. changes in templates do not automatically affect VMs, or
-vice versa).
+Please note that after the generation step VM and template objects have no relationship with each other besides the aforementioned label.  Changes in templates do not automatically affect VMs or vice versa.
 
 ### common template customization
 
@@ -244,7 +241,7 @@ customize your kubevirt-provided templates editing these annotations, or
 you can add them to your existing templates to make them consumable by
 the kubevirt services.
 
-Here’s a description of the kubevirt annotations. Unless otherwise
+Here's a description of the kubevirt annotations. Unless otherwise
 specified, the following keys are meant to be top-level entries of the
 template metadata, like
 
@@ -345,7 +342,7 @@ consume to find the default values for the corresponding types. For
 example, considering the annotation
 `defaults.template.kubevirt.io/disk: my-disk`: we assume that later in
 the document it exists an element called `my-disk` that the UI can use
-to find the data it needs. The names actually don’t matter as long as
+to find the data it needs. The names actually don't matter as long as
 they are legal for kubernetes and consistent with the content of the
 document.
 
@@ -455,7 +452,7 @@ resources (CPU, memory) to allocate to the VM.
 
 ### Openshift Console
 
-VMs can be created through [OpenShift Cluster Console UI ](https://github.com/openshift/console). 
+VMs can be created through [OpenShift Cluster Console UI ](https://github.com/openshift/console).
 This UI supports creation VM using templates and templates
 features - flavors and workload profiles. To create VM from template, choose
 WorkLoads in the left panel >> choose Virtualization >> press to the "Create Virtual Machine"
@@ -623,7 +620,7 @@ parameters:
 ```
 
 Note that the template above defines free parameters (`NAME`,
-`SRC_PVC_NAME`, `SRC_PVC_NAMESPACE`, `CLOUD_USER_PASSWORD`) and the `NAME` 
+`SRC_PVC_NAME`, `SRC_PVC_NAMESPACE`, `CLOUD_USER_PASSWORD`) and the `NAME`
 parameter does not have specified default value.
 
 An OpenShift template has to be converted into the JSON file via
@@ -664,7 +661,7 @@ The command above results in creating a Kubernetes object according to
 the specification given by the template \\(in this example it is an
 instance of the VirtualMachine object\\).
 
-It’s possible to get list of available parameters using the following
+It's possible to get list of available parameters using the following
 command:
 
 ```console
@@ -698,7 +695,7 @@ VM testvm was scheduled to start
 
 As soon as VM starts, Kubernetes creates new type of object -
 VirtualMachineInstance. It has similar name to VirtualMachine. Example
-(not full output, it’s too big):
+(not full output, it's too big):
 
 ```console
 $ kubectl describe vm testvm
@@ -758,8 +755,8 @@ spec:
 
 ## Using DataVolumes
 
-Kubevirt VM templates are using dataVolumeTemplates. 
-Before using dataVolumes, CDI has to be installed in 
+Kubevirt VM templates are using dataVolumeTemplates.
+Before using dataVolumes, CDI has to be installed in
 cluster. After that, source Datavolume can be created.
 
 ```console

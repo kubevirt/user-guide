@@ -15,6 +15,7 @@ example, the `vmi-preset.yaml` file below describes a
 `VirtualMachineInstancePreset` that requests a `VirtualMachineInstance`
 be created with a resource request for 64M of RAM.
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstancePreset
     metadata:
@@ -27,12 +28,13 @@ be created with a resource request for 64M of RAM.
         resources:
           requests:
             memory: 64M
+```
 
 -   Create a `VirtualMachineInstancePreset` based on that YAML file:
 
-<!-- -->
-
+```console
     kubectl create -f vmipreset.yaml
+```
 
 ### Required Fields
 
@@ -55,8 +57,8 @@ applied to a `VirtualMachineInstance`, the `VirtualMachineInstance` will
 be marked with an Annotation upon completion.
 
 Any domain structure can be listed in the `spec` of a
-`VirtualMachineInstancePreset`, e.g. Clock, Features, Memory, CPU, or
-Devices such as network interfaces. All elements of the `spec` section
+`VirtualMachineInstancePreset` (Clock, Features, Memory, CPU, or
+Devices such as network interfaces). All elements of the `spec` section
 of a `VirtualMachineInstancePreset` will be applied to the
 `VirtualMachineInstance`.
 
@@ -100,11 +102,13 @@ In the event that there is a difference between the `Domains` of a
 will create an `Event`. `kubectl get events` can be used to show all
 `Events`. For example:
 
+```console
     $ kubectl get events
     ....
     Events:
       FirstSeen                         LastSeen                        Count From                              SubobjectPath                Reason    Message
       2m          2m           1         myvmi.1515bbb8d397f258                       VirtualMachineInstance                                     Warning   Conflict                  virtualmachineinstance-preset-controller   Unable to apply VirtualMachineInstancePreset 'example-preset': spec.cpu: &{6} != &{4}
+```
 
 ## Usage
 
@@ -117,6 +121,7 @@ use them:
 KubeVirt will determine which `VirtualMachineInstancePresets` apply to a
 Particular `VirtualMachineInstance` by matching `Labels`. For example:
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstancePreset
     metadata:
@@ -125,10 +130,12 @@ Particular `VirtualMachineInstance` by matching `Labels`. For example:
         matchLabels:
           kubevirt.io/os: win10
       ...
+```
 
 would match any `VirtualMachineInstance` in the same namespace with a
 `Label` of `flavor: foo`. For example:
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstance
     version: v1
@@ -137,16 +144,16 @@ would match any `VirtualMachineInstance` in the same namespace with a
       labels:
         kubevirt.io/os: win10
       ...
+```
 
 ## Conflicts
 
 When multiple `VirtualMachineInstancePresets` match a particular
-`VirtualMachineInstance`, if they specify the same settings within a
-Domain, those settings must match. If two
-`VirtualMachineInstancePresets` have conflicting settings (e.g. for the
-number of CPU cores requested), an error will occur, and the
-`VirtualMachineInstance` will enter the `Failed` state, and a `Warning`
-event will be emitted explaining which settings of which
+`VirtualMachineInstance`, if they specify the same settings within a Domain,
+those settings must match. If two `VirtualMachineInstancePresets` have
+conflicting settings (e.g. for the number of CPU cores requested), an error will
+occur, and the `VirtualMachineInstance` will enter the `Failed` state, and a
+`Warning` event will be emitted explaining which settings of which
 `VirtualMachineInstancePresets` were problematic.
 
 ## Matching Multiple `VirtualMachineInstances`
@@ -167,33 +174,41 @@ using selectors.
 Using matchLabels, the label used in the `VirtualMachineInstancePreset`
 must match one of the labels of the `VirtualMachineInstance`:
 
+```console
     selector:
       matchLabels:
         kubevirt.io/memory: large
+```
 
 would match
 
+```console
     metadata:
       labels:
         kubevirt.io/memory: large
         kubevirt.io/os: win10
+```
 
 or
 
+```console
     metadata:
       labels:
         kubevirt.io/memory: large
         kubevirt.io/os: fedora27
+```
 
 Using matchExpressions allows for matching multiple labels of
 `VirtualMachineInstances` without needing to explicity list a label.
 
+```console
     selector:
       matchExpressions:
         - {key: kubevirt.io/os, operator: In, values: [fedora27, fedora26]}
+```
 
 would match both:
-
+```console
     metadata:
       labels:
         kubevirt.io/os: fedora26
@@ -201,6 +216,7 @@ would match both:
     metadata:
       labels:
         kubevirt.io/os: fedora27
+```
 
 The Kubernetes
 [documentation](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
@@ -214,6 +230,7 @@ needs to exist a mechanism by which `VirtualMachineInstances` can opt
 out of `VirtualMachineInstancePresets` altogether. This is done using an
 annotation:
 
+```console
     kind: VirtualMachineInstance
     version: v1
     metadata:
@@ -221,11 +238,13 @@ annotation:
       annotations:
         virtualmachineinstancepresets.admission.kubevirt.io/exclude: "true"
       ...
+```
 
 ## Examples
 
 ### Simple `VirtualMachineInstancePreset` Example
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstancePreset
     version: v1alpha3
@@ -256,10 +275,12 @@ annotation:
       domain:
         firmware:
           uuid: c8f99fc8-20f5-46c4-85e5-2b841c547cef
+```
 
 Once the `VirtualMachineInstancePreset` is applied to the
 `VirtualMachineInstance`, the resulting resource would look like this:
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstance
     metadata:
@@ -294,13 +315,15 @@ Once the `VirtualMachineInstancePreset` is applied to the
         resources:
           requests:
             memory: 8Mi
+```
 
 ### Conflict Example
 
 This is an example of a merge conflict. In this case both the
 `VirtualMachineInstance` and `VirtualMachineInstancePreset` request
-different number of CPU’s.
+different number of CPU's.
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstancePreset
     version: v1alpha3
@@ -325,10 +348,12 @@ different number of CPU’s.
       domain:
         cpu:
           cores: 6
+```
 
 In this case the `VirtualMachineInstance` Spec will remain unmodified.
 Use `kubectl get events` to show events.
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstance
     metadata:
@@ -348,11 +373,13 @@ Use `kubectl get events` to show events.
           type: ""
         resources: {}
     status: {}
+```
 
-Calling ‘kubectl get events\` would have a line like: 2m 2m 1
-myvmi.1515bbb8d397f258 VirtualMachineInstance Warning Conflict
-virtualmachineinstance-preset-controller Unable to apply
-VirtualMachineInstancePreset \`example-preset’: spec.cpu: &{6} != &{4}
+Calling `kubectl get events` would have a line like:
+
+```console
+2m 2m 1 myvmi.1515bbb8d397f258 VirtualMachineInstance Warning Conflict virtualmachineinstance-preset-controller Unable to apply VirtualMachineInstancePreset example-preset: spec.cpu: &{6} != &{4}
+```
 
 ### Matching Multiple VirtualMachineInstances Using MatchLabels
 
@@ -362,6 +389,7 @@ and one that is shared.
 Note: This example breaks from the convention of using os-shortname as a
 `Label` for demonstration purposes.
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstancePreset
     metadata:
@@ -392,10 +420,12 @@ Note: This example breaks from the convention of using os-shortname as a
         kubevirt.io/cpu: dodecacore
     spec:
       terminationGracePeriodSeconds: 0
+```
 
 Adding this `VirtualMachineInstancePreset` and these
 `VirtualMachineInstances` will result in:
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstance
     metadata:
@@ -434,12 +464,14 @@ Adding this `VirtualMachineInstancePreset` and these
           requests:
             memory: 4Gi
       terminationGracePeriodSeconds: 0
+```
 
 ### Matching Multiple VirtualMachineInstances Using MatchExpressions
 
 This `VirtualMachineInstancePreset` has a matchExpression that will
 match two labels: `kubevirt.io/os: win10` and `kubevirt.io/os: win7`.
 
+```console
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstancePreset
     metadata:
@@ -470,9 +502,11 @@ match two labels: `kubevirt.io/os: win10` and `kubevirt.io/os: win7`.
         kubevirt.io/os: win7
     spec:
       terminationGracePeriodSeconds: 120
+```
 
-Applying the preset to both VM’s will result in:
+Applying the preset to both VM's will result in:
 
+```console
     apiVersion: v1
     items:
     - apiVersion: kubevirt.io/v1alpha3
@@ -505,3 +539,4 @@ Applying the preset to both VM’s will result in:
             requests:
               memory: 128M
         terminationGracePeriodSeconds: 60
+```

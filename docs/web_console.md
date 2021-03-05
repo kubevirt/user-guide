@@ -27,7 +27,7 @@ from a **PXE** source if there are no disks attached to the virtual
 machine. If one or more disks are attached to the virtual machine, you
 must select one as the **Bootable Disk**.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Click **Create Virtual Machine** and select **Create with Wizard**.
 
@@ -40,7 +40,7 @@ must select one as the **Bootable Disk**.
 
     1.  (Optional) Click **Create NIC** to create additional NICs.
 
-    2.  (Optional) You can remove any or all NICs by clicking the ⋮
+    2.  (Optional) You can remove any or all NICs by clicking the ![](assets/ellipsis.png "Ellipsis")
         button and selecting **Remove NIC**. A virtual machine does not
         need a NIC attached to be created. NICs can be
         [created](#vm-create-nic-web) after the virtual machine has been
@@ -50,11 +50,11 @@ must select one as the **Bootable Disk**.
     [**Storage**](#storage-fields) screen.
 
     1.  (Optional) Click **Create Disk** to create additional disks.
-        These disks can be removed by clicking the ⋮ button and
+        These disks can be removed by clicking the ![](assets/ellipsis.png "Ellipsis") button and
         selecting **Remove Disk**.
 
     2.  (Optional) Click on a disk to modify available fields. Click the
-        ✓ button to save the update.
+        ![](assets/check.png "Check") button to save the update.
 
     3.  (Optional) Click **Attach Disk** to choose an available disk
         from the **Select Storage** drop-down list.
@@ -62,13 +62,13 @@ must select one as the **Bootable Disk**.
 6.  Click **Create Virtual Machine &gt;**. The **Results** screen
     displays the JSON configuration file for the virtual machine.
 
-The virtual machine should now be listed in **Workloads** → **Virtual
+The virtual machine should now be listed in **Workloads** > **Virtual
 Machines**.
 
 ### Creating a Virtual Machine Using a YAML Configuration File
 
 A virtual machine can also be created by writing or pasting a YAML
-configuration file in the web console in the **Workloads** → **Virtual
+configuration file in the web console in the **Workloads** > **Virtual
 Machines** screen. A valid `example` virtual machine configuration is
 provided by default whenever you open the YAML edit screen.
 
@@ -79,7 +79,7 @@ one error is shown at a time.
 > Note: Navigating away from the YAML screen while editing cancels any
 > changes to the configuration you have made.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Click **Create Virtual Machine** and select **Create from YAML**.
 
@@ -94,7 +94,7 @@ one error is shown at a time.
 
 5.  Click **Create** to create the virtual machine.
 
-The virtual machine should now be listed in **Workloads** → **Virtual
+The virtual machine should now be listed in **Workloads** > **Virtual
 Machines**.
 
 ### Editing a Virtual Machine
@@ -106,7 +106,7 @@ by editing the [YAML directly](#editing-vm-yaml-web), or from the
 When editing from the **Virtual Machine Overview** screen, the virtual
 machine must be **Off**.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Select a Virtual Machine.
 
@@ -135,7 +135,7 @@ machine has been restarted.
 > Note: Navigating away from the YAML screen while editing cancels any
 > changes to the configuration you have made.
 
-1.  Click **Workloads** → **Virtual Machine** from the side menu.
+1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
 2.  Select a virtual machine.
 
@@ -154,10 +154,10 @@ including the updated version number for the object.
 You can view the events stream for a running virtual machine from the
 **Virtual Machine Details** screen of the web console.
 
-The ▮▮ button pauses the events stream.  
-The ▶ button continues a paused events stream.
+The ![](assets/pause.png "Pause") button pauses the events stream.  
+The ![](assets/play.png "Play") button continues a paused events stream.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Select a virtual machine.
 
@@ -167,18 +167,18 @@ The ▶ button continues a paused events stream.
 
 Deleting a virtual machine permanently removes it from the cluster.
 
-Delete a virtual machine using the ⋮ button of the virtual machine in
-the **Workloads** → **Virtual Machines** list, or using the
+Delete a virtual machine using the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine in
+the **Workloads** > **Virtual Machines** list, or using the
 [**Actions**](#vm-actions-web) button of the **Virtual Machine Details**
 screen.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
-2.  Click the ⋮ button of the virtual machine you wish to delete and
+2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine you wish to delete and
     select **Delete Virtual Machine**.
 
     1.  Alternatively, click the virtual machine name to open the
-        **Virtual Machine Details** screen and click **Actions** →
+        **Virtual Machine Details** screen and click **Actions** >
         **Delete Virtual Machine**.
 
 3.  In the confirmation pop-up window, click **Delete** to permanently
@@ -188,14 +188,14 @@ screen.
 
 ### Starting a Virtual Machine
 
-Virtual machines can be [started](#vm-actions-web) from the ⋮ button
-found on each virtual machine in the **Workloads** → **Virtual
+Virtual machines can be [started](#vm-actions-web) from the ![](assets/ellipsis.png "Ellipsis") button
+found on each virtual machine in the **Workloads** > **Virtual
 Machines** list, or from the [**Actions**](#vm-actions-web) button on
 the **Virtual Machine Details** screen.
 
-1.  Click **Workloads** → **Virtual Machine** from the side menu.
+1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
-2.  Click the ⋮ button of the virtual machine and select **Start Virtual
+2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine and select **Start Virtual
     Machine**.
 
     1.  Alternatively, click the virtual machine name to open the
@@ -207,14 +207,14 @@ the **Virtual Machine Details** screen.
 
 ### Stopping a Virtual Machine
 
-A running virtual machine can be [stopped](#vm-actions-web) using the ⋮
-button found on each virtual machine in the **Workloads** → **Virtual
+A running virtual machine can be [stopped](#vm-actions-web) using the ![](assets/ellipsis.png "Ellipsis")
+button found on each virtual machine in the **Workloads** > **Virtual
 Machines** list, or from the [**Actions**](#vm-actions-web) button on
 the **Virtual Machine Details** screen.
 
-1.  Click **Workloads** → **Virtual Machine** from the side menu.
+1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
-2.  Click the ⋮ button of the virtual machine and select **Stop Virtual
+2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine and select **Stop Virtual
     Machine**.
 
     1.  Alternatively, click the virtual machine name to open the
@@ -226,8 +226,8 @@ the **Virtual Machine Details** screen.
 
 ### Restarting a Virtual Machine
 
-A running virtual machine can be [restarted](#vm-actions-web) from the ⋮
-button found on each virtual machine in the **Workloads** → **Virtual
+A running virtual machine can be [restarted](#vm-actions-web) from the ![](assets/ellipsis.png "Ellipsis")
+button found on each virtual machine in the **Workloads** > **Virtual
 Machines** list, or from the [**Actions**](#vm-actions-web) button on
 the **Virtual Machine Details** screen.
 
@@ -236,9 +236,9 @@ the **Virtual Machine Details** screen.
 > and is a [known
 > issue](#../cnv_release_notes/cnv_release_notes.adoc#RN_known_issues).
 
-1.  Click **Workloads** → **Virtual Machine** from the side menu.
+1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
-2.  Click the ⋮ button of the virtual machine and select **Restart
+2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine and select **Restart
     Virtual Machine**.
 
     1.  Alternatively, click the virtual machine name to open the
@@ -251,14 +251,14 @@ the **Virtual Machine Details** screen.
 ### Live Migrating a Virtual Machine
 
 Virtual machines can be [live migrated](#vm-actions-web) to a different
-node from the ⋮ button found on each virtual machine in the
-**Workloads** → **Virtual Machines** list, or from the
+node from the ![](assets/ellipsis.png "Ellipsis") button found on each virtual machine in the
+**Workloads** > **Virtual Machines** list, or from the
 [**Actions**](#vm-actions-web) button on the **Virtual Machine Details**
 screen.
 
-1.  Click **Workloads** → **Virtual Machine** from the side menu.
+1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
-2.  Click the ⋮ button of the virtual machine and select **Migrate
+2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine and select **Migrate
     Virtual Machine**.
 
     1.  Alternatively, click the virtual machine name to open the
@@ -271,14 +271,14 @@ screen.
 ### Cancelling a Virtual Machine Live Migration
 
 A live migration of the virtual machine can be
-[cancelled](#vm-actions-web) using the ⋮ button found on each virtual
-machine in the **Workloads** → **Virtual Machines** list, or from the
+[cancelled](#vm-actions-web) using the ![](assets/ellipsis.png "Ellipsis") button found on each virtual
+machine in the **Workloads** > **Virtual Machines** list, or from the
 [**Actions**](#vm-actions-web) button on the **Cancel Virtual Machine
 Migration** screen.
 
-1.  Click **Workloads** → **Virtual Machine** from the side menu.
+1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
-2.  Click the ⋮ button of the virtual machine and select **Cancel
+2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine and select **Cancel
     Virtual Machine Migration**.
 
     1.  Alternatively, click the virtual machine name to open the
@@ -335,7 +335,7 @@ Connect to the **Serial Console** of a running virtual machine from the
 **Consoles** tab in the **Virtual Machine Details** screen of the web
 console.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Select a virtual machine.
 
@@ -350,7 +350,7 @@ Connect to the VNC console of a running virtual machine from the
 **Consoles** tab in the **Virtual Machine Details** screen of the web
 console.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Select a virtual machine.
 
@@ -361,7 +361,7 @@ console.
 The Desktop Viewer option can be used to connect to the RDP console of a
 running Windows virtual machine.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Select a virtual machine.
 
@@ -389,7 +389,7 @@ running Windows virtual machine.
 Create and attach additional NICs to a virtual machine from the web
 console.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Select a virtual machine.
 
@@ -401,7 +401,7 @@ console.
 5.  Fill in the **NAME**, **NETWORK**, **MAC ADDRESS**, and **BINDING
     METHOD** [details](#networking-fields) for the new NIC.
 
-6.  Click the ✓ button to save and attach the NIC to the virtual
+6.  Click the ![](assets/check.png "Check") button to save and attach the NIC to the virtual
     machine.
 
 ### Deleting a NIC from a Virtual Machine
@@ -409,14 +409,14 @@ console.
 Deleting a NIC from a virtual machine detaches and permanently deletes
 the NIC.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Select a virtual machine.
 
 3.  Click **Network Interfaces** to display the NICs already attached to
     the virtual machine.
 
-4.  Click the ⋮ button of the NIC you wish to delete and select
+4.  Click the ![](assets/ellipsis.png "Ellipsis") button of the NIC you wish to delete and select
     **Delete**.
 
 5.  In the confirmation pop-up window, click **Delete** to detach and
@@ -429,7 +429,7 @@ the NIC.
 Create and attach additional storage disks to a virtual machine from the
 web console.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Select a virtual machine.
 
@@ -441,7 +441,7 @@ web console.
 5.  Fill in the **NAME**, **SIZE**, and optional **STORAGE CLASS**
     [details](#storage-fields) for the new disk.
 
-6.  Click the ✓ button to save and attach the disk to the virtual
+6.  Click the ![](assets/check.png "Check") button to save and attach the disk to the virtual
     machine.
 
 ### Deleting a Disk from a Virtual Machine
@@ -449,14 +449,14 @@ web console.
 Deleting a disk from a virtual machine detaches and permanently deletes
 the disk.
 
-1.  Click **Workloads** → **Virtual Machines** from the side menu.
+1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
 2.  Select a virtual machine.
 
 3.  Click **Disks** to display the disks already attached to the virtual
     machine.
 
-4.  Click the ⋮ button of the disk you wish to delete and select
+4.  Click the ![](assets/ellipsis.png "Ellipsis") button of the disk you wish to delete and select
     **Delete**.
 
 5.  Click **Confirm** to detach and delete the disk.
@@ -494,7 +494,7 @@ from a **PXE** source if there are no disks attached to the virtual
 machine. If one or more disks are attached to the virtual machine, you
 must select one as the **Bootable Disk**.
 
-1.  Click **Workloads** → **Virtual Machine Templates** from the side
+1.  Click **Workloads** > **Virtual Machine Templates** from the side
     menu.
 
 2.  Click **Create Template** and select **Create with Wizard**.
@@ -508,7 +508,7 @@ must select one as the **Bootable Disk**.
 
     1.  (Optional) Click **Create NIC** to create additional NICs.
 
-    2.  (Optional) You can remove any or all NICs by clicking the ⋮
+    2.  (Optional) You can remove any or all NICs by clicking the ![](assets/ellipsis.png "Ellipsis")
         button and selecting **Remove NIC**. Virtual machines created
         from a template do not need a NIC attached. NICs can be
         [created](#vm-create-nic-web) after a virtual machine has been
@@ -518,11 +518,11 @@ must select one as the **Bootable Disk**.
     [**Storage**](#storage-fields) screen.
 
     1.  (Optional) Click **Create Disk** to create additional disks.
-        These disks can be removed by clicking the ⋮ button and
+        These disks can be removed by clicking the ![](assets/ellipsis.png "Ellipsis") button and
         selecting **Remove Disk**.
 
     2.  (Optional) Click on a disk to modify available fields. Click the
-        ✓ button to save the update.
+        ![](assets/check.png "Check") button to save the update.
 
     3.  (Optional) Click **Attach Disk** to choose an available disk
         from the **Select Storage** drop-down list.
@@ -531,7 +531,7 @@ must select one as the **Bootable Disk**.
     screen displays the JSON configuration file for the virtual machine
     template.
 
-The template should now be listed in **Workloads** → **Virtual Machine
+The template should now be listed in **Workloads** > **Virtual Machine
 Templates**.
 
 ### Editing the YAML of a Virtual Machine Template
@@ -546,7 +546,7 @@ parameter that was not able to be updated.
 > Note: Navigating away from the YAML screen while editing cancels any
 > changes to the configuration you have made.
 
-1.  Click **Workloads** → **Virtual Machine Template** from the side
+1.  Click **Workloads** > **Virtual Machine Template** from the side
     menu.
 
 2.  Select a template.
@@ -566,19 +566,19 @@ including the updated version number for the object.
 Deleting a virtual machine template permanently removes it from the
 cluster.
 
-Delete a virtual machine template using the ⋮ button found on each
-template in the **Workloads** → **Virtual Machines Templates** list, or
+Delete a virtual machine template using the ![](assets/ellipsis.png "Ellipsis") button found on each
+template in the **Workloads** > **Virtual Machines Templates** list, or
 using the **Actions** button of the **Virtual Machine Templates
 Details** screen.
 
-1.  Click **Workloads** → **Virtual Machine Templates** from the side
+1.  Click **Workloads** > **Virtual Machine Templates** from the side
     menu.
 
-2.  Click the ⋮ button of the template you wish to delete and select
+2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the template you wish to delete and select
     **Delete Template**.
 
     1.  Alternatively, click the template name to open the **Virtual
-        Machine Template Details** screen and click **Actions** →
+        Machine Template Details** screen and click **Actions** >
         **Delete Template**.
 
 3.  In the confirmation pop-up window, click **Delete** to permanently
@@ -625,7 +625,7 @@ Details** screen.
 | Name | Description |
 |------|-------------|
 | Hostname | Sets a specific hostname for the virtual machine |
-| Authenticated SSH Keys | The user’s public key<br><br>* This will be copied to `~/.ssh/authorized_keys` on the virtual machine |
+| Authenticated SSH Keys | The user's public key<br><br>* This will be copied to `~/.ssh/authorized_keys` on the virtual machine |
 | Use custom script | Replaces other options with a textbox into which you can paste a custom cloud-init script |
 
 ### Networking Fields

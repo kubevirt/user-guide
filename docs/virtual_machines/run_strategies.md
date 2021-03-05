@@ -88,7 +88,7 @@ the runStrategy of the VirtualMachine as below:
 </tbody>
 </table>
 
-Table entries marked with `-` don’t make sense, so won’t have an effect
+Table entries marked with `-` don't make sense, so won't have an effect
 on RunStrategy.
 
 ## RunStrategy Examples

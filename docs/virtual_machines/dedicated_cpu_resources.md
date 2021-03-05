@@ -3,17 +3,17 @@
 Certain workloads, requiring a predictable latency and enhanced
 performance during its execution would benefit from obtaining dedicated
 CPU resources. KubeVirt, relying on the Kubernetes CPU manager, is able
-to pin guest’s vCPUs to the host’s pCPUs.
+to pin guest's vCPUs to the host's pCPUs.
 
 [Kubernetes CPU
 manager](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/)
 
     Kubernetes CPU manager is a mechanism that affects the scheduling of
     workloads, placing it on a host which can allocate `Guaranteed`
-    resources and pin certain POD’s containers to host pCPUs, if the
+    resources and pin certain POD's containers to host pCPUs, if the
     following requirement are met:
 
-    * https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed[POD’s
+    * https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed[POD's
     QOS] is Guaranteed
     ** resources requests and limits are equal
     ** all containers in the POD express CPU and memory requirements
@@ -34,14 +34,14 @@ will indicate the desire to allocate dedicated CPU resource to the VMI
 
 Kubevirt will verify that all the necessary conditions are met, for the
 Kubernetes CPU manager to pin the virt-launcher container to dedicated
-host CPUs. Once, virt-launcher is running, the VMI’s vCPUs will be
+host CPUs. Once, virt-launcher is running, the VMI's vCPUs will be
 pinned to the pCPUS that has been dedicated for the virt-launcher
 container.
 
-Expressing the desired amount of VMI’s vCPUs can be done by either
+Expressing the desired amount of VMI's vCPUs can be done by either
 setting the guest topology in `spec.domain.cpu` (`sockets`, `cores`,
 `threads`) or `spec.domain.resources.[requests/limits].cpu` to a whole
-number, integer (e.g. 1, 2, etc) indicating the number of vCPUs
+number integer ([1-9]+) indicating the number of vCPUs
 requested for the VMI. Number of vCPUs is counted as
 `sockets * cores * threads` or if `spec.domain.cpu` is empty then it
 takes value from `spec.domain.resources.requests.cpu` or
@@ -91,7 +91,7 @@ OR
 
 A number of QEMU threads, such as QEMU main event loop, async I/O
 operation completion, etc., also execute on the same physical CPUs as
-the VMI’s vCPUs. This may affect the expected latency of a vCPU. In
+the VMI's vCPUs. This may affect the expected latency of a vCPU. In
 order to enhance the real-time support in KubeVirt and provide improved
 latency, KubeVirt will allocate an additional dedicated CPU, exclusively
 for the emulator thread, to which it will be pinned. This will
@@ -100,7 +100,7 @@ In case `ioThreadsPolicy` is set to `auto` IOThreads will also be
 "isolated" and placed on the same physical CPU as the QEMU emulator thread.
 
 This functionality can be enabled by specifying
-`isolateEmulatorThread: true` inside VMI spec’s `Spec.Domain.CPU`
+`isolateEmulatorThread: true` inside VMI spec's `Spec.Domain.CPU`
 section. Naturally, this setting has to be specified in a combination
 with a `dedicatedCpuPlacement: true`.
 
@@ -120,7 +120,7 @@ Example:
 
 ## Identifying nodes with a running CPU manager
 
-At this time, [Kubernetes doesn’t label the
+At this time, [Kubernetes doesn't label the
 nodes](https://github.com/kubernetes/kubernetes/issues/66525) that has
 CPU manager running on it.
 
@@ -136,7 +136,7 @@ When automatic identification is disabled, cluster administrator may
 manually add the above label to all the nodes when CPU Manager is
 running.
 
--   Nodes’ labels are view-able: `kubectl describe nodes`
+-   Nodes' labels are view-able: `kubectl describe nodes`
 
 -   Administrators may manually label a missing node:
     `kubectl label node [node_name] cpumanager=true`
@@ -184,11 +184,11 @@ Alternatively, users can edit an existing kubevirt:
 According to the Kubernetes CPU manager model, in order the POD would
 reach the required QOS level `Guaranteed`, all containers in the POD
 must express CPU and memory requirements. At this time, Kubevirt often
-uses a sidecar container to mount VMI’s registry disk. It also uses a
-sidecar container of it’s hooking mechanism. These additional resources
+uses a sidecar container to mount VMI's registry disk. It also uses a
+sidecar container of it's hooking mechanism. These additional resources
 can be viewed as an overhead and should be taken into account when
 calculating a node capacity.
 
-**Note:** The current defaults for sidecar’s resources: `CPU: 200m`
+**Note:** The current defaults for sidecar's resources: `CPU: 200m`
 `Memory: 64M` As the CPU resource is not expressed as a whole number,
 CPU manager will not attempt to pin the sidecar container to a host CPU.

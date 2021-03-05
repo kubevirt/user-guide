@@ -9,7 +9,7 @@ the case of OKD the **oc adm drain** command.
 
 ## How to Evict all VMs on a Node
 
-Select the node you’d like to evict VirtualMachineInstances from by
+Select the node you'd like to evict VirtualMachineInstances from by
 identifying the node from the list of cluster nodes.
 
 `kubectl get nodes`
@@ -41,7 +41,7 @@ is required.
 
 -   `--force` is a required flag because VirtualMachineInstance pods are
     not owned by a ReplicaSet or DaemonSet controller. This means
-    kubectl can’t guarantee that the pods being terminated on the target
+    kubectl can't guarantee that the pods being terminated on the target
     node will get re-scheduled replacements placed else where in the
     cluster after the pods are evicted. KubeVirt has its own controllers
     which manage the underlying VirtualMachineInstance pods. Each
@@ -54,7 +54,7 @@ is required.
 
 ## How to Evict all VMs and Pods on a Node
 
-By removing the **–pod-selector** argument from the previous command, we
+By removing the **-pod-selector** argument from the previous command, we
 can issue the eviction of all Pods on a node. This command ensures Pods
 associated with VMs as well as all other Pods are evicted from the
 target node.
@@ -172,7 +172,7 @@ or in the case of OKD.
 
 ## Shutting down a Node after Eviction
 
-From KubeVirt’s perspective, a node is safe to shutdown once all
+From KubeVirt's perspective, a node is safe to shutdown once all
 VirtualMachineInstances have been evicted from the node. In a multi-use
 cluster where VirtualMachineInstances are being scheduled alongside
 other containerized workloads, it is up to the cluster admin to ensure

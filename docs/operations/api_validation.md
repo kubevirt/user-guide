@@ -26,12 +26,12 @@ general structure of a KubeVirt object looks correct. It does not
 however verify that the contents of that object make sense.
 
 With OpenAPIv3 validation alone, users can easily make simple mistakes
-(like not referencing a volume’s name correctly with a disk) and the
+(like not referencing a volume's name correctly with a disk) and the
 cluster will still accept the object. However, the
 VirtualMachineInstance will of course not start if these errors in the
-API exist. Ideally we’d like to catch configuration issues as early as
+API exist. Ideally we'd like to catch configuration issues as early as
 possible and not allow an object to even be posted to the cluster if we
-can detect there’s a problem with the object’s Spec.
+can detect there's a problem with the object's Spec.
 
 In order to perform this advanced validation, KubeVirt implements its
 own admission controller which is registered with kubernetes as an
@@ -47,7 +47,7 @@ be enabled on the cluster in order to be enabled.
 
 When provisioning a new Kubernetes cluster, ensure that both the
 **MutatingAdmissionWebhook** and **ValidatingAdmissionWebhook** values
-are present in the Apiserver’s **--admission-control** cli argument.
+are present in the Apiserver's **--admission-control** cli argument.
 
 Below is an example of the **--admission-control** values we use during
 development

@@ -79,7 +79,7 @@ is installed across your cluster and a corresponding
 
 The following example defines a network which uses the [ovs-cni
 plugin](https://github.com/kubevirt/ovs-cni), which will connect the VMI
-to Open vSwitch’s bridge `br1` and VLAN 100. Other CNI plugins such as
+to Open vSwitch's bridge `br1` and VLAN 100. Other CNI plugins such as
 ptp, bridge, macvlan or Flannel might be used as well. For their
 installation and usage refer to the respective project documentation.
 
@@ -184,7 +184,7 @@ spec:
 ## Frontend
 
 Network interfaces are configured in `spec.domain.devices.interfaces`.
-They describe properties of virtual interfaces as “seen” inside guest
+They describe properties of virtual interfaces as "seen" inside guest
 instances. The same network backend may be connected to a virtual
 machine in multiple different ways, each with their own connectivity
 guarantees and characteristics.
@@ -224,7 +224,7 @@ fields:
 </table>
 
 Each interface may also have additional configuration fields that modify
-properties “seen” inside guest instances, as listed below:
+properties "seen" inside guest instances, as listed below:
 
 <table>
 <colgroup>
@@ -287,7 +287,7 @@ spec:
 ```
 
 > **Note:** If a specific MAC address is configured for a virtual
-> machine interface, it’s passed to the underlying CNI plugin that is
+> machine interface, it's passed to the underlying CNI plugin that is
 > expected to configure the backend to allow for this particular MAC
 > address. Not every plugin has native support for custom MAC addresses.
 
@@ -328,7 +328,7 @@ spec:
 > -   Plugins that are compatible with `tuning` plugin: `flannel`,
 >     `ptp`, `bridge`.
 >
-> -   Plugins that don’t need special MAC address treatment: `sriov` (in
+> -   Plugins that don't need special MAC address treatment: `sriov` (in
 >     `vfio` mode).
 >
 ### Ports
@@ -375,7 +375,7 @@ Declare ports listen by the virtual machine
 </tbody>
 </table>
 
-> **Tip:** Use `e1000` model if your guest image doesn’t ship with
+> **Tip:** Use `e1000` model if your guest image doesn't ship with
 > virtio drivers.
 
 > **Note:** Windows machines need the latest virtio network driver to
@@ -383,7 +383,7 @@ Declare ports listen by the virtual machine
 
 If `spec.domain.devices.interfaces` is omitted, the virtual machine is
 connected using the default pod network interface of `bridge` type. If
-you’d like to have a virtual machine instance without any network
+you'd like to have a virtual machine instance without any network
 connectivity, you can use the `autoattachPodInterface` field as follows:
 
 ```yaml
@@ -397,7 +397,7 @@ spec:
 ### bridge
 
 In `bridge` mode, virtual machines are connected to the network backend
-through a linux “bridge”. The pod network IPv4 address is delegated to
+through a linux "bridge". The pod network IPv4 address is delegated to
 the virtual machine via DHCPv4. The virtual machine should be configured
 to use DHCP to acquire IPv4 addresses.
 
@@ -419,11 +419,11 @@ spec:
       networkName: red
 ```
 
-At this time, `bridge` mode doesn’t support additional configuration
+At this time, `bridge` mode doesn't support additional configuration
 fields.
 
 > **Note:** due to IPv4 address delegation, in `bridge` mode the pod
-> doesn’t have an IP address configured, which may introduce issues with
+> doesn't have an IP address configured, which may introduce issues with
 > third-party solutions that may rely on it. For example, Istio may not
 > work in this mode.
 
@@ -471,7 +471,7 @@ spec:
     pod: {}
 ```
 
-At this time, `slirp` mode doesn’t support additional configuration
+At this time, `slirp` mode doesn't support additional configuration
 fields.
 
 > **Note:** in `slirp` mode, the only supported protocols are TCP and
@@ -484,7 +484,7 @@ Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29
 
 In `masquerade` mode, KubeVirt allocates internal IP addresses to
 virtual machines and hides them behind NAT. All the traffic exiting
-virtual machines is "NAT’ed" using pod IP addresses. A guest operating system
+virtual machines is "NAT'ed" using pod IP addresses. A guest operating system
 should be configured to use DHCP to acquire IPv4 addresses.
 
 To allow traffic of specific ports into virtual machines, the template `ports` section of

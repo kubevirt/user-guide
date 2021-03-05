@@ -23,7 +23,7 @@ VMs.
 Cloud-init documentation can be found here: [Cloud-init
 Documentation](https://cloudinit.readthedocs.io/en/latest/).
 
-KubeVirt supports cloud-init’s “NoCloud” and “ConfigDrive” datasources
+KubeVirt supports cloud-init's "NoCloud" and "ConfigDrive" datasources
 which involve injecting startup scripts into a VM instance through the
 use of an ephemeral disk. VMs with the cloud-init package installed will
 detect the ephemeral disk and execute custom userdata scripts at boot.
@@ -40,7 +40,7 @@ The general flow is:
     %WINDIR%\system32\sysprep\sysprep.exe /generalize /shutdown /oobe /mode:vm
     ```
 
-    More information can be found here: 
+    More information can be found here:
     * [Sysprep Process Overview](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep-process-overview)
     * [Sysprep (Generalize) a Windows installation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation)
 
@@ -60,7 +60,7 @@ attached to the VM.
 
 In order to assign a custom userdata script to a VirtualMachineInstance
 using this method, users must define a disk and a volume for the NoCloud
-or ConfigDrive datasource in the VirtualMachineInstance’s spec.
+or ConfigDrive datasource in the VirtualMachineInstance's spec.
 
 #### Data Sources
 
@@ -71,7 +71,7 @@ supported by the cloud-init implementation (e.g.
 should switch the data source to ConfigDrive.
 
 Switching the cloud-init data source to ConfigDrive is as easy as
-changing the volume type in the VirtualMachineInstance’s spec from
+changing the volume type in the VirtualMachineInstance's spec from
 `cloudInitNoCloud` to `cloudInitConfigDrive`.
 
 NoCloud data source:
@@ -93,8 +93,8 @@ See the examples below for more complete cloud-init examples.
 #### Cloud-init user-data as clear text
 
 In the example below, a SSH key is stored in the cloudInitNoCloud
-Volume’s userData field as clean text. There is a corresponding disks
-entry that references the cloud-init volume and assigns it to the VM’s
+Volume's userData field as clean text. There is a corresponding disks
+entry that references the cloud-init volume and assigns it to the VM's
 device.
 
     # Create a VM manifest with the startup script
@@ -138,12 +138,12 @@ device.
 #### Cloud-init user-data as base64 string
 
 In the example below, a simple bash script is base64 encoded and stored
-in the cloudInitNoCloud Volume’s userDataBase64 field. There is a
+in the cloudInitNoCloud Volume's userDataBase64 field. There is a
 corresponding disks entry that references the cloud-init volume and
-assigns it to the VM’s device.
+assigns it to the VM's device.
 
 *Users also have the option of storing the startup script in a
-Kubernetes Secret and referencing the Secret in the VM’s spec. Examples
+Kubernetes Secret and referencing the Secret in the VM's spec. Examples
 further down in the document illustrate how that is done.*
 
     # Create a simple startup script
@@ -198,7 +198,7 @@ Multiple VirtualMachineInstance specs can reference the same Kubernetes
 Secret containing cloud-init userdata.
 
 Below is an example of how to create a Kubernetes Secret containing a
-startup script and reference that Secret in the VM’s spec.
+startup script and reference that Secret in the VM's spec.
 
     # Create a simple startup script
 
@@ -245,10 +245,10 @@ startup script and reference that Secret in the VM’s spec.
     # Post the VM
     kubectl create -f my-vmi.yaml
 
-#### Injecting SSH keys with Cloud-init’s Cloud-config
+#### Injecting SSH keys with Cloud-init's Cloud-config
 
 In the examples so far, the cloud-init userdata script has been a bash
-script. Cloud-init has it’s own configuration that can handle some
+script. Cloud-init has it's own configuration that can handle some
 common tasks such as user creation and SSH key injection.
 
 More cloud-config examples can be found here: [Cloud-init
@@ -305,7 +305,7 @@ default user (fedora in this case) of a [Fedora Atomic](https://www.projectatomi
 #### Inject SSH key using a Custom Shell Script
 
 Depending on the boot image in use, users may have a mixed experience
-using cloud-init’s cloud-config to create users and inject SSH keys.
+using cloud-init's cloud-config to create users and inject SSH keys.
 
 Below is an example of creating a user and injecting SSH keys for that
 user using a script instead of cloud-config.
@@ -371,9 +371,9 @@ parse *network-config* even if it is just the user-data config header:
 #### Cloud-init network-config as clear text
 
 In the example below, a simple cloud-init network-config is stored in
-the cloudInitNoCloud Volume’s networkData field as clean text. There is
+the cloudInitNoCloud Volume's networkData field as clean text. There is
 a corresponding disks entry that references the cloud-init volume and
-assigns it to the VM’s device.
+assigns it to the VM's device.
 
     # Create a VM manifest with the network-config in
     # a cloudInitNoCloud volume's networkData field.
@@ -424,12 +424,12 @@ assigns it to the VM’s device.
 #### Cloud-init network-config as base64 string
 
 In the example below, a simple network-config is base64 encoded and
-stored in the cloudInitNoCloud Volume’s networkDataBase64 field. There
+stored in the cloudInitNoCloud Volume's networkDataBase64 field. There
 is a corresponding disks entry that references the cloud-init volume and
-assigns it to the VM’s device.
+assigns it to the VM's device.
 
 *Users also have the option of storing the network-config in a
-Kubernetes Secret and referencing the Secret in the VM’s spec. Examples
+Kubernetes Secret and referencing the Secret in the VM's spec. Examples
 further down in the document illustrate how that is done.*
 
     # Create a simple network-config
@@ -493,7 +493,7 @@ Multiple VirtualMachineInstance specs can reference the same Kubernetes
 Secret containing cloud-init network-config.
 
 Below is an example of how to create a Kubernetes Secret containing a
-network-config and reference that Secret in the VM’s spec.
+network-config and reference that Secret in the VM's spec.
 
     # Create a simple network-config
 
@@ -552,7 +552,7 @@ network-config and reference that Secret in the VM’s spec.
 
 Depending on the operating system distribution in use, cloud-init output
 is often printed to the console output on boot up. When developing
-userdata scripts, users can connect to the VM’s console during boot up
+userdata scripts, users can connect to the VM's console during boot up
 to debug.
 
 Example of connecting to console using virtctl:

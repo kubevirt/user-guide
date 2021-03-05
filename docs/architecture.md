@@ -206,7 +206,7 @@ $ kubectl get vmis
 No resources found.
 ```
 
-Let’s start the VirtualMachine:
+Let's start the VirtualMachine:
 
 ```
 $ virtctl start vm vm-cirros

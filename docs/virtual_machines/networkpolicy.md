@@ -14,7 +14,7 @@ objects in that namespace to indicate the allowed incoming connections.
 
 ## Create NetworkPolicy to Deny All Traffic
 
-To make a project “deny by default” add a NetworkPolicy object that
+To make a project "deny by default" add a NetworkPolicy object that
 matches all vmis but accepts no traffic.
 
     kind: NetworkPolicy
