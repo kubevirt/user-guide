@@ -1,31 +1,34 @@
-[[ -e kubevirt ]] || git clone git@github.com:kubevirt/kubevirt.git
+#!/bin/bash -x
+set -e
+
+[[ -e kubevirt ]] || git clone https://github.com/kubevirt/kubevirt.git kubevirt
 git -C kubevirt checkout master
-git -C kubevirt pull --tags
+git -C kubevirt fetch --tags
 
 releases() {
-git -C kubevirt tag | sort -rV | while read TAG ;
-do
-  [[ "$TAG" =~ [0-9].0$ ]] || continue ;
-  echo "$TAG" ;
-done
+  # I'm sure some one can do better here
+  if [ $# -eq 1 ]; then
+    git -C kubevirt tag | sort -rV | egrep -v "alpha|rc|cnv" | grep "$1"
+  else
+    git -C kubevirt tag | sort -rV | egrep -v "alpha|rc|cnv" | head -1
+  fi
 }
 
 features_for() {
-  echo -e  ""
-  git -C kubevirt show $1 | grep Date: | head -n1 | sed "s/Date:\s\+/Released on: /"
-  echo -e  ""
-  git -C kubevirt show $1 | sed -n "/changes$/,/Contributors/ p" | sed '1d;2d;$d' | sed '/^$/d'
+  git -C kubevirt show $1 | grep Date: | head -n1 | sed -e "s/Date:\s\+/Released on: /"
+  git -C kubevirt show $1 | sed -n "/changes$/,/Contributors/ p" | sed -e '1d;2d;$d'
 }
 
 gen_changelog() {
-  {
-  echo "# Release notes"
-  for REL in $(releases);
-  do
-    echo -e "\n## $REL" ;
+  IFS=$'\n'
+  sed -i -e "s/# Latest release notes//" ./docs/latest_release_notes.md
+  REL_NOTES=$(for REL in `releases $1`; do
+    echo -e "## $REL\n" ;
     features_for $REL
-  done
-  } > docs/latest_release_notes.md
+  done)
+  printf '%s %s\n' "$REL_NOTES `cat docs/latest_release_notes.md`" > ./docs/latest_release_notes.md
+  sed -i "1 i\# Latest release notes\n" ./docs/latest_release_notes.md
+  sed -i 's/[ \t]*$//' docs/latest_release_notes.md
 }
 
-gen_changelog
+gen_changelog $1
