@@ -105,6 +105,7 @@ check_links: | envvar stop
 				--rm \
 				--name userguide \
 				-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
+				-v /dev/null:/srv/Gemfile.lock \
 				--mount type=tmpfs,destination=/srv/site \
 				kubevirt-userguide \
 				/bin/bash -c 'cd /srv; bundle install --quiet; rake -- -u'
