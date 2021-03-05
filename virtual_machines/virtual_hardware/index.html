@@ -196,7 +196,7 @@
               
                 <h1 id="virtual-hardware">Virtual hardware<a class="headerlink" href="#virtual-hardware" title="Permanent link">&para;</a></h1>
 <p>Fine-tuning different aspects of the hardware which are not device
-related (BIOS, mainboard, …) is sometimes necessary to allow guest
+related (BIOS, mainboard, etc.) is sometimes necessary to allow guest
 operating systems to properly boot and reboot.</p>
 <h2 id="machine-type">Machine Type<a class="headerlink" href="#machine-type" title="Permanent link">&para;</a></h2>
 <p>QEMU is able to work with two different classes of chipsets for x86_64,
@@ -204,7 +204,7 @@ so called machine types. The x86_64 chipsets are i440fx (also called
 pc) and q35. They are versioned based on qemu-system-${ARCH},
 following the format <code>pc-${machine_type}-${qemu_version}</code>,
 e.g.<code>pc-i440fx-2.10</code> and <code>pc-q35-2.10</code>.</p>
-<p>KubeVirt defaults to QEMU’s newest q35 machine type. If a custom machine
+<p>KubeVirt defaults to QEMU's newest q35 machine type. If a custom machine
 type is desired, it is configurable through the following structure:</p>
 <pre><code>metadata:
   name: myvmi
@@ -225,7 +225,7 @@ spec:
       persistentVolumeClaim:
         claimName: myclaim
 </code></pre>
-<p>Comparison of the machine types’ internals can be found <a href="https://wiki.qemu.org/Features/Q35">at QEMU
+<p>Comparison of the machine types' internals can be found <a href="https://wiki.qemu.org/Features/Q35">at QEMU
 wiki</a>.</p>
 <h3 id="biosuefi">BIOS/UEFI<a class="headerlink" href="#biosuefi" title="Permanent link">&para;</a></h3>
 <p>All virtual machines use BIOS by default for booting.</p>
@@ -360,7 +360,7 @@ with aes feature.</p>
 <h4 id="model">Model<a class="headerlink" href="#model" title="Permanent link">&para;</a></h4>
 <p><strong>Note</strong>: Be sure that node CPU model where you run a VM, has the same
 or higher CPU family.</p>
-<p><strong>Note</strong>: If CPU model wasn’t defined, the VM will have CPU model
+<p><strong>Note</strong>: If CPU model wasn't defined, the VM will have CPU model
 closest to one that used on the node where the VM is running.</p>
 <p><strong>Note</strong>: CPU model is case sensitive.</p>
 <p>Setting the CPU model is possible via <code>spec.domain.cpu.model</code>. The
@@ -381,7 +381,7 @@ spec:
 <p>When CPUNodeDiscovery feature-gate is enabled and VM has cpu model,
 Kubevirt creates node selector with format:
 <code>feature.node.kubernetes.io/cpu-model-&lt;cpuModel&gt;</code>, e.g.
-<code>feature.node.kubernetes.io/cpu-model-Conroe</code>. When VM doesn’t have cpu
+<code>feature.node.kubernetes.io/cpu-model-Conroe</code>. When VM doesn't have cpu
 model, then no node selector is created.</p>
 <h4 id="enabling-default-cluster-cpu-model">Enabling default cluster cpu model<a class="headerlink" href="#enabling-default-cluster-cpu-model" title="Permanent link">&para;</a></h4>
 <p>To enable the default cpu model, user may add the <code>cpuModel</code>
@@ -397,9 +397,9 @@ field in the KubeVirt CR.</p>
         cpuModel: &quot;EPYC&quot;
     ...
 </code></pre>
-<p>Default CPU model is set when vmi doesn’t have any cpu model. When vmi
-has cpu model set, then vmi’s cpu model is preferred. When default cpu
-model is not set and vmi’s cpu model is not set too, <code>host-model</code> will
+<p>Default CPU model is set when vmi doesn't have any cpu model. When vmi
+has cpu model set, then vmi's cpu model is preferred. When default cpu
+model is not set and vmi's cpu model is not set too, <code>host-model</code> will
 be set. Default cpu model can be changed when kubevirt is running. When
 CPUNodeDiscovery feature gate is enabled Kubevirt creates node selector
 with default cpu model.</p>
@@ -468,7 +468,7 @@ following policies: force, require, optional, disable, forbid.</p>
 <p>When CPUNodeDiscovery feature-gate is enabled Kubevirt creates node
 selector from cpu features with format:
 <code>feature.node.kubernetes.io/cpu-feature-&lt;cpuFeature&gt;</code>, e.g.
-<code>feature.node.kubernetes.io/cpu-feature-apic</code>. When VM doesn’t have cpu
+<code>feature.node.kubernetes.io/cpu-feature-apic</code>. When VM doesn't have cpu
 feature, then no node selector is created.</p>
 <h3 id="clock">Clock<a class="headerlink" href="#clock" title="Permanent link">&para;</a></h3>
 <h4 id="guest-time">Guest time<a class="headerlink" href="#guest-time" title="Permanent link">&para;</a></h4>
@@ -486,7 +486,7 @@ Available options are</p>
 Reference</a>
 for all possible configuration options.</p>
 <h4 id="utc">utc<a class="headerlink" href="#utc" title="Permanent link">&para;</a></h4>
-<p>If <code>utc</code> is specified, the VM’s clock will be set to UTC.</p>
+<p>If <code>utc</code> is specified, the VM's clock will be set to UTC.</p>
 <pre><code>metadata:
   name: myvmi
 spec:
@@ -506,7 +506,7 @@ spec:
         claimName: myclaim
 </code></pre>
 <h4 id="timezone">timezone<a class="headerlink" href="#timezone" title="Permanent link">&para;</a></h4>
-<p>If <code>timezone</code> is specified, the VM’s clock will be set to the specified
+<p>If <code>timezone</code> is specified, the VM's clock will be set to the specified
 local time.</p>
 <pre><code>metadata:
   name: myvmi
@@ -695,7 +695,7 @@ spec:
 <h3 id="cpu_1">CPU<a class="headerlink" href="#cpu_1" title="Permanent link">&para;</a></h3>
 <p>Specifying CPU limits will determine the amount of <em>cpu</em> <em>shares</em> set on
 the control group the VM is running in, in other words, the amount of
-time the VM’s CPUs can execute on the assigned resources when there is a
+time the VM's CPUs can execute on the assigned resources when there is a
 competition for CPU resources.</p>
 <p>For more information please refer to <a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-limits-are-run">how Pods with resource limits are
 run</a>.</p>

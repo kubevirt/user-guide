@@ -206,7 +206,7 @@
               
                 <h1 id="node-overcommit">Node overcommit<a class="headerlink" href="#node-overcommit" title="Permanent link">&para;</a></h1>
 <p>KubeVirt does not yet support classical Memory Overcommit Management or
-Memory Ballooning. In other words VirtualMachineInstances can’t give
+Memory Ballooning. In other words VirtualMachineInstances can't give
 back memory they have allocated. However, a few other things can be
 tweaked to reduce the memory footprint and overcommit the per-VMI memory
 overhead.</p>
@@ -232,18 +232,18 @@ process.</p>
 <p>In order to increase the VMI density on the node, it is possible to not
 request the additional overhead by setting
 <code>spec.domain.resources.overcommitGuestOverhead</code> to <code>true</code>:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-metadata:
-  name: testvmi-nocloud
-spec:
-  terminationGracePeriodSeconds: 30
-  domain:
-    resources:
-      overcommitGuestOverhead: true
-      requests:
-        memory: 1024M
-[...]
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    metadata:
+      name: testvmi-nocloud
+    spec:
+      terminationGracePeriodSeconds: 30
+      domain:
+        resources:
+          overcommitGuestOverhead: true
+          requests:
+            memory: 1024M
+    [...]
 </code></pre>
 <p>This will work fine for as long as most of the VirtualMachineInstances
 will not request the whole memory. That is especially the case if you
@@ -258,20 +258,20 @@ is requested from the cluster by setting <code>spec.domain.memory.guest</code> t
 value higher than <code>spec.domain.resources.requests.memory</code>.</p>
 <p>The following definition requests <code>1024MB</code> from the cluster but tells
 the VMI that it has <code>2048MB</code> of memory available:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-metadata:
-  name: testvmi-nocloud
-spec:
-  terminationGracePeriodSeconds: 30
-  domain:
-    resources:
-      overcommitGuestOverhead: true
-      requests:
-        memory: 1024M
-    memory:
-      guest: 2048M
-[...]
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    metadata:
+      name: testvmi-nocloud
+    spec:
+      terminationGracePeriodSeconds: 30
+      domain:
+        resources:
+          overcommitGuestOverhead: true
+          requests:
+            memory: 1024M
+        memory:
+          guest: 2048M
+    [...]
 </code></pre>
 <p>For as long as there is enough free memory available on the node, the
 VMI can happily consume up to <code>2048MB</code>. This VMI will get the
@@ -295,26 +295,14 @@ configuration the virtual machines may get killed by the OOM handler or
 by the <code>kubelet</code> itself. It is possible to tweak that behaviour based on
 the requirements of your VirtualMachineInstances by:</p>
 <ul>
-<li>
-<p>Configuring <a href="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#soft-eviction-thresholds">Soft Eviction
-    Thresholds</a></p>
-</li>
-<li>
-<p>Configuring <a href="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#hard-eviction-thresholds">Hard Eviction
-    Thresholds</a></p>
-</li>
-<li>
-<p>Requesting the right QoS class for VirtualMachineInstances</p>
-</li>
-<li>
-<p>Setting <code>--system-reserved</code> and <code>--kubelet-reserved</code></p>
-</li>
-<li>
-<p>Enabling KSM</p>
-</li>
-<li>
-<p>Enabling swap</p>
-</li>
+<li>Configuring <a href="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#soft-eviction-thresholds">Soft Eviction
+    Thresholds</a></li>
+<li>Configuring <a href="https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#hard-eviction-thresholds">Hard Eviction
+    Thresholds</a></li>
+<li>Requesting the right QoS class for VirtualMachineInstances</li>
+<li>Setting <code>--system-reserved</code> and <code>--kubelet-reserved</code></li>
+<li>Enabling KSM</li>
+<li>Enabling swap</li>
 </ul>
 <h3 id="configuring-soft-eviction-thresholds">Configuring Soft Eviction Thresholds<a class="headerlink" href="#configuring-soft-eviction-thresholds" title="Permanent link">&para;</a></h3>
 <blockquote>
@@ -354,24 +342,19 @@ supports the QoS classes <code>Burstable</code> and <code>Guaranteed</code>. <co
 are evicted before <code>Guaranteed</code> VMIs.</p>
 <p>This allows creating two classes of VMIs:</p>
 <ul>
-<li>
-<p>One type can have equal <code>requests.memory</code> and <code>limits.memory</code> set
+<li>One type can have equal <code>requests.memory</code> and <code>limits.memory</code> set
     and therefore gets the <code>Guaranteed</code> class assigned. This one will
     not get evicted and should never run into memory issues, but is more
-    demanding.</p>
-</li>
-<li>
-<p>One type can have no <code>limits.memory</code> or a <code>limits.memory</code> which is
+    demanding.</li>
+<li>One type can have no <code>limits.memory</code> or a <code>limits.memory</code> which is
     greater than <code>requests.memory</code> and therefore gets the <code>Burstable</code>
-    class assigned. These VMIs will be evicted first.</p>
-</li>
+    class assigned. These VMIs will be evicted first.</li>
 </ul>
 <h2 id="setting-system-reserved-and-kubelet-reserved">Setting <code>--system-reserved</code> and <code>--kubelet-reserved</code><a class="headerlink" href="#setting-system-reserved-and-kubelet-reserved" title="Permanent link">&para;</a></h2>
-<p>It may be important to reserve some memory for other daemons (not
-DaemonSets) which are running on the same node (e.g. ssh, dhcp servers,
-…). The reservation can be done with the <code>--system-reserved</code> switch.
-Further for the Kubelet and Docker a special flag called
-<code>--kubelet-reserved</code> exists.</p>
+<p>It may be important to reserve some memory for other daemons (not DaemonSets)
+which are running on the same node (ssh, dhcp servers, etc). The reservation
+can be done with the <code>--system reserved</code> switch. Further for the Kubelet and
+Docker a special flag called <code>--kubelet-reserved</code> exists.</p>
 <h2 id="enabling-ksm">Enabling KSM<a class="headerlink" href="#enabling-ksm" title="Permanent link">&para;</a></h2>
 <p>The <a href="https://www.linux-kvm.org/page/KSM">KSM</a> (Kernel same-page merging)
 daemon can be started on the node. Depending on its tuning parameters it
@@ -384,7 +367,7 @@ KSM activate) and aggressiveness (how many pages per second will it
 scan).</p>
 <h2 id="enabling-swap">Enabling Swap<a class="headerlink" href="#enabling-swap" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>Note: This will definitely make sure that your VirtualMachines can’t
+<p>Note: This will definitely make sure that your VirtualMachines can't
 crash or get evicted from the node but it comes with the cost of
 pretty unpredictable performance once the node runs out of memory and
 the kubelet may not detect that it should evict Pods to increase the

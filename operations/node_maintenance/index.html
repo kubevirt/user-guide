@@ -208,7 +208,7 @@ backed by a Pod, the recommended method of evicting
 VirtualMachineInstances is to use the <strong>kubectl drain</strong> command, or in
 the case of OKD the <strong>oc adm drain</strong> command.</p>
 <h2 id="evict-all-vms-from-a-node">Evict all VMs from a Node<a class="headerlink" href="#evict-all-vms-from-a-node" title="Permanent link">&para;</a></h2>
-<p>Select the node you’d like to evict VirtualMachineInstances from by
+<p>Select the node you'd like to evict VirtualMachineInstances from by
 identifying the node from the list of cluster nodes.</p>
 <p><code>kubectl get nodes</code></p>
 <p>The following command will gracefully terminate all VMs on a specific
@@ -240,7 +240,7 @@ is required.</p>
 <li>
 <p><code>--force</code> is a required flag because VirtualMachineInstance pods are
     not owned by a ReplicaSet or DaemonSet controller. This means
-    kubectl can’t guarantee that the pods being terminated on the target
+    kubectl can't guarantee that the pods being terminated on the target
     node will get re-scheduled replacements placed else where in the
     cluster after the pods are evicted. KubeVirt has its own controllers
     which manage the underlying VirtualMachineInstance pods. Each
@@ -254,7 +254,7 @@ is required.</p>
 </li>
 </ul>
 <h2 id="evict-all-vms-and-pods-from-a-node">Evict all VMs and Pods from a Node<a class="headerlink" href="#evict-all-vms-and-pods-from-a-node" title="Permanent link">&para;</a></h2>
-<p>By removing the <strong>–pod-selector</strong> argument from the previous command, we
+<p>By removing the <code>-pod-selector</code> argument from the previous command, we
 can issue the eviction of all Pods on a node. This command ensures Pods
 associated with VMs as well as all other Pods are evicted from the
 target node.</p>
@@ -352,7 +352,7 @@ the following command must be run.</p>
 <p>or in the case of OKD.</p>
 <p><code>oc adm uncordon &lt;node name&gt;</code></p>
 <h2 id="shutting-down-a-node-after-eviction">Shutting down a Node after Eviction<a class="headerlink" href="#shutting-down-a-node-after-eviction" title="Permanent link">&para;</a></h2>
-<p>From KubeVirt’s perspective, a node is safe to shutdown once all
+<p>From KubeVirt's perspective, a node is safe to shutdown once all
 VirtualMachineInstances have been evicted from the node. In a multi-use
 cluster where VirtualMachineInstances are being scheduled alongside
 other containerized workloads, it is up to the cluster admin to ensure

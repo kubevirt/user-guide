@@ -198,7 +198,7 @@
 <p>Making persistent storage in the cluster (<strong>volumes</strong>) accessible to VMs consists of three parts. First, volumes are specified in <code>spec.volumes</code>. Second, disks are added to the VM by specifying them in <code>spec.domain.devices.disks</code>. Finally, a reference to the specified volume is added to the disk specification by name.</p>
 <h2 id="disks">Disks<a class="headerlink" href="#disks" title="Permanent link">&para;</a></h2>
 <p>Like all other vmi devices a <code>spec.domain.devices.disks</code> element has a
-mandatory <code>name</code>, and furthermore, the disk’s <code>name</code> must reference the
+mandatory <code>name</code>, and furthermore, the disk's <code>name</code> must reference the
 <code>name</code> of a volume inside <code>spec.volumes</code>.</p>
 <p>A disk can be made accessible via four different types:</p>
 <ul>
@@ -219,7 +219,7 @@ mandatory <code>name</code>, and furthermore, the disk’s <code>name</code> mus
 Reference</a>.</p>
 <p>All types, with the exception of <strong>floppy</strong>, allow you to specify the
 <code>bus</code> attribute. The <code>bus</code> attribute determines how the disk will be
-presented to the guest operating system. <strong>floppy</strong> disks don’t support
+presented to the guest operating system. <strong>floppy</strong> disks don't support
 the <code>bus</code> attribute: they are always attached to the <code>fdc</code> bus.</p>
 <h3 id="lun">lun<a class="headerlink" href="#lun" title="Permanent link">&para;</a></h3>
 <p>A <code>lun</code> disk will expose the volume as a LUN device to the VM. This
@@ -449,16 +449,16 @@ spec:
 </code></pre>
 <h3 id="persistentvolumeclaim">persistentVolumeClaim<a class="headerlink" href="#persistentvolumeclaim" title="Permanent link">&para;</a></h3>
 <p>Allows connecting a <code>PersistentVolumeClaim</code> to a VM disk.</p>
-<p>Use a PersistentVolumeClaim when the VirtualMachineInstance’s disk needs
-to persist after the VM terminates. This allows for the VM’s data to
+<p>Use a PersistentVolumeClaim when the VirtualMachineInstance's disk needs
+to persist after the VM terminates. This allows for the VM's data to
 remain persistent between restarts.</p>
-<p>A <code>PersistentVolume</code> can be in “filesystem” or “block” mode:</p>
+<p>A <code>PersistentVolume</code> can be in "filesystem" or "block" mode:</p>
 <ul>
 <li>
 <p>Filesystem: For KubeVirt to be able to consume the disk present on a
-    PersistentVolume’s filesystem, the disk must be named <code>disk.img</code> and
+    PersistentVolume's filesystem, the disk must be named <code>disk.img</code> and
     be placed in the root path of the filesystem. Currently the disk is
-    also required to be in raw format. &gt; <strong>Important:</strong> The
+    also required to be in raw format. <strong>&gt; Important:</strong> The
     <code>disk.img</code> image file needs to be owned by the user-id <code>107</code> in
     order to avoid permission issues.</p>
 <blockquote>
@@ -466,7 +466,7 @@ remain persistent between restarts.</p>
 manually before starting a VM then it will be created
 automatically with the <code>PersistentVolumeClaim</code> size. Since not
 every storage provisioner provides volumes with the exact usable
-amount of space as requested (e.g. due to filesystem overhead),
+amount of space as requested (e.g. due to filesystem overhead),
 KubeVirt tolerates up to 10% less available space. This can be
 configured with the <code>pvc-tolerate-less-space-up-to-percent</code> value
 in the <code>kubevirt-config</code> ConfigMap.</p>
@@ -499,7 +499,7 @@ spec:
 </code></pre>
 <h4 id="datavolume">dataVolume<a class="headerlink" href="#datavolume" title="Permanent link">&para;</a></h4>
 <p>DataVolumes are a way to automate importing virtual machine disks onto
-PVCs during the virtual machine’s launch flow. Without using a
+PVCs during the virtual machine's launch flow. Without using a
 DataVolume, users have to prepare a PVC with a disk image before
 assigning it to a VM or VMI manifest. With a DataVolume, both the PVC
 creation and import is automated on behalf of the user.</p>
@@ -561,7 +561,7 @@ automatically be deleted as well.</p>
 <p>For a VMI object, DataVolumes can be referenced as a volume source for
 the VMI. When this is done, it is expected that the referenced
 DataVolume exists in the cluster. The VMI will consume the DataVolume,
-but the DataVolume’s life-cycle will not be tied to the VMI.</p>
+but the DataVolume's life-cycle will not be tied to the VMI.</p>
 <p>Below is an example of a DataVolume being referenced by a VMI. It is
 expected that the DataVolume <em>alpine-datavolume</em> was created prior to
 posting the VMI manifest to the cluster. It is okay to post the VMI
@@ -682,7 +682,7 @@ persistent root disks across VM restarts.</p>
 a way that is consumable by the KubeVirt runtime. Disks must be placed
 into the <code>/disk</code> directory inside the container. Raw and qcow2 formats
 are supported. Qcow2 is recommended in order to reduce the container
-image’s size. <code>containerdisks</code> can and should be based on <code>scratch</code>. No
+image's size. <code>containerdisks</code> can and should be based on <code>scratch</code>. No
 content except the image is required.</p>
 <blockquote>
 <p><strong>Note:</strong> Prior to kubevirt 0.20, the containerDisk image needed to
@@ -1031,14 +1031,14 @@ additional context switching is incurred for each thread.</p>
 <p>Disks with <code>dedicatedIOThread</code> set to <code>true</code> will not use the shared
 thread, but will instead be allocated an exclusive thread. This is
 generally useful if a specific Disk is expected to have heavy I/O
-traffic, e.g. a database spindle.</p>
+traffic, e.g. a database spindle.</p>
 <h4 id="auto">Auto<a class="headerlink" href="#auto" title="Permanent link">&para;</a></h4>
 <p><code>auto</code> IOThreads indicates that KubeVirt should use a pool of IOThreads
 and allocate disks to IOThreads in a round-robin fashion. The pool size
-is generally limited to twice the number of VCPU’s allocated to the VM.
+is generally limited to twice the number of VCPU's allocated to the VM.
 This essentially attempts to dedicate disks to separate IOThreads, but
 only up to a reasonable limit. This would come in to play for systems
-with a large number of disks and a smaller number of CPU’s for instance.</p>
+with a large number of disks and a smaller number of CPU's for instance.</p>
 <p>As a caveat to the size of the IOThread pool, disks with
 <code>dedicatedIOThread</code> will always be guaranteed their own thread. This
 effectively diminishes the upper limit of the number of threads
@@ -1051,7 +1051,7 @@ use the shared IOThreads pool. Thus if a sufficiently large number of
 disks have dedicated IOThreads assigned, <code>auto</code> and <code>shared</code> policies
 would essentially result in the same layout.</p>
 <h4 id="iothreads-with-dedicated-pinned-cpus">IOThreads with Dedicated (pinned) CPUs<a class="headerlink" href="#iothreads-with-dedicated-pinned-cpus" title="Permanent link">&para;</a></h4>
-<p>When guest’s vCPUs are pinned to a host’s physical CPUs, it is also best
+<p>When guest's vCPUs are pinned to a host's physical CPUs, it is also best
 to pin the IOThreads to specific CPUs to prevent these from floating
 between the CPUs. KubeVirt will automatically calculate and pin each
 IOThread to a CPU or a set of CPUs, depending on the ration between
@@ -1237,8 +1237,8 @@ for optimal performance.</p>
 </code></pre>
 <p><strong>Note:</strong> Due to the way KubeVirt implements CPU allocation,
 blockMultiQueue can only be used if a specific CPU allocation is
-requested. If a specific number of CPUs hasn’t been allocated to a
-VirtualMachine, KubeVirt will use all CPU’s on the node on a best effort
+requested. If a specific number of CPUs hasn't been allocated to a
+VirtualMachine, KubeVirt will use all CPU's on the node on a best effort
 basis. In that case the amount of CPU allocation to a VM at the host
 level could change over time. If blockMultiQueue were to request a
 number of queues to match all the CPUs on a node, that could lead to

@@ -239,7 +239,7 @@ spec:
   [...]
 </code></pre>
 <p>In case there is a communication issue or the host goes down,
-<code>virt-handler</code> can’t update its labels and annotations any-more. Once
+<code>virt-handler</code> can't update its labels and annotations any-more. Once
 the last <code>kubevirt.io/heartbeat</code> timestamp is older than five minutes,
 the KubeVirt node-controller kicks in and sets the
 <code>kubevirt.io/schedulable</code> label to <code>false</code>. As a consequence no more
@@ -251,7 +251,7 @@ fine, a <code>VirtualMachineInstance</code> can be deleted as usual via
 <code>kubectl delete vmi &lt;myvm&gt;</code>. Pods of a <code>VirtualMachineInstance</code> will be
 told by the cluster-controllers they should shut down. As soon as the
 Pod is gone, the <code>VirtualMachineInstance</code> will be moved to <code>Failed</code>
-state, if <code>virt-handler</code> did not manage to update it’s heartbeat in the
+state, if <code>virt-handler</code> did not manage to update it's heartbeat in the
 meantime. If <code>virt-handler</code> could recover in the meantime,
 <code>virt-handler</code> will move the <code>VirtualMachineInstance</code> to failed state
 instead of the cluster-controllers.</p>

@@ -195,7 +195,7 @@
             <div class="section">
               
                 <h1 id="authorization">Authorization<a class="headerlink" href="#authorization" title="Permanent link">&para;</a></h1>
-<p>KubeVirt authorization is performed using Kubernetes’s Resource Based
+<p>KubeVirt authorization is performed using Kubernetes's Resource Based
 Authorization Control system (RBAC). RBAC allows cluster admins to grant
 access to cluster resources by binding RBAC roles to users.</p>
 <p>For example, an admin creates an RBAC role that represents the
@@ -210,7 +210,7 @@ used to grant users permissions to access KubeVirt Resources.</p>
 <h3 id="default-view-role">Default View Role<a class="headerlink" href="#default-view-role" title="Permanent link">&para;</a></h3>
 <p>The <strong>kubevirt.io:view</strong> ClusterRole gives users permissions to view all
 KubeVirt resources in the cluster. The permissions to create, delete,
-modify or access any KubeVirt resources beyond viewing the resource’s
+modify or access any KubeVirt resources beyond viewing the resource's
 spec are not included in this role. This means a user with this role
 could see that a VirtualMachineInstance is running, but neither shutdown
 nor gain access to that VirtualMachineInstance via console/VNC.</p>
@@ -262,8 +262,8 @@ automatically gain access to the equivalent KubeVirt roles as well.</p>
 <p>If the default KubeVirt ClusterRoles are not expressive enough, admins
 can create their own custom RBAC roles to grant user access to KubeVirt
 resources. The creation of a RBAC role is inclusive only, meaning
-there’s no way to deny access. Instead access is only granted.</p>
-<p>Below is an example of what KubeVirt’s default admin ClusterRole looks
+there's no way to deny access. Instead access is only granted.</p>
+<p>Below is an example of what KubeVirt's default admin ClusterRole looks
 like. A custom RBAC role can be created by reducing the permissions in
 this example role.</p>
 <pre><code>apiVersion: rbac.authorization.k8s.io/v1beta1

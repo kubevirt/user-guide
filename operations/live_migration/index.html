@@ -320,7 +320,7 @@ and <code>Failed</code>.</p>
     Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
 </code></pre>
 <h2 id="changing-cluster-wide-migration-limits">Changing Cluster Wide Migration Limits<a class="headerlink" href="#changing-cluster-wide-migration-limits" title="Permanent link">&para;</a></h2>
-<p>KubeVirt puts some limits in place, so that migrations don’t overwhelm
+<p>KubeVirt puts some limits in place, so that migrations don't overwhelm
 the cluster. By default, it is configured to only run <code>5</code> migrations in
 parallel with an additional limit of a maximum of <code>2</code> outbound
 migrations per node. Finally, every migration is limited to a bandwidth
@@ -356,14 +356,14 @@ disk blocks at a higher rate than these can be copied, which will
 prevent the migration process from completing in a reasonable amount of
 time. In this case, live migration will be aborted if it is running for
 a long period of time. The timeout is calculated base on the size of
-the VMI, it’s memory and the ephemeral disks that are needed to be
+the VMI, it's memory and the ephemeral disks that are needed to be
 copied. The configurable parameter <code>completionTimeoutPerGiB</code>, which
 defaults to 800s is the time for GiB of data to wait for the migration
 to be completed before aborting it. A VMI with 8Gib of memory will time
 out after 6400 seconds.</p>
 <h2 id="progress-timeout">Progress timeout<a class="headerlink" href="#progress-timeout" title="Permanent link">&para;</a></h2>
 <p>Live migration will also be aborted when it will be noticed that copying
-memory doesn’t make any progress. The time to wait for live migration to
+memory doesn't make any progress. The time to wait for live migration to
 make progress in transferring data is configurable by <code>progressTimeout</code>
 parameter, which defaults to 150s</p>
               

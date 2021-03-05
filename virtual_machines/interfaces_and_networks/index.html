@@ -258,7 +258,7 @@ is installed across your cluster and a corresponding
 <code>NetworkAttachmentDefinition</code> CRD was created.</p>
 <p>The following example defines a network which uses the <a href="https://github.com/kubevirt/ovs-cni">ovs-cni
 plugin</a>, which will connect the VMI
-to Open vSwitch’s bridge <code>br1</code> and VLAN 100. Other CNI plugins such as
+to Open vSwitch's bridge <code>br1</code> and VLAN 100. Other CNI plugins such as
 ptp, bridge, macvlan or Flannel might be used as well. For their
 installation and usage refer to the respective project documentation.</p>
 <p>First the <code>NetworkAttachmentDefinition</code> needs to be created. That is
@@ -352,7 +352,7 @@ spec:
 </code></pre>
 <h2 id="frontend">Frontend<a class="headerlink" href="#frontend" title="Permanent link">&para;</a></h2>
 <p>Network interfaces are configured in <code>spec.domain.devices.interfaces</code>.
-They describe properties of virtual interfaces as “seen” inside guest
+They describe properties of virtual interfaces as "seen" inside guest
 instances. The same network backend may be connected to a virtual
 machine in multiple different ways, each with their own connectivity
 guarantees and characteristics.</p>
@@ -390,7 +390,7 @@ fields:</p>
 </table>
 
 <p>Each interface may also have additional configuration fields that modify
-properties “seen” inside guest instances, as listed below:</p>
+properties "seen" inside guest instances, as listed below:</p>
 <table>
 <colgroup>
 <col style="width: 25%" />
@@ -451,7 +451,7 @@ spec:
 </code></pre>
 <blockquote>
 <p><strong>Note:</strong> If a specific MAC address is configured for a virtual
-machine interface, it’s passed to the underlying CNI plugin that is
+machine interface, it's passed to the underlying CNI plugin that is
 expected to configure the backend to allow for this particular MAC
 address. Not every plugin has native support for custom MAC addresses.</p>
 <p><strong>Note:</strong> For some CNI plugins without native support for custom MAC
@@ -491,7 +491,7 @@ not compatible with <code>tuning</code> plugin.</p>
     <code>ptp</code>, <code>bridge</code>.</p>
 </li>
 <li>
-<p>Plugins that don’t need special MAC address treatment: <code>sriov</code> (in
+<p>Plugins that don't need special MAC address treatment: <code>sriov</code> (in
     <code>vfio</code> mode).
 </p>
 </li>
@@ -541,14 +541,14 @@ will be forwarded to the virtual machine.</p>
 </table>
 
 <blockquote>
-<p><strong>Tip:</strong> Use <code>e1000</code> model if your guest image doesn’t ship with
+<p><strong>Tip:</strong> Use <code>e1000</code> model if your guest image doesn't ship with
 virtio drivers.</p>
 <p><strong>Note:</strong> Windows machines need the latest virtio network driver to
 configure the correct MTU on the interface.</p>
 </blockquote>
 <p>If <code>spec.domain.devices.interfaces</code> is omitted, the virtual machine is
 connected using the default pod network interface of <code>bridge</code> type. If
-you’d like to have a virtual machine instance without any network
+you'd like to have a virtual machine instance without any network
 connectivity, you can use the <code>autoattachPodInterface</code> field as follows:</p>
 <pre><code class="language-yaml">kind: VM
 spec:
@@ -558,7 +558,7 @@ spec:
 </code></pre>
 <h3 id="bridge">bridge<a class="headerlink" href="#bridge" title="Permanent link">&para;</a></h3>
 <p>In <code>bridge</code> mode, virtual machines are connected to the network backend
-through a linux “bridge”. The pod network IPv4 address is delegated to
+through a linux "bridge". The pod network IPv4 address is delegated to
 the virtual machine via DHCPv4. The virtual machine should be configured
 to use DHCP to acquire IPv4 addresses.</p>
 <blockquote>
@@ -578,11 +578,11 @@ spec:
     multus:
       networkName: red
 </code></pre>
-<p>At this time, <code>bridge</code> mode doesn’t support additional configuration
+<p>At this time, <code>bridge</code> mode doesn't support additional configuration
 fields.</p>
 <blockquote>
 <p><strong>Note:</strong> due to IPv4 address delegation, in <code>bridge</code> mode the pod
-doesn’t have an IP address configured, which may introduce issues with
+doesn't have an IP address configured, which may introduce issues with
 third-party solutions that may rely on it. For example, Istio may not
 work in this mode.</p>
 <p><strong>Note:</strong> admin can forbid using <code>bridge</code> interface type for pod
@@ -624,7 +624,7 @@ spec:
   - name: red
     pod: {}
 </code></pre>
-<p>At this time, <code>slirp</code> mode doesn’t support additional configuration
+<p>At this time, <code>slirp</code> mode doesn't support additional configuration
 fields.</p>
 <blockquote>
 <p><strong>Note:</strong> in <code>slirp</code> mode, the only supported protocols are TCP and
@@ -635,7 +635,7 @@ Wiki</a>.</p>
 <h3 id="masquerade">masquerade<a class="headerlink" href="#masquerade" title="Permanent link">&para;</a></h3>
 <p>In <code>masquerade</code> mode, KubeVirt allocates internal IP addresses to
 virtual machines and hides them behind NAT. All the traffic exiting
-virtual machines is "NAT’ed" using pod IP addresses. A guest operating system
+virtual machines is "NAT'ed" using pod IP addresses. A guest operating system
 should be configured to use DHCP to acquire IPv4 addresses.</p>
 <p>To allow traffic of specific ports into virtual machines, the template <code>ports</code> section of
 the interface should be configured as follows. If the <code>ports</code> section is missing,

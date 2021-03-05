@@ -266,7 +266,7 @@ a snippet presenting a couple of most commonly found editable fields:</p>
 <p>Each entry in the editable field list must be a
 <a href="https://kubernetes.io/docs/reference/kubectl/jsonpath/">jsonpath</a>. The
 jsonpath root is the objects: element of the template. The actually
-editable field is the last entry (the “leaf”) of the path. For example,
+editable field is the last entry (the "leaf") of the path. For example,
 the following minimal snippet highlights the fields which you can edit:</p>
 <pre><code class="language-console">    objects:
       spec:
@@ -399,10 +399,7 @@ same namespace as the VM.</p>
 <p>You can add the VM from the template to the cluster in one go</p>
 <pre><code class="language-console">    oc process rhel8-server-tiny NAME=rheltinyvm SRC_PVC_NAME=rhel SRC_PVC_NAMESPACE=kubevirt | oc apply -f -
 </code></pre>
-<p>Please note that, after the generation step, VM objects and template
-objects have no relationship with each other besides the aforementioned
-label (e.g. changes in templates do not automatically affect VMs, or
-vice versa).</p>
+<p>Please note that after the generation step VM and template objects have no relationship with each other besides the aforementioned label.  Changes in templates do not automatically affect VMs or vice versa.</p>
 <h3 id="common-template-customization">common template customization<a class="headerlink" href="#common-template-customization" title="Permanent link">&para;</a></h3>
 <p>The templates provided by the kubevirt project provide a set of
 conventions and annotations that augment the basic feature of the
@@ -411,7 +408,7 @@ templates</a>. You can
 customize your kubevirt-provided templates editing these annotations, or
 you can add them to your existing templates to make them consumable by
 the kubevirt services.</p>
-<p>Here’s a description of the kubevirt annotations. Unless otherwise
+<p>Here's a description of the kubevirt annotations. Unless otherwise
 specified, the following keys are meant to be top-level entries of the
 template metadata, like</p>
 <pre><code class="language-console">    apiVersion: v1
@@ -484,7 +481,7 @@ consume to find the default values for the corresponding types. For
 example, considering the annotation
 <code>defaults.template.kubevirt.io/disk: my-disk</code>: we assume that later in
 the document it exists an element called <code>my-disk</code> that the UI can use
-to find the data it needs. The names actually don’t matter as long as
+to find the data it needs. The names actually don't matter as long as
 they are legal for kubernetes and consistent with the content of the
 document.</p>
 <h4 id="complete-example">complete example<a class="headerlink" href="#complete-example" title="Permanent link">&para;</a></h4>
@@ -581,7 +578,7 @@ Furthermore, it allows to maximize the stability of the VM, and allows
 performance optimizations. - Size (flavor) Defines the amount of
 resources (CPU, memory) to allocate to the VM.</p>
 <h3 id="openshift-console">Openshift Console<a class="headerlink" href="#openshift-console" title="Permanent link">&para;</a></h3>
-<p>VMs can be created through <a href="https://github.com/openshift/console">OpenShift Cluster Console UI </a>. 
+<p>VMs can be created through <a href="https://github.com/openshift/console">OpenShift Cluster Console UI </a>.
 This UI supports creation VM using templates and templates
 features - flavors and workload profiles. To create VM from template, choose
 WorkLoads in the left panel &gt;&gt; choose Virtualization &gt;&gt; press to the "Create Virtual Machine"
@@ -740,7 +737,7 @@ parameters:
   name: CLOUD_USER_PASSWORD
 </code></pre>
 <p>Note that the template above defines free parameters (<code>NAME</code>,
-<code>SRC_PVC_NAME</code>, <code>SRC_PVC_NAMESPACE</code>, <code>CLOUD_USER_PASSWORD</code>) and the <code>NAME</code> 
+<code>SRC_PVC_NAME</code>, <code>SRC_PVC_NAMESPACE</code>, <code>CLOUD_USER_PASSWORD</code>) and the <code>NAME</code>
 parameter does not have specified default value.</p>
 <p>An OpenShift template has to be converted into the JSON file via
 <code>oc process</code> command, that also allows you to set the template
@@ -771,7 +768,7 @@ virtualmachine.kubevirt.io/testvm created
 <p>The command above results in creating a Kubernetes object according to
 the specification given by the template \(in this example it is an
 instance of the VirtualMachine object\).</p>
-<p>It’s possible to get list of available parameters using the following
+<p>It's possible to get list of available parameters using the following
 command:</p>
 <pre><code class="language-console">$ oc process -f dist/templates/fedora-desktop-large.yaml --parameters
 NAME                  DESCRIPTION                                          GENERATOR           VALUE
@@ -795,7 +792,7 @@ VM testvm was scheduled to start
 </code></pre>
 <p>As soon as VM starts, Kubernetes creates new type of object -
 VirtualMachineInstance. It has similar name to VirtualMachine. Example
-(not full output, it’s too big):</p>
+(not full output, it's too big):</p>
 <pre><code class="language-console">$ kubectl describe vm testvm
 name:         testvm
 Namespace:    myproject
@@ -845,8 +842,8 @@ spec:
 
 </code></pre>
 <h2 id="using-datavolumes">Using DataVolumes<a class="headerlink" href="#using-datavolumes" title="Permanent link">&para;</a></h2>
-<p>Kubevirt VM templates are using dataVolumeTemplates. 
-Before using dataVolumes, CDI has to be installed in 
+<p>Kubevirt VM templates are using dataVolumeTemplates.
+Before using dataVolumes, CDI has to be installed in
 cluster. After that, source Datavolume can be created.</p>
 <pre><code class="language-console">---
 apiVersion: cdi.kubevirt.io/v1beta1

@@ -210,12 +210,12 @@ no thought on the users part to enable.</p>
 general structure of a KubeVirt object looks correct. It does not
 however verify that the contents of that object make sense.</p>
 <p>With OpenAPIv3 validation alone, users can easily make simple mistakes
-(like not referencing a volume’s name correctly with a disk) and the
+(like not referencing a volume's name correctly with a disk) and the
 cluster will still accept the object. However, the
 VirtualMachineInstance will of course not start if these errors in the
-API exist. Ideally we’d like to catch configuration issues as early as
+API exist. Ideally we'd like to catch configuration issues as early as
 possible and not allow an object to even be posted to the cluster if we
-can detect there’s a problem with the object’s Spec.</p>
+can detect there's a problem with the object's Spec.</p>
 <p>In order to perform this advanced validation, KubeVirt implements its
 own admission controller which is registered with kubernetes as an
 admission controller webhook. This webhook is registered with Kubernetes
@@ -227,7 +227,7 @@ be enabled on the cluster in order to be enabled.</p>
 <h3 id="enabling-kubevirt-admission-controller-on-kubernetes">Enabling KubeVirt Admission Controller on Kubernetes<a class="headerlink" href="#enabling-kubevirt-admission-controller-on-kubernetes" title="Permanent link">&para;</a></h3>
 <p>When provisioning a new Kubernetes cluster, ensure that both the
 <strong>MutatingAdmissionWebhook</strong> and <strong>ValidatingAdmissionWebhook</strong> values
-are present in the Apiserver’s <strong>--admission-control</strong> cli argument.</p>
+are present in the Apiserver's <strong>--admission-control</strong> cli argument.</p>
 <p>Below is an example of the <strong>--admission-control</strong> values we use during
 development</p>
 <pre><code>--admission-control='Initializers,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota'

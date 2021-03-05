@@ -217,25 +217,23 @@ of common settings that should apply to multiple
 example, the <code>vmi-preset.yaml</code> file below describes a
 <code>VirtualMachineInstancePreset</code> that requests a <code>VirtualMachineInstance</code>
 be created with a resource request for 64M of RAM.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstancePreset
-metadata:
-  name: small-qemu
-spec:
-  selector:
-    matchLabels:
-      kubevirt.io/size: small
-  domain:
-    resources:
-      requests:
-        memory: 64M
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstancePreset
+    metadata:
+      name: small-qemu
+    spec:
+      selector:
+        matchLabels:
+          kubevirt.io/size: small
+      domain:
+        resources:
+          requests:
+            memory: 64M
 </code></pre>
 <ul>
 <li>Create a <code>VirtualMachineInstancePreset</code> based on that YAML file:</li>
 </ul>
-<!-- -->
-
-<pre><code>kubectl create -f vmipreset.yaml
+<pre><code class="language-console">    kubectl create -f vmipreset.yaml
 </code></pre>
 <h3 id="required-fields">Required Fields<a class="headerlink" href="#required-fields" title="Permanent link">&para;</a></h3>
 <p>As with most Kubernetes resources, a <code>VirtualMachineInstancePreset</code>
@@ -253,7 +251,7 @@ Kubernetes. If a setting from a <code>VirtualMachineInstancePreset</code> is
 applied to a <code>VirtualMachineInstance</code>, the <code>VirtualMachineInstance</code> will
 be marked with an Annotation upon completion.</p>
 <p>Any domain structure can be listed in the <code>spec</code> of a
-<code>VirtualMachineInstancePreset</code>, e.g. Clock, Features, Memory, CPU, or
+<code>VirtualMachineInstancePreset</code>, e.g. Clock, Features, Memory, CPU, or
 Devices such as network interfaces. All elements of the <code>spec</code> section
 of a <code>VirtualMachineInstancePreset</code> will be applied to the
 <code>VirtualMachineInstance</code>.</p>
@@ -289,11 +287,11 @@ successfully applied, the <code>VirtualMachineInstance</code> will be annotated.
 <code>VirtualMachineInstance</code> and <code>VirtualMachineInstancePreset</code>, KubeVirt
 will create an <code>Event</code>. <code>kubectl get events</code> can be used to show all
 <code>Events</code>. For example:</p>
-<pre><code>$ kubectl get events
-....
-Events:
-  FirstSeen                         LastSeen                        Count From                              SubobjectPath                Reason    Message
-  2m          2m           1         myvmi.1515bbb8d397f258                       VirtualMachineInstance                                     Warning   Conflict                  virtualmachineinstance-preset-controller   Unable to apply VirtualMachineInstancePreset 'example-preset': spec.cpu: &amp;{6} != &amp;{4}
+<pre><code class="language-console">    $ kubectl get events
+    ....
+    Events:
+      FirstSeen                         LastSeen                        Count From                              SubobjectPath                Reason    Message
+      2m          2m           1         myvmi.1515bbb8d397f258                       VirtualMachineInstance                                     Warning   Conflict                  virtualmachineinstance-preset-controller   Unable to apply VirtualMachineInstancePreset 'example-preset': spec.cpu: &amp;{6} != &amp;{4}
 </code></pre>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <p><code>VirtualMachineInstancePresets</code> are namespaced resources, so should be
@@ -302,34 +300,33 @@ use them:</p>
 <p><code>kubectl create -f &lt;preset&gt;.yaml [--namespace &lt;namespace&gt;]</code></p>
 <p>KubeVirt will determine which <code>VirtualMachineInstancePresets</code> apply to a
 Particular <code>VirtualMachineInstance</code> by matching <code>Labels</code>. For example:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstancePreset
-metadata:
-  name: example-preset
-  selector:
-    matchLabels:
-      kubevirt.io/os: win10
-  ...
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstancePreset
+    metadata:
+      name: example-preset
+      selector:
+        matchLabels:
+          kubevirt.io/os: win10
+      ...
 </code></pre>
 <p>would match any <code>VirtualMachineInstance</code> in the same namespace with a
 <code>Label</code> of <code>flavor: foo</code>. For example:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-version: v1
-metadata:
-  name: myvmi
-  labels:
-    kubevirt.io/os: win10
-  ...
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    version: v1
+    metadata:
+      name: myvmi
+      labels:
+        kubevirt.io/os: win10
+      ...
 </code></pre>
 <h2 id="conflicts">Conflicts<a class="headerlink" href="#conflicts" title="Permanent link">&para;</a></h2>
 <p>When multiple <code>VirtualMachineInstancePresets</code> match a particular
-<code>VirtualMachineInstance</code>, if they specify the same settings within a
-Domain, those settings must match. If two
-<code>VirtualMachineInstancePresets</code> have conflicting settings (e.g. for the
-number of CPU cores requested), an error will occur, and the
-<code>VirtualMachineInstance</code> will enter the <code>Failed</code> state, and a <code>Warning</code>
-event will be emitted explaining which settings of which
+<code>VirtualMachineInstance</code>, if they specify the same settings within a Domain,
+those settings must match. If two <code>VirtualMachineInstancePresets</code> have
+conflicting settings (e.g. for the number of CPU cores requested), an error will
+occur, and the <code>VirtualMachineInstance</code> will enter the <code>Failed</code> state, and a
+<code>Warning</code> event will be emitted explaining which settings of which
 <code>VirtualMachineInstancePresets</code> were problematic.</p>
 <h2 id="matching-multiple-virtualmachineinstances">Matching Multiple <code>VirtualMachineInstances</code><a class="headerlink" href="#matching-multiple-virtualmachineinstances" title="Permanent link">&para;</a></h2>
 <p>The main use case for <code>VirtualMachineInstancePresets</code> is to create
@@ -347,36 +344,36 @@ used to match multiple</p>
 </ul>
 <p>Using matchLabels, the label used in the <code>VirtualMachineInstancePreset</code>
 must match one of the labels of the <code>VirtualMachineInstance</code>:</p>
-<pre><code>selector:
-  matchLabels:
-    kubevirt.io/memory: large
+<pre><code class="language-console">    selector:
+      matchLabels:
+        kubevirt.io/memory: large
 </code></pre>
 <p>would match</p>
-<pre><code>metadata:
-  labels:
-    kubevirt.io/memory: large
-    kubevirt.io/os: win10
+<pre><code class="language-console">    metadata:
+      labels:
+        kubevirt.io/memory: large
+        kubevirt.io/os: win10
 </code></pre>
 <p>or</p>
-<pre><code>metadata:
-  labels:
-    kubevirt.io/memory: large
-    kubevirt.io/os: fedora27
+<pre><code class="language-console">    metadata:
+      labels:
+        kubevirt.io/memory: large
+        kubevirt.io/os: fedora27
 </code></pre>
 <p>Using matchExpressions allows for matching multiple labels of
 <code>VirtualMachineInstances</code> without needing to explicity list a label.</p>
-<pre><code>selector:
-  matchExpressions:
-    - {key: kubevirt.io/os, operator: In, values: [fedora27, fedora26]}
+<pre><code class="language-console">    selector:
+      matchExpressions:
+        - {key: kubevirt.io/os, operator: In, values: [fedora27, fedora26]}
 </code></pre>
 <p>would match both:</p>
-<pre><code>metadata:
-  labels:
-    kubevirt.io/os: fedora26
+<pre><code class="language-console">    metadata:
+      labels:
+        kubevirt.io/os: fedora26
 
-metadata:
-  labels:
-    kubevirt.io/os: fedora27
+    metadata:
+      labels:
+        kubevirt.io/os: fedora27
 </code></pre>
 <p>The Kubernetes
 <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/">documentation</a>
@@ -387,283 +384,282 @@ which <code>VirtualMachineInstances</code> their settings should apply to, there
 needs to exist a mechanism by which <code>VirtualMachineInstances</code> can opt
 out of <code>VirtualMachineInstancePresets</code> altogether. This is done using an
 annotation:</p>
-<pre><code>kind: VirtualMachineInstance
-version: v1
-metadata:
-  name: myvmi
-  annotations:
-    virtualmachineinstancepresets.admission.kubevirt.io/exclude: "true"
-  ...
+<pre><code class="language-console">    kind: VirtualMachineInstance
+    version: v1
+    metadata:
+      name: myvmi
+      annotations:
+        virtualmachineinstancepresets.admission.kubevirt.io/exclude: &quot;true&quot;
+      ...
 </code></pre>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="simple-virtualmachineinstancepreset-example">Simple <code>VirtualMachineInstancePreset</code> Example<a class="headerlink" href="#simple-virtualmachineinstancepreset-example" title="Permanent link">&para;</a></h3>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstancePreset
-version: v1alpha3
-metadata:
-  name: example-preset
-spec:
-  selector:
-    matchLabels:
-      kubevirt.io/os: win10
-  domain:
-    features:
-      acpi: {}
-      apic: {}
-      hyperv:
-        relaxed: {}
-        vapic: {}
-        spinlocks:
-          spinlocks: 8191
----
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-version: v1
-metadata:
-  name: myvmi
-  labels:
-    kubevirt.io/os: win10
-spec:
-  domain:
-    firmware:
-      uuid: c8f99fc8-20f5-46c4-85e5-2b841c547cef
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstancePreset
+    version: v1alpha3
+    metadata:
+      name: example-preset
+    spec:
+      selector:
+        matchLabels:
+          kubevirt.io/os: win10
+      domain:
+        features:
+          acpi: {}
+          apic: {}
+          hyperv:
+            relaxed: {}
+            vapic: {}
+            spinlocks:
+              spinlocks: 8191
+    ---
+    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    version: v1
+    metadata:
+      name: myvmi
+      labels:
+        kubevirt.io/os: win10
+    spec:
+      domain:
+        firmware:
+          uuid: c8f99fc8-20f5-46c4-85e5-2b841c547cef
 </code></pre>
 <p>Once the <code>VirtualMachineInstancePreset</code> is applied to the
 <code>VirtualMachineInstance</code>, the resulting resource would look like this:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-metadata:
-  annotations:
-    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-    virtualmachineinstancepreset.kubevirt.io/example-preset: kubevirt.io/v1alpha3
-  labels:
-    kubevirt.io/os: win10
-    kubevirt.io/nodeName: master
-  name: myvmi
-  namespace: default
-spec:
-  domain:
-    devices: {}
-    features:
-      acpi:
-        enabled: true
-      apic:
-        enabled: true
-      hyperv:
-        relaxed:
-          enabled: true
-        spinlocks:
-          enabled: true
-          spinlocks: 8191
-        vapic:
-          enabled: true
-    firmware:
-      uuid: c8f99fc8-20f5-46c4-85e5-2b841c547cef
-    machine:
-      type: q35
-    resources:
-      requests:
-        memory: 8Mi
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    metadata:
+      annotations:
+        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+        virtualmachineinstancepreset.kubevirt.io/example-preset: kubevirt.io/v1alpha3
+      labels:
+        kubevirt.io/os: win10
+        kubevirt.io/nodeName: master
+      name: myvmi
+      namespace: default
+    spec:
+      domain:
+        devices: {}
+        features:
+          acpi:
+            enabled: true
+          apic:
+            enabled: true
+          hyperv:
+            relaxed:
+              enabled: true
+            spinlocks:
+              enabled: true
+              spinlocks: 8191
+            vapic:
+              enabled: true
+        firmware:
+          uuid: c8f99fc8-20f5-46c4-85e5-2b841c547cef
+        machine:
+          type: q35
+        resources:
+          requests:
+            memory: 8Mi
 </code></pre>
 <h3 id="conflict-example">Conflict Example<a class="headerlink" href="#conflict-example" title="Permanent link">&para;</a></h3>
 <p>This is an example of a merge conflict. In this case both the
 <code>VirtualMachineInstance</code> and <code>VirtualMachineInstancePreset</code> request
-different number of CPU’s.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstancePreset
-version: v1alpha3
-metadata:
-  name: example-preset
-spec:
-  selector:
-    matchLabels:
-      kubevirt.io/flavor: default-features
-  domain:
-    cpu:
-      cores: 4
----
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-version: v1
-metadata:
-  name: myvmi
-  labels:
-    kubevirt.io/flavor: default-features
-spec:
-  domain:
-    cpu:
-      cores: 6
+different number of CPU's.</p>
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstancePreset
+    version: v1alpha3
+    metadata:
+      name: example-preset
+    spec:
+      selector:
+        matchLabels:
+          kubevirt.io/flavor: default-features
+      domain:
+        cpu:
+          cores: 4
+    ---
+    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    version: v1
+    metadata:
+      name: myvmi
+      labels:
+        kubevirt.io/flavor: default-features
+    spec:
+      domain:
+        cpu:
+          cores: 6
 </code></pre>
 <p>In this case the <code>VirtualMachineInstance</code> Spec will remain unmodified.
 Use <code>kubectl get events</code> to show events.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-metadata:
-  annotations:
-    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-  generation: 0
-  labels:
-    kubevirt.io/flavor: default-features
-  name: myvmi
-  namespace: default
-spec:
-  domain:
-    cpu:
-      cores: 6
-    devices: {}
-    machine:
-      type: ""
-    resources: {}
-status: {}
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    metadata:
+      annotations:
+        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+      generation: 0
+      labels:
+        kubevirt.io/flavor: default-features
+      name: myvmi
+      namespace: default
+    spec:
+      domain:
+        cpu:
+          cores: 6
+        devices: {}
+        machine:
+          type: &quot;&quot;
+        resources: {}
+    status: {}
 </code></pre>
-<p>Calling ‘kubectl get events` would have a line like: 2m 2m 1
-myvmi.1515bbb8d397f258 VirtualMachineInstance Warning Conflict
-virtualmachineinstance-preset-controller Unable to apply
-VirtualMachineInstancePreset `example-preset’: spec.cpu: &amp;{6} != &amp;{4}</p>
+<p>Calling <code>kubectl get events</code> would have a line like:</p>
+<pre><code class="language-console">2m 2m 1 myvmi.1515bbb8d397f258 VirtualMachineInstance Warning Conflict virtualmachineinstance-preset-controller Unable to apply VirtualMachineInstancePreset example-preset: spec.cpu: &amp;{6} != &amp;{4}
+</code></pre>
 <h3 id="matching-multiple-virtualmachineinstances-using-matchlabels">Matching Multiple VirtualMachineInstances Using MatchLabels<a class="headerlink" href="#matching-multiple-virtualmachineinstances-using-matchlabels" title="Permanent link">&para;</a></h3>
 <p>These <code>VirtualMachineInstances</code> have multiple labels, one that is unique
 and one that is shared.</p>
 <p>Note: This example breaks from the convention of using os-shortname as a
 <code>Label</code> for demonstration purposes.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstancePreset
-metadata:
-  name: twelve-cores
-spec:
-  selector:
-    matchLabels:
-      kubevirt.io/cpu: dodecacore
-  domain:
-    cpu:
-      cores: 12
----
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-metadata:
-  name: windows-10
-  labels:
-    kubevirt.io/os: win10
-    kubevirt.io/cpu: dodecacore
-spec:
----
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-metadata:
-  name: windows-7
-  labels:
-    kubevirt.io/os: win7
-    kubevirt.io/cpu: dodecacore
-spec:
-  terminationGracePeriodSeconds: 0
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstancePreset
+    metadata:
+      name: twelve-cores
+    spec:
+      selector:
+        matchLabels:
+          kubevirt.io/cpu: dodecacore
+      domain:
+        cpu:
+          cores: 12
+    ---
+    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    metadata:
+      name: windows-10
+      labels:
+        kubevirt.io/os: win10
+        kubevirt.io/cpu: dodecacore
+    spec:
+    ---
+    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    metadata:
+      name: windows-7
+      labels:
+        kubevirt.io/os: win7
+        kubevirt.io/cpu: dodecacore
+    spec:
+      terminationGracePeriodSeconds: 0
 </code></pre>
 <p>Adding this <code>VirtualMachineInstancePreset</code> and these
 <code>VirtualMachineInstances</code> will result in:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-metadata:
-  annotations:
-    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-    virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha3
-  labels:
-    kubevirt.io/cpu: dodecacore
-    kubevirt.io/os: win10
-  name: windows-10
-spec:
-  domain:
-    cpu:
-      cores: 12
-    devices: {}
-    resources:
-      requests:
-        memory: 4Gi
----
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-metadata:
-  annotations:
-    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-    virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha3
-  labels:
-    kubevirt.io/cpu: dodecacore
-    kubevirt.io/os: win7
-  name: windows-7
-spec:
-  domain:
-    cpu:
-      cores: 12
-    devices: {}
-    resources:
-      requests:
-        memory: 4Gi
-  terminationGracePeriodSeconds: 0
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    metadata:
+      annotations:
+        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+        virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha3
+      labels:
+        kubevirt.io/cpu: dodecacore
+        kubevirt.io/os: win10
+      name: windows-10
+    spec:
+      domain:
+        cpu:
+          cores: 12
+        devices: {}
+        resources:
+          requests:
+            memory: 4Gi
+    ---
+    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    metadata:
+      annotations:
+        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+        virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha3
+      labels:
+        kubevirt.io/cpu: dodecacore
+        kubevirt.io/os: win7
+      name: windows-7
+    spec:
+      domain:
+        cpu:
+          cores: 12
+        devices: {}
+        resources:
+          requests:
+            memory: 4Gi
+      terminationGracePeriodSeconds: 0
 </code></pre>
 <h3 id="matching-multiple-virtualmachineinstances-using-matchexpressions">Matching Multiple VirtualMachineInstances Using MatchExpressions<a class="headerlink" href="#matching-multiple-virtualmachineinstances-using-matchexpressions" title="Permanent link">&para;</a></h3>
 <p>This <code>VirtualMachineInstancePreset</code> has a matchExpression that will
 match two labels: <code>kubevirt.io/os: win10</code> and <code>kubevirt.io/os: win7</code>.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstancePreset
-metadata:
-  name: windows-vmis
-spec:
-  selector:
-    matchExpressions:
-      - {key: kubevirt.io/os, operator: In, values: [win10, win7]}
-  domain:
-    resources:
-      requests:
-        memory: 128M
----
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-metadata:
-  name: smallvmi
-  labels:
-    kubevirt.io/os: win10
-spec:
-  terminationGracePeriodSeconds: 60
----
-apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-metadata:
-  name: largevmi
-  labels:
-    kubevirt.io/os: win7
-spec:
-  terminationGracePeriodSeconds: 120
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstancePreset
+    metadata:
+      name: windows-vmis
+    spec:
+      selector:
+        matchExpressions:
+          - {key: kubevirt.io/os, operator: In, values: [win10, win7]}
+      domain:
+        resources:
+          requests:
+            memory: 128M
+    ---
+    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    metadata:
+      name: smallvmi
+      labels:
+        kubevirt.io/os: win10
+    spec:
+      terminationGracePeriodSeconds: 60
+    ---
+    apiVersion: kubevirt.io/v1alpha3
+    kind: VirtualMachineInstance
+    metadata:
+      name: largevmi
+      labels:
+        kubevirt.io/os: win7
+    spec:
+      terminationGracePeriodSeconds: 120
 </code></pre>
-<p>Applying the preset to both VM’s will result in:</p>
-<pre><code>apiVersion: v1
-items:
-- apiVersion: kubevirt.io/v1alpha3
-  kind: VirtualMachineInstance
-  metadata:
-    annotations:
-      presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-      virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1alpha3
-    labels:
-      kubevirt.io/os: win7
-    name: largevmi
-  spec:
-    domain:
-      resources:
-        requests:
-          memory: 128M
-    terminationGracePeriodSeconds: 120
-- apiVersion: kubevirt.io/v1alpha3
-  kind: VirtualMachineInstance
-  metadata:
-    annotations:
-      presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-      virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1alpha3
-    labels:
-      kubevirt.io/os: win10
-    name: smallvmi
-  spec:
-    domain:
-      resources:
-        requests:
-          memory: 128M
-    terminationGracePeriodSeconds: 60
+<p>Applying the preset to both VM's will result in:</p>
+<pre><code class="language-console">    apiVersion: v1
+    items:
+    - apiVersion: kubevirt.io/v1alpha3
+      kind: VirtualMachineInstance
+      metadata:
+        annotations:
+          presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+          virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1alpha3
+        labels:
+          kubevirt.io/os: win7
+        name: largevmi
+      spec:
+        domain:
+          resources:
+            requests:
+              memory: 128M
+        terminationGracePeriodSeconds: 120
+    - apiVersion: kubevirt.io/v1alpha3
+      kind: VirtualMachineInstance
+      metadata:
+        annotations:
+          presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+          virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1alpha3
+        labels:
+          kubevirt.io/os: win10
+        name: smallvmi
+      spec:
+        domain:
+          resources:
+            requests:
+              memory: 128M
+        terminationGracePeriodSeconds: 60
 </code></pre>
               
             </div>
