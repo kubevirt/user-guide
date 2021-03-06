@@ -69,49 +69,6 @@ namespace :links do
         puts "Checks html files for broken internal links " + note + "..."
         HTMLProofer.check_directory("./site", options).run
     end
-
-
-    desc 'Checks html files for links to nonexistant userguide selectors'
-    task :userguide_selectors => :build do
-        # Verify regex's at https://regex101.com
-        options = {
-            :log_level          => :debug,
-            :checks_to_ignore   => [ "ScriptCheck", "ImageCheck" ],
-            :assume_extension   => true,
-            :only_4xx           => true,
-            :allow_hash_href    => true,
-            :enforce_https      => true,
-            :check_external_hash => true,
-            :external_only      => true,
-            :url_ignore         => [
-                                   /http(s)?:\/\/(?!(kubevirt.io\/user-guide)).*/
-                                   ],
-        }
-
-        puts
-        puts "Discovering links to userguide with selectors " + note + " ..."
-
-        # BLACK MAGIC BEGINS RIGHT HERE ...
-        io = StringIO.new
-        $stdout = io
-
-        HTMLProofer.check_directory("./site", options).run
-
-        # UNCOMMENT TO enable full output of HTMLProofer
-        STDOUT.puts $stdout.string
-
-        $stdout.string.each_line do |f|
-            if f.include? "#"
-                if f.strip.match("Received a 200 for")
-                    f["Received a "] = ''
-                    f["for "] = ''
-                    f["  in "] = ','
-                    f.sub!(/^[0-9]+ /,'')
-                    STDOUT.puts f
-                end
-            end
-        end
-    end
 end
 
 desc 'The default task will execute all tests in a row'
