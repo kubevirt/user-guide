@@ -62,6 +62,7 @@ namespace :links do
             :allow_hash_href    => true,
             :log_level          => :info,
             :disable_external   => true,
+            :url_swap           => {'/user-guide' => '',},
             :http_status_ignore => [0, 200, 400, 429, 999]
         }
 
