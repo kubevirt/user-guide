@@ -716,7 +716,7 @@ mounted on a VM. To mount the `configMap` users can use `cloudInit` and
 the disks serial number. The `name` needs to be set for a reference to
 the created kubernetes `ConfigMap`.
 
-> **Note:** Currently, ConfigMap update propagation is not supported. If
+> **Note:** Currently, ConfigMap update is not propagate into the VMI. If
 > a ConfigMap is updated, only a pod will be aware of changes, not
 > running VMIs.
 
