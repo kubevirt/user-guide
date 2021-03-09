@@ -36,9 +36,8 @@ installation, setup, and custom software provisioning.
 The general flow is:
 
 1. Seal the vm image with the Sysprep tool, for example by running:
-    ```console
-    %WINDIR%\system32\sysprep\sysprep.exe /generalize /shutdown /oobe /mode:vm
-    ```
+
+        %WINDIR%\system32\sysprep\sysprep.exe /generalize /shutdown /oobe /mode:vm
 
     More information can be found here:
     * [Sysprep Process Overview](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep-process-overview)

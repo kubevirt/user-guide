@@ -77,16 +77,12 @@ configuration:
 
  * `pciVendorSelector` is a combination of a `vendor_id:product_id` required for a device identification on a host. This identifier `10de:1eb8` can be found using `lspci`.
 
-	```
-	lspci -nnv|grep -i nvidia
-	65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)
-	```
+        $ lspci -nnv|grep -i nvidia
+        65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)
 
  * `mdevNameSelector` is a name of a mediated device type required for a device identification on a host.
-	```
-	For example: mdev type nvidia-226 represents GRID T4-2A
-    	The selector is matched against the content of /sys/class/mdev_bus/$mdevUUID/mdev_type/name
-	```
+
+    For example, mediated device type `nvidia-226` represents `GRID T4-2A`. The selector is matched against the content of `/sys/class/mdev_bus/$mdevUUID/mdev_type/name`.
 
  * External providers:
 `externalResourceProvider` field indicates that this resource is being provided by an external device plugin. KubeVirt in this case will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.

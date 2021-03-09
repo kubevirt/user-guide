@@ -57,7 +57,7 @@ libvirt, qemu, and virt-launcher, which can optionally be updated during the
 KubeVirt update process as well. However that requires opting in to having
 virt-operator perform automated actions on workloads.
 
-Opting in to VMI updates involves configuring the ```workloadUpdateStrategy```
+Opting in to VMI updates involves configuring the `workloadUpdateStrategy`
 field on the KubeVirt CR. This field controls the methods virt-operator will
 use to when updating the VMI workload pods.
 
