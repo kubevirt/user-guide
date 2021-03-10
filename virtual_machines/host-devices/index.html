@@ -273,7 +273,11 @@ cluster. Permitted host devices in the cluster will need to be allowlisted in Ku
 </li>
 <li>
 <p><code>mdevNameSelector</code> is a name of a mediated device type required for a device identification on a host.</p>
-<p>For example, mediated device type <code>nvidia-226</code> represents <code>GRID T4-2A</code>. The selector is matched against the content of <code>/sys/class/mdev_bus/$mdevUUID/mdev_type/name</code>.</p>
+<p>You can see what mediated types a given PCI device supports by
+examining the contents of
+<code>/sys/bus/pci/devices/SLOT:BUS:DOMAIN.FUNCTION/mdev_supported_types/TYPE/name</code>.
+For example, if you have an NVIDIA T4 GPU on your system, and you substitute in the <code>SLOT</code>, <code>BUS</code>, <code>DOMAIN</code>, and <code>FUNCTION</code> values that are correct for your system into the above path name, you will see that a <code>TYPE</code> of <code>nvidia-226</code> contains the selector string <code>GRID T4-2A</code> in its <code>name</code> file.</p>
+<p>Taking <code>GRID T4-2A</code> and specifying it as the <code>mdevNameSelector</code> allows KubeVirt to find a corresponding mediated device by matching it against <code>/sys/class/mdev_bus/SLOT:BUS:DOMAIN.FUNCTION/$mdevUUID/mdev_type/name</code> for some values of <code>SLOT:BUS:DOMAIN.FUNCTION</code> and <code>$mdevUUID</code>.</p>
 </li>
 <li>
 <p>External providers:
