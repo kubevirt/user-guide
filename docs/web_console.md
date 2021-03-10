@@ -1,5 +1,8 @@
 # Web Console
 
+!!! Note
+    By deploying KubeVirt on top of OpenShift the user can benefit from the [OpenShift web console](https://docs.openshift.com/container-platform/4.5/web_console/web-console.html) functionality.
+
 ## Managing Virtual Machines
 
 ### Creating a Virtual Machine with the Interactive Wizard
@@ -40,21 +43,21 @@ must select one as the **Bootable Disk**.
 
     1.  (Optional) Click **Create NIC** to create additional NICs.
 
-    2.  (Optional) You can remove any or all NICs by clicking the ![](assets/ellipsis.png "Ellipsis")
+    2.  (Optional) You can remove any or all NICs by clicking the ![Ellipsis](assets/ellipsis.png "")
         button and selecting **Remove NIC**. A virtual machine does not
         need a NIC attached to be created. NICs can be
-        [created](#vm-create-nic-web) after the virtual machine has been
+        [created](#creating-a-nic-for-a-virtual-machine) after the virtual machine has been
         created.
 
 5.  Click **Next** to progress to the
     [**Storage**](#storage-fields) screen.
 
     1.  (Optional) Click **Create Disk** to create additional disks.
-        These disks can be removed by clicking the ![](assets/ellipsis.png "Ellipsis") button and
+        These disks can be removed by clicking the ![Ellipsis](assets/ellipsis.png "") button and
         selecting **Remove Disk**.
 
     2.  (Optional) Click on a disk to modify available fields. Click the
-        ![](assets/check.png "Check") button to save the update.
+        ![Check](assets/check.png "") button to save the update.
 
     3.  (Optional) Click **Attach Disk** to choose an available disk
         from the **Select Storage** drop-down list.
@@ -100,7 +103,7 @@ Machines**.
 ### Editing a Virtual Machine
 
 You can edit some values of a virtual machine in the web console, either
-by editing the [YAML directly](#editing-vm-yaml-web), or from the
+by editing the [YAML directly](#editing-the-yaml-of-a-virtual-machine), or from the
 **Virtual Machine Overview** screen.
 
 When editing from the **Virtual Machine Overview** screen, the virtual
@@ -154,8 +157,8 @@ including the updated version number for the object.
 You can view the events stream for a running virtual machine from the
 **Virtual Machine Details** screen of the web console.
 
-The ![](assets/pause.png "Pause") button pauses the events stream.  
-The ![](assets/play.png "Play") button continues a paused events stream.
+The ![Pause](assets/pause.png "Pause") button pauses the events stream.  
+The ![Play](assets/play.png "Play") button continues a paused events stream.
 
 1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
@@ -167,19 +170,13 @@ The ![](assets/play.png "Play") button continues a paused events stream.
 
 Deleting a virtual machine permanently removes it from the cluster.
 
-Delete a virtual machine using the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine in
-the **Workloads** > **Virtual Machines** list, or using the
-[**Actions**](#vm-actions-web) button of the **Virtual Machine Details**
-screen.
+Delete a virtual machine using the ![Ellipsis](assets/ellipsis.png "") button of the virtual machine in the **Workloads** > **Virtual Machines** list, or using the ![Actions](assets/actions.png "Actions") button of the **Virtual Machine Details** screen.
 
 1.  Click **Workloads** > **Virtual Machines** from the side menu.
 
-2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine you wish to delete and
-    select **Delete Virtual Machine**.
+2.  Click the ![Ellipsis](assets/ellipsis.png "") button of the virtual machine you wish to delete and select **Delete Virtual Machine**.
 
-    1.  Alternatively, click the virtual machine name to open the
-        **Virtual Machine Details** screen and click **Actions** >
-        **Delete Virtual Machine**.
+    1.  Alternatively, click the virtual machine name to open the **Virtual Machine Details** screen and click ![Actions](assets/actions.png "Actions") > **Delete Virtual Machine**.
 
 3.  In the confirmation pop-up window, click **Delete** to permanently
     delete the virtual machine.
@@ -188,102 +185,70 @@ screen.
 
 ### Starting a Virtual Machine
 
-Virtual machines can be [started](#vm-actions-web) from the ![](assets/ellipsis.png "Ellipsis") button
-found on each virtual machine in the **Workloads** > **Virtual
-Machines** list, or from the [**Actions**](#vm-actions-web) button on
-the **Virtual Machine Details** screen.
+Virtual machines can be started from the ![Ellipsis](assets/ellipsis.png "") button found on each virtual machine in the **Workloads** > **Virtual Machines** list, or from the ![Actions](assets/actions.png "Actions") button on the **Virtual Machine Details** screen.
 
 1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
-2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine and select **Start Virtual
-    Machine**.
+2.  Click the ![Ellipsis](assets/ellipsis.png "") button of the virtual machine and select **Start Virtual Machine**.
 
-    1.  Alternatively, click the virtual machine name to open the
-        **Virtual Machine Details** screen and click **Actions** and
-        select **Start Virtual Machine**.
+    1.  Alternatively, click the virtual machine name to open the **Virtual Machine Details** screen and click ![Actions](assets/actions.png "Actions") and select **Start Virtual Machine**.
 
 3.  In the confirmation pop-up window, click **Start** to start the
     virtual machine.
 
 ### Stopping a Virtual Machine
 
-A running virtual machine can be [stopped](#vm-actions-web) using the ![](assets/ellipsis.png "Ellipsis")
-button found on each virtual machine in the **Workloads** > **Virtual
-Machines** list, or from the [**Actions**](#vm-actions-web) button on
-the **Virtual Machine Details** screen.
+A running virtual machine can be stopped using the ![Ellipsis](assets/ellipsis.png "") button found on each virtual machine in the **Workloads** > **Virtual Machines** list, or from the ![Actions](assets/actions.png "Actions") button on the **Virtual Machine Details** screen.
 
 1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
-2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine and select **Stop Virtual
-    Machine**.
+2.  Click the ![Ellipsis](assets/ellipsis.png "") button of the virtual machine and select **Stop Virtual Machine**.
 
-    1.  Alternatively, click the virtual machine name to open the
-        **Virtual Machine Details** screen and click **Actions** and
-        select **Stop Virtual Machine**.
+    1.  Alternatively, click the virtual machine name to open the **Virtual Machine Details** screen and click ![Actions](assets/actions.png "Actions") and select **Stop Virtual Machine**.
 
 3.  In the confirmation pop-up window, click **Stop** to stop the
     virtual machine.
 
 ### Restarting a Virtual Machine
 
-A running virtual machine can be [restarted](#vm-actions-web) from the ![](assets/ellipsis.png "Ellipsis")
-button found on each virtual machine in the **Workloads** > **Virtual
-Machines** list, or from the [**Actions**](#vm-actions-web) button on
-the **Virtual Machine Details** screen.
+A running virtual machine can be restarted from the ![Ellipsis](assets/ellipsis.png "") button found on each virtual machine in the **Workloads** > **Virtual Machines** list, or from the ![Actions](assets/actions.png "Actions") button on the **Virtual Machine Details** screen.
 
 > Important: Do not restart a virtual machine while it has a status of
 > **Importing**. This will result in an error for the virtual machine
-> and is a [known
-> issue](#../cnv_release_notes/cnv_release_notes.adoc#RN_known_issues).
+> and is a [known issue](https://docs.openshift.com/container-platform/4.6/virt/virt-2-5-release-notes.html#virt-2-5-known-issues).
 
 1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
-2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine and select **Restart
-    Virtual Machine**.
+2.  Click the ![Ellipsis](assets/ellipsis.png "") button of the virtual machine and select **Restart Virtual Machine**.
 
-    1.  Alternatively, click the virtual machine name to open the
-        **Virtual Machine Details** screen, click **Actions**, and
-        select **Restart Virtual Machine**.
+    1.  Alternatively, click the virtual machine name to open the **Virtual Machine Details** screen, click ![Actions](assets/actions.png "Actions"), and select **Restart Virtual Machine**.
 
 3.  In the confirmation pop-up window, click **Restart** to restart the
     virtual machine.
 
 ### Live Migrating a Virtual Machine
 
-Virtual machines can be [live migrated](#vm-actions-web) to a different
-node from the ![](assets/ellipsis.png "Ellipsis") button found on each virtual machine in the
-**Workloads** > **Virtual Machines** list, or from the
-[**Actions**](#vm-actions-web) button on the **Virtual Machine Details**
-screen.
+Virtual machines can be live migrated to a different
+node from the ![Ellipsis](assets/ellipsis.png "") button found on each virtual machine in the **Workloads** > **Virtual Machines** list, or from the ![Actions](assets/actions.png "Actions") button on the **Virtual Machine Details** screen.
 
 1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
-2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine and select **Migrate
-    Virtual Machine**.
+2.  Click the ![Ellipsis](assets/ellipsis.png "") button of the virtual machine and select **Migrate Virtual Machine**.
 
-    1.  Alternatively, click the virtual machine name to open the
-        **Virtual Machine Details** screen and click **Actions** and
-        select **Migrate Virtual Machine**.
+    1.  Alternatively, click the virtual machine name to open the **Virtual Machine Details** screen and click ![Actions](assets/actions.png "Actions") and select **Migrate Virtual Machine**.
 
 3.  In the confirmation pop-up window, click **Migrate** to migrate the
     virtual machine.
 
 ### Cancelling a Virtual Machine Live Migration
 
-A live migration of the virtual machine can be
-[cancelled](#vm-actions-web) using the ![](assets/ellipsis.png "Ellipsis") button found on each virtual
-machine in the **Workloads** > **Virtual Machines** list, or from the
-[**Actions**](#vm-actions-web) button on the **Cancel Virtual Machine
-Migration** screen.
+A live migration of the virtual machine can be cancelled using the ![Ellipsis](assets/ellipsis.png "") button found on each virtual machine in the **Workloads** > **Virtual Machines** list, or from the ![Actions](assets/actions.png "Actions") button on the **Cancel Virtual Machine Migration** screen.
 
 1.  Click **Workloads** > **Virtual Machine** from the side menu.
 
-2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the virtual machine and select **Cancel
-    Virtual Machine Migration**.
+2.  Click the ![Ellipsis](assets/ellipsis.png "") button of the virtual machine and select **Cancel Virtual Machine Migration**.
 
-    1.  Alternatively, click the virtual machine name to open the
-        **Virtual Machine Details** screen and click **Actions** and
-        select **Cancel Virtual Machine Migration**.
+    1.  Alternatively, click the virtual machine name to open the **Virtual Machine Details** screen and click ![Actions](assets/actions.png "Actions") and select **Cancel Virtual Machine Migration**.
 
 3.  In the confirmation pop-up window, click **Cancel Migration** to
     cancel the virtual machine live migration.
@@ -301,9 +266,9 @@ There are three choices available: the graphical **VNC Console**, the
 to the **RDP Console** (Windows only). The **VNC Console** opens by
 default whenever you navigate to the **Consoles** tab. You can switch
 between the consoles using the [**VNC
-Console**](#vm-vnc-console-web)|[**Serial
-Console**](#vm-serial-console-web)|[**Desktop
-Viewer**](#vm-desktop-viewer-web) drop-down list.
+Console**](#virtual-machine-console-sessions)|[**Serial
+Console**](#connecting-to-the-serial-console)|[**Desktop
+Viewer**](#using-desktop-viewer-to-connect-to-rdp-console-windows-only) drop-down list.
 
 Console sessions remain active in the background unless they are
 disconnected. When the **Disconnect before switching** checkbox is
@@ -401,7 +366,7 @@ console.
 5.  Fill in the **NAME**, **NETWORK**, **MAC ADDRESS**, and **BINDING
     METHOD** [details](#networking-fields) for the new NIC.
 
-6.  Click the ![](assets/check.png "Check") button to save and attach the NIC to the virtual
+6.  Click the ![Check](assets/check.png "") button to save and attach the NIC to the virtual
     machine.
 
 ### Deleting a NIC from a Virtual Machine
@@ -416,8 +381,7 @@ the NIC.
 3.  Click **Network Interfaces** to display the NICs already attached to
     the virtual machine.
 
-4.  Click the ![](assets/ellipsis.png "Ellipsis") button of the NIC you wish to delete and select
-    **Delete**.
+4.  Click the ![Ellipsis](assets/ellipsis.png "") button of the NIC you wish to delete and select **Delete**.
 
 5.  In the confirmation pop-up window, click **Delete** to detach and
     delete the NIC.
@@ -441,7 +405,7 @@ web console.
 5.  Fill in the **NAME**, **SIZE**, and optional **STORAGE CLASS**
     [details](#storage-fields) for the new disk.
 
-6.  Click the ![](assets/check.png "Check") button to save and attach the disk to the virtual
+6.  Click the ![Check](assets/check.png "") button to save and attach the disk to the virtual
     machine.
 
 ### Deleting a Disk from a Virtual Machine
@@ -456,8 +420,7 @@ the disk.
 3.  Click **Disks** to display the disks already attached to the virtual
     machine.
 
-4.  Click the ![](assets/ellipsis.png "Ellipsis") button of the disk you wish to delete and select
-    **Delete**.
+4.  Click the ![Ellipsis](assets/ellipsis.png "") button of the disk you wish to delete and select **Delete**.
 
 5.  Click **Confirm** to detach and delete the disk.
 
@@ -468,10 +431,10 @@ the disk.
 Virtual machine templates are an easy way to create multiple virtual
 machines with similar configuration. After a template is created,
 reference the template when [creating virtual
-machines](#creating-vm-wizard-web).
+machines](#creating-a-virtual-machine-template-with-the-interactive-wizard).
 
 The web console features an interactive wizard that guides you through
-[**Basic Settings**](#template-wizard-fields-web),
+[**Basic Settings**](#creating-a-virtual-machine-template-with-the-interactive-wizard),
 [**Networking**](#networking-fields), and
 [**Storage**](#storage-fields) screens to simplify the
 process of creating virtual machine templates. All required fields are
@@ -484,7 +447,7 @@ after they have been created.
 ****Bootable Disk**.**
 
 If either `URL` or `Container` are selected as the **Provision Source**
-in the [**Basic Settings**](#template-wizard-fields-web) screen, a
+in the [**Basic Settings**](#creating-a-virtual-machine-template-with-the-interactive-wizard) screen, a
 `rootdisk` disk is created and attached to virtual machines as the
 **Bootable Disk**. You can modify the `rootdisk` but you cannot remove
 it.
@@ -500,7 +463,7 @@ must select one as the **Bootable Disk**.
 2.  Click **Create Template** and select **Create with Wizard**.
 
 3.  Fill in all required [**Basic
-    Settings**](#template-wizard-fields-web).
+    Settings**](#creating-a-virtual-machine-template-with-the-interactive-wizard).
 
 4.  Click **Next** to progress to the
     [**Networking**](#networking-fields) screen. An `nic0`
@@ -508,21 +471,15 @@ must select one as the **Bootable Disk**.
 
     1.  (Optional) Click **Create NIC** to create additional NICs.
 
-    2.  (Optional) You can remove any or all NICs by clicking the ![](assets/ellipsis.png "Ellipsis")
-        button and selecting **Remove NIC**. Virtual machines created
-        from a template do not need a NIC attached. NICs can be
-        [created](#vm-create-nic-web) after a virtual machine has been
-        created.
+    2.  (Optional) You can remove any or all NICs by clicking the ![Ellipsis](assets/ellipsis.png "") button and selecting **Remove NIC**. Virtual machines created from a template do not need a NIC attached. NICs can be [created](#creating-a-nic-for-a-virtual-machine) after a virtual machine has been created.
 
 5.  Click **Next** to progress to the
     [**Storage**](#storage-fields) screen.
 
-    1.  (Optional) Click **Create Disk** to create additional disks.
-        These disks can be removed by clicking the ![](assets/ellipsis.png "Ellipsis") button and
-        selecting **Remove Disk**.
+    1.  (Optional) Click **Create Disk** to create additional disks. These disks can be removed by clicking the ![Ellipsis](assets/ellipsis.png "") button and selecting **Remove Disk**.
 
     2.  (Optional) Click on a disk to modify available fields. Click the
-        ![](assets/check.png "Check") button to save the update.
+        ![Check](assets/check.png "") button to save the update.
 
     3.  (Optional) Click **Attach Disk** to choose an available disk
         from the **Select Storage** drop-down list.
@@ -566,23 +523,20 @@ including the updated version number for the object.
 Deleting a virtual machine template permanently removes it from the
 cluster.
 
-Delete a virtual machine template using the ![](assets/ellipsis.png "Ellipsis") button found on each
+Delete a virtual machine template using the ![Ellipsis](assets/ellipsis.png "") button found on each
 template in the **Workloads** > **Virtual Machines Templates** list, or
-using the **Actions** button of the **Virtual Machine Templates
+using the ![Actions](assets/actions.png "Actions") button of the **Virtual Machine Templates
 Details** screen.
 
 1.  Click **Workloads** > **Virtual Machine Templates** from the side
     menu.
 
-2.  Click the ![](assets/ellipsis.png "Ellipsis") button of the template you wish to delete and select
+2.  Click the ![Ellipsis](assets/ellipsis.png "") button of the template you wish to delete and select
     **Delete Template**.
 
-    1.  Alternatively, click the template name to open the **Virtual
-        Machine Template Details** screen and click **Actions** >
-        **Delete Template**.
+    1.  Alternatively, click the template name to open the **Virtual Machine Template Details** screen and click ![Actions](assets/actions.png "Actions") > **Delete Template**.
 
-3.  In the confirmation pop-up window, click **Delete** to permanently
-    delete the template.
+3.  In the confirmation pop-up window, click **Delete** to permanently delete the template.
 
 ## Reference
 
@@ -601,7 +555,7 @@ Details** screen.
 | Workload Profile || A general configuration that balances performance and compatibility for a broad range of workloads |
 | highperformance | The virtual machine has a more efficient configuration optimized for high performance loads ||
 | Start virtual machine on creation || Select this checkbox to automatically start the virtual machine upon creation |
-| cloud-init || Select this checkbox to enable the [cloud-init fields](https://kubevirt.io/user-guide/web_console/#cloud-init-fields-web) |
+| cloud-init || Select this checkbox to enable the [cloud-init fields](#cloud-init-fields) |
 
 ### Virtual Machine Template Wizard Fields
 
@@ -618,7 +572,7 @@ Details** screen.
 | Flavor | small, medium, large, tiny, Custom | Presets that determine the amount of CPU and memory allocated to the virtual machine |
 | Workload Profile | generic | A general configuration that balances performance and compatibility for a broad range of workloads |
 | highperformance | Virtual machines have a more efficient configuration optimized for high performance loads ||
-| cloud-init || Select this checkbox to enable the [cloud-init fields](https://kubevirt.io/user-guide/web_console/#cloud-init-fields-web) |
+| cloud-init || Select this checkbox to enable the [cloud-init fields](#cloud-init-fields) |
 
 ### Cloud-init Fields
 

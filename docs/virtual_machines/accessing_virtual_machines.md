@@ -9,7 +9,7 @@ consoles it exposes. Usually there are two types of consoles:
 -   Graphical Console (VNC)
 
 > Note: You need to have `virtctl`
-> [installed](/installation/?id=client-side-virtctl-deployment) to gain
+> [installed](../../operations/virtctl_client_tool) to gain
 > access to the VirtualMachineInstance.
 
 
@@ -185,7 +185,7 @@ spec:
       - sshPublicKey:
           source:
             secret:
-              secretName: my-pub-key 
+              secretName: my-pub-key
           propagationMethod:
             configDrive: {}
       volumes:
@@ -207,7 +207,7 @@ kubectl create -f my-vm.yaml
 
 KubeVirt supports dynamically injecting public ssh keys at run time through the
 use of the qemu guest agent. This is achieved through the access credentials
-api by using the qemuGuestAgent propagation method. 
+api by using the qemuGuestAgent propagation method.
 
 > Note: This requires the qemu guest agent to be installed within the guest
 >
@@ -218,7 +218,7 @@ api by using the qemuGuestAgent propagation method.
 > Note: More information about the motivation behind the access credentials
 > api can be found in the [pull request description](https://github.com/kubevirt/kubevirt/pull/4195) that introduced this api.
 
-In the example below, a secret contains an ssh key. When attached to the 
+In the example below, a secret contains an ssh key. When attached to the
 VM via the access credential api with the qemuGuestAgent propagation method,
 the contents of the secret can be updated at any time which will automatically
 get applied to a running VM. The secret can contain multiple public keys.
@@ -286,7 +286,7 @@ spec:
       - sshPublicKey:
           source:
             secret:
-              secretName: my-pub-key 
+              secretName: my-pub-key
           propagationMethod:
             qemuGuestAgent:
               users:
@@ -298,15 +298,13 @@ spec:
       - cloudInitConfigDrive:
           userData: |
             #!/bin/bash
-            
+
             sudo setenforce Permissive
             sudo yum install -y qemu-guest-agent
-            sudo systemctl start qemu-guest-agent 
+            sudo systemctl start qemu-guest-agent
         name: disk1
 END
 
 kubectl create -f my-vm.yaml
 
 ```
-
-
