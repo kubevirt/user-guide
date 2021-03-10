@@ -82,7 +82,12 @@ configuration:
 
  * `mdevNameSelector` is a name of a mediated device type required for a device identification on a host.
 
-    For example, mediated device type `nvidia-226` represents `GRID T4-2A`. The selector is matched against the content of `/sys/class/mdev_bus/$mdevUUID/mdev_type/name`.
+    You can see what mediated types a given PCI device supports by
+    examining the contents of
+    `/sys/bus/pci/devices/SLOT:BUS:DOMAIN.FUNCTION/mdev_supported_types/TYPE/name`.
+    For example, if you have an NVIDIA T4 GPU on your system, and you substitute in the `SLOT`, `BUS`, `DOMAIN`, and `FUNCTION` values that are correct for your system into the above path name, you will see that a `TYPE` of `nvidia-226` contains the selector string `GRID T4-2A` in its `name` file.
+
+    Taking `GRID T4-2A` and specifying it as the `mdevNameSelector` allows KubeVirt to find a corresponding mediated device by matching it against `/sys/class/mdev_bus/SLOT:BUS:DOMAIN.FUNCTION/$mdevUUID/mdev_type/name` for some values of `SLOT:BUS:DOMAIN.FUNCTION` and `$mdevUUID`.
 
  * External providers:
 `externalResourceProvider` field indicates that this resource is being provided by an external device plugin. KubeVirt in this case will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.
