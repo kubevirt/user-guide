@@ -201,6 +201,10 @@
             <div class="section">
               
                 <h1 id="web-console">Web Console<a class="headerlink" href="#web-console" title="Permanent link">&para;</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By deploying KubeVirt on top of OpenShift the user can benefit from the <a href="https://docs.openshift.com/container-platform/4.5/web_console/web-console.html">OpenShift web console</a> functionality.</p>
+</div>
 <h2 id="managing-virtual-machines">Managing Virtual Machines<a class="headerlink" href="#managing-virtual-machines" title="Permanent link">&para;</a></h2>
 <h3 id="creating-a-virtual-machine-with-the-interactive-wizard">Creating a Virtual Machine with the Interactive Wizard<a class="headerlink" href="#creating-a-virtual-machine-with-the-interactive-wizard" title="Permanent link">&para;</a></h3>
 <p>The web console features an interactive wizard that guides you through
@@ -241,10 +245,10 @@ must select one as the <strong>Bootable Disk</strong>.</p>
 <p>(Optional) Click <strong>Create NIC</strong> to create additional NICs.</p>
 </li>
 <li>
-<p>(Optional) You can remove any or all NICs by clicking the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" />
+<p>(Optional) You can remove any or all NICs by clicking the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" />
     button and selecting <strong>Remove NIC</strong>. A virtual machine does not
     need a NIC attached to be created. NICs can be
-    <a href="#vm-create-nic-web">created</a> after the virtual machine has been
+    <a href="#creating-a-nic-for-a-virtual-machine">created</a> after the virtual machine has been
     created.</p>
 </li>
 </ol>
@@ -255,12 +259,12 @@ must select one as the <strong>Bootable Disk</strong>.</p>
 <ol>
 <li>
 <p>(Optional) Click <strong>Create Disk</strong> to create additional disks.
-    These disks can be removed by clicking the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button and
+    These disks can be removed by clicking the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button and
     selecting <strong>Remove Disk</strong>.</p>
 </li>
 <li>
 <p>(Optional) Click on a disk to modify available fields. Click the
-    <img alt="" src="../assets/check.png" title="Check" /> button to save the update.</p>
+    <img alt="Check" src="../assets/check.png" title="" /> button to save the update.</p>
 </li>
 <li>
 <p>(Optional) Click <strong>Attach Disk</strong> to choose an available disk
@@ -314,7 +318,7 @@ changes to the configuration you have made.</p>
 Machines</strong>.</p>
 <h3 id="editing-a-virtual-machine">Editing a Virtual Machine<a class="headerlink" href="#editing-a-virtual-machine" title="Permanent link">&para;</a></h3>
 <p>You can edit some values of a virtual machine in the web console, either
-by editing the <a href="#editing-vm-yaml-web">YAML directly</a>, or from the
+by editing the <a href="#editing-the-yaml-of-a-virtual-machine">YAML directly</a>, or from the
 <strong>Virtual Machine Overview</strong> screen.</p>
 <p>When editing from the <strong>Virtual Machine Overview</strong> screen, the virtual
 machine must be <strong>Off</strong>.</p>
@@ -373,8 +377,8 @@ including the updated version number for the object.</p>
 <h3 id="viewing-the-events-of-a-virtual-machine">Viewing the Events of a Virtual Machine<a class="headerlink" href="#viewing-the-events-of-a-virtual-machine" title="Permanent link">&para;</a></h3>
 <p>You can view the events stream for a running virtual machine from the
 <strong>Virtual Machine Details</strong> screen of the web console.</p>
-<p>The <img alt="" src="../assets/pause.png" title="Pause" /> button pauses the events stream.<br />
-The <img alt="" src="../assets/play.png" title="Play" /> button continues a paused events stream.</p>
+<p>The <img alt="Pause" src="../assets/pause.png" title="Pause" /> button pauses the events stream.<br />
+The <img alt="Play" src="../assets/play.png" title="Play" /> button continues a paused events stream.</p>
 <ol>
 <li>
 <p>Click <strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> from the side menu.</p>
@@ -388,21 +392,15 @@ The <img alt="" src="../assets/play.png" title="Play" /> button continues a paus
 </ol>
 <h2 id="deleting-a-virtual-machine">Deleting a Virtual Machine<a class="headerlink" href="#deleting-a-virtual-machine" title="Permanent link">&para;</a></h2>
 <p>Deleting a virtual machine permanently removes it from the cluster.</p>
-<p>Delete a virtual machine using the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button of the virtual machine in
-the <strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> list, or using the
-<a href="#vm-actions-web"><strong>Actions</strong></a> button of the <strong>Virtual Machine Details</strong>
-screen.</p>
+<p>Delete a virtual machine using the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button of the virtual machine in the <strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> list, or using the <img alt="Actions" src="../assets/actions.png" title="Actions" /> button of the <strong>Virtual Machine Details</strong> screen.</p>
 <ol>
 <li>
 <p>Click <strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> from the side menu.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button of the virtual machine you wish to delete and
-    select <strong>Delete Virtual Machine</strong>.</p>
+<p>Click the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button of the virtual machine you wish to delete and select <strong>Delete Virtual Machine</strong>.</p>
 <ol>
-<li>Alternatively, click the virtual machine name to open the
-    <strong>Virtual Machine Details</strong> screen and click <strong>Actions</strong> &gt;
-    <strong>Delete Virtual Machine</strong>.</li>
+<li>Alternatively, click the virtual machine name to open the <strong>Virtual Machine Details</strong> screen and click <img alt="Actions" src="../assets/actions.png" title="Actions" /> &gt; <strong>Delete Virtual Machine</strong>.</li>
 </ol>
 </li>
 <li>
@@ -412,21 +410,15 @@ screen.</p>
 </ol>
 <h2 id="controlling-virtual-machines">Controlling Virtual Machines<a class="headerlink" href="#controlling-virtual-machines" title="Permanent link">&para;</a></h2>
 <h3 id="starting-a-virtual-machine">Starting a Virtual Machine<a class="headerlink" href="#starting-a-virtual-machine" title="Permanent link">&para;</a></h3>
-<p>Virtual machines can be <a href="#vm-actions-web">started</a> from the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button
-found on each virtual machine in the <strong>Workloads</strong> &gt; <strong>Virtual
-Machines</strong> list, or from the <a href="#vm-actions-web"><strong>Actions</strong></a> button on
-the <strong>Virtual Machine Details</strong> screen.</p>
+<p>Virtual machines can be started from the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button found on each virtual machine in the <strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> list, or from the <img alt="Actions" src="../assets/actions.png" title="Actions" /> button on the <strong>Virtual Machine Details</strong> screen.</p>
 <ol>
 <li>
 <p>Click <strong>Workloads</strong> &gt; <strong>Virtual Machine</strong> from the side menu.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button of the virtual machine and select <strong>Start Virtual
-    Machine</strong>.</p>
+<p>Click the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button of the virtual machine and select <strong>Start Virtual Machine</strong>.</p>
 <ol>
-<li>Alternatively, click the virtual machine name to open the
-    <strong>Virtual Machine Details</strong> screen and click <strong>Actions</strong> and
-    select <strong>Start Virtual Machine</strong>.</li>
+<li>Alternatively, click the virtual machine name to open the <strong>Virtual Machine Details</strong> screen and click <img alt="Actions" src="../assets/actions.png" title="Actions" /> and select <strong>Start Virtual Machine</strong>.</li>
 </ol>
 </li>
 <li>
@@ -435,21 +427,15 @@ the <strong>Virtual Machine Details</strong> screen.</p>
 </li>
 </ol>
 <h3 id="stopping-a-virtual-machine">Stopping a Virtual Machine<a class="headerlink" href="#stopping-a-virtual-machine" title="Permanent link">&para;</a></h3>
-<p>A running virtual machine can be <a href="#vm-actions-web">stopped</a> using the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" />
-button found on each virtual machine in the <strong>Workloads</strong> &gt; <strong>Virtual
-Machines</strong> list, or from the <a href="#vm-actions-web"><strong>Actions</strong></a> button on
-the <strong>Virtual Machine Details</strong> screen.</p>
+<p>A running virtual machine can be stopped using the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button found on each virtual machine in the <strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> list, or from the <img alt="Actions" src="../assets/actions.png" title="Actions" /> button on the <strong>Virtual Machine Details</strong> screen.</p>
 <ol>
 <li>
 <p>Click <strong>Workloads</strong> &gt; <strong>Virtual Machine</strong> from the side menu.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button of the virtual machine and select <strong>Stop Virtual
-    Machine</strong>.</p>
+<p>Click the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button of the virtual machine and select <strong>Stop Virtual Machine</strong>.</p>
 <ol>
-<li>Alternatively, click the virtual machine name to open the
-    <strong>Virtual Machine Details</strong> screen and click <strong>Actions</strong> and
-    select <strong>Stop Virtual Machine</strong>.</li>
+<li>Alternatively, click the virtual machine name to open the <strong>Virtual Machine Details</strong> screen and click <img alt="Actions" src="../assets/actions.png" title="Actions" /> and select <strong>Stop Virtual Machine</strong>.</li>
 </ol>
 </li>
 <li>
@@ -458,27 +444,20 @@ the <strong>Virtual Machine Details</strong> screen.</p>
 </li>
 </ol>
 <h3 id="restarting-a-virtual-machine">Restarting a Virtual Machine<a class="headerlink" href="#restarting-a-virtual-machine" title="Permanent link">&para;</a></h3>
-<p>A running virtual machine can be <a href="#vm-actions-web">restarted</a> from the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" />
-button found on each virtual machine in the <strong>Workloads</strong> &gt; <strong>Virtual
-Machines</strong> list, or from the <a href="#vm-actions-web"><strong>Actions</strong></a> button on
-the <strong>Virtual Machine Details</strong> screen.</p>
+<p>A running virtual machine can be restarted from the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button found on each virtual machine in the <strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> list, or from the <img alt="Actions" src="../assets/actions.png" title="Actions" /> button on the <strong>Virtual Machine Details</strong> screen.</p>
 <blockquote>
 <p>Important: Do not restart a virtual machine while it has a status of
 <strong>Importing</strong>. This will result in an error for the virtual machine
-and is a <a href="#../cnv_release_notes/cnv_release_notes.adoc#RN_known_issues">known
-issue</a>.</p>
+and is a <a href="https://docs.openshift.com/container-platform/4.6/virt/virt-2-5-release-notes.html#virt-2-5-known-issues">known issue</a>.</p>
 </blockquote>
 <ol>
 <li>
 <p>Click <strong>Workloads</strong> &gt; <strong>Virtual Machine</strong> from the side menu.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button of the virtual machine and select <strong>Restart
-    Virtual Machine</strong>.</p>
+<p>Click the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button of the virtual machine and select <strong>Restart Virtual Machine</strong>.</p>
 <ol>
-<li>Alternatively, click the virtual machine name to open the
-    <strong>Virtual Machine Details</strong> screen, click <strong>Actions</strong>, and
-    select <strong>Restart Virtual Machine</strong>.</li>
+<li>Alternatively, click the virtual machine name to open the <strong>Virtual Machine Details</strong> screen, click <img alt="Actions" src="../assets/actions.png" title="Actions" />, and select <strong>Restart Virtual Machine</strong>.</li>
 </ol>
 </li>
 <li>
@@ -487,22 +466,16 @@ issue</a>.</p>
 </li>
 </ol>
 <h3 id="live-migrating-a-virtual-machine">Live Migrating a Virtual Machine<a class="headerlink" href="#live-migrating-a-virtual-machine" title="Permanent link">&para;</a></h3>
-<p>Virtual machines can be <a href="#vm-actions-web">live migrated</a> to a different
-node from the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button found on each virtual machine in the
-<strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> list, or from the
-<a href="#vm-actions-web"><strong>Actions</strong></a> button on the <strong>Virtual Machine Details</strong>
-screen.</p>
+<p>Virtual machines can be live migrated to a different
+node from the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button found on each virtual machine in the <strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> list, or from the <img alt="Actions" src="../assets/actions.png" title="Actions" /> button on the <strong>Virtual Machine Details</strong> screen.</p>
 <ol>
 <li>
 <p>Click <strong>Workloads</strong> &gt; <strong>Virtual Machine</strong> from the side menu.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button of the virtual machine and select <strong>Migrate
-    Virtual Machine</strong>.</p>
+<p>Click the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button of the virtual machine and select <strong>Migrate Virtual Machine</strong>.</p>
 <ol>
-<li>Alternatively, click the virtual machine name to open the
-    <strong>Virtual Machine Details</strong> screen and click <strong>Actions</strong> and
-    select <strong>Migrate Virtual Machine</strong>.</li>
+<li>Alternatively, click the virtual machine name to open the <strong>Virtual Machine Details</strong> screen and click <img alt="Actions" src="../assets/actions.png" title="Actions" /> and select <strong>Migrate Virtual Machine</strong>.</li>
 </ol>
 </li>
 <li>
@@ -511,22 +484,15 @@ screen.</p>
 </li>
 </ol>
 <h3 id="cancelling-a-virtual-machine-live-migration">Cancelling a Virtual Machine Live Migration<a class="headerlink" href="#cancelling-a-virtual-machine-live-migration" title="Permanent link">&para;</a></h3>
-<p>A live migration of the virtual machine can be
-<a href="#vm-actions-web">cancelled</a> using the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button found on each virtual
-machine in the <strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> list, or from the
-<a href="#vm-actions-web"><strong>Actions</strong></a> button on the <strong>Cancel Virtual Machine
-Migration</strong> screen.</p>
+<p>A live migration of the virtual machine can be cancelled using the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button found on each virtual machine in the <strong>Workloads</strong> &gt; <strong>Virtual Machines</strong> list, or from the <img alt="Actions" src="../assets/actions.png" title="Actions" /> button on the <strong>Cancel Virtual Machine Migration</strong> screen.</p>
 <ol>
 <li>
 <p>Click <strong>Workloads</strong> &gt; <strong>Virtual Machine</strong> from the side menu.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button of the virtual machine and select <strong>Cancel
-    Virtual Machine Migration</strong>.</p>
+<p>Click the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button of the virtual machine and select <strong>Cancel Virtual Machine Migration</strong>.</p>
 <ol>
-<li>Alternatively, click the virtual machine name to open the
-    <strong>Virtual Machine Details</strong> screen and click <strong>Actions</strong> and
-    select <strong>Cancel Virtual Machine Migration</strong>.</li>
+<li>Alternatively, click the virtual machine name to open the <strong>Virtual Machine Details</strong> screen and click <img alt="Actions" src="../assets/actions.png" title="Actions" /> and select <strong>Cancel Virtual Machine Migration</strong>.</li>
 </ol>
 </li>
 <li>
@@ -543,9 +509,9 @@ Details</strong> screen of the web console.</p>
 <strong>Serial Console</strong>, and <strong>Desktop Viewer</strong> which can be used to connect
 to the <strong>RDP Console</strong> (Windows only). The <strong>VNC Console</strong> opens by
 default whenever you navigate to the <strong>Consoles</strong> tab. You can switch
-between the consoles using the <a href="#vm-vnc-console-web"><strong>VNC
-Console</strong></a>|<a href="#vm-serial-console-web"><strong>Serial
-Console</strong></a>|<a href="#vm-desktop-viewer-web"><strong>Desktop
+between the consoles using the <a href="#virtual-machine-console-sessions"><strong>VNC
+Console</strong></a>|<a href="#connecting-to-the-serial-console"><strong>Serial
+Console</strong></a>|<a href="#using-desktop-viewer-to-connect-to-rdp-console-windows-only"><strong>Desktop
 Viewer</strong></a> drop-down list.</p>
 <p>Console sessions remain active in the background unless they are
 disconnected. When the <strong>Disconnect before switching</strong> checkbox is
@@ -657,7 +623,7 @@ console.</p>
     METHOD</strong> <a href="#networking-fields">details</a> for the new NIC.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/check.png" title="Check" /> button to save and attach the NIC to the virtual
+<p>Click the <img alt="Check" src="../assets/check.png" title="" /> button to save and attach the NIC to the virtual
     machine.</p>
 </li>
 </ol>
@@ -676,8 +642,7 @@ the NIC.</p>
     the virtual machine.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button of the NIC you wish to delete and select
-    <strong>Delete</strong>.</p>
+<p>Click the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button of the NIC you wish to delete and select <strong>Delete</strong>.</p>
 </li>
 <li>
 <p>In the confirmation pop-up window, click <strong>Delete</strong> to detach and
@@ -707,7 +672,7 @@ web console.</p>
     <a href="#storage-fields">details</a> for the new disk.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/check.png" title="Check" /> button to save and attach the disk to the virtual
+<p>Click the <img alt="Check" src="../assets/check.png" title="" /> button to save and attach the disk to the virtual
     machine.</p>
 </li>
 </ol>
@@ -726,8 +691,7 @@ the disk.</p>
     machine.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button of the disk you wish to delete and select
-    <strong>Delete</strong>.</p>
+<p>Click the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button of the disk you wish to delete and select <strong>Delete</strong>.</p>
 </li>
 <li>
 <p>Click <strong>Confirm</strong> to detach and delete the disk.</p>
@@ -737,10 +701,10 @@ the disk.</p>
 <h3 id="creating-a-virtual-machine-template-with-the-interactive-wizard">Creating a Virtual Machine Template with the Interactive Wizard<a class="headerlink" href="#creating-a-virtual-machine-template-with-the-interactive-wizard" title="Permanent link">&para;</a></h3>
 <p>Virtual machine templates are an easy way to create multiple virtual
 machines with similar configuration. After a template is created,
-reference the template when <a href="#creating-vm-wizard-web">creating virtual
+reference the template when <a href="#creating-a-virtual-machine-template-with-the-interactive-wizard">creating virtual
 machines</a>.</p>
 <p>The web console features an interactive wizard that guides you through
-<a href="#template-wizard-fields-web"><strong>Basic Settings</strong></a>,
+<a href="#creating-a-virtual-machine-template-with-the-interactive-wizard"><strong>Basic Settings</strong></a>,
 <a href="#networking-fields"><strong>Networking</strong></a>, and
 <a href="#storage-fields"><strong>Storage</strong></a> screens to simplify the
 process of creating virtual machine templates. All required fields are
@@ -750,7 +714,7 @@ screen until the required fields have been completed.</p>
 after they have been created.</p>
 <p><strong><em>*Bootable Disk</em>*.</strong></p>
 <p>If either <code>URL</code> or <code>Container</code> are selected as the <strong>Provision Source</strong>
-in the <a href="#template-wizard-fields-web"><strong>Basic Settings</strong></a> screen, a
+in the <a href="#creating-a-virtual-machine-template-with-the-interactive-wizard"><strong>Basic Settings</strong></a> screen, a
 <code>rootdisk</code> disk is created and attached to virtual machines as the
 <strong>Bootable Disk</strong>. You can modify the <code>rootdisk</code> but you cannot remove
 it.</p>
@@ -767,7 +731,7 @@ must select one as the <strong>Bootable Disk</strong>.</p>
 <p>Click <strong>Create Template</strong> and select <strong>Create with Wizard</strong>.</p>
 </li>
 <li>
-<p>Fill in all required <a href="#template-wizard-fields-web"><strong>Basic
+<p>Fill in all required <a href="#creating-a-virtual-machine-template-with-the-interactive-wizard"><strong>Basic
     Settings</strong></a>.</p>
 </li>
 <li>
@@ -779,11 +743,7 @@ must select one as the <strong>Bootable Disk</strong>.</p>
 <p>(Optional) Click <strong>Create NIC</strong> to create additional NICs.</p>
 </li>
 <li>
-<p>(Optional) You can remove any or all NICs by clicking the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" />
-    button and selecting <strong>Remove NIC</strong>. Virtual machines created
-    from a template do not need a NIC attached. NICs can be
-    <a href="#vm-create-nic-web">created</a> after a virtual machine has been
-    created.</p>
+<p>(Optional) You can remove any or all NICs by clicking the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button and selecting <strong>Remove NIC</strong>. Virtual machines created from a template do not need a NIC attached. NICs can be <a href="#creating-a-nic-for-a-virtual-machine">created</a> after a virtual machine has been created.</p>
 </li>
 </ol>
 </li>
@@ -792,13 +752,11 @@ must select one as the <strong>Bootable Disk</strong>.</p>
     <a href="#storage-fields"><strong>Storage</strong></a> screen.</p>
 <ol>
 <li>
-<p>(Optional) Click <strong>Create Disk</strong> to create additional disks.
-    These disks can be removed by clicking the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button and
-    selecting <strong>Remove Disk</strong>.</p>
+<p>(Optional) Click <strong>Create Disk</strong> to create additional disks. These disks can be removed by clicking the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button and selecting <strong>Remove Disk</strong>.</p>
 </li>
 <li>
 <p>(Optional) Click on a disk to modify available fields. Click the
-    <img alt="" src="../assets/check.png" title="Check" /> button to save the update.</p>
+    <img alt="Check" src="../assets/check.png" title="" /> button to save the update.</p>
 </li>
 <li>
 <p>(Optional) Click <strong>Attach Disk</strong> to choose an available disk
@@ -848,9 +806,9 @@ including the updated version number for the object.</p>
 <h3 id="deleting-a-virtual-machine-template">Deleting a Virtual Machine Template<a class="headerlink" href="#deleting-a-virtual-machine-template" title="Permanent link">&para;</a></h3>
 <p>Deleting a virtual machine template permanently removes it from the
 cluster.</p>
-<p>Delete a virtual machine template using the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button found on each
+<p>Delete a virtual machine template using the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button found on each
 template in the <strong>Workloads</strong> &gt; <strong>Virtual Machines Templates</strong> list, or
-using the <strong>Actions</strong> button of the <strong>Virtual Machine Templates
+using the <img alt="Actions" src="../assets/actions.png" title="Actions" /> button of the <strong>Virtual Machine Templates
 Details</strong> screen.</p>
 <ol>
 <li>
@@ -858,17 +816,14 @@ Details</strong> screen.</p>
     menu.</p>
 </li>
 <li>
-<p>Click the <img alt="" src="../assets/ellipsis.png" title="Ellipsis" /> button of the template you wish to delete and select
+<p>Click the <img alt="Ellipsis" src="../assets/ellipsis.png" title="" /> button of the template you wish to delete and select
     <strong>Delete Template</strong>.</p>
 <ol>
-<li>Alternatively, click the template name to open the <strong>Virtual
-    Machine Template Details</strong> screen and click <strong>Actions</strong> &gt;
-    <strong>Delete Template</strong>.</li>
+<li>Alternatively, click the template name to open the <strong>Virtual Machine Template Details</strong> screen and click <img alt="Actions" src="../assets/actions.png" title="Actions" /> &gt; <strong>Delete Template</strong>.</li>
 </ol>
 </li>
 <li>
-<p>In the confirmation pop-up window, click <strong>Delete</strong> to permanently
-    delete the template.</p>
+<p>In the confirmation pop-up window, click <strong>Delete</strong> to permanently delete the template.</p>
 </li>
 </ol>
 <h2 id="reference">Reference<a class="headerlink" href="#reference" title="Permanent link">&para;</a></h2>
@@ -940,7 +895,7 @@ Details</strong> screen.</p>
 <tr>
 <td>cloud-init</td>
 <td></td>
-<td>Select this checkbox to enable the <a href="https://kubevirt.io/user-guide/web_console/#cloud-init-fields-web">cloud-init fields</a></td>
+<td>Select this checkbox to enable the <a href="#cloud-init-fields">cloud-init fields</a></td>
 </tr>
 </tbody>
 </table>
@@ -1012,7 +967,7 @@ Details</strong> screen.</p>
 <tr>
 <td>cloud-init</td>
 <td></td>
-<td>Select this checkbox to enable the <a href="https://kubevirt.io/user-guide/web_console/#cloud-init-fields-web">cloud-init fields</a></td>
+<td>Select this checkbox to enable the <a href="#cloud-init-fields">cloud-init fields</a></td>
 </tr>
 </tbody>
 </table>
