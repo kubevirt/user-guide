@@ -5,10 +5,12 @@
 Reviewing the following will prepare you for contributing
 
 For code contributors:
+
 * You need to be familiar with writing code in golang.  See the [golang tour](https://tour.golang.org/welcome/1) to familiarize yourself.
 * Read the Developer [contribution page](https://github.com/kubevirt/kubevirt/blob/master/CONTRIBUTING.md) and the [getting started page](https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md).
 
 For all contributors:
+
 * You need to be comfortable with git, GitHub workflow of fork, branch, commit, open pull request, reviewing changes, and merge to work effectively in the KubeVirt community.  If you're new to git git-scm.com very nice tutorials [here](https://git-scm.com/doc).
 * Familiarize yourself with the various repositories of the [KubeVirt](https://github.com/kubevirt) GitHub organization.
 * Try the Deploy KubeVirt on [minikube](https://kubevirt.io/quickstart_minikube/) or [kind](https://kubevirt.io/quickstart_kind/) quickstart lab.
