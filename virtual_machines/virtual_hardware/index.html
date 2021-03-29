@@ -323,41 +323,41 @@ spec:
 and create node selectors from them. With these node selectors, VM can
 be scheduled on the node which can support VM cpu model and features.</p>
 <h4 id="labeling-nodes-with-cpu-models-and-cpu-features">Labeling nodes with cpu models and cpu features<a class="headerlink" href="#labeling-nodes-with-cpu-models-and-cpu-features" title="Permanent link">&para;</a></h4>
-<p>To properly label the node, user can use (only for cpu models and cpu
-features) <a href="https://github.com/kubevirt/node-labeller">node-labeller</a> in
-combination with
-<a href="https://github.com/kubevirt/cpu-nfd-plugin">cpu-nfd-plugin</a> or create
-node labels by himself.</p>
-<p>To install node-labeller to cluster, user can use
-(<a href="https://github.com/MarSik/kubevirt-ssp-operator">kubevirt-ssp-operator</a>),
-which will install node-labeller + all available plugins.</p>
-<p>Cpu-nfd-plugin uses libvirt to get all supported cpu models and cpu
-features on host and Node-labeller create labels from cpu models. Then
-Kubevirt can schedule VM on node which has support for VM cpu model and
+<p>To properly label the node, user can use Kubevirt Node-labeller, which creates all 
+neccessary labels or create node labels by himself.</p>
+<p>Kubevirt node-labeller creates 3 types of labels: cpu models, cpu features and kvm info.
+It uses libvirt to get all supported cpu models and cpu
+features on host and then Node-labeller creates labels from cpu models. 
+Kubevirt can then schedule VM on node which has support for VM cpu model and
 features.</p>
-<p>Cpu-nfd-plugin supports black list of cpu models and minimal baseline
-cpu model for features. Both features can be set via config map:</p>
-<pre><code>apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cpu-plugin-configmap
-data:
-  cpu-plugin-configmap.yaml: |-
-    obsoleteCPUs:
-      - "486"
-      - "pentium"
-    minCPU: "Penryn"
+<p>Node-labeller supports obsolete list of cpu models and minimal baseline
+cpu model for features. Both features can be set via KubeVirt CR:</p>
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+    kind: Kubevirt
+    metadata:
+      name: kubevirt
+      namespace: kubevirt
+    spec:
+      ...
+      configuration:
+        minCPUModel: &quot;Penryn&quot;
+        obsoleteCPUModels:
+          - &quot;486&quot;
+          - &quot;pentium&quot;
+    ...
 </code></pre>
-<p>This config map has to be created before node-labeller is created,
-otherwise plugin will show all cpu models. Plugin will not reload when
-config map is changed.</p>
-<p>Obsolete cpus will not be inserted in labels. In minCPU user can set
-baseline cpu model. CPU features, which have this model, are used as
-basic features. These basic features are not in the label list. Feature
+<p>Obsolete cpus will not be inserted in labels. If KubeVirt CR doesn't 
+contain <code>obsoleteCPUModels</code> or <code>minCPUModel</code> variables, Labeller sets default values 
+(for <code>obsoleteCPUModels</code> "pentium, pentium2, pentium3, pentiumpro, coreduo, n270, 
+core2duo, Conroe, athlon, phenom, kvm32, kvm64, qemu32, qemu64" and for <code>minCPUModel</code> 
+"Penryn"). In minCPU user can set baseline cpu model. CPU features, which have this model, 
+are used as basic features. These basic features are not in the label list. Feature
 labels are created as subtraction between set of newer cpu features and
 set of basic cpu features, e.g.: Haswell has: aes, apic, clflush Penryr
 has: apic, clflush subtraction is: aes. So label will be created only
 with aes feature.</p>
+<p>User can change obsoleteCPUModels or minCPUModel by adding / removing cpu model in config map.
+Kubevirt then update nodes with new labels.</p>
 <h4 id="model">Model<a class="headerlink" href="#model" title="Permanent link">&para;</a></h4>
 <p><strong>Note</strong>: Be sure that node CPU model where you run a VM, has the same
 or higher CPU family.</p>
@@ -381,8 +381,8 @@ spec:
 <a href="https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml">here</a>.</p>
 <p>When CPUNodeDiscovery feature-gate is enabled and VM has cpu model,
 Kubevirt creates node selector with format:
-<code>feature.node.kubernetes.io/cpu-model-&lt;cpuModel&gt;</code>, e.g.
-<code>feature.node.kubernetes.io/cpu-model-Conroe</code>. When VM doesn't have cpu
+<code>cpu-model.node.kubevirt.io/&lt;cpuModel&gt;</code>, e.g.
+<code>cpu-model.node.kubevirt.io/Conroe</code>. When VM doesn’t have cpu
 model, then no node selector is created.</p>
 <h4 id="enabling-default-cluster-cpu-model">Enabling default cluster cpu model<a class="headerlink" href="#enabling-default-cluster-cpu-model" title="Permanent link">&para;</a></h4>
 <p>To enable the default cpu model, user may add the <code>cpuModel</code>
@@ -468,8 +468,8 @@ following policies: force, require, optional, disable, forbid.</p>
 <a href="https://libvirt.org/formatdomain.html#elementsCPU">here</a>.</p>
 <p>When CPUNodeDiscovery feature-gate is enabled Kubevirt creates node
 selector from cpu features with format:
-<code>feature.node.kubernetes.io/cpu-feature-&lt;cpuFeature&gt;</code>, e.g.
-<code>feature.node.kubernetes.io/cpu-feature-apic</code>. When VM doesn't have cpu
+<code>cpu-feature.node.kubevirt.io/&lt;cpuFeature&gt;</code>, e.g.
+<code>cpu-feature.node.kubevirt.io/apic</code>. When VM doesn’t have cpu
 feature, then no node selector is created.</p>
 <h3 id="clock">Clock<a class="headerlink" href="#clock" title="Permanent link">&para;</a></h3>
 <h4 id="guest-time">Guest time<a class="headerlink" href="#guest-time" title="Permanent link">&para;</a></h4>
