@@ -204,3 +204,41 @@ Kubernetes right now. However, it can be useful in combination with KSM,
 since KSM merges identical pages over time. Swap allows the VMIs to
 successfully allocate memory which will then effectively never be used
 because of the later de-duplication done by KSM.
+
+# Node CPU allocation ratio
+
+KubeVirt runs Virtual Machines in a Kubernetes Pod. This pod requests a certain
+amount of CPU time from the host. On the other hand, the Virtual Machine is
+being created with a certain amount of vCPUs. The number of vCPUs may not
+necessarily correlate to the number of requested CPUs by the POD. 
+Depending on the [QOS](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) of the POD, vCPUs can be scheduled on a variable amount
+of physical CPUs; this depends on the available CPU resources on a node. When
+there are fewer available CPUs on the node as the requested vCPU, vCPU will be
+overcommitted.
+
+By default, each pod requests 100mil of CPU time. The CPU requested on the pod
+sets the cgroups cpu.shares which serves as a priority for the scheduler to
+provide CPU time for vCPUs in this POD.
+As the number of vCPUs increases, this will reduce the amount of CPU time each
+vCPU may get when competing with other processes on the node or other Virtual
+Machine Instances with a lower amount of vCPUs.
+
+The `cpuAllocationRatio` comes to normalize the amount of CPU time the POD will
+request based on the number of vCPUs.
+For example, POD CPU request = number of vCPUs * 1/cpuAllocationRatio
+When cpuAllocationRatio is set to 1, a full amount of vCPUs will be requested
+for the POD.
+
+> Note: In Kubernetes, one full core is 1000 of CPU time
+> [More Information](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/)
+
+Administrators can change this ratio by updaing the KubeVirt CR
+
+```
+...
+    spec:
+      configuration:
+        developerConfiguration:
+          cpuAllocationRatio: 10
+```
+
