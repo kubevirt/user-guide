@@ -1,15 +1,17 @@
 # Host Devices Assignment
 
 KubeVirt provides a mechanism for assigning host devices to a virtual machine.
-This mechanism is generic and allows various types of PCI devices, such as GPU
-or any other devices attached to a PCI bus, to be assigned. It also allows
-Mediated devices, such as pre-configured virtual GPUs to be assigned using the
-same mechanism.
+This mechanism is generic and allows various types of PCI devices,
+such as accelerators (including GPUs) or any other devices attached to
+a PCI bus, to be assigned. It also allows [Linux Mediated
+devices](https://www.kernel.org/doc/html/latest/driver-api/vfio-mediated-device.html),
+such as pre-configured virtual GPUs to be assigned using the same
+mechanism.
 
 
 ## Host preparation for PCI Passthrough
 
- * Host Devices passthrough requires virtualization extension and IOMMU extension
+ * Host Devices passthrough requires the virtualization extension and the IOMMU extension
 (Intel VT-d or AMD IOMMU) to be enabled in the BIOS.
 
  * To enable IOMMU, depending on the CPU type, a host should be booted with an additional kernel parameter, `intel_iommu=on` for Intel and `amd_iommu=on`
@@ -29,23 +31,23 @@ GRUB_CMDLINE_LINUX="nofb splash=quiet console=tty0 ... intel_iommu=on
 # reboot
 ```
 
- * vfio-pci kernel module should be enabled on the host.
+ * The vfio-pci kernel module should be enabled on the host.
 ```
 # modprobe vfio-pci
 ```
 
 ## Preparation of PCI devices for passthrough
 
-At this time, KubeVirt is able to assign PCI devices that are using the `vfio-pci` driver. To prepare a desired device for device assignment, it should first be unbound from its original driver and bound to `vfio-pci`
+At this time, KubeVirt is only able to assign PCI devices that are using the `vfio-pci` driver. To prepare a specific device for device assignment, it should first be unbound from its original driver and bound to the `vfio-pci` driver.
 
- * Find PCI address of a device
+ * Find the PCI address of the desired device:
 
 ```
 $ lspci -DD|grep NVIDIA
 0000.65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)
 ```
 
- * Bind the device to vfio-pci driver
+ * Bind that device to the `vfio-pci` driver:
 ```
 echo 0000:65:00.0 > /sys/bus/pci/drivers/nvidia/unbind
 echo "vfio-pci" > /sys/bus/pci/devices/0000\:65\:00.0/driver_override
@@ -54,7 +56,7 @@ echo 0000:65:00.0 > /sys/bus/pci/drivers/vfio-pci/bind
 
 ## Preparation of mediated devices such as vGPU
 
-At this time, configuration of a mediated device (mdev) should be done according to the vendor directions. Once the mdev is configured, KubeVirt will be able to discover and use it for device assignment.
+At this time, configuration of a Mediated device (mdev) should be done according to the vendor directions. Once the mdev is configured, KubeVirt will be able to discover and use it for device assignment.
 
 ## Listing permitted devices
 
@@ -75,12 +77,12 @@ configuration:
       resourceName: "nvidia.com/GRID_T4-1Q"
 ```
 
- * `pciVendorSelector` is a combination of a `vendor_id:product_id` required for a device identification on a host. This identifier `10de:1eb8` can be found using `lspci`.
+ * `pciVendorSelector` is a PCI vendor ID and product ID tuple in the form `vendor_id:product_id`.  This tuplie can identify specific types of devices on a host. For example, the identifier `10de:1eb8`, shown above, can be found using `lspci`.
 
         $ lspci -nnv|grep -i nvidia
         65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)
 
- * `mdevNameSelector` is a name of a mediated device type required for a device identification on a host.
+ * `mdevNameSelector` is a name of a Mediated device type that can identify specific types of Mediated devices on a host.
 
     You can see what mediated types a given PCI device supports by
     examining the contents of
@@ -90,13 +92,14 @@ configuration:
     Taking `GRID T4-2A` and specifying it as the `mdevNameSelector` allows KubeVirt to find a corresponding mediated device by matching it against `/sys/class/mdev_bus/SLOT:BUS:DOMAIN.FUNCTION/$mdevUUID/mdev_type/name` for some values of `SLOT:BUS:DOMAIN.FUNCTION` and `$mdevUUID`.
 
  * External providers:
-`externalResourceProvider` field indicates that this resource is being provided by an external device plugin. KubeVirt in this case will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.
+`externalResourceProvider` field indicates that this resource is being provided by an external device plugin. In this case, KubeVirt will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.
 
 
 ## Staring a Virtual Machine
 
-HostDevices, as well as the existing GPUs field, will be able to reference both
-PCI and mediated devices
+Host devices can be assigned to virtual machines via the `gpus` and
+`hostDevices` fields.  The `deviceNames` can reference both PCI
+and Mediated device resource names.
 
 ```
 kind: VirtualMachineInstance
