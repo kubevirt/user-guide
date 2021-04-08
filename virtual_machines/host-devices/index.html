@@ -201,14 +201,16 @@
               
                 <h1 id="host-devices-assignment">Host Devices Assignment<a class="headerlink" href="#host-devices-assignment" title="Permanent link">&para;</a></h1>
 <p>KubeVirt provides a mechanism for assigning host devices to a virtual machine.
-This mechanism is generic and allows various types of PCI devices, such as GPU
-or any other devices attached to a PCI bus, to be assigned. It also allows
-Mediated devices, such as pre-configured virtual GPUs to be assigned using the
-same mechanism.</p>
+This mechanism is generic and allows various types of PCI devices,
+such as accelerators (including GPUs) or any other devices attached to
+a PCI bus, to be assigned. It also allows <a href="https://www.kernel.org/doc/html/latest/driver-api/vfio-mediated-device.html">Linux Mediated
+devices</a>,
+such as pre-configured virtual GPUs to be assigned using the same
+mechanism.</p>
 <h2 id="host-preparation-for-pci-passthrough">Host preparation for PCI Passthrough<a class="headerlink" href="#host-preparation-for-pci-passthrough" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
-<p>Host Devices passthrough requires virtualization extension and IOMMU extension
+<p>Host Devices passthrough requires the virtualization extension and the IOMMU extension
 (Intel VT-d or AMD IOMMU) to be enabled in the BIOS.</p>
 </li>
 <li>
@@ -228,27 +230,27 @@ GRUB_CMDLINE_LINUX=&quot;nofb splash=quiet console=tty0 ... intel_iommu=on
 # reboot
 </code></pre>
 <ul>
-<li>vfio-pci kernel module should be enabled on the host.</li>
+<li>The vfio-pci kernel module should be enabled on the host.</li>
 </ul>
 <pre><code># modprobe vfio-pci
 </code></pre>
 <h2 id="preparation-of-pci-devices-for-passthrough">Preparation of PCI devices for passthrough<a class="headerlink" href="#preparation-of-pci-devices-for-passthrough" title="Permanent link">&para;</a></h2>
-<p>At this time, KubeVirt is able to assign PCI devices that are using the <code>vfio-pci</code> driver. To prepare a desired device for device assignment, it should first be unbound from its original driver and bound to <code>vfio-pci</code></p>
+<p>At this time, KubeVirt is only able to assign PCI devices that are using the <code>vfio-pci</code> driver. To prepare a specific device for device assignment, it should first be unbound from its original driver and bound to the <code>vfio-pci</code> driver.</p>
 <ul>
-<li>Find PCI address of a device</li>
+<li>Find the PCI address of the desired device:</li>
 </ul>
 <pre><code>$ lspci -DD|grep NVIDIA
 0000.65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)
 </code></pre>
 <ul>
-<li>Bind the device to vfio-pci driver</li>
+<li>Bind that device to the <code>vfio-pci</code> driver:</li>
 </ul>
 <pre><code>echo 0000:65:00.0 &gt; /sys/bus/pci/drivers/nvidia/unbind
 echo &quot;vfio-pci&quot; &gt; /sys/bus/pci/devices/0000\:65\:00.0/driver_override
 echo 0000:65:00.0 &gt; /sys/bus/pci/drivers/vfio-pci/bind
 </code></pre>
 <h2 id="preparation-of-mediated-devices-such-as-vgpu">Preparation of mediated devices such as vGPU<a class="headerlink" href="#preparation-of-mediated-devices-such-as-vgpu" title="Permanent link">&para;</a></h2>
-<p>At this time, configuration of a mediated device (mdev) should be done according to the vendor directions. Once the mdev is configured, KubeVirt will be able to discover and use it for device assignment.</p>
+<p>At this time, configuration of a Mediated device (mdev) should be done according to the vendor directions. Once the mdev is configured, KubeVirt will be able to discover and use it for device assignment.</p>
 <h2 id="listing-permitted-devices">Listing permitted devices<a class="headerlink" href="#listing-permitted-devices" title="Permanent link">&para;</a></h2>
 <p>Administrators can control which host devices are exposed and permitted to be used in the
 cluster. Permitted host devices in the cluster will need to be allowlisted in KubeVirt CR by its <code>vendor:product</code> selector for PCI devices or mediated device names.</p>
@@ -266,13 +268,13 @@ cluster. Permitted host devices in the cluster will need to be allowlisted in Ku
 </code></pre>
 <ul>
 <li>
-<p><code>pciVendorSelector</code> is a combination of a <code>vendor_id:product_id</code> required for a device identification on a host. This identifier <code>10de:1eb8</code> can be found using <code>lspci</code>.</p>
+<p><code>pciVendorSelector</code> is a PCI vendor ID and product ID tuple in the form <code>vendor_id:product_id</code>.  This tuplie can identify specific types of devices on a host. For example, the identifier <code>10de:1eb8</code>, shown above, can be found using <code>lspci</code>.</p>
 <pre><code>$ lspci -nnv|grep -i nvidia
 65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)
 </code></pre>
 </li>
 <li>
-<p><code>mdevNameSelector</code> is a name of a mediated device type required for a device identification on a host.</p>
+<p><code>mdevNameSelector</code> is a name of a Mediated device type that can identify specific types of Mediated devices on a host.</p>
 <p>You can see what mediated types a given PCI device supports by
 examining the contents of
 <code>/sys/bus/pci/devices/SLOT:BUS:DOMAIN.FUNCTION/mdev_supported_types/TYPE/name</code>.
@@ -281,12 +283,13 @@ For example, if you have an NVIDIA T4 GPU on your system, and you substitute in 
 </li>
 <li>
 <p>External providers:
-<code>externalResourceProvider</code> field indicates that this resource is being provided by an external device plugin. KubeVirt in this case will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.</p>
+<code>externalResourceProvider</code> field indicates that this resource is being provided by an external device plugin. In this case, KubeVirt will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.</p>
 </li>
 </ul>
 <h2 id="staring-a-virtual-machine">Staring a Virtual Machine<a class="headerlink" href="#staring-a-virtual-machine" title="Permanent link">&para;</a></h2>
-<p>HostDevices, as well as the existing GPUs field, will be able to reference both
-PCI and mediated devices</p>
+<p>Host devices can be assigned to virtual machines via the <code>gpus</code> and
+<code>hostDevices</code> fields.  The <code>deviceNames</code> can reference both PCI
+and Mediated device resource names.</p>
 <pre><code>kind: VirtualMachineInstance
 spec:
   domain:
