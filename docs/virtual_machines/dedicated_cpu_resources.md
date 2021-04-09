@@ -5,29 +5,25 @@ performance during its execution would benefit from obtaining dedicated
 CPU resources. KubeVirt, relying on the Kubernetes CPU manager, is able
 to pin guest's vCPUs to the host's pCPUs.
 
-[Kubernetes CPU
-manager](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/)
+## [Kubernetes CPU manager](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/)
 
-    Kubernetes CPU manager is a mechanism that affects the scheduling of
-    workloads, placing it on a host which can allocate `Guaranteed`
-    resources and pin certain POD's containers to host pCPUs, if the
-    following requirement are met:
+Kubernetes CPU manager is a mechanism that affects the scheduling of
+workloads, placing it on a host which can allocate `Guaranteed`
+resources and pin certain Pod's containers to host pCPUs, if the
+following requirements are met:
 
-    * https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed[POD's
-    QOS] is Guaranteed
-    ** resources requests and limits are equal
-    ** all containers in the POD express CPU and memory requirements
-    * Requested number of CPUs is an Integer
+* [Pod's QoS](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed) is Guaranteed
+	* resources requests and limits are equal
+	* all containers in the Pod express CPU and memory requirements
+* Requested number of CPUs is an Integer
 
-    Additional information: *
-    https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/[Enabling
-    the CPU manager on Kubernetes] *
-    https://docs.openshift.com/container-platform/3.10/scaling_performance/using_cpu_manager.html[Enabling
-    the CPU manager on OKD] *
-    https://kubernetes.io/blog/2018/07/24/feature-highlight-cpu-manager/[Kubernetes
-    blog explaning the feature]
+Additional information: 
 
-    Requesting dedicated CPU resources
+* [Enabling the CPU manager on Kubernetes](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/)
+* [Enabling the CPU manager on OKD](https://docs.openshift.com/container-platform/4.6/scalability_and_performance/using-cpu-manager.html)
+* [Kubernetes blog explaining the feature](https://kubernetes.io/blog/2018/07/24/feature-highlight-cpu-manager/)
+
+## Requesting dedicated CPU resources
 
 Setting `spec.domain.cpu.dedicatedCpuPlacement` to `true` in a VMI spec
 will indicate the desire to allocate dedicated CPU resource to the VMI
