@@ -110,6 +110,10 @@
                     </li>
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Dedicated CPU resources</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#kubernetes-cpu-manager">Kubernetes CPU manager</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#requesting-dedicated-cpu-resources">Requesting dedicated CPU resources</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#requesting-dedicated-cpu-for-qemu-emulator">Requesting dedicated CPU for QEMU emulator</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#identifying-nodes-with-a-running-cpu-manager">Identifying nodes with a running CPU manager</a>
@@ -202,29 +206,26 @@
 performance during its execution would benefit from obtaining dedicated
 CPU resources. KubeVirt, relying on the Kubernetes CPU manager, is able
 to pin guest's vCPUs to the host's pCPUs.</p>
-<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/">Kubernetes CPU
-manager</a></p>
-<pre><code>Kubernetes CPU manager is a mechanism that affects the scheduling of
-workloads, placing it on a host which can allocate `Guaranteed`
-resources and pin certain POD's containers to host pCPUs, if the
-following requirement are met:
-
-* https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed[POD's
-QOS] is Guaranteed
-** resources requests and limits are equal
-** all containers in the POD express CPU and memory requirements
-* Requested number of CPUs is an Integer
-
-Additional information: *
-https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/[Enabling
-the CPU manager on Kubernetes] *
-https://docs.openshift.com/container-platform/3.10/scaling_performance/using_cpu_manager.html[Enabling
-the CPU manager on OKD] *
-https://kubernetes.io/blog/2018/07/24/feature-highlight-cpu-manager/[Kubernetes
-blog explaning the feature]
-
-Requesting dedicated CPU resources
-</code></pre>
+<h2 id="kubernetes-cpu-manager"><a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/">Kubernetes CPU manager</a><a class="headerlink" href="#kubernetes-cpu-manager" title="Permanent link">&para;</a></h2>
+<p>Kubernetes CPU manager is a mechanism that affects the scheduling of
+workloads, placing it on a host which can allocate <code>Guaranteed</code>
+resources and pin certain Pod's containers to host pCPUs, if the
+following requirements are met:</p>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed">Pod's QoS</a> is Guaranteed<ul>
+<li>resources requests and limits are equal</li>
+<li>all containers in the Pod express CPU and memory requirements</li>
+</ul>
+</li>
+<li>Requested number of CPUs is an Integer</li>
+</ul>
+<p>Additional information: </p>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/">Enabling the CPU manager on Kubernetes</a></li>
+<li><a href="https://docs.openshift.com/container-platform/4.6/scalability_and_performance/using-cpu-manager.html">Enabling the CPU manager on OKD</a></li>
+<li><a href="https://kubernetes.io/blog/2018/07/24/feature-highlight-cpu-manager/">Kubernetes blog explaining the feature</a></li>
+</ul>
+<h2 id="requesting-dedicated-cpu-resources">Requesting dedicated CPU resources<a class="headerlink" href="#requesting-dedicated-cpu-resources" title="Permanent link">&para;</a></h2>
 <p>Setting <code>spec.domain.cpu.dedicatedCpuPlacement</code> to <code>true</code> in a VMI spec
 will indicate the desire to allocate dedicated CPU resource to the VMI</p>
 <p>Kubevirt will verify that all the necessary conditions are met, for the
