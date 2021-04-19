@@ -77,7 +77,7 @@ configuration:
       resourceName: "nvidia.com/GRID_T4-1Q"
 ```
 
- * `pciVendorSelector` is a PCI vendor ID and product ID tuple in the form `vendor_id:product_id`.  This tuplie can identify specific types of devices on a host. For example, the identifier `10de:1eb8`, shown above, can be found using `lspci`.
+ * `pciVendorSelector` is a PCI vendor ID and product ID tuple in the form `vendor_id:product_id`.  This tuple can identify specific types of devices on a host. For example, the identifier `10de:1eb8`, shown above, can be found using `lspci`.
 
         $ lspci -nnv|grep -i nvidia
         65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)

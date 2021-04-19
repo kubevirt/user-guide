@@ -214,7 +214,7 @@ necessarily correlate to the number of requested CPUs by the POD.
 Depending on the [QOS](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) of the POD, vCPUs can be scheduled on a variable amount
 of physical CPUs; this depends on the available CPU resources on a node. When
 there are fewer available CPUs on the node as the requested vCPU, vCPU will be
-overcommitted.
+over committed.
 
 By default, each pod requests 100mil of CPU time. The CPU requested on the pod
 sets the cgroups cpu.shares which serves as a priority for the scheduler to
@@ -232,7 +232,7 @@ for the POD.
 > Note: In Kubernetes, one full core is 1000 of CPU time
 > [More Information](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/)
 
-Administrators can change this ratio by updaing the KubeVirt CR
+Administrators can change this ratio by updating the KubeVirt CR
 
 ```
 ...
