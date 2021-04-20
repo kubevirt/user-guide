@@ -150,7 +150,7 @@ be scheduled on the node which can support VM cpu model and features.
 #### Labeling nodes with cpu models and cpu features
 
 To properly label the node, user can use Kubevirt Node-labeller, which creates all 
-neccessary labels or create node labels by himself.
+necessary labels or create node labels by himself.
 
 Kubevirt node-labeller creates 3 types of labels: cpu models, cpu features and kvm info.
 It uses libvirt to get all supported cpu models and cpu
