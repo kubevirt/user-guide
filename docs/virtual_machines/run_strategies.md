@@ -104,7 +104,7 @@ An example usage of the Always RunStrategy.
         kubevirt.io/vm: vm-cirros
       name: vm-cirros
     spec:
-      runStrategy: always
+      runStrategy: Always
       template:
         metadata:
           labels:
