@@ -297,6 +297,14 @@ size, sending an <code>UploadTokenRequest</code> to the <code>cdi-apiserver</cod
 uploading the file to the <code>cdi-uploadproxy</code>.</p>
 <pre><code>virtctl image-upload dv cirros-vm-disk --size=500Mi --image-path=/home/mhenriks/images/cirros-0.4.0-x86_64-disk.img --uploadproxy-url=&lt;url to upload proxy service&gt;
 </code></pre>
+<h3 id="setting-the-url-of-the-cdi-upload-proxy-service">Setting the URL of the cdi-upload Proxy Service<a class="headerlink" href="#setting-the-url-of-the-cdi-upload-proxy-service" title="Permanent link">&para;</a></h3>
+<p>Setting the URL for the cdi-upload proxy service allows the <code>virtctl image-upload</code> command to upload the images without specifying the <code>--uploadproxy-url</code> flag.
+Permanently setting the URL is done by patching the CDI configuration.</p>
+<p>The following will set the default upload proxy to user port 31001 of mycluster.example.org. An IP address could also be used instead of the dns name.</p>
+<pre><code>kubectl patch cdi cdi \
+  --type merge \
+  --patch '{"spec":{"config":{"uploadProxyURLOverride":"https://mycluster.example.org:31001"}}}'
+</code></pre>
 <h2 id="create-a-virtualmachineinstance">Create a VirtualMachineInstance<a class="headerlink" href="#create-a-virtualmachineinstance" title="Permanent link">&para;</a></h2>
 <p>To create a <code>VirtualMachineInstance</code> from a DataVolume, you can execute the
 following:</p>
