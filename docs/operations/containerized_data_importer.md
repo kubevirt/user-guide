@@ -101,6 +101,18 @@ uploading the file to the `cdi-uploadproxy`.
 
     virtctl image-upload dv cirros-vm-disk --size=500Mi --image-path=/home/mhenriks/images/cirros-0.4.0-x86_64-disk.img --uploadproxy-url=<url to upload proxy service>
 
+### Setting the URL of the cdi-upload Proxy Service
+Setting the URL for the cdi-upload proxy service allows the `virtctl image-upload` command to upload the images without specifying the `--uploadproxy-url` flag.
+Permanently setting the URL is done by patching the CDI configuration.
+
+The following will set the default upload proxy to user port 31001 of mycluster.example.org. An IP address could also be used instead of the dns name.
+
+    kubectl patch cdi cdi \
+      --type merge \
+      --patch '{"spec":{"config":{"uploadProxyURLOverride":"https://mycluster.example.org:31001"}}}'
+
+
+
 ## Create a VirtualMachineInstance
 
 To create a `VirtualMachineInstance` from a DataVolume, you can execute the
