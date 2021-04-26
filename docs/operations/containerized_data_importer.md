@@ -223,7 +223,7 @@ The upload should now work.
 
 
 
-### Setting the URL of the cdi-upload Proxy Service
+## Setting the URL of the cdi-upload Proxy Service
 Setting the URL for the cdi-upload proxy service allows the `virtctl image-upload` command to upload the images without specifying the `--uploadproxy-url` flag.
 Permanently setting the URL is done by patching the CDI configuration.
 
