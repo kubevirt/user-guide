@@ -148,7 +148,7 @@ Use the `openssl` command to view the names of the cdi-uploadproxy service.
 Adding the following entry to the /etc/hosts file, if it provides name resolution, should fix this issue.
 Any service that provides name resolution for the system could be used.
 
-    cat "192.168.39.32  mycluster.example.org" >> /etc/hosts
+    cat "192.168.39.32  cdi-uploadproxy" >> /etc/hosts
 
 The upload should now work.
 
