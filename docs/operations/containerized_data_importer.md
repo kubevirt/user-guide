@@ -101,14 +101,14 @@ uploading the file to the `cdi-uploadproxy`.
 
     virtctl image-upload dv cirros-vm-disk --size=500Mi --image-path=/home/mhenriks/images/cirros-0.4.0-x86_64-disk.img --uploadproxy-url=<url to upload proxy service>
 
-### Addressing Certificate Issues when Uploading
+## Addressing Certificate Issues when Uploading Images
 
 Issues with the certificates can be circumvented by using the `--insecure` flag to prevent the virtctl command from verifying the remote host.
 It is better to resolve certificate issues that prevent uploading images using the `virtctl image-upload` command and not use the `--insecure` flag.
 
 The following are some common issues with certificates and some easy ways to fix them.
 
-#### Does not contain any IP SANs
+### Does not contain any IP SANs
 
 This issue happens when trying to upload images using an IP address instead of a resolvable name.
 For example, trying to upload to the IP address 192.168.39.32 at port 31001 would produce the following error.
@@ -171,7 +171,7 @@ The upload should now work.
 
 
 
-#### Certificate Signed by Unknown Authority
+### Certificate Signed by Unknown Authority
 This happens because the cdi-uploadproxy certificate is self signed and the system does not trust the cdi-uploadproxy as a Certificate Authority.
 
     virtctl image-upload dv f33 \
@@ -192,7 +192,7 @@ This happens because the cdi-uploadproxy certificate is self signed and the syst
 This can be fixed by adding the certificate to the systems trust store.
 Download the cdi-uploadproxy-server-cert.
 
-    oc get secret -n cdi cdi-uploadproxy-server-cert \
+    kubectl get secret -n cdi cdi-uploadproxy-server-cert \
       -o jsonpath="{.data['tls\.crt']}" \
       | base64 -d > cdi-uploadproxy-server-cert.crt
 
