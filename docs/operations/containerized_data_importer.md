@@ -101,16 +101,140 @@ uploading the file to the `cdi-uploadproxy`.
 
     virtctl image-upload dv cirros-vm-disk --size=500Mi --image-path=/home/mhenriks/images/cirros-0.4.0-x86_64-disk.img --uploadproxy-url=<url to upload proxy service>
 
+### Addressing Certificate Issues when Uploading
+
+Issues with the certificates can be circumvented by using the `--insecure` flag to prevent the virtctl command from verifying the remote host.
+It is better to resolve certificate issues that prevent uploading images using the `virtctl image-upload` command and not use the `--insecure` flag.
+
+The following are some common issues with certificates and some easy ways to fix them.
+
+#### Does not contain any IP SANs
+
+This issue happens when trying to upload images using an IP address instead of a resolvable name.
+For example, trying to upload to the IP address 192.168.39.32 at port 31001 would produce the following error.
+
+    virtctl image-upload dv f33 \
+      --size 5Gi \
+      --image-path Fedora-Cloud-Base-33-1.2.x86_64.raw.xz \
+      --uploadproxy-url https://192.168.39.32:31001
+
+    PVC default/f33 not found 
+    DataVolume default/f33 created
+    Waiting for PVC f33 upload pod to be ready...
+    Pod now ready
+    Uploading data to https://192.168.39.32:31001
+
+     0 B / 193.89 MiB [-------------------------------------------------------]   0.00% 0s
+
+    Post https://192.168.39.32:31001/v1alpha1/upload: x509: cannot validate certificate for 192.168.39.32 because it doesn't contain any IP SANs
+
+
+It is easily fixed by adding an entry it your local name resolution service.
+This could be a DNS server or the local hosts file.
+The URL used to upload the proxy should be changed to reflect the resolvable name.
+
+The `Subject` and the `Subject Alternative Name` in the certificate contain valid names that can be used for resolution.
+Only one of these names needs to be resolvable.
+Use the `openssl` command to view the names of the cdi-uploadproxy service.
+
+    echo | openssl s_client -showcerts -connect 192.168.39.32:31001 2>/dev/null \
+         | openssl x509 -inform pem -noout -text \
+         | sed -n -e '/Subject.*CN/p' -e '/Subject Alternative/{N;p}'
+
+        Subject: CN = cdi-uploadproxy
+            X509v3 Subject Alternative Name: 
+                DNS:cdi-uploadproxy, DNS:cdi-uploadproxy.cdi, DNS:cdi-uploadproxy.cdi.svc
+
+Adding the following entry to the /etc/hosts file, if it provides name resolution, should fix this issue.
+Any service that provides name resolution for the system could be used.
+
+    cat "192.168.39.32  mycluster.example.org" >> /etc/hosts
+
+The upload should now work.
+
+    virtctl image-upload dv f33 \
+      --size 5Gi \
+      --image-path Fedora-Cloud-Base-33-1.2.x86_64.raw.xz \
+      --uploadproxy-url https://cdi-uploadproxy:31001
+
+    PVC default/f33 not found 
+    DataVolume default/f33 created
+    Waiting for PVC f33 upload pod to be ready...
+    Pod now ready
+    Uploading data to https://cdi-uploadproxy:31001
+
+     193.89 MiB / 193.89 MiB [=============================================] 100.00% 1m38s
+
+    Uploading data completed successfully, waiting for processing to complete, you can hit ctrl-c without interrupting the progress
+    Processing completed successfully
+    Uploading Fedora-Cloud-Base-33-1.2.x86_64.raw.xz completed successfully
+
+
+
+#### Certificate Signed by Unknown Authority
+This happens because the cdi-uploadproxy certificate is self signed and the system does not trust the cdi-uploadproxy as a Certificate Authority.
+
+    virtctl image-upload dv f33 \
+      --size 5Gi \
+      --image-path Fedora-Cloud-Base-33-1.2.x86_64.raw.xz \
+      --uploadproxy-url https://cdi-uploadproxy:31001
+
+    PVC default/f33 not found 
+    DataVolume default/f33 created
+    Waiting for PVC f33 upload pod to be ready...
+    Pod now ready
+    Uploading data to https://cdi-uploadproxy:31001
+
+     0 B / 193.89 MiB [-------------------------------------------------------]   0.00% 0s
+
+    Post https://cdi-uploadproxy:31001/v1alpha1/upload: x509: certificate signed by unknown authority
+
+This can be fixed by adding the certificate to the systems trust store.
+Download the cdi-uploadproxy-server-cert.
+
+    oc get secret -n cdi cdi-uploadproxy-server-cert \
+      -o jsonpath="{.data['tls\.crt']}" \
+      | base64 -d > cdi-uploadproxy-server-cert.crt
+
+Add this certificate to the systems trust store. On Fedora, this can be done as follows.
+
+    sudo cp cdi-uploadproxy-server-cert.crt /etc/pki/ca-trust/source/anchors
+
+    sudo update-ca-trust
+
+The upload should now work.
+
+    virtctl image-upload dv f33 \
+      --size 5Gi \
+      --image-path Fedora-Cloud-Base-33-1.2.x86_64.raw.xz \
+      --uploadproxy-url https://cdi-uploadproxy:31001
+
+    PVC default/f33 not found 
+    DataVolume default/f33 created
+    Waiting for PVC f33 upload pod to be ready...
+    Pod now ready
+    Uploading data to https://cdi-uploadproxy:31001
+
+     193.89 MiB / 193.89 MiB [=============================================] 100.00% 1m36s
+
+    Uploading data completed successfully, waiting for processing to complete, you can hit ctrl-c without interrupting the progress
+    Processing completed successfully
+    Uploading Fedora-Cloud-Base-33-1.2.x86_64.raw.xz completed successfully
+
+
+
 ### Setting the URL of the cdi-upload Proxy Service
 Setting the URL for the cdi-upload proxy service allows the `virtctl image-upload` command to upload the images without specifying the `--uploadproxy-url` flag.
 Permanently setting the URL is done by patching the CDI configuration.
 
-The following will set the default upload proxy to user port 31001 of mycluster.example.org. An IP address could also be used instead of the dns name.
+The following will set the default upload proxy to use port 31001 of cdi-uploadproxy.
+An IP address could also be used instead of the dns name.
+
+See the section Addressing Certificate Issues when Uploading for why cdi-uploadproxy was chosen and issues that can be encountered when using an IP address.
 
     kubectl patch cdi cdi \
       --type merge \
-      --patch '{"spec":{"config":{"uploadProxyURLOverride":"https://mycluster.example.org:31001"}}}'
-
+      --patch '{"spec":{"config":{"uploadProxyURLOverride":"https://cdi-uploadproxy:31001"}}}'
 
 
 ## Create a VirtualMachineInstance
