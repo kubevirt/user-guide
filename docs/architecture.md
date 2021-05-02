@@ -59,14 +59,40 @@ After creating a VirtualMachine it can be switched on or off like this:
 ### Controller status
 
 Once a VirtualMachineInstance is created, its state will be tracked via
-`status.created` and `status.ready`. If a VirtualMachineInstance exists
-in the cluster, `status.created` will equal to `true`. If the
-VirtualMachineInstance is also ready, `status.ready` will equal `true`
-too.
+`status.created` and `status.ready` fields of the VirtualMachine. If a
+VirtualMachineInstance exists in the cluster, `status.created` will equal
+to `true`. If the VirtualMachineInstance is also ready, `status.ready` will
+equal `true` too.
 
 If a VirtualMachineInstance reaches a final state but the `spec.running`
 equals `true`, the VirtualMachine controller will set `status.ready` to
 `false` and re-create the VirtualMachineInstance.
+
+Additionally, the `status.printableStatus` field provides high-level summary
+information about the state of the VirtualMachine. This information is also displayed
+when listing VirtualMachines using the CLI:
+
+```
+$ kubectl get virtualmachines
+NAME     AGE   STATUS    VOLUME
+vm1      4m    Running
+vm2      11s   Stopped
+```
+
+Here's the list of states currently supported and their meanings.
+Note that states may be added/removed in future releases, so caution
+should be used if consumed by automated programs.
+
+ - **Stopped**: The virtual machine is currently stopped and isn't expected to start.
+ - **Provisioning**: Cluster resources associated with the virtual machine (e.g., DataVolumes) are being provisioned and prepared.
+ - **Starting**: The virtual machine is being prepared for running.
+ - **Running**: The virtual machine is in running state.
+ - **Paused**: The virtual machine is in paused state.
+ - **Migrating**: The virtual machine is in the process of being migrated to another host.
+ - **Stopping**: The virtual machine is in the process of being stopped.
+ - **Terminating**: The virtual machine is in the process of deletion, as well as its associated resources (VirtualMachineInstance, DataVolumes, …).
+ - **Unknown**: The state of the virtual machine could not be obtained, typically due to an error in communicating with the host on which it's running.
+
 
 ### Restarting
 
