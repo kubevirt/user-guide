@@ -61,7 +61,7 @@ After creating a VirtualMachine it can be switched on or off like this:
 Once a VirtualMachineInstance is created, its state will be tracked via
 `status.created` and `status.ready` fields of the VirtualMachine. If a
 VirtualMachineInstance exists in the cluster, `status.created` will equal
-to `true`. If the VirtualMachineInstance is also ready, `status.ready` will
+`true`. If the VirtualMachineInstance is also ready, `status.ready` will
 equal `true` too.
 
 If a VirtualMachineInstance reaches a final state but the `spec.running`
@@ -86,8 +86,8 @@ should be used if consumed by automated programs.
  - **Stopped**: The virtual machine is currently stopped and isn't expected to start.
  - **Provisioning**: Cluster resources associated with the virtual machine (e.g., DataVolumes) are being provisioned and prepared.
  - **Starting**: The virtual machine is being prepared for running.
- - **Running**: The virtual machine is in running state.
- - **Paused**: The virtual machine is in paused state.
+ - **Running**: The virtual machine is running.
+ - **Paused**: The virtual machine is paused.
  - **Migrating**: The virtual machine is in the process of being migrated to another host.
  - **Stopping**: The virtual machine is in the process of being stopped.
  - **Terminating**: The virtual machine is in the process of deletion, as well as its associated resources (VirtualMachineInstance, DataVolumes, …).
