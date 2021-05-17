@@ -246,13 +246,35 @@ kubectl patch virtualmachine vm --type merge -p \
 </code></pre>
 <h3 id="controller-status">Controller status<a class="headerlink" href="#controller-status" title="Permanent link">&para;</a></h3>
 <p>Once a VirtualMachineInstance is created, its state will be tracked via
-<code>status.created</code> and <code>status.ready</code>. If a VirtualMachineInstance exists
-in the cluster, <code>status.created</code> will equal to <code>true</code>. If the
-VirtualMachineInstance is also ready, <code>status.ready</code> will equal <code>true</code>
-too.</p>
+<code>status.created</code> and <code>status.ready</code> fields of the VirtualMachine. If a
+VirtualMachineInstance exists in the cluster, <code>status.created</code> will equal
+<code>true</code>. If the VirtualMachineInstance is also ready, <code>status.ready</code> will
+equal <code>true</code> too.</p>
 <p>If a VirtualMachineInstance reaches a final state but the <code>spec.running</code>
 equals <code>true</code>, the VirtualMachine controller will set <code>status.ready</code> to
 <code>false</code> and re-create the VirtualMachineInstance.</p>
+<p>Additionally, the <code>status.printableStatus</code> field provides high-level summary
+information about the state of the VirtualMachine. This information is also displayed
+when listing VirtualMachines using the CLI:</p>
+<pre><code>$ kubectl get virtualmachines
+NAME     AGE   STATUS    VOLUME
+vm1      4m    Running
+vm2      11s   Stopped
+</code></pre>
+<p>Here's the list of states currently supported and their meanings.
+Note that states may be added/removed in future releases, so caution
+should be used if consumed by automated programs.</p>
+<ul>
+<li><strong>Stopped</strong>: The virtual machine is currently stopped and isn't expected to start.</li>
+<li><strong>Provisioning</strong>: Cluster resources associated with the virtual machine (e.g., DataVolumes) are being provisioned and prepared.</li>
+<li><strong>Starting</strong>: The virtual machine is being prepared for running.</li>
+<li><strong>Running</strong>: The virtual machine is running.</li>
+<li><strong>Paused</strong>: The virtual machine is paused.</li>
+<li><strong>Migrating</strong>: The virtual machine is in the process of being migrated to another host.</li>
+<li><strong>Stopping</strong>: The virtual machine is in the process of being stopped.</li>
+<li><strong>Terminating</strong>: The virtual machine is in the process of deletion, as well as its associated resources (VirtualMachineInstance, DataVolumes, …).</li>
+<li><strong>Unknown</strong>: The state of the virtual machine could not be obtained, typically due to an error in communicating with the host on which it's running.</li>
+</ul>
 <h3 id="restarting">Restarting<a class="headerlink" href="#restarting" title="Permanent link">&para;</a></h3>
 <p>A VirtualMachineInstance restart can be triggered by deleting the
 VirtualMachineInstance. This will also propagate configuration changes
