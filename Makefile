@@ -1,7 +1,7 @@
 .PHONY: help envvar \
 				check_links check_spelling \
-				build build_image_userguide build_image_yaspeller \
-				status run stop stop_yaspeller
+				build build_img \
+				status run stop
 
 # COLORS
 RED    := $(shell tput -Txterm setaf 1)
@@ -91,99 +91,22 @@ ifdef SELINUX_ENABLED
 ifeq ($(shell test "$(SELINUX_ENABLED)" = True  -o  \
 									 "$(SELINUX_ENABLED)" = true && printf "true"), true)
 		@$(eval export SELINUX_ENABLED=,Z)
+else
+		@$(eval export SELINUX_ENABLED='')
 endif
 endif
 	@echo
 
-
-## Check external and internal links
-check_links: | envvar stop
-	@echo "${GREEN}Makefile: Check external and internal links${RESET}"
-	${DEBUG}export IFS=$$'\n'; \
-	${CONTAINER_ENGINE} run \
-				-it \
-				--rm \
-				--name userguide \
-				-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
-				-v /dev/null:/srv/Gemfile.lock \
-				--mount type=tmpfs,destination=/srv/site \
-				kubevirt-userguide \
-				/bin/bash -c 'cd /srv; bundle install --quiet; rake -- -u'
+ifndef IMGTAG
+	@$(eval export IMGTAG=localhost/kubevirt-user-guide)
+else
+ifeq ($(shell test $IMGTAG > /dev/null 2>&1 && printf "true"), true)
+	@echo WARN: Using IMGTAG=$$IMGTAG
 	@echo
-
-
-## Check spelling on content
-check_spelling: | envvar stop
-	@echo "${GREEN}Makefile: Check spelling on site content${RESET}"
-	${DEBUG}if [ ! -e "./yaspeller.json" ]; then \
-		echo "Dictionary file: https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"; \
-		if [ "`curl https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json -o yaspeller.json -w '%{http_code}\n' -s`" != "200" ]; then \
-			echo "Unable to curl yaspeller dictionary file"; \
-			RETVAL=1; \
-		fi; \
-		REMOTE=1; \
-	else \
-		echo "Using local dictionary file"; \
-		echo "Dictionary file: yaspeller.json"; \
-		echo "Be sure to add changes to upstream: kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"; \
-	fi; \
-	export IFS=$$'\n'; \
-	if `cat ./yaspeller.json 2>&1 | jq > /dev/null 2>&1`; then \
-		for i in `${CONTAINER_ENGINE} run -it --rm --name yaspeller -v ${PWD}:/srv:ro${SELINUX_ENABLED} -v /dev/null:/srv/Gemfile.lock -v ./yaspeller.json:/srv/yaspeller.json:ro${SELINUX_ENABLED} yaspeller /bin/bash -c 'echo; yaspeller -c /srv/yaspeller.json --only-errors --ignore-tags iframe,img,code,kbd,object,samp,script,style,var /srv'`; do \
-			if [[ "$${i}" =~ "✗" ]]; then \
-				RETVAL=1; \
-			fi; \
-		echo "$${i}" | sed -e 's/\/srv\//\.\//g'; \
-		done; \
-	else \
-		echo "yaspeller dictionary file does not exist or is invalid json"; \
-		RETVAL=1; \
-	fi; \
-	if [ "$${REMOTE}" ]; then \
-		rm -rf yaspeller.json > /dev/null 2>&1; \
-	fi; \
-	if [ "$${RETVAL}" ]; then exit 1; else echo "Complete!"; fi
-
-
-## Build image: userguide
-build_image_userguide: stop
-	${DEBUG}$(eval export TAG=localhost/kubevirt-userguide:latest)
-	${DEBUG}$(MAKE) build_image
-	@echo
-
-
-## Build image: yaspeller
-build_image_yaspeller: stop_yaspeller
-	${DEBUG}$(eval export TAG='localhost/yaspeller:latest')
-	${DEBUG}$(MAKE) build_image
-	@echo
-
-
-build_image: envvar
-	@echo "${GREEN}Makefile: Building image: ${TAG}${RESET}"
-ifeq ($(TAG),)
-	@echo "This is a sourced target!"
-	@echo "Do not run this target directly... exiting!"
-	@exit 1
+else
+	@$(eval export IMGTAG=localhost/kubevirt-user-guide)
 endif
-	${DEBUG}if [ ! -e "./Dockerfile" ]; then \
-		IMAGE="`echo $${TAG} | sed -e s#\'##g -e s#localhost\/## -e s#:latest##`"; \
-		DOCKERFILE_URL="https://raw.githubusercontent.com/kubevirt/project-infra/master/images/$${IMAGE}/Dockerfile" \
-		DOCKERFILE_GET_RESULT="`curl $${DOCKERFILE_URL} -o Dockerfile -w '%{http_code}\n' -s`"; \
-		if [ "$${DOCKERFILE_GET_RESULT}" != "200" ]; then \
-			echo "Download of Dockerfile from [$${DOCKERFILE_URL}] failed... exiting!"; \
-			exit 2; \
-		else \
-			REMOTE=1; \
-		fi; \
-	else \
-		IMAGE="`echo $${TAG} | sed -e s#\'##g -e s#localhost\/## -e s#:latest##`"; \
-		echo "DOCKERFILE file: ./Dockerfile"; \
-		echo "Be sure to add changes to upstream: kubevirt/project-infra/master/images/$${IMAGE}/Dockerfile"; \
-	fi; \
-	${CONTAINER_ENGINE} rmi ${TAG} 2> /dev/null || echo -n; \
-	${BUILD_ENGINE} ${TAG}; \
-	if [ "$${REMOTE}" ]; then rm -f Dockerfile > /dev/null 2>&1; fi
+endif
 
 
 ## Build site. This target should only be used by Netlify and Prow
@@ -200,6 +123,75 @@ build: envvar
 	mkdocs build -f mkdocs.yml -d site
 
 
+## Build image localhost/kubevirt-user-guide
+build_img: | envvar
+	@echo "${GREEN}Makefile: Building Image ${RESET}"
+	${DEBUG}if [ ! -e "./Dockerfile" ]; then \
+	  IMAGE="`echo $${IMGTAG} | sed -e s#\'##g -e s#localhost\/## -e s#:latest##`";  \
+		echo "Downloading Dockerfile file: https://raw.githubusercontent.com/kubevirt/project-infra/master/images/kubevirt-user-guide/Dockerfile"; \
+	  if ! `curl -f -s https://raw.githubusercontent.com/kubevirt/project-infra/master/images/kubevirt-user-guide/Dockerfile -o ./Dockerfile`; then \
+			echo "${RED}ERROR: Unable to curl Dockerfile... exiting!${RESET}"; \
+			exit 2; \
+		else \
+			echo "${WHITE}Dockerfile file updated${RESET}"; \
+			echo; \
+			REMOTE=1; \
+		fi; \
+	else \
+		IMAGE="`echo $${TAG} | sed -e s#\'##g -e s#localhost\/## -e s#:latest##`"; \
+		echo "Using Dockerfile file: ./Dockerfile"; \
+		echo "Be sure to add changes to upstream: kubevirt/project-infra/master/images/${IMGTAG}/Dockerfile"; \
+		echo; \
+	fi; \
+	${CONTAINER_ENGINE} rmi ${IMGTAG} 2> /dev/null || echo -n; \
+	${BUILD_ENGINE} ${IMGTAG}; \
+	if [ "$${REMOTE}" ]; then rm -f Dockerfile > /dev/null 2>&1; fi
+
+
+## Check external and internal links
+check_links: | envvar stop
+	@echo "${GREEN}Makefile: Check external and internal links${RESET}"
+	${DEBUG}export IFS=$$'\n'; \
+	${CONTAINER_ENGINE} run \
+				-it \
+				--rm \
+				--name userguide \
+				-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
+				-v /dev/null:/srv/Gemfile.lock \
+				--mount type=tmpfs,destination=/srv/site \
+				--workdir=/srv \
+				${IMGTAG} \
+				/bin/bash -c 'rake -- -u'
+	@echo
+
+
+## Check spelling on content
+check_spelling: | envvar stop
+	@echo "${GREEN}Makefile: Check spelling on site content${RESET}"
+	${DEBUG}if [ ! -e "./yaspeller.json" ]; then \
+		echo "${WHITE}Downloading Dictionary file: https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json${RESET}"; \
+		if ! `curl -f -s https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json -o yaspeller.json`; then \
+			echo "${RED}ERROR: Unable to curl yaspeller dictionary file... exiting!${RESET}"; \
+			exit 2; \
+		else \
+			echo "${WHITE}Dictionary file updated${RESET}"; \
+			echo; \
+			REMOTE=1; \
+		fi; \
+	else \
+		echo "YASPELLER file: ./yaspeller.json"; \
+		echo "Be sure to add changes to upstream: kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"; \
+		echo; \
+	fi; \
+	if `jq -C  . yaspeller.json > /dev/null 2>&1`; then \
+		${CONTAINER_ENGINE} run -it --rm --name userguide -v ${PWD}:/srv:ro${SELINUX_ENABLED} -v ${PWD}/yaspeller.json:/srv/yaspeller.json:ro${SELINUX_ENABLED} --workdir=/srv ${IMGTAG} /bin/bash -c 'yaspeller -c /srv/yaspeller.json --only-errors --ignore-tags iframe,img,code,kbd,object,samp,script,style,var /srv' | sed -e 's/\/srv/./g'; \
+	else \
+		echo "${RED}ERROR: yaspeller dictionary file does not exist or is invalid json ${RESET}"; \
+		exit 1; \
+	fi; \
+	if [ "$${REMOTE}" ]; then rm -f yaspeller.json > /dev/null 2>&1; fi
+
+
 ## Run site.  App available @ http://0.0.0.0:8000
 run: | envvar stop
 	@echo "${GREEN}Makefile: Run site${RESET}"
@@ -208,8 +200,9 @@ run: | envvar stop
 				--name userguide \
 				-p ${LOCAL_SERVER_PORT}:8000 \
 				-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
+				-v /dev/null:/srv/Gemfile.lock:rw${SELINUX_ENABLED} \
 				--mount type=tmpfs,destination=/srv/site \
-				kubevirt-userguide:latest \
+				${IMGTAG} \
 				/bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
 	@echo
 	@echo "${AQUA}Makefile: Server now running at [https://localhost:$(LOCAL_SERVER_PORT)]${RESET}"
@@ -227,11 +220,4 @@ status: | envvar
 stop: | envvar
 	@echo "${GREEN}Makefile: Stop site${RESET}"
 	${CONTAINER_ENGINE} rm -f userguide 2> /dev/null; echo
-	@echo -n
-
-
-## Stop yaspeller image
-stop_yaspeller: | envvar
-	@echo "${GREEN}Makefile: Stop yaspeller image${RESET}"
-	${CONTAINER_ENGINE} rm -f yaspeller 2> /dev/null; echo
 	@echo -n
