@@ -339,7 +339,7 @@ Use the <code>openssl</code> command to view the names of the cdi-uploadproxy se
 </code></pre>
 <p>Adding the following entry to the /etc/hosts file, if it provides name resolution, should fix this issue.
 Any service that provides name resolution for the system could be used.</p>
-<pre><code>cat "192.168.39.32  cdi-uploadproxy" &gt;&gt; /etc/hosts
+<pre><code>echo "192.168.39.32  cdi-uploadproxy" &gt;&gt; /etc/hosts
 </code></pre>
 <p>The upload should now work.</p>
 <pre><code>virtctl image-upload dv f33 \
