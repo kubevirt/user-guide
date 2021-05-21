@@ -28,8 +28,8 @@ There are two ways to get it:
 Example:
 
 ```
-export VERSION=v0.26.1
-wget https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/virtctl-${VERSION}-linux-x86_64
+export VERSION=v0.41.0
+wget https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/virtctl-${VERSION}-linux-amd64
 ```
 
 ## Install `virtctl` with `krew`
