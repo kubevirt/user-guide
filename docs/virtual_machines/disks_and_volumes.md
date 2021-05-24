@@ -677,6 +677,8 @@ Kubernetes and provides two usage types:
 
 -   `Disk` a disk image must exist at a given location
 
+Note: you need to enable the HostDisk feature gate.
+
 Example: Create a 1Gi disk image located at /data/disk.img and attach it
 to a VM.
 
