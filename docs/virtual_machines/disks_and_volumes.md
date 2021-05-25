@@ -191,6 +191,8 @@ Supported volume sources are
 
 -   [**serviceAccount**](#serviceaccount)
 
+-   [**downwardMetrics**](#downwardmetrics)
+
 All possible configuration options are available in the [Volume API
 Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume).
 
@@ -879,6 +881,69 @@ Example:
       - name: serviceaccountdisk
         serviceAccount:
           serviceAccountName: default
+
+### downwardMetrics
+
+A `downwardMetrics` volume exposes a limited set of VM and host metrics to the
+guest as a raw block volume. The format of the block volume is compatible with
+[vhostmd](https://github.com/vhostmd/vhostmd).
+
+Getting a limited set of host and VM metrics is in some cases required to allow
+third-parties diagnosing performance issues on their appliances. One prominent
+example is SAP HANA.
+
+Example:
+
+    apiVersion: kubevirt.io/v1
+    kind: VirtualMachineInstance
+    metadata:
+      labels:
+        special: vmi-fedora
+      name: vmi-fedora
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: metrics
+        machine:
+          type: ""
+        resources:
+          requests:
+            memory: 1024M
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: containerdisk
+        containerDisk:
+          image: kubevirt/fedora-cloud-container-disk-demo:latest
+      - name: metrics
+        downwardMetrics: {}
+
+The `vm-dump-metrics` tool can be used to read the metrics:
+
+    $ dnf install -y vm-dump-metrics
+    $ vm-dump-metrics
+    <metrics>
+      <metric type="string" context="host">
+        <name>HostName</name>
+        <value>node01</value>
+    [...]
+      <metric type="int64" context="host" unit="s">
+        <name>Time</name>
+        <value>1619008605</value>
+      </metric>
+      <metric type="string" context="host">
+        <name>VirtualizationVendor</name>
+        <value>kubevirt.io</value>
+      </metric>
+    </metrics>
+
+> **Note:** The **DownwardMetrics** feature gate must be enabled to use this
+> volume. Available starting with KubeVirt v0.42.0.
 
 ## High Performance Features
 
