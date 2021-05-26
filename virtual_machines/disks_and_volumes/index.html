@@ -385,6 +385,9 @@ spec:
 <li>
 <p><a href="#serviceaccount"><strong>serviceAccount</strong></a></p>
 </li>
+<li>
+<p><a href="#downwardmetrics"><strong>downwardMetrics</strong></a></p>
+</li>
 </ul>
 <p>All possible configuration options are available in the <a href="https://kubevirt.github.io/api-reference/master/definitions.html#_v1_volume">Volume API
 Reference</a>.</p>
@@ -1011,6 +1014,65 @@ spec:
     serviceAccount:
       serviceAccountName: default
 </code></pre>
+<h3 id="downwardmetrics">downwardMetrics<a class="headerlink" href="#downwardmetrics" title="Permanent link">&para;</a></h3>
+<p>A <code>downwardMetrics</code> volume exposes a limited set of VM and host metrics to the
+guest as a raw block volume. The format of the block volume is compatible with
+<a href="https://github.com/vhostmd/vhostmd">vhostmd</a>.</p>
+<p>Getting a limited set of host and VM metrics is in some cases required to allow
+third-parties diagnosing performance issues on their appliances. One prominent
+example is SAP HANA.</p>
+<p>Example:</p>
+<pre><code>apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: metrics
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - name: metrics
+    downwardMetrics: {}
+</code></pre>
+<p>The <code>vm-dump-metrics</code> tool can be used to read the metrics:</p>
+<pre><code>$ dnf install -y vm-dump-metrics
+$ vm-dump-metrics
+&lt;metrics&gt;
+  &lt;metric type="string" context="host"&gt;
+    &lt;name&gt;HostName&lt;/name&gt;
+    &lt;value&gt;node01&lt;/value&gt;
+[...]
+  &lt;metric type="int64" context="host" unit="s"&gt;
+    &lt;name&gt;Time&lt;/name&gt;
+    &lt;value&gt;1619008605&lt;/value&gt;
+  &lt;/metric&gt;
+  &lt;metric type="string" context="host"&gt;
+    &lt;name&gt;VirtualizationVendor&lt;/name&gt;
+    &lt;value&gt;kubevirt.io&lt;/value&gt;
+  &lt;/metric&gt;
+&lt;/metrics&gt;
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> The <strong>DownwardMetrics</strong> feature gate must be enabled to use this
+volume. Available starting with KubeVirt v0.42.0.</p>
+</blockquote>
 <h2 id="high-performance-features">High Performance Features<a class="headerlink" href="#high-performance-features" title="Permanent link">&para;</a></h2>
 <h3 id="iothreads">IOThreads<a class="headerlink" href="#iothreads" title="Permanent link">&para;</a></h3>
 <p>Libvirt has the ability to use IOThreads for dedicated disk access (for
