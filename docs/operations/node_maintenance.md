@@ -63,9 +63,11 @@ target node.
 
 ## Evacuate VMIs via Live Migration from a Node
 
-If the **LiveMigration** feature gate is enabled, it is possible to
+If the `LiveMigration`
+[feature gate](./activating_feature_gates.md#how-to-activate-a-feature-gate)
+is enabled, it is possible to
 specify an `evictionStrategy` on VMIs which will react with
-live-migrations on specific taints on nodes. The following snipped on a
+live-migrations on specific taints on nodes. The following snippet on a
 VMI ensures that the VMI is migrated if the
 `kubevirt.io/drain:NoSchedule` taint is added to a nodes:
 

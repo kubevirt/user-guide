@@ -126,7 +126,9 @@ removed when KubeVirt will identify that CPU manager is no longer
 running on the node. This automatic identification should be viewed as a
 temporary workaround until Kubernetes will provide the required
 functionality. Therefore, this feature should be manually enabled by
-adding CPUManager to the kube-config feature-gate field.
+activating the `CPUManager`
+[feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+to the KubeVirt CR.
 
 When automatic identification is disabled, cluster administrator may
 manually add the above label to all the nodes when CPU Manager is
@@ -137,45 +139,13 @@ running.
 -   Administrators may manually label a missing node:
     `kubectl label node [node_name] cpumanager=true`
 
-## Enabling the CPU Manager automatic identification feature gate
-
-To enable the automatic identification, user may expand the
-`featureGates` field in the KubeVirt CR by adding the
-`CPUManager` to it.
-
-```
-    apiVersion: kubevirt.io/v1alpha3
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      ...
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - "CPUManager"
-```
-
-Alternatively, users can edit an existing kubevirt:
-
-`kubectl edit kubevirt kubevirt -n kubevirt`
-
-```
-    ...
-    spec:
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - "DataVolumes"
-            - "CPUManager"
-```
 
 ## Sidecar containers and CPU allocation overhead
 
 **Note:** In order to run sidecar containers, KubeVirt requires the
-`Sidecar` feature gate to be enabled by adding `Sidecar` to the
-`kubevirt` CR's `configuration.developerConfiguration.featureGates` field.
+`Sidecar`
+[feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+to be enabled in KubeVirt's CR.
 
 According to the Kubernetes CPU manager model, in order the POD would
 reach the required QOS level `Guaranteed`, all containers in the POD

@@ -768,6 +768,10 @@ In `macvtap` mode, virtual machines are directly exposed to the Kubernetes
 nodes L2 network. This is achieved by 'extending' an existing network interface
 with a virtual device that has its own MAC address.
 
+Macvtap interfaces are feature gated; to enable the feature, follow
+[these](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+instructions, in order to activate the `Macvtap` feature gate (case sensitive).
+
 #### How to expose host interface to the macvtap device plugin
 To simplify the procedure, please use the
 [Cluster Network Addons Operator](https://github.com/kubevirt/cluster-network-addons-operator)
