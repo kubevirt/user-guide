@@ -200,8 +200,9 @@ created, but only two are running and ready.
 
 ### Scaling via the Scale Subresource
 
-> **Note:** This requires the `CustomResourceSubresources` feature gate
-> to be enables for clusters prior to 1.11.
+> **Note:** This requires the `CustomResourceSubresources`
+> [feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+> to be enabled for clusters prior to 1.11.
 
 The `VirtualMachineInstanceReplicaSet` supports the `scale` subresource.
 As a consequence it is possible to scale it via `kubectl`:

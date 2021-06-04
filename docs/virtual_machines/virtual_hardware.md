@@ -124,24 +124,9 @@ The following VM will have a CPU with `3` cores:
 
 #### Enabling cpu compatibility enforcement
 
-To enable the CPU compatibility enforcement, user may expand the
-`featureGates` field in the KubeVirt CR by adding the
-`CPUNodeDiscovery` to it.
-
-```
-    apiVersion: kubevirt.io/v1alpha3
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      ...
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - "CPUNodeDiscovery"
-    ...
-```
+To enable the CPU compatibility enforcement, the `CPUNodeDiscovery`
+[feature gates](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+must be enabled in the KubeVirt CR.
 
 This feature-gate allows kubevirt to take VM cpu model and cpu features
 and create node selectors from them. With these node selectors, VM can

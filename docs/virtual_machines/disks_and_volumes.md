@@ -289,7 +289,8 @@ A `PersistentVolume` can be in "filesystem" or "block" mode:
     > in the `kubevirt-config` ConfigMap.
 
 -   Block: Use a block volume for consuming raw block devices. Note: you
-    need to enable the BlockVolume feature gate.
+    need to enable the `BlockVolume`
+    [feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate).
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk`
 may look like this:
@@ -425,9 +426,9 @@ users a workflow for dynamically creating PVCs and importing data into
 those PVCs.
 
 In order to take advantage of the DataVolume volume source on a VM or
-VMI, the **DataVolumes** feature gate must be enabled in the
-**kubevirt-config** config map before KubeVirt is installed. CDI must
-also be installed.
+VMI, the `DataVolumes`
+[feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+must be enabled in the **kubevirt** CR. CDI must also be installed.
 
 **Installing CDI**
 
@@ -436,29 +437,6 @@ page](https://github.com/kubevirt/containerized-data-importer/releases)
 
 Pick the latest stable release and post the corresponding
 cdi-controller-deployment.yaml manifest to your cluster.
-
-**Enabling the DataVolumes feature gate**
-
-Below is an example of how to enable DataVolume support using the
-kubevirt-config config map.
-
-    cat <<EOF | kubectl create -f -
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: kubevirt-config
-      namespace: kubevirt
-      labels:
-        kubevirt.io: ""
-    data:
-      feature-gates: "DataVolumes"
-    EOF
-
-This config map assumes KubeVirt will be installed in the kubevirt
-namespace. Change the namespace to suite your installation.
-
-First post the ConfigMap above, then install KubeVirt. At that point
-DataVolume integration will be enabled.
 
 ### ephemeral
 
@@ -944,8 +922,9 @@ The `vm-dump-metrics` tool can be used to read the metrics:
       </metric>
     </metrics>
 
-> **Note:** The **DownwardMetrics** feature gate must be enabled to use this
-> volume. Available starting with KubeVirt v0.42.0.
+> **Note:** The **DownwardMetrics** feature gate
+> [must be enabled](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+> to use this volume. Available starting with KubeVirt v0.42.0.
 
 ## High Performance Features
 

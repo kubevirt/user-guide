@@ -7,38 +7,8 @@ continues to run and remain accessible.
 ## Enabling the live-migration support
 
 Live migration must be enabled in the feature gates to be supported. The
-`featureGates` field in the KubeVirt CR can be expanded
-by adding the `LiveMigration` to it.
-
-```
-    apiVersion: kubevirt.io/v1alpha3
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      ...
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - "LiveMigration"
-```
-
-Alternatively, the existing kubevirt CR can be altered:
-
-```sh
-kubectl edit kubevirt kubevirt -n kubevirt
-```
-
-```
-    ...
-    spec:
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - "DataVolumes"
-            - "LiveMigration"
-```
+[feature gates](./activating_feature_gates.md#how-to-activate-a-feature-gate)
+field in the KubeVirt CR must be expanded by adding the `LiveMigration` to it.
 
 ## Limitations
 
