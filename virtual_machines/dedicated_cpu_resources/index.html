@@ -93,6 +93,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../operations/containerized_data_importer/">Containerized Data Importer</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/activating_feature_gates/">Activating feature gates</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Virtual machines</span></p>
                 <ul class="current">
@@ -115,8 +117,6 @@
     <li class="toctree-l2"><a class="reference internal" href="#requesting-dedicated-cpu-for-qemu-emulator">Requesting dedicated CPU for QEMU emulator</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#identifying-nodes-with-a-running-cpu-manager">Identifying nodes with a running CPU manager</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#enabling-the-cpu-manager-automatic-identification-feature-gate">Enabling the CPU Manager automatic identification feature gate</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#sidecar-containers-and-cpu-allocation-overhead">Sidecar containers and CPU allocation overhead</a>
     </li>
@@ -313,7 +313,9 @@ removed when KubeVirt will identify that CPU manager is no longer
 running on the node. This automatic identification should be viewed as a
 temporary workaround until Kubernetes will provide the required
 functionality. Therefore, this feature should be manually enabled by
-adding CPUManager to the kube-config feature-gate field.</p>
+activating the <code>CPUManager</code>
+<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
+to the KubeVirt CR.</p>
 <p>When automatic identification is disabled, cluster administrator may
 manually add the above label to all the nodes when CPU Manager is
 running.</p>
@@ -326,36 +328,11 @@ running.</p>
     <code>kubectl label node [node_name] cpumanager=true</code></p>
 </li>
 </ul>
-<h2 id="enabling-the-cpu-manager-automatic-identification-feature-gate">Enabling the CPU Manager automatic identification feature gate<a class="headerlink" href="#enabling-the-cpu-manager-automatic-identification-feature-gate" title="Permanent link">&para;</a></h2>
-<p>To enable the automatic identification, user may expand the
-<code>featureGates</code> field in the KubeVirt CR by adding the
-<code>CPUManager</code> to it.</p>
-<pre><code>    apiVersion: kubevirt.io/v1alpha3
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      ...
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - &quot;CPUManager&quot;
-</code></pre>
-<p>Alternatively, users can edit an existing kubevirt:</p>
-<p><code>kubectl edit kubevirt kubevirt -n kubevirt</code></p>
-<pre><code>    ...
-    spec:
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - &quot;DataVolumes&quot;
-            - &quot;CPUManager&quot;
-</code></pre>
 <h2 id="sidecar-containers-and-cpu-allocation-overhead">Sidecar containers and CPU allocation overhead<a class="headerlink" href="#sidecar-containers-and-cpu-allocation-overhead" title="Permanent link">&para;</a></h2>
 <p><strong>Note:</strong> In order to run sidecar containers, KubeVirt requires the
-<code>Sidecar</code> feature gate to be enabled by adding <code>Sidecar</code> to the
-<code>kubevirt</code> CR's <code>configuration.developerConfiguration.featureGates</code> field.</p>
+<code>Sidecar</code>
+<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
+to be enabled in KubeVirt's CR.</p>
 <p>According to the Kubernetes CPU manager model, in order the POD would
 reach the required QOS level <code>Guaranteed</code>, all containers in the POD
 must express CPU and memory requirements. At this time, Kubevirt often

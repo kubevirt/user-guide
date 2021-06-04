@@ -103,6 +103,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../activating_feature_gates/">Activating feature gates</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Virtual machines</span></p>
                 <ul>
@@ -201,31 +203,8 @@ Instance moves to another compute node while the guest workload
 continues to run and remain accessible.</p>
 <h2 id="enabling-the-live-migration-support">Enabling the live-migration support<a class="headerlink" href="#enabling-the-live-migration-support" title="Permanent link">&para;</a></h2>
 <p>Live migration must be enabled in the feature gates to be supported. The
-<code>featureGates</code> field in the KubeVirt CR can be expanded
-by adding the <code>LiveMigration</code> to it.</p>
-<pre><code>    apiVersion: kubevirt.io/v1alpha3
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      ...
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - &quot;LiveMigration&quot;
-</code></pre>
-<p>Alternatively, the existing kubevirt CR can be altered:</p>
-<pre><code class="language-sh">kubectl edit kubevirt kubevirt -n kubevirt
-</code></pre>
-<pre><code>    ...
-    spec:
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - &quot;DataVolumes&quot;
-            - &quot;LiveMigration&quot;
-</code></pre>
+<a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gates</a>
+field in the KubeVirt CR must be expanded by adding the <code>LiveMigration</code> to it.</p>
 <h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
 <ul>
 <li>

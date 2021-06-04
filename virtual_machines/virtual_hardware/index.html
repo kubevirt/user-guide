@@ -93,6 +93,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../operations/containerized_data_importer/">Containerized Data Importer</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/activating_feature_gates/">Activating feature gates</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Virtual machines</span></p>
                 <ul class="current">
@@ -301,22 +303,9 @@ spec:
         claimName: myclaim
 </code></pre>
 <h4 id="enabling-cpu-compatibility-enforcement">Enabling cpu compatibility enforcement<a class="headerlink" href="#enabling-cpu-compatibility-enforcement" title="Permanent link">&para;</a></h4>
-<p>To enable the CPU compatibility enforcement, user may expand the
-<code>featureGates</code> field in the KubeVirt CR by adding the
-<code>CPUNodeDiscovery</code> to it.</p>
-<pre><code>    apiVersion: kubevirt.io/v1alpha3
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      ...
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - &quot;CPUNodeDiscovery&quot;
-    ...
-</code></pre>
+<p>To enable the CPU compatibility enforcement, the <code>CPUNodeDiscovery</code>
+<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gates</a>
+must be enabled in the KubeVirt CR.</p>
 <p>This feature-gate allows kubevirt to take VM cpu model and cpu features
 and create node selectors from them. With these node selectors, VM can
 be scheduled on the node which can support VM cpu model and features.</p>

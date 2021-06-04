@@ -107,6 +107,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../activating_feature_gates/">Activating feature gates</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Virtual machines</span></p>
                 <ul>
@@ -259,9 +261,11 @@ associated with VMs as well as all other Pods are evicted from the
 target node.</p>
 <p><code>kubectl drain &lt;node name&gt; --delete-local-data --ignore-daemonsets=true --force</code></p>
 <h2 id="evacuate-vmis-via-live-migration-from-a-node">Evacuate VMIs via Live Migration from a Node<a class="headerlink" href="#evacuate-vmis-via-live-migration-from-a-node" title="Permanent link">&para;</a></h2>
-<p>If the <strong>LiveMigration</strong> feature gate is enabled, it is possible to
+<p>If the <code>LiveMigration</code>
+<a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
+is enabled, it is possible to
 specify an <code>evictionStrategy</code> on VMIs which will react with
-live-migrations on specific taints on nodes. The following snipped on a
+live-migrations on specific taints on nodes. The following snippet on a
 VMI ensures that the VMI is migrated if the
 <code>kubevirt.io/drain:NoSchedule</code> taint is added to a nodes:</p>
 <pre><code>spec:

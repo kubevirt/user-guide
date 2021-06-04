@@ -93,6 +93,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../operations/containerized_data_importer/">Containerized Data Importer</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/activating_feature_gates/">Activating feature gates</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Virtual machines</span></p>
                 <ul class="current">
@@ -891,6 +893,9 @@ For further details please refer to the <a href="https://kubevirt.io/user-guide/
 <p>In <code>macvtap</code> mode, virtual machines are directly exposed to the Kubernetes
 nodes L2 network. This is achieved by 'extending' an existing network interface
 with a virtual device that has its own MAC address.</p>
+<p>Macvtap interfaces are feature gated; to enable the feature, follow
+<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">these</a>
+instructions, in order to activate the <code>Macvtap</code> feature gate (case sensitive).</p>
 <h4 id="how-to-expose-host-interface-to-the-macvtap-device-plugin">How to expose host interface to the macvtap device plugin<a class="headerlink" href="#how-to-expose-host-interface-to-the-macvtap-device-plugin" title="Permanent link">&para;</a></h4>
 <p>To simplify the procedure, please use the
 <a href="https://github.com/kubevirt/cluster-network-addons-operator">Cluster Network Addons Operator</a>

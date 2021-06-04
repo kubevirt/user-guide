@@ -93,6 +93,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../operations/containerized_data_importer/">Containerized Data Importer</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/activating_feature_gates/">Activating feature gates</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Virtual machines</span></p>
                 <ul class="current">
@@ -476,7 +478,8 @@ in the <code>kubevirt-config</code> ConfigMap.</p>
 </li>
 <li>
 <p>Block: Use a block volume for consuming raw block devices. Note: you
-    need to enable the BlockVolume feature gate.</p>
+    need to enable the <code>BlockVolume</code>
+    <a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>.</p>
 </li>
 </ul>
 <p>A simple example which attaches a <code>PersistentVolumeClaim</code> as a <code>disk</code>
@@ -600,33 +603,14 @@ Importer (CDI) project. KubeVirt integrates with CDI in order to provide
 users a workflow for dynamically creating PVCs and importing data into
 those PVCs.</p>
 <p>In order to take advantage of the DataVolume volume source on a VM or
-VMI, the <strong>DataVolumes</strong> feature gate must be enabled in the
-<strong>kubevirt-config</strong> config map before KubeVirt is installed. CDI must
-also be installed.</p>
+VMI, the <code>DataVolumes</code>
+<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
+must be enabled in the <strong>kubevirt</strong> CR. CDI must also be installed.</p>
 <p><strong>Installing CDI</strong></p>
 <p>Go to the <a href="https://github.com/kubevirt/containerized-data-importer/releases">CDI release
 page</a></p>
 <p>Pick the latest stable release and post the corresponding
 cdi-controller-deployment.yaml manifest to your cluster.</p>
-<p><strong>Enabling the DataVolumes feature gate</strong></p>
-<p>Below is an example of how to enable DataVolume support using the
-kubevirt-config config map.</p>
-<pre><code>cat &lt;&lt;EOF | kubectl create -f -
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kubevirt-config
-  namespace: kubevirt
-  labels:
-    kubevirt.io: ""
-data:
-  feature-gates: "DataVolumes"
-EOF
-</code></pre>
-<p>This config map assumes KubeVirt will be installed in the kubevirt
-namespace. Change the namespace to suite your installation.</p>
-<p>First post the ConfigMap above, then install KubeVirt. At that point
-DataVolume integration will be enabled.</p>
 <h3 id="ephemeral">ephemeral<a class="headerlink" href="#ephemeral" title="Permanent link">&para;</a></h3>
 <p>An ephemeral volume is a local COW (copy on write) image that uses a
 network volume as a read-only backing store. With an ephemeral volume,
@@ -1069,8 +1053,9 @@ $ vm-dump-metrics
 &lt;/metrics&gt;
 </code></pre>
 <blockquote>
-<p><strong>Note:</strong> The <strong>DownwardMetrics</strong> feature gate must be enabled to use this
-volume. Available starting with KubeVirt v0.42.0.</p>
+<p><strong>Note:</strong> The <strong>DownwardMetrics</strong> feature gate
+<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">must be enabled</a>
+to use this volume. Available starting with KubeVirt v0.42.0.</p>
 </blockquote>
 <h2 id="high-performance-features">High Performance Features<a class="headerlink" href="#high-performance-features" title="Permanent link">&para;</a></h2>
 <h3 id="iothreads">IOThreads<a class="headerlink" href="#iothreads" title="Permanent link">&para;</a></h3>
