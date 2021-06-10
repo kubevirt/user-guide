@@ -20,21 +20,27 @@ that is often being changed.
 Defining an external boot source can be done in the following way:
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
+kind: VirtualMachine
 metadata:
-  name: vmi-kernel-boot
+  name: ext-kernel-boot-vm
 spec:
-  domain:
-    devices: {}
-    firmware:
-      kernelBoot:
-        container:
-          kernelArgs: console=ttyS0
-          image: vmi_ext_boot/kernel_initrd_binaries_container:latest
-          initrdPath: /boot/initramfs-virt
-          kernelPath: /boot/vmlinuz-virt
-          imagePullSecret: IfNotPresent
-          imagePullPolicy: IfNotPresent
+  runStrategy: Manual
+  template:
+    spec:
+      domain:
+        devices: {}
+        firmware:
+          kernelBoot:
+            container:
+              image: vmi_ext_boot/kernel_initrd_binaries_container:latest
+              initrdPath: /boot/initramfs-virt
+              kernelPath: /boot/vmlinuz-virt
+              imagePullPolicy: Always
+              imagePullSecret: IfNotPresent
+            kernelArgs: console=ttyS0
+        resources:
+          requests:
+            memory: 1Gi
 ```
 
 Notes:
@@ -48,4 +54,7 @@ Notes:
 arguments will be passed to the default kernel the VM boots from.
   
 - `imagePullSecret` and `imagePullPolicy` are optional
+
+- if `imagePullPolicy` is `Always` and the container image is updated then the VM will be booted
+  into the new kernel when VM restarts
   
