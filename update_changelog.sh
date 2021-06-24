@@ -2,7 +2,7 @@
 set -e
 
 [[ -e kubevirt ]] || git clone https://github.com/kubevirt/kubevirt.git kubevirt
-git -C kubevirt checkout master
+git -C kubevirt checkout main
 git -C kubevirt fetch --tags
 
 releases() {
