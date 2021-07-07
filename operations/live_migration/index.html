@@ -322,6 +322,7 @@ of <code>64MiB/s</code>.</p>
           bandwidthPerMigration: 64Mi
           completionTimeoutPerGiB: 800
           progressTimeout: 150
+          disableTLS: false
 </code></pre>
 <h1 id="migration-timeouts">Migration timeouts<a class="headerlink" href="#migration-timeouts" title="Permanent link">&para;</a></h1>
 <p>Depending on the type, the live migration process will copy virtual
@@ -346,6 +347,24 @@ out after 6400 seconds.</p>
 memory doesn't make any progress. The time to wait for live migration to
 make progress in transferring data is configurable by <code>progressTimeout</code>
 parameter, which defaults to 150s</p>
+<h1 id="disabling-secure-migrations">Disabling secure migrations<a class="headerlink" href="#disabling-secure-migrations" title="Permanent link">&para;</a></h1>
+<p><strong>FEATURE STATE:</strong> KubeVirt v0.43</p>
+<p>Sometimes it may be desirable to disable TLS encryption of migrations to
+improve performance. Use <code>disableTLS</code> to do that:</p>
+<pre><code>    apiVersion: kubevirt.io/v1
+    kind: Kubevirt
+    metadata:
+      name: kubevirt
+      namespace: kubevirt
+    spec:
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - &quot;LiveMigration&quot;
+        migrationConfiguration:
+          disableTLS: true
+</code></pre>
+<p><strong>Note:</strong> While this increases perfomance it may allow MITM attacks. Be careful.</p>
               
             </div>
           </div>
