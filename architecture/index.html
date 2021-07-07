@@ -55,6 +55,16 @@
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">Architecture</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#stack">Stack</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#additional-services">Additional Services</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#application-layout">Application Layout</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#native-workloads">Native Workloads</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#the-razor">The Razor</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#virtualmachine">VirtualMachine</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#how-to-use-a-virtualmachine">How to use a VirtualMachine</a>
@@ -194,6 +204,121 @@
             <div class="section">
               
                 <h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
+<p>KubeVirt is built using a service oriented architecture and a choreography
+pattern.</p>
+<h2 id="stack">Stack<a class="headerlink" href="#stack" title="Permanent link">&para;</a></h2>
+<pre><code>  +---------------------+
+  | KubeVirt            |
+~~+---------------------+~~
+  | Orchestration (K8s) |
+  +---------------------+
+  | Scheduling (K8s)    |
+  +---------------------+
+  | Container Runtime   |
+~~+---------------------+~~
+  | Operating System    |
+  +---------------------+
+  | Virtual(kvm)        |
+~~+---------------------+~~
+  | Physical            |
+  +---------------------+
+</code></pre>
+<p>Users requiring virtualization services are speaking to the Virtualization API
+(see below) which in turn is speaking to the Kubernetes cluster to schedule
+requested Virtual Machine Instances (VMIs). Scheduling, networking, and storage 
+are all delegated to Kubernetes, while KubeVirt provides the virtualization functionality.</p>
+<h2 id="additional-services">Additional Services<a class="headerlink" href="#additional-services" title="Permanent link">&para;</a></h2>
+<p>KubeVirt provides additional functionality to your Kubernetes cluster,
+to perform virtual machine management</p>
+<p>If we recall how Kubernetes is handling Pods, then we remember that Pods are
+created by posting a Pod specification to the Kubernetes API Server.
+This specification is then transformed into an object inside the API Server,
+this object is of a specific type or <em>kind</em> - that is how it's called in the
+specification.
+A Pod is of the type <code>Pod</code>. Controllers within Kubernetes know how to handle
+these Pod objects. Thus once a new Pod object is seen, those controllers
+perform the necessary actions to bring the Pod alive, and to match the
+required state.</p>
+<p>This same mechanism is used by KubeVirt. Thus KubeVirt delivers three things
+to provide the new functionality:</p>
+<ol>
+<li>Additional types - so called <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">Custom Resource Definition</a> (CRD) - are added to the Kubernetes API</li>
+<li>Additional controllers for cluster wide logic associated with these new types</li>
+<li>Additional daemons for node specific logic associated with new types</li>
+</ol>
+<p>Once all three steps have been completed, you are able to</p>
+<ul>
+<li>create new objects of these new types in Kubernetes (VMIs in our
+  case)</li>
+<li>and the new controllers take care to get the VMIs scheduled on some host,</li>
+<li>and a daemon - the <code>virt-handler</code> - is taking care of a host - alongside the
+  <code>kubelet</code> - to launch the VMI and configure it until it matches the required
+  state.</li>
+</ul>
+<p>One final note; both controllers and daemons are running as Pods (or similar)
+<em>on top of</em> the Kubernetes cluster, and are not installed alongside it. The type
+is - as said before - even defined inside the Kubernetes API server. This allows
+users to speak to Kubernetes, but modify VMIs.</p>
+<p>The following diagram illustrates how the additional controllers and daemons
+communicate with Kubernetes and where the additional types are stored:</p>
+<p><img alt="Architecture diagram" src="/assets/architecture.png" title="Architecture" /></p>
+<p>And a simplified version:</p>
+<p><img alt="Simplified architecture diagram" src="/assets/architecture-simple.png" title="Simplified architecture" /></p>
+<h2 id="application-layout">Application Layout<a class="headerlink" href="#application-layout" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Cluster</li>
+<li>KubeVirt Components<ul>
+<li>virt-controller</li>
+<li>virt-handler</li>
+<li>libvirtd</li>
+<li>…</li>
+</ul>
+</li>
+<li>KubeVirt Managed Pods<ul>
+<li>VMI Foo</li>
+<li>VMI Bar</li>
+<li>…</li>
+</ul>
+</li>
+<li>KubeVirt Custom Resources<ul>
+<li>VirtualMachine (VM) Foo
+    -&gt; VirtualMachineInstance (VMI) Foo</li>
+<li>VirtualMachineInstanceReplicaSet (VMIRS) Bar
+    -&gt; VirtualMachineInstance (VMI) Bar</li>
+</ul>
+</li>
+</ul>
+<p>VirtualMachineInstance (VMI) is the custom resource that represents the basic ephemeral building block of an instance.
+In a lot of cases this object won't be created directly by the user but by a high level resource.
+High level resources for VMI can be:
+* VirtualMachine (VM) - StateFul VM that can be stopped and started while keeping the VM data and state.
+* VirtualMachineInstanceReplicaSet (VMIRS) - Similar to pods ReplicaSet, a group of ephemeral VMIs with similar configuration defined in a template.</p>
+<h2 id="native-workloads">Native Workloads<a class="headerlink" href="#native-workloads" title="Permanent link">&para;</a></h2>
+<p>KubeVirt is deployed on top of a Kubernetes cluster.
+This means that you can continue to run your Kubernetes-native workloads next
+to the VMIs managed through KubeVirt.</p>
+<p>Furthermore: if you can run native workloads, and you have KubeVirt installed,
+you should be able to run VM-based workloads, too.
+For example, Application Operators should not require additional permissions
+to use cluster features for VMs, compared to using that feature with a plain Pod.</p>
+<p>Security-wise, installing and using KubeVirt must not grant users any permission
+they do not already have regarding native workloads. For example, a non-privileged
+Application Operator must never gain access to a privileged Pod by using a KubeVirt
+feature.</p>
+<h2 id="the-razor">The Razor<a class="headerlink" href="#the-razor" title="Permanent link">&para;</a></h2>
+<p>We love virtual machines, think that they are very important and work hard to make
+them easy to use in Kubernetes. But even more than VMs, we love good design
+and modular, reusable components.
+Quite frequently, we face a dilemma: should we solve a problem in KubeVirt in a
+way that is best optimized for VMs, or should we take a longer path and introduce
+the solution to Pod-based workloads too?</p>
+<p>To decide these dilemmas we came up with the <strong>KubeVirt Razor</strong>:
+"If something is useful for Pods, we should not implement it only for VMs".</p>
+<p>For example, we debated how we should connect VMs to external network
+resources. The quickest way seems to introduce KubeVirt-specific code,
+attaching a VM to a host bridge.
+However, we chose the longer path of integrating with <a href="https://github.com/intel/multus-cni">Multus</a>
+and <a href="https://github.com/containernetworking">CNI</a> and improving them.</p>
 <h2 id="virtualmachine">VirtualMachine<a class="headerlink" href="#virtualmachine" title="Permanent link">&para;</a></h2>
 <p>A <code>VirtualMachine</code> provides additional management capabilities to a
 VirtualMachineInstance inside the cluster. That includes:</p>
