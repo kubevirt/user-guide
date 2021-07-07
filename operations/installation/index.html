@@ -322,6 +322,12 @@ $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/re
 $ curl https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/commit
 d358cf085b5a86cc4fa516215f8b757a4e61def2
 </code></pre>
+<h3 id="experimental-arm64-developer-builds">Experimental ARM64 developer builds<a class="headerlink" href="#experimental-arm64-developer-builds" title="Permanent link">&para;</a></h3>
+<p>Experimental ARM64 developer builds can be installed like this:</p>
+<pre><code>$ LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest-arm64)
+$ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator-arm64.yaml
+$ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-cr-arm64.yaml
+</code></pre>
 <h2 id="deploying-from-source">Deploying from Source<a class="headerlink" href="#deploying-from-source" title="Permanent link">&para;</a></h2>
 <p>See the <a href="https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md">Developer Getting Started
 Guide</a>
