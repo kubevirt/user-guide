@@ -145,6 +145,7 @@ These values can be change in the `kubevirt` CR:
           bandwidthPerMigration: 64Mi
           completionTimeoutPerGiB: 800
           progressTimeout: 150
+          disableTLS: false
 ```
 
 # Migration timeouts
@@ -175,3 +176,27 @@ Live migration will also be aborted when it will be noticed that copying
 memory doesn't make any progress. The time to wait for live migration to
 make progress in transferring data is configurable by `progressTimeout`
 parameter, which defaults to 150s
+
+# Disabling secure migrations
+
+**FEATURE STATE:** KubeVirt v0.43
+
+Sometimes it may be desirable to disable TLS encryption of migrations to
+improve performance. Use `disableTLS` to do that:
+
+```
+    apiVersion: kubevirt.io/v1
+    kind: Kubevirt
+    metadata:
+      name: kubevirt
+      namespace: kubevirt
+    spec:
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - "LiveMigration"
+        migrationConfiguration:
+          disableTLS: true
+```
+
+**Note:** While this increases perfomance it may allow MITM attacks. Be careful.
