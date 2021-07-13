@@ -95,7 +95,7 @@ configuration:
 `externalResourceProvider` field indicates that this resource is being provided by an external device plugin. In this case, KubeVirt will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.
 
 
-## Staring a Virtual Machine
+## Starting a Virtual Machine
 
 Host devices can be assigned to virtual machines via the `gpus` and
 `hostDevices` fields.  The `deviceNames` can reference both PCI
