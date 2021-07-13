@@ -5,14 +5,10 @@ Microsoft Windows running in a fully virtualized guest.
 
 ## Do I need virtio drivers?
 
-Yes. Without the virtio drivers, you cannot use
-[paravirtualized](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_getting_started_guide/sec-virtualization_getting_started-products-virtualized-hardware-devices#sec-Virtualization_Getting_Started-Products-paravirtdevices)
-hardware properly. It would either not work, or will have a severe
-performance penalty.
+Yes. Without the virtio drivers, you cannot use paravirtualized hardware properly. It would either not work, or will have a severe performance penalty.
 
-For more details on configuring your guest please refer to [Guest
-Virtual Machine Device
-Configuration](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/chap-guest_virtual_machine_device_configuration).
+For more details on configuring your VirtIO driver please refer to [Installing VirtIO driver on a new Windows virtual machine](https://docs.openshift.com/container-platform/4.7/virt/virtual_machines/virt-installing-virtio-drivers-on-new-windows-vm.html#virt-installing-virtio-drivers-on-new-windows-vm) and [Installing VirtIO driver on an existing Windows virtual machine](https://docs.openshift.com/container-platform/4.7/virt/virtual_machines/virt-installing-virtio-drivers-on-existing-windows-vm.html).
+
 
 ## Which drivers I need to install?
 
