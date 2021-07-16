@@ -218,6 +218,10 @@ field in the KubeVirt CR must be expanded by adding the <code>LiveMigration</cod
   interface type
   (<!--#/creation/interfaces-and-networks-->)</p>
 </li>
+<li>
+<p>Live migration requires ports <code>22222, 49152, 49153</code> to be available in the virt-launcher pod.
+  If these ports are explicitly specified in <a href="!--#/virtual_machines/interfaces_and_networks/#masquerade--">masquarade interface</a>, live migration will not function.</p>
+</li>
 </ul>
 <h2 id="initiate-live-migration">Initiate live migration<a class="headerlink" href="#initiate-live-migration" title="Permanent link">&para;</a></h2>
 <p>Live migration is initiated by posting a VirtualMachineInstanceMigration
