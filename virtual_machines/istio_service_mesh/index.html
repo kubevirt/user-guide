@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/run_strategies/">
+  <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/istio_service_mesh/">
   <link rel="shortcut icon" href="../../assets/favicon.ico">
   
-  <title>Run Strategies - KubeVirt User-Guide</title>
+  <title>Istio service mesh - KubeVirt User-Guide</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -19,9 +19,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Run Strategies";
-    var mkdocs_page_input_path = "virtual_machines/run_strategies.md";
-    var mkdocs_page_url = "/user-guide/virtual_machines/run_strategies/";
+    var mkdocs_page_name = "Istio service mesh";
+    var mkdocs_page_input_path = "virtual_machines/istio_service_mesh.md";
+    var mkdocs_page_url = "/user-guide/virtual_machines/istio_service_mesh/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -101,15 +101,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../lifecycle/">Lifecycle</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Run Strategies</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#runstrategy">RunStrategy</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#runstrategy-examples">RunStrategy Examples</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../run_strategies/">Run Strategies</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../presets/">Presets</a>
                     </li>
@@ -121,7 +113,19 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../interfaces_and_networks/">Interfaces and Networks</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../istio_service_mesh/">Istio service mesh</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Istio service mesh</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#limitations">Limitations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#create-a-virtualmachineinstance-with-enabled-istio-proxy-injecton">Create a VirtualMachineInstance with enabled Istio proxy injecton</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#verification">Verification</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+    </li>
+    </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
                     </li>
@@ -184,10 +188,10 @@
         
       
     
-    <li>Run Strategies</li>
+    <li>Istio service mesh</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/run_strategies.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/istio_service_mesh.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -199,124 +203,133 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="run-strategies">Run Strategies<a class="headerlink" href="#run-strategies" title="Permanent link">&para;</a></h1>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>VirtualMachines have a <code>Running</code> setting that determines whether or not
-there should be a guest running or not. Because KubeVirt will always
-immediately restart a VirtualMachineInstance for VirtualMachines with
-<code>spec.running: true</code>, a simple boolean is not always enough to fully
-describe desired behavior. For instance, there are cases when a user
-would like the ability to shut down a guest from inside the virtual
-machine. With <code>spec.running: true</code>, KubeVirt would immediately restart
-the VirtualMachineInstance.</p>
-<h2 id="runstrategy">RunStrategy<a class="headerlink" href="#runstrategy" title="Permanent link">&para;</a></h2>
-<p>To allow for greater variation of user states, the <code>RunStrategy</code> field
-has been introduced. This is mutually exclusive with <code>Running</code> as they
-have somewhat overlapping conditions. There are currently four
-RunStrategies defined:</p>
+                <h1 id="istio-service-mesh">Istio service mesh<a class="headerlink" href="#istio-service-mesh" title="Permanent link">&para;</a></h1>
+<p>Service mesh allows to monitor, visualize and control traffic between pods.
+Kubevirt supports running VMs as a part of Istio service mesh.</p>
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
-<p>Always: A VirtualMachineInstance will always be present. If the
-    VirtualMachineInstance crashed, a new one will be spawned. This is
-    the same behavior as <code>spec.running: true</code>.</p>
+<p>Istio service mesh is only supported with a pod network masquerade binding.</p>
 </li>
 <li>
-<p>RerunOnFailure: A VirtualMachineInstance will be respawned if the
-    previous instance failed in an error state. It will not be
-    re-created if the guest stopped successfully (e.g. shut down from
-    inside guest).</p>
+<p>Istio uses a <a href="https://istio.io/latest/docs/ops/deployment/requirements/#ports-used-by-istio">list of ports</a> for its own purposes, these ports must not be explicitly specified in a VMI interface.</p>
 </li>
 <li>
-<p>Manual: The presence of a VirtualMachineInstance or lack thereof is
-    controlled exclusively by the start/stop/restart VirtualMachine
-    subresource endpoints.</p>
-</li>
-<li>
-<p>Halted: No VirtualMachineInstance will be present. If a guest is
-    already running, it will be stopped. This is the same behavior as
-    <code>spec.running: false</code>.</p>
+<p>Istio only supports IPv4.</p>
 </li>
 </ul>
-<p><em>Note</em>: RunStrategy and Running are mutually exclusive, because they can
-be contradictory. The API server will reject VirtualMachine resources
-that define both.</p>
-<h3 id="virtctl">Virtctl<a class="headerlink" href="#virtctl" title="Permanent link">&para;</a></h3>
-<p>The <code>start</code>, <code>stop</code> and <code>restart</code> methods of virtctl will invoke their
-respective subresources of VirtualMachines. This can have an effect on
-the runStrategy of the VirtualMachine as below:</p>
-<table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>RunStrategy</th>
-<th>start</th>
-<th>stop</th>
-<th>restart</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><strong>Always</strong></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>Halted</code></p></td>
-<td><p><code>Always</code></p></td>
-</tr>
-<tr class="even">
-<td><p><strong>RerunOnFailure</strong></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>Halted</code></p></td>
-<td><p><code>RerunOnFailure</code></p></td>
-</tr>
-<tr class="odd">
-<td><p><strong>Manual</strong></p></td>
-<td><p><code>Manual</code></p></td>
-<td><p><code>Manual</code></p></td>
-<td><p><code>Manual</code></p></td>
-</tr>
-<tr class="even">
-<td><p><strong>Halted</strong></p></td>
-<td><p><code>Always</code></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>-</code></p></td>
-</tr>
-</tbody>
-</table>
-
-<p>Table entries marked with <code>-</code> don't make sense, so won't have an effect
-on RunStrategy.</p>
-<h2 id="runstrategy-examples">RunStrategy Examples<a class="headerlink" href="#runstrategy-examples" title="Permanent link">&para;</a></h2>
-<h3 id="always">Always<a class="headerlink" href="#always" title="Permanent link">&para;</a></h3>
-<p>An example usage of the Always RunStrategy.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachine
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>This guide assumes that Istio is already deployed and uses Istio CNI Plugin. See <a href="https://istio.io/latest/docs/">Istio documentation</a> for more information.</p>
+</li>
+<li>
+<p>Optionally, <code>istioctl</code> binary for troubleshooting. See Istio <a href="https://istio.io/latest/docs/setup/getting-started/">installation inctructions</a>.</p>
+</li>
+<li>
+<p>The target namespace where the VM is created must be labelled with <code>istio-injection=enabled</code> label.</p>
+</li>
+<li>
+<p>If Multus is used to manage CNI, the following <code>NetworkAttachmentDefinition</code> is required in the application namespace:</p>
+</li>
+</ul>
+<pre><code class="language-yaml">apiVersion: &quot;k8s.cni.cncf.io/v1&quot;
+kind: NetworkAttachmentDefinition
 metadata:
-  labels:
-    kubevirt.io/vm: vm-cirros
-  name: vm-cirros
-spec:
-  runStrategy: Always
-  template:
-    metadata:
-      labels:
-        kubevirt.io/vm: vm-cirros
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - containerDisk:
-          image: kubevirt/cirros-container-disk-demo:latest
-        name: containerdisk
+  name: istio-cni
 </code></pre>
+<h2 id="create-a-virtualmachineinstance-with-enabled-istio-proxy-injecton">Create a VirtualMachineInstance with enabled Istio proxy injecton<a class="headerlink" href="#create-a-virtualmachineinstance-with-enabled-istio-proxy-injecton" title="Permanent link">&para;</a></h2>
+<p>The example below specifies a VMI with masquerade network interface and <code>sidecar.istio.io/inject</code> annotation to register the VM to the service mesh. </p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  annotations:
+    sidecar.istio.io/inject: &quot;true&quot;
+  labels:
+    app: vmi-istio
+  name: vmi-istio
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: default
+          masquerade: {}
+      disks:
+        - disk:
+            bus: virtio
+          name: containerdisk
+    resources:
+      requests:
+        memory: 1024M
+  networks:
+    - name: default
+      pod: {}
+  terminationGracePeriodSeconds: 0
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: registry:5000/kubevirt/fedora-cloud-container-disk-demo:devel
+</code></pre>
+<p>Istio expects each application to be associated with at least one Kubernetes service. Create the following Service exposing port 8080:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: vmi-istio
+spec:
+  selector:
+    app: vmi-istio
+  ports:
+    - port: 8080
+      name: http
+      protocol: TCP
+</code></pre>
+<p><strong>Note:</strong> Each Istio enabled VMI must feature the <code>sidecar.istio.io/inject</code> annotation instructing KubeVirt to perform necessary network configuration.</p>
+<h2 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
+<p>Verify istio-proxy sidecar is deployed and able to synchronize with Istio control plane using <code>istioctl proxy-status</code> command. See Istio <a href="https://istio.io/latest/docs/ops/diagnostic-tools/proxy-cmd/">Debbuging Envoy and Istiod</a> documentation section for more information about <code>proxy-status</code> subcommand.</p>
+<pre><code class="language-shell">$ kubectl get pods
+NAME                             READY   STATUS    RESTARTS   AGE
+virt-launcher-vmi-istio-ncx7r    3/3     Running   0          7s
+
+$ kubectl get pods virt-launcher-vmi-istio-ncx7r -o jsonpath='{.spec.containers[*].name}'
+compute volumecontainerdisk istio-proxy
+
+$ istioctl proxy-status
+NAME                                    CDS        LDS        EDS        RDS          ISTIOD                      VERSION
+...
+virt-launcher-vmi-istio-ncx7r.default   SYNCED     SYNCED     SYNCED     SYNCED       istiod-7c4d8c7757-hshj5     1.10.0
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="istio-sidecar-is-not-deployed">Istio sidecar is not deployed<a class="headerlink" href="#istio-sidecar-is-not-deployed" title="Permanent link">&para;</a></h3>
+<pre><code class="language-shell">$ kubectl get pods
+NAME                             READY   STATUS    RESTARTS   AGE
+virt-launcher-vmi-istio-jnw6p    2/2     Running   0          37s
+
+$ kubectl get pods virt-launcher-vmi-istio-jnw6p -o jsonpath='{.spec.containers[*].name}'
+compute volumecontainerdisk
+</code></pre>
+<p><strong>Resolution:</strong> Make sure the <code>istio-injection=enabled</code> is added to the target namespace. If the issue persists, consult <a href="https://istio.io/latest/docs/ops/configuration/mesh/injection-concepts/">relevant part of Istio documentation</a>.</p>
+<h3 id="istio-sidecar-is-not-ready">Istio sidecar is not ready<a class="headerlink" href="#istio-sidecar-is-not-ready" title="Permanent link">&para;</a></h3>
+<pre><code class="language-shell">$ kubectl get pods
+NAME                             READY   STATUS    RESTARTS   AGE
+virt-launcher-vmi-istio-lg5gp    2/3     Running   0          90s
+
+$ kubectl describe pod virt-launcher-vmi-istio-lg5gp
+  ...
+  Warning  Unhealthy  2d8h (x3 over 2d8h)  kubelet            Readiness probe failed: Get &quot;http://10.244.186.222:15021/healthz/ready&quot;: dial tcp 10.244.186.222:15021: connect: no route to host
+  Warning  Unhealthy  2d8h (x4 over 2d8h)  kubelet            Readiness probe failed: Get &quot;http://10.244.186.222:15021/healthz/ready&quot;: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+</code></pre>
+<p><strong>Resolution:</strong> Make sure the <code>sidecar.istio.io/inject: "true"</code> annotation is defined in the created VMI and that masquerade binding is used for pod network interface.</p>
+<h3 id="virt-launcher-pod-for-vmi-is-stuck-at-initialization-phase">Virt-launcher pod for VMI is stuck at initialization phase<a class="headerlink" href="#virt-launcher-pod-for-vmi-is-stuck-at-initialization-phase" title="Permanent link">&para;</a></h3>
+<pre><code class="language-shell">$ kubectl get pods
+NAME                             READY   STATUS     RESTARTS   AGE
+virt-launcher-vmi-istio-44mws    0/3     Init:0/3   0          29s
+
+$ kubectl describe pod virt-launcher-vmi-istio-44mws
+  ...
+  Multus: [default/virt-launcher-vmi-istio-44mws]: error loading k8s delegates k8s args: TryLoadPodDelegates: error in getting k8s network for pod: GetNetworkDelegates: failed getting the delegate: getKubernetesDelegate: cannot find a network-attachment-definition (istio-cni) in namespace (default): network-attachment-definitions.k8s.cni.cncf.io &quot;istio-cni&quot; not found
+
+</code></pre>
+<p><strong>Resolution:</strong> Make sure the <code>istio-cni</code> NetworkAttachmentDefinition (provided in the <a href="#prerequisites">Prerequisites</a> section) is created in the target namespace.</p>
               
             </div>
           </div>
@@ -324,10 +337,10 @@ spec:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../presets/" class="btn btn-neutral float-right" title="Presets">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../networkpolicy/" class="btn btn-neutral float-right" title="NetworkPolicy">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../lifecycle/" class="btn btn-neutral" title="Lifecycle"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../interfaces_and_networks/" class="btn btn-neutral" title="Interfaces and Networks"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -357,10 +370,10 @@ spec:
         </span>
     
     
-      <span><a href="../lifecycle/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../interfaces_and_networks/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../presets/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../networkpolicy/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
