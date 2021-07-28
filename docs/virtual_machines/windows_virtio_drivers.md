@@ -7,6 +7,8 @@ Microsoft Windows running in a fully virtualized guest.
 
 Yes. Without the virtio drivers, you cannot use paravirtualized hardware properly. It would either not work, or will have a severe performance penalty.
 
+For more information about VirtIO and paravirtualization, see [VirtIO and paravirtualization](https://wiki.libvirt.org/page/Virtio)
+
 For more details on configuring your VirtIO driver please refer to [Installing VirtIO driver on a new Windows virtual machine](https://docs.openshift.com/container-platform/4.7/virt/virtual_machines/virt-installing-virtio-drivers-on-new-windows-vm.html#virt-installing-virtio-drivers-on-new-windows-vm) and [Installing VirtIO driver on an existing Windows virtual machine](https://docs.openshift.com/container-platform/4.7/virt/virtual_machines/virt-installing-virtio-drivers-on-existing-windows-vm.html).
 
 
