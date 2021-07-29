@@ -772,6 +772,10 @@ Macvtap interfaces are feature gated; to enable the feature, follow
 [these](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
 instructions, in order to activate the `Macvtap` feature gate (case sensitive).
 
+#### Limitations
+
+- Live migration is not seamless, see [issue #5912](https://github.com/kubevirt/kubevirt/issues/5912#issuecomment-888938920)
+
 #### How to expose host interface to the macvtap device plugin
 To simplify the procedure, please use the
 [Cluster Network Addons Operator](https://github.com/kubevirt/cluster-network-addons-operator)
