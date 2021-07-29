@@ -40,14 +40,18 @@ The general flow is:
         %WINDIR%\system32\sysprep\sysprep.exe /generalize /shutdown /oobe /mode:vm
 
     More information can be found here:
+
     * [Sysprep Process Overview](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep-process-overview)
     * [Sysprep (Generalize) a Windows installation](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation)
+
+    Note: It is important that there is no answer file detected when the Sysprep Tool is triggered, because Windows Setup searches for answer files at the beginning of each configuration pass and caches it. If that happens, when the OS will start - it will just use the cached answer file, ignoring the one we provide through the Sysprep API. More information can be found [here](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-setup-automation-overview#implicit-answer-file-search-order)
 
 2. Providing an Answer file named `autounattend.xml` in an attached media. The answer file can be provided in a ConfigMap or a Secret with the key `autounattend.xml`
 
     More information can be found here: [Answer files (unattend.xml)](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs)
 
-    Note that there are also many easy to find online tools available for creating an answer file.
+    !!! Note
+        There are also many easy to find online tools available for creating an answer file.
 
 ## Cloud-init Examples
 
