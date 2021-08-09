@@ -67,11 +67,11 @@ users to speak to Kubernetes, but modify VMIs.
 The following diagram illustrates how the additional controllers and daemons
 communicate with Kubernetes and where the additional types are stored:
 
-![Architecture diagram](/docs/assets/architecture.png "Architecture")
+![Architecture diagram](assets/architecture.png "Architecture")
 
 And a simplified version:
 
-![Simplified architecture diagram](/docs/assets/architecture-simple.png "Simplified architecture")
+![Simplified architecture diagram](assets/architecture-simple.png "Simplified architecture")
 
 ## Application Layout
 
