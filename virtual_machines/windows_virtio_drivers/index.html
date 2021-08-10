@@ -205,13 +205,9 @@
 <p>Purpose of this document is to explain how to install virtio drivers for
 Microsoft Windows running in a fully virtualized guest.</p>
 <h2 id="do-i-need-virtio-drivers">Do I need virtio drivers?<a class="headerlink" href="#do-i-need-virtio-drivers" title="Permanent link">&para;</a></h2>
-<p>Yes. Without the virtio drivers, you cannot use
-<a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_getting_started_guide/sec-virtualization_getting_started-products-virtualized-hardware-devices#sec-Virtualization_Getting_Started-Products-paravirtdevices">paravirtualized</a>
-hardware properly. It would either not work, or will have a severe
-performance penalty.</p>
-<p>For more details on configuring your guest please refer to <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_deployment_and_administration_guide/chap-guest_virtual_machine_device_configuration">Guest
-Virtual Machine Device
-Configuration</a>.</p>
+<p>Yes. Without the virtio drivers, you cannot use paravirtualized hardware properly. It would either not work, or will have a severe performance penalty.</p>
+<p>For more information about VirtIO and paravirtualization, see <a href="https://wiki.libvirt.org/page/Virtio">VirtIO and paravirtualization</a></p>
+<p>For more details on configuring your VirtIO driver please refer to <a href="https://docs.openshift.com/container-platform/4.7/virt/virtual_machines/virt-installing-virtio-drivers-on-new-windows-vm.html#virt-installing-virtio-drivers-on-new-windows-vm">Installing VirtIO driver on a new Windows virtual machine</a> and <a href="https://docs.openshift.com/container-platform/4.7/virt/virtual_machines/virt-installing-virtio-drivers-on-existing-windows-vm.html">Installing VirtIO driver on an existing Windows virtual machine</a>.</p>
 <h2 id="which-drivers-i-need-to-install">Which drivers I need to install?<a class="headerlink" href="#which-drivers-i-need-to-install" title="Permanent link">&para;</a></h2>
 <p>There are usually up to 8 possible devices that are required to run
 Windows smoothly in a virtualized environment. KubeVirt currently
