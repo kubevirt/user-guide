@@ -22,7 +22,7 @@ matches all vmis but accepts no traffic.
     metadata:
       name: deny-by-default
     spec:
-      podSelector:
+      podSelector: {}
       ingress: []
 
 Create NetworkPolicy to only Accept connections from vmis within
@@ -37,7 +37,7 @@ namespaces
     metadata:
       name: allow-same-namespace
     spec:
-      podSelector:
+      podSelector: {}
       ingress:
       - from:
         - podSelector: {}
@@ -53,7 +53,7 @@ object similar to:
     metadata:
       name: allow-http-https
     spec:
-      podSelector:
+      podSelector: {}
       ingress:
       - ports:
         - protocol: TCP
