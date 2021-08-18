@@ -117,6 +117,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#frontend">Frontend</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#security">Security</a>
+    </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../istio_service_mesh/">Istio service mesh</a>
@@ -1012,6 +1014,59 @@ name of the provisioned <code>NetworkAttachmentDefinition</code>.</p>
 <p><strong>Note:</strong> VMIs with macvtap interfaces can be migrated, but their MAC
 addresses <strong>must</strong> be statically set.</p>
 </blockquote>
+<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
+<h3 id="mac-spoof-check">MAC spoof check<a class="headerlink" href="#mac-spoof-check" title="Permanent link">&para;</a></h3>
+<p>MAC spoofing refers to the ability to generate traffic with an arbitrary source
+MAC address.
+An attacker may use this option to generate attacks on the network.</p>
+<p>In order to protect against such scenarios, it is possible to enable the
+mac-spoof-check support in CNI plugins that support it.</p>
+<p>The pod primary network which is served by the cluster network provider
+is not covered by this documentation. Please refer to the relevant provider to
+check how to enable spoofing check.
+The following text refers to the secondary networks, served using multus.</p>
+<p>There are two known CNI plugins that support mac-spoof-check:</p>
+<ul>
+<li><a href="https://github.com/openshift/sriov-cni">sriov-cni</a>:
+  Through the <code>spoofchk</code> parameter .</li>
+<li>cnv-bridge: Through the <code>macspoofchk</code>.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> <code>cnv-bridge</code> is provided by
+  <a href="https://github.com/kubevirt/cluster-network-addons-operator">CNAO</a>.
+  The <a href="https://github.com/containernetworking/plugins">bridge-cni</a> is planned
+  to support the <code>macspoofchk</code> options as well.</p>
+</blockquote>
+<p>The configuration is to be done on the  NetworkAttachmentDefinition by the
+operator and any interface that refers to it, will have this feature enabled.</p>
+<p>Below is an example of using the <code>cnv-bridge</code> CNI with <code>macspoofchk</code> enabled:</p>
+<pre><code class="language-yaml">apiVersion: &quot;k8s.cni.cncf.io/v1&quot;
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-spoof-check
+spec:
+  config: '{
+            &quot;cniVersion&quot;: &quot;0.3.1&quot;,
+            &quot;name&quot;: &quot;br-spoof-check&quot;,
+            &quot;type&quot;: &quot;cnv-bridge&quot;,
+            &quot;bridge&quot;: &quot;br10&quot;,
+            &quot;macspoofchk&quot;: true
+        }'
+</code></pre>
+<p>On the VMI, the network section should point to this
+NetworkAttachmentDefinition by name:</p>
+<pre><code class="language-yaml">  networks:
+  - name: default
+    pod: {}
+  - multus:
+      networkName: br-spoof-check
+    name: br10
+</code></pre>
+<h4 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h4>
+<ul>
+<li>The <code>cnv-bridge</code> CNI supports mac-spoof-check through nftables, therefore
+the node must support nftables and have the <code>nft</code> binary deployed.</li>
+</ul>
               
             </div>
           </div>
