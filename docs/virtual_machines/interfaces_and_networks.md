@@ -897,3 +897,65 @@ name of the provisioned `NetworkAttachmentDefinition`.
 
 > **Note:** VMIs with macvtap interfaces can be migrated, but their MAC
 > addresses **must** be statically set.
+
+## Security
+
+### MAC spoof check
+
+MAC spoofing refers to the ability to generate traffic with an arbitrary source
+MAC address.
+An attacker may use this option to generate attacks on the network.
+
+In order to protect against such scenarios, it is possible to enable the
+mac-spoof-check support in CNI plugins that support it.
+
+The pod primary network which is served by the cluster network provider
+is not covered by this documentation. Please refer to the relevant provider to
+check how to enable spoofing check.
+The following text refers to the secondary networks, served using multus.
+
+There are two known CNI plugins that support mac-spoof-check:
+
+- [sriov-cni](https://github.com/openshift/sriov-cni):
+  Through the `spoofchk` parameter .
+- cnv-bridge: Through the `macspoofchk`.
+
+> **Note:** `cnv-bridge` is provided by
+  [CNAO](https://github.com/kubevirt/cluster-network-addons-operator).
+  The [bridge-cni](https://github.com/containernetworking/plugins) is planned
+  to support the `macspoofchk` options as well.
+
+The configuration is to be done on the  NetworkAttachmentDefinition by the
+operator and any interface that refers to it, will have this feature enabled.
+
+Below is an example of using the `cnv-bridge` CNI with `macspoofchk` enabled:
+```yaml
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: br-spoof-check
+spec:
+  config: '{
+            "cniVersion": "0.3.1",
+            "name": "br-spoof-check",
+            "type": "cnv-bridge",
+            "bridge": "br10",
+            "macspoofchk": true
+        }'
+```
+
+On the VMI, the network section should point to this
+NetworkAttachmentDefinition by name:
+```yaml
+  networks:
+  - name: default
+    pod: {}
+  - multus:
+      networkName: br-spoof-check
+    name: br10
+```
+
+#### Limitations
+
+- The `cnv-bridge` CNI supports mac-spoof-check through nftables, therefore
+the node must support nftables and have the `nft` binary deployed.
