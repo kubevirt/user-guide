@@ -902,6 +902,10 @@ with a virtual device that has its own MAC address.</p>
 <p>Macvtap interfaces are feature gated; to enable the feature, follow
 <a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">these</a>
 instructions, in order to activate the <code>Macvtap</code> feature gate (case sensitive).</p>
+<h4 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Live migration is not seamless, see <a href="https://github.com/kubevirt/kubevirt/issues/5912#issuecomment-888938920">issue #5912</a></li>
+</ul>
 <h4 id="how-to-expose-host-interface-to-the-macvtap-device-plugin">How to expose host interface to the macvtap device plugin<a class="headerlink" href="#how-to-expose-host-interface-to-the-macvtap-device-plugin" title="Permanent link">&para;</a></h4>
 <p>To simplify the procedure, please use the
 <a href="https://github.com/kubevirt/cluster-network-addons-operator">Cluster Network Addons Operator</a>
@@ -1062,7 +1066,7 @@ NetworkAttachmentDefinition by name:</p>
       networkName: br-spoof-check
     name: br10
 </code></pre>
-<h4 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h4>
+<h4 id="limitations_1">Limitations<a class="headerlink" href="#limitations_1" title="Permanent link">&para;</a></h4>
 <ul>
 <li>The <code>cnv-bridge</code> CNI supports mac-spoof-check through nftables, therefore
 the node must support nftables and have the <code>nft</code> binary deployed.</li>
