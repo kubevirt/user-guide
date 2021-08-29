@@ -100,7 +100,7 @@ of gaining secure passwordless access to a virtual machine.
 KubeVirt provides multiple ways to inject ssh public keys into a virtual
 machine. In general, these methods fall into two categories. [Static key injection](/virtual_machines/accessing_virtual_machines/#static-ssh-key-injection-via-cloud-init),
  which places keys on the virtual machine the first time it is
-booted, and [dynamic injection](/virtual_machines/accessing_virtual_machines/#dynamic-ssh-key-injection-via-qemu-user-agent), which allows keys to be dynamically updated
+booted, and [dynamic injection](#dynamic-ssh-key-injection-via-qemu-user-agent), which allows keys to be dynamically updated
 both at boot and during runtime.
 
 ### Static SSH Key Injection via Cloud Init
