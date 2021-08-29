@@ -58,7 +58,9 @@ $ export BUILD_ENGINE=docker
 $ make run
 ```
 
+<!-- markdown-link-check-disable -->
 Open your web browser to http://0.0.0.0:8000 and validate page rendering
+<!-- markdown-link-check-enable -->
 
 ### Create a pull request to `kubevirt/user-guide`
 
