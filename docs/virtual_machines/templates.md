@@ -783,4 +783,4 @@ virtualmachine.kubevirt.io/testvm created
 ```
 
 ## Additional information
-You can follow [Virtual Machine Lifecycle Guide](./lifecycle) for further reference.
+You can follow [Virtual Machine Lifecycle Guide](./lifecycle.md) for further reference.
