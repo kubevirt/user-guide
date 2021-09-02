@@ -129,9 +129,11 @@ Once nodes are restarted with this configuration, the KubeVirt can be deployed a
 
 ## Installing the Daily Developer Builds
 
+<!-- markdown-link-check-disable -->
 KubeVirt releases daily a developer build from current master. One can see
 when the last release happened by looking at our
 [nightly-build-jobs](https://prow.apps.ovirt.org/?job=periodic-kubevirt-push-nightly-build-master).
+<!-- markdown-link-check-enable -->
 
 To install the latest developer build, run the following commands:
 

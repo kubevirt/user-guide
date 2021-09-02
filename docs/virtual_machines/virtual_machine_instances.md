@@ -67,10 +67,10 @@ require a provisioner in your cluster.
 ## Additional Information
 
 -   More information about persistent and ephemeral volumes:
-    [Disks and Volumes](../disks_and_volumes)
+    [Disks and Volumes](./disks_and_volumes.md)
 
 -   How to access a VirtualMachineInstance via `console` or `vnc`:
-    [Console Access](../accessing_virtual_machines)
+    [Console Access](./accessing_virtual_machines.md)
 
 -   How to customize VirtualMachineInstances with `cloud-init`:
-    [Cloud Init](../startup_scripts#cloud-init)
+    [Cloud Init](./startup_scripts.md#cloud-init)

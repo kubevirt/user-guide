@@ -9,7 +9,7 @@ consoles it exposes. Usually there are two types of consoles:
 -   Graphical Console (VNC)
 
 > Note: You need to have `virtctl`
-> [installed](../../operations/virtctl_client_tool) to gain
+> [installed](../operations/virtctl_client_tool.md) to gain
 > access to the VirtualMachineInstance.
 
 
@@ -98,16 +98,16 @@ public ssh keys into the virtual machines at boot. This allows automation tools
 of gaining secure passwordless access to a virtual machine.
 
 KubeVirt provides multiple ways to inject ssh public keys into a virtual
-machine. In general, these methods fall into two categories. [Static key injection](/virtual_machines/accessing_virtual_machines/#static-ssh-key-injection-via-cloud-init),
+machine. In general, these methods fall into two categories. [Static key injection](./accessing_virtual_machines.md#static-ssh-key-injection-via-cloud-init),
  which places keys on the virtual machine the first time it is
-booted, and [dynamic injection](/virtual_machines/accessing_virtual_machines/#dynamic-ssh-key-injection-via-qemu-user-agent), which allows keys to be dynamically updated
+booted, and [dynamic injection](./accessing_virtual_machines.md#dynamic-ssh-key-injection-via-qemu-user-agent), which allows keys to be dynamically updated
 both at boot and during runtime.
 
 ### Static SSH Key Injection via Cloud Init
 
 Users creating virtual machines have the ability to provide startup scripts to
 their virtual machines which allow any number of custom operations to take place.
-Placing public ssh keys into a [cloud-init startup script](/virtual_machines/startup_scripts/#cloud-init) is one option people
+Placing public ssh keys into a [cloud-init startup script](./startup_scripts.md#cloud-init) is one option people
 have for getting their public keys into the virtual machine, however there are
 some other options that grant more flexibility.
 

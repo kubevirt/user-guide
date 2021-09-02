@@ -12,7 +12,7 @@ First the safest option to reduce the memory footprint, is removing the
 graphical device from the VMI by setting
 `spec.domain.devices.autottachGraphicsDevice` to `false`. See the video
 and graphics device
-[documentation](../../virtual_machines/virtual_hardware#video-and-graphics-device)
+[documentation](../virtual_machines/virtual_hardware.md#video-and-graphics-device)
 for further details and examples.
 
 This will save a constant amount of `16MB` per VirtualMachineInstance

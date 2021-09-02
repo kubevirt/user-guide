@@ -67,11 +67,11 @@ users to speak to Kubernetes, but modify VMIs.
 The following diagram illustrates how the additional controllers and daemons
 communicate with Kubernetes and where the additional types are stored:
 
-![Architecture diagram](/docs/assets/architecture.png "Architecture")
+![Architecture diagram](./assets/architecture.png "Architecture")
 
 And a simplified version:
 
-![Simplified architecture diagram](/docs/assets/architecture-simple.png "Simplified architecture")
+![Simplified architecture diagram](./assets/architecture-simple.png "Simplified architecture")
 
 ## Application Layout
 
@@ -165,7 +165,7 @@ avoid confusing and contradictory states, these fields are mutually
 exclusive.
 
 An extended explanation of `spec.runStrategy` vs `spec.running` can be
-found in [Run Strategies](../virtual_machines/run_strategies)
+found in [Run Strategies](./virtual_machines/run_strategies.md)
 
 ### Starting and stopping
 
@@ -274,7 +274,7 @@ after the VirtualMachine was created, but before it started:
 
 All service exposure options that apply to a VirtualMachineInstance apply to a VirtualMachine.
 
-See [Service Objects](../virtual_machines/service_objects) for more details.
+See [Service Objects](./virtual_machines/service_objects.md) for more details.
 
 ## When to use a VirtualMachine
 

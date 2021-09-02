@@ -253,8 +253,10 @@ common tasks such as user creation and SSH key injection.
 More cloud-config examples can be found here: [Cloud-init
 Examples](https://cloudinit.readthedocs.io/en/latest/topics/examples.html)
 
+<!-- markdown-link-check-disable -->
 Below is an example of using cloud-config to inject an SSH key for the
 default user (fedora in this case) of a [Fedora Atomic](https://www.projectatomic.io/) disk image.
+<!-- markdown-link-check-enable -->
 
     # Create the cloud-init cloud-config userdata.
     cat << END > startup-script

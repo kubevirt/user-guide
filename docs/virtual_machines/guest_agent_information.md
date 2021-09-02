@@ -2,7 +2,7 @@
 
 Guest Agent (GA) is an optional component that can run inside of Virtual Machines.
 The GA provides plenty of additional runtime information about the running operating system (OS).
-More technical detail about available GA commands is available here: https://qemu.weilnetz.de/doc/3.1/qemu-ga-ref.html[documentation].
+More technical detail about available GA commands is available [here](https://qemu.weilnetz.de/doc/3.1/qemu-ga-ref.html).
 
 
 ## Guest Agent info in Virtual Machine status
