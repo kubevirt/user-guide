@@ -263,9 +263,9 @@ is - as said before - even defined inside the Kubernetes API server. This allows
 users to speak to Kubernetes, but modify VMIs.</p>
 <p>The following diagram illustrates how the additional controllers and daemons
 communicate with Kubernetes and where the additional types are stored:</p>
-<p><img alt="Architecture diagram" src="/docs/assets/architecture.png" title="Architecture" /></p>
+<p><img alt="Architecture diagram" src="../assets/architecture.png" title="Architecture" /></p>
 <p>And a simplified version:</p>
-<p><img alt="Simplified architecture diagram" src="/docs/assets/architecture-simple.png" title="Simplified architecture" /></p>
+<p><img alt="Simplified architecture diagram" src="../assets/architecture-simple.png" title="Simplified architecture" /></p>
 <h2 id="application-layout">Application Layout<a class="headerlink" href="#application-layout" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Cluster</li>
@@ -355,7 +355,7 @@ control the state of the associated VirtualMachineInstance object. To
 avoid confusing and contradictory states, these fields are mutually
 exclusive.</p>
 <p>An extended explanation of <code>spec.runStrategy</code> vs <code>spec.running</code> can be
-found in <a href="../virtual_machines/run_strategies">Run Strategies</a></p>
+found in <a href="../virtual_machines/run_strategies/">Run Strategies</a></p>
 <h3 id="starting-and-stopping">Starting and stopping<a class="headerlink" href="#starting-and-stopping" title="Permanent link">&para;</a></h3>
 <p>After creating a VirtualMachine it can be switched on or off like this:</p>
 <pre><code># Start the virtual machine:
@@ -441,7 +441,7 @@ after the VirtualMachine was created, but before it started:</p>
 <pre><code>$ virtctl expose virtualmachine vmi-ephemeral --name vmiservice --port 27017 --target-port 22
 </code></pre>
 <p>All service exposure options that apply to a VirtualMachineInstance apply to a VirtualMachine.</p>
-<p>See <a href="../virtual_machines/service_objects">Service Objects</a> for more details.</p>
+<p>See <a href="../virtual_machines/service_objects/">Service Objects</a> for more details.</p>
 <h2 id="when-to-use-a-virtualmachine">When to use a VirtualMachine<a class="headerlink" href="#when-to-use-a-virtualmachine" title="Permanent link">&para;</a></h2>
 <h3 id="when-abi-stability-is-required-between-restarts">When ABI stability is required between restarts<a class="headerlink" href="#when-abi-stability-is-required-between-restarts" title="Permanent link">&para;</a></h3>
 <p>A <code>VirtualMachine</code> makes sure that VirtualMachineInstance ABI

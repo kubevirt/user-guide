@@ -311,9 +311,12 @@ needs to be added to all nodes prior KubeVirt deployment:</p>
 </code></pre>
 <p>Once nodes are restarted with this configuration, the KubeVirt can be deployed as described above.</p>
 <h2 id="installing-the-daily-developer-builds">Installing the Daily Developer Builds<a class="headerlink" href="#installing-the-daily-developer-builds" title="Permanent link">&para;</a></h2>
+<!-- markdown-link-check-disable -->
 <p>KubeVirt releases daily a developer build from current master. One can see
 when the last release happened by looking at our
 <a href="https://prow.apps.ovirt.org/?job=periodic-kubevirt-push-nightly-build-master">nightly-build-jobs</a>.</p>
+<!-- markdown-link-check-enable -->
+
 <p>To install the latest developer build, run the following commands:</p>
 <pre><code>$ LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest)
 $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator.yaml
