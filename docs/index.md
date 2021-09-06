@@ -5,7 +5,13 @@ This page is provided as the entrypoint to the different topics of this user-gui
 
 ## Try it out
 
-- An easy to use demo: <https://github.com/kubevirt/demo>
+- Kubevirt on katacoda: <https://www.katacoda.com/kubevirt>
+
+- Kubevirt on minikube: <https://kubevirt.io/quickstart_minikube/>
+
+- Kubevirt on kind: <https://kubevirt.io/quickstart_kind/>
+
+- Kubevirt on cloud providers: <https://kubevirt.io/quickstart_cloud/>
 
 ## Getting help
 
