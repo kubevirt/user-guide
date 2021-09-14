@@ -755,7 +755,7 @@ spec:
 
 In the example below, a configMap with `autounattend.xml` file is used to modify the windows iso image which is downloaded from microsoft
 and creates a base installed windows machine with virtio drivers installed and all the commands executed in `post-install.ps1`
-For the below manifests to work it needs to have `win10-iso` DataVolume and RedHat RegistryAuthentication.
+For the below manifests to work it needs to have `win10-iso` DataVolume.
 
 ```
 apiVersion: v1
@@ -929,6 +929,7 @@ data:
     C:\Windows\System32\Sysprep\sysprep.exe /generalize /oobe /shutdown /mode:vm
 
 ---
+
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
@@ -986,7 +987,6 @@ spec:
         pvc:
           accessModes:
             - ReadWriteOnce
-          storageClassName: rook-ceph-block  
           resources:
             requests:
               storage: 20Gi
@@ -1000,7 +1000,6 @@ spec:
         pvc:
           accessModes:
             - ReadWriteOnce
-          storageClassName: rook-ceph-block
           resources:
             requests:
               storage: 25Gi
@@ -1095,9 +1094,7 @@ spec:
             name: win10-template
           name: win10-template
         - containerDisk:
-            image: >-
-              registry.redhat.io/container-native-virtualization/virtio-win@sha256:873b41d4701369fb3588fb337daf372a2878d2ce81a5a633e00a3b7ba4f9f19d
-            imagePullSecret: redhatregistrykey
+            image: kubevirt/virtio-container-disk
           name: windows-guest-tools
         - name: sysprep
           sysprep:
@@ -1108,10 +1105,10 @@ spec:
 
 ### Launching a VM from template
 
-From the above example after the sysprep command is executed in the `post-install.ps1` and the vm is shutdown in state
-we can use the `win10-template` to launch a new VM with additional changes mentioned from the below unattend.xml in `sysprep-config`
-VM can take upto 5 minutes to be in running state since the windows goes through oobe setup in the background with the `unattend.xml` customizations
-we have specified.
+From the above example after the sysprep command is executed in the `post-install.ps1` and the vm is in shutdown state,
+A new VM can be launched from the base `win10-template` with additional changes mentioned from the below `unattend.xml` in `sysprep-config`.
+The new VM can take upto 5 minutes to be in running state since windows goes through oobe setup in the background with the customizations specified in the below `unattend.xml` file.
+
 ```
 apiVersion: v1
 kind: ConfigMap
@@ -1150,8 +1147,8 @@ data:
                 <PlainText>true</PlainText>
         </AdministratorPassword>
           </UserAccounts>
-          <RegisteredOrganization>Samsung</RegisteredOrganization>
-          <RegisteredOwner>jay</RegisteredOwner>
+          <RegisteredOrganization>Kuebvirt</RegisteredOrganization>
+          <RegisteredOwner>Kubevirt</RegisteredOwner>
           <TimeZone>Eastern Standard Time</TimeZone>
                 <FirstLogonCommands>
                     <SynchronousCommand wcm:action="add">
@@ -1220,7 +1217,7 @@ data:
     $DownloadUrl = $DownloadPage.Links | Where-Object { $_.outerHTML -like '*npp.*.Installer.x64.exe"*' } | Select-Object -ExpandProperty href
     Install-Exe $DownloadUrl
   id_rsa.pub: |-
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC1M+L3R1Hxb27lWcv0ISMgc8PpuSpmWRtMMahGpmENqBNRJFWmXg1Ydy1qE3NIrxW7FflYzTr9ygEvod8U40fVCi2trnxDwh9PrT70BKoSpvKk9SK6z0MtIh1PI9H340NXInCDgpfAE+m4yW0hYPQkdg1Yj4P8IUdG3Wzo8vq+Gf3C6huBTnG6jMzFUdAFqLkwHDcxQsDcqyvPWoSCsDH5937idUd1414WFU7mnq90HEtYn1XrkyIJOK1m9Y7+tdImc5bCr3a7bwYuAEfz3jY8hy5QXd7VooQix8Qno0+l8OSXVAXLZ9meTgdEL1pBxchTcflee4zHcBNQ1wDfsTJv dominik@t460p
+    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6zdgFiLr1uAK7PdcchDd+LseA5fEOcxCCt7TLlr7Mx6h8jUg+G+8L9JBNZuDzTZSF0dR7qwzdBBQjorAnZTmY3BhsKcFr8Gt4KMGrS6r3DNmGruP8GORvegdWZuXgASKVpXeI7nCIjRJwAaK1x+eGHwAWO9Z8ohcboHbLyffOoSZDSIuk2kRIc47+ENRjg0T6x2VRsqX27g6j4DfPKQZGk0zvXkZaYtr1e2tZgqTBWqZUloMJK8miQq6MktCKAS4VtPk0k7teQX57OGwD6D7uo4b+Cl8aYAAwhn0hc0C2USfbuVHgq88ESo2/+NwV4SQcl3sxCW21yGIjAGt4Hy7J fedora@localhost.localdomain
 
 
 ```
