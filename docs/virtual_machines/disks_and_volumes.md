@@ -1257,3 +1257,9 @@ Example: force `writethrough` cache mode
         persistentVolumeClaim:
           claimName: disk-alpine
     status: {}
+
+## Volume hotplug / hotunplug
+Information about adding / removing disks to running virtual machines can be
+found in the
+[KubeVirt repo documentation](https://github.com/kubevirt/kubevirt/blob/main/docs/hotplug.md#hotplug-volumes).
+
