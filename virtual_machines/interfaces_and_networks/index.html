@@ -465,28 +465,30 @@ address. Not every plugin has native support for custom MAC addresses.</p>
 addresses, there is a workaround, which is to use the <code>tuning</code> CNI
 plugin to adjust pod interface MAC address. This can be used as
 follows:</p>
-<p><code>yaml
-apiVersion: "k8s.cni.cncf.io/v1"
+</blockquote>
+<pre><code class="language-yaml">apiVersion: &quot;k8s.cni.cncf.io/v1&quot;
 kind: NetworkAttachmentDefinition
 metadata:
   name: ptp-mac
 spec:
   config: '{
-      "cniVersion": "0.3.1",
-      "name": "ptp-mac",
-      "plugins": [
+      &quot;cniVersion&quot;: &quot;0.3.1&quot;,
+      &quot;name&quot;: &quot;ptp-mac&quot;,
+      &quot;plugins&quot;: [
         {
-          "type": "ptp",
-          "ipam": {
-            "type": "host-local",
-            "subnet": "10.1.1.0/24"
+          &quot;type&quot;: &quot;ptp&quot;,
+          &quot;ipam&quot;: {
+            &quot;type&quot;: &quot;host-local&quot;,
+            &quot;subnet&quot;: &quot;10.1.1.0/24&quot;
           }
         },
         {
-          "type": "tuning"
+          &quot;type&quot;: &quot;tuning&quot;
         }
       ]
-    }'</code></p>
+    }'
+</code></pre>
+<blockquote>
 <p>This approach may not work for all plugins. For example, OKD SDN is
 not compatible with <code>tuning</code> plugin.</p>
 <ul>
