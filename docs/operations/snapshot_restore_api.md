@@ -1,4 +1,4 @@
-# KubeVirt Snapshot and Restore API
+# Snapshot Restore API
 
 The `snapshot.kubevirt.io` API Group defines resources for snapshotting and restoring KubeVirt `VirtualMachines`
 

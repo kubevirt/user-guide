@@ -2,19 +2,11 @@
 
 KubeVirt now supports hotplugging volumes into a running Virtual Machine Instance (VMI). The volume must be either a block volume or contain a disk image file just like any other regular volume. When a VM that has hotplugged volumes is rebooted, the hotplugged volumes will NOT be attached to the restarted VM unless the volumes are persisted.
 
-## Enable feature gate
+## Enabling hotplug volume support
 
-In order to enable the HotplugVolumes feature gate, you must add the HotplugVolumes to the list of enabled featureGates.
-
-```yaml
-spec:
-  configuration:
-    developerConfiguration:
-      featureGates:
-      - HotplugVolumes
-```
-
-Once the feature gate is enabled, you will be able to hotplug volumes into a running VMI.
+Hotplug volume support must be enabled in the feature gates to be supported. The
+[feature gates](./activating_feature_gates.md#how-to-activate-a-feature-gate)
+field in the KubeVirt CR must be expanded by adding the `HotplugVolumes` to it.
 
 ## Virtctl support
 
@@ -35,11 +27,11 @@ spec:
       requests:
         storage: 5Gi
 ```
-In this example we are using ReadWriteOnce accessMode, and the default FileSystem volume mode. Volume hotplugging supports all combinations of block volume mode and ReadWriteMany/ReadWriteOnce/ReadOnlyMany accessModes, if your storage supports the combination.
+In this example we are using `ReadWriteOnce` accessMode, and the default FileSystem volume mode. Volume hotplugging supports all combinations of block volume mode and `ReadWriteMany`/`ReadWriteOnce`/`ReadOnlyMany` accessModes, if your storage supports the combination.
 
 ### Addvolume
 
-Now lets assume we have started a VMI like the [Fedora VMI in examples](examples/vmi-fedora.yaml) and the name of the VMI is 'vmi-fedora' we can add the above blank volume to this running VMI by using the 'addvolume' command  available with virtctl
+Now lets assume we have started a VMI like the [Fedora VMI in examples](https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-fedora.yaml) and the name of the VMI is 'vmi-fedora' we can add the above blank volume to this running VMI by using the 'addvolume' command  available with virtctl
 
 ```bash
 $ virtctl addvolume vmi-fedora --volume-name=example-volume-hotplug
@@ -72,7 +64,10 @@ scsi-0QEMU_QEMU_HARDDISK_1234567890
 As you can see the serial is part of the disk name, so you can uniquely identify it.
 
 ### Persist
-In some cases you want a hotplugged volume to become part of the standard disks after a restart of the VM. For instance if you added some permanent storage to the VM. We also assume that the running VMI has a matching VM that defines it specification. You can call the addvolume command with the --persist flag. This will update the VM domain disks section in addition to updating the VMI domain disks. This means that when you restart the VM, the disk is already defined in the VM, and thus in the new VMI.
+In some cases you want a hotplugged volume to become part of the standard disks after a restart of the VM.
+For instance if you added some permanent storage to the VM. We also assume that the running VMI has a matching VM that defines it specification.
+You can call the addvolume command with the --persist flag. This will update the VM domain disks section in addition to updating the VMI domain disks.
+This means that when you restart the VM, the disk is already defined in the VM, and thus in the new VMI.
 
 ```bash
 $ virtctl addvolume vm-fedora --volume-name=example-volume-hotplug --persist
@@ -102,7 +97,7 @@ In addition to hotplug plugging the volume, you can also unplug it by using the 
 ```bash
 $ virtctl removevolume vmi-fedora --volume-name=example-volume-hotplug
 ```
-Note: You can only unplug volumes that were dynamically added with addvolume, or using the API.
+**Note**: You can only unplug volumes that were dynamically added with addvolume, or using the API.
 
 ### VolumeStatus
 VMI objects have a new VolumeStatus status field. This is an array containing each disk, hotplugged or not. For example after hotplugging the volume in the addvolume example, the VMI status will contain this:
