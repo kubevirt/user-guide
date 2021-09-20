@@ -295,31 +295,31 @@ spec:
 > addresses, there is a workaround, which is to use the `tuning` CNI
 > plugin to adjust pod interface MAC address. This can be used as
 > follows:
->
-> ```yaml
-> apiVersion: "k8s.cni.cncf.io/v1"
-> kind: NetworkAttachmentDefinition
-> metadata:
->   name: ptp-mac
-> spec:
->   config: '{
->       "cniVersion": "0.3.1",
->       "name": "ptp-mac",
->       "plugins": [
->         {
->           "type": "ptp",
->           "ipam": {
->             "type": "host-local",
->             "subnet": "10.1.1.0/24"
->           }
->         },
->         {
->           "type": "tuning"
->         }
->       ]
->     }'
-> ```
->
+
+```yaml
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: ptp-mac
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "name": "ptp-mac",
+      "plugins": [
+        {
+          "type": "ptp",
+          "ipam": {
+            "type": "host-local",
+            "subnet": "10.1.1.0/24"
+          }
+        },
+        {
+          "type": "tuning"
+        }
+      ]
+    }'
+```
+
 > This approach may not work for all plugins. For example, OKD SDN is
 > not compatible with `tuning` plugin.
 >
