@@ -232,14 +232,23 @@ installation, setup, and custom software provisioning.</p>
 <p>Seal the vm image with the Sysprep tool, for example by running:</p>
 <pre><code>%WINDIR%\system32\sysprep\sysprep.exe /generalize /shutdown /oobe /mode:vm
 </code></pre>
-<p>More information can be found here:
-* <a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep-process-overview">Sysprep Process Overview</a>
-* <a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation">Sysprep (Generalize) a Windows installation</a></p>
+<p>More information can be found here:</p>
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep-process-overview">Sysprep Process Overview</a></li>
+<li><a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep--generalize--a-windows-installation">Sysprep (Generalize) a Windows installation</a></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is important that there is no answer file detected when the Sysprep Tool is triggered, because Windows Setup searches for answer files at the beginning of each configuration pass and caches it. If that happens, when the OS will start - it will just use the cached answer file, ignoring the one we provide through the Sysprep API. More information can be found <a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/windows-setup-automation-overview#implicit-answer-file-search-order">here</a>.</p>
+</div>
 </li>
 <li>
 <p>Providing an Answer file named <code>autounattend.xml</code> in an attached media. The answer file can be provided in a ConfigMap or a Secret with the key <code>autounattend.xml</code></p>
 <p>More information can be found here: <a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs">Answer files (unattend.xml)</a></p>
-<p>Note that there are also many easy to find online tools available for creating an answer file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are also many easy to find online tools available for creating an answer file.</p>
+</div>
 </li>
 </ol>
 <h2 id="cloud-init-examples">Cloud-init Examples<a class="headerlink" href="#cloud-init-examples" title="Permanent link">&para;</a></h2>
