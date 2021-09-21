@@ -20,11 +20,10 @@ Even if you have no `VolumeSnapshotClasses` in your cluster, `VirtualMachineSnap
 
 ### Snapshot Feature Gate
 
-Snapshot/Restore are currently considered alpha features and are disabled by default.
+Snapshot/Restore support must be enabled in the feature gates to be supported. The
+[feature gates](./activating_feature_gates.md#how-to-activate-a-feature-gate)
+field in the KubeVirt CR must be expanded by adding the `Snapshot` to it.
 
-```bash
-kubectl patch -n kubevirt kubevirt kubevirt -p '{"spec": {"configuration": { "developerConfiguration": { "featureGates": [ "Snapshot" ] }}}}' -o json --type merge
-```
 
 ## Snapshot a VirtualMachine
 
@@ -32,11 +31,11 @@ Snapshotting a virtualMachine is supported for online and offline vms.
 
 When snapshotting a running vm the controller will check for qemu guest agent in the vm. If the agent exists it will freeze the vm filesystems before taking the snapshot and unfreeze after the snapshot. It is recommended to take online snapshots with the guest agent for a better snapshot, if not present a best effort snapshot will be taken.
 
-!!! Note To check if your vm has a qemu-guest-agent check for 'AgentConnected' in the vm status.
+> *Note* To check if your vm has a qemu-guest-agent check for 'AgentConnected' in the vm status.
 
 There will be an indication in the vmSnapshot status if the snapshot was taken online and with or without guest agent participation.
 
-!!! Note Currently online vm snapshot is not supported with hotplugged disks, in this case the vm has to be turned off in order to take the snapshot (or all hotplugged disks unplugged).
+> *Note* Currently online vm snapshot is not supported with hotplugged disks, in this case the vm has to be turned off in order to take the snapshot (or all hotplugged disks unplugged).
 
 
 To snapshot a `VirtualMachine` named `larry`, apply the following yaml.

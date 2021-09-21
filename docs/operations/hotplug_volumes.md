@@ -107,7 +107,8 @@ In addition to hotplug plugging the volume, you can also unplug it by using the 
 ```bash
 $ virtctl removevolume vmi-fedora --volume-name=example-volume-hotplug
 ```
-**Note**: You can only unplug volumes that were dynamically added with addvolume, or using the API.
+
+> *NOTE* You can only unplug volumes that were dynamically added with addvolume, or using the API.
 
 ### VolumeStatus
 VMI objects have a new `status.VolumeStatus` field. This is an array containing each disk, hotplugged or not. For example, after hotplugging the volume in the addvolume example, the VMI status will contain this:
@@ -132,4 +133,4 @@ The hotplugVolume has some extra information that regular volume statuses do not
 
 ## Live Migration
 Currently Live Migration is enabled for any VMI that has volumes hotplugged into it. 
-!!! Warning However there is a known issue that the migration may fail for VMIs with hotplugged block volumes if the target node uses CPU manager with static policy and `runc` prior to version `v1.0.0`.
+> *NOTE* However there is a known issue that the migration may fail for VMIs with hotplugged block volumes if the target node uses CPU manager with static policy and `runc` prior to version `v1.0.0`.
