@@ -236,6 +236,14 @@ installation, setup, and custom software provisioning.</p>
 <p>Seal the vm image with the Sysprep tool, for example by running:</p>
 <pre><code>%WINDIR%\system32\sysprep\sysprep.exe /generalize /shutdown /oobe /mode:vm
 </code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We need to make sure the base vm does not restart, which can be done by setting the vm run strategy as <code>RerunOnFailure</code>.</p>
+<p>VM runStrategy:</p>
+<pre><code>spec:
+  runStrategy: RerunOnFailure
+</code></pre>
+</div>
 <p>More information can be found here:</p>
 <ul>
 <li><a href="https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/sysprep-process-overview">Sysprep Process Overview</a></li>
@@ -882,6 +890,465 @@ spec:
         sysprep:
           secret:
             name: sysprep-secret
+</code></pre>
+<h3 id="base-sysprep-vm">Base Sysprep VM<a class="headerlink" href="#base-sysprep-vm" title="Permanent link">&para;</a></h3>
+<p>In the example below, a configMap with <code>autounattend.xml</code> file is used to modify the Windows iso image which is downloaded from Microsoft
+and creates a base installed Windows machine with virtio drivers installed and all the commands executed in <code>post-install.ps1</code>
+For the below manifests to work it needs to have <code>win10-iso</code> DataVolume.</p>
+<pre><code>apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: win10-template-configmap
+data:
+  autounattend.xml: |-
+    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+    &lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;
+      &lt;settings pass=&quot;windowsPE&quot;&gt;
+        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-International-Core-WinPE&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
+          &lt;SetupUILanguage&gt;
+            &lt;UILanguage&gt;en-US&lt;/UILanguage&gt;
+          &lt;/SetupUILanguage&gt;
+          &lt;InputLocale&gt;0409:00000409&lt;/InputLocale&gt;
+          &lt;SystemLocale&gt;en-US&lt;/SystemLocale&gt;
+          &lt;UILanguage&gt;en-US&lt;/UILanguage&gt;
+          &lt;UILanguageFallback&gt;en-US&lt;/UILanguageFallback&gt;
+          &lt;UserLocale&gt;en-US&lt;/UserLocale&gt;
+        &lt;/component&gt;
+        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-PnpCustomizationsWinPE&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
+          &lt;DriverPaths&gt;
+            &lt;PathAndCredentials wcm:keyValue=&quot;4b29ba63&quot; wcm:action=&quot;add&quot;&gt;
+              &lt;Path&gt;E:\amd64\2k19&lt;/Path&gt;
+            &lt;/PathAndCredentials&gt;
+            &lt;PathAndCredentials wcm:keyValue=&quot;25fe51ea&quot; wcm:action=&quot;add&quot;&gt;
+              &lt;Path&gt;E:\NetKVM\2k19\amd64&lt;/Path&gt;
+            &lt;/PathAndCredentials&gt;
+          &lt;/DriverPaths&gt;
+        &lt;/component&gt;
+        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Setup&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
+          &lt;DiskConfiguration&gt;
+            &lt;Disk wcm:action=&quot;add&quot;&gt;
+              &lt;CreatePartitions&gt;
+                &lt;CreatePartition wcm:action=&quot;add&quot;&gt;
+                  &lt;Order&gt;1&lt;/Order&gt;
+                  &lt;Type&gt;Primary&lt;/Type&gt;
+                  &lt;Size&gt;100&lt;/Size&gt;
+                &lt;/CreatePartition&gt;
+                &lt;CreatePartition wcm:action=&quot;add&quot;&gt;
+                  &lt;Extend&gt;true&lt;/Extend&gt;
+                  &lt;Order&gt;2&lt;/Order&gt;
+                  &lt;Type&gt;Primary&lt;/Type&gt;
+                &lt;/CreatePartition&gt;
+              &lt;/CreatePartitions&gt;
+              &lt;ModifyPartitions&gt;
+                &lt;ModifyPartition wcm:action=&quot;add&quot;&gt;
+                  &lt;Format&gt;NTFS&lt;/Format&gt;
+                  &lt;Label&gt;System Reserved&lt;/Label&gt;
+                  &lt;Order&gt;1&lt;/Order&gt;
+                  &lt;PartitionID&gt;1&lt;/PartitionID&gt;
+                  &lt;TypeID&gt;0x27&lt;/TypeID&gt;
+                &lt;/ModifyPartition&gt;
+                &lt;ModifyPartition wcm:action=&quot;add&quot;&gt;
+                  &lt;Format&gt;NTFS&lt;/Format&gt;
+                  &lt;Label&gt;OS&lt;/Label&gt;
+                  &lt;Letter&gt;C&lt;/Letter&gt;
+                  &lt;Order&gt;2&lt;/Order&gt;
+                  &lt;PartitionID&gt;2&lt;/PartitionID&gt;
+                &lt;/ModifyPartition&gt;
+              &lt;/ModifyPartitions&gt;
+              &lt;DiskID&gt;0&lt;/DiskID&gt;
+              &lt;WillWipeDisk&gt;true&lt;/WillWipeDisk&gt;
+            &lt;/Disk&gt;
+          &lt;/DiskConfiguration&gt;
+          &lt;ImageInstall&gt;
+            &lt;OSImage&gt;
+              &lt;InstallFrom&gt;
+                &lt;MetaData wcm:action=&quot;add&quot;&gt;
+                  &lt;Key&gt;/Image/Description&lt;/Key&gt;
+                  &lt;Value&gt;Windows 10 Pro&lt;/Value&gt;
+                &lt;/MetaData&gt;
+              &lt;/InstallFrom&gt;
+              &lt;InstallTo&gt;
+                &lt;DiskID&gt;0&lt;/DiskID&gt;
+                &lt;PartitionID&gt;2&lt;/PartitionID&gt;
+              &lt;/InstallTo&gt;
+            &lt;/OSImage&gt;
+          &lt;/ImageInstall&gt;
+          &lt;UserData&gt;
+            &lt;AcceptEula&gt;true&lt;/AcceptEula&gt;
+            &lt;FullName/&gt;
+            &lt;Organization/&gt;
+            &lt;ProductKey&gt;
+              &lt;Key/&gt;
+            &lt;/ProductKey&gt;
+          &lt;/UserData&gt;
+        &lt;/component&gt;
+      &lt;/settings&gt;
+      &lt;settings pass=&quot;offlineServicing&quot;&gt;
+        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-LUA-Settings&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
+          &lt;EnableLUA&gt;false&lt;/EnableLUA&gt;
+        &lt;/component&gt;
+      &lt;/settings&gt;
+      &lt;settings pass=&quot;specialize&quot;&gt;
+        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-International-Core&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
+          &lt;InputLocale&gt;0409:00000409&lt;/InputLocale&gt;
+          &lt;SystemLocale&gt;en-US&lt;/SystemLocale&gt;
+          &lt;UILanguage&gt;en-US&lt;/UILanguage&gt;
+          &lt;UILanguageFallback&gt;en-US&lt;/UILanguageFallback&gt;
+          &lt;UserLocale&gt;en-US&lt;/UserLocale&gt;
+        &lt;/component&gt;
+        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Security-SPP-UX&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
+          &lt;SkipAutoActivation&gt;true&lt;/SkipAutoActivation&gt;
+        &lt;/component&gt;
+        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-SQMApi&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
+          &lt;CEIPEnabled&gt;0&lt;/CEIPEnabled&gt;
+        &lt;/component&gt;
+      &lt;/settings&gt;
+      &lt;settings pass=&quot;oobeSystem&quot;&gt;
+        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Shell-Setup&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
+          &lt;OOBE&gt;
+            &lt;HideEULAPage&gt;true&lt;/HideEULAPage&gt;
+            &lt;HideOEMRegistrationScreen&gt;true&lt;/HideOEMRegistrationScreen&gt;
+            &lt;HideOnlineAccountScreens&gt;true&lt;/HideOnlineAccountScreens&gt;
+            &lt;HideWirelessSetupInOOBE&gt;true&lt;/HideWirelessSetupInOOBE&gt;
+            &lt;NetworkLocation&gt;Work&lt;/NetworkLocation&gt;
+            &lt;SkipUserOOBE&gt;true&lt;/SkipUserOOBE&gt;
+            &lt;SkipMachineOOBE&gt;true&lt;/SkipMachineOOBE&gt;
+            &lt;ProtectYourPC&gt;3&lt;/ProtectYourPC&gt;
+          &lt;/OOBE&gt;
+          &lt;AutoLogon&gt;
+            &lt;Password&gt;
+              &lt;Value&gt;123456&lt;/Value&gt;
+              &lt;PlainText&gt;true&lt;/PlainText&gt;
+            &lt;/Password&gt;
+            &lt;Enabled&gt;true&lt;/Enabled&gt;
+            &lt;Username&gt;Administrator&lt;/Username&gt;
+          &lt;/AutoLogon&gt;
+          &lt;UserAccounts&gt;
+            &lt;AdministratorPassword&gt;
+              &lt;Value&gt;123456&lt;/Value&gt;
+              &lt;PlainText&gt;true&lt;/PlainText&gt;
+            &lt;/AdministratorPassword&gt;
+          &lt;/UserAccounts&gt;
+          &lt;RegisteredOrganization/&gt;
+          &lt;RegisteredOwner/&gt;
+          &lt;TimeZone&gt;Eastern Standard Time&lt;/TimeZone&gt;
+          &lt;FirstLogonCommands&gt;
+            &lt;SynchronousCommand wcm:action=&quot;add&quot;&gt;
+              &lt;CommandLine&gt;powershell -ExecutionPolicy Bypass -NoExit -NoProfile f:\post-install.ps1&lt;/CommandLine&gt;
+              &lt;RequiresUserInput&gt;false&lt;/RequiresUserInput&gt;
+              &lt;Order&gt;1&lt;/Order&gt;
+              &lt;Description&gt;Post Installation Script&lt;/Description&gt;
+            &lt;/SynchronousCommand&gt;
+          &lt;/FirstLogonCommands&gt;
+        &lt;/component&gt;
+      &lt;/settings&gt;
+    &lt;/unattend&gt;
+
+
+  post-install.ps1: |-
+    # Remove AutoLogin
+    # https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-autologon-logoncount#logoncount-known-issue
+    reg add &quot;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&quot; /v AutoAdminLogon /t REG_SZ /d 0 /f
+
+    # install Qemu Tools (Drivers)
+    Start-Process msiexec -Wait -ArgumentList '/i e:\virtio-win-gt-x64.msi /qn /passive /norestart'
+
+    # install Guest Agent
+    Start-Process msiexec -Wait -ArgumentList '/i e:\guest-agent\qemu-ga-x86_64.msi /qn /passive /norestart'
+
+    # Rename cached unattend.xml to avoid it is picked up by sysprep
+    mv C:\Windows\Panther\unattend.xml C:\Windows\Panther\unattend.install.xml
+
+    # Eject CD, to avoid that the autounattend.xml on the CD is picked up by sysprep
+    (new-object -COM Shell.Application).NameSpace(17).ParseName('F:').InvokeVerb('Eject')
+
+    # Run Sysprep and Shutdown
+    C:\Windows\System32\Sysprep\sysprep.exe /generalize /oobe /shutdown /mode:vm
+
+---
+
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  annotations:
+    name.os.template.kubevirt.io/win10: Microsoft Windows 10
+    vm.kubevirt.io/validations: |
+      [
+        {
+          &quot;name&quot;: &quot;minimal-required-memory&quot;,
+          &quot;path&quot;: &quot;jsonpath::.spec.domain.resources.requests.memory&quot;,
+          &quot;rule&quot;: &quot;integer&quot;,
+          &quot;message&quot;: &quot;This VM requires more memory.&quot;,
+          &quot;min&quot;: 2147483648
+        }, {
+          &quot;name&quot;: &quot;windows-virtio-bus&quot;,
+          &quot;path&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,
+          &quot;valid&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,
+          &quot;rule&quot;: &quot;enum&quot;,
+          &quot;message&quot;: &quot;virto disk bus type has better performance, install virtio drivers in VM and change bus type&quot;,
+          &quot;values&quot;: [&quot;virtio&quot;],
+          &quot;justWarning&quot;: true
+        }, {
+          &quot;name&quot;: &quot;windows-disk-bus&quot;,
+          &quot;path&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,
+          &quot;valid&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,
+          &quot;rule&quot;: &quot;enum&quot;,
+          &quot;message&quot;: &quot;disk bus has to be either virtio or sata or scsi&quot;,
+          &quot;values&quot;: [&quot;virtio&quot;, &quot;sata&quot;, &quot;scsi&quot;]
+        }, {
+          &quot;name&quot;: &quot;windows-cd-bus&quot;,
+          &quot;path&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].cdrom.bus&quot;,
+          &quot;valid&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].cdrom.bus&quot;,
+          &quot;rule&quot;: &quot;enum&quot;,
+          &quot;message&quot;: &quot;cd bus has to be sata&quot;,
+          &quot;values&quot;: [&quot;sata&quot;]
+        }
+      ]
+  name: win10-template
+  namespace: default
+  labels:
+    app: win10-template
+    flavor.template.kubevirt.io/medium: 'true'
+    os.template.kubevirt.io/win10: 'true'
+    vm.kubevirt.io/template: windows10-desktop-medium
+    vm.kubevirt.io/template.namespace: openshift
+    vm.kubevirt.io/template.revision: '1'
+    vm.kubevirt.io/template.version: v0.14.0
+    workload.template.kubevirt.io/desktop: 'true'
+spec:
+  runStrategy: RerunOnFailure
+  dataVolumeTemplates:
+    - metadata:
+        name: win10-template-windows-iso
+      spec:
+        pvc:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+        source:
+          pvc:
+            name: windows10-iso
+            namespace: default
+    - metadata:
+        name: win10-template
+      spec:
+        pvc:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 25Gi
+          volumeMode: Filesystem
+        source:
+          blank: {}
+  template:
+    metadata:
+      annotations:
+        vm.kubevirt.io/flavor: medium
+        vm.kubevirt.io/os: windows10
+        vm.kubevirt.io/workload: desktop
+      labels:
+        flavor.template.kubevirt.io/medium: 'true'
+        kubevirt.io/domain: win10-template
+        kubevirt.io/size: medium
+        os.template.kubevirt.io/win10: 'true'
+        vm.kubevirt.io/name: win10-template
+        workload.template.kubevirt.io/desktop: 'true'
+    spec:
+      domain:
+        clock:
+          timer:
+            hpet:
+              present: false
+            hyperv: {}
+            pit:
+              tickPolicy: delay
+            rtc:
+              tickPolicy: catchup
+          utc: {}
+        cpu:
+          cores: 1
+          sockets: 1
+          threads: 1
+        devices:
+          disks:
+            - bootOrder: 1
+              disk:
+                bus: virtio
+              name: win10-template
+            - bootOrder: 2
+              cdrom:
+                bus: sata
+              name: windows-iso
+            - cdrom:
+                bus: sata
+              name: windows-guest-tools
+            - name: sysprep
+              cdrom:
+                bus: sata
+          inputs:
+            - bus: usb
+              name: tablet
+              type: tablet
+          interfaces:
+            - masquerade: {}
+              model: virtio
+              name: default
+        features:
+          acpi: {}
+          apic: {}
+          hyperv:
+            reenlightenment: {}
+            ipi: {}
+            synic: {}
+            synictimer:
+              direct: {}
+            spinlocks:
+              spinlocks: 8191
+            reset: {}
+            relaxed: {}
+            vpindex: {}
+            runtime: {}
+            tlbflush: {}
+            frequencies: {}
+            vapic: {}
+        machine:
+          type: pc-q35-rhel8.4.0
+        resources:
+          requests:
+            memory: 4Gi
+      hostname: win10-template
+      networks:
+        - name: default
+          pod: {}
+      volumes:
+        - dataVolume:
+            name: win10-iso
+          name: windows-iso
+        - dataVolume:
+            name: win10-template
+          name: win10-template
+        - containerDisk:
+            image: kubevirt/virtio-container-disk
+          name: windows-guest-tools
+        - name: sysprep
+          sysprep:
+            configMap:
+              name: win10-template-configmap
+
+</code></pre>
+<h3 id="launching-a-vm-from-template">Launching a VM from template<a class="headerlink" href="#launching-a-vm-from-template" title="Permanent link">&para;</a></h3>
+<p>From the above example after the sysprep command is executed in the <code>post-install.ps1</code> and the vm is in shutdown state,
+A new VM can be launched from the base <code>win10-template</code> with additional changes mentioned from the below <code>unattend.xml</code> in <code>sysprep-config</code>.
+The new VM can take upto 5 minutes to be in running state since Windows goes through oobe setup in the background with the customizations specified in the below <code>unattend.xml</code> file.</p>
+<pre><code>apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sysprep-config
+data:
+  autounattend.xml: |-
+    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+    &lt;!-- responsible for installing windows, ignored on sysprepped images --&gt;
+  unattend.xml: |-
+    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+    &lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;
+      &lt;settings pass=&quot;oobeSystem&quot;&gt;
+        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Shell-Setup&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
+          &lt;OOBE&gt;
+            &lt;HideEULAPage&gt;true&lt;/HideEULAPage&gt;
+            &lt;HideOEMRegistrationScreen&gt;true&lt;/HideOEMRegistrationScreen&gt;
+            &lt;HideOnlineAccountScreens&gt;true&lt;/HideOnlineAccountScreens&gt;
+            &lt;HideWirelessSetupInOOBE&gt;true&lt;/HideWirelessSetupInOOBE&gt;
+            &lt;NetworkLocation&gt;Work&lt;/NetworkLocation&gt;
+            &lt;SkipUserOOBE&gt;true&lt;/SkipUserOOBE&gt;
+            &lt;SkipMachineOOBE&gt;true&lt;/SkipMachineOOBE&gt;
+            &lt;ProtectYourPC&gt;3&lt;/ProtectYourPC&gt;
+          &lt;/OOBE&gt;
+          &lt;AutoLogon&gt;
+            &lt;Password&gt;
+            &lt;Value&gt;123456&lt;/Value&gt;
+              &lt;PlainText&gt;true&lt;/PlainText&gt;
+            &lt;/Password&gt;
+            &lt;Enabled&gt;true&lt;/Enabled&gt;
+        &lt;Username&gt;Administrator&lt;/Username&gt;
+    &lt;/AutoLogon&gt;
+    &lt;UserAccounts&gt;
+         &lt;AdministratorPassword&gt;
+                &lt;Value&gt;123456&lt;/Value&gt;
+                &lt;PlainText&gt;true&lt;/PlainText&gt;
+        &lt;/AdministratorPassword&gt;
+          &lt;/UserAccounts&gt;
+          &lt;RegisteredOrganization&gt;Kuebvirt&lt;/RegisteredOrganization&gt;
+          &lt;RegisteredOwner&gt;Kubevirt&lt;/RegisteredOwner&gt;
+          &lt;TimeZone&gt;Eastern Standard Time&lt;/TimeZone&gt;
+                &lt;FirstLogonCommands&gt;
+                    &lt;SynchronousCommand wcm:action=&quot;add&quot;&gt;
+                    &lt;CommandLine&gt;powershell -ExecutionPolicy Bypass -NoExit -WindowStyle Hidden -NoProfile d:\customize.ps1&lt;/CommandLine&gt;
+                        &lt;RequiresUserInput&gt;false&lt;/RequiresUserInput&gt;
+                        &lt;Order&gt;1&lt;/Order&gt;
+                &lt;Description&gt;Customize Script&lt;/Description&gt;
+            &lt;/SynchronousCommand&gt;
+                &lt;/FirstLogonCommands&gt;
+        &lt;/component&gt;
+      &lt;/settings&gt;
+    &lt;/unattend&gt;
+  customize.ps1: |-
+    # Enable RDP
+    Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name &quot;fDenyTSConnections&quot; -value 0
+    Enable-NetFirewallRule -DisplayGroup &quot;Remote Desktop&quot;
+
+
+    # https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse
+    # Install the OpenSSH Server
+    Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+    # Start the sshd service
+    Start-Service sshd
+
+    Set-Service -Name sshd -StartupType 'Automatic'
+
+    # https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_server_configuration
+    # use powershell as default shell for ssh
+    New-ItemProperty -Path &quot;HKLM:\SOFTWARE\OpenSSH&quot; -Name DefaultShell -Value &quot;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&quot; -PropertyType String -Force
+
+
+    # Add ssh authorized_key for administrator
+    # https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement
+    $MyDir = $MyInvocation.MyCommand.Path | Split-Path -Parent
+    $PublicKey = Get-Content -Path $MyDir\id_rsa.pub
+    $authrized_keys_path = $env:ProgramData + &quot;\ssh\administrators_authorized_keys&quot; 
+    Add-Content -Path $authrized_keys_path -Value $PublicKey
+    icacls.exe $authrized_keys_path /inheritance:r /grant &quot;Administrators:F&quot; /grant &quot;SYSTEM:F&quot;
+
+
+    # install application via exe file installer from url
+    function Install-Exe {
+      $dlurl = $args[0]
+      $installerPath = Join-Path $env:TEMP (Split-Path $dlurl -Leaf)
+      Invoke-WebRequest -UseBasicParsing $dlurl -OutFile $installerPath
+      Start-Process -FilePath $installerPath -Args &quot;/S&quot; -Verb RunAs -Wait
+      Remove-Item $installerPath
+
+    }
+
+    # Wait for networking before running a task at startup
+    do {
+      $ping = test-connection -comp kubevirt.io -count 1 -Quiet
+    } until ($ping)
+
+    # Installing the Latest Notepad++ with PowerShell
+    $BaseUri = &quot;https://notepad-plus-plus.org&quot;
+    $BasePage = Invoke-WebRequest -Uri $BaseUri -UseBasicParsing
+    $ChildPath = $BasePage.Links | Where-Object { $_.outerHTML -like '*Current Version*' } | Select-Object -ExpandProperty href
+    $DownloadPageUri = $BaseUri + $ChildPath
+    $DownloadPage = Invoke-WebRequest -Uri $DownloadPageUri -UseBasicParsing
+    $DownloadUrl = $DownloadPage.Links | Where-Object { $_.outerHTML -like '*npp.*.Installer.x64.exe&quot;*' } | Select-Object -ExpandProperty href
+    Install-Exe $DownloadUrl
+  id_rsa.pub: |-
+    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6zdgFiLr1uAK7PdcchDd+LseA5fEOcxCCt7TLlr7Mx6h8jUg+G+8L9JBNZuDzTZSF0dR7qwzdBBQjorAnZTmY3BhsKcFr8Gt4KMGrS6r3DNmGruP8GORvegdWZuXgASKVpXeI7nCIjRJwAaK1x+eGHwAWO9Z8ohcboHbLyffOoSZDSIuk2kRIc47+ENRjg0T6x2VRsqX27g6j4DfPKQZGk0zvXkZaYtr1e2tZgqTBWqZUloMJK8miQq6MktCKAS4VtPk0k7teQX57OGwD6D7uo4b+Cl8aYAAwhn0hc0C2USfbuVHgq88ESo2/+NwV4SQcl3sxCW21yGIjAGt4Hy7J fedora@localhost.localdomain
+
+
 </code></pre>
               
             </div>
