@@ -1,6 +1,6 @@
 # Hotplug Volumes
 
-KubeVirt now supports hotplugging volumes into a running Virtual Machine Instance (VMI). The volume must be either a block volume or contain a disk image file just like any other regular volume. When a VM that has hotplugged volumes is rebooted, the hotplugged volumes will NOT be attached to the restarted VM unless the volumes are persisted.
+KubeVirt now supports hotplugging volumes into a running Virtual Machine Instance (VMI). The volume must be either a block volume or contain a disk image. When a VM that has hotplugged volumes is rebooted, the hotplugged volumes will be attached to the restarted VM. If the volumes are persisted they will become part of the VM spec, and will not be considered hotplugged. If they are not persisted, the volumes will be reattached as hotplugged volumes
 
 ## Enabling hotplug volume support
 
@@ -31,7 +31,7 @@ In this example we are using `ReadWriteOnce` accessMode, and the default FileSys
 
 ### Addvolume
 
-Now lets assume we have started a VMI like the [Fedora VMI in examples](https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-fedora.yaml) and the name of the VMI is 'vmi-fedora' we can add the above blank volume to this running VMI by using the 'addvolume' command  available with virtctl
+Now lets assume we have started a VMI like the [Fedora VMI in examples](https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-fedora.yaml) and the name of the VMI is 'vmi-fedora'. We can add the above blank volume to this running VMI by using the 'addvolume' command  available with virtctl
 
 ```bash
 $ virtctl addvolume vmi-fedora --volume-name=example-volume-hotplug
@@ -45,7 +45,7 @@ You can change the serial of the disk by specifying the --serial parameter, for 
 $ virtctl addvolume vmi-fedora --volume-name=example-volume-hotplug --serial=1234567890
 ```
 
-The serial will be used in the guest so you can identify the disk inside the by the serial. For instance in Fedora the disk by id will contain the serial
+The serial will be used in the guest so you can identify the disk inside the guest by the serial. For instance in Fedora the disk by id will contain the serial.
 ```bash
 $ virtctl console vmi-fedora
 
@@ -62,6 +62,16 @@ scsi-0QEMU_QEMU_HARDDISK_1234567890
 [fedora@vmi-fedora ~]$ 
 ```
 As you can see the serial is part of the disk name, so you can uniquely identify it.
+
+The format and length of serials are specified according to the libvirt documentation:
+```
+    If present, this specify serial number of virtual hard drive. For example, it may look like <serial>WD-WMAP9A966149</serial>. Not supported for scsi-block devices, that is those using disk type 'block' using device 'lun' on bus 'scsi'. Since 0.7.1
+
+    Note that depending on hypervisor and device type the serial number may be truncated silently. IDE/SATA devices are commonly limited to 20 characters. SCSI devices depending on hypervisor version are limited to 20, 36 or 247 characters.
+
+    Hypervisors may also start rejecting overly long serials instead of truncating them in the future so it's advised to avoid the implicit truncation by testing the desired serial length range with the desired device and hypervisor combination.
+
+```
 
 ### Persist
 In some cases you want a hotplugged volume to become part of the standard disks after a restart of the VM.
@@ -100,7 +110,7 @@ $ virtctl removevolume vmi-fedora --volume-name=example-volume-hotplug
 **Note**: You can only unplug volumes that were dynamically added with addvolume, or using the API.
 
 ### VolumeStatus
-VMI objects have a new VolumeStatus status field. This is an array containing each disk, hotplugged or not. For example after hotplugging the volume in the addvolume example, the VMI status will contain this:
+VMI objects have a new `status.VolumeStatus` field. This is an array containing each disk, hotplugged or not. For example, after hotplugging the volume in the addvolume example, the VMI status will contain this:
 ```yaml
     volumeStatus:
     - name: cloudinitdisk
@@ -116,9 +126,10 @@ VMI objects have a new VolumeStatus status field. This is an array containing ea
       reason: VolumeReady
       target: sda
 ```
-Vda is the container disk that contains the Fedora OS, vdb is the cloudinit disk. As you can see those just contain the name and target used when assigning them to the VM. The target is the value passed to QEMU when specifying the disks. The value is unique for the VM and does *NOT* represent the naming inside the guest. For instance for a Windows Guest OS the target has no meaning. The same will be true for hot plugged volumes. The target is just a unique identifier meant for QEMU, inside the guest the disk can be assigned a different name.
+Vda is the container disk that contains the Fedora OS, vdb is the cloudinit disk. As you can see those just contain the name and target used when assigning them to the VM. The target is the value passed to QEMU when specifying the disks. The value is unique for the VM and does *NOT* represent the naming inside the guest. For instance for a Windows Guest OS the target has no meaning. The same will be true for hotplugged volumes. The target is just a unique identifier meant for QEMU, inside the guest the disk can be assigned a different name.
 
 The hotplugVolume has some extra information that regular volume statuses do not have. The attachPodName is the name of the pod that was used to attach the volume to the node the VMI is running on. If this pod is deleted it will also stop the VMI as we cannot guarantee the volume will remain attached to the node. The other fields are similar to conditions and indicate the status of the hot plug process. Once a Volume is ready it can be used by the VM.
 
 ## Live Migration
-Currently Live Migration is enabled for any VMI that has volumes hotplugged into it. However there is a known issue that the migration may fail for VMIs with hotplugged block volumes if the target node uses CPU manager with static policy and `runc` prior to version `v1.0.0`.
+Currently Live Migration is enabled for any VMI that has volumes hotplugged into it. 
+!!! Warning However there is a known issue that the migration may fail for VMIs with hotplugged block volumes if the target node uses CPU manager with static policy and `runc` prior to version `v1.0.0`.
