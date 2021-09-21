@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  <link rel="canonical" href="https://kubevirt.io/user-guide/operations/unresponsive_nodes/">
+  <link rel="canonical" href="https://kubevirt.io/user-guide/operations/hotplug_volumes/">
   <link rel="shortcut icon" href="../../assets/favicon.ico">
   
-  <title>Unresponsive nodes - KubeVirt User-Guide</title>
+  <title>Hotplug Volumes - KubeVirt User-Guide</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -19,9 +19,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Unresponsive nodes";
-    var mkdocs_page_input_path = "operations/unresponsive_nodes.md";
-    var mkdocs_page_url = "/user-guide/operations/unresponsive_nodes/";
+    var mkdocs_page_name = "Hotplug Volumes";
+    var mkdocs_page_input_path = "operations/hotplug_volumes.md";
+    var mkdocs_page_url = "/user-guide/operations/hotplug_volumes/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -74,7 +74,15 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../live_migration/">Live Migration</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../hotplug_volumes/">Hotplug Volumes</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Hotplug Volumes</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#enabling-hotplug-volume-support">Enabling hotplug volume support</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#virtctl-support">Virtctl support</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#live-migration">Live Migration</a>
+    </li>
+    </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../snapshot_restore_api/">Snapshot Restore API</a>
                     </li>
@@ -92,17 +100,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../node_overcommit/">Node overcommit</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Unresponsive nodes</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#virt-handler-heartbeat">virt-handler heartbeat</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#deleting-stuck-vmis-when-virt-handler-is-unresponsive">Deleting stuck VMIs when virt-handler is unresponsive</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#deleting-stuck-vmis-when-the-whole-node-is-unresponsive">Deleting stuck VMIs when the whole node is unresponsive</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#timing-considerations">Timing considerations</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../unresponsive_nodes/">Unresponsive nodes</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
                     </li>
@@ -190,10 +188,10 @@
         
       
     
-    <li>Unresponsive nodes</li>
+    <li>Hotplug Volumes</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/operations/unresponsive_nodes.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/operations/hotplug_volumes.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -205,84 +203,116 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="unresponsive-nodes">Unresponsive nodes<a class="headerlink" href="#unresponsive-nodes" title="Permanent link">&para;</a></h1>
-<p>KubeVirt has its own node daemon, called virt-handler. In addition to
-the usual k8s methods of detecting issues on nodes, the virt-handler
-daemon has its own heartbeat mechanism. This allows for fine-tuned error
-handling of VirtualMachineInstances.</p>
-<h2 id="virt-handler-heartbeat">virt-handler heartbeat<a class="headerlink" href="#virt-handler-heartbeat" title="Permanent link">&para;</a></h2>
-<p><code>virt-handler</code> periodically tries to update the
-<code>kubevirt.io/schedulable</code> label and the <code>kubevirt.io/heartbeat</code>
-annotation on the node it is running on:</p>
-<pre><code>$ kubectl get nodes -o yaml
-apiVersion: v1
-items:
-- apiVersion: v1
-  kind: Node
-  metadata:
-    annotations:
-      kubevirt.io/heartbeat: 2018-11-05T09:42:25Z
-    creationTimestamp: 2018-11-05T08:55:53Z
-    labels:
-      beta.kubernetes.io/arch: amd64
-      beta.kubernetes.io/os: linux
-      cpumanager: "false"
-      kubernetes.io/hostname: node01
-      kubevirt.io/schedulable: "true"
-      node-role.kubernetes.io/master: ""
-</code></pre>
-<p>If a <code>VirtualMachineInstance</code> gets scheduled, the scheduler is only
-considering nodes where <code>kubevirt.io/schedulable</code> is <code>true</code>. This can be
-seen when looking on the corresponding pod of a
-<code>VirtualMachineInstance</code>:</p>
-<pre><code>$ kubectl get pods  virt-launcher-vmi-nocloud-ct6mr -o yaml
-apiVersion: v1
-kind: Pod
+                <h1 id="hotplug-volumes">Hotplug Volumes<a class="headerlink" href="#hotplug-volumes" title="Permanent link">&para;</a></h1>
+<p>KubeVirt now supports hotplugging volumes into a running Virtual Machine Instance (VMI). The volume must be either a block volume or contain a disk image. When a VM that has hotplugged volumes is rebooted, the hotplugged volumes will be attached to the restarted VM. If the volumes are persisted they will become part of the VM spec, and will not be considered hotplugged. If they are not persisted, the volumes will be reattached as hotplugged volumes</p>
+<h2 id="enabling-hotplug-volume-support">Enabling hotplug volume support<a class="headerlink" href="#enabling-hotplug-volume-support" title="Permanent link">&para;</a></h2>
+<p>Hotplug volume support must be enabled in the feature gates to be supported. The
+<a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gates</a>
+field in the KubeVirt CR must be expanded by adding the <code>HotplugVolumes</code> to it.</p>
+<h2 id="virtctl-support">Virtctl support<a class="headerlink" href="#virtctl-support" title="Permanent link">&para;</a></h2>
+<p>In order to hotplug a volume, you must first prepare a volume. This can be done by using a DataVolume (DV). In the example we will use a blank DV in order to add some extra storage to a running VMI</p>
+<pre><code class="language-yaml">apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
 metadata:
-  [...]
+  name: example-volume-hotplug
 spec:
-  [...]
-  nodeName: node01
-  nodeSelector:
-    kubevirt.io/schedulable: "true"
-  [...]
+  source:
+    blank: {}
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 5Gi
 </code></pre>
-<p>In case there is a communication issue or the host goes down,
-<code>virt-handler</code> can't update its labels and annotations any-more. Once
-the last <code>kubevirt.io/heartbeat</code> timestamp is older than five minutes,
-the KubeVirt node-controller kicks in and sets the
-<code>kubevirt.io/schedulable</code> label to <code>false</code>. As a consequence no more
-VMIs will be schedule to this node until virt-handler is connected
-again.</p>
-<h2 id="deleting-stuck-vmis-when-virt-handler-is-unresponsive">Deleting stuck VMIs when virt-handler is unresponsive<a class="headerlink" href="#deleting-stuck-vmis-when-virt-handler-is-unresponsive" title="Permanent link">&para;</a></h2>
-<p>In cases where <code>virt-handler</code> has some issues but the node is in general
-fine, a <code>VirtualMachineInstance</code> can be deleted as usual via
-<code>kubectl delete vmi &lt;myvm&gt;</code>. Pods of a <code>VirtualMachineInstance</code> will be
-told by the cluster-controllers they should shut down. As soon as the
-Pod is gone, the <code>VirtualMachineInstance</code> will be moved to <code>Failed</code>
-state, if <code>virt-handler</code> did not manage to update it's heartbeat in the
-meantime. If <code>virt-handler</code> could recover in the meantime,
-<code>virt-handler</code> will move the <code>VirtualMachineInstance</code> to failed state
-instead of the cluster-controllers.</p>
-<h2 id="deleting-stuck-vmis-when-the-whole-node-is-unresponsive">Deleting stuck VMIs when the whole node is unresponsive<a class="headerlink" href="#deleting-stuck-vmis-when-the-whole-node-is-unresponsive" title="Permanent link">&para;</a></h2>
-<p>If the whole node is unresponsive, deleting a <code>VirtualMachineInstance</code>
-via <code>kubectl delete vmi &lt;myvmi&gt;</code> alone will never remove the
-<code>VirtualMachineInstance</code>. In this case all pods on the unresponsive node
-need to be force-deleted: First make sure that the node is really dead.
-Then delete all pods on the node via a force-delete:
-<code>kubectl delete pod --force --grace-period=0 &lt;mypod&gt;</code>.</p>
-<p>As soon as the pod disappears and the heartbeat from virt-handler timed
-out, the VMIs will be moved to <code>Failed</code> state. If they were already
-marked for deletion they will simply disappear. If not, they can be
-deleted and will disappear almost immediately.</p>
-<h2 id="timing-considerations">Timing considerations<a class="headerlink" href="#timing-considerations" title="Permanent link">&para;</a></h2>
-<p>It takes up to five minutes until the KubeVirt cluster components can
-detect that virt-handler is unhealthy. During that time-frame it is
-possible that new VMIs are scheduled to the affected node. If
-virt-handler is not capable of connecting to these pods on the node, the
-pods will sooner or later go to failed state. As soon as the cluster
-finally detects the issue, the VMIs will be set to failed by the
-cluster.</p>
+<p>In this example we are using <code>ReadWriteOnce</code> accessMode, and the default FileSystem volume mode. Volume hotplugging supports all combinations of block volume mode and <code>ReadWriteMany</code>/<code>ReadWriteOnce</code>/<code>ReadOnlyMany</code> accessModes, if your storage supports the combination.</p>
+<h3 id="addvolume">Addvolume<a class="headerlink" href="#addvolume" title="Permanent link">&para;</a></h3>
+<p>Now lets assume we have started a VMI like the <a href="https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-fedora.yaml">Fedora VMI in examples</a> and the name of the VMI is 'vmi-fedora'. We can add the above blank volume to this running VMI by using the 'addvolume' command  available with virtctl</p>
+<pre><code class="language-bash">$ virtctl addvolume vmi-fedora --volume-name=example-volume-hotplug
+</code></pre>
+<p>This will hotplug the volume into the running VMI, and set the serial of the disk to the volume name. In this example it is set to example-hotplug-volume.</p>
+<h4 id="serial">Serial<a class="headerlink" href="#serial" title="Permanent link">&para;</a></h4>
+<p>You can change the serial of the disk by specifying the --serial parameter, for example:</p>
+<pre><code class="language-bash">$ virtctl addvolume vmi-fedora --volume-name=example-volume-hotplug --serial=1234567890
+</code></pre>
+<p>The serial will be used in the guest so you can identify the disk inside the guest by the serial. For instance in Fedora the disk by id will contain the serial.</p>
+<pre><code class="language-bash">$ virtctl console vmi-fedora
+
+Fedora 32 (Cloud Edition)
+Kernel 5.6.6-300.fc32.x86_64 on an x86_64 (ttyS0)
+
+SSH host key: SHA256:c8ik1A9F4E7AxVrd6eE3vMNOcMcp6qBxsf8K30oC/C8 (ECDSA)
+SSH host key: SHA256:fOAKptNAH2NWGo2XhkaEtFHvOMfypv2t6KIPANev090 (ED25519)
+eth0: 10.244.196.144 fe80::d8b7:51ff:fec4:7099
+vmi-fedora login:fedora
+Password:fedora
+[fedora@vmi-fedora ~]$ ls /dev/disk/by-id
+scsi-0QEMU_QEMU_HARDDISK_1234567890
+[fedora@vmi-fedora ~]$ 
+</code></pre>
+<p>As you can see the serial is part of the disk name, so you can uniquely identify it.</p>
+<p>The format and length of serials are specified according to the libvirt documentation:</p>
+<pre><code>    If present, this specify serial number of virtual hard drive. For example, it may look like &lt;serial&gt;WD-WMAP9A966149&lt;/serial&gt;. Not supported for scsi-block devices, that is those using disk type 'block' using device 'lun' on bus 'scsi'. Since 0.7.1
+
+    Note that depending on hypervisor and device type the serial number may be truncated silently. IDE/SATA devices are commonly limited to 20 characters. SCSI devices depending on hypervisor version are limited to 20, 36 or 247 characters.
+
+    Hypervisors may also start rejecting overly long serials instead of truncating them in the future so it's advised to avoid the implicit truncation by testing the desired serial length range with the desired device and hypervisor combination.
+
+</code></pre>
+<h3 id="persist">Persist<a class="headerlink" href="#persist" title="Permanent link">&para;</a></h3>
+<p>In some cases you want a hotplugged volume to become part of the standard disks after a restart of the VM.
+For instance if you added some permanent storage to the VM. We also assume that the running VMI has a matching VM that defines it specification.
+You can call the addvolume command with the --persist flag. This will update the VM domain disks section in addition to updating the VMI domain disks.
+This means that when you restart the VM, the disk is already defined in the VM, and thus in the new VMI.</p>
+<pre><code class="language-bash">$ virtctl addvolume vm-fedora --volume-name=example-volume-hotplug --persist
+</code></pre>
+<p>In the VM spec this will now show as a new disk</p>
+<pre><code class="language-yaml">    spec:
+    domain:
+        devices:
+            disks:
+            - disk:
+                bus: virtio
+                name: containerdisk
+            - disk:
+                bus: virtio
+                name: cloudinitdisk
+            - disk:
+                bus: scsi
+                name: example-volume-hotplug
+        machine:
+          type: &quot;&quot;
+</code></pre>
+<h3 id="removevolume">Removevolume<a class="headerlink" href="#removevolume" title="Permanent link">&para;</a></h3>
+<p>In addition to hotplug plugging the volume, you can also unplug it by using the 'removevolume' command available with virtctl</p>
+<pre><code class="language-bash">$ virtctl removevolume vmi-fedora --volume-name=example-volume-hotplug
+</code></pre>
+<blockquote>
+<p><em>NOTE</em> You can only unplug volumes that were dynamically added with addvolume, or using the API.</p>
+</blockquote>
+<h3 id="volumestatus">VolumeStatus<a class="headerlink" href="#volumestatus" title="Permanent link">&para;</a></h3>
+<p>VMI objects have a new <code>status.VolumeStatus</code> field. This is an array containing each disk, hotplugged or not. For example, after hotplugging the volume in the addvolume example, the VMI status will contain this:</p>
+<pre><code class="language-yaml">    volumeStatus:
+    - name: cloudinitdisk
+      target: vdb
+    - name: containerdisk
+      target: vda
+    - hotplugVolume:
+        attachPodName: hp-volume-7fmz4
+        attachPodUID: 62a7f6bf-474c-4e25-8db5-1db9725f0ed2
+      message: Successfully attach hotplugged volume volume-hotplug to VM
+      name: example-volume-hotplug
+      phase: Ready
+      reason: VolumeReady
+      target: sda
+</code></pre>
+<p>Vda is the container disk that contains the Fedora OS, vdb is the cloudinit disk. As you can see those just contain the name and target used when assigning them to the VM. The target is the value passed to QEMU when specifying the disks. The value is unique for the VM and does <em>NOT</em> represent the naming inside the guest. For instance for a Windows Guest OS the target has no meaning. The same will be true for hotplugged volumes. The target is just a unique identifier meant for QEMU, inside the guest the disk can be assigned a different name.</p>
+<p>The hotplugVolume has some extra information that regular volume statuses do not have. The attachPodName is the name of the pod that was used to attach the volume to the node the VMI is running on. If this pod is deleted it will also stop the VMI as we cannot guarantee the volume will remain attached to the node. The other fields are similar to conditions and indicate the status of the hot plug process. Once a Volume is ready it can be used by the VM.</p>
+<h2 id="live-migration">Live Migration<a class="headerlink" href="#live-migration" title="Permanent link">&para;</a></h2>
+<p>Currently Live Migration is enabled for any VMI that has volumes hotplugged into it. </p>
+<blockquote>
+<p><em>NOTE</em> However there is a known issue that the migration may fail for VMIs with hotplugged block volumes if the target node uses CPU manager with static policy and <code>runc</code> prior to version <code>v1.0.0</code>.</p>
+</blockquote>
               
             </div>
           </div>
@@ -290,10 +320,10 @@ cluster.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../containerized_data_importer/" class="btn btn-neutral float-right" title="Containerized Data Importer">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../snapshot_restore_api/" class="btn btn-neutral float-right" title="Snapshot Restore API">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../node_overcommit/" class="btn btn-neutral" title="Node overcommit"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../live_migration/" class="btn btn-neutral" title="Live Migration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -323,10 +353,10 @@ cluster.</p>
         </span>
     
     
-      <span><a href="../node_overcommit/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../live_migration/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../containerized_data_importer/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../snapshot_restore_api/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
