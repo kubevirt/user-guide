@@ -153,15 +153,15 @@ check_links: | envvar stop
 	@echo "${GREEN}Makefile: Check external and internal links${RESET}"
 	${DEBUG}export IFS=$$'\n'; \
 	${CONTAINER_ENGINE} run \
-				-it \
-				--rm \
-				--name userguide \
-				-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
-				-v /dev/null:/srv/Gemfile.lock \
-				--mount type=tmpfs,destination=/srv/site \
-				--workdir=/srv \
-				${IMGTAG} \
-				/bin/bash -c 'rake -- -u'
+		-it \
+		--rm \
+		--name userguide \
+		-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
+		-v /dev/null:/srv/Gemfile.lock \
+		--mount type=tmpfs,destination=/srv/site \
+		--workdir=/srv \
+		${IMGTAG} \
+		/bin/bash -c 'rake -- -u'
 	@echo
 
 
@@ -196,16 +196,16 @@ check_spelling: | envvar stop
 run: | envvar stop
 	@echo "${GREEN}Makefile: Run site${RESET}"
 	${CONTAINER_ENGINE} run \
-				-d \
-				--name userguide \
-				-p ${LOCAL_SERVER_PORT}:8000 \
-				-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
-				-v /dev/null:/srv/Gemfile.lock:rw${SELINUX_ENABLED} \
-				--mount type=tmpfs,destination=/srv/site \
-				${IMGTAG} \
-				/bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
+		-d \
+		--name userguide \
+		-p ${LOCAL_SERVER_PORT}:8000 \
+		-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
+		-v /dev/null:/srv/Gemfile.lock:rw${SELINUX_ENABLED} \
+		--mount type=tmpfs,destination=/srv/site \
+		${IMGTAG} \
+		/bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
 	@echo
-	@echo "${AQUA}Makefile: Server now running at [https://localhost:$(LOCAL_SERVER_PORT)]${RESET}"
+	@echo "${AQUA}Makefile: Server now running at [http://localhost:$(LOCAL_SERVER_PORT)]${RESET}"
 	@echo
 
 
