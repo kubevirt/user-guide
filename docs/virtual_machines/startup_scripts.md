@@ -753,8 +753,8 @@ spec:
 
 ### Base Sysprep VM
 
-In the example below, a configMap with `autounattend.xml` file is used to modify the windows iso image which is downloaded from microsoft
-and creates a base installed windows machine with virtio drivers installed and all the commands executed in `post-install.ps1`
+In the example below, a configMap with `autounattend.xml` file is used to modify the Windows iso image which is downloaded from Microsoft
+and creates a base installed Windows machine with virtio drivers installed and all the commands executed in `post-install.ps1`
 For the below manifests to work it needs to have `win10-iso` DataVolume.
 
 ```
@@ -1107,7 +1107,7 @@ spec:
 
 From the above example after the sysprep command is executed in the `post-install.ps1` and the vm is in shutdown state,
 A new VM can be launched from the base `win10-template` with additional changes mentioned from the below `unattend.xml` in `sysprep-config`.
-The new VM can take upto 5 minutes to be in running state since windows goes through oobe setup in the background with the customizations specified in the below `unattend.xml` file.
+The new VM can take upto 5 minutes to be in running state since Windows goes through oobe setup in the background with the customizations specified in the below `unattend.xml` file.
 
 ```
 apiVersion: v1
@@ -1199,16 +1199,12 @@ data:
 
     }
 
-    # https://superuser.com/questions/747149/
+    # Wait for networking before running a task at startup
     do {
       $ping = test-connection -comp kubevirt.io -count 1 -Quiet
     } until ($ping)
 
-    # https://gist.github.com/dansmith65/7dd950f183af5f5deaf9650f2ad3226c
-    Install-Exe ('https://7-zip.org/' + (Invoke-WebRequest -UseBasicParsin -Uri 'https://7-zip.org/' | Select-Object -ExpandProperty Links | Where-Object {($_.href -like "a/*") -and ($_.href -like "*-x64.exe")} | Select-Object -First 1 | Select-Object -ExpandProperty href))
-
-
-    # https://blog.kmsigma.com/2021/01/06/installing-the-latest-notepad-with-powershell/
+    # Installing the Latest Notepad++ with PowerShell
     $BaseUri = "https://notepad-plus-plus.org"
     $BasePage = Invoke-WebRequest -Uri $BaseUri -UseBasicParsing
     $ChildPath = $BasePage.Links | Where-Object { $_.outerHTML -like '*Current Version*' } | Select-Object -ExpandProperty href
