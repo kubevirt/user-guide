@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/service_objects/">
+  <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/numa/">
   <link rel="shortcut icon" href="../../assets/favicon.ico">
   
-  <title>Service objects - KubeVirt User-Guide</title>
+  <title>NUMA - KubeVirt User-Guide</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -19,9 +19,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Service objects";
-    var mkdocs_page_input_path = "virtual_machines/service_objects.md";
-    var mkdocs_page_url = "/user-guide/virtual_machines/service_objects/";
+    var mkdocs_page_name = "NUMA";
+    var mkdocs_page_input_path = "virtual_machines/numa.md";
+    var mkdocs_page_url = "/user-guide/virtual_machines/numa/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -113,7 +113,13 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../dedicated_cpu_resources/">Dedicated CPU resources</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../numa/">NUMA</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">NUMA</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#preconditions">Preconditions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#guestmappingpassthrough">GuestMappingPassthrough</a>
+    </li>
+    </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../disks_and_volumes/">Disks and Volumes</a>
                     </li>
@@ -137,15 +143,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../startup_scripts/">Startup Scripts</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Service objects</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#expose-virtualmachineinstance-as-a-clusterip-service">Expose VirtualMachineInstance as a ClusterIP Service</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#expose-virtualmachineinstance-as-a-nodeport-service">Expose VirtualMachineInstance as a NodePort Service</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#expose-virtualmachineinstance-as-a-loadbalancer-service">Expose VirtualMachineInstance as a LoadBalancer Service</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../service_objects/">Service objects</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../templates/">Templates</a>
                     </li>
@@ -190,10 +188,10 @@
         
       
     
-    <li>Service objects</li>
+    <li>NUMA</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/service_objects.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/numa.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -205,148 +203,79 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="service-objects">Service objects<a class="headerlink" href="#service-objects" title="Permanent link">&para;</a></h1>
-<p>Once the VirtualMachineInstance is started, in order to connect to a
-VirtualMachineInstance, you can create a <code>Service</code> object for a
-VirtualMachineInstance. Currently, three types of service are supported:
-<code>ClusterIP</code>, <code>NodePort</code> and <code>LoadBalancer</code>. The default type is
-<code>ClusterIP</code>.</p>
-<blockquote>
-<p><strong>Note</strong>: Labels on a VirtualMachineInstance are passed through to the
-pod, so simply add your labels for service creation to the
-VirtualMachineInstance. From there on it works like exposing any other
-k8s resource, by referencing these labels in a service.</p>
-</blockquote>
-<h2 id="expose-virtualmachineinstance-as-a-clusterip-service">Expose VirtualMachineInstance as a ClusterIP Service<a class="headerlink" href="#expose-virtualmachineinstance-as-a-clusterip-service" title="Permanent link">&para;</a></h2>
-<p>Give a VirtualMachineInstance with the label <code>special: key</code>:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+                <h1 id="numa">NUMA<a class="headerlink" href="#numa" title="Permanent link">&para;</a></h1>
+<p><strong>FEATURE STATE:</strong> KubeVirt v0.43</p>
+<p>NUMA support in KubeVirt is at this stage limited to a small set of special
+use-cases and will improve over time together with improvements made to
+Kubernetes.</p>
+<p>In general, the goal is to map the host NUMA topology as efficiently as possible
+to the Virtual Machine topology to improve the performance.</p>
+<p>The following NUMA mapping strategies can be used:</p>
+<ul>
+<li><a href="#GuestMappingPassthrough"><strong>GuestMappingPassthrough</strong></a></li>
+</ul>
+<h2 id="preconditions">Preconditions<a class="headerlink" href="#preconditions" title="Permanent link">&para;</a></h2>
+<p>In order to use current NUMA support, the following preconditions must be met:</p>
+<ul>
+<li><a href="../dedicated_cpu_resources/">Dedicated CPU Resources</a> must be configured.</li>
+<li><a href="../virtual_hardware/#Hugepages">Hugepages</a> need to be allocatable on target
+  nodes.</li>
+<li>The <code>NUMA</code>
+  <a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
+  must be enabled.</li>
+</ul>
+<h2 id="guestmappingpassthrough">GuestMappingPassthrough<a class="headerlink" href="#guestmappingpassthrough" title="Permanent link">&para;</a></h2>
+<p>GuestMappingPassthrough will pass through the node numa topology to the guest.
+The topology is based on the dedicated CPUs which the VMI got assigned from the
+kubelet via the CPU Manager. It can be requested by
+setting <code>spec.domain.cpu.guestMappingPassthrough</code> on the VMI.</p>
+<p>Since KubeVirt does not know upfront which exclusive CPUs the VMI will get from
+the kubelet, there are some limitations:</p>
+<ul>
+<li>Guests may see different NUMA topologies when being rescheduled.</li>
+<li>The resulting NUMA topology may be asymmetrical.</li>
+<li>The VMI may fail to start on the node if not enough hugepages are available on
+  the assigned NUMA nodes.</li>
+</ul>
+<p>While this NUMA modelling strategy has its limitations, aligning the guest's
+NUMA architecture with the node's can be critical for high-performance
+applications.</p>
+<p>An example VMI may look like this:</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
-  name: vmi-ephemeral
-  labels:
-    special: key
+  name: numavm
 spec:
   domain:
+    cpu:
+      cores: 4
+      dedicatedCpuPlacement: true
+      numa:
+        guestMappingPassthrough: { }
     devices:
       disks:
-      - disk:
-          bus: virtio
-        name: containerdisk
+        - disk:
+            bus: virtio
+          name: containerdisk
+        - disk:
+            bus: virtio
+          name: cloudinitdisk
     resources:
       requests:
-        memory: 64M
+        memory: 64Mi
+    memory:
+      hugepages:
+        pageSize: 2Mi
   volumes:
-  - name: containerdisk
-    containerDisk:
-      image: kubevirt/cirros-registry-disk-demo:latest
+    - containerDisk:
+        image: quay.io/kubevirt/cirros-container-disk-demo
+      name: containerdisk
+    - cloudInitNoCloud:
+        userData: |
+          #!/bin/sh
+          echo 'printed from cloud-init userdata'
+      name: cloudinitdisk
 </code></pre>
-<p>we can expose its SSH port (22) by creating a <code>ClusterIP</code> service:</p>
-<pre><code>apiVersion: v1
-kind: Service
-metadata:
-  name: vmiservice
-spec:
-  ports:
-  - port: 27017
-    protocol: TCP
-    targetPort: 22
-  selector:
-    special: key
-  type: ClusterIP
-</code></pre>
-<p>You just need to create this <code>ClusterIP</code> service by using <code>kubectl</code>:</p>
-<pre><code>$ kubectl create -f vmiservice.yaml
-</code></pre>
-<p>Alternatively, the VirtualMachineInstance could be exposed using the
-<code>virtctl</code> command:</p>
-<pre><code>$ virtctl expose virtualmachineinstance vmi-ephemeral --name vmiservice --port 27017 --target-port 22
-</code></pre>
-<p>Notes: * If <code>--target-port</code> is not set, it will be take the same value
-as <code>--port</code> * The cluster IP is usually allocated automatically, but it
-may also be forced into a value using the <code>--cluster-ip</code> flag (assuming
-value is in the valid range and not taken)</p>
-<p>Query the service object:</p>
-<pre><code>$ kubectl get service
-NAME        TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)     AGE
-vmiservice   ClusterIP   172.30.3.149   &lt;none&gt;        27017/TCP   2m
-</code></pre>
-<p>You can connect to the VirtualMachineInstance by service IP and service
-port inside the cluster network:</p>
-<pre><code>$ ssh cirros@172.30.3.149 -p 27017
-</code></pre>
-<h2 id="expose-virtualmachineinstance-as-a-nodeport-service">Expose VirtualMachineInstance as a NodePort Service<a class="headerlink" href="#expose-virtualmachineinstance-as-a-nodeport-service" title="Permanent link">&para;</a></h2>
-<p>Expose the SSH port (22) of a VirtualMachineInstance running on KubeVirt
-by creating a <code>NodePort</code> service:</p>
-<pre><code>apiVersion: v1
-kind: Service
-metadata:
-  name: nodeport
-spec:
-  externalTrafficPolicy: Cluster
-  ports:
-  - name: nodeport
-    nodePort: 30000
-    port: 27017
-    protocol: TCP
-    targetPort: 22
-  selector:
-    special: key
-  type: NodePort
-</code></pre>
-<p>You just need to create this <code>NodePort</code> service by using <code>kubectl</code>:</p>
-<pre><code>$ kubectl -f nodeport.yaml
-</code></pre>
-<p>Alternatively, the VirtualMachineInstance could be exposed using the
-<code>virtctl</code> command:</p>
-<pre><code>$ virtctl expose virtualmachineinstance vmi-ephemeral --name nodeport --type NodePort --port 27017 --target-port 22 --node-port 30000
-</code></pre>
-<p>Notes: * If <code>--node-port</code> is not set, its value will be allocated
-dynamically (in the range above 30000) * If the <code>--node-port</code> value is
-set, it must be unique across all services</p>
-<p>The service can be listed by querying for the service objects:</p>
-<pre><code>$ kubectl get service
-NAME           TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE
-nodeport       NodePort   172.30.232.73   &lt;none&gt;        27017:30000/TCP   5m
-</code></pre>
-<p>Connect to the VirtualMachineInstance by using a node IP and node port
-outside the cluster network:</p>
-<pre><code>$ ssh cirros@$NODE_IP -p 30000
-</code></pre>
-<h2 id="expose-virtualmachineinstance-as-a-loadbalancer-service">Expose VirtualMachineInstance as a LoadBalancer Service<a class="headerlink" href="#expose-virtualmachineinstance-as-a-loadbalancer-service" title="Permanent link">&para;</a></h2>
-<p>Expose the RDP port (3389) of a VirtualMachineInstance running on
-KubeVirt by creating <code>LoadBalancer</code> service. Here is an example:</p>
-<pre><code>apiVersion: v1
-kind: Service
-metadata:
-  name: lbsvc
-spec:
-  externalTrafficPolicy: Cluster
-  ports:
-  - port: 27017
-    protocol: TCP
-    targetPort: 3389
-  selector:
-    special: key
-  type: LoadBalancer
-</code></pre>
-<p>You could create this <code>LoadBalancer</code> service by using <code>kubectl</code>:</p>
-<pre><code>$ kubectl -f lbsvc.yaml
-</code></pre>
-<p>Alternatively, the VirtualMachineInstance could be exposed using the
-<code>virtctl</code> command:</p>
-<pre><code>$ virtctl expose virtualmachineinstance vmi-ephemeral --name lbsvc --type LoadBalancer --port 27017 --target-port 3389
-</code></pre>
-<p>Note that the external IP of the service could be forced to a value
-using the <code>--external-ip</code> flag (no validation is performed on this
-value).</p>
-<p>The service can be listed by querying for the service objects:</p>
-<pre><code>$ kubectl get svc
-NAME      TYPE           CLUSTER-IP       EXTERNAL-IP                   PORT(S)           AGE
-lbsvc     LoadBalancer   172.30.27.5      172.29.10.235,172.29.10.235   27017:31829/TCP   5s
-</code></pre>
-<p>Use <code>vinagre</code> client to connect your VirtualMachineInstance by using the
-public IP and port.</p>
-<p>Note that here the external port here (31829) was dynamically allocated.</p>
               
             </div>
           </div>
@@ -354,10 +283,10 @@ public IP and port.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../templates/" class="btn btn-neutral float-right" title="Templates">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../disks_and_volumes/" class="btn btn-neutral float-right" title="Disks and Volumes">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../startup_scripts/" class="btn btn-neutral" title="Startup Scripts"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../dedicated_cpu_resources/" class="btn btn-neutral" title="Dedicated CPU resources"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -387,10 +316,10 @@ public IP and port.</p>
         </span>
     
     
-      <span><a href="../startup_scripts/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../dedicated_cpu_resources/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../templates/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../disks_and_volumes/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
