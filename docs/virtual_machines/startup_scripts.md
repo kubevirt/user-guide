@@ -1091,7 +1091,7 @@ spec:
             name: win10-iso
           name: windows-iso
         - dataVolume:
-            name: win10-template
+            name: win10-template-windows-iso
           name: win10-template
         - containerDisk:
             image: kubevirt/virtio-container-disk
