@@ -66,10 +66,9 @@ target node.
 If the `LiveMigration`
 [feature gate](./activating_feature_gates.md#how-to-activate-a-feature-gate)
 is enabled, it is possible to
-specify an `evictionStrategy` on VMIs which will react with
-live-migrations on specific taints on nodes. The following snippet on a
-VMI ensures that the VMI is migrated if the
-`kubevirt.io/drain:NoSchedule` taint is added to a nodes:
+specify an `evictionStrategy` on VMIs which will react with live-migrations on
+specific taints on nodes. The following snippet on a VMI or the VMI templates in
+a VM ensures that the VMI is migrated during node eviction:
 
     spec:
       evictionStrategy: LiveMigrate
@@ -106,56 +105,16 @@ Here a full VMI:
             password: fedora
             chpasswd: { expire: False }
 
-Once the VMI is created, taint the node with
-
-    kubectl taint nodes foo kubevirt.io/drain=draining:NoSchedule
-
-which will trigger a migration.
-
 Behind the scenes a **PodDisruptionBudget** is created for each VMI
 which has an **evictionStrategy** defined. This ensures that evictions
 are be blocked on these VMIs and that we can guarantee that a VMI will
 be migrated instead of shut off.
 
-**Note:** While the **evictionStrategy** blocks the shutdown of VMIs
-during evictions, the live migration process is detached from the drain
-process itself. Therefore it is necessary to add specified taints as
-part of the drain process explicitly, until we have a better integrated
-solution.
-
-By default KubeVirt will trigger live migrations if the taint
-`kubevirt.io/drain:NoSchedule` is added to the node. It is possible to
-configure a different key in the `kubevirt` CR, by
-setting the migration option `nodeDrainTaintKey`:
-
-    apiVersion: kubevirt.io/v1alpha3
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - "LiveMigration"
-        migrationConfiguration:
-          nodeDrainTaintKey: mytaint/drain
-
-The default value is `kubevirt.io/drain`. With the change above
-migrations can be triggered with
-
-    kubectl taint nodes foo mytaint/drain=draining:NoSchedule
-
-Here a full drain flow for nodes which includes VMI live migrations with
-the default setting:
-
-    kubectl taint nodes foo kubevirt.io/drain=draining:NoSchedule
-    kubectl drain foo --delete-local-data --ignore-daemonsets=true --force
-
-To make the node schedulable again, run
-
-    kubectl taint nodes foo kubevirt.io/drain-
-    kubectl uncordon foo
+**Note** Prior to v0.34 the drain process with live migrations was detached from
+the `kubectl drain` itself and required in addition specifying a special taint
+on the nodes: `kubectl taint nodes foo kubevirt.io/drain=draining:NoSchedule`.
+This is no longer needed. The taint will still be respected if provided but is
+**obsolete**.
 
 ## Re-enabling a Node after Eviction
 
