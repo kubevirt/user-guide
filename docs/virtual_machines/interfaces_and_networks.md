@@ -439,8 +439,8 @@ metadata:
   namespace: kubevirt
 spec:
   configuration:
-    networkConfiguration:
-      permitBridgeInterfaceOnPodNetwork: "false"
+    network:
+      permitBridgeInterfaceOnPodNetwork: false
 ```
 
 > **Note:** binding the pod network using `bridge` interface type may
