@@ -140,7 +140,7 @@ A `cdrom` disk will expose the volume as a cdrom drive to the VM. It is
 read-only by default.
 
 A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
-as a `floppy` device to the VM:
+as a `cdrom` device to the VM:
 
     metadata:
       name: testvmi-cdrom
