@@ -323,10 +323,9 @@ spec:
 > This approach may not work for all plugins. For example, OKD SDN is
 > not compatible with `tuning` plugin.
 >
-> -   Plugins that handle custom MAC addresses natively: `ovs`.
+> -   Plugins that handle custom MAC addresses natively: `ovs`, `bridge`.
 >
-> -   Plugins that are compatible with `tuning` plugin: `flannel`,
->     `ptp`, `bridge`.
+> -   Plugins that are compatible with `tuning` plugin: `flannel`, `ptp`.
 >
 > -   Plugins that don't need special MAC address treatment: `sriov` (in
 >     `vfio` mode).
