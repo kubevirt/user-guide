@@ -279,14 +279,14 @@ A `PersistentVolume` can be in "filesystem" or "block" mode:
     `disk.img` image file needs to be owned by the user-id `107` in
     order to avoid permission issues.
 
-    > **Note:** If the `disk.img` image file has not been created
-    > manually before starting a VM then it will be created
-    > automatically with the `PersistentVolumeClaim` size. Since not
-    > every storage provisioner provides volumes with the exact usable
-    > amount of space as requested (e.g. due to filesystem overhead),
-    > KubeVirt tolerates up to 10% less available space. This can be
-    > configured with the `pvc-tolerate-less-space-up-to-percent` value
-    > in the `kubevirt-config` ConfigMap.
+    > **Note:** If the `disk.img` image file has not been created manually
+    > before starting a VM then it will be created automatically with the
+    > `PersistentVolumeClaim` size. Since not every storage provisioner
+    > provides volumes with the exact usable amount of space as requested (e.g.
+    > due to filesystem overhead), KubeVirt tolerates up to 10% less available
+    > space. This can be configured with the
+    > `developerConfiguration.pvcTolerateLessSpaceUpToPercent` value in the
+    > KubeVirt CR (`kubectl edit kubevirt kubevirt -n kubevirt`).
 
 -   Block: Use a block volume for consuming raw block devices. Note: you
     need to enable the `BlockVolume`
