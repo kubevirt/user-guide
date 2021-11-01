@@ -476,14 +476,14 @@ remain persistent between restarts.</p>
     <code>disk.img</code> image file needs to be owned by the user-id <code>107</code> in
     order to avoid permission issues.</p>
 <blockquote>
-<p><strong>Note:</strong> If the <code>disk.img</code> image file has not been created
-manually before starting a VM then it will be created
-automatically with the <code>PersistentVolumeClaim</code> size. Since not
-every storage provisioner provides volumes with the exact usable
-amount of space as requested (e.g. due to filesystem overhead),
-KubeVirt tolerates up to 10% less available space. This can be
-configured with the <code>pvc-tolerate-less-space-up-to-percent</code> value
-in the <code>kubevirt-config</code> ConfigMap.</p>
+<p><strong>Note:</strong> If the <code>disk.img</code> image file has not been created manually
+before starting a VM then it will be created automatically with the
+<code>PersistentVolumeClaim</code> size. Since not every storage provisioner
+provides volumes with the exact usable amount of space as requested (e.g.
+due to filesystem overhead), KubeVirt tolerates up to 10% less available
+space. This can be configured with the
+<code>developerConfiguration.pvcTolerateLessSpaceUpToPercent</code> value in the
+KubeVirt CR (<code>kubectl edit kubevirt kubevirt -n kubevirt</code>).</p>
 </blockquote>
 </li>
 <li>
