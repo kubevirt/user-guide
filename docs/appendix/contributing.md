@@ -27,5 +27,5 @@ The following will help you decide where to start
 
 ## Other ways to contribute
 
-* Visit the KubeVirt [community page](https://kubevirt.io/community/), participate on Twitter or Stack Overflow, learn about local meetups and events.
+* Visit the KubeVirt [community page](https://kubevirt.io/community/), participate on Twitter or Slack, learn about local meetups and events.
 * Visit the KubeVirt [website repository](https://github.com/kubevirt/kubevirt.github.io) and submit a blog post, case study or lab.
