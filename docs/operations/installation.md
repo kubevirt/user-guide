@@ -174,10 +174,26 @@ guide](https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitr
 > playbook](https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network)
 > installs these plugins by default.
 
-## Restricting virt-handler DaemonSet
+## Restricting KubeVirt components node placement
 
-You can patch the `virt-handler` DaemonSet post-deployment to restrict
-it to a specific subset of nodes with a nodeSelector. For example, to
-restrict the DaemonSet to only nodes with the "region=primary" label:
+You can restrict the placement of the KubeVirt components across your 
+cluster nodes by editing the KubeVirt CR:
 
-    kubectl patch ds/virt-handler -n kubevirt -p '{"spec": {"template": {"spec": {"nodeSelector": {"region": "primary"}}}}}'
+- The placement of the KubeVirt control plane components (virt-controller, virt-api)
+  is governed by the `.spec.infra.nodePlacement` field in the KubeVirt CR.
+- The placement of the virt-handler DaemonSet pods (and consequently, the placement of the 
+  VM workloads scheduled to the cluster) is governed by the `.spec.workloads.nodePlacement`
+  field in the KubeVirt CR.
+  
+For each of these `.nodePlacement` objects, the `.affinity`, `.nodeSelector` and `.tolerations` sub-fields can be configured.
+See the description in the [API reference](http://kubevirt.io/api-reference/master/definitions.html#_v1_componentconfig)
+for further information about using these fields.
+
+For example, to restrict the virt-controller and virt-api pods to only run on the master nodes:
+
+    kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"infra": {"nodePlacement": {"nodeSelector": {"node-role.kubernetes.io/master": ""}}}}}'
+
+To restrict the virt-handler pods to only run on nodes with the "region=primary" label:
+
+    kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"workloads": {"nodePlacement": {"nodeSelector": {"region": "primary"}}}}}'
+
