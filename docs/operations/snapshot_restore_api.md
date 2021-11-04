@@ -35,7 +35,7 @@ When snapshotting a running vm the controller will check for qemu guest agent in
 
 There will be an indication in the vmSnapshot status if the snapshot was taken online and with or without guest agent participation.
 
-> *Note* Currently online vm snapshot is not supported with hotplugged disks, in this case the vm has to be turned off in order to take the snapshot (or all hotplugged disks unplugged).
+> *Note* Online snapshot with hotplugged disks is supported, only persistent hotplugged disks will be included in the snapshot.
 
 
 To snapshot a `VirtualMachine` named `larry`, apply the following yaml.
