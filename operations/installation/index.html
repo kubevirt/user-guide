@@ -78,7 +78,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#installing-network-plugins-optional">Installing network plugins (optional)</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#restricting-virt-handler-daemonset">Restricting virt-handler DaemonSet</a>
+    <li class="toctree-l2"><a class="reference internal" href="#restricting-kubevirt-components-node-placement">Restricting KubeVirt components node placement</a>
     </li>
     </ul>
                     </li>
@@ -355,11 +355,24 @@ guide</a>.</p>
 playbook</a>
 installs these plugins by default.</p>
 </blockquote>
-<h2 id="restricting-virt-handler-daemonset">Restricting virt-handler DaemonSet<a class="headerlink" href="#restricting-virt-handler-daemonset" title="Permanent link">&para;</a></h2>
-<p>You can patch the <code>virt-handler</code> DaemonSet post-deployment to restrict
-it to a specific subset of nodes with a nodeSelector. For example, to
-restrict the DaemonSet to only nodes with the "region=primary" label:</p>
-<pre><code>kubectl patch ds/virt-handler -n kubevirt -p '{"spec": {"template": {"spec": {"nodeSelector": {"region": "primary"}}}}}'
+<h2 id="restricting-kubevirt-components-node-placement">Restricting KubeVirt components node placement<a class="headerlink" href="#restricting-kubevirt-components-node-placement" title="Permanent link">&para;</a></h2>
+<p>You can restrict the placement of the KubeVirt components across your 
+cluster nodes by editing the KubeVirt CR:</p>
+<ul>
+<li>The placement of the KubeVirt control plane components (virt-controller, virt-api)
+  is governed by the <code>.spec.infra.nodePlacement</code> field in the KubeVirt CR.</li>
+<li>The placement of the virt-handler DaemonSet pods (and consequently, the placement of the 
+  VM workloads scheduled to the cluster) is governed by the <code>.spec.workloads.nodePlacement</code>
+  field in the KubeVirt CR.</li>
+</ul>
+<p>For each of these <code>.nodePlacement</code> objects, the <code>.affinity</code>, <code>.nodeSelector</code> and <code>.tolerations</code> sub-fields can be configured.
+See the description in the <a href="http://kubevirt.io/api-reference/master/definitions.html#_v1_componentconfig">API reference</a>
+for further information about using these fields.</p>
+<p>For example, to restrict the virt-controller and virt-api pods to only run on the master nodes:</p>
+<pre><code>kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"infra": {"nodePlacement": {"nodeSelector": {"node-role.kubernetes.io/master": ""}}}}}'
+</code></pre>
+<p>To restrict the virt-handler pods to only run on nodes with the "region=primary" label:</p>
+<pre><code>kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"workloads": {"nodePlacement": {"nodeSelector": {"region": "primary"}}}}}'
 </code></pre>
               
             </div>
