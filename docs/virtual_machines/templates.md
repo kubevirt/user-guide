@@ -430,7 +430,7 @@ spec:
 ### Overview
 
 The KubeVirt projects provides a set of
-[templates](https://github.com/kubevirt/kubevirt/tree/master/examples) to
+[templates](https://github.com/kubevirt/kubevirt/tree/main/examples) to
 create VMs to handle common usage scenarios. These templates provide a
 combination of some key factors that could be further customized and
 processed to have a Virtual Machine object.
@@ -622,7 +622,7 @@ An OpenShift template has to be converted into the JSON file via
 parameters.
 
 A complete example can be found in the [KubeVirt
-repository](https://raw.githubusercontent.com/kubevirt/kubevirt/master/examples/vm-template-fedora.yaml).
+repository](https://raw.githubusercontent.com/kubevirt/kubevirt/main/examples/vm-template-fedora.yaml).
 
 !> You need to be logged in by `oc login` command.
 

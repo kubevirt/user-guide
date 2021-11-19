@@ -128,8 +128,8 @@ build_img: | envvar
 	@echo "${GREEN}Makefile: Building Image ${RESET}"
 	${DEBUG}if [ ! -e "./Dockerfile" ]; then \
 	  IMAGE="`echo $${IMGTAG} | sed -e s#\'##g -e s#localhost\/## -e s#:latest##`";  \
-		echo "Downloading Dockerfile file: https://raw.githubusercontent.com/kubevirt/project-infra/master/images/kubevirt-user-guide/Dockerfile"; \
-	  if ! `curl -f -s https://raw.githubusercontent.com/kubevirt/project-infra/master/images/kubevirt-user-guide/Dockerfile -o ./Dockerfile`; then \
+		echo "Downloading Dockerfile file: https://raw.githubusercontent.com/kubevirt/project-infra/main/images/kubevirt-user-guide/Dockerfile"; \
+	  if ! `curl -f -s https://raw.githubusercontent.com/kubevirt/project-infra/main/images/kubevirt-user-guide/Dockerfile -o ./Dockerfile`; then \
 			echo "${RED}ERROR: Unable to curl Dockerfile... exiting!${RESET}"; \
 			exit 2; \
 		else \
@@ -140,7 +140,7 @@ build_img: | envvar
 	else \
 		IMAGE="`echo $${TAG} | sed -e s#\'##g -e s#localhost\/## -e s#:latest##`"; \
 		echo "Using Dockerfile file: ./Dockerfile"; \
-		echo "Be sure to add changes to upstream: kubevirt/project-infra/master/images/${IMGTAG}/Dockerfile"; \
+		echo "Be sure to add changes to upstream: kubevirt/project-infra/main/images/${IMGTAG}/Dockerfile"; \
 		echo; \
 	fi; \
 	${CONTAINER_ENGINE} rmi ${IMGTAG} 2> /dev/null || echo -n; \
@@ -169,8 +169,8 @@ check_links: | envvar stop
 check_spelling: | envvar stop
 	@echo "${GREEN}Makefile: Check spelling on site content${RESET}"
 	${DEBUG}if [ ! -e "./yaspeller.json" ]; then \
-		echo "${WHITE}Downloading Dictionary file: https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json${RESET}"; \
-		if ! `curl -f -s https://raw.githubusercontent.com/kubevirt/project-infra/master/images/yaspeller/.yaspeller.json -o yaspeller.json`; then \
+		echo "${WHITE}Downloading Dictionary file: https://raw.githubusercontent.com/kubevirt/project-infra/main/images/yaspeller/.yaspeller.json${RESET}"; \
+		if ! `curl -f -s https://raw.githubusercontent.com/kubevirt/project-infra/main/images/yaspeller/.yaspeller.json -o yaspeller.json`; then \
 			echo "${RED}ERROR: Unable to curl yaspeller dictionary file... exiting!${RESET}"; \
 			exit 2; \
 		else \
@@ -180,7 +180,7 @@ check_spelling: | envvar stop
 		fi; \
 	else \
 		echo "YASPELLER file: ./yaspeller.json"; \
-		echo "Be sure to add changes to upstream: kubevirt/project-infra/master/images/yaspeller/.yaspeller.json"; \
+		echo "Be sure to add changes to upstream: kubevirt/project-infra/main/images/yaspeller/.yaspeller.json"; \
 		echo; \
 	fi; \
 	if `jq -C  . yaspeller.json > /dev/null 2>&1`; then \

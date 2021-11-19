@@ -26,7 +26,7 @@ annotation on the node it is running on:
           cpumanager: "false"
           kubernetes.io/hostname: node01
           kubevirt.io/schedulable: "true"
-          node-role.kubernetes.io/master: ""
+          node-role.kubernetes.io/control-plane: ""
 
 If a `VirtualMachineInstance` gets scheduled, the scheduler is only
 considering nodes where `kubevirt.io/schedulable` is `true`. This can be
