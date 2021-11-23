@@ -135,6 +135,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#starting-a-virtual-machine">Starting a Virtual Machine</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#nvme-pci-passthrough">NVMe PCI passthrough</a>
+    </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../windows_virtio_drivers/">Windows virtio drivers</a>
@@ -312,6 +314,53 @@ spec:
       hostDevices:
       - deviceName: intel.com/qat
         name: quickaccess1
+</code></pre>
+<h2 id="nvme-pci-passthrough">NVMe PCI passthrough<a class="headerlink" href="#nvme-pci-passthrough" title="Permanent link">&para;</a></h2>
+<p>In order to passthrough an NVMe device the procedure is very similar to the gpu case. The device needs to be listed under the <code>permittedHostDevice</code> and under <code>hostDevices</code> in the VM declaration. </p>
+<p>Currently, the KubeVirt device plugin doesn't allow the user to select a specific device by specifying the address. Therefore, if multiple NVMe devices with the same vendor and product id exist in the cluster, they could be randomly assigned to a VM. If the devices are not on the same node, then the nodeSelector mitigates the issue.</p>
+<p>Example:</p>
+<p>Modify the <code>permittedHostDevice</code></p>
+<pre><code class="language-yaml">    configuration:
+      permittedHostDevices:
+        pciHostDevices:
+        - pciVendorSelector: 8086:5845
+          resourceName: devices.kubevirt.io/nvme
+</code></pre>
+<p>VMI declaration:</p>
+<pre><code class="language-yaml">kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-nvme
+  name: vmi-nvme
+spec:
+  nodeSelector: 
+    kubernetes.io/hostname: node03   # &lt;--
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      hostDevices:  # &lt;--
+      - name: nvme  # &lt;--
+        deviceName: devices.kubevirt.io/nvme  # &lt;--
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - containerDisk:
+      image: registry:5000/kubevirt/fedora-with-test-tooling-container-disk:devel
+    name: containerdisk
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+    name: cloudinitdisk
 </code></pre>
               
             </div>
