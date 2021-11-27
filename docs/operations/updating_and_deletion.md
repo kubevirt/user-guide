@@ -108,8 +108,8 @@ spec:
   workloadUpdateStrategy:
     workloadUpdateMethods:
       - Evict
-    batchEvictSize: 10
-    batchEvictInterval: "1m"
+    batchEvictionSize: 10
+    batchEvictionInterval: "1m"
 ```
 
 
@@ -132,8 +132,8 @@ spec:
     workloadUpdateMethods:
       - LiveMigrate
       - Evict
-    batchEvictSize: 10
-    batchEvictInterval: "1m"
+    batchEvictionSize: 10
+    batchEvictionInterval: "1m"
 ```
 
 ## Deleting KubeVirt
