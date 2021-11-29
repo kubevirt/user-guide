@@ -229,7 +229,7 @@ field in the KubeVirt CR must be expanded by adding the <code>Snapshot</code> to
 </blockquote>
 <p>There will be an indication in the vmSnapshot status if the snapshot was taken online and with or without guest agent participation.</p>
 <blockquote>
-<p><em>Note</em> Currently online vm snapshot is not supported with hotplugged disks, in this case the vm has to be turned off in order to take the snapshot (or all hotplugged disks unplugged).</p>
+<p><em>Note</em> Online snapshot with hotplugged disks is supported, only persistent hotplugged disks will be included in the snapshot.</p>
 </blockquote>
 <p>To snapshot a <code>VirtualMachine</code> named <code>larry</code>, apply the following yaml.</p>
 <pre><code class="language-yaml">apiVersion: snapshot.kubevirt.io/v1alpha1
