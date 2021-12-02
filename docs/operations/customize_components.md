@@ -27,7 +27,7 @@ spec:
       patch: '[{"op": "remove", "path": "/spec/template/spec/containers/0/livenessProbe"}]'
       type: json
     - resourceType: Deployment
-      resourecName: virt-controller
+      resourceName: virt-controller
       patch: '{"metadata":{"annotations":{"patch": "true"}}}'
       type: strategic
 ```
