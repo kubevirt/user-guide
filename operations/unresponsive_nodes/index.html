@@ -231,7 +231,7 @@ items:
       cpumanager: "false"
       kubernetes.io/hostname: node01
       kubevirt.io/schedulable: "true"
-      node-role.kubernetes.io/master: ""
+      node-role.kubernetes.io/control-plane: ""
 </code></pre>
 <p>If a <code>VirtualMachineInstance</code> gets scheduled, the scheduler is only
 considering nodes where <code>kubevirt.io/schedulable</code> is <code>true</code>. This can be

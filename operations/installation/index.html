@@ -263,7 +263,7 @@ $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELE
 $ kubectl -n kubevirt wait kv kubevirt --for condition=Available
 </code></pre>
 <p>If hardware virtualization is not available, then a
-<a href="https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md">software emulation fallback</a>
+<a href="https://github.com/kubevirt/kubevirt/blob/main/docs/software-emulation.md">software emulation fallback</a>
 can be enabled using by setting in the KubeVirt CR <code>spec.configuration.developerConfiguration.useEmulation</code> to <code>true</code> as follows:</p>
 <pre><code>$ kubectl edit -n kubevirt kubevirt kubevirt
 </code></pre>
@@ -318,7 +318,7 @@ needs to be added to all nodes prior KubeVirt deployment:</p>
 <p>Once nodes are restarted with this configuration, the KubeVirt can be deployed as described above.</p>
 <h2 id="installing-the-daily-developer-builds">Installing the Daily Developer Builds<a class="headerlink" href="#installing-the-daily-developer-builds" title="Permanent link">&para;</a></h2>
 <!-- markdown-link-check-disable -->
-<p>KubeVirt releases daily a developer build from current master. One can see
+<p>KubeVirt releases daily a developer build from the current main branch. One can see
 when the last release happened by looking at our
 <a href="https://prow.apps.ovirt.org/?job=periodic-kubevirt-push-nightly-build-master">nightly-build-jobs</a>.</p>
 <!-- markdown-link-check-enable -->
@@ -340,7 +340,7 @@ $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/re
 $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-cr-arm64.yaml
 </code></pre>
 <h2 id="deploying-from-source">Deploying from Source<a class="headerlink" href="#deploying-from-source" title="Permanent link">&para;</a></h2>
-<p>See the <a href="https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md">Developer Getting Started
+<p>See the <a href="https://github.com/kubevirt/kubevirt/blob/main/docs/getting-started.md">Developer Getting Started
 Guide</a>
 to understand how to build and deploy KubeVirt from source.</p>
 <h2 id="installing-network-plugins-optional">Installing network plugins (optional)<a class="headerlink" href="#installing-network-plugins-optional" title="Permanent link">&para;</a></h2>
@@ -348,7 +348,7 @@ to understand how to build and deploy KubeVirt from source.</p>
 allows user to utilize them. If you want to attach your VMs to multiple
 networks (Multus CNI) or have full control over L2 (OVS CNI), you need
 to deploy respective network plugins. For more information, refer to
-<a href="https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitrary-cluster.md">OVS CNI installation
+<a href="https://github.com/kubevirt/ovs-cni/blob/main/docs/deployment-on-arbitrary-cluster.md">OVS CNI installation
 guide</a>.</p>
 <blockquote>
 <p>Note: KubeVirt Ansible <a href="https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network">network
@@ -368,8 +368,8 @@ cluster nodes by editing the KubeVirt CR:</p>
 <p>For each of these <code>.nodePlacement</code> objects, the <code>.affinity</code>, <code>.nodeSelector</code> and <code>.tolerations</code> sub-fields can be configured.
 See the description in the <a href="http://kubevirt.io/api-reference/master/definitions.html#_v1_componentconfig">API reference</a>
 for further information about using these fields.</p>
-<p>For example, to restrict the virt-controller and virt-api pods to only run on the master nodes:</p>
-<pre><code>kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"infra": {"nodePlacement": {"nodeSelector": {"node-role.kubernetes.io/master": ""}}}}}'
+<p>For example, to restrict the virt-controller and virt-api pods to only run on the control-plane nodes:</p>
+<pre><code>kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"infra": {"nodePlacement": {"nodeSelector": {"node-role.kubernetes.io/control-plane": ""}}}}}'
 </code></pre>
 <p>To restrict the virt-handler pods to only run on nodes with the "region=primary" label:</p>
 <pre><code>kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"workloads": {"nodePlacement": {"nodeSelector": {"region": "primary"}}}}}'
