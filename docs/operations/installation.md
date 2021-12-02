@@ -56,7 +56,7 @@ how to install KubeVirt using an official release.
     $ kubectl -n kubevirt wait kv kubevirt --for condition=Available
 
 If hardware virtualization is not available, then a
-[software emulation fallback](https://github.com/kubevirt/kubevirt/blob/master/docs/software-emulation.md)
+[software emulation fallback](https://github.com/kubevirt/kubevirt/blob/main/docs/software-emulation.md)
 can be enabled using by setting in the KubeVirt CR `spec.configuration.developerConfiguration.useEmulation` to `true` as follows:
 
     $ kubectl edit -n kubevirt kubevirt kubevirt
@@ -130,7 +130,7 @@ Once nodes are restarted with this configuration, the KubeVirt can be deployed a
 ## Installing the Daily Developer Builds
 
 <!-- markdown-link-check-disable -->
-KubeVirt releases daily a developer build from current master. One can see
+KubeVirt releases daily a developer build from the current main branch. One can see
 when the last release happened by looking at our
 [nightly-build-jobs](https://prow.apps.ovirt.org/?job=periodic-kubevirt-push-nightly-build-master).
 <!-- markdown-link-check-enable -->
@@ -158,7 +158,7 @@ Experimental ARM64 developer builds can be installed like this:
 ## Deploying from Source
 
 See the [Developer Getting Started
-Guide](https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md)
+Guide](https://github.com/kubevirt/kubevirt/blob/main/docs/getting-started.md)
 to understand how to build and deploy KubeVirt from source.
 
 ## Installing network plugins (optional)
@@ -168,7 +168,7 @@ allows user to utilize them. If you want to attach your VMs to multiple
 networks (Multus CNI) or have full control over L2 (OVS CNI), you need
 to deploy respective network plugins. For more information, refer to
 [OVS CNI installation
-guide](https://github.com/kubevirt/ovs-cni/blob/master/docs/deployment-on-arbitrary-cluster.md).
+guide](https://github.com/kubevirt/ovs-cni/blob/main/docs/deployment-on-arbitrary-cluster.md).
 
 > Note: KubeVirt Ansible [network
 > playbook](https://github.com/kubevirt/kubevirt-ansible/tree/master/playbooks#network)
@@ -189,9 +189,9 @@ For each of these `.nodePlacement` objects, the `.affinity`, `.nodeSelector` and
 See the description in the [API reference](http://kubevirt.io/api-reference/master/definitions.html#_v1_componentconfig)
 for further information about using these fields.
 
-For example, to restrict the virt-controller and virt-api pods to only run on the master nodes:
+For example, to restrict the virt-controller and virt-api pods to only run on the control-plane nodes:
 
-    kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"infra": {"nodePlacement": {"nodeSelector": {"node-role.kubernetes.io/master": ""}}}}}'
+    kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"infra": {"nodePlacement": {"nodeSelector": {"node-role.kubernetes.io/control-plane": ""}}}}}'
 
 To restrict the virt-handler pods to only run on nodes with the "region=primary" label:
 

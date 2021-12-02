@@ -5,7 +5,7 @@ Importer](https://github.com/kubevirt/containerized-data-importer) (CDI)
 project provides facilities for enabling [Persistent Volume
 Claims](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 (PVCs) to be used as disks for KubeVirt VMs by way of
-[DataVolumes](https://github.com/kubevirt/containerized-data-importer/blob/master/doc/datavolumes.md).
+[DataVolumes](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/datavolumes.md).
 The three main CDI use cases are:
 
 -   Import a disk image from a web server or container registry to a DataVolume
@@ -42,7 +42,7 @@ cluster. Here are some ways to do that:
     (not recommended for production clusters)
 
 Look
-[here](https://github.com/kubevirt/containerized-data-importer/blob/master/doc/upload.md)
+[here](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/upload.md)
 for example manifests.
 
 ## Supported image formats

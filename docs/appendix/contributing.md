@@ -7,7 +7,7 @@ Reviewing the following will prepare you for contributing
 For code contributors:
 
 * You need to be familiar with writing code in golang.  See the [golang tour](https://tour.golang.org/welcome/1) to familiarize yourself.
-* Read the Developer [contribution page](https://github.com/kubevirt/kubevirt/blob/master/CONTRIBUTING.md) and the [getting started page](https://github.com/kubevirt/kubevirt/blob/master/docs/getting-started.md).
+* Read the Developer [contribution page](https://github.com/kubevirt/kubevirt/blob/main/CONTRIBUTING.md) and the [getting started page](https://github.com/kubevirt/kubevirt/blob/main/docs/getting-started.md).
 
 For all contributors:
 

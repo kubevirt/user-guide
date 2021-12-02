@@ -26,10 +26,10 @@ Signature verification on commits are required -- you may sign your commits by r
 $ git commit -s -m "The commit message" file1 file 2 ...
 ```
 
-If you need to sign all commits from a certain point (for example, `master`), you may run:
+If you need to sign all commits from a certain point (for example, `main`), you may run:
 
 ```console
-git rebase --exec 'git commit --amend --no-edit -n -s' -i master
+git rebase --exec 'git commit --amend --no-edit -n -s' -i main
 ```
 
 Signed commit messages generally take the following form:
