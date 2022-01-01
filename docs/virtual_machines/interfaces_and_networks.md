@@ -449,7 +449,9 @@ spec:
 > use a custom MAC address for your VM instances. If you think you may
 > be affected by any of issues mentioned above, consider changing the
 > default interface type to `masquerade`, and disabling the `bridge`
-> type for pod network, as shown in the example above.
+> type for pod network, as shown in the example above. Setting a static 
+> mac address in your yaml file for multiple vms should not cause problems 
+> as the MAC address is used for VM to pod networking.
 
 ### slirp
 
