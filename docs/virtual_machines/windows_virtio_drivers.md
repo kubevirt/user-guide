@@ -107,10 +107,10 @@ The virtio Windows drivers are distributed in a form of
 [containerDisk](./disks_and_volumes.md#containerdisk),
 which can be simply mounted to the VirtualMachine. The container image,
 containing the disk is located at:
-<https://hub.docker.com/r/kubevirt/virtio-container-disk> and the image
+<https://quay.io/repository/kubevirt/virtio-container-disk?tab=tags> and the image
 be pulled as any other docker container:
 
-    docker pull kubevirt/virtio-container-disk
+    docker pull quay.io/kubevirt/virtio-container-disk
 
 However, pulling image manually is not required, it will be downloaded
 if not present by Kubernetes when deploying VirtualMachine.
@@ -146,7 +146,7 @@ ContainerDisk to you VirtualMachine.
                 bus: sata
     volumes:
       - containerDisk:
-          image: kubevirt/virtio-container-disk
+          image: quay.io/kubevirt/virtio-container-disk
         name: virtiocontainerdisk
 
 Once you are done installing virtio drivers, you can remove virtio
