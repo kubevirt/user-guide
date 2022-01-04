@@ -301,9 +301,9 @@ Enterprise Linux 7</a>.</p>
 <a href="../disks_and_volumes/#containerdisk">containerDisk</a>,
 which can be simply mounted to the VirtualMachine. The container image,
 containing the disk is located at:
-<a href="https://hub.docker.com/r/kubevirt/virtio-container-disk">https://hub.docker.com/r/kubevirt/virtio-container-disk</a> and the image
+<a href="https://quay.io/repository/kubevirt/virtio-container-disk?tab=tags">https://quay.io/repository/kubevirt/virtio-container-disk?tab=tags</a> and the image
 be pulled as any other docker container:</p>
-<pre><code>docker pull kubevirt/virtio-container-disk
+<pre><code>docker pull quay.io/kubevirt/virtio-container-disk
 </code></pre>
 <p>However, pulling image manually is not required, it will be downloaded
 if not present by Kubernetes when deploying VirtualMachine.</p>
@@ -334,7 +334,7 @@ ContainerDisk to you VirtualMachine.</p>
             bus: sata
 volumes:
   - containerDisk:
-      image: kubevirt/virtio-container-disk
+      image: quay.io/kubevirt/virtio-container-disk
     name: virtiocontainerdisk
 </code></pre>
 <p>Once you are done installing virtio drivers, you can remove virtio
