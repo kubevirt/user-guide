@@ -745,6 +745,9 @@ regular memory it will use node hugepages of the size of <code>2Mi</code>.</p>
 <li>
 <p>requested memory must be divisible by hugepages size</p>
 </li>
+<li>
+<p>hugepages uses by default memfd. Memfd is supported from kernel &gt;= 4.14. If you run on an older host (e.g centos 7.9), it is required to disable memfd with the annotation <code>kubevirt.io/memfd: "false"</code> in the VMI metadata annotation.</p>
+</li>
 </ul>
 <h2 id="input-devices">Input Devices<a class="headerlink" href="#input-devices" title="Permanent link">&para;</a></h2>
 <h3 id="tablet">Tablet<a class="headerlink" href="#tablet" title="Permanent link">&para;</a></h3>
