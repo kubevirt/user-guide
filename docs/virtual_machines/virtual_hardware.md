@@ -605,6 +605,8 @@ regular memory it will use node hugepages of the size of `2Mi`.
 
 -   requested memory must be divisible by hugepages size
 
+-   hugepages uses by default memfd. Memfd is supported from kernel >= 4.14. If you run on an older host (e.g centos 7.9), it is required to disable memfd with the annotation `kubevirt.io/memfd: "false"` in the VMI metadata annotation.
+
 ## Input Devices
 
 ### Tablet
