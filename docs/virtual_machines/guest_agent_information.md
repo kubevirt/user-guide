@@ -40,7 +40,8 @@ GA info with merged into status
         version: "29"
         versionId: "29"
       interfaces:
-      - interfaceName: eth0
+      - infoSource: domain, guest-agent
+        interfaceName: eth0
         ipAddress: 10.244.0.23/24
         ipAddresses:
         - 10.244.0.23/24
@@ -48,8 +49,13 @@ GA info with merged into status
         mac: 0a:58:0a:f4:00:17
         name: default
 
-When the Guest Agent is not present in the Virtual Machine, the information is not shown. No error is reported because the Guest Agent is an optional component.
+When the Guest Agent is not present in the Virtual Machine, the Guest Agent information is not shown. No error is reported because the Guest Agent is an optional component.
 
+The infoSource field indicates where the info is gathered from. Valid values:
+
+   - domain: the info is based on the domain spec
+   - guest-agent: the info is based on Guest Agent report
+   - domain, guest-agent: the info is based on both the domain spec and the Guest Agent report
 
 ## Guest Agent info available through the API
 
