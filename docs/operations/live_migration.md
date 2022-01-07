@@ -39,7 +39,7 @@ spec:
 
 ## Migration Status Reporting
 
-# Condition and migration method
+### Condition and migration method
 
 When starting a virtual machine instance, it has also been calculated
 whether the machine is live migratable. The result is being stored in
@@ -62,7 +62,7 @@ Status:
   Migration Method: BlockMigration
 ```
 
-# Migration Status
+### Migration Status
 
 The migration progress status is being reported in the VMI `VMI.status`.
 Most importantly, it indicates whether the migration has been
@@ -90,7 +90,7 @@ Migration State:
     Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
 ```
 
-## Cancel live migration
+## Canceling a live migration
 
 Live migration can also be canceled by simply deleting the migration
 object. A successfully aborted migration will indicate that the abort
@@ -129,10 +129,10 @@ parallel with an additional limit of a maximum of `2` outbound
 migrations per node. Finally, every migration is limited to a bandwidth
 of `64MiB/s`.
 
-These values can be change in the `kubevirt` CR:
+These values can be changed in the `kubevirt` CR:
 
 ```
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
       name: kubevirt
@@ -141,8 +141,8 @@ These values can be change in the `kubevirt` CR:
       configuration:
         developerConfiguration:
           featureGates:
-            - "LiveMigration"
-        migrationConfiguration:
+          - LiveMigration
+        migrations:
           parallelMigrationsPerCluster: 5
           parallelOutboundMigrationsPerNode: 2
           bandwidthPerMigration: 64Mi
@@ -151,7 +151,91 @@ These values can be change in the `kubevirt` CR:
           disableTLS: false
 ```
 
-# Migration timeouts
+## Using a different network for migrations
+
+Live migrations can be configured to happen on a different network than
+the one Kubernetes is configured to use.
+That potentially allows for more determinism, control and/or bandwidth,
+depending on use-cases.
+
+### Creating a migration network on a cluster
+
+A separate physical network is required, meaning that every node on the
+cluster has to have at least 2 NICs, and the NICs that will be used for
+migrations need to be interconnected, i.e. all plugged to the same switch.
+The examples below assume that `eth1` will be used for migrations.
+
+It is also required for the Kubernetes cluster to have
+[multus](https://github.com/k8snetworkplumbingwg/multus-cni.git) installed.
+
+If the desired network doesn't include a DHCP server, then
+[whereabouts](https://github.com/k8snetworkplumbingwg/whereabouts) will
+be needed as well.
+
+Finally, a NetworkAttachmentDefinition needs to be created in the
+namespace where KubeVirt is installed. Here is an example:
+```
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: migration-network
+  namespace: kubevirt
+spec:
+  config: '{
+      "cniVersion": "0.3.1",
+      "name": "migration-bridge",
+      "type": "macvlan",
+      "master": "eth1",
+      "mode": "bridge",
+      "ipam": {
+        "type": "whereabouts",
+        "range": "10.1.1.0/24"
+      }
+    }'
+```
+
+### Configuring KubeVirt to migrate VMIs over that network
+
+This is just a matter of adding the name of the
+NetworkAttachmentDefinition to the KubeVirt CR, like so:
+```
+    apiVersion: kubevirt.io/v1
+    kind: Kubevirt
+    metadata:
+      name: kubevirt
+      namespace: kubevirt
+    spec:
+      configuration:
+        developerConfiguration:
+          featureGates:
+          - LiveMigration
+        migrations:
+          network: migration-network
+```
+
+That change will trigger a restart of the virt-handler pods, as they
+get connected to that new network.
+
+From now on, migrations will happen over that network.
+
+### Configuring KubeVirtCI for testing migration networks
+
+Developers and people wanting to test the feature before deploying
+it on a real cluster might want to configure a dedicated migration
+network in KubeVirtCI.
+
+KubeVirtCI can simply be configured to include a virtual secondary
+network, as well as automatically install multus and whereabouts.
+The following environment variables just have to be declared before
+running `make cluster-up`:
+```
+export KUBEVIRT_NUM_NODES=2;
+export KUBEVIRT_NUM_SECONDARY_NICS=1;
+export KUBEVIRT_DEPLOY_ISTIO=true;
+export KUBEVIRT_WITH_CNAO=true
+```
+
+## Migration timeouts
 
 Depending on the type, the live migration process will copy virtual
 machine memory pages and disk blocks to the destination. During this
@@ -160,7 +244,7 @@ the instance to use again. To achieve a successful migration, it is
 assumed that the instance will write to the free pages and blocks
 (pollute the pages) at a lower rate than these are being copied.
 
-## Completion time
+### Completion time
 
 In some cases the virtual machine can write to different memory pages /
 disk blocks at a higher rate than these can be copied, which will
@@ -173,14 +257,14 @@ defaults to 800s is the time for GiB of data to wait for the migration
 to be completed before aborting it. A VMI with 8Gib of memory will time
 out after 6400 seconds.
 
-## Progress timeout
+### Progress timeout
 
 Live migration will also be aborted when it will be noticed that copying
 memory doesn't make any progress. The time to wait for live migration to
 make progress in transferring data is configurable by `progressTimeout`
 parameter, which defaults to 150s
 
-# Disabling secure migrations
+## Disabling secure migrations
 
 **FEATURE STATE:** KubeVirt v0.43
 
