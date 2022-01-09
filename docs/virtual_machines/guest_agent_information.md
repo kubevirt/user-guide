@@ -13,11 +13,11 @@ The condition tells that the GA is connected and can be used.
 GA condition on VirtualMachineInstance
 
     status:
-        conditions:
-            - lastProbeTime: "2020-02-28T10:22:59Z"
-            lastTransitionTime: null
-            status: "True"
-            type: AgentConnected
+      conditions:
+      - lastProbeTime: "2020-02-28T10:22:59Z"
+        lastTransitionTime: null
+        status: "True"
+        type: AgentConnected
 
 
 When the GA is connected, additional OS information is shown in the status.
@@ -31,25 +31,31 @@ Below is the example of the information shown in the VirtualMachineInstance stat
 GA info with merged into status
 
     status:
-        guestOSInfo:
-            id: fedora
-            kernelRelease: 4.18.16-300.fc29.x86_64
-            kernelVersion: '#1 SMP Sat Oct 20 23:24:08 UTC 2018'
-            name: Fedora
-            prettyName: Fedora 29 (Cloud Edition)
-            version: "29"
-            versionId: "29"
-        interfaces:
-            - interfaceName: eth0
-            ipAddress: 10.244.0.23/24
-            ipAddresses:
-                - 10.244.0.23/24
-                - fe80::858:aff:fef4:17/64
-            mac: 0a:58:0a:f4:00:17
-            name: default
+      guestOSInfo:
+        id: fedora
+        kernelRelease: 4.18.16-300.fc29.x86_64
+        kernelVersion: '#1 SMP Sat Oct 20 23:24:08 UTC 2018'
+        name: Fedora
+        prettyName: Fedora 29 (Cloud Edition)
+        version: "29"
+        versionId: "29"
+      interfaces:
+      - infoSource: domain, guest-agent
+        interfaceName: eth0
+        ipAddress: 10.244.0.23/24
+        ipAddresses:
+        - 10.244.0.23/24
+        - fe80::858:aff:fef4:17/64
+        mac: 0a:58:0a:f4:00:17
+        name: default
 
-When the Guest Agent is not present in the Virtual Machine, the information is not shown. No error is reported because the Guest Agent is an optional component.
+When the Guest Agent is not present in the Virtual Machine, the Guest Agent information is not shown. No error is reported because the Guest Agent is an optional component.
 
+The infoSource field indicates where the info is gathered from. Valid values:
+
+   - domain: the info is based on the domain spec
+   - guest-agent: the info is based on Guest Agent report
+   - domain, guest-agent: the info is based on both the domain spec and the Guest Agent report
 
 ## Guest Agent info available through the API
 
