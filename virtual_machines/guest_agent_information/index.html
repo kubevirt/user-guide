@@ -212,11 +212,11 @@ More technical detail about available GA commands is available <a href="https://
 The condition tells that the GA is connected and can be used.</p>
 <p>GA condition on VirtualMachineInstance</p>
 <pre><code>status:
-    conditions:
-        - lastProbeTime: "2020-02-28T10:22:59Z"
-        lastTransitionTime: null
-        status: "True"
-        type: AgentConnected
+  conditions:
+  - lastProbeTime: "2020-02-28T10:22:59Z"
+    lastTransitionTime: null
+    status: "True"
+    type: AgentConnected
 </code></pre>
 <p>When the GA is connected, additional OS information is shown in the status.
 This information comprises:</p>
@@ -227,24 +227,31 @@ This information comprises:</p>
 <p>Below is the example of the information shown in the VirtualMachineInstance status.</p>
 <p>GA info with merged into status</p>
 <pre><code>status:
-    guestOSInfo:
-        id: fedora
-        kernelRelease: 4.18.16-300.fc29.x86_64
-        kernelVersion: '#1 SMP Sat Oct 20 23:24:08 UTC 2018'
-        name: Fedora
-        prettyName: Fedora 29 (Cloud Edition)
-        version: "29"
-        versionId: "29"
-    interfaces:
-        - interfaceName: eth0
-        ipAddress: 10.244.0.23/24
-        ipAddresses:
-            - 10.244.0.23/24
-            - fe80::858:aff:fef4:17/64
-        mac: 0a:58:0a:f4:00:17
-        name: default
+  guestOSInfo:
+    id: fedora
+    kernelRelease: 4.18.16-300.fc29.x86_64
+    kernelVersion: '#1 SMP Sat Oct 20 23:24:08 UTC 2018'
+    name: Fedora
+    prettyName: Fedora 29 (Cloud Edition)
+    version: "29"
+    versionId: "29"
+  interfaces:
+  - infoSource: domain, guest-agent
+    interfaceName: eth0
+    ipAddress: 10.244.0.23/24
+    ipAddresses:
+    - 10.244.0.23/24
+    - fe80::858:aff:fef4:17/64
+    mac: 0a:58:0a:f4:00:17
+    name: default
 </code></pre>
-<p>When the Guest Agent is not present in the Virtual Machine, the information is not shown. No error is reported because the Guest Agent is an optional component.</p>
+<p>When the Guest Agent is not present in the Virtual Machine, the Guest Agent information is not shown. No error is reported because the Guest Agent is an optional component.</p>
+<p>The infoSource field indicates where the info is gathered from. Valid values:</p>
+<ul>
+<li>domain: the info is based on the domain spec</li>
+<li>guest-agent: the info is based on Guest Agent report</li>
+<li>domain, guest-agent: the info is based on both the domain spec and the Guest Agent report</li>
+</ul>
 <h2 id="guest-agent-info-available-through-the-api">Guest Agent info available through the API<a class="headerlink" href="#guest-agent-info-available-through-the-api" title="Permanent link">&para;</a></h2>
 <p>The data shown in the VirtualMachineInstance status are a subset of the information available.
 The rest of the data is available via the REST API exposed in the Kubernetes <code>kube-api</code> server.</p>
