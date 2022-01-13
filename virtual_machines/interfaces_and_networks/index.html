@@ -463,10 +463,10 @@ spec:
     pod: {}
 </code></pre>
 <blockquote>
-<p><strong>Note:</strong> If a specific MAC address is configured for a virtual
-machine interface, it's passed to the underlying CNI plugin that is
-expected to configure the backend to allow for this particular MAC
-address. Not every plugin has native support for custom MAC addresses.</p>
+<p><strong>Note:</strong> For secondary interfaces, when a MAC address is specified for a
+virtual machine interface, it is passed to the underlying CNI plugin which is,
+in turn, expected to configure the backend to allow for this particular MAC.
+Not every plugin has native support for custom MAC addresses.</p>
 <p><strong>Note:</strong> For some CNI plugins without native support for custom MAC
 addresses, there is a workaround, which is to use the <code>tuning</code> CNI
 plugin to adjust pod interface MAC address. This can be used as
