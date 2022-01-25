@@ -82,6 +82,16 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#migration-status-reporting">Migration Status Reporting</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#canceling-a-live-migration">Canceling a live migration</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#changing-cluster-wide-migration-limits">Changing Cluster Wide Migration Limits</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#using-a-different-network-for-migrations">Using a different network for migrations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#migration-timeouts">Migration timeouts</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#disabling-secure-migrations">Disabling secure migrations</a>
+    </li>
     </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../hotplug_volumes/">Hotplug Volumes</a>
@@ -243,7 +253,7 @@ spec:
   vmiName: vmi-fedora
 </code></pre>
 <h2 id="migration-status-reporting">Migration Status Reporting<a class="headerlink" href="#migration-status-reporting" title="Permanent link">&para;</a></h2>
-<h1 id="condition-and-migration-method">Condition and migration method<a class="headerlink" href="#condition-and-migration-method" title="Permanent link">&para;</a></h1>
+<h3 id="condition-and-migration-method">Condition and migration method<a class="headerlink" href="#condition-and-migration-method" title="Permanent link">&para;</a></h3>
 <p>When starting a virtual machine instance, it has also been calculated
 whether the machine is live migratable. The result is being stored in
 the VMI <code>VMI.status.conditions</code>. The calculation can be based on
@@ -261,7 +271,7 @@ only the instance memory will be copied.</p>
     Type: LiveMigratable
   Migration Method: BlockMigration
 </code></pre>
-<h1 id="migration-status">Migration Status<a class="headerlink" href="#migration-status" title="Permanent link">&para;</a></h1>
+<h3 id="migration-status">Migration Status<a class="headerlink" href="#migration-status" title="Permanent link">&para;</a></h3>
 <p>The migration progress status is being reported in the VMI <code>VMI.status</code>.
 Most importantly, it indicates whether the migration has been
 <code>Completed</code> or if it <code>Failed</code>.</p>
@@ -284,7 +294,7 @@ Most importantly, it indicates whether the migration has been
     Target Node Domain Detected:  true
     Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
 </code></pre>
-<h2 id="cancel-live-migration">Cancel live migration<a class="headerlink" href="#cancel-live-migration" title="Permanent link">&para;</a></h2>
+<h2 id="canceling-a-live-migration">Canceling a live migration<a class="headerlink" href="#canceling-a-live-migration" title="Permanent link">&para;</a></h2>
 <p>Live migration can also be canceled by simply deleting the migration
 object. A successfully aborted migration will indicate that the abort
 has been requested <code>Abort Requested</code>, and that it succeeded:
@@ -317,8 +327,8 @@ the cluster. By default, it is configured to only run <code>5</code> migrations 
 parallel with an additional limit of a maximum of <code>2</code> outbound
 migrations per node. Finally, every migration is limited to a bandwidth
 of <code>64MiB/s</code>.</p>
-<p>These values can be change in the <code>kubevirt</code> CR:</p>
-<pre><code>    apiVersion: kubevirt.io/v1alpha3
+<p>These values can be changed in the <code>kubevirt</code> CR:</p>
+<pre><code>    apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
       name: kubevirt
@@ -327,8 +337,8 @@ of <code>64MiB/s</code>.</p>
       configuration:
         developerConfiguration:
           featureGates:
-            - &quot;LiveMigration&quot;
-        migrationConfiguration:
+          - LiveMigration
+        migrations:
           parallelMigrationsPerCluster: 5
           parallelOutboundMigrationsPerNode: 2
           bandwidthPerMigration: 64Mi
@@ -336,14 +346,81 @@ of <code>64MiB/s</code>.</p>
           progressTimeout: 150
           disableTLS: false
 </code></pre>
-<h1 id="migration-timeouts">Migration timeouts<a class="headerlink" href="#migration-timeouts" title="Permanent link">&para;</a></h1>
+<h2 id="using-a-different-network-for-migrations">Using a different network for migrations<a class="headerlink" href="#using-a-different-network-for-migrations" title="Permanent link">&para;</a></h2>
+<p>Live migrations can be configured to happen on a different network than
+the one Kubernetes is configured to use.
+That potentially allows for more determinism, control and/or bandwidth,
+depending on use-cases.</p>
+<h3 id="creating-a-migration-network-on-a-cluster">Creating a migration network on a cluster<a class="headerlink" href="#creating-a-migration-network-on-a-cluster" title="Permanent link">&para;</a></h3>
+<p>A separate physical network is required, meaning that every node on the
+cluster has to have at least 2 NICs, and the NICs that will be used for
+migrations need to be interconnected, i.e. all plugged to the same switch.
+The examples below assume that <code>eth1</code> will be used for migrations.</p>
+<p>It is also required for the Kubernetes cluster to have
+<a href="https://github.com/k8snetworkplumbingwg/multus-cni.git">multus</a> installed.</p>
+<p>If the desired network doesn't include a DHCP server, then
+<a href="https://github.com/k8snetworkplumbingwg/whereabouts">whereabouts</a> will
+be needed as well.</p>
+<p>Finally, a NetworkAttachmentDefinition needs to be created in the
+namespace where KubeVirt is installed. Here is an example:</p>
+<pre><code>apiVersion: &quot;k8s.cni.cncf.io/v1&quot;
+kind: NetworkAttachmentDefinition
+metadata:
+  name: migration-network
+  namespace: kubevirt
+spec:
+  config: '{
+      &quot;cniVersion&quot;: &quot;0.3.1&quot;,
+      &quot;name&quot;: &quot;migration-bridge&quot;,
+      &quot;type&quot;: &quot;macvlan&quot;,
+      &quot;master&quot;: &quot;eth1&quot;,
+      &quot;mode&quot;: &quot;bridge&quot;,
+      &quot;ipam&quot;: {
+        &quot;type&quot;: &quot;whereabouts&quot;,
+        &quot;range&quot;: &quot;10.1.1.0/24&quot;
+      }
+    }'
+</code></pre>
+<h3 id="configuring-kubevirt-to-migrate-vmis-over-that-network">Configuring KubeVirt to migrate VMIs over that network<a class="headerlink" href="#configuring-kubevirt-to-migrate-vmis-over-that-network" title="Permanent link">&para;</a></h3>
+<p>This is just a matter of adding the name of the
+NetworkAttachmentDefinition to the KubeVirt CR, like so:</p>
+<pre><code>    apiVersion: kubevirt.io/v1
+    kind: Kubevirt
+    metadata:
+      name: kubevirt
+      namespace: kubevirt
+    spec:
+      configuration:
+        developerConfiguration:
+          featureGates:
+          - LiveMigration
+        migrations:
+          network: migration-network
+</code></pre>
+<p>That change will trigger a restart of the virt-handler pods, as they
+get connected to that new network.</p>
+<p>From now on, migrations will happen over that network.</p>
+<h3 id="configuring-kubevirtci-for-testing-migration-networks">Configuring KubeVirtCI for testing migration networks<a class="headerlink" href="#configuring-kubevirtci-for-testing-migration-networks" title="Permanent link">&para;</a></h3>
+<p>Developers and people wanting to test the feature before deploying
+it on a real cluster might want to configure a dedicated migration
+network in KubeVirtCI.</p>
+<p>KubeVirtCI can simply be configured to include a virtual secondary
+network, as well as automatically install multus and whereabouts.
+The following environment variables just have to be declared before
+running <code>make cluster-up</code>:</p>
+<pre><code>export KUBEVIRT_NUM_NODES=2;
+export KUBEVIRT_NUM_SECONDARY_NICS=1;
+export KUBEVIRT_DEPLOY_ISTIO=true;
+export KUBEVIRT_WITH_CNAO=true
+</code></pre>
+<h2 id="migration-timeouts">Migration timeouts<a class="headerlink" href="#migration-timeouts" title="Permanent link">&para;</a></h2>
 <p>Depending on the type, the live migration process will copy virtual
 machine memory pages and disk blocks to the destination. During this
 process non-locked pages and blocks are being copied and become free for
 the instance to use again. To achieve a successful migration, it is
 assumed that the instance will write to the free pages and blocks
 (pollute the pages) at a lower rate than these are being copied.</p>
-<h2 id="completion-time">Completion time<a class="headerlink" href="#completion-time" title="Permanent link">&para;</a></h2>
+<h3 id="completion-time">Completion time<a class="headerlink" href="#completion-time" title="Permanent link">&para;</a></h3>
 <p>In some cases the virtual machine can write to different memory pages /
 disk blocks at a higher rate than these can be copied, which will
 prevent the migration process from completing in a reasonable amount of
@@ -354,12 +431,12 @@ copied. The configurable parameter <code>completionTimeoutPerGiB</code>, which
 defaults to 800s is the time for GiB of data to wait for the migration
 to be completed before aborting it. A VMI with 8Gib of memory will time
 out after 6400 seconds.</p>
-<h2 id="progress-timeout">Progress timeout<a class="headerlink" href="#progress-timeout" title="Permanent link">&para;</a></h2>
+<h3 id="progress-timeout">Progress timeout<a class="headerlink" href="#progress-timeout" title="Permanent link">&para;</a></h3>
 <p>Live migration will also be aborted when it will be noticed that copying
 memory doesn't make any progress. The time to wait for live migration to
 make progress in transferring data is configurable by <code>progressTimeout</code>
 parameter, which defaults to 150s</p>
-<h1 id="disabling-secure-migrations">Disabling secure migrations<a class="headerlink" href="#disabling-secure-migrations" title="Permanent link">&para;</a></h1>
+<h2 id="disabling-secure-migrations">Disabling secure migrations<a class="headerlink" href="#disabling-secure-migrations" title="Permanent link">&para;</a></h2>
 <p><strong>FEATURE STATE:</strong> KubeVirt v0.43</p>
 <p>Sometimes it may be desirable to disable TLS encryption of migrations to
 improve performance. Use <code>disableTLS</code> to do that:</p>
