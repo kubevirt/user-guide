@@ -16,7 +16,7 @@ example, the `vmi-preset.yaml` file below describes a
 be created with a resource request for 64M of RAM.
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     metadata:
       name: small-qemu
@@ -122,7 +122,7 @@ KubeVirt will determine which `VirtualMachineInstancePresets` apply to a
 Particular `VirtualMachineInstance` by matching `Labels`. For example:
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     metadata:
       name: example-preset
@@ -136,7 +136,7 @@ would match any `VirtualMachineInstance` in the same namespace with a
 `Label` of `flavor: foo`. For example:
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     version: v1
     metadata:
@@ -245,9 +245,9 @@ annotation:
 ### Simple `VirtualMachineInstancePreset` Example
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
-    version: v1alpha3
+    version: v1
     metadata:
       name: example-preset
     spec:
@@ -264,7 +264,7 @@ annotation:
             spinlocks:
               spinlocks: 8191
     ---
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     version: v1
     metadata:
@@ -281,12 +281,12 @@ Once the `VirtualMachineInstancePreset` is applied to the
 `VirtualMachineInstance`, the resulting resource would look like this:
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       annotations:
-        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-        virtualmachineinstancepreset.kubevirt.io/example-preset: kubevirt.io/v1alpha3
+        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1
+        virtualmachineinstancepreset.kubevirt.io/example-preset: kubevirt.io/v1
       labels:
         kubevirt.io/os: win10
         kubevirt.io/nodeName: master
@@ -324,9 +324,9 @@ This is an example of a merge conflict. In this case both the
 different number of CPU's.
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
-    version: v1alpha3
+    version: v1
     metadata:
       name: example-preset
     spec:
@@ -337,7 +337,7 @@ different number of CPU's.
         cpu:
           cores: 4
     ---
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     version: v1
     metadata:
@@ -354,11 +354,11 @@ In this case the `VirtualMachineInstance` Spec will remain unmodified.
 Use `kubectl get events` to show events.
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       annotations:
-        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
+        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1
       generation: 0
       labels:
         kubevirt.io/flavor: default-features
@@ -390,7 +390,7 @@ Note: This example breaks from the convention of using os-shortname as a
 `Label` for demonstration purposes.
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     metadata:
       name: twelve-cores
@@ -402,7 +402,7 @@ Note: This example breaks from the convention of using os-shortname as a
         cpu:
           cores: 12
     ---
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: windows-10
@@ -411,7 +411,7 @@ Note: This example breaks from the convention of using os-shortname as a
         kubevirt.io/cpu: dodecacore
     spec:
     ---
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: windows-7
@@ -426,12 +426,12 @@ Adding this `VirtualMachineInstancePreset` and these
 `VirtualMachineInstances` will result in:
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       annotations:
-        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-        virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha3
+        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1
+        virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1
       labels:
         kubevirt.io/cpu: dodecacore
         kubevirt.io/os: win10
@@ -445,12 +445,12 @@ Adding this `VirtualMachineInstancePreset` and these
           requests:
             memory: 4Gi
     ---
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       annotations:
-        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-        virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1alpha3
+        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1
+        virtualmachineinstancepreset.kubevirt.io/twelve-cores: kubevirt.io/v1
       labels:
         kubevirt.io/cpu: dodecacore
         kubevirt.io/os: win7
@@ -472,7 +472,7 @@ This `VirtualMachineInstancePreset` has a matchExpression that will
 match two labels: `kubevirt.io/os: win10` and `kubevirt.io/os: win7`.
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     metadata:
       name: windows-vmis
@@ -485,7 +485,7 @@ match two labels: `kubevirt.io/os: win10` and `kubevirt.io/os: win7`.
           requests:
             memory: 128M
     ---
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: smallvmi
@@ -494,7 +494,7 @@ match two labels: `kubevirt.io/os: win10` and `kubevirt.io/os: win7`.
     spec:
       terminationGracePeriodSeconds: 60
     ---
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: largevmi
@@ -509,12 +509,12 @@ Applying the preset to both VM's will result in:
 ```console
     apiVersion: v1
     items:
-    - apiVersion: kubevirt.io/v1alpha3
+    - apiVersion: kubevirt.io/v1
       kind: VirtualMachineInstance
       metadata:
         annotations:
-          presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-          virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1alpha3
+          presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1
+          virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1
         labels:
           kubevirt.io/os: win7
         name: largevmi
@@ -524,12 +524,12 @@ Applying the preset to both VM's will result in:
             requests:
               memory: 128M
         terminationGracePeriodSeconds: 120
-    - apiVersion: kubevirt.io/v1alpha3
+    - apiVersion: kubevirt.io/v1
       kind: VirtualMachineInstance
       metadata:
         annotations:
-          presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-          virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1alpha3
+          presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1
+          virtualmachineinstancepreset.kubevirt.io/windows-vmis: kubevirt.io/v1
         labels:
           kubevirt.io/os: win10
         name: smallvmi
