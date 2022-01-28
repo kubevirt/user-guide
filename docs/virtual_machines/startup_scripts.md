@@ -599,7 +599,7 @@ spec:
         name: default
       - bridge: {}
         name: ptp
-	tag: ptp
+        tag: ptp
       - name: sriov-net
         sriov: {}
         tag: nfvfunc
