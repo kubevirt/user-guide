@@ -184,9 +184,9 @@ the VM.
 Dual-stack networking configurations have a limitation when using HTTP / TCP
 probes - you **cannot probe the VMI by its IPv6 address**. The reason for this
 is the `host` field for both the
-[HTTP](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#httpgetaction-v1-core)
+[HTTP](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#httpgetaction-v1-core)
 and
-[TCP](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#tcpsocketaction-v1-core)
+[TCP](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#tcpsocketaction-v1-core)
 probe actions default to the pod's IP address, which is currently always the
 IPv4 address.
 
