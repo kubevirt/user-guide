@@ -532,10 +532,10 @@ place the VM.
         resources:
           requests:
             memory: "1Gi"
-            cpu: "2"
+            cpu: "1"
           limits:
             memory: "2Gi"
-            cpu: "1"
+            cpu: "2"
           disks:
           - name: myimage
             disk: {}
