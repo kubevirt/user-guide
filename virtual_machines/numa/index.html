@@ -193,7 +193,7 @@
     <li>NUMA</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/numa.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/numa.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -214,13 +214,13 @@ Kubernetes.</p>
 to the Virtual Machine topology to improve the performance.</p>
 <p>The following NUMA mapping strategies can be used:</p>
 <ul>
-<li><a href="#GuestMappingPassthrough"><strong>GuestMappingPassthrough</strong></a></li>
+<li><a href="#guestmappingpassthrough"><strong>GuestMappingPassthrough</strong></a></li>
 </ul>
 <h2 id="preconditions">Preconditions<a class="headerlink" href="#preconditions" title="Permanent link">&para;</a></h2>
 <p>In order to use current NUMA support, the following preconditions must be met:</p>
 <ul>
 <li><a href="../dedicated_cpu_resources/">Dedicated CPU Resources</a> must be configured.</li>
-<li><a href="../virtual_hardware/#Hugepages">Hugepages</a> need to be allocatable on target
+<li><a href="../virtual_hardware/#hugepages">Hugepages</a> need to be allocatable on target
   nodes.</li>
 <li>The <code>NUMA</code>
   <a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
@@ -291,7 +291,7 @@ spec:
 </li>
 </ul>
 <h3 id="preconditions_1">Preconditions<a class="headerlink" href="#preconditions_1" title="Permanent link">&para;</a></h3>
-<p>A prerequisite to running real-time workloads include locking resources in the cluster to allow the real-time VM exclusive usage. This translates into nodes, or node, that have been configured with a <a href="https://github.com/kubevirt/user-guide/blob/master/docs/virtual_machines/dedicated_cpu_resources.md">dedicated set of CPUs</a> and also provides support for <a href="https://github.com/kubevirt/user-guide/blob/master/docs/virtual_machines/numa.md">NUMA</a> with a free number of hugepages of 2Mi or 1Gi size (depending on the configuration in the VMI). Additionally, the node must be configured to allow the scheduler to run processes with real-time policy.</p>
+<p>A prerequisite to running real-time workloads include locking resources in the cluster to allow the real-time VM exclusive usage. This translates into nodes, or node, that have been configured with a <a href="https://github.com/kubevirt/user-guide/blob/main/docs/virtual_machines/dedicated_cpu_resources.md">dedicated set of CPUs</a> and also provides support for <a href="https://github.com/kubevirt/user-guide/blob/main/docs/virtual_machines/numa.md">NUMA</a> with a free number of hugepages of 2Mi or 1Gi size (depending on the configuration in the VMI). Additionally, the node must be configured to allow the scheduler to run processes with real-time policy.</p>
 <h3 id="nodes-capable-of-running-real-time-workloads">Nodes capable of running real-time workloads<a class="headerlink" href="#nodes-capable-of-running-real-time-workloads" title="Permanent link">&para;</a></h3>
 <p>When the KubeVirt pods are deployed in a node, it will check if it is capable of running processes in real-time scheduling policy and label the node as real-time capable (kubevirt.io/realtime). If, on the other hand, the node is not able to deliver such capability, the label is not applied. To check which nodes are able to host real-time VM workloads run this command:</p>
 <pre><code class="language-bash">$&gt;kubectl get nodes -l kubevirt.io/realtime

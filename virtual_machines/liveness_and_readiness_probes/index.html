@@ -197,7 +197,7 @@
     <li>Liveness and Readiness Probes</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/kubevirt/user-guide/edit/master/docs/virtual_machines/liveness_and_readiness_probes.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/liveness_and_readiness_probes.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -381,9 +381,9 @@ the VM.</p>
 <p>Dual-stack networking configurations have a limitation when using HTTP / TCP
 probes - you <strong>cannot probe the VMI by its IPv6 address</strong>. The reason for this
 is the <code>host</code> field for both the
-<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#httpgetaction-v1-core">HTTP</a>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#httpgetaction-v1-core">HTTP</a>
 and
-<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#tcpsocketaction-v1-core">TCP</a>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.23/#tcpsocketaction-v1-core">TCP</a>
 probe actions default to the pod's IP address, which is currently always the
 IPv4 address.</p>
 <p>Since the pod's IP address is not known before creating the VMI, it is not
