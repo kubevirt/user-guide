@@ -11,14 +11,14 @@ to the Virtual Machine topology to improve the performance.
 
 The following NUMA mapping strategies can be used:
 
-- [**GuestMappingPassthrough**](#GuestMappingPassthrough)
+- [**GuestMappingPassthrough**](#guestmappingpassthrough)
 
 ## Preconditions
 
 In order to use current NUMA support, the following preconditions must be met:
 
 * [Dedicated CPU Resources](dedicated_cpu_resources.md) must be configured.
-* [Hugepages](virtual_hardware.md#Hugepages) need to be allocatable on target
+* [Hugepages](virtual_hardware.md#hugepages) need to be allocatable on target
   nodes.
 * The `NUMA`
   [feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
@@ -97,7 +97,7 @@ To make use of the optimized settings, two new settings have been added to the V
 
 ### Preconditions
 
-A prerequisite to running real-time workloads include locking resources in the cluster to allow the real-time VM exclusive usage. This translates into nodes, or node, that have been configured with a [dedicated set of CPUs](https://github.com/kubevirt/user-guide/blob/master/docs/virtual_machines/dedicated_cpu_resources.md) and also provides support for [NUMA](https://github.com/kubevirt/user-guide/blob/master/docs/virtual_machines/numa.md) with a free number of hugepages of 2Mi or 1Gi size (depending on the configuration in the VMI). Additionally, the node must be configured to allow the scheduler to run processes with real-time policy.
+A prerequisite to running real-time workloads include locking resources in the cluster to allow the real-time VM exclusive usage. This translates into nodes, or node, that have been configured with a [dedicated set of CPUs](https://github.com/kubevirt/user-guide/blob/main/docs/virtual_machines/dedicated_cpu_resources.md) and also provides support for [NUMA](https://github.com/kubevirt/user-guide/blob/main/docs/virtual_machines/numa.md) with a free number of hugepages of 2Mi or 1Gi size (depending on the configuration in the VMI). Additionally, the node must be configured to allow the scheduler to run processes with real-time policy.
 
 ### Nodes capable of running real-time workloads
 
