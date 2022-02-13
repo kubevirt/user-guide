@@ -37,6 +37,13 @@ spec:
   vmiName: vmi-fedora
 ```
 
+### Using virtctl to initiate live migration
+Live migration can also be initiated using virtctl
+```console
+    virtctl migrate vmi-fedora
+```
+
+
 ## Migration Status Reporting
 
 ### Condition and migration method
@@ -119,6 +126,13 @@ Migration State:
     Target Node Address:          10.128.0.46
     Target Node Domain Detected:  true
     Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
+```
+
+### Using virtctl to cancel a live migration
+Live migration can also be canceled using virtctl, by specifying the name
+of a VMI which is currently being migrated
+```console
+    virtctl migrate-cancel vmi-fedora
 ```
 
 ## Changing Cluster Wide Migration Limits
@@ -286,4 +300,4 @@ improve performance. Use `disableTLS` to do that:
           disableTLS: true
 ```
 
-**Note:** While this increases perfomance it may allow MITM attacks. Be careful.
+**Note:** While this increases performance it may allow MITM attacks. Be careful.
