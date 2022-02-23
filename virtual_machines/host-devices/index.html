@@ -98,6 +98,8 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../operations/activating_feature_gates/">Activating feature gates</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../operations/mediated_devices_configuration/">Mediated devices and virtual GPUs</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Virtual machines</span></p>
                 <ul class="current">
@@ -262,7 +264,10 @@ echo &quot;vfio-pci&quot; &gt; /sys/bus/pci/devices/0000\:65\:00.0/driver_overri
 echo 0000:65:00.0 &gt; /sys/bus/pci/drivers/vfio-pci/bind
 </code></pre>
 <h2 id="preparation-of-mediated-devices-such-as-vgpu">Preparation of mediated devices such as vGPU<a class="headerlink" href="#preparation-of-mediated-devices-such-as-vgpu" title="Permanent link">&para;</a></h2>
-<p>At this time, configuration of a Mediated device (mdev) should be done according to the vendor directions. Once the mdev is configured, KubeVirt will be able to discover and use it for device assignment.</p>
+<p>In general, configuration of a Mediated devices (mdevs), such as vGPUs, should be done according to the vendor directions. 
+KubeVirt can now facilitate the creation of the mediated devices / vGPUs on the cluster nodes. This assumes that the required vendor driver is already installed on the nodes.
+See the <a href="../../operations/mediated_devices_configuration/">Mediated devices and virtual GPUs</a> to learn more about this functionality.</p>
+<p>Once the mdev is configured, KubeVirt will be able to discover and use it for device assignment.</p>
 <h2 id="listing-permitted-devices">Listing permitted devices<a class="headerlink" href="#listing-permitted-devices" title="Permanent link">&para;</a></h2>
 <p>Administrators can control which host devices are exposed and permitted to be used in the
 cluster. Permitted host devices in the cluster will need to be allowlisted in KubeVirt CR by its <code>vendor:product</code> selector for PCI devices or mediated device names.</p>

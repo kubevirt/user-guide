@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  <link rel="canonical" href="https://kubevirt.io/user-guide/operations/annotations_and_labels/">
+  <link rel="canonical" href="https://kubevirt.io/user-guide/operations/mediated_devices_configuration/">
   <link rel="shortcut icon" href="../../assets/favicon.ico">
   
-  <title>Annotations and labels - KubeVirt User-Guide</title>
+  <title>Mediated devices and virtual GPUs - KubeVirt User-Guide</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -19,9 +19,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Annotations and labels";
-    var mkdocs_page_input_path = "operations/annotations_and_labels.md";
-    var mkdocs_page_url = "/user-guide/operations/annotations_and_labels/";
+    var mkdocs_page_name = "Mediated devices and virtual GPUs";
+    var mkdocs_page_input_path = "operations/mediated_devices_configuration.md";
+    var mkdocs_page_url = "/user-guide/operations/mediated_devices_configuration/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -84,11 +84,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../authorization/">Authorization</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Annotations and labels</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#kubevirtio">kubevirt.io</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../annotations_and_labels/">Annotations and labels</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../node_assignment/">Node assignment</a>
                     </li>
@@ -102,7 +98,13 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../activating_feature_gates/">Activating feature gates</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../mediated_devices_configuration/">Mediated devices and virtual GPUs</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Mediated devices and virtual GPUs</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#configuration-scenarios">Configuration scenarios</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#assigning-vgpumdev-to-a-virtual-machine">Assigning vGPU/MDEV to a Virtual Machine</a>
+    </li>
+    </ul>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Virtual machines</span></p>
@@ -188,10 +190,10 @@
         
       
     
-    <li>Annotations and labels</li>
+    <li>Mediated devices and virtual GPUs</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/annotations_and_labels.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/mediated_devices_configuration.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -203,34 +205,120 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="annotations-and-labels">Annotations and labels<a class="headerlink" href="#annotations-and-labels" title="Permanent link">&para;</a></h1>
-<p>KubeVirt builds on and exposes a number of labels and annotations that
-either are used for internal implementation needs or expose useful
-information to API users. This page documents the labels and annotations
-that may be useful for regular API consumers. This page intentionally
-does <em>not</em> list labels and annotations that are merely part of internal
-implementation.</p>
-<p><strong>Note:</strong> Annotations and labels that are not specific to KubeVirt are
-also documented
-<a href="https://kubernetes.io/docs/reference/kubernetes-api/labels-annotations-taints/">here</a>.</p>
-<h2 id="kubevirtio">kubevirt.io<a class="headerlink" href="#kubevirtio" title="Permanent link">&para;</a></h2>
-<p>Example: <code>kubevirt.io=virt-launcher</code></p>
-<p>Used on: Pod</p>
-<p>This label marks resources that belong to KubeVirt. An optional value
-may indicate which specific KubeVirt component a resource belongs to.
-This label may be used to list all resources that belong to KubeVirt,
-for example, to uninstall it from a cluster.</p>
-<h3 id="kubevirtioschedulable">kubevirt.io/schedulable<a class="headerlink" href="#kubevirtioschedulable" title="Permanent link">&para;</a></h3>
-<p>Example: <code>kubevirt.io/schedulable=true</code></p>
-<p>Used on: Node</p>
-<p>This label declares whether a particular node is available for
-scheduling virtual machine instances on it.</p>
-<h3 id="kubevirtioheartbeat">kubevirt.io/heartbeat<a class="headerlink" href="#kubevirtioheartbeat" title="Permanent link">&para;</a></h3>
-<p>Example: <code>kubevirt.io/heartbeat=2018-07-03T20:07:25Z</code></p>
-<p>Used on: Node</p>
-<p>This annotation is regularly updated by virt-handler to help determine
-if a particular node is alive and hence should be available for new
-virtual machine instance scheduling.</p>
+                <h1 id="mediated-devices-and-virtual-gpus">Mediated devices and virtual GPUs<a class="headerlink" href="#mediated-devices-and-virtual-gpus" title="Permanent link">&para;</a></h1>
+<p>KubeVirt aims to facilitate the configuration of mediated devices on large clusters.
+The new <code>mediatedDevicesConfiguration</code> API in KubeVirt CR allows administrators to
+create or remove mediated devices in a declarative way, by providing a list of the desired mediated devices types  that they expect to be configured in the cluster.</p>
+<p>It would also be possible to provide a more specific configuration that targets a specific node or a group of nodes directly.
+This can be achieved by using the <code>nodeMediatedDeviceTypes</code>, however, it must be used in a combination with <code>mediatedDevicesTypes</code>, to override the global
+configuration set in <code>mediatedDevicesTypes</code> section. Therefore, using <code>nodeMediatedDeviceTypes</code> without the <code>mediatedDevicesTypes</code> section is not supported.</p>
+<p>KubeVirt will use the provided configuration to automatically create the relevant mdev/vGPU devices on nodes that can support it.</p>
+<p>Currently, a single mdev type per card will be configured.
+The maximum amount of instances of the selected mdev type will be configured per card.</p>
+<blockquote>
+<p>Note: Some vendors, such as NVIDIA, require a driver to be installed on the nodes to provide mediated devices, including vGPUs.</p>
+</blockquote>
+<p>Here's an example of a configuration that can be provided to KubeVirt CR:</p>
+<pre><code>spec:  
+  configuration:  
+     mediatedDevicesConfiguration:  
+       mediatedDevicesTypes:  
+       - nvidia-222  
+       - nvidia-228  
+       nodeMediatedDeviceTypes:  
+       - nodeSelector:  
+           kubernetes.io/hostname: nodeName  
+         mediatedDevicesTypes:  
+         - nvidia-234
+</code></pre>
+<h2 id="configuration-scenarios">Configuration scenarios<a class="headerlink" href="#configuration-scenarios" title="Permanent link">&para;</a></h2>
+<h3 id="large-cluster-with-multiple-cards-on-each-node">Large cluster with multiple cards on each node<a class="headerlink" href="#large-cluster-with-multiple-cards-on-each-node" title="Permanent link">&para;</a></h3>
+<p>On nodes with multiple cards that can support similar vGPU types, the relevant desired types will be created in a round-robin manner.  </p>
+<h4 id="for-example-considering-the-following-configuration">For example, considering the following configuration:<a class="headerlink" href="#for-example-considering-the-following-configuration" title="Permanent link">&para;</a></h4>
+<pre><code>mediatedDevicesConfiguration:
+  mediatedDevicesTypes:
+  - nvidia-222
+  - nvidia-228
+  - nvidia-105
+  - nvidia-108
+</code></pre>
+<ul>
+<li>Nodes with 2 Tesla T4 cards</li>
+<li>Each card can support multiple types:<ul>
+<li>nvidia-222</li>
+<li>nvidia-223</li>
+<li>nvidia-228</li>
+<li>...</li>
+</ul>
+</li>
+<li>Nodes with 2 Tesla V100 cards</li>
+<li>Each card can support multiple types:<ul>
+<li>nvidia-105</li>
+<li>...</li>
+<li>nvidia-108</li>
+<li>nvidia-217</li>
+<li>nvidia-299</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+<p>KubeVirt will create the following devices:</p>
+<ul>
+<li>Nodes with 3 Tesla T4 cards will be configured with</li>
+<li>16 vGPUs of type nvidia-222 on card 1</li>
+<li>2 vGPUs of type nvidia-228 on card 2</li>
+<li>16 vGPUs of type nvidia-222 on card 3</li>
+<li>Nodes with 2 Tesla V100 cards will be configured with</li>
+<li>16 vGPUs of type nvidia-105 on card 1</li>
+<li>2 vGPUs of type nvidia-108 on card 2</li>
+</ul>
+<h3 id="single-card-on-a-node-multiple-desired-vgpu-types-are-supported">Single card on a node, multiple desired vGPU types are supported<a class="headerlink" href="#single-card-on-a-node-multiple-desired-vgpu-types-are-supported" title="Permanent link">&para;</a></h3>
+<p>The first supported type from the list will be configured  </p>
+<h5 id="for-example-consider-the-following-list-of-desired-types-where-nvidia-223-and-nvidia-224-are-supported">For example, consider the following list of desired types, where nvidia-223 and nvidia-224 are supported:<a class="headerlink" href="#for-example-consider-the-following-list-of-desired-types-where-nvidia-223-and-nvidia-224-are-supported" title="Permanent link">&para;</a></h5>
+<pre><code>mediatedDevicesConfiguration:
+  mediatedDevicesTypes:  
+  - nvidia-22  
+  - nvidia-223  
+  - nvidia-224
+</code></pre>
+<p>In this case, nvidia-223 will be configured on the node.</p>
+<h3 id="overriding-configuration-on-a-specifc-node">Overriding configuration on a specifc node<a class="headerlink" href="#overriding-configuration-on-a-specifc-node" title="Permanent link">&para;</a></h3>
+<p><code>nodeMediatedDeviceTypes</code> needs to be used along with <code>mediatedDevicesTypes</code>, to override the global config brought in by, <code>mediatedDevicesTypes</code>.</p>
+<h4 id="for-example-considering-the-following-configuration_1">For example, considering the following configuration:<a class="headerlink" href="#for-example-considering-the-following-configuration_1" title="Permanent link">&para;</a></h4>
+<pre><code>mediatedDevicesConfiguration:
+  mediatedDevicesTypes:  
+  - nvidia-230
+  - nvidia-223  
+  - nvidia-224
+  nodeMediatedDeviceTypes:  
+  - nodeSelector:  
+      kubernetes.io/hostname: node2  
+    mediatedDevicesTypes:  
+    - nvidia-234
+</code></pre>
+<ul>
+<li>Two nodes has 2 Tesla T4 cards</li>
+<li>Each card can support a long list of types:<ul>
+<li>nvidia-222</li>
+<li>nvidia-223</li>
+<li>nvidia-224</li>
+<li>nvidia-230</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+<p>KubeVirt will create the following devices:
+* Node 1
+  * type nvidia-230 on card 1
+  * type nvidia-223 on card 2
+* Node 2
+  * type nvidia-234 on card 1 and card 2</p>
+<h3 id="updating-and-removing-vgpu-types">Updating and Removing vGPU types<a class="headerlink" href="#updating-and-removing-vgpu-types" title="Permanent link">&para;</a></h3>
+<p>Changes made to the mediatedDevicesTypes section of the KubeVirt CR will trigger a re-evaluation of the configured mdevs/vGPU types on the cluster nodes.</p>
+<p>Any change to the node labels that match the nodeMediatedDeviceTypes nodeSelector in the KubeVirt CR will trigger a similar re-evaluation.</p>
+<p>Consequently, mediated devices will be reconfigured or entirely removed based on the updated configuration.</p>
+<h2 id="assigning-vgpumdev-to-a-virtual-machine">Assigning vGPU/MDEV to a Virtual Machine<a class="headerlink" href="#assigning-vgpumdev-to-a-virtual-machine" title="Permanent link">&para;</a></h2>
+<p>See the <a href="../../virtual_machines/host-devices/">Host Devices Assignment</a> to learn how to consume the newly created mediated devices/vGPUs</p>
               
             </div>
           </div>
@@ -238,10 +326,10 @@ virtual machine instance scheduling.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../node_assignment/" class="btn btn-neutral float-right" title="Node assignment">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../virtual_machines/virtual_machine_instances/" class="btn btn-neutral float-right" title="Virtual Machines Instances">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../authorization/" class="btn btn-neutral" title="Authorization"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../activating_feature_gates/" class="btn btn-neutral" title="Activating feature gates"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -271,10 +359,10 @@ virtual machine instance scheduling.</p>
         </span>
     
     
-      <span><a href="../authorization/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../activating_feature_gates/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../node_assignment/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../virtual_machines/virtual_machine_instances/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
