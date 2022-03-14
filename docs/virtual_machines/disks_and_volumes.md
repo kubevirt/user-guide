@@ -1257,3 +1257,150 @@ Example: force `writethrough` cache mode
         persistentVolumeClaim:
           claimName: disk-alpine
     status: {}
+
+### Disk sharing
+
+Shareable disks allow multiple VMs to share the same underlying storage. In order to use this feature, special care is required because this could lead to data corruption and the loss of important data. Shareable disks demand either data synchronization at the application level or the use of clustered filesystems. These advanced configurations are not within the scope of this documentation and are use-case specific.
+
+If the `shareable` option is set, it indicates to libvirt/QEMU that the disk is going to be accessed by multiple VMs and not to create a lock for the writes.
+
+In this example, we use Rook Ceph in order to dynamically provisioning the PVC.
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: block-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Block
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: rook-ceph-block
+```
+```bash
+$ kubectl get pvc
+NAME        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
+block-pvc   Bound    pvc-0a161bb2-57c7-4d97-be96-0a20ff0222e2   1Gi        RWO            rook-ceph-block   51s
+```
+Then, we can declare 2 VMs and set the `shareable` option to true for the shared disk.
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-block-1
+  name: vm-block-1
+spec:
+  running: true
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-block-1
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+          - disk:
+              bus: virtio
+            shareable: true
+            name: block-disk
+        machine:
+          type: ""
+        resources:
+          requests:
+            memory: 2G
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - containerDisk:
+          image: registry:5000/kubevirt/fedora-with-test-tooling-container-disk:devel
+        name: containerdisk
+      - cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            password: fedora
+            chpasswd: { expire: False }
+        name: cloudinitdisk
+      - name: block-disk
+        persistentVolumeClaim:
+          claimName: block-pvc
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-block-2
+  name: vm-block-2
+spec:
+  running: true
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-block-2
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: kubevirt.io/vm
+                operator: In
+                values:
+                - vm-block-1
+            topologyKey: "kubernetes.io/hostname"
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+          - disk:
+              bus: virtio
+            shareable: true
+            name: block-disk
+        machine:
+          type: ""
+        resources:
+          requests:
+            memory: 2G
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - containerDisk:
+          image: registry:5000/kubevirt/fedora-with-test-tooling-container-disk:devel
+        name: containerdisk
+      - cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            password: fedora
+            chpasswd: { expire: False }
+        name: cloudinitdisk
+      - name: block-disk
+        persistentVolumeClaim:
+          claimName: block-pvc                                        
+```
+We can now attempt to write a string from the first guest and then read the string from the second guest to test that the sharing is working.
+```bash
+$ virtctl console vm-block-1
+$ printf "Test awesome shareable disks" | sudo dd  of=/dev/vdc bs=1 count=150 conv=notrunc
+28+0 records in
+28+0 records out
+28 bytes copied, 0.0264182 s, 1.1 kB/s
+# Log into the second guest
+$ virtctl console vm-block-2
+$ sudo dd  if=/dev/vdc bs=1 count=150 conv=notrunc
+Test awesome shareable disks150+0 records in
+150+0 records out
+150 bytes copied, 0.136753 s, 1.1 kB/s
+```
+
+If you are using local devices or RWO PVCs, setting the affinity on the VMs that share the storage guarantees they will be scheduled on the same node. In the example, we set the affinity on the second VM using the label used on the first VM. If you are using shared storage with RWX PVCs, then the affinity rule is not necessary as the storage can be attached simultaneously on multiple nodes.
