@@ -785,9 +785,10 @@ The aforementioned operator effectively deploys the
 combo.
 
 There are two different alternatives to configure which host interfaces get
-exposed to the user, enabling them to create macvtap interfaces on top of;
-  - select the host interfaces: indicates which host interfaces are exposed.
-  - expose all interfaces: all interfaces of all hosts are exposed.
+exposed to the user, enabling them to create macvtap interfaces on top of:
+
+- select the host interfaces: indicates which host interfaces are exposed.
+- expose all interfaces: all interfaces of all hosts are exposed.
 
 Both options are configured via the `macvtap-deviceplugin-config` ConfigMap,
 and more information on how to configure it can be found in the
