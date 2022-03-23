@@ -254,6 +254,10 @@ metadata:
 spec:
   vmiName: vmi-fedora
 </code></pre>
+<h3 id="using-virtctl-to-initiate-live-migration">Using virtctl to initiate live migration<a class="headerlink" href="#using-virtctl-to-initiate-live-migration" title="Permanent link">&para;</a></h3>
+<p>Live migration can also be initiated using virtctl</p>
+<pre><code class="language-console">    virtctl migrate vmi-fedora
+</code></pre>
 <h2 id="migration-status-reporting">Migration Status Reporting<a class="headerlink" href="#migration-status-reporting" title="Permanent link">&para;</a></h2>
 <h3 id="condition-and-migration-method">Condition and migration method<a class="headerlink" href="#condition-and-migration-method" title="Permanent link">&para;</a></h3>
 <p>When starting a virtual machine instance, it has also been calculated
@@ -322,6 +326,11 @@ and <code>Failed</code>.</p>
     Target Node Address:          10.128.0.46
     Target Node Domain Detected:  true
     Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
+</code></pre>
+<h3 id="using-virtctl-to-cancel-a-live-migration">Using virtctl to cancel a live migration<a class="headerlink" href="#using-virtctl-to-cancel-a-live-migration" title="Permanent link">&para;</a></h3>
+<p>Live migration can also be canceled using virtctl, by specifying the name
+of a VMI which is currently being migrated</p>
+<pre><code class="language-console">    virtctl migrate-cancel vmi-fedora
 </code></pre>
 <h2 id="changing-cluster-wide-migration-limits">Changing Cluster Wide Migration Limits<a class="headerlink" href="#changing-cluster-wide-migration-limits" title="Permanent link">&para;</a></h2>
 <p>KubeVirt puts some limits in place, so that migrations don't overwhelm
@@ -455,7 +464,7 @@ improve performance. Use <code>disableTLS</code> to do that:</p>
         migrationConfiguration:
           disableTLS: true
 </code></pre>
-<p><strong>Note:</strong> While this increases perfomance it may allow MITM attacks. Be careful.</p>
+<p><strong>Note:</strong> While this increases performance it may allow MITM attacks. Be careful.</p>
               
             </div>
           </div>
