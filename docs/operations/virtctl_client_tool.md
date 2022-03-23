@@ -12,7 +12,7 @@ It also provides convenience commands for:
 
 -   Starting and stopping VirtualMachineInstances
 
--   Live migrating VirtualMachineInstances
+-   Live migrating VirtualMachineInstances and canceling live migrations
 
 -   Uploading virtual machine disk images
 
