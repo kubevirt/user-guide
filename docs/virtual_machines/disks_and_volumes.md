@@ -426,9 +426,7 @@ users a workflow for dynamically creating PVCs and importing data into
 those PVCs.
 
 In order to take advantage of the DataVolume volume source on a VM or
-VMI, the `DataVolumes`
-[feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
-must be enabled in the **kubevirt** CR. CDI must also be installed.
+VMI, CDI must be installed.
 
 **Installing CDI**
 
