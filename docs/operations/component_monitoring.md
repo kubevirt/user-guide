@@ -70,6 +70,10 @@ KubeVirt to create these resources correctly:
 
 -   `monitorAccount`: The serviceAccount that prometheus-operator runs
     with. Defaults to `prometheus-k8s`.
+    
+-   `serviceMonitorNamespace`: The namespace that prometheus-operator runs in.
+     Defaults to `monitorNamespace` please note that Prometheus crd must consider
+     that namespace through `serviceMonitorNamespaceSelector` field.
 
 If the prometheus-operator for a given deployment uses these defaults,
 then these values can be omitted.
