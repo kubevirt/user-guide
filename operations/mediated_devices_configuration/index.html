@@ -1,209 +1,188 @@
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  
-  <link rel="canonical" href="https://kubevirt.io/user-guide/operations/mediated_devices_configuration/">
-  <link rel="shortcut icon" href="../../assets/favicon.ico">
-  
-  <title>Mediated devices and virtual GPUs - KubeVirt User-Guide</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
-
-  <link rel="stylesheet" href="../../css/theme.css" />
-  <link rel="stylesheet" href="../../css/theme_extra.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
-  
-  <script>
-    // Current page data
-    var mkdocs_page_name = "Mediated devices and virtual GPUs";
-    var mkdocs_page_input_path = "operations/mediated_devices_configuration.md";
-    var mkdocs_page_url = "/user-guide/operations/mediated_devices_configuration/";
-  </script>
-  
-  <script src="../../js/jquery-2.1.1.min.js" defer></script>
-  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/yaml.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script> 
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/operations/mediated_devices_configuration/" />
+      <link rel="shortcut icon" href="../../assets/favicon.ico" />
+    <title>Mediated devices and virtual GPUs - KubeVirt User-Guide</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Mediated devices and virtual GPUs";
+        var mkdocs_page_input_path = "operations/mediated_devices_configuration.md";
+        var mkdocs_page_url = "/user-guide/operations/mediated_devices_configuration/";
+      </script>
+    
+    <script src="../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/yaml.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
 </head>
 
 <body class="wy-body-for-nav" role="document">
 
   <div class="wy-grid-for-nav">
-
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
-        <a href="../.." class="icon icon-home"> KubeVirt User-Guide</a>
-        <div role="search">
+          <a href="../.." class="icon icon-home"> KubeVirt User-Guide
+        </a><div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
       <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../latest_release_notes/">Latest release notes</a>
-                    </li>
-                </ul>
-                <p class="caption"><span class="caption-text">Operations</span></p>
-                <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../updating_and_deletion/">Updating and deletion</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../basic_use/">Basic use</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../api_validation/">API Validation</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../virtctl_client_tool/">virtctl Client Tool</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../live_migration/">Live Migration</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../hotplug_volumes/">Hotplug Volumes</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../snapshot_restore_api/">Snapshot Restore API</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../component_monitoring/">Component monitoring</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../authorization/">Authorization</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../annotations_and_labels/">Annotations and labels</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../node_assignment/">Node assignment</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../node_maintenance/">Node maintenance</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../node_overcommit/">Node overcommit</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../unresponsive_nodes/">Unresponsive nodes</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../activating_feature_gates/">Activating feature gates</a>
-                    </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Mediated devices and virtual GPUs</a>
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../latest_release_notes/">Latest release notes</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Operations</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../updating_and_deletion/">Updating and deletion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../basic_use/">Basic use</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../api_validation/">API Validation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../virtctl_client_tool/">virtctl Client Tool</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../live_migration/">Live Migration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hotplug_volumes/">Hotplug Volumes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../snapshot_restore_api/">Snapshot Restore API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../component_monitoring/">Component monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../authorization/">Authorization</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../annotations_and_labels/">Annotations and labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node_assignment/">Node assignment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node_maintenance/">Node maintenance</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node_overcommit/">Node overcommit</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../unresponsive_nodes/">Unresponsive nodes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../activating_feature_gates/">Activating feature gates</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Mediated devices and virtual GPUs</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#configuration-scenarios">Configuration scenarios</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#assigning-vgpumdev-to-a-virtual-machine">Assigning vGPU/MDEV to a Virtual Machine</a>
     </li>
     </ul>
-                    </li>
-                </ul>
-                <p class="caption"><span class="caption-text">Virtual machines</span></p>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/lifecycle/">Lifecycle</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/run_strategies/">Run Strategies</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/presets/">Presets</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_hardware/">Virtual hardware</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/numa/">NUMA</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/istio_service_mesh/">Istio service mesh</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/host-devices/">Host Devices Assignment</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_virtio_drivers/">Windows virtio drivers</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_agent_information/">Guest Agent information</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/accessing_virtual_machines/">Accessing Virtual Machines</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/startup_scripts/">Startup Scripts</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/service_objects/">Service objects</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/templates/">Templates</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dns/">DNS records</a>
-                    </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/boot_from_external_source/">Booting From External Source</a>
-                    </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
-                    </li>
-                </ul>
-                <p class="caption"><span class="caption-text">Appendix</span></p>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
-                    </li>
-                </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Virtual machines</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/lifecycle/">Lifecycle</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/run_strategies/">Run Strategies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/presets/">Presets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/numa/">NUMA</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/istio_service_mesh/">Istio service mesh</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/host-devices/">Host Devices Assignment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_virtio_drivers/">Windows virtio drivers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/accessing_virtual_machines/">Accessing Virtual Machines</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/startup_scripts/">Startup Scripts</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/service_objects/">Service objects</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/templates/">Templates</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dns/">DNS records</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/boot_from_external_source/">Booting From External Source</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Appendix</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                  </li>
+              </ul>
       </div>
     </div>
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../..">KubeVirt User-Guide</a>
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">KubeVirt User-Guide</a>
+        
       </nav>
-
-      
       <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="../..">Docs</a> &raquo;</li>
-    
-      
-        
-          <li>Operations &raquo;</li>
-        
-      
-    
-    <li>Mediated devices and virtual GPUs</li>
+    <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Operations &raquo;</li><li>Mediated devices and virtual GPUs</li>
     <li class="wy-breadcrumbs-aside">
-      
         <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/mediated_devices_configuration.md"
           class="icon icon-github"> Edit on GitHub</a>
-      
     </li>
   </ul>
-  
   <hr/>
 </div>
 
-          <div role="main">
-            <div class="section">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
               
                 <h1 id="mediated-devices-and-virtual-gpus">Mediated devices and virtual GPUs<a class="headerlink" href="#mediated-devices-and-virtual-gpus" title="Permanent link">&para;</a></h1>
 <p>KubeVirt aims to facilitate the configuration of mediated devices on large clusters.
@@ -321,29 +300,21 @@ The maximum amount of instances of the selected mdev type will be configured per
 <p>See the <a href="../../virtual_machines/host-devices/">Host Devices Assignment</a> to learn how to consume the newly created mediated devices/vGPUs</p>
               
             </div>
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../activating_feature_gates/" class="btn btn-neutral float-left" title="Activating feature gates"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../../virtual_machines/virtual_machine_instances/" class="btn btn-neutral float-right" title="Virtual Machines Instances">Next <span class="icon icon-circle-arrow-right"></span></a>
-      
-      
-        <a href="../activating_feature_gates/" class="btn btn-neutral" title="Activating feature gates"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-      
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <!-- Copyright etc -->
-    
   </div>
 
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
-      
+          
         </div>
       </div>
 
@@ -351,7 +322,7 @@ The maximum amount of instances of the selected mdev type will be configured per
 
   </div>
 
-  <div class="rst-versions" role="note" aria-label="versions">
+  <div class="rst-versions" role="note" aria-label="Versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     
         <span>
