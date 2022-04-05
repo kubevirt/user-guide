@@ -22,7 +22,7 @@ For all contributors:
 The following will help you decide where to start
 
 * Check a repository issues list and label `good-first-issue` for issues that make good entry points.
-* Open a pull request using GitHub to documentation.
+* Open a pull request using GitHub to documentation. The tutorials found here can be helpful https://lab.github.com/
 * Review a pull request from other community members for accuracy and language.
 
 ## Other ways to contribute
