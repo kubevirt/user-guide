@@ -50,7 +50,7 @@ Notes:
 - Kernel and Initrd binaries must be owned by `qemu` user & group.
   - To change ownership: `chown qemu:qemu <binary>` when `<binary>` is the binary file.
 
-- `kernelArgs` can be provided even if a kernel binary is not provided (i.e. `kernelPath` not defined). These
+- `kernelArgs` can only be provided if a kernel binary is provided (i.e. `kernelPath` not defined). These
 arguments will be passed to the default kernel the VM boots from.
   
 - `imagePullSecret` and `imagePullPolicy` are optional
