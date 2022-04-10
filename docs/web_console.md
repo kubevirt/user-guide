@@ -1,7 +1,7 @@
 # Web Console
 
 !!! Note
-    By deploying KubeVirt on top of OpenShift the user can benefit from the [OpenShift web console](https://docs.openshift.com/container-platform/4.5/web_console/web-console.html) functionality.
+    By deploying KubeVirt on top of OpenShift the user can benefit from the [OpenShift web console](https://docs.openshift.com/container-platform/4.10/web_console/web-console.html) functionality.
 
 ## Managing Virtual Machines
 
