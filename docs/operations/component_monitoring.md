@@ -62,7 +62,7 @@ KubeVirt will automatically create a `ServiceMonitor` resource in the
 `monitorNamespace`, as well as an appropriate role and rolebinding in
 KubeVirt's namespace.
 
-Two settings are exposed in the `KubeVirt` custom resource to direct
+Three settings are exposed in the `KubeVirt` custom resource to direct
 KubeVirt to create these resources correctly:
 
 -   `monitorNamespace`: The namespace that prometheus-operator runs in.
@@ -70,6 +70,13 @@ KubeVirt to create these resources correctly:
 
 -   `monitorAccount`: The serviceAccount that prometheus-operator runs
     with. Defaults to `prometheus-k8s`.
+
+-   `serviceMonitorNamespace`: The namespace that the serviceMonitor runs in.
+    Defaults to be `monitorNamespace` 
+
+Please note that if you decide to set `serviceMonitorNamespace` than this 
+namespace must be included in `serviceMonitorNamespaceSelector` field of 
+Prometheus spec.
 
 If the prometheus-operator for a given deployment uses these defaults,
 then these values can be omitted.
