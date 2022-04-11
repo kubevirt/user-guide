@@ -667,8 +667,8 @@ spec:
 section using the <code>vmNetworkCIDR</code> attribute.</p>
 </blockquote>
 <h4 id="masquerade-ipv4-and-ipv6-dual-stack-support">masquerade - IPv4 and IPv6 dual-stack support<a class="headerlink" href="#masquerade-ipv4-and-ipv6-dual-stack-support" title="Permanent link">&para;</a></h4>
-<p>It is currently experimental, but <code>masquerade</code> mode can be used in IPv4 and IPv6
-dual-stack clusters to provide a VM with an IP connectivity over both protocols.</p>
+<p><code>masquerade</code> mode can be used in IPv4 and IPv6 dual-stack clusters to provide
+a VM with an IP connectivity over both protocols.</p>
 <p>As with the IPv4 <code>masquerade</code> mode, the VM can be contacted using the pod's IP
 address - which will be in this case two IP addresses, one IPv4 and one
 IPv6. Outgoing traffic is also "NAT'ed" to the pod's respective IP address
@@ -708,6 +708,18 @@ spec:
 <p><strong>Note:</strong> The IPv6 address for the VM and default gateway <strong>must</strong> be the ones
 shown above.</p>
 </blockquote>
+<h4 id="masquerade-ipv6-single-stack-support">masquerade - IPv6 single-stack support<a class="headerlink" href="#masquerade-ipv6-single-stack-support" title="Permanent link">&para;</a></h4>
+<p><code>masquerade</code> mode can be used in IPv6 single stack clusters to provide a VM
+with an IPv6 only connectivity.</p>
+<p>As with the IPv4 <code>masquerade</code> mode, the VM can be contacted using the pod's IP
+address - which will be in this case the IPv6 one.
+Outgoing traffic is also "NAT'ed" to the pod's respective IPv6 address.</p>
+<p>As with the dual-stack cluster, the configuration of the IPv6 address and the default route is
+not automatic; it should be configured via cloud init, as shown in the <a href="#masquerade-ipv4-and-ipv6-dual-stack-support">dual-stack section</a>.</p>
+<p>Unlike the dual-stack cluster, which has a DHCP server for IPv4, the IPv6 single stack cluster
+has no DHCP server at all. Therefore, the VM won't have the search domains information and
+reaching a destination using its FQDN is not possible.
+Tracking issue - https://github.com/kubevirt/kubevirt/issues/7184</p>
 <h3 id="virtio-net-multiqueue">virtio-net multiqueue<a class="headerlink" href="#virtio-net-multiqueue" title="Permanent link">&para;</a></h3>
 <p>Setting the <code>networkInterfaceMultiqueue</code> to <code>true</code> will enable the
 multi-queue functionality, increasing the number of vhost queue, for
