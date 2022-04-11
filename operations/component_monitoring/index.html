@@ -244,7 +244,7 @@ resource exists when creating an install strategy for deployment.
 KubeVirt will automatically create a <code>ServiceMonitor</code> resource in the
 <code>monitorNamespace</code>, as well as an appropriate role and rolebinding in
 KubeVirt's namespace.</p>
-<p>Two settings are exposed in the <code>KubeVirt</code> custom resource to direct
+<p>Three settings are exposed in the <code>KubeVirt</code> custom resource to direct
 KubeVirt to create these resources correctly:</p>
 <ul>
 <li>
@@ -255,7 +255,14 @@ KubeVirt to create these resources correctly:</p>
 <p><code>monitorAccount</code>: The serviceAccount that prometheus-operator runs
     with. Defaults to <code>prometheus-k8s</code>.</p>
 </li>
+<li>
+<p><code>serviceMonitorNamespace</code>: The namespace that the serviceMonitor runs in.
+    Defaults to be <code>monitorNamespace</code> </p>
+</li>
 </ul>
+<p>Please note that if you decide to set <code>serviceMonitorNamespace</code> than this 
+namespace must be included in <code>serviceMonitorNamespaceSelector</code> field of 
+Prometheus spec.</p>
 <p>If the prometheus-operator for a given deployment uses these defaults,
 then these values can be omitted.</p>
 <p>An example of the KubeVirt resource depicting these default values:</p>
