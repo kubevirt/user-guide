@@ -35,7 +35,7 @@ cluster. Here are some ways to do that:
 
 -   [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 
--   [Route](https://docs.openshift.com/container-platform/3.9/architecture/networking/routes.html)
+-   [Route](https://docs.openshift.com/container-platform/4.10/networking/routes/route-configuration.html)
 
 -   [kubectl
     port-forward](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/)

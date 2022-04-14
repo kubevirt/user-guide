@@ -20,7 +20,7 @@ following requirements are met:
 Additional information: 
 
 * [Enabling the CPU manager on Kubernetes](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/)
-* [Enabling the CPU manager on OKD](https://docs.openshift.com/container-platform/4.6/scalability_and_performance/using-cpu-manager.html)
+* [Enabling the CPU manager on OKD](https://docs.openshift.com/container-platform/4.10/scalability_and_performance/using-cpu-manager.html)
 * [Kubernetes blog explaining the feature](https://kubernetes.io/blog/2018/07/24/feature-highlight-cpu-manager/)
 
 ## Requesting dedicated CPU resources

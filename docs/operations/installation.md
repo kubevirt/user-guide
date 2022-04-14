@@ -92,7 +92,7 @@ All new components will be deployed under the `kubevirt` namespace:
 ## Installing KubeVirt on OKD
 
 The following
-[SCC](https://docs.openshift.com/container-platform/3.11/admin_guide/manage_scc.html)
+[SCC](https://docs.openshift.com/container-platform/4.10/authentication/managing-security-context-constraints.html)
 needs to be added prior KubeVirt deployment:
 
     $ oc adm policy add-scc-to-user privileged -n kubevirt -z kubevirt-operator
