@@ -184,7 +184,9 @@ spec:
 #### Invalid CNIs for secondary networks
 The following list of CNIs is known **not** to work for bridge interfaces -
 which are most common for secondary interfaces.
+
 - [macvlan](https://www.cni.dev/plugins/current/main/macvlan/)
+
 - [ipvlan](https://www.cni.dev/plugins/current/main/ipvlan/)
 
 The reason is similar: the bridge interface type moves the pod interface MAC
@@ -192,7 +194,9 @@ address to the VM, leaving the pod interface with a different address. The
 aforementioned CNIs require the pod interface to have the original MAC address.
 
 These issues are tracked individually:
+
 - [macvlan](https://github.com/kubevirt/kubevirt/issues/5483)
+
 - [ipvlan](https://github.com/kubevirt/kubevirt/issues/7001)
 
 Feel free to discuss and / or propose fixes for them; we'd like to have
