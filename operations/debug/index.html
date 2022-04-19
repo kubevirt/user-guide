@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/operations/component_monitoring/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/operations/debug/" />
       <link rel="shortcut icon" href="../../assets/favicon.ico" />
-    <title>Component monitoring - KubeVirt User-Guide</title>
+    <title>Debug - KubeVirt User-Guide</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Component monitoring";
-        var mkdocs_page_input_path = "operations/component_monitoring.md";
-        var mkdocs_page_url = "/user-guide/operations/component_monitoring/";
+        var mkdocs_page_name = "Debug";
+        var mkdocs_page_input_path = "operations/debug.md";
+        var mkdocs_page_url = "/user-guide/operations/debug/";
       </script>
     
     <script src="../../js/jquery-3.6.0.min.js" defer></script>
@@ -63,7 +63,11 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../api_validation/">API Validation</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../debug/">Debug</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Debug</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#log-verbosity">Log Verbosity</a>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../virtctl_client_tool/">virtctl Client Tool</a>
                   </li>
@@ -75,19 +79,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Component monitoring</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#custom-service-discovery">Custom Service Discovery</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#integrating-with-the-prometheus-operator">Integrating with the prometheus-operator</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#integrating-with-the-okd-cluster-monitoring-operator">Integrating with the OKD cluster-monitoring-operator</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#metrics-about-virtual-machines">Metrics about Virtual Machines</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#important-queries">Important Queries</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../component_monitoring/">Component monitoring</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../authorization/">Authorization</a>
                   </li>
@@ -180,9 +172,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-          <li>Operations &raquo;</li><li>Component monitoring</li>
+          <li>Operations &raquo;</li><li>Debug</li>
     <li class="wy-breadcrumbs-aside">
-        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/component_monitoring.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/debug.md"
           class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
@@ -192,128 +184,89 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="component-monitoring">Component monitoring<a class="headerlink" href="#component-monitoring" title="Permanent link">&para;</a></h1>
-<p>All KubeVirt system-components expose Prometheus metrics at their
-<code>/metrics</code> REST endpoint.</p>
-<h2 id="custom-service-discovery">Custom Service Discovery<a class="headerlink" href="#custom-service-discovery" title="Permanent link">&para;</a></h2>
-<p>Prometheus supports service discovery based on
-<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod">Pods</a>
-and
-<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#endpoints">Endpoints</a>
-out of the box. Both can be used to discover KubeVirt services.</p>
-<p>All Pods which expose metrics are labeled with <code>prometheus.kubevirt.io</code>
-and contain a port-definition which is called <code>metrics</code>. In the KubeVirt
-release-manifests, the default <code>metrics</code> port is <code>8443</code>.</p>
-<p>The above labels and port informations are collected by a <code>Service</code>
-called <code>kubevirt-prometheus-metrics</code>. Kubernetes automatically creates a
-corresponding <code>Endpoint</code> with an equal name:</p>
-<pre><code>$ kubectl get endpoints -n kubevirt kubevirt-prometheus-metrics -o yaml
-apiVersion: v1
-kind: Endpoints
-metadata:
-  labels:
-    kubevirt.io: ""
-    prometheus.kubevirt.io: ""
-  name: kubevirt-prometheus-metrics
-  namespace: kubevirt
-subsets:
-- addresses:
-  - ip: 10.244.0.5
-    nodeName: node01
-    targetRef:
-      kind: Pod
-      name: virt-handler-cjzg6
-      namespace: kubevirt
-      resourceVersion: "4891"
-      uid: c67331f9-bfcf-11e8-bc54-525500d15501
-  - ip: 10.244.0.6
-  [...]
-  ports:
-  - name: metrics
-    port: 8443
-    protocol: TCP
-</code></pre>
-<p>By watching this endpoint for added and removed IPs to
-<code>subsets.addresses</code> and appending the <code>metrics</code> port from
-<code>subsets.ports</code>, it is possible to always get a complete list of
-ready-to-be-scraped Prometheus targets.</p>
-<h2 id="integrating-with-the-prometheus-operator">Integrating with the prometheus-operator<a class="headerlink" href="#integrating-with-the-prometheus-operator" title="Permanent link">&para;</a></h2>
-<p>The <a href="https://github.com/coreos/prometheus-operator">prometheus-operator</a>
-can make use of the <code>kubevirt-prometheus-metrics</code> service to
-automatically create the appropriate Prometheus config.</p>
-<p>KubeVirt's <code>virt-operator</code> checks if the <code>ServiceMonitor</code> custom
-resource exists when creating an install strategy for deployment.
-KubeVirt will automatically create a <code>ServiceMonitor</code> resource in the
-<code>monitorNamespace</code>, as well as an appropriate role and rolebinding in
-KubeVirt's namespace.</p>
-<p>Three settings are exposed in the <code>KubeVirt</code> custom resource to direct
-KubeVirt to create these resources correctly:</p>
-<ul>
-<li>
-<p><code>monitorNamespace</code>: The namespace that prometheus-operator runs in.
-    Defaults to <code>openshift-monitoring</code>.</p>
-</li>
-<li>
-<p><code>monitorAccount</code>: The serviceAccount that prometheus-operator runs
-    with. Defaults to <code>prometheus-k8s</code>.</p>
-</li>
-<li>
-<p><code>serviceMonitorNamespace</code>: The namespace that the serviceMonitor runs in.
-    Defaults to be <code>monitorNamespace</code> </p>
-</li>
-</ul>
-<p>Please note that if you decide to set <code>serviceMonitorNamespace</code> than this 
-namespace must be included in <code>serviceMonitorNamespaceSelector</code> field of 
-Prometheus spec.</p>
-<p>If the prometheus-operator for a given deployment uses these defaults,
-then these values can be omitted.</p>
-<p>An example of the KubeVirt resource depicting these default values:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+                <h1 id="debug">Debug<a class="headerlink" href="#debug" title="Permanent link">&para;</a></h1>
+<p>This page contains instructions on how to debug KubeVirt.</p>
+<p>This is useful to both KubeVirt developers and advanced users that would like to gain deep understanding on what's
+happening behind the scenes.</p>
+<h2 id="log-verbosity">Log Verbosity<a class="headerlink" href="#log-verbosity" title="Permanent link">&para;</a></h2>
+<p>KubeVirt produces a lot of logging throughout its codebase. Some log entries have a verbosity level defined to them.
+The verbosity level that's defined for a log entry determines the minimum verbosity level in order to expose the
+log entry.</p>
+<p>In code, the log entry looks similar to: <code>log.Log.V(verbosity).Infof("...")</code> while <code>verbosity</code> is the minimum verbosity
+level for this entry.</p>
+<p>For example, if the log verbosity for some log entry is <code>3</code>, then the log would be exposed only if the log verbosity
+is defined to be equal or greater than <code>3</code>, or else it would be filtered out.</p>
+<p>Currently, log verbosity can be defined per-component or per-node. The most updated API is detailed <a href="https://kubevirt.io/api-reference/master/definitions.html#_v1_logverbosity">here</a>.</p>
+<h3 id="setting-verbosity-per-kubevirt-component">Setting verbosity per KubeVirt component<a class="headerlink" href="#setting-verbosity-per-kubevirt-component" title="Permanent link">&para;</a></h3>
+<p>One way of raising log verbosity is to manually determine it for the different components in <code>KubeVirt</code> CR:</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
 kind: KubeVirt
 metadata:
   name: kubevirt
+  namespace: kubevirt
 spec:
-  monitorNamespace: openshift-monitoring
-  monitorAccount: prometheus-k8s
+  configuration:
+    developerConfiguration:
+      logVerbosity:
+        virtLauncher: 2
+        virtHandler: 3
+        virtController: 4
+        virtAPI: 5
+        virtOperator: 6
 </code></pre>
-<h2 id="integrating-with-the-okd-cluster-monitoring-operator">Integrating with the OKD cluster-monitoring-operator<a class="headerlink" href="#integrating-with-the-okd-cluster-monitoring-operator" title="Permanent link">&para;</a></h2>
-<p>After the
-<a href="https://github.com/openshift/cluster-monitoring-operator">cluster-monitoring-operator</a>
-is up and running, KubeVirt will detect the existence of the
-<code>ServiceMonitor</code> resource. Because the definition contains the
-<code>openshift.io/cluster-monitoring</code> label, it will automatically be picked
-up by the cluster monitor.</p>
-<h2 id="metrics-about-virtual-machines">Metrics about Virtual Machines<a class="headerlink" href="#metrics-about-virtual-machines" title="Permanent link">&para;</a></h2>
-<p>The endpoints report metrics related to the runtime behaviour of the
-Virtual Machines. All the relevant metrics are prefixed with
-<code>kubevirt_vmi</code>.</p>
-<p>The metrics have labels that allow to connect to the VMI objects they
-refer to. At minimum, the labels will expose <code>node</code>, <code>name</code> and
-<code>namespace</code> of the related VMI object.</p>
-<p>For example, reported metrics could look like</p>
-<pre><code>kubevirt_vmi_memory_resident_bytes{domain=&quot;default_vm-test-01&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;} 2.5595904e+07
-kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;rx&quot;} 8431
-kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;tx&quot;} 1835
-kubevirt_vmi_vcpu_seconds{domain=&quot;default_vm-test-01&quot;,id=&quot;0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,state=&quot;1&quot;} 19
+<p>This option is best for debugging specific components.</p>
+<h3 id="setting-verbosity-per-nodes">Setting verbosity per nodes<a class="headerlink" href="#setting-verbosity-per-nodes" title="Permanent link">&para;</a></h3>
+<p>Another way is to set verbosity level per node:</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    developerConfiguration:
+      nodeVerbosity:
+        &quot;node01&quot;: 4
+        &quot;otherNodeName&quot;: 6
 </code></pre>
-<p>Please note the <code>domain</code> label in the above example. This label is
-deprecated and it will be removed in a future release. You should
-identify the VMI using the <code>node</code>, <code>namespace</code>, <code>name</code> labels instead.</p>
-<h2 id="important-queries">Important Queries<a class="headerlink" href="#important-queries" title="Permanent link">&para;</a></h2>
-<h3 id="detecting-connection-issues-for-the-rest-client">Detecting connection issues for the REST client<a class="headerlink" href="#detecting-connection-issues-for-the-rest-client" title="Permanent link">&para;</a></h3>
-<p>Use the following query to get a counter for all REST call which
-indicate connection issues:</p>
-<pre><code>rest_client_requests_total{code="&lt;error&gt;"}
+<p><code>nodeVerbosity</code> is essentially a map from string to int when the key is the node name and the value is the verbosity
+level. The verbosity level would be defined for all the different components in that node (e.g. <code>virt-handler</code>,
+<code>virt-launcher</code>, etc).</p>
+<h3 id="how-to-retrieve-kubevirt-components-logs">How to retrieve KubeVirt components' logs<a class="headerlink" href="#how-to-retrieve-kubevirt-components-logs" title="Permanent link">&para;</a></h3>
+<p>In Kubernetes, logs are defined at the Pod level. Therefore, first it's needed to list the Pods of KubeVirt's core
+components. In order to do that we can first list the Pods under KubeVirt's install namespace.</p>
+<p>For example:</p>
+<pre><code class="language-bash">$&gt; kubectl get pods -n &lt;KubeVirt Install Namespace&gt;
+NAME                               READY   STATUS    RESTARTS   AGE
+disks-images-provider-7gqbc        1/1     Running   0          32m
+disks-images-provider-vg4kx        1/1     Running   0          32m
+virt-api-57fcc4497b-7qfmc          1/1     Running   0          31m
+virt-api-57fcc4497b-tx9nc          1/1     Running   0          31m
+virt-controller-76c784655f-7fp6m   1/1     Running   0          30m
+virt-controller-76c784655f-f4pbd   1/1     Running   0          30m
+virt-handler-2m86x                 1/1     Running   0          30m
+virt-handler-9qs6z                 1/1     Running   0          30m
+virt-operator-7ccfdbf65f-q5snk     1/1     Running   0          32m
+virt-operator-7ccfdbf65f-vllz8     1/1     Running   0          32m
 </code></pre>
-<p>If this counter is continuously increasing, it is an indicator that the
-corresponding KubeVirt component has general issues to connect to the
-apiserver</p>
+<p>Then, we can pick one of the pods and fetch its logs. For example:</p>
+<pre><code class="language-bash">$&gt; kubectl logs -n &lt;KubeVirt Install Namespace&gt; virt-handler-2m86x | head -n8
+{&quot;component&quot;:&quot;virt-handler&quot;,&quot;level&quot;:&quot;info&quot;,&quot;msg&quot;:&quot;set verbosity to 2&quot;,&quot;pos&quot;:&quot;virt-handler.go:453&quot;,&quot;timestamp&quot;:&quot;2022-04-17T08:58:37.373695Z&quot;}
+{&quot;component&quot;:&quot;virt-handler&quot;,&quot;level&quot;:&quot;info&quot;,&quot;msg&quot;:&quot;set verbosity to 2&quot;,&quot;pos&quot;:&quot;virt-handler.go:453&quot;,&quot;timestamp&quot;:&quot;2022-04-17T08:58:37.373726Z&quot;}
+{&quot;component&quot;:&quot;virt-handler&quot;,&quot;level&quot;:&quot;info&quot;,&quot;msg&quot;:&quot;setting rate limiter to 5 QPS and 10 Burst&quot;,&quot;pos&quot;:&quot;virt-handler.go:462&quot;,&quot;timestamp&quot;:&quot;2022-04-17T08:58:37.373782Z&quot;}
+{&quot;component&quot;:&quot;virt-handler&quot;,&quot;level&quot;:&quot;info&quot;,&quot;msg&quot;:&quot;CPU features of a minimum baseline CPU model: map[apic:true clflush:true cmov:true cx16:true cx8:true de:true fpu:true fxsr:true lahf_lm:true lm:true mca:true mce:true mmx:true msr:true mtrr:true nx:true pae:true pat:true pge:true pni:true pse:true pse36:true sep:true sse:true sse2:true sse4.1:true ssse3:true syscall:true tsc:true]&quot;,&quot;pos&quot;:&quot;cpu_plugin.go:96&quot;,&quot;timestamp&quot;:&quot;2022-04-17T08:58:37.390221Z&quot;}
+{&quot;component&quot;:&quot;virt-handler&quot;,&quot;level&quot;:&quot;warning&quot;,&quot;msg&quot;:&quot;host model mode is expected to contain only one model&quot;,&quot;pos&quot;:&quot;cpu_plugin.go:103&quot;,&quot;timestamp&quot;:&quot;2022-04-17T08:58:37.390263Z&quot;}
+{&quot;component&quot;:&quot;virt-handler&quot;,&quot;level&quot;:&quot;info&quot;,&quot;msg&quot;:&quot;node-labeller is running&quot;,&quot;pos&quot;:&quot;node_labeller.go:94&quot;,&quot;timestamp&quot;:&quot;2022-04-17T08:58:37.391011Z&quot;}
+
+</code></pre>
+<p>Obviously, for both examples above, <code>&lt;KubeVirt Install Namespace&gt;</code> needs to be replaced with the actual namespace
+KubeVirt is installed in.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../hugepages/" class="btn btn-neutral float-left" title="Hugepages support"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../authorization/" class="btn btn-neutral float-right" title="Authorization">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../api_validation/" class="btn btn-neutral float-left" title="API Validation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../virtctl_client_tool/" class="btn btn-neutral float-right" title="virtctl Client Tool">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -340,10 +293,10 @@ apiserver</p>
         </span>
     
     
-      <span><a href="../hugepages/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../api_validation/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../authorization/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../virtctl_client_tool/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
