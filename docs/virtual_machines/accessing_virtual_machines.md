@@ -92,6 +92,18 @@ ClusterRole using a RoleBinding that targets a single namespace.
 
 ## SSH Access
 
+In order to connect to a vm, you need to inject a key into it, and after the key is injected you can connect to it with "virtctl ssh".
+
+### Connecting to a vm with virtctl after injecting your key
+
+```
+virtctl ssh <user_name>@vm/<vm_name>.<namespace_name>
+```
+
+*Please not that "virtctl ssh" is only supported in up to date versions of virtctl.
+
+### Key injection
+
 A common operational pattern used when managing virtual machines is to inject
 public ssh keys into the virtual machines at boot. This allows automation tools
 (like ansible) to provision the virtual machine. It also gives operators a way
