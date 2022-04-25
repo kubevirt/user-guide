@@ -157,8 +157,8 @@ cpu model for features. Both features can be set via KubeVirt CR:
       configuration:
         minCPUModel: "Penryn"
         obsoleteCPUModels:
-          - "486"
-          - "pentium"
+          486: true
+          pentium: true
     ...
 ```
 
