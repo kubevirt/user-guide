@@ -11,8 +11,9 @@ virtual machines.
 A few requirements need to be met before you can begin:
 
 -   [Kubernetes](https://kubernetes.io) cluster or derivative
-    (such as [OpenShift](https://github.com/openshift/origin), Tectonic)
-    based on Kubernetes 1.10 or greater
+    (such as [OpenShift](https://github.com/openshift/origin))
+    based on a one of the latest three Kubernetes releases that are
+    out at the time the KubeVirt release is made.
 -   Kubernetes apiserver must have `--allow-privileged=true` in order to run KubeVirt's privileged DaemonSet.
 -   `kubectl` client utility
 
