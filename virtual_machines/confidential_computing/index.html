@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/lifecycle/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/confidential_computing/" />
       <link rel="shortcut icon" href="../../assets/favicon.ico" />
-    <title>Lifecycle - KubeVirt User-Guide</title>
+    <title>Confidential computing - KubeVirt User-Guide</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Lifecycle";
-        var mkdocs_page_input_path = "virtual_machines/lifecycle.md";
-        var mkdocs_page_url = "/user-guide/virtual_machines/lifecycle/";
+        var mkdocs_page_name = "Confidential computing";
+        var mkdocs_page_input_path = "virtual_machines/confidential_computing.md";
+        var mkdocs_page_url = "/user-guide/virtual_machines/confidential_computing/";
       </script>
     
     <script src="../../js/jquery-3.6.0.min.js" defer></script>
@@ -100,21 +100,7 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../virtual_machine_instances/">Virtual Machines Instances</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Lifecycle</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#launching-a-virtual-machine">Launching a virtual machine</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#listing-virtual-machines">Listing virtual machines</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#retrieving-a-virtual-machine-definition">Retrieving a virtual machine definition</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#stopping-a-virtual-machine">Stopping a virtual machine</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#pausing-and-unpausing-a-virtual-machine">Pausing and unpausing a virtual machine</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#renaming-a-virtual-machine">Renaming a Virtual Machine</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../lifecycle/">Lifecycle</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../run_strategies/">Run Strategies</a>
                   </li>
@@ -158,7 +144,11 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../boot_from_external_source/">Booting From External Source</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../confidential_computing/">Confidential computing</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Confidential computing</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#amd-secure-encrypted-virtualization-sev">AMD Secure Encrypted Virtualization (SEV)</a>
+    </li>
+    </ul>
                   </li>
               </ul>
               <ul>
@@ -184,9 +174,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-          <li>Virtual machines &raquo;</li><li>Lifecycle</li>
+          <li>Virtual machines &raquo;</li><li>Confidential computing</li>
     <li class="wy-breadcrumbs-aside">
-        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/lifecycle.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/confidential_computing.md"
           class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
@@ -196,73 +186,70 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="lifecycle">Lifecycle<a class="headerlink" href="#lifecycle" title="Permanent link">&para;</a></h1>
-<p>Every <code>VirtualMachineInstance</code> represents a single virtual machine
-<em>instance</em>. In general, the management of VirtualMachineInstances is
-kept similar to how <code>Pods</code> are managed: Every VM that is defined in the
-cluster is expected to be running, just like Pods. Deleting a
-VirtualMachineInstance is equivalent to shutting it down, this is also
-equivalent to how Pods behave.</p>
-<h2 id="launching-a-virtual-machine">Launching a virtual machine<a class="headerlink" href="#launching-a-virtual-machine" title="Permanent link">&para;</a></h2>
-<p>In order to start a VirtualMachineInstance, you just need to create a
-<code>VirtualMachineInstance</code> object using <code>kubectl</code>:</p>
-<pre><code>$ kubectl create -f vmi.yaml
+                <h1 id="confidential-computing">Confidential computing<a class="headerlink" href="#confidential-computing" title="Permanent link">&para;</a></h1>
+<h2 id="amd-secure-encrypted-virtualization-sev">AMD Secure Encrypted Virtualization (SEV)<a class="headerlink" href="#amd-secure-encrypted-virtualization-sev" title="Permanent link">&para;</a></h2>
+<p><strong>FEATURE STATE:</strong> KubeVirt v0.49.0 (experimental support)</p>
+<p><a href="https://developer.amd.com/sev/">Secure Encrypted Virtualization (SEV)</a> is a feature of AMD's EPYC CPUs that allows the memory of a virtual machine to be encrypted on the fly.</p>
+<p>KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV feature.</p>
+<h3 id="preconditions">Preconditions<a class="headerlink" href="#preconditions" title="Permanent link">&para;</a></h3>
+<p>In order to run an SEV guest the following condition must be met:</p>
+<ul>
+<li><code>WorkloadEncryptionSEV</code> <a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a> must be enabled.</li>
+<li>The guest must support <a href="../virtual_hardware/#biosuefi">UEFI boot</a></li>
+<li>SecureBoot must be disabled for the guest VM</li>
+</ul>
+<h3 id="running-an-sev-guest">Running an SEV guest<a class="headerlink" href="#running-an-sev-guest" title="Permanent link">&para;</a></h3>
+<p>SEV memory encryption can be requested by setting the <code>spec.domain.launchSecurity.sev</code> element in the VMI definition:</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    launchSecurity:
+      sev: {}
+    firmware:
+      bootloader:
+        efi:
+          secureBoot: false
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      rng: {}
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - containerDisk:
+      image: registry:5000/kubevirt/fedora-with-test-tooling-container-disk:devel
+    name: containerdisk
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+    name: cloudinitdisk
 </code></pre>
-<h2 id="listing-virtual-machines">Listing virtual machines<a class="headerlink" href="#listing-virtual-machines" title="Permanent link">&para;</a></h2>
-<p>VirtualMachineInstances can be listed by querying for
-VirtualMachineInstance objects:</p>
-<pre><code>$ kubectl get vmis
-</code></pre>
-<h2 id="retrieving-a-virtual-machine-definition">Retrieving a virtual machine definition<a class="headerlink" href="#retrieving-a-virtual-machine-definition" title="Permanent link">&para;</a></h2>
-<p>A single VirtualMachineInstance definition can be retrieved by getting
-the specific VirtualMachineInstance object:</p>
-<pre><code>$ kubectl get vmis testvmi
-</code></pre>
-<h2 id="stopping-a-virtual-machine">Stopping a virtual machine<a class="headerlink" href="#stopping-a-virtual-machine" title="Permanent link">&para;</a></h2>
-<p>To stop the VirtualMachineInstance, you just need to delete the
-corresponding <code>VirtualMachineInstance</code> object using <code>kubectl</code>.</p>
-<pre><code>$ kubectl delete -f vmi.yaml
-# OR
-$ kubectl delete vmis testvmi
-</code></pre>
-<blockquote>
-<p>Note: Stopping a VirtualMachineInstance implies that it will be
-deleted from the cluster. You will not be able to start this
-VirtualMachineInstance object again.</p>
-</blockquote>
-<h2 id="pausing-and-unpausing-a-virtual-machine">Pausing and unpausing a virtual machine<a class="headerlink" href="#pausing-and-unpausing-a-virtual-machine" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>Note: Pausing in this context refers to libvirt's <code>virDomainSuspend</code> command:<br />
-"The process is frozen without further access to CPU resources and I/O but the memory used by the domain at the hypervisor level will stay allocated"</p>
-</blockquote>
-<p>To pause a virtual machine, you need the <code>virtctl</code> command line tool. Its <code>pause</code> command works on either <code>VirtualMachine</code> s
-or <code>VirtualMachinesInstance</code> s:</p>
-<pre><code>$ virtctl pause vm testvm
-# OR
-$ virtctl pause vmi testvm
-</code></pre>
-<p>Paused VMIs have a <code>Paused</code> condition in their status:</p>
-<pre><code>$ kubectl get vmi testvm -o=jsonpath='{.status.conditions[?(@.type=="Paused")].message}'
-VMI was paused by user
-</code></pre>
-<p>Unpausing works similar to pausing:</p>
-<pre><code>$ virtctl unpause vm testvm
-# OR
-$ virtctl unpause vmi testvm
-</code></pre>
-<h2 id="renaming-a-virtual-machine">Renaming a Virtual Machine<a class="headerlink" href="#renaming-a-virtual-machine" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>Note: Renaming a Virtual Machine is only possible when a Virtual Machine
-is stopped, or has a 'Halted' run strategy.</p>
-</blockquote>
-<pre><code>$ virtctl rename vm_name new_vm_name
-</code></pre>
+<h3 id="current-limitations">Current limitations<a class="headerlink" href="#current-limitations" title="Permanent link">&para;</a></h3>
+<ul>
+<li>SEV-encrypted VMs cannot contain directly-accessible host devices (that is, PCI passthrough)</li>
+<li>Live Migration is not supported</li>
+<li>The VMs are not attested</li>
+</ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../virtual_machine_instances/" class="btn btn-neutral float-left" title="Virtual Machines Instances"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../run_strategies/" class="btn btn-neutral float-right" title="Run Strategies">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../boot_from_external_source/" class="btn btn-neutral float-left" title="Booting From External Source"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../web_console/" class="btn btn-neutral float-right" title="Web Console">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -289,10 +276,10 @@ is stopped, or has a 'Halted' run strategy.</p>
         </span>
     
     
-      <span><a href="../virtual_machine_instances/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../boot_from_external_source/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../run_strategies/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../web_console/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
