@@ -187,6 +187,8 @@ After creating a VirtualMachine it can be switched on or off like this:
     kubectl patch virtualmachine vm --type merge -p \
         '{"spec":{"running":false}}'
 
+Find more details about [a VM's life-cycle in the relevant section](./virtual_machines/lifecycle.md)
+
 ### Controller status
 
 Once a VirtualMachineInstance is created, its state will be tracked via

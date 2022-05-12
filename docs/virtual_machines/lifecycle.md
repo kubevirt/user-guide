@@ -24,7 +24,7 @@ VirtualMachineInstance objects:
     $ kubectl get vmis
 
 
-## Retrieving a virtual machine definition
+## Retrieving a virtual machine instance definition
 
 A single VirtualMachineInstance definition can be retrieved by getting
 the specific VirtualMachineInstance object:
@@ -32,7 +32,7 @@ the specific VirtualMachineInstance object:
     $ kubectl get vmis testvmi
 
 
-## Stopping a virtual machine
+## Stopping a virtual machine instance
 
 To stop the VirtualMachineInstance, you just need to delete the
 corresponding `VirtualMachineInstance` object using `kubectl`.
@@ -45,6 +45,20 @@ corresponding `VirtualMachineInstance` object using `kubectl`.
 > deleted from the cluster. You will not be able to start this
 > VirtualMachineInstance object again.
 
+## Starting and stopping a virtual machine
+
+Virtual machines, in contrast to VirtualMachineInstances, have a running state. Thus on VM you can define if it
+should be running, or not. VirtualMachineInstances are, if they are defined in the cluster, always running and consuming resources.
+
+`virtctl` is used in order to start and stop a VirtualMachine:
+
+    $ virtctl start my-vm
+    $ virtctl stop my-vm
+    
+    # Or force stop a VM (which is like pulling the power cord,
+    # with all it's implications like data inconcistencies or
+    # [in the worst case] data loss) by
+    $ virtctl stop my-vm --grace-period 0 --force
 
 ## Pausing and unpausing a virtual machine
 
