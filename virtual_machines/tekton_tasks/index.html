@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/dedicated_cpu_resources/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/tekton_tasks/" />
       <link rel="shortcut icon" href="../../assets/favicon.ico" />
-    <title>Dedicated CPU resources - KubeVirt User-Guide</title>
+    <title>KubeVirt Tekton - KubeVirt User-Guide</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Dedicated CPU resources";
-        var mkdocs_page_input_path = "virtual_machines/dedicated_cpu_resources.md";
-        var mkdocs_page_url = "/user-guide/virtual_machines/dedicated_cpu_resources/";
+        var mkdocs_page_name = "KubeVirt Tekton";
+        var mkdocs_page_input_path = "virtual_machines/tekton_tasks.md";
+        var mkdocs_page_url = "/user-guide/virtual_machines/tekton_tasks/";
       </script>
     
     <script src="../../js/jquery-3.6.0.min.js" defer></script>
@@ -108,19 +108,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../virtual_hardware/">Virtual hardware</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Dedicated CPU resources</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#kubernetes-cpu-manager">Kubernetes CPU manager</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#requesting-dedicated-cpu-resources">Requesting dedicated CPU resources</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#requesting-dedicated-cpu-for-qemu-emulator">Requesting dedicated CPU for QEMU emulator</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#identifying-nodes-with-a-running-cpu-manager">Identifying nodes with a running CPU manager</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#sidecar-containers-and-cpu-allocation-overhead">Sidecar containers and CPU allocation overhead</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../dedicated_cpu_resources/">Dedicated CPU resources</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../numa/">NUMA</a>
                   </li>
@@ -150,7 +138,13 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../templates/">Templates</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../tekton_tasks/">KubeVirt Tekton</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">KubeVirt Tekton</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#kubevirt-tekton-tasks-operator-tto">KubeVirt Tekton tasks operator (TTO)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#kubevirt-tekton-tasks">KubeVirt Tekton tasks</a>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../replicaset/">VirtualMachineInstanceReplicaSet</a>
                   </li>
@@ -184,9 +178,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-          <li>Virtual machines &raquo;</li><li>Dedicated CPU resources</li>
+          <li>Virtual machines &raquo;</li><li>KubeVirt Tekton</li>
     <li class="wy-breadcrumbs-aside">
-        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/dedicated_cpu_resources.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/tekton_tasks.md"
           class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
@@ -196,156 +190,126 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="dedicated-cpu-resources">Dedicated CPU resources<a class="headerlink" href="#dedicated-cpu-resources" title="Permanent link">&para;</a></h1>
-<p>Certain workloads, requiring a predictable latency and enhanced
-performance during its execution would benefit from obtaining dedicated
-CPU resources. KubeVirt, relying on the Kubernetes CPU manager, is able
-to pin guest's vCPUs to the host's pCPUs.</p>
-<h2 id="kubernetes-cpu-manager"><a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/">Kubernetes CPU manager</a><a class="headerlink" href="#kubernetes-cpu-manager" title="Permanent link">&para;</a></h2>
-<p>Kubernetes CPU manager is a mechanism that affects the scheduling of
-workloads, placing it on a host which can allocate <code>Guaranteed</code>
-resources and pin certain Pod's containers to host pCPUs, if the
-following requirements are met:</p>
+                <h1 id="kubevirt-tekton">KubeVirt Tekton<a class="headerlink" href="#kubevirt-tekton" title="Permanent link">&para;</a></h1>
+<h2 id="kubevirt-tekton-tasks-operator-tto">KubeVirt Tekton tasks operator (TTO)<a class="headerlink" href="#kubevirt-tekton-tasks-operator-tto" title="Permanent link">&para;</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed">Pod's QoS</a> is Guaranteed<ul>
-<li>resources requests and limits are equal</li>
-<li>all containers in the Pod express CPU and memory requirements</li>
+<li><a href="https://tekton.dev/">Tekton</a></li>
+<li><a href="https://kubevirt.io/">KubeVirt</a></li>
+<li><a href="https://github.com/kubevirt/containerized-data-importer">CDI</a></li>
 </ul>
-</li>
-<li>Requested number of CPUs is an Integer</li>
-</ul>
-<p>Additional information: </p>
+<h3 id="deploying-tto">Deploying TTO<a class="headerlink" href="#deploying-tto" title="Permanent link">&para;</a></h3>
+<p><a href="https://github.com/kubevirt/tekton-tasks-operator">TTO</a> is a Golang based operator, which takes care of deploying 
+<a href="https://github.com/kubevirt/kubevirt-tekton-tasks">kubevirt-tekton-tasks</a> and example pipelines.</p>
+<p>TTO is shipped as a part of <a href="https://github.com/kubevirt/hyperconverged-cluster-operator">hyperconverged-cluster-operator</a> 
+or it can be deployed by the user as a stand-alone from the latest <a href="https://github.com/kubevirt/tekton-tasks-operator/releases/latest">release</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>TTO requires <a href="https://tekton.dev/">Tekton</a> to work.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>TTO does not deploy its resources by default.</p>
+</div>
+<p>The user has to enable <code>deployTektonTaskResources</code> feature gate in HCO CR to deploy all its resources</p>
+<pre><code class="language-console">apiVersion: hco.kubevirt.io/v1beta1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+  namespace: kubevirt-hyperconverged
+spec:
+  featureGates:
+    deployTektonTaskResources: true
+</code></pre>
+<p>or in TTO CR:</p>
+<pre><code class="language-console">apiVersion: tektontasks.kubevirt.io/v1alpha1
+kind: TektonTasks
+metadata:
+  name: tektontasks
+  namespace: kubevirt
+spec:
+  featureGates:
+    deployTektonTaskResources: true
+</code></pre>
+<p>Once <code>spec.featureGates.deployTektonTaskResources</code> is set to <code>true</code>, TTO will not delete any cluster 
+tasks or pipeline examples even if it is reverted back to false.</p>
+<p>The user can set in which namespace example pipelines will be deployed by setting <code>spec.tektonPipelinesNamespace</code> in HCO CR:</p>
+<pre><code class="language-console">apiVersion: hco.kubevirt.io/v1beta1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+  namespace: kubevirt-hyperconverged
+spec:
+  tektonPipelinesNamespace: userNamespace
+</code></pre>
+<p>or in TTO CR by setting <code>spec.pipelines.namespace</code>:</p>
+<pre><code class="language-console">apiVersion: tektontasks.kubevirt.io/v1alpha1
+kind: TektonTasks
+metadata:
+  name: tektontasks
+  namespace: kubevirt
+spec:
+  pipelines:
+    namespace: userNamespace
+</code></pre>
+<h2 id="kubevirt-tekton-tasks">KubeVirt Tekton tasks<a class="headerlink" href="#kubevirt-tekton-tasks" title="Permanent link">&para;</a></h2>
+<h3 id="what-are-kubevirt-tekton-tasks">What are KubeVirt Tekton tasks?<a class="headerlink" href="#what-are-kubevirt-tekton-tasks" title="Permanent link">&para;</a></h3>
+<p>KubeVirt-specific Tekton tasks, which are focused on:</p>
 <ul>
-<li><a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/">Enabling the CPU manager on Kubernetes</a></li>
-<li><a href="https://docs.openshift.com/container-platform/4.10/scalability_and_performance/using-cpu-manager.html">Enabling the CPU manager on OKD</a></li>
-<li><a href="https://kubernetes.io/blog/2018/07/24/feature-highlight-cpu-manager/">Kubernetes blog explaining the feature</a></li>
+<li>Creating and managing resources (VMs, DataVolumes)</li>
+<li>Executing commands in VMs</li>
+<li>Manipulating disk images with libguestfs tools</li>
 </ul>
-<h2 id="requesting-dedicated-cpu-resources">Requesting dedicated CPU resources<a class="headerlink" href="#requesting-dedicated-cpu-resources" title="Permanent link">&para;</a></h2>
-<p>Setting <code>spec.domain.cpu.dedicatedCpuPlacement</code> to <code>true</code> in a VMI spec
-will indicate the desire to allocate dedicated CPU resource to the VMI</p>
-<p>Kubevirt will verify that all the necessary conditions are met, for the
-Kubernetes CPU manager to pin the virt-launcher container to dedicated
-host CPUs. Once, virt-launcher is running, the VMI's vCPUs will be
-pinned to the pCPUS that has been dedicated for the virt-launcher
-container.</p>
-<p>Expressing the desired amount of VMI's vCPUs can be done by either
-setting the guest topology in <code>spec.domain.cpu</code> (<code>sockets</code>, <code>cores</code>,
-<code>threads</code>) or <code>spec.domain.resources.[requests/limits].cpu</code> to a whole
-number integer ([1-9]+) indicating the number of vCPUs
-requested for the VMI. Number of vCPUs is counted as
-<code>sockets * cores * threads</code> or if <code>spec.domain.cpu</code> is empty then it
-takes value from <code>spec.domain.resources.requests.cpu</code> or
-<code>spec.domain.resources.limits.cpu</code>.</p>
-<blockquote>
-<p><strong>Note:</strong> Users should not specify both <code>spec.domain.cpu</code> and
-<code>spec.domain.resources.[requests/limits].cpu</code></p>
-<p><strong>Note:</strong> <code>spec.domain.resources.requests.cpu</code> must be equal to
-<code>spec.domain.resources.limits.cpu</code></p>
-<p><strong>Note:</strong> Multiple cpu-bound microbenchmarks show a significant
-performance advantage when using <code>spec.domain.cpu.sockets</code> instead of
-<code>spec.domain.cpu.cores</code>.</p>
-</blockquote>
-<p>All inconsistent requirements will be rejected.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-spec:
-  domain:
-    cpu:
-      sockets: 2
-      cores: 1
-      threads: 1
-      dedicatedCpuPlacement: true
-    resources:
-      limits:
-        memory: 2Gi
-[...]
-</code></pre>
-<p>OR</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-spec:
-  domain:
-    cpu:
-      dedicatedCpuPlacement: true
-    resources:
-      limits:
-        cpu: 2
-        memory: 2Gi
-[...]
-</code></pre>
-<h2 id="requesting-dedicated-cpu-for-qemu-emulator">Requesting dedicated CPU for QEMU emulator<a class="headerlink" href="#requesting-dedicated-cpu-for-qemu-emulator" title="Permanent link">&para;</a></h2>
-<p>A number of QEMU threads, such as QEMU main event loop, async I/O
-operation completion, etc., also execute on the same physical CPUs as
-the VMI's vCPUs. This may affect the expected latency of a vCPU. In
-order to enhance the real-time support in KubeVirt and provide improved
-latency, KubeVirt will allocate an additional dedicated CPU, exclusively
-for the emulator thread, to which it will be pinned. This will
-effectively "isolate" the emulator thread from the vCPUs of the VMI.
-In case <code>ioThreadsPolicy</code> is set to <code>auto</code> IOThreads will also be
-"isolated" and placed on the same physical CPU as the QEMU emulator thread.</p>
-<p>This functionality can be enabled by specifying
-<code>isolateEmulatorThread: true</code> inside VMI spec's <code>Spec.Domain.CPU</code>
-section. Naturally, this setting has to be specified in a combination
-with a <code>dedicatedCpuPlacement: true</code>.</p>
-<p>Example:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
-kind: VirtualMachineInstance
-spec:
-  domain:
-    cpu:
-      dedicatedCpuPlacement: true
-      isolateEmulatorThread: true
-    resources:
-      limits:
-        cpu: 2
-        memory: 2Gi
-</code></pre>
-<h2 id="identifying-nodes-with-a-running-cpu-manager">Identifying nodes with a running CPU manager<a class="headerlink" href="#identifying-nodes-with-a-running-cpu-manager" title="Permanent link">&para;</a></h2>
-<p>At this time, <a href="https://github.com/kubernetes/kubernetes/issues/66525">Kubernetes doesn't label the
-nodes</a> that has
-CPU manager running on it.</p>
-<p>KubeVirt has a mechanism to identify which nodes has the CPU manager
-running and manually add a <code>cpumanager=true</code> label. This label will be
-removed when KubeVirt will identify that CPU manager is no longer
-running on the node. This automatic identification should be viewed as a
-temporary workaround until Kubernetes will provide the required
-functionality. Therefore, this feature should be manually enabled by
-activating the <code>CPUManager</code>
-<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
-to the KubeVirt CR.</p>
-<p>When automatic identification is disabled, cluster administrator may
-manually add the above label to all the nodes when CPU Manager is
-running.</p>
+<h3 id="existing-tasks">Existing tasks<a class="headerlink" href="#existing-tasks" title="Permanent link">&para;</a></h3>
+<h4 id="create-virtual-machines">Create Virtual Machines<a class="headerlink" href="#create-virtual-machines" title="Permanent link">&para;</a></h4>
+<ul>
+<li>create-vm-from-manifest - create a VM from provided manifest.</li>
+<li>create-vm-from-template - create a VM from template (works only on OpenShift).</li>
+</ul>
+<h4 id="utilize-templates">Utilize Templates<a class="headerlink" href="#utilize-templates" title="Permanent link">&para;</a></h4>
+<ul>
+<li>copy-template - Copies the given template and creates a new one (works only on OpenShift).</li>
+<li>modify-vm-template - Modifies a template with user provided data (works only on OpenShift).</li>
+</ul>
+<h4 id="create-datavolumes">Create DataVolumes<a class="headerlink" href="#create-datavolumes" title="Permanent link">&para;</a></h4>
+<ul>
+<li>create-datavolume-from-manifest - Create a datavolume from a manifest.</li>
+</ul>
+<h4 id="generate-ssh-keys">Generate SSH Keys<a class="headerlink" href="#generate-ssh-keys" title="Permanent link">&para;</a></h4>
+<ul>
+<li>generate-ssh-keys - Generates a private and public key pair, and injects it into a VM.</li>
+</ul>
+<h4 id="execute-commands-in-virtual-machines">Execute commands in Virtual Machines<a class="headerlink" href="#execute-commands-in-virtual-machines" title="Permanent link">&para;</a></h4>
+<ul>
+<li>execute-in-vm - Execute commands over SSH in a VM.</li>
+<li>cleanup-vm - Execute commands and/or stop/delete VMs.</li>
+</ul>
+<h4 id="manipulate-pvcs-with-libguestfs-tools">Manipulate PVCs with libguestfs tools<a class="headerlink" href="#manipulate-pvcs-with-libguestfs-tools" title="Permanent link">&para;</a></h4>
+<ul>
+<li>disk-virt-customize - execute virt-customize commands in PVCs.</li>
+<li>disk-virt-sysprep- execute virt-sysprep commands in PVCs.</li>
+</ul>
+<h4 id="wait-for-virtual-machine-instance-status">Wait for Virtual Machine Instance Status<a class="headerlink" href="#wait-for-virtual-machine-instance-status" title="Permanent link">&para;</a></h4>
+<ul>
+<li>wait-for-vmi-status - Waits for a VMI to be running.</li>
+</ul>
+<h3 id="example-pipeline">Example pipeline<a class="headerlink" href="#example-pipeline" title="Permanent link">&para;</a></h3>
+<p>All these tasks can be used for creating <a href="https://github.com/tektoncd/pipeline/blob/main/docs/pipelines.md">pipelines</a>.
+TTO is creating multiple example pipelines, e.g.:</p>
 <ul>
 <li>
-<p>Nodes' labels are view-able: <code>kubectl describe nodes</code></p>
+<p><a href="https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows10-installer.yaml">Windows 10 installer</a> - Pipeline will prepare a template and Windows 10 datavolume. User has to provide a link to working Windows 10 iso file.</p>
 </li>
 <li>
-<p>Administrators may manually label a missing node:
-    <code>kubectl label node [node_name] cpumanager=true</code></p>
+<p><a href="https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows10-customize.yaml">Windows 10 customize</a> - Pipeline will install sql server in windows 10 VM</p>
 </li>
 </ul>
-<h2 id="sidecar-containers-and-cpu-allocation-overhead">Sidecar containers and CPU allocation overhead<a class="headerlink" href="#sidecar-containers-and-cpu-allocation-overhead" title="Permanent link">&para;</a></h2>
-<p><strong>Note:</strong> In order to run sidecar containers, KubeVirt requires the
-<code>Sidecar</code>
-<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
-to be enabled in KubeVirt's CR.</p>
-<p>According to the Kubernetes CPU manager model, in order the POD would
-reach the required QOS level <code>Guaranteed</code>, all containers in the POD
-must express CPU and memory requirements. At this time, Kubevirt often
-uses a sidecar container to mount VMI's registry disk. It also uses a
-sidecar container of it's hooking mechanism. These additional resources
-can be viewed as an overhead and should be taken into account when
-calculating a node capacity.</p>
-<p><strong>Note:</strong> The current defaults for sidecar's resources: <code>CPU: 200m</code>
-<code>Memory: 64M</code> As the CPU resource is not expressed as a whole number,
-CPU manager will not attempt to pin the sidecar container to a host CPU.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../virtual_hardware/" class="btn btn-neutral float-left" title="Virtual hardware"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../numa/" class="btn btn-neutral float-right" title="NUMA">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../templates/" class="btn btn-neutral float-left" title="Templates"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../replicaset/" class="btn btn-neutral float-right" title="VirtualMachineInstanceReplicaSet">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -372,10 +336,10 @@ CPU manager will not attempt to pin the sidecar container to a host CPU.</p>
         </span>
     
     
-      <span><a href="../virtual_hardware/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../templates/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../numa/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../replicaset/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
