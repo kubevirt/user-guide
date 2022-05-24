@@ -57,7 +57,11 @@ The general flow is:
 
 2. Providing an Answer file named `autounattend.xml` in an attached media. The answer file can be provided in a ConfigMap or a Secret with the key `autounattend.xml`
 
-    More information can be found here: [Answer files (unattend.xml)](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs)
+    The configuration file can be generated with [Windows SIM](https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/wsim/windows-system-image-manager-overview-topics) or it can be specified manually according to the information found here:
+
+    * [Answer files (unattend.xml)](https://docs.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs)
+    * [Answer File Reference](https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/wsim/answer-files-overview)
+    * [Answer File Components Reference](https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/components-b-unattend)
 
     !!! Note
         There are also many easy to find online tools available for creating an answer file.
