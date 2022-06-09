@@ -136,7 +136,7 @@ and [CNI](https://github.com/containernetworking) and improving them.
 A `VirtualMachine` provides additional management capabilities to a
 VirtualMachineInstance inside the cluster. That includes:
 
--   ABI stability
+-   API stability
 
 -   Start/stop/restart capabilities on the controller level
 
@@ -278,16 +278,16 @@ See [Service Objects](./virtual_machines/service_objects.md) for more details.
 
 ## When to use a VirtualMachine
 
-### When ABI stability is required between restarts
+### When API stability is required between restarts
 
-A `VirtualMachine` makes sure that VirtualMachineInstance ABI
+A `VirtualMachine` makes sure that VirtualMachineInstance API
 configurations are consistent between restarts. A classical example are
 licenses which are bound to the firmware UUID of a virtual machine. The
 `VirtualMachine` makes sure that the UUID will always stay the same
 without the user having to take care of it.
 
 One of the main benefits is that a user can still make use of defaulting
-logic, although a stable ABI is needed.
+logic, although a stable API is needed.
 
 ### When config updates should be picked up on the next restart
 
