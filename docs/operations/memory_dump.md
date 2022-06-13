@@ -95,6 +95,11 @@ You can manage the dump in one of the following ways:
           - mountPath: /dev/pvc
             name: my-pvc
     ```
+
+    kubectl cp example:
+    ```bash
+    $ kubectl cp default/consumer-pod:/dev/pvc/ memory-dump
+    ```
 - Create a pod with troubleshooting tools that will mount the PVC and inspect it within the pod.
 - Use Export mechanism by:
     - Exporting only the PVC (not supported yet)
