@@ -1,6 +1,9 @@
 # Virtual machine memory dump  
 
 Kubevirt now supports getting a VM memory dump for analysis purposes.
+The Memory dump can be used to diagnose, identify and resolve issues in the VM. Typically providing information about the last state of the programs, applications and system before they were terminated or crashed.
+
+> *Note* This memory dump is not used for saving VM state and resuming it later.
 
 ## Prerequisites
 
