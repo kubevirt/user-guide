@@ -28,6 +28,7 @@ spec:
     requests:
       storage: 2Gi
   storageClassName: rook-ceph-block
+  volumeMode: Filesystem
 ```
 
 The PVC must be a FileSystem volume mode PVC.
@@ -44,7 +45,7 @@ $ virtctl memory-dump get my-vm --claim-name=my-pvc
 ```
 
 This will dump the memory of the running VM to the given PVC.
-The information of the memory dump will be updated on the VM status.
+Information regarding the memory dump process will be available on the VM's status section
 ```yaml
     memoryDumpRequest:
       claimName: memory-dump
@@ -70,10 +71,30 @@ $ virtctl memory-dump remove my-vm
 
 ## Handle the memory dump
 Once the memory dump process is completed the PVC will hold the output.
-There are several options to get the dump out of the PVC:
-- Copy it from the PVC to your local environment by using virtctl scp command(for more info look for virtctl scp help). This is useful if the VM memory is pretty small.
+You can manage the dump in one of the following ways:
+- Create a consumer pod for the PVC that will mount the PVC as a device, then copy the content out from the pod using `kubectl cp`
+    yaml example:
+    ```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: consumer-pod
+    spec:
+      volumes:
+        - name: my-pvc
+          persistentVolumeClaim:
+            claimName: my-pvc
+      containers:
+      - name: pod-container
+        image: busybox
+        command: ['/bin/sh', '-c', 'while true; do echo hello; sleep 2;done']
+        volumeMounts:
+          - mountPath: /dev/pvc
+            name: my-pvc
+    ```
+- Create a pod with troubleshooting tools that will mount the PVC and inspect it within the pod.
 - Use Export mechanism by:
     - Exporting only the PVC (not supported yet)
     - Include the memory dump in the VMSnapshot and export the whole VMSnapshot (will include both the memory dump and the disks) (not supported yet) 
 
-The output of the memory dump can be used for memory analysis with different tools for example [Volatility3](https://github.com/volatilityfoundation/volatility3)
+The output of the memory dump can be inspected with memory analysis tools for example [Volatility3](https://github.com/volatilityfoundation/volatility3)
