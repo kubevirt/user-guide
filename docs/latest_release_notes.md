@@ -1,5 +1,608 @@
 # Latest release notes
 
+## v0.54.0
+
+Released on: Wed Jun 8 14:15:43 2022 +0000
+
+- [PR #7757][orenc1] new alert for excessive number of VMI migrations in a period of time.
+- [PR #7517][ShellyKa13] Add virtctl Memory Dump command
+- [PR #7801][VirrageS] Empty (`nil` values) of `Address` and `Driver` fields in XML will be omitted.
+- [PR #7475][raspbeep] Adds the reason of a live-migration failure to a recorded event in case EvictionStrategy is set but live-migration is blocked due to its limitations.
+- [PR #7739][fossedihelm] Allow `virtualmachines/migrate` subresource to admin/edit users
+- [PR #7618][lyarwood] The requirement to define a `Disk` or `Filesystem` for each `Volume` associated with a `VirtualMachine` has been removed. Any `Volumes` without a `Disk` or `Filesystem` defined will have a `Disk` defined within the `VirtualMachineInstance` at runtime.
+- [PR #7529][xpivarc] NoReadyVirtController and NoReadyVirtOperator should be properly fired.
+- [PR #7465][machadovilaca] Add metrics for migrations and respective phases
+- [PR #7592][akalenyu] BugFix: virtctl guestfs incorrectly assumes image name
+
+## v0.53.1
+
+Released on: Tue May 17 14:55:54 2022 +0000
+
+- [PR #7749][kubevirt-bot] NoReadyVirtController and NoReadyVirtOperator should be properly fired.
+
+## v0.53.0
+
+Released on: Mon May 9 14:02:20 2022 +0000
+
+- [PR #7533][akalenyu] Add several VM snapshot metrics
+- [PR #7574][rmohr] Pull in cdi dependencies with minimized transitive dependencies to ease API adoption
+- [PR #7318][iholder-redhat] Snapshot restores now support restoring to a target VM different than the source
+- [PR #7474][borod108] Added the following metrics for live migration: kubevirt_migrate_vmi_data_processed_bytes, kubevirt_migrate_vmi_data_remaining_bytes, kubevirt_migrate_vmi_dirty_memory_rate_bytes
+- [PR #7441][rmohr] Add `virtctl scp` to ease copying files from and to VMs and VMIs
+- [PR #7265][rthallisey] Support steady-state job types in the load-generator tool
+- [PR #7544][fossedihelm] Upgraded go version to 1.17.8
+- [PR #7582][acardace] Fix failed reported migrations when actually they were successful.
+- [PR #7546][0xFelix] Update virtio-container-disk to virtio-win version 0.1.217-1
+- [PR #7530][iholder-redhat] [External Kernel Boot]: Disallow kernel args without providing custom kernel
+- [PR #7493][davidvossel] Adds new EvictionStrategy "External" for blocking eviction which is handled by an external controller
+- [PR #7563][akalenyu] Switch VolumeSnapshot to v1
+- [PR #7406][acardace] Reject `LiveMigrate` as a workload-update strategy if the `LiveMigration` feature gate is not enabled.
+- [PR #7103][jean-edouard] Non-persistent vTPM now supported. Keep in mind that the state of the TPM is wiped after each shutdown. Do not enable Bitlocker!
+- [PR #7277][andreabolognani] This version of KubeVirt includes upgraded virtualization technology based on libvirt 8.0.0 and QEMU 6.2.0.
+- [PR #7130][Barakmor1] Add field to kubevirtCR to set Prometheus ServiceMonitor object's namespace
+- [PR #7401][iholder-redhat] virt-api deployment is now scalable - replicas are determined by the number of nodes in the cluster
+- [PR #7500][awels] BugFix: Fixed RBAC for admin/edit user to allow virtualmachine/addvolume and removevolume. This allows for persistent disks
+- [PR #7328][apoorvajagtap] Don't ignore --identity-file when setting --local-ssh=true on `virtctl ssh`
+- [PR #7469][xpivarc] Users can now enable the NonRoot feature gate instead of NonRootExperimental
+- [PR #7451][fossedihelm] Reduce virt-launcher memory usage by splitting monitoring and launcher processes
+
+## v0.52.0
+
+Released on: Fri Apr 8 16:17:56 2022 +0000
+
+- [PR #7024][fossedihelm] Add an warning message if the client and server virtctl versions are not aligned
+- [PR #7486][rmohr] Move stable.txt location to a more appropriate path
+- [PR #7372][saschagrunert] Fixed `KubeVirtComponentExceedsRequestedMemory` alert complaining about many-to-many matching not allowed.
+- [PR #7426][iholder-redhat] Add warning for manually determining core-component replica count in Kubevirt CR
+- [PR #7424][maiqueb] Provide interface binding types descriptions, which will be featured in the KubeVirt API.
+- [PR #7422][orelmisan] Fixed setting custom guest pciAddress and bootOrder parameter(s) to a list of SR-IOV NICs.
+- [PR #7421][rmohr] Fix knowhosts file corruption for virtctl ssh
+- [PR #6854][rmohr] Make virtctl ssh work with ssh-rsa+ preauthentication
+- [PR #7267][iholder-redhat] Applied migration configurations can now be found in VMI's status
+- [PR #7321][iholder-redhat] [Migration Policies]: precedence to VMI labels over Namespace labels
+- [PR #7326][oshoval] The Ginkgo dependency has been upgraded to v2.1.3 (major version upgrade)
+- [PR #7361][SeanKnight] Fixed a bug that prevents virtctl from working with clusters accessed via Rancher authentication proxy, or any other cluster where the server URL contains a path component. (#3760)
+- [PR #7255][tyleraharrison] Users are now able to specify `--address [ip_address]` when using `virtctl vnc` rather than only using 127.0.0.1
+- [PR #7275][enp0s3] Add observedGeneration to virt-operator to have a race-free way to detect KubeVirt config rollouts
+- [PR #7233][xpivarc] Bug fix: Successfully aborted migrations should be reported now
+- [PR #7158][AlonaKaplan] Add masquerade VMs support to single stack IPv6.
+- [PR #7227][rmohr] Remove VMI informer from virt-api to improve scaling characteristics of virt-api
+- [PR #7288][raspbeep] Users now don't need to specify container for `kubectl logs <vmi-pod>` and `kubectl exec <vmi-pod>`.
+- [PR #6709][xpivarc] Workloads will be migrated to nonroot implementation if NonRoot feature gate is set. (Except VirtioFS)
+- [PR #7241][lyarwood] Fixed a bug that prevents only a unattend.xml configmap or secret being provided as contents for a sysprep disk. (#7240, @lyarwood)
+
+## v0.51.0
+
+Released on: Tue Mar 8 21:06:59 2022 +0000
+
+- [PR #7102][machadovilaca] Add Virtual Machine name label to virt-launcher pod
+- [PR #7139][davidvossel] Fixes inconsistent VirtualMachinePool VM/VMI updates by using controller revisions
+- [PR #6754][jean-edouard] New and resized disks are now always 1MiB-aligned
+- [PR #7086][acardace] Add 'EvictionStrategy' as a cluster-wide setting in the KubeVirt CR
+- [PR #7232][rmohr] Properly format the PDB scale event during migrations
+- [PR #7223][Barakmor1] Add a name label to virt-operator pods
+- [PR #7221][davidvossel] RunStrategy: Once - allows declaring a VM should run once to a finalized state
+- [PR #7091][EdDev] SR-IOV interfaces are now reported in the VMI status even without an active guest-agent.
+- [PR #7169][rmohr] Improve device plugin de-registration in virt-handler and some test stabilizations
+- [PR #6604][alicefr] Add shareable option to identify if the disk is shared with other VMs
+- [PR #7144][davidvossel] Garbage collect finalized migration objects only leaving the most recent 5 objects
+- [PR #6110][xpivarc] [Nonroot] SRIOV is now available.
+
+## v0.50.0
+
+Released on: Wed Feb 9 18:01:08 2022 +0000
+
+- [PR #7056][fossedihelm] Update k8s dependencies to 0.23.1
+- [PR #7135][davidvossel] Switch from reflects.DeepEquals to equality.Semantic.DeepEquals() across the entire project
+- [PR #7052][sradco] Updated recording rule "kubevirt_vm_container_free_memory_bytes"
+- [PR #7000][iholder-redhat] Adds a possibility to override default libvirt log filters though VMI annotations
+- [PR #7064][davidvossel] Fixes issue associated with blocked uninstalls when VMIs exist during removal
+- [PR #7097][iholder-redhat] [Bug fix] VMI with kernel boot stuck on "Terminating" status if more disks are defined
+- [PR #6700][VirrageS] Simplify replacing `time.Ticker` in agent poller and fix default values for `qemu-*-interval` flags
+- [PR #6581][ormergi] SRIOV network interfaces are now hot-plugged when disconnected manually or due to aborted migrations.
+- [PR #6924][EdDev] Support for legacy GPU definition is removed. Please see https://kubevirt.io/user-guide/virtual_machines/host-devices on how to define host-devices.
+- [PR #6735][uril] The command `migrate_cancel` was added to virtctl. It cancels an active VM migration.
+- [PR #6883][rthallisey] Add instance-type to cloud-init metadata
+- [PR #6999][maya-r] When expanding disk images, take the minimum between the request and the capacity - avoid using the full underlying file system on storage like NFS, local.
+- [PR #6946][vladikr] Numa information of an assigned device will be presented in the devices metadata
+- [PR #6042][iholder-redhat] Fully support cgroups v2, include a new cohesive package and perform major refactoring.
+- [PR #6968][vladikr] Added Writeback disk cache support
+- [PR #6995][sradco] Alert OrphanedVirtualMachineImages name was changed to OrphanedVirtualMachineInstances.
+- [PR #6923][rhrazdil] Fix issue with ssh being unreachable on VMIs with Istio proxy
+- [PR #6821][jean-edouard] Migrating VMIs that contain dedicated CPUs will now have properly dedicated CPUs on target
+- [PR #6793][oshoval] Add infoSource field to vmi.status.interfaces.
+
+## v0.49.0
+
+Released on: Tue Jan 11 17:27:09 2022 +0000
+
+- [PR #7004][iholder-redhat] Bugfix: Avoid setting block migration for volumes used by read-only disks
+- [PR #6959][enp0s3] generate event when target pod enters unschedulable phase
+- [PR #6888][assafad] Added common labels into alert definitions
+- [PR #6166][vasiliy-ul] Experimental support of AMD SEV
+- [PR #6980][vasiliy-ul] Updated the dependencies to include the fix for CVE-2021-43565 (KubeVirt is not affected)
+- [PR #6944][iholder-redhat] Remove disabling TLS configuration from Live Migration Policies
+- [PR #6800][jean-edouard] CPU pinning doesn't require hardware-assisted virtualization anymore
+- [PR #6501][ShellyKa13] Use virtctl image-upload to upload archive content
+- [PR #6918][iholder-redhat] Bug fix: Unscheduable host-model VMI alert is now properly triggered
+- [PR #6796][Barakmor1] 'kubevirt-operator' changed to 'virt-operator' on 'managed-by' label in kubevirt's components made by virt-operator
+- [PR #6036][jean-edouard] Migrations can now be done over a dedicated multus network
+- [PR #6933][erkanerol] Add a new lane for monitoring tests
+- [PR #6949][jean-edouard] KubeVirt components should now be successfully removed on CR deletion, even when using only 1 replica for virt-api and virt-controller
+- [PR #6954][maiqueb] Update the `virtctl` exposed services `IPFamilyPolicyType` default to `IPFamilyPolicyPreferDualStack`
+- [PR #6931][fossedihelm] added DryRun to AddVolumeOptions and RemoveVolumeOptions
+- [PR #6379][nunnatsa] Fix issue https://bugzilla.redhat.com/show_bug.cgi?id=1945593
+- [PR #6399][iholder-redhat] Introduce live migration policies that allow system-admins to have fine-grained control over migration configuration for different sets of VMs.
+- [PR #6880][iholder-redhat] Add full Podman support for `make` and `make test`
+- [PR #6702][acardace] implement virt-handler canary upgrade and rollback for faster and safer rollouts
+- [PR #6717][davidvossel] Introducing the VirtualMachinePools feature for managing stateful VMs at scale
+- [PR #6698][rthallisey] Add tracing to the virt-controller work queue
+- [PR #6762][fossedihelm] added DryRun mode to virtcl to migrate command
+- [PR #6891][rmohr] Fix "Make raw terminal failed: The handle is invalid?" issue with "virtctl console" when not executed in a pty
+- [PR #6783][rmohr] Skip SSH RSA auth if no RSA key was explicitly provided and not key exists at the default location
+
+## v0.48.1
+
+Released on: Wed Dec 15 15:11:55 2021 +0000
+
+- [PR #6900][kubevirt-bot] Skip SSH RSA auth if no RSA key was explicitly provided and not key exists at the default location
+- [PR #6902][kubevirt-bot] Fix "Make raw terminal failed: The handle is invalid?" issue with "virtctl console" when not executed in a pty
+
+## v0.48.0
+
+Released on: Mon Dec 6 18:26:51 2021 +0000
+
+- [PR #6670][futuretea] Added 'virtctl soft-reboot' command to reboot the VMI.
+- [PR #6861][orelmisan] virtctl errors are written to stderr instead of stdout
+- [PR #6836][enp0s3] Added PHASE and VMI columns for the 'kubectl get vmim' CLI output
+- [PR #6784][nunnatsa] kubevirt-config configMap is no longer supported for KubeVirt configuration
+- [PR #6839][ShellyKa13] fix restore of VM with RunStrategy
+- [PR #6533][zcahana] Paused VMIs are now marked as unready even when no readinessProbe is specified
+- [PR #6858][rmohr] Fix a nil pointer in virtctl in combination with some external auth plugins
+- [PR #6780][fossedihelm] Add PatchOptions to the Patch request of the VirtualMachineInstanceInterface
+- [PR #6773][iholder-redhat] alert if migration for VMI with host-model CPU is stuck since no node is suitable
+- [PR #6714][rhrazdil] Shorten timeout for Istio proxy detection
+- [PR #6725][fossedihelm] added DryRun mode to virtcl for pause and unpause commands
+- [PR #6737][davidvossel] Pending migration target pods timeout after 5 minutes when unschedulable
+- [PR #6814][fossedihelm] Changed some terminology to be more inclusive
+- [PR #6649][Barakmor1] Designate the apps.kubevirt.io/component label for KubeVirt components.
+- [PR #6650][victortoso] Introduces support to ich9 or ac97 sound devices
+- [PR #6734][Barakmor1] replacing the command that extract libvirtd's pid  to avoid this error:
+- [PR #6802][rmohr] Maintain a separate api package which synchronizes to kubevirt.io/api for better third party integration with client-gen
+- [PR #6730][zhhray] change kubevrit cert secret type from Opaque to kubernetes.io/tls
+- [PR #6508][oshoval] Add missing domain to guest search list, in case subdomain is used.
+- [PR #6664][vladikr] enable the display and ramfb for vGPUs by default
+- [PR #6710][iholder-redhat] virt-launcher fix - stop logging successful shutdown when it isn't true
+- [PR #6162][vladikr] KVM_HINTS_REALTIME will always be set when dedicatedCpusPlacement is requested
+- [PR #6772][zcahana] Bugfix: revert #6565 which prevented upgrades to v0.47.
+- [PR #6722][zcahana] Remove obsolete scheduler.alpha.kubernetes.io/critical-pod annotation
+- [PR #6723][acardace] remove stale pdbs created by < 0.41.1 virt-controller
+- [PR #6721][iholder-redhat] Set default CPU model in VMI spec, even if not defined in KubevirtCR
+- [PR #6713][zcahana] Report WaitingForVolumeBinding VM status when PVC/DV-type volumes reference unbound PVCs
+- [PR #6681][fossedihelm] Users can use --dry-run flag
+- [PR #6663][jean-edouard] The number of virt-api and virt-controller replicas is now configurable in the CSV
+- [PR #5981][maya-r] Always resize disk.img files to the largest size at boot.
+
+## v0.47.1
+
+Released on: Thu Nov 11 15:52:59 2021 +0000
+
+- [PR #6775][kubevirt-bot] Bugfix: revert #6565 which prevented upgrades to v0.47.
+- [PR #6703][mhenriks] Fix BZ 2018521 - On upgrade VirtualMachineSnapshots going to Failed
+- [PR #6511][knopt] Fixed virt-api significant memory usage when using Cluster Profiler with large KubeVirt deployments. (#6478, @knopt)
+- [PR #6629][awels] BugFix: Hotplugging more than one block device would cause IO error (#6564)
+- [PR #6657][andreabolognani] This version of KubeVirt includes upgraded virtualization technology based on libvirt 7.6.0 and QEMU 6.0.0.
+- [PR #6565][Barakmor1] 'kubevirt-operator' changed to 'virt-operator' on 'managed-by' label in kubevirt's components made by virt-operator
+- [PR #6642][ShellyKa13] Include hot-plugged disks in a Online VM Snapshot
+- [PR #6513][brybacki] Adds force-bind flag to virtctl imageupload
+- [PR #6588][erkanerol] Fix recording rules based on up metrics
+- [PR #6575][davidvossel] VM controller now syncs VMI conditions to corresponding VM object
+- [PR #6661][rmohr] Make the kubevirt api compatible with client-gen to make selecting compatible k8s golang dependencies easier
+- [PR #6535][rmohr] Migrations use digests to reference containerDisks and kernel boot images to ensure disk consistency
+- [PR #6651][ormergi] Kubevirt Conformance plugin now supports passing tests images registry.
+- [PR #6589][iholder-redhat] custom kernel / initrd to boot from is now pre-pulled which improves stability
+- [PR #6199][ormergi] Kubevirt Conformance plugin now supports passing image tag or digest
+- [PR #6477][zcahana] Report DataVolumeError VM status when referenced a DataVolume indicates an error
+- [PR #6593][rhrazdil] Removed python dependencies from virt-launcher and virt-handler containers
+- [PR #6026][akrejcir] Implemented minimal VirtualMachineFlavor functionality.
+- [PR #6570][erkanerol] Use honorLabels instead of labelDrop for namespace label on metrics
+- [PR #6182][jordigilh] adds support for real time workloads
+- [PR #6177][rmohr] Switch the node base images to centos8 stream
+- [PR #6171][zcahana] Report ErrorPvcNotFound/ErrorDataVolumeNotFound VM status when PVC/DV-type volumes reference non-existent objects
+- [PR #6437][VirrageS] Fix deprecated use of watch API to prevent reporting incorrect metrics.
+- [PR #6482][jean-edouard] VMs with cloud-init data should now properly migrate from older KubeVirt versions
+- [PR #6375][dhiller] Rely on kubevirtci installing cdi during testing
+
+## v0.46.1
+
+Released on: Tue Oct 19 15:41:10 2021 +0000
+
+- [PR #6557][jean-edouard] VMs with cloud-init data should now properly migrate from older KubeVirt versions
+
+## v0.46.0
+
+Released on: Fri Oct 8 21:12:33 2021 +0000
+
+- [PR #6425][awels] Hotplug disks are possible when iothreads are enabled.
+- [PR #6297][acardace] mutate migration PDBs instead of creating an additional one for the duration of the migration.
+- [PR #6464][awels] BugFix: Fixed hotplug race between kubelet and virt-handler when virt-launcher dies unexpectedly.
+- [PR #6465][salanki] Fix corrupted DHCP Gateway Option from local DHCP server, leading to rejected IP configuration on Windows VMs.
+- [PR #6458][vladikr] Tagged SR-IOV interfaces will now appear in the config drive metadata
+- [PR #6446][brybacki] Access mode for virtctl image upload is now optional. This version of virtctl now requires CDI v1.34 or greater
+- [PR #6391][zcahana] Cleanup obsolete permissions from virt-operator's ClusterRole
+- [PR #6419][rthallisey] Fix virt-controller panic caused by lots of deleted VMI events
+- [PR #5972][kwiesmueller] Add a `ssh` command to `virtctl` that can be used to open SSH sessions to VMs/VMIs.
+- [PR #6403][jrife] Removed go module pinning to an old version (v0.3.0) of github.com/go-kit/kit
+- [PR #6367][brybacki] virtctl imageupload now uses DataVolume.spec.storage
+- [PR #6198][iholder-redhat] Fire a Prometheus alert when a lot of REST failures are detected in virt-api
+- [PR #6211][davidvossel] cluster-profiler pprof gathering tool and corresponding "ClusterProfiler" feature gate
+- [PR #6323][vladikr] switch live migration to use unix sockets
+- [PR #6374][vladikr] Fix the default setting of CPU requests on vmipods
+- [PR #6283][rthallisey] Record the time it takes to delete a VMI and expose it as a metric
+- [PR #6251][rmohr] Better place vcpu threads on host cpus to form more efficient passthrough architectures
+- [PR #6377][rmohr] Don't fail on failed selinux relabel attempts if selinux is permissive
+- [PR #6308][awels] BugFix: hotplug was broken when using it with a hostpath volume that was on a separate device.
+- [PR #6186][davidvossel] Add resource and verb labels to rest_client_requests_total metric
+
+## v0.45.1
+
+Released on: Tue Oct 19 15:39:42 2021 +0000
+
+- [PR #6537][kubevirt-bot] Fix corrupted DHCP Gateway Option from local DHCP server, leading to rejected IP configuration on Windows VMs.
+- [PR #6556][jean-edouard] VMs with cloud-init data should now properly migrate from older KubeVirt versions
+- [PR #6480][kubevirt-bot] BugFix: Fixed hotplug race between kubelet and virt-handler when virt-launcher dies unexpectedly.
+- [PR #6384][kubevirt-bot] Better place vcpu threads on host cpus to form more efficient passthrough architectures
+
+## v0.45.0
+
+Released on: Wed Sep 8 13:56:47 2021 +0000
+
+- [PR #6191][marceloamaral] Addition of perfscale-load-generator to perform stress tests to evaluate the control plane
+- [PR #6248][VirrageS] Reduced logging in hot paths
+- [PR #6079][weihanglo] Hotplug volume can be unplugged at anytime and reattached after a VM restart.
+- [PR #6101][rmohr] Make k8s client rate limits configurable
+- [PR #6204][sradco] This PR adds to each alert the runbook url that points to a runbook that provides additional details on each alert and how to mitigate it.
+- [PR #5974][vladikr] a list of desired mdev types can now be provided in KubeVirt CR to kubevirt to configure these devices on relevant nodes
+- [PR #6147][rmohr] Fix rbac permissions for freeze/unfreeze, addvolume/removevolume, guestosinfo, filesystemlist and userlist
+- [PR #6161][ashleyschuett] Remove HostDevice validation on VMI creation
+- [PR #6078][zcahana] Report ErrImagePull/ImagePullBackOff VM status when image pull errors occur
+- [PR #6176][kwiesmueller] Fix goroutine leak in virt-handler, potentially causing issues with a high turnover of VMIs.
+- [PR #6047][ShellyKa13] Add phases to the vm snapshot api, specifically a failure phase
+- [PR #6138][ansijain] NA
+
+## v0.44.3
+
+Released on: Tue Oct 19 15:38:22 2021 +0000
+
+- [PR #6518][jean-edouard] VMs with cloud-init data should now properly migrate from older KubeVirt versions
+- [PR #6532][kubevirt-bot] mutate migration PDBs instead of creating an additional one for the duration of the migration.
+- [PR #6536][kubevirt-bot] Fix corrupted DHCP Gateway Option from local DHCP server, leading to rejected IP configuration on Windows VMs.
+
+## v0.44.2
+
+Released on: Thu Oct 7 12:55:34 2021 +0000
+
+- [PR #6479][kubevirt-bot] BugFix: Fixed hotplug race between kubelet and virt-handler when virt-launcher dies unexpectedly.
+- [PR #6392][rmohr] Better place vcpu threads on host cpus to form more efficient passthrough architectures
+- [PR #6251][rmohr] Better place vcpu threads on host cpus to form more efficient passthrough architectures
+- [PR #6344][kubevirt-bot] BugFix: hotplug was broken when using it with a hostpath volume that was on a separate device.
+- [PR #6263][rmohr] Make k8s client rate limits configurable
+- [PR #6207][kubevirt-bot] Fix goroutine leak in virt-handler, potentially causing issues with a high turnover of VMIs.
+- [PR #6101][rmohr] Make k8s client rate limits configurable
+- [PR #6249][kubevirt-bot] Fix rbac permissions for freeze/unfreeze, addvolume/removevolume, guestosinfo, filesystemlist and userlist
+
+## v0.44.1
+
+Released on: Thu Aug 12 12:28:02 2021 +0000
+
+- [PR #6219][kubevirt-bot] Add phases to the vm snapshot api, specifically a failure phase
+
+## v0.44.0
+
+Released on: Mon Aug 9 14:20:14 2021 +0000
+
+- [PR #6058][acardace] Fix virt-launcher exit pod race condition
+- [PR #6035][davidvossel] Addition of perfscale-audit tool for auditing performance of control plane during stress tests
+- [PR #6145][acardace] virt-launcher: disable unencrypted TCP socket for libvirtd.
+- [PR #6163][davidvossel] Handle qemu processes in defunc (zombie) state
+- [PR #6105][ashleyschuett] Add VirtualMachineInstancesPerNode to KubeVirt CR under Spec.Configuration
+- [PR #6104][zcahana] Report FailedUnschedulable VM status when scheduling errors occur
+- [PR #5905][davidvossel] VM CrashLoop detection and Exponential Backoff
+- [PR #6070][acardace] Initiate Live-Migration using a unix socket (exposed by virt-handler) instead of an additional TCP<->Unix migration proxy started by virt-launcher
+- [PR #5728][vasiliy-ul] Live migration of VMs with hotplug volumes is now enabled
+- [PR #6109][rmohr] Fix virt-controller SCC: Reflect the need for NET_BIND_SERVICE in the virt-controller SCC.
+- [PR #5942][ShellyKa13] Integrate guest agent to online VM snapshot
+- [PR #6034][ashleyschuett] Go version updated to version 1.16.6
+- [PR #6040][yuhaohaoyu] Improved debuggability by keeping the environment of a failed VMI alive.
+- [PR #6068][dhiller] Add check that not all tests have been skipped
+- [PR #6041][xpivarc] [Experimental] Virt-launcher can run as non-root user
+- [PR #6062][iholder-redhat] replace dead "stress" binary with new, maintained, "stress-ng" binary
+- [PR #6029][mhenriks] CDI to 1.36.0 with DataSource support
+- [PR #4089][victortoso] Add support to USB Redirection with usbredir
+- [PR #5946][vatsalparekh] Add guest-agent based ping probe
+- [PR #6005][acardace] make containerDisk validation memory usage limit configurable
+- [PR #5791][zcahana] Added a READY column to the tabular output of "kubectl get vm/vmi"
+- [PR #6006][awels] DataVolumes created by DataVolumeTemplates will follow the associated VMs priority class.
+- [PR #5982][davidvossel] Reduce vmi Update collisions (http code 409) during startup
+- [PR #5891][akalenyu] BugFix: Pending VMIs when creating concurrent bulk of VMs backed by WFFC DVs
+- [PR #5925][rhrazdil] Fix issue with Windows VMs not being assigned IP address configured in network-attachment-definition IPAM.
+- [PR #6007][rmohr] Fix: The bandwidth limitation on migrations is no longer ignored. Caution: The default bandwidth limitation of 64Mi is changed to "unlimited" to not break existing installations.
+- [PR #4944][kwiesmueller] Add `/portforward` subresource to `VirtualMachine` and `VirtualMachineInstance` that can tunnel TCP traffic through the API Server using a websocket stream.
+- [PR #5402][alicefr] Integration of libguestfs-tools and added new command `guestfs` to virtctl
+- [PR #5953][ashleyschuett] Allow Failed VMs to be stopped when using `--force --gracePeriod 0`
+- [PR #5876][mlsorensen] KubeVirt CR supports specifying a runtime class for virt-launcher pods via 'launcherRuntimeClass'.
+
+## v0.43.1
+
+Released on: Tue Oct 19 15:36:32 2021 +0000
+
+- [PR #6555][jean-edouard] VMs with cloud-init data should now properly migrate from older KubeVirt versions
+- [PR #6052][kubevirt-bot] make containerDisk validation memory usage limit configurable
+
+## v0.43.0
+
+Released on: Fri Jul 9 15:46:22 2021 +0000
+
+- [PR #5952][mhenriks] Use CDI beta API. CDI v1.20.0 is now the minimum requirement for kubevirt.
+- [PR #5846][rmohr] Add "spec.cpu.numaTopologyPassthrough" which allows emulating a host-alligned virtual numa topology for high performance
+- [PR #5894][rmohr] Add `spec.migrations.disableTLS` to the KubeVirt CR to allow disabling encrypted migrations. They stay secure by default.
+- [PR #5649][awels] Enhancement: remove one attachment pod per disk limit (behavior on upgrade with running VM with hotplugged disks is undefined)
+- [PR #5742][rmohr] VMIs which choose evictionStrategy `LifeMigrate` and request the `invtsc` cpuflag are now live-migrateable
+- [PR #5911][dhiller] Bumps kubevirtci, also suppresses kubectl.sh output to avoid confusing checks
+- [PR #5863][xpivarc] Fix: ioerrors don't cause crash-looping of notify server
+- [PR #5867][mlsorensen] New build target added to export virt-* images as a tar archive.
+- [PR #5766][davidvossel] Addition of kubevirt_vmi_phase_transition_seconds_since_creation to monitor how long it takes to transition a VMI to a specific phase from creation time.
+- [PR #5823][dhiller] Change default branch to `main` for `kubevirt/kubevirt` repository
+- [PR #5763][nunnatsa] Fix bug 1945589: Prevent migration of VMIs that uses virtiofs
+- [PR #5827][mlsorensen] Auto-provisioned disk images on empty PVCs now leave 128KiB unused to avoid edge cases that run the volume out of space.
+- [PR #5849][davidvossel] Fixes event recording causing a segfault in virt-controller
+- [PR #5797][rhrazdil] Add serviceAccountDisk automatically when Istio is enabled in VMI annotations
+- [PR #5723][ashleyschuett] Allow virtctl to stop VM and ignore the graceful shutdown period
+- [PR #5806][mlsorensen] configmap, secret, and cloud-init raw disks now work when underlying node storage has 4k blocks.
+- [PR #5623][iholder-redhat] [bugfix]: Allow migration of VMs with host-model CPU to migrate only for compatible nodes
+- [PR #5716][rhrazdil] Fix issue with virt-launcher becoming `NotReady` after migration when Istio is used.
+- [PR #5778][ashleyschuett] Update ca-bundle if it is unable to be parsed
+- [PR #5787][acardace] migrated references of authorization/v1beta1 to authorization/v1
+- [PR #5461][rhrazdil] Add support for Istio proxy when no explicit ports are specified on masquerade interface
+- [PR #5751][acardace] EFI VMIs with secureboot disabled can now be booted even when only OVMF_CODE.secboot.fd and OVMF_VARS.fd are present in the virt-launcher image
+- [PR #5629][andreyod] Support starting Virtual Machine with its guest CPU paused using `virtctl start --paused`
+- [PR #5725][dhiller] Generate REST API coverage report after functional tests
+- [PR #5758][davidvossel] Fixes kubevirt_vmi_phase_count to include all phases, even those that occur before handler hand off.
+- [PR #5745][ashleyschuett] Alert with resource usage exceeds resource requests
+- [PR #5759][mhenriks] Update CDI to 1.34.1
+- [PR #5038][kwiesmueller] Add exec command to VM liveness and readinessProbe executed through the qemu-guest-agent.
+- [PR #5431][alonSadan] Add NFT and IPTables rules to allow port-forward to non-declared ports on the VMI. Declaring ports on VMI will limit
+
+## v0.42.2
+
+Released on: Tue Oct 19 15:34:37 2021 +0000
+
+- [PR #6554][jean-edouard] VMs with cloud-init data should now properly migrate from older KubeVirt versions
+- [PR #5887][ashleyschuett] Allow virtctl to stop VM and ignore the graceful shutdown period
+- [PR #5907][kubevirt-bot] Fix: ioerrors don't cause crash-looping of notify server
+- [PR #5871][maiqueb] Fix: do not override with the DHCP server advertising IP with the gateway info.
+- [PR #5875][kubevirt-bot] Update ca-bundle if it is unable to be parsed
+
+## v0.42.1
+
+Released on: Thu Jun 10 01:31:52 2021 +0000
+
+- [PR #5738][rmohr] Stop releasing jinja2 templates of our operator. Kustomize is the preferred way for customizations.
+- [PR #5691][ashleyschuett] Allow multiple shutdown events to ensure the event is received by ACPI
+- [PR #5558][ormergi] Drop virt-launcher SYS_RESOURCE capability
+- [PR #5694][davidvossel] Fixes null pointer dereference in migration controller
+- [PR #5416][iholder-redhat] [feature] support booting VMs from a custom kernel/initrd images with custom kernel arguments
+- [PR #5495][iholder-redhat] Go version updated to version 1.16.1.
+- [PR #5502][rmohr] Add downwardMetrics volume to expose a limited set of hots metrics to guests
+- [PR #5601][maya-r] Update libvirt-go to 7.3.0
+- [PR #5661][davidvossel] Validation/Mutation webhooks now explicitly define a 10 second timeout period
+- [PR #5652][rmohr] Automatically discover kube-prometheus installations and configure kubevirt monitoring
+- [PR #5631][davidvossel] Expand backport policy to include logging and debug fixes
+- [PR #5528][zcahana] Introduced a "status.printableStatus" field in the VirtualMachine CRD. This field is now displayed in the tabular output of "kubectl get vm".
+- [PR #5200][rhrazdil] Add support for Istio proxy traffic routing with masquerade interface. nftables is required for this feature.
+- [PR #5560][oshoval] virt-launcher now populates domain's guestOS info and interfaces status according guest agent also when doing periodic resyncs.
+- [PR #5514][rhrazdil] Fix live-migration failing when VM with masquarade iface has explicitly specified any of these ports: 22222, 49152, 49153
+- [PR #5583][dhiller] Reenable coverage
+- [PR #5129][davidvossel] Gracefully shutdown virt-api connections and ensure zero exit code under normal shutdown conditions
+- [PR #5582][dhiller] Fix flaky unit tests
+- [PR #5600][davidvossel] Improved logging around VM/VMI shutdown and restart
+- [PR #5564][omeryahud] virtctl rename support is dropped
+- [PR #5585][iholder-redhat] [bugfix] - reject VM defined with volume with no matching disk
+- [PR #5595][zcahana] Fixes adoption of orphan DataVolumes
+- [PR #5566][davidvossel] Release branches are now cut on the first _business day_ of the month rather than the first day.
+- [PR #5108][Omar007] Fixes handling of /proc/<pid>/mountpoint by working on the device information instead of mount information
+- [PR #5250][mlsorensen] Controller health checks will no longer actively test connectivity to the Kubernetes API. They will rely in health of their watches to determine if they have API connectivity.
+- [PR #5563][ashleyschuett] Set KubeVirt resources flags in the KubeVirt CR
+- [PR #5328][andreabolognani] This version of KubeVirt includes upgraded virtualization technology based on libvirt 7.0.0 and QEMU 5.2.0.
+
+## v0.42.0
+
+Released on: Tue Jun 8 12:09:49 2021 +0000
+
+- [PR #5738][rmohr] Stop releasing jinja2 templates of our operator. Kustomize is the preferred way for customizations.
+- [PR #5691][ashleyschuett] Allow multiple shutdown events to ensure the event is received by ACPI
+- [PR #5558][ormergi] Drop virt-launcher SYS_RESOURCE capability
+- [PR #5694][davidvossel] Fixes null pointer dereference in migration controller
+- [PR #5416][iholder-redhat] [feature] support booting VMs from a custom kernel/initrd images with custom kernel arguments
+- [PR #5495][iholder-redhat] Go version updated to version 1.16.1.
+- [PR #5502][rmohr] Add downwardMetrics volume to expose a limited set of hots metrics to guests
+- [PR #5601][maya-r] Update libvirt-go to 7.3.0
+- [PR #5661][davidvossel] Validation/Mutation webhooks now explicitly define a 10 second timeout period
+- [PR #5652][rmohr] Automatically discover kube-prometheus installations and configure kubevirt monitoring
+- [PR #5631][davidvossel] Expand backport policy to include logging and debug fixes
+- [PR #5528][zcahana] Introduced a "status.printableStatus" field in the VirtualMachine CRD. This field is now displayed in the tabular output of "kubectl get vm".
+- [PR #5200][rhrazdil] Add support for Istio proxy traffic routing with masquerade interface. nftables is required for this feature.
+- [PR #5560][oshoval] virt-launcher now populates domain's guestOS info and interfaces status according guest agent also when doing periodic resyncs.
+- [PR #5514][rhrazdil] Fix live-migration failing when VM with masquarade iface has explicitly specified any of these ports: 22222, 49152, 49153
+- [PR #5583][dhiller] Reenable coverage
+- [PR #5129][davidvossel] Gracefully shutdown virt-api connections and ensure zero exit code under normal shutdown conditions
+- [PR #5582][dhiller] Fix flaky unit tests
+- [PR #5600][davidvossel] Improved logging around VM/VMI shutdown and restart
+- [PR #5564][omeryahud] virtctl rename support is dropped
+- [PR #5585][iholder-redhat] [bugfix] - reject VM defined with volume with no matching disk
+- [PR #5595][zcahana] Fixes adoption of orphan DataVolumes
+- [PR #5566][davidvossel] Release branches are now cut on the first _business day_ of the month rather than the first day.
+- [PR #5108][Omar007] Fixes handling of /proc/<pid>/mountpoint by working on the device information instead of mount information
+- [PR #5250][mlsorensen] Controller health checks will no longer actively test connectivity to the Kubernetes API. They will rely in health of their watches to determine if they have API connectivity.
+- [PR #5563][ashleyschuett] Set KubeVirt resources flags in the KubeVirt CR
+- [PR #5328][andreabolognani] This version of KubeVirt includes upgraded virtualization technology based on libvirt 7.0.0 and QEMU 5.2.0.
+
+## v0.41.4
+
+Released on: Tue Oct 19 15:31:59 2021 +0000
+
+- [PR #6573][acardace] mutate migration PDBs instead of creating an additional one for the duration of the migration.
+- [PR #6517][jean-edouard] VMs with cloud-init data should now properly migrate from older KubeVirt versions
+- [PR #6333][acardace] Fix virt-launcher exit pod race condition
+- [PR #6401][rmohr] Fix rbac permissions for freeze/unfreeze, addvolume/removevolume, guestosinfo, filesystemlist and userlist
+- [PR #6147][rmohr] Fix rbac permissions for freeze/unfreeze, addvolume/removevolume, guestosinfo, filesystemlist and userlist
+- [PR #5673][kubevirt-bot] Improved logging around VM/VMI shutdown and restart
+- [PR #6227][kwiesmueller] Fix goroutine leak in virt-handler, potentially causing issues with a high turnover of VMIs.
+
+## v0.41.3
+
+Released on: Thu Aug 12 16:35:43 2021 +0000
+
+- [PR #6196][ashleyschuett] Allow multiple shutdown events to ensure the event is received by ACPI
+- [PR #6194][kubevirt-bot] Allow Failed VMs to be stopped when using `--force --gracePeriod 0`
+- [PR #6039][akalenyu] BugFix: Pending VMIs when creating concurrent bulk of VMs backed by WFFC DVs
+- [PR #5917][davidvossel] Fixes event recording causing a segfault in virt-controller
+- [PR #5886][ashleyschuett] Allow virtctl to stop VM and ignore the graceful shutdown period
+- [PR #5866][xpivarc] Fix: Kubevirt build with golang 1.14+ will not fail on validation of container disk with memory allocation error
+- [PR #5873][kubevirt-bot] Update ca-bundle if it is unable to be parsed
+- [PR #5822][kubevirt-bot] migrated references of authorization/v1beta1 to authorization/v1
+- [PR #5704][davidvossel] Fix virt-controller clobbering in progress vmi migration state during virt handler handoff
+- [PR #5707][kubevirt-bot] Fixes null pointer dereference in migration controller
+- [PR #5685][stu-gott] [bugfix] - reject VM defined with volume with no matching disk
+- [PR #5670][stu-gott] Validation/Mutation webhooks now explicitly define a 10 second timeout period
+- [PR #5653][kubevirt-bot] virt-launcher now populates domain's guestOS info and interfaces status according guest agent also when doing periodic resyncs.
+- [PR #5644][kubevirt-bot] Fix live-migration failing when VM with masquarade iface has explicitly specified any of these ports: 22222, 49152, 49153
+- [PR #5646][kubevirt-bot] virtctl rename support is dropped
+
+## v0.41.2
+
+Released on: Wed Jul 28 12:13:19 2021 -0400
+
+## v0.41.1
+
+Released on: Wed Jul 28 12:08:42 2021 -0400
+
+## v0.41.0
+
+Released on: Wed May 12 14:30:49 2021 +0000
+
+- [PR #5586][kubevirt-bot] This version of KubeVirt includes upgraded virtualization technology based on libvirt 7.0.0 and QEMU 5.2.0.
+- [PR #5344][ashleyschuett] Reconcile PrometheusRules and ServiceMonitor resources
+- [PR #5542][andreyod] Add startStrategy field to VMI spec to allow Virtual Machine start in paused state.
+- [PR #5459][ashleyschuett] Reconcile service resource
+- [PR #5520][ashleyschuett] Reconcile required labels and annotations on ConfigMap resources
+- [PR #5533][rmohr] Fix `docker save` and `docker push` issues with released kubevirt images
+- [PR #5428][oshoval] virt-launcher now populates domain's guestOS info and interfaces status according guest agent also when doing periodic resyncs.
+- [PR #5410][ashleyschuett] Reconcile ServiceAccount resources
+- [PR #5109][Omar007] Add support for specifying a logical and physical block size for disk devices
+- [PR #5471][ashleyschuett] Reconcile APIService resources
+- [PR #5513][ashleyschuett] Reconcile Secret resources
+- [PR #5496][davidvossel] Improvements to migration proxy logging
+- [PR #5376][ashleyschuett] Reconcile CustomResourceDefinition resources
+- [PR #5435][AlonaKaplan] Support dual stack service on "virtctl expose"-
+- [PR #5425][davidvossel] Fixes VM restart during eviction when EvictionStrategy=LiveMigrate
+- [PR #5423][ashleyschuett] Add resource requests to virt-controller, virt-api, virt-operator and virt-handler
+- [PR #5343][erkanerol] Some cleanups and small additions to the storage metrics
+- [PR #4682][stu-gott] Updated Guest Agent Version compatibility check. The new approach is much more accurate.
+- [PR #5485][rmohr] Fix fallback to iptables if nftables is not used on the host on arm64
+- [PR #5426][rmohr] Fix fallback to iptables if nftables is not used on the host
+- [PR #5403][tiraboschi] Added a kubevirt_ prefix to several recording rules and metrics
+- [PR #5241][stu-gott] Introduced Duration and RenewBefore parameters for cert rotation. Previous values are now deprecated.
+- [PR #5463][acardace] Fixes upgrades from KubeVirt v0.36
+- [PR #5456][zhlhahaha] Enable arm64 cross-compilation
+- [PR #3310][davidvossel] Doc outlines our Kubernetes version compatibility commitment
+- [PR #3383][EdDev] Add `vmIPv6NetworkCIDR` under `NetworkSource.pod` to support custom IPv6 CIDR for the vm network when using masquerade binding.
+- [PR #3415][zhlhahaha] Make kubevirt code fit for arm64 support. No testing is at this stage performed against arm64 at this point.
+- [PR #5147][xpivarc] Remove CAP_NET_ADMIN from the virt-launcher pod(second take).
+- [PR #5351][awels] Support hotplug with virtctl using addvolume and removevolume commands
+- [PR #5050][ashleyschuett] Fire Prometheus Alert when a vmi is orphaned for more than an hour
+
+## v0.40.1
+
+Released on: Tue Oct 19 13:33:33 2021 +0000
+
+- [PR #6598][jean-edouard] VMs with cloud-init data should now properly migrate from older KubeVirt versions
+- [PR #6287][kubevirt-bot] Fix goroutine leak in virt-handler, potentially causing issues with a high turnover of VMIs.
+- [PR #5559][kubevirt-bot] Fix `docker save` issues with kubevirt images
+- [PR #5500][kubevirt-bot] Support hotplug with virtctl using addvolume and removevolume commands
+
+## v0.40.0
+
+Released on: Mon Apr 19 12:25:41 2021 +0000
+
+- [PR #5467][rmohr] Fixes upgrades from KubeVirt v0.36
+- [PR #5350][jean-edouard] Removal of entire `permittedHostDevices` section will now remove all user-defined host device plugins.
+- [PR #5242][jean-edouard] Creating more than 1 migration at the same time for a given VMI will now fail
+- [PR #4907][vasiliy-ul] Initial cgroupv2 support
+- [PR #5324][jean-edouard] Default feature gates can now be defined in the provider configuration.
+- [PR #5006][alicefr] Add discard=unmap option
+- [PR #5022][davidvossel] Fixes race condition between operator adding service and webhooks that can result in installs/uninstalls failing
+- [PR #5310][ashleyschuett] Reconcile CRD resources
+- [PR #5102][iholder-redhat] Go version updated to 1.14.14
+- [PR #4746][ashleyschuett] Reconcile Deployments, DaemonSets, MutatingWebhookConfigurations and ValidatingWebhookConfigurations
+- [PR #5037][ormergi] Hot-plug SR-IOV VF interfaces to VM's post a successful migration.
+- [PR #5269][mlsorensen] Prometheus metrics scraped from virt-handler are now served from the VMI informer cache, rather than calling back to the Kubernetes API for VMI information.
+- [PR #5138][davidvossel] virt-handler now waits up to 5 minutes for all migrations on the node to complete before shutting down.
+- [PR #5191][yuvalturg] Added a metric for monitoring CPU affinity
+- [PR #5215][xphyr] Enable detection of Intel GVT-g vGPU.
+- [PR #4760][rmohr] Make virt-handler heartbeat more efficient and robust: Only one combined PATCH and no need to detect different cluster types anymore.
+- [PR #5091][iholder-redhat] QEMU SeaBios debug logs are being seen as part of virt-launcher log.
+- [PR #5221][rmohr] Remove  workload placement validation webhook which blocks placement updates when VMIs are running
+- [PR #5128][yuvalturg] Modified memory related metrics by adding several new metrics and splitting the swap traffic bytes metric
+- [PR #5084][ashleyschuett] Add validation to CustomizeComponents object on the KubeVirt resource
+- [PR #5182][davidvossel] New [release-blocker] functional test marker to signify tests that can never be disabled before making a release
+- [PR #5137][davidvossel] Added our policy around release branch backporting in docs/release-branch-backporting.md
+- [PR #5096][yuvalturg] Modified networking metrics by adding new metrics, splitting existing ones by rx/tx and using the device alias for the interface name when available
+- [PR #5088][awels] Hotplug works with hostpath storage.
+- [PR #4908][dhiller] Move travis tag and master builds to kubevirt prow.
+- [PR #4741][EdDev] Allow live migration for SR-IOV VM/s without preserving the VF interfaces.
+
+## v0.39.2
+
+Released on: Tue Oct 19 13:29:33 2021 +0000
+
+- [PR #6597][jean-edouard] VMs with cloud-init data should now properly migrate from older KubeVirt versions
+- [PR #5854][rthallisey] Prometheus metrics scraped from virt-handler are now served from the VMI informer cache, rather than calling back to the Kubernetes API for VMI information.
+- [PR #5561][kubevirt-bot] Fix `docker save` issues with kubevirt images
+
+## v0.39.1
+
+Released on: Tue Apr 13 12:10:13 2021 +0000
+## v0.39.0
+
+Released on: Wed Mar 10 14:51:58 2021 +0000
+
+- [PR #5010][jean-edouard] Migrated VMs stay persistent and can therefore survive S3, among other things.
+- [PR #4952][ashleyschuett] Create warning NodeUnresponsive event if a node is running a VMI pod but not a virt-handler pod
+- [PR #4686][davidvossel] Automated workload updates via new KubeVirt WorkloadUpdateStrategy API
+- [PR #4886][awels] Hotplug support for WFFC datavolumes.
+- [PR #5026][AlonaKaplan] virt-launcher, masquerade binding - prefer nft over iptables.
+- [PR #4921][borod108] Added support for Sysprep in the API. A user can now add a answer file through a ConfigMap or a Secret. The User Guide is updated accordingly. /kind feature
+- [PR #4874][ormergi] Add new feature-gate SRIOVLiveMigration,
+- [PR #4917][iholder-redhat] Now it is possible to enable QEMU SeaBios debug logs setting virt-launcher log verbosity to be greater than 5.
+- [PR #4966][arnongilboa] Solve virtctl "Error when closing file ... file already closed" that shows after successful image upload
+- [PR #4489][salanki] Fix a bug where a disk.img file was created on filesystems mounted via Virtio-FS
+- [PR #4982][xpivarc] Fixing handling of transient domain
+- [PR #4984][ashleyschuett] Change customizeComponents.patches such that '*' resourceName or resourceType matches all, all fields of a patch (type, patch, resourceName, resourceType) are now required.
+- [PR #4972][vladikr] allow disabling pvspinlock to support older guest kernels
+- [PR #4927][yuhaohaoyu] Fix of XML and JSON marshalling/unmarshalling for user defined device alias names which can make migrations fail.
+- [PR #4552][rthallisey] VMs using bridged networking will survive a kubelet restart by having kubevirt create a dummy interface on the virt-launcher pods, so that some Kubernetes CNIs, that have implemented the `CHECK` RPC call, will not cause VMI pods to enter a failed state.
+- [PR #4883][iholder-redhat] Bug fixed: Enabling libvirt debug logs only if debugLogs label value is "true", disabling otherwise.
+- [PR #4840][alicefr] Generate k8s events on IO errors
+- [PR #4940][vladikr] permittedHostDevices will support both upper and lowercase letters in the device ID
+
+## v0.38.2
+
+Released on: Tue Oct 19 13:24:57 2021 +0000
+
+- [PR #6596][jean-edouard] VMs with cloud-init data should now properly migrate from older KubeVirt versions
+- [PR #5853][rthallisey] Prometheus metrics scraped from virt-handler are now served from the VMI informer cache, rather than calling back to the Kubernetes API for VMI information.
+
 ## v0.38.1
 
 Released on: Mon Feb 8 19:00:24 2021 +0000
