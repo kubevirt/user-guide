@@ -8,6 +8,8 @@ The `snapshot.kubevirt.io` API Group defines resources for snapshotting and rest
 
 KubeVirt leverages the `VolumeSnapshot` functionality of Kubernetes [CSI drivers](https://kubernetes-csi.github.io/docs/drivers.html) for capturing persistent `VirtualMachine` state.  So, you should make sure that your `VirtualMachine` uses `DataVolumes` or `PersistentVolumeClaims` backed by a `StorageClass` that supports `VolumeSnapshots` and a `VolumeSnapshotClass` is properly configured for that `StorageClass`.
 
+KubeVirt looks for Kubernetes Volume Snapshot related APIs/resources in the `v1` version. To make sure that KubeVirt's snapshot controller is able to snapshot the VirtualMachine and referenced volumes as expected, Kubernetes Volume Snapshot APIs must be served from `v1` version.
+
 To list `VolumeSnapshotClasses`:
 
 ```bash
@@ -63,7 +65,7 @@ You can check the vmSnapshot phase in the vmSnapshot status. It can be one of th
 * Succeeded
 * Failed.
 
-The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not succeessfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a [duration](https://pkg.go.dev/time#ParseDuration) string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m" 
+The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not succeessfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a [duration](https://pkg.go.dev/time#ParseDuration) string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m"
 
 ```yaml
 apiVersion: snapshot.kubevirt.io/v1alpha1
