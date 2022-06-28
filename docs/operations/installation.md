@@ -45,10 +45,10 @@ virtualization workloads:
 
 KubeVirt can be installed using the KubeVirt operator, which manages the
 lifecycle of all the KubeVirt core components. Below is an example of
-how to install KubeVirt using an official release.
+how to install KubeVirt's latest official release.
 
-    # Pick an upstream version of KubeVirt to install
-    $ export RELEASE=v0.35.0
+    # Point at latest release
+    $ export RELEASE=$(curl https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt)
     # Deploy the KubeVirt operator
     $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
     # Create the KubeVirt CR (instance deployment request) which triggers the actual installation
