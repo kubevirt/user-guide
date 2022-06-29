@@ -198,9 +198,7 @@ Download the cdi-uploadproxy-server-cert.
 
 Add this certificate to the systems trust store. On Fedora, this can be done as follows.
 
-    sudo cp cdi-uploadproxy-server-cert.crt /etc/pki/ca-trust/source/anchors
-
-    sudo update-ca-trust
+    sudo cp cdi-uploadproxy-server-cert.crt /etc/pki/tls/certs
 
 The upload should now work.
 
