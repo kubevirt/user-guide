@@ -1,5 +1,31 @@
 # Latest release notes
 
+## v0.55.0
+
+Released on: Thu Jul 14 16:33:25 2022 +0000
+
+- [PR #7336][iholder-redhat] Introduce clone CRD, controller and API
+- [PR #7791][iholder-redhat] Introduction of an initial deprecation policy
+- [PR #7875][lyarwood] `ControllerRevisions` of any `VirtualMachineFlavorSpec` or `VirtualMachinePreferenceSpec` are stored during the initial start of a `VirtualMachine` and used for subsequent restarts ensuring changes to the original `VirtualMachineFlavor` or `VirtualMachinePreference` do not modify the `VirtualMachine` and the `VirtualMachineInstance` it creates.
+- [PR #8011][fossedihelm] Increase virt-launcher memory overhead
+- [PR #7963][qinqon] Bump alpine_with_test_tooling
+- [PR #7881][ShellyKa13] Enable memory dump to be included in VMSnapshot
+- [PR #7926][qinqon] tests: Move main clean function to global AfterEach and create a VM per each infra_test.go Entry.
+- [PR #7845][janeczku] Fixed a bug that caused `make generate` to fail when API code comments contain backticks. (#7844, @janeczku)
+- [PR #7932][marceloamaral] Addition of kubevirt_vmi_migration_phase_transition_time_from_creation_seconds metric to monitor how long it takes to transition a VMI Migration object to a specific phase from creation time.
+- [PR #7879][marceloamaral] Faster VM phase transitions thanks to an increased virt-controller QPS/Burst
+- [PR #7807][acardace] make cloud-init 'instance-id' persistent across reboots
+- [PR #7928][iholder-redhat] bugfix: node-labeller now removes "host-model-cpu.node.kubevirt.io/" and "host-model-required-features.node.kubevirt.io/" prefixes
+- [PR #7841][jean-edouard] Non-root VMs will now migrate to root VMs after a cluster disables non-root.
+- [PR #7933][akalenyu] BugFix: Fix vm restore in case of restore size bigger then PVC requested size
+- [PR #7919][lyarwood] Device preferences are now applied to any default network interfaces or missing volume disks added to a `VirtualMachineInstance` at runtime.
+- [PR #7910][qinqon] tests: Create the expected readiness probe instead of liveness
+- [PR #7732][acardace] Prevent virt-handler from starting a migration twice
+- [PR #7594][alicefr] Enable to run libguestfs-tools pod to run as noroot user
+- [PR #7811][raspbeep] User now gets information about the type of commands which the guest agent does not support.
+- [PR #7590][awels] VMExport allows filesystem PVCs to be exported as either disks or directories.
+- [PR #7683][alicefr] Add --command and --local-ssh-opts" options to virtctl ssh to execute remote command using local ssh method
+
 ## v0.54.0
 
 Released on: Wed Jun 8 14:15:43 2022 +0000
