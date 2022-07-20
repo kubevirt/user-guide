@@ -52,6 +52,8 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">Latest release notes</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#v0550">v0.55.0</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#v0540">v0.54.0</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#v0531">v0.53.1</a>
@@ -441,7 +443,8 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>Latest release notes</li>
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Latest release notes</li>
     <li class="wy-breadcrumbs-aside">
         <a href="https://github.com/kubevirt/user-guide/edit/main/docs/latest_release_notes.md"
           class="icon icon-github"> Edit on GitHub</a>
@@ -449,11 +452,35 @@
   </ul>
   <hr/>
 </div>
-
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
                 <h1 id="latest-release-notes">Latest release notes<a class="headerlink" href="#latest-release-notes" title="Permanent link">&para;</a></h1>
+<h2 id="v0550">v0.55.0<a class="headerlink" href="#v0550" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Jul 14 16:33:25 2022 +0000</p>
+<ul>
+<li>[PR #7336][iholder-redhat] Introduce clone CRD, controller and API</li>
+<li>[PR #7791][iholder-redhat] Introduction of an initial deprecation policy</li>
+<li>[PR #7875][lyarwood] <code>ControllerRevisions</code> of any <code>VirtualMachineFlavorSpec</code> or <code>VirtualMachinePreferenceSpec</code> are stored during the initial start of a <code>VirtualMachine</code> and used for subsequent restarts ensuring changes to the original <code>VirtualMachineFlavor</code> or <code>VirtualMachinePreference</code> do not modify the <code>VirtualMachine</code> and the <code>VirtualMachineInstance</code> it creates.</li>
+<li>[PR #8011][fossedihelm] Increase virt-launcher memory overhead</li>
+<li>[PR #7963][qinqon] Bump alpine_with_test_tooling</li>
+<li>[PR #7881][ShellyKa13] Enable memory dump to be included in VMSnapshot</li>
+<li>[PR #7926][qinqon] tests: Move main clean function to global AfterEach and create a VM per each infra_test.go Entry.</li>
+<li>[PR #7845][janeczku] Fixed a bug that caused <code>make generate</code> to fail when API code comments contain backticks. (#7844, @janeczku)</li>
+<li>[PR #7932][marceloamaral] Addition of kubevirt_vmi_migration_phase_transition_time_from_creation_seconds metric to monitor how long it takes to transition a VMI Migration object to a specific phase from creation time.</li>
+<li>[PR #7879][marceloamaral] Faster VM phase transitions thanks to an increased virt-controller QPS/Burst</li>
+<li>[PR #7807][acardace] make cloud-init 'instance-id' persistent across reboots</li>
+<li>[PR #7928][iholder-redhat] bugfix: node-labeller now removes "host-model-cpu.node.kubevirt.io/" and "host-model-required-features.node.kubevirt.io/" prefixes</li>
+<li>[PR #7841][jean-edouard] Non-root VMs will now migrate to root VMs after a cluster disables non-root.</li>
+<li>[PR #7933][akalenyu] BugFix: Fix vm restore in case of restore size bigger then PVC requested size</li>
+<li>[PR #7919][lyarwood] Device preferences are now applied to any default network interfaces or missing volume disks added to a <code>VirtualMachineInstance</code> at runtime.</li>
+<li>[PR #7910][qinqon] tests: Create the expected readiness probe instead of liveness</li>
+<li>[PR #7732][acardace] Prevent virt-handler from starting a migration twice</li>
+<li>[PR #7594][alicefr] Enable to run libguestfs-tools pod to run as noroot user</li>
+<li>[PR #7811][raspbeep] User now gets information about the type of commands which the guest agent does not support.</li>
+<li>[PR #7590][awels] VMExport allows filesystem PVCs to be exported as either disks or directories.</li>
+<li>[PR #7683][alicefr] Add --command and --local-ssh-opts" options to virtctl ssh to execute remote command using local ssh method</li>
+</ul>
 <h2 id="v0540">v0.54.0<a class="headerlink" href="#v0540" title="Permanent link">&para;</a></h2>
 <p>Released on: Wed Jun 8 14:15:43 2022 +0000</p>
 <ul>
