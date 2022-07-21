@@ -21,7 +21,7 @@ After you have created the token you can now create a VMExport CR that identifie
 apiVersion: export.kubevirt.io/v1alpha1
 kind: VirtualMachineExport
 metadata:
-    name: example-export
+  name: example-export
 spec:
   tokenSecretRef: example-token
   source:
@@ -30,7 +30,7 @@ spec:
     name: vm-disk
 ```
 
-In this example the PVC name is `vm-disk` this will be different for your Virtual Machine Disk. Note the PVC doesn't need to contain a Virtual Machine Disk, it can contain any content, but the main use case is exporting Virtual Machine Disks. After you post this yaml to the cluster, and the PVC is not in use by another pod. A new export server is created in the same namespace as the PVC. The VirtualMachineExport CR will contain a status with internal and external links to the export service. The internal links are only valid inside the cluster, and the external links are valid for external access. The `cert` field will contain the CA that signed the certificate of the export server for internal links, or the CA that signed the Route or Ingress.
+In this example the PVC name is vm-disk, but it will be different for your Virtual Machine Disk. Note the PVC doesn't need to contain a Virtual Machine Disk, it can contain any content, but the main use case is exporting Virtual Machine Disks. After you post this yaml to the cluster, and the PVC is not in use by another pod, a new export server is created in the same namespace as the PVC. The VirtualMachineExport CR will contain a status with internal and external links to the export service. The internal links are only valid inside the cluster, and the external links are valid for external access. The `cert` field will contain the CA that signed the certificate of the export server for internal links, or the CA that signed the Route or Ingress.
 
 ```yaml
 apiVersion: export.kubevirt.io/v1alpha1
