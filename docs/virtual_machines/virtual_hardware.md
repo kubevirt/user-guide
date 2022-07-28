@@ -57,12 +57,19 @@ It is possible to utilize UEFI/OVMF by setting a value via
           - disk:
               bus: virtio
             name: containerdisk
+          features:
+            smm:
+              enabled: true
         firmware:
           # this sets the bootloader type
           bootloader:
             efi: {}
 
-SecureBoot is not yet supported.
+Enabling EFI automatically enables [Secure Boot](https://docs.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-secure-boot),
+unless the `secureBoot` field under `efi` is set to `false`.  
+Secure Boot itself requires the [SMM](https://en.wikipedia.org/wiki/System_Management_Mode)
+CPU feature to be enabled as above, which does not happen automatically,
+for security reasons.
 
 ### SMBIOS Firmware
 
