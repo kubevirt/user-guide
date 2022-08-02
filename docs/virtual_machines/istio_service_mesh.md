@@ -5,7 +5,7 @@ Kubevirt supports running VMs as a part of Istio service mesh.
 
 ## Limitations
 
-- Istio service mesh is only supported with a pod network masquerade binding.
+- Istio service mesh is only supported with a pod network masquerade or passt binding.
 
 - Istio uses a [list of ports](https://istio.io/latest/docs/ops/deployment/requirements/#ports-used-by-istio) for its own purposes, these ports must not be explicitly specified in a VMI interface.
 
@@ -126,7 +126,7 @@ $ kubectl describe pod virt-launcher-vmi-istio-lg5gp
   Warning  Unhealthy  2d8h (x4 over 2d8h)  kubelet            Readiness probe failed: Get "http://10.244.186.222:15021/healthz/ready": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
 ```
 
-**Resolution:** Make sure the `sidecar.istio.io/inject: "true"` annotation is defined in the created VMI and that masquerade binding is used for pod network interface.
+**Resolution:** Make sure the `sidecar.istio.io/inject: "true"` annotation is defined in the created VMI and that masquerade or passt binding is used for pod network interface.
 
 ### Virt-launcher pod for VMI is stuck at initialization phase
 ```shell
