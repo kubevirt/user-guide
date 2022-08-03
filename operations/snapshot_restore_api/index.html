@@ -199,6 +199,7 @@
 <h2 id="prerequesites">Prerequesites<a class="headerlink" href="#prerequesites" title="Permanent link">&para;</a></h2>
 <h3 id="volumesnapshotclass">VolumeSnapshotClass<a class="headerlink" href="#volumesnapshotclass" title="Permanent link">&para;</a></h3>
 <p>KubeVirt leverages the <code>VolumeSnapshot</code> functionality of Kubernetes <a href="https://kubernetes-csi.github.io/docs/drivers.html">CSI drivers</a> for capturing persistent <code>VirtualMachine</code> state.  So, you should make sure that your <code>VirtualMachine</code> uses <code>DataVolumes</code> or <code>PersistentVolumeClaims</code> backed by a <code>StorageClass</code> that supports <code>VolumeSnapshots</code> and a <code>VolumeSnapshotClass</code> is properly configured for that <code>StorageClass</code>.</p>
+<p>KubeVirt looks for Kubernetes Volume Snapshot related APIs/resources in the <code>v1</code> version. To make sure that KubeVirt's snapshot controller is able to snapshot the VirtualMachine and referenced volumes as expected, Kubernetes Volume Snapshot APIs must be served from <code>v1</code> version.</p>
 <p>To list <code>VolumeSnapshotClasses</code>:</p>
 <pre><code class="language-bash">kubectl get volumesnapshotclass
 </code></pre>
@@ -236,7 +237,7 @@ spec:
 * InProgress
 * Succeeded
 * Failed.</p>
-<p>The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not succeessfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a <a href="https://pkg.go.dev/time#ParseDuration">duration</a> string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m" </p>
+<p>The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not succeessfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a <a href="https://pkg.go.dev/time#ParseDuration">duration</a> string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m"</p>
 <pre><code class="language-yaml">apiVersion: snapshot.kubevirt.io/v1alpha1
 kind: VirtualMachineSnapshot
 metadata:
