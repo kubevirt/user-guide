@@ -242,12 +242,19 @@ spec:
       - disk:
           bus: virtio
         name: containerdisk
+      features:
+        smm:
+          enabled: true
     firmware:
       # this sets the bootloader type
       bootloader:
         efi: {}
 </code></pre>
-<p>SecureBoot is not yet supported.</p>
+<p>Enabling EFI automatically enables <a href="https://docs.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-secure-boot">Secure Boot</a>,
+unless the <code>secureBoot</code> field under <code>efi</code> is set to <code>false</code>.<br />
+Secure Boot itself requires the <a href="https://en.wikipedia.org/wiki/System_Management_Mode">SMM</a>
+CPU feature to be enabled as above, which does not happen automatically,
+for security reasons.</p>
 <h3 id="smbios-firmware">SMBIOS Firmware<a class="headerlink" href="#smbios-firmware" title="Permanent link">&para;</a></h3>
 <p>In order to provide a consistent view on the virtualized hardware for
 the guest OS, the SMBIOS UUID can be set to a constant value via
