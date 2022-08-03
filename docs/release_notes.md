@@ -1,4 +1,4 @@
-# Latest release notes
+# KubeVirt release notes
 
 ## v0.55.0
 

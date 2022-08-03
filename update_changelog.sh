@@ -21,14 +21,14 @@ features_for() {
 
 gen_changelog() {
   IFS=$'\n'
-  sed -i -e "s/# Latest release notes//" ./docs/latest_release_notes.md
+  sed -i -e "s/# KubeVirt release notes//" ./docs/release_notes.md
   REL_NOTES=$(for REL in `releases $1`; do
     echo -e "## $REL\n" ;
     features_for $REL
   done)
-  printf '%s %s\n' "$REL_NOTES `cat docs/latest_release_notes.md`" > ./docs/latest_release_notes.md
-  sed -i "1 i\# Latest release notes\n" ./docs/latest_release_notes.md
-  sed -i 's/[ \t]*$//' docs/latest_release_notes.md
+  printf '%s %s\n' "$REL_NOTES `cat docs/release_notes.md`" > ./docs/release_notes.md
+  sed -i "1 i\# KubeVirt release notes\n" ./docs/release_notes.md
+  sed -i 's/[ \t]*$//' docs/release_notes.md
 }
 
 gen_changelog $1
