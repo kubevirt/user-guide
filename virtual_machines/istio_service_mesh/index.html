@@ -202,7 +202,7 @@ Kubevirt supports running VMs as a part of Istio service mesh.</p>
 <h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
-<p>Istio service mesh is only supported with a pod network masquerade binding.</p>
+<p>Istio service mesh is only supported with a pod network masquerade or passt binding.</p>
 </li>
 <li>
 <p>Istio uses a <a href="https://istio.io/latest/docs/ops/deployment/requirements/#ports-used-by-istio">list of ports</a> for its own purposes, these ports must not be explicitly specified in a VMI interface.</p>
@@ -311,7 +311,7 @@ $ kubectl describe pod virt-launcher-vmi-istio-lg5gp
   Warning  Unhealthy  2d8h (x3 over 2d8h)  kubelet            Readiness probe failed: Get &quot;http://10.244.186.222:15021/healthz/ready&quot;: dial tcp 10.244.186.222:15021: connect: no route to host
   Warning  Unhealthy  2d8h (x4 over 2d8h)  kubelet            Readiness probe failed: Get &quot;http://10.244.186.222:15021/healthz/ready&quot;: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
 </code></pre>
-<p><strong>Resolution:</strong> Make sure the <code>sidecar.istio.io/inject: "true"</code> annotation is defined in the created VMI and that masquerade binding is used for pod network interface.</p>
+<p><strong>Resolution:</strong> Make sure the <code>sidecar.istio.io/inject: "true"</code> annotation is defined in the created VMI and that masquerade or passt binding is used for pod network interface.</p>
 <h3 id="virt-launcher-pod-for-vmi-is-stuck-at-initialization-phase">Virt-launcher pod for VMI is stuck at initialization phase<a class="headerlink" href="#virt-launcher-pod-for-vmi-is-stuck-at-initialization-phase" title="Permanent link">&para;</a></h3>
 <pre><code class="language-shell">$ kubectl get pods
 NAME                             READY   STATUS     RESTARTS   AGE

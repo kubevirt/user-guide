@@ -738,6 +738,102 @@ not automatic; it should be configured via cloud init, as shown in the <a href="
 has no DHCP server at all. Therefore, the VM won't have the search domains information and
 reaching a destination using its FQDN is not possible.
 Tracking issue - https://github.com/kubevirt/kubevirt/issues/7184</p>
+<h3 id="passt">passt<a class="headerlink" href="#passt" title="Permanent link">&para;</a></h3>
+<p><code>passt</code> is a new approach for user-mode networking which can be used as a simple replacement for Slirp (which is practically dead).</p>
+<p><code>passt</code> is a universal tool which implements a translation layer between a Layer-2 network interface and native
+Layer -4 sockets (TCP, UDP, ICMP/ICMPv6 echo) on a host.<br/></p>
+<p>Its main benefits are:
+- doesn't require extra network capabilities as CAP_NET_RAW and CAP_NET_ADMIN.
+- allows integration with service meshes (which expect applications to run locally) out of the box.
+- supports IPv6 out of the box (in contrast to the existing bindings which require configuring IPv6
+manually).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Masquerade</th>
+<th>Bridge</th>
+<th>Passt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Supports migration</td>
+<td>Yes</td>
+<td>No</td>
+<td>No<br/>(will be supported in the future)</td>
+</tr>
+<tr>
+<td>VM uses Pod IP</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes<br/>(in the future it will be possible to configure the VM IP. Currently the default is the pod IP)</td>
+</tr>
+<tr>
+<td>Service Mesh out of the box</td>
+<td>No<br/>(only ISTIO is supported, adjustmets on both ISTIO and kubevirt had to be done to make it work)</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Doesn’t require extra capabilities on the virt-launcher pod</td>
+<td>Yes<br/>(multiple workarounds had to be added to kuebivrt to make it work)</td>
+<td>No<br/>(Multiple workarounds had to be added to kuebivrt to make it work)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Doesn't require extra network devices on the virt-launcher pod</td>
+<td>No<br/>(bridge and tap device are created)</td>
+<td>No<br/>(bridge and tap device are created)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Supports IPv6</td>
+<td>Yes<br/>(requires manual configuration on the VM)</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-yaml">kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          passt: {} # connect using passt mode
+          ports:
+            - port: 8080 # allow incoming traffic on port 8080 to get into the virtual machine
+  networks:
+    - name: red
+      pod: {}
+</code></pre>
+<h4 id="requirementsrecommendations">Requirements/Recommendations:<a class="headerlink" href="#requirementsrecommendations" title="Permanent link">&para;</a></h4>
+<ol>
+<li>To get better performance the node should be configured with:</li>
+</ol>
+<pre><code>sysctl -w net.core.rmem_max = 33554432
+sysctl -w net.core.wmem_max = 33554432
+</code></pre>
+<ol>
+<li>To run multiple passt VMs with no explicit ports, the node's <code>fs.file_max</code> should be increased
+   (for a VM forwards all IPv4 and IPv6 ports, for TCP and UDP, passt needs to create ~2^18 sockets):</li>
+</ol>
+<pre><code>sysctl -w fs.file_max = 9223372036854775807
+</code></pre>
+<ol>
+<li>The <code>vmi.Spec.Domain.Resources.Requests.Memory</code> of a passt VM with no explicit ports should be at least 2048M.</li>
+</ol>
+<h4 id="temporary-restrictions">Temporary restrictions:<a class="headerlink" href="#temporary-restrictions" title="Permanent link">&para;</a></h4>
+<ol>
+<li><code>passt</code> currently only supported as primary network and doesn't allow extra multus networks to be configured on the VM.</li>
+<li>A VM with passt binding cannot bind to low ports (less than 1024).</li>
+</ol>
+<p>passt interfaces are feature gated; to enable the feature, follow
+<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">these</a>
+instructions, in order to activate the <code>Passt</code> feature gate (case sensitive).</p>
+<p>More information about passt mode can be found in <a href="https://passt.top/passt/about/">passt
+Wiki</a>.</p>
 <h3 id="virtio-net-multiqueue">virtio-net multiqueue<a class="headerlink" href="#virtio-net-multiqueue" title="Permanent link">&para;</a></h3>
 <p>Setting the <code>networkInterfaceMultiqueue</code> to <code>true</code> will enable the
 multi-queue functionality, increasing the number of vhost queue, for
