@@ -595,6 +595,67 @@ has no DHCP server at all. Therefore, the VM won't have the search domains infor
 reaching a destination using its FQDN is not possible.
 Tracking issue - https://github.com/kubevirt/kubevirt/issues/7184
 
+### passt
+
+`passt` is a new approach for user-mode networking which can be used as a simple replacement for Slirp (which is practically dead).
+
+`passt` is a universal tool which implements a translation layer between a Layer-2 network interface and native
+Layer -4 sockets (TCP, UDP, ICMP/ICMPv6 echo) on a host.<br/>
+
+Its main benefits are:
+- doesn't require extra network capabilities as CAP_NET_RAW and CAP_NET_ADMIN.
+- allows integration with service meshes (which expect applications to run locally) out of the box.
+- supports IPv6 out of the box (in contrast to the existing bindings which require configuring IPv6
+manually).
+
+|                                                                | Masquerade                                                                                             | Bridge                                                                    | Passt                                                                                                   |
+|----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| Supports migration                                             | Yes                                                                                                    | No                                                                        | No<br/>(will be supported in the future)                                                                |
+| VM uses Pod IP                                                 | No                                                                                                     | Yes                                                                       | Yes<br/>(in the future it will be possible to configure the VM IP. Currently the default is the pod IP) |
+| Service Mesh out of the box                                    | No<br/>(only ISTIO is supported, adjustmets on both ISTIO and kubevirt had to be done to make it work) | No                                                                        | Yes                                                                                                     |
+| Doesn’t require extra capabilities on the virt-launcher pod    | Yes<br/>(multiple workarounds had to be added to kuebivrt to make it work)                             | No<br/>(Multiple workarounds had to be added to kuebivrt to make it work) | Yes                                                                                                     |
+| Doesn't require extra network devices on the virt-launcher pod | No<br/>(bridge and tap device are created)                                                             | No<br/>(bridge and tap device are created)                                | Yes                                                                                                     |
+| Supports IPv6                                                  | Yes<br/>(requires manual configuration on the VM)                                                      | No                                                                        | Yes                                                                                                     |
+
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      interfaces:
+        - name: red
+          passt: {} # connect using passt mode
+          ports:
+            - port: 8080 # allow incoming traffic on port 8080 to get into the virtual machine
+  networks:
+    - name: red
+      pod: {}
+```
+
+#### Requirements/Recommendations:
+1. To get better performance the node should be configured with:
+```
+sysctl -w net.core.rmem_max = 33554432
+sysctl -w net.core.wmem_max = 33554432
+```
+2. To run multiple passt VMs with no explicit ports, the node's `fs.file_max` should be increased
+   (for a VM forwards all IPv4 and IPv6 ports, for TCP and UDP, passt needs to create ~2^18 sockets):
+```
+sysctl -w fs.file_max = 9223372036854775807
+```
+3. The `vmi.Spec.Domain.Resources.Requests.Memory` of a passt VM with no explicit ports should be at least 2048M.
+
+#### Temporary restrictions: 
+1. `passt` currently only supported as primary network and doesn't allow extra multus networks to be configured on the VM.
+2. A VM with passt binding cannot bind to low ports (less than 1024).
+
+passt interfaces are feature gated; to enable the feature, follow
+[these](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+instructions, in order to activate the `Passt` feature gate (case sensitive).
+
+More information about passt mode can be found in [passt
+Wiki](https://passt.top/passt/about/).
+
 ### virtio-net multiqueue
 
 Setting the `networkInterfaceMultiqueue` to `true` will enable the
