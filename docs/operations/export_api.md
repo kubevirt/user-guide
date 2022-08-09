@@ -83,7 +83,7 @@ spec:
     name: example-pvc
 ```
 
-In this example the PVC name is `example-pvc`. Note the PVC doesn't need to contain a Virtual Machine Disk, it can contain any content, but the main use case is exporting Virtual Machine Disks. After you post this yaml to the cluster, a new export server is created in the same namespace as the PVC. If the source PVC is in use by another pod (such as the virt-launcher pod) then the export will remain pending until the PVC is no longer in use. If the exporter server is active and another pod starts using the PVC, the exporter server will be terminated until the PVC is not in use anymore.
+In this example the PVC name is `example-pvc`. Note the PVC doesn't need to contain a Virtual Machine Disk, it can contain any content, but the main use case is exporting Virtual Machine Disks. After you post this yaml to the cluster, a new export server is created in the same namespace as the PVC. If the source PVC is *in use by another pod* (such as the virt-launcher pod) then the export will remain pending until the PVC is no longer in use. If the exporter server is active and another pod starts using the PVC, the exporter server will be terminated until the PVC is not in use anymore.
 
 
 ### Export status links
@@ -132,9 +132,6 @@ status:
         name: example-disk
     internal:
       cert: |-
-        -----BEGIN CERTIFICATE-----
-        ...
-        -----END CERTIFICATE-----
         -----BEGIN CERTIFICATE-----
         ...
         -----END CERTIFICATE-----
@@ -192,9 +189,6 @@ status:
         -----BEGIN CERTIFICATE-----
         ...
         -----END CERTIFICATE-----
-        -----BEGIN CERTIFICATE-----
-        ...
-        -----END CERTIFICATE-----
       volumes:
       - formats:
         - format: dir
@@ -223,3 +217,209 @@ The external link certificates as associated with the Ingress/Route that points 
 
 ### virtctl integration
 __TODO__
+
+### Use cases
+
+#### Clone VM from one cluster to another cluster
+
+If you want to transfer KubeVirt disk images from a source cluster to another target cluster, you can use the VMExport in the source to expose the disks and Containerized Data Importer (CDI) in the target cluster to import the image into the target cluster. Let's assume we have an Ingress or Route in the source cluster that exposes the export proxy with the following example domain `virt-exportproxy-example.example.com` and we have a Virtual Machine in the source cluster with one disk, which looks like this:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-example-datavolume
+  name: example-vm
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: example-dv
+    spec:
+      storage:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: local
+      source:
+        registry:
+          url: docker://quay.io/containerdisks/centos-stream:9
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-example-datavolume
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: datavolumedisk1
+        resources:
+          requests:
+            memory: 2Gi
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - dataVolume:
+          name: example-dv
+        name: datavolumedisk1
+```
+
+This is a VM that has a DataVolume (DV) `example-dv` that is populated from a container disk and we want to export that disk to the target cluster. To export this VM we have to create a token that we can use in the target cluster to get access to the export. For example
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: example-token
+data:
+  token: MTIzNDU2Nzg5MGFi
+```
+The value of the token is `1234567890ab` hardly a secure token, but it is an example. We can now create a VMExport that looks like this:
+
+```yaml
+apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+spec:
+  tokenSecretRef: example-token
+  source:
+    apiGroup: "kubevirt.io"
+    kind: VirtualMachine
+    name: example-vm
+```
+If the VM is not running the status of the VMExport object will get updated once the export-server pod is running to look something like this:
+
+```yaml
+apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+  namespace: example
+spec:
+  tokenSecretRef: example-token
+  source:
+    apiGroup: "kubevirt.io"
+    kind: VirtualMachine
+    name: example-vm
+status:
+  conditions:
+  - lastProbeTime: null
+    reason: podReady
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    reason: pvcBound
+    status: "True"
+    type: PVCReady
+  links:
+    external:
+      cert: |-
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      volumes:
+      - formats:
+        - format: raw
+          url: https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img
+        - format: gzip
+          url: https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img.gz
+        name: example-disk
+    internal:
+      cert: |-
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      volumes:
+      - formats:
+        - format: raw
+          url: https://virt-export-example-export.example.svc/volumes/example-dv/disk.img
+        - format: gzip
+          url: https://virt-export-example-export.example.svc/volumes/example-dv/disk.img.gz
+        name: example-disk
+  phase: Ready
+  serviceName: virt-export-example-export
+```
+Note in this example we are in the `example` namespace in the source cluster, which is why the internal links domain ends with `.example.svc`. The external links are what will be visible to outside of the source cluster, so we can use that for when we import into the target cluster.
+
+Now we are ready to import this disk into the target cluster. In order for CDI to import, we will need to provide it the CA certificate that signed the Ingress/Route that we will be connecting to. Luckily the `cert` field of the external links will contain the entire certificate chain. You can use the contents of the `cert` field to populate the configMap. In the target cluster create the configmap in the namespace you will import the disk into:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: router-cert
+data:
+  ca.pem: |
+    -----BEGIN CERTIFICATE-----
+    ...
+    -----END CERTIFICATE-----
+```
+
+Next create a secret in the same namespace on the target cluster, note the token value will be a header that is passed to the server by CDI.
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-headers
+stringData:
+  token: "x-kubevirt-export-token: 1234567890ab"
+```
+
+Now we can go ahead and import the disk image into the target cluster using a data volume, for convenience I put the data volume inside a data volume template section of the same VM spec as the source:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-example-datavolume
+  name: example-target-vm
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: example-dv
+    spec:
+      source:
+        http:
+          url: "https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img.gz"
+          certConfigMap: router-cert
+          secretExtraHeaders:
+          - secret-headers
+      storage:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: target-local
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-example-datavolume
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: datavolumedisk1
+        resources:
+          requests:
+            memory: 2Gi
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - dataVolume:
+          name: example-dv
+        name: datavolumedisk1
+```
+
+After the import completes you should be able to start the VM in the target cluster.
