@@ -1,25 +1,25 @@
 # Export API
+It can be desireable to export a Virtual Machine and its related disks out of a cluster so you can import that Virtual Machine into another system or cluster. The Virtual Machine disks are the most prominent things you will want to export. The export API makes it possible to declaratively export Virtual Machine disks. It is also possible to export individual PVCs and their contents, for instance when you have created a memory dump from a VM or are using virtio-fs to have a Virtual Machine populate a PVC.
 
-## Prerequesites
-None
+In order not to overload the kubernetes API server the data is transferred through a dedicated export proxy server. The proxy server can then be exposed to the outside world through a service associated with an Ingress/Route or NodePort.
 
 ### Export Feature Gate
 
-VMExport support must be enabled in the feature gates to be supported. The
+VMExport support must be enabled in the feature gates to be available. The
 [feature gates](./activating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `VMExport` to it.
 
 ### Export token
 
-In order to securely export a Virtual Machine Disk, you must create a token that is used to authorize users accessing the export endpoint. This token must be in a secret that is stored in the namespace the Virtual Machine resides in. The contents of the secret can be passed as a token header or parameter to the export URL. The name of the header or argument is `x-kubevirt-export-token` with a value that matches the content of the secret. The secret can be named any valid secret in the namespace. We recommend you generate an alpha numeric token of at least 12 characters. The data key should be `token`. For example:
+In order to securely export a Virtual Machine Disk, you must create a token that is used to authorize users accessing the export endpoint. This token must be in the same namespace as the Virtual Machine. The contents of the secret can be passed as a token header or parameter to the export URL. The name of the header or argument is `x-kubevirt-export-token` with a value that matches the content of the secret. The secret can be named any valid secret in the namespace. We recommend you generate an alpha numeric token of at least 12 characters. The data key should be `token`. For example:
 
 ```yaml
 apiVersion: v1
 kind: Secret
 metadata:
   name: example-token
-data:
-  token: MTIzNDU2Nzg5MGFi
+stringData:
+  token: 1234567890ab
 ```
 ### Export Virtual Machine volumes
 After you have created the token you can now create a VMExport CR that identifies the Virtual Machine you want to export. You can create a VMExport that looks like this:
@@ -43,13 +43,13 @@ The following volumes present in the VM will be exported:
 * DataVolumes
 * MemoryDump
 
-All other volume types are not exported. The export will only be available when the VM is not running, this is to prevent corrupt data from being exported. If you want to export data from a running VM, the VM will have to use storage that can be snapshotted, and you can create a Virtual Machine Snapshot and export that while the VM stays running. If an export is active and the VM is started the export will detect this state and terminate the export server.
+All other volume types are not exported. To avoid the export of inconsistent data, a Virtual Machine can only be exported while it is powered off. Any active VM exports will be terminated if the Virtual Machine is started. To export data from a running Virtual Machine you must first create a Virtual Machine Snapshot (see below).
 
 If the VM contains multiple volumes that can be exported, each volume will get its own URL links. If the VM contains no volumes that can be exported, the VMExport will go into a `Skipped` phase, and no export server is started.
 
 ### Export Virtual Machine Snapshot volumes
 
-After you have created the token you can now create a VMExport CR that identifies the Virtual Machine Snapshot you want to export. You can create a VMExport that looks like this:
+You can create a VMExport CR that identifies the Virtual Machine Snapshot you want to export. You can create a VMExport that looks like this:
 
 ```yaml
 apiVersion: export.kubevirt.io/v1alpha1
@@ -68,7 +68,7 @@ When you create a VMExport based on a Virtual Machine Snapshot, the controller w
 
 ### Export Persistent Volume Claim
 
-After you have created the token you can now create a VMExport CR that identifies the Persistent Volume Claim (PVC) you want to export. You can create a VMExport that looks like this:
+You can create a VMExport CR that identifies the Persistent Volume Claim (PVC) you want to export. You can create a VMExport that looks like this:
 
 ```yaml
 apiVersion: export.kubevirt.io/v1alpha1
@@ -91,7 +91,7 @@ In this example the PVC name is `example-pvc`. Note the PVC doesn't need to cont
 The VirtualMachineExport CR will contain a status with internal and external links to the export service. The internal links are only valid inside the cluster, and the external links are valid for external access through an Ingress or Route. The `cert` field will contain the CA that signed the certificate of the export server for internal links, or the CA that signed the Route or Ingress.
 
 #### KubeVirt content-type
-Example of exporting a PVC that contains a KubeVirt disk image. The controller determines if the PVC contains a kubevirt disk by checking if there is a special annotation on the PVC, or if there is a DataVolume ownerReference on the PVC, or if the PVC has a volumeMode of block.
+The following is an example of exporting a PVC that contains a KubeVirt disk image. The controller determines if the PVC contains a kubevirt disk by checking if there is a special annotation on the PVC, or if there is a DataVolume ownerReference on the PVC, or if the PVC has a volumeMode of block.
 
 ```yaml
 apiVersion: export.kubevirt.io/v1alpha1
@@ -146,6 +146,7 @@ status:
   serviceName: virt-export-example-export
 ```
 #### Archive content-type
+Archive content-type is automatically selected if we are unable to determine the PVC contains a KubeVirt disk. The archive will contain all the files that are in the PVC.
 
 ```yaml
 apiVersion: export.kubevirt.io/v1alpha1
@@ -201,6 +202,7 @@ status:
 ```
 #### Format types
 There are 4 format types that are possible:
+
 * Raw. The unaltered raw KubeVirt disk image.
 * Gzip. The raw KubeVirt disk image but gzipped to help with transferring efficiency.
 * Dir. A directory listing, allowing you to find the files contained in the PVC.
@@ -213,7 +215,7 @@ Raw and Gzip will be selected if the PVC is determined to be a KubeVirt disk. Ku
 The export server certificate is valid for 7 days after which it is rotated by deleting the export server pod and associated secret and generating a new one. If for whatever reason the export server pod dies, the associated secret is also automatically deleted and a new pod and secret are generated. The VirtualMachineExport object status will be automatically updated to reflect the new certificate.
 
 #### External link certificates
-The external link certificates as associated with the Ingress/Route that points to the service created by the KubeVirt operator. The CA that signed the Ingress/Route will part of the certificates. 
+The external link certificates are associated with the Ingress/Route that points to the service created by the KubeVirt operator. The CA that signed the Ingress/Route will part of the certificates. 
 
 ### virtctl integration
 __TODO__
@@ -276,8 +278,8 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: example-token
-data:
-  token: MTIzNDU2Nzg5MGFi
+stringData:
+  token: 1234567890ab
 ```
 The value of the token is `1234567890ab` hardly a secure token, but it is an example. We can now create a VMExport that looks like this:
 
@@ -361,7 +363,7 @@ data:
     -----END CERTIFICATE-----
 ```
 
-Next create a secret in the same namespace on the target cluster, note the token value will be a header that is passed to the server by CDI.
+Next create a secret in the same namespace on the target cluster. Note: the token value will be a header that is passed to the server by CDI.
 
 ```yaml
 apiVersion: v1
@@ -369,10 +371,10 @@ kind: Secret
 metadata:
   name: secret-headers
 stringData:
-  token: "x-kubevirt-export-token: 1234567890ab"
+  token: "x-kubevirt-export-token:1234567890ab"
 ```
-
-Now we can go ahead and import the disk image into the target cluster using a data volume, for convenience I put the data volume inside a data volume template section of the same VM spec as the source:
+Note: make sure there is no ` ` between the `:` and the actual token, otherwise the space is sent as part of the header, the authentication will fail.
+Now we can go ahead and import the disk image into the target cluster using a data volume. For convenience, I put the data volume inside a data volume template section of the same VM spec as the source:
 
 ```yaml
 apiVersion: kubevirt.io/v1
