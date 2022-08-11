@@ -5,7 +5,7 @@ This page is provided as the entrypoint to the different topics of this user-gui
 
 ## Try it out
 
-- Kubevirt on katacoda: <https://www.katacoda.com/kubevirt>
+- Kubevirt on killercoda: <https://killercoda.com/kubevirt>
 
 - Kubevirt on minikube: <https://kubevirt.io/quickstart_minikube/>
 
