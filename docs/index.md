@@ -5,6 +5,8 @@ This page is provided as the entrypoint to the different topics of this user-gui
 
 ## Try it out
 
+- Kubevirt on killercoda: <https://killercoda.com/kubevirt>
+
 - Kubevirt on minikube: <https://kubevirt.io/quickstart_minikube/>
 
 - Kubevirt on kind: <https://kubevirt.io/quickstart_kind/>
