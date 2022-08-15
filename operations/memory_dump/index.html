@@ -195,8 +195,14 @@ The Memory dump can be used to diagnose, identify and resolve issues in the VM. 
 <p>The memory dump process mounts a PVC to the virt-launcher in order to get the output in that PVC, hence the hot plug volumes feature gate must be enabled. The
 <a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gates</a>
 field in the KubeVirt CR must be expanded by adding the <code>HotplugVolumes</code> to it.</p>
-<h3 id="a-pvc-to-hold-the-memory-dump-output">A PVC to hold the memory dump output<a class="headerlink" href="#a-pvc-to-hold-the-memory-dump-output" title="Permanent link">&para;</a></h3>
-<p>Currently in order to get the memory dump output a pre-existing PVC is required. The size of the PVC must be big enough to hold the memory dump (The VM memory size + 100Mi overhead).</p>
+<h2 id="virtctl-support">Virtctl support<a class="headerlink" href="#virtctl-support" title="Permanent link">&para;</a></h2>
+<h3 id="get-memory-dump">Get memory dump<a class="headerlink" href="#get-memory-dump" title="Permanent link">&para;</a></h3>
+<p>Now lets assume we have a running VM and the name of the VM is 'my-vm'.
+We can either dump to an existing pvc, or request one to be created.</p>
+<h4 id="existing-pvc">Existing PVC<a class="headerlink" href="#existing-pvc" title="Permanent link">&para;</a></h4>
+<p>The size of the PVC must be big enough to hold the memory dump. The calculation is (VMMemorySize + 100Mi) * FileSystemOverhead, Where <code>VMMemorySize</code> is the memory size,
+100Mi is reserved space for the memory dump overhead and <code>FileSystemOverhead</code> is the value used to adjust requested PVC size with the filesystem overhead.
+also the PVC must have a <code>FileSystem</code> volume mode.</p>
 <p>Example for such PVC:</p>
 <pre><code class="language-yaml">apiVersion: v1
 kind: PersistentVolumeClaim
@@ -211,15 +217,16 @@ spec:
   storageClassName: rook-ceph-block
   volumeMode: Filesystem
 </code></pre>
-<p>The PVC must be a FileSystem volume mode PVC.</p>
-<h2 id="virtctl-support">Virtctl support<a class="headerlink" href="#virtctl-support" title="Permanent link">&para;</a></h2>
-<h3 id="get-memory-dump">Get memory dump<a class="headerlink" href="#get-memory-dump" title="Permanent link">&para;</a></h3>
-<p>Now lets assume we have a running VM and the name of the VM is 'my-vm'.
-We can get a memory dump of this VM to the above PVC by using the 'memory-dump get' command available with virtctl</p>
+<p>We can get a memory dump of the VM to the PVC by using the 'memory-dump get' command available with virtctl</p>
 <pre><code class="language-bash">$ virtctl memory-dump get my-vm --claim-name=my-pvc
 </code></pre>
-<p>This will dump the memory of the running VM to the given PVC.
-Information regarding the memory dump process will be available on the VM's status section</p>
+<h4 id="on-demand-pvc">On demand PVC<a class="headerlink" href="#on-demand-pvc" title="Permanent link">&para;</a></h4>
+<p>For on demand PVC, we need to add <code>--create-claim</code> flag to the virtctl request:</p>
+<pre><code class="language-bash">$ virtctl memory-dump get my-vm --claim-name=new-pvc --create-claim
+</code></pre>
+<p>A PVC with size big enough for the dump will be created. We can also request specific storage class and access mode with appropriate flags.</p>
+<h3 id="monitoring-the-memory-dump">Monitoring the memory dump<a class="headerlink" href="#monitoring-the-memory-dump" title="Permanent link">&para;</a></h3>
+<p>Information regarding the memory dump process will be available on the VM's status section</p>
 <pre><code class="language-yaml">    memoryDumpRequest:
       claimName: memory-dump
       phase: Completed
@@ -227,10 +234,16 @@ Information regarding the memory dump process will be available on the VM's stat
       endTimestamp: &quot;2022-03-29T11:00:09Z&quot;
       fileName: my-vm-my-pvc-20220329-110004
 </code></pre>
-<p>During the process the volumeStatus on the VMI will be updated with the process information such as the attachment pod information and messages, if all goes well once the process is completed, the PVC is unmounted from the virt-launcher pod and the volumeStatus is deleted.</p>
-<p>Getting a new memory dump to the same PVC is possible without the need to use the claim-name flag.
-Each memory-dump command will delete the previous dump in that PVC.
-In order to get a memory dump to a different PVC you need to 'remove' the current memory-dump PVC and then do a new get with the new PVC name.</p>
+<p>During the process the volumeStatus on the VMI will be updated with the process information such as the attachment pod information and messages, if all goes well once the process is completed, the PVC is unmounted from the virt-launcher pod and the volumeStatus is deleted.
+A memory dump annotation will be added to the PVC with the memory dump file name.</p>
+<h3 id="retriggering-the-memory-dump">Retriggering the memory dump<a class="headerlink" href="#retriggering-the-memory-dump" title="Permanent link">&para;</a></h3>
+<p>Getting a new memory dump to the same PVC is possible without the need to use any flag:</p>
+<pre><code class="language-bash">$ virtctl memory-dump get my-vm
+</code></pre>
+<blockquote>
+<p><em>Note</em> Each memory-dump command will delete the previous dump in that PVC.</p>
+</blockquote>
+<p>In order to get a memory dump to a different PVC you need to 'remove' the current memory-dump PVC and then do a new get with the new PVC name.</p>
 <h3 id="remove-memory-dump">Remove memory dump<a class="headerlink" href="#remove-memory-dump" title="Permanent link">&para;</a></h3>
 <p>As mentioned in order to remove the associated memory dump PVC you need to run a 'memory-dump remove' command. This will allow you to replace the current PVC and get the memory dump to a new one.</p>
 <pre><code class="language-bash">$ virtctl memory-dump remove my-vm
@@ -265,7 +278,7 @@ $ kubectl cp default/consumer-pod:/dev/pvc/ memory-dump
 <ul>
 <li>Create a pod with troubleshooting tools that will mount the PVC and inspect it within the pod.</li>
 <li>Use Export mechanism by:<ul>
-<li>Exporting only the PVC (not supported yet)</li>
+<li><a href="https://github.com/kubevirt/user-guide/blob/main/docs/operations/export_api.md">Exporting the PVC</a></li>
 <li>Include the memory dump in the VMSnapshot and export the whole VMSnapshot (will include both the memory dump and the disks) (not supported yet) </li>
 </ul>
 </li>
