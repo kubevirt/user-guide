@@ -21,7 +21,8 @@ Now lets assume we have a running VM and the name of the VM is 'my-vm'.
 We can either dump to an existing pvc, or request one to be created.
 
 #### Existing PVC
-The size of the PVC must be big enough to hold the memory dump (The VM memory size + 100Mi overhead multiplied with the filesystem overhead),
+The size of the PVC must be big enough to hold the memory dump. The calculation is (VMMemorySize + 100Mi) * FileSystemOverhead, Where `VMMemorySize` is the memory size,
+100Mi is reserved space for the memory dump overhead and `FileSystemOverhead` is the value used to adjust requested PVC size with the filesystem overhead.
 also the PVC must have a `FileSystem` volume mode.
 
 Example for such PVC:
