@@ -162,7 +162,6 @@ cpu model for features. Both features can be set via KubeVirt CR:
     spec:
       ...
       configuration:
-        minCPUModel: "Penryn"
         obsoleteCPUModels:
           486: true
           pentium: true
@@ -170,23 +169,20 @@ cpu model for features. Both features can be set via KubeVirt CR:
 ```
 
 Obsolete cpus will not be inserted in labels. If KubeVirt CR doesn't 
-contain `obsoleteCPUModels` or `minCPUModel` variables, Labeller sets default values 
-(for `obsoleteCPUModels` "pentium, pentium2, pentium3, pentiumpro, coreduo, n270, 
-core2duo, Conroe, athlon, phenom, kvm32, kvm64, qemu32, qemu64" and for `minCPUModel` 
-"Penryn"). In minCPU user can set baseline cpu model. CPU features, which have this model, 
-are used as basic features. These basic features are not in the label list. Feature
-labels are created as subtraction between set of newer cpu features and
-set of basic cpu features, e.g.: Haswell has: aes, apic, clflush Penryr
-has: apic, clflush subtraction is: aes. So label will be created only
-with aes feature.
+contain `obsoleteCPUModels` variable, Labeller sets default values
+("pentium, pentium2, pentium3, pentiumpro, coreduo, n270, 
+core2duo, Conroe, athlon, phenom, kvm32, kvm64, qemu32 and qemu64").
 
-User can change obsoleteCPUModels or minCPUModel by adding / removing cpu model in config map.
+User can change obsoleteCPUModels by adding / removing cpu model in config map.
 Kubevirt then update nodes with new labels.
 
-#### Model
+For homogenous cluster / clusters without live migration enabled it's possible
+to disable the node labeler and avoid adding labels to the nodes by adding the 
+following annotation to the nodes:
 
-**Note**: Be sure that node CPU model where you run a VM, has the same
-or higher CPU family.
+`node-labeller.kubevirt.io/skip-node`.
+
+#### Model
 
 **Note**: If CPU model wasn't defined, the VM will have CPU model
 closest to one that used on the node where the VM is running.
