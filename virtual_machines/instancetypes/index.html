@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/instancetypes/" />
+      <link rel="shortcut icon" href="../../assets/favicon.ico" />
+    <title>Instancetypes and preferences - KubeVirt User-Guide</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Instancetypes and preferences";
+        var mkdocs_page_input_path = "virtual_machines/instancetypes.md";
+        var mkdocs_page_url = "/user-guide/virtual_machines/instancetypes/";
+      </script>
+    
+    <script src="../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/yaml.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> KubeVirt User-Guide
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../release_notes/">KubeVirt release notes</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Operations</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/updating_and_deletion/">Updating and deletion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/basic_use/">Basic use</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/api_validation/">API Validation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/debug/">Debug</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/virtctl_client_tool/">virtctl Client Tool</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/live_migration/">Live Migration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/hotplug_volumes/">Hotplug Volumes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/snapshot_restore_api/">Snapshot Restore API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/hugepages/">Hugepages support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/component_monitoring/">Component monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/authorization/">Authorization</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/annotations_and_labels/">Annotations and labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/node_assignment/">Node assignment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/node_maintenance/">Node maintenance</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/node_overcommit/">Node overcommit</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/unresponsive_nodes/">Unresponsive nodes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/containerized_data_importer/">Containerized Data Importer</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/activating_feature_gates/">Activating feature gates</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../operations/mediated_devices_configuration/">Mediated devices and virtual GPUs</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Virtual machines</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machine_instances/">Virtual Machines Instances</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../lifecycle/">Lifecycle</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../run_strategies/">Run Strategies</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Instancetypes and preferences</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#virtualmachineinstancetype">VirtualMachineInstancetype</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#virtualmachinepreference">VirtualMachinePreference</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#virtualmachine">VirtualMachine</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#versioning">Versioning</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../presets/">Presets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../virtual_hardware/">Virtual hardware</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dedicated_cpu_resources/">Dedicated CPU resources</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../numa/">NUMA</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../disks_and_volumes/">Disks and Volumes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../interfaces_and_networks/">Interfaces and Networks</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../istio_service_mesh/">Istio service mesh</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../host-devices/">Host Devices Assignment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../windows_virtio_drivers/">Windows virtio drivers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../guest_operating_system_information/">Guest Operating System Information</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../guest_agent_information/">Guest Agent information</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../accessing_virtual_machines/">Accessing Virtual Machines</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../startup_scripts/">Startup Scripts</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../service_objects/">Service objects</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../templates/">Templates</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../tekton_tasks/">KubeVirt Tekton</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../replicaset/">VirtualMachineInstanceReplicaSet</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dns/">DNS records</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../boot_from_external_source/">Booting From External Source</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../confidential_computing/">Confidential computing</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Appendix</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">KubeVirt User-Guide</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Virtual machines &raquo;</li>
+      <li>Instancetypes and preferences</li>
+    <li class="wy-breadcrumbs-aside">
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/instancetypes.md"
+          class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="instancetypes-and-preferences">Instancetypes and preferences<a class="headerlink" href="#instancetypes-and-preferences" title="Permanent link">&para;</a></h1>
+<p><strong>FEATURE STATE:</strong> </p>
+<ul>
+<li><code>v1alpha1</code> (Experimental) as of the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v0.56.0"><code>v0.56.0</code></a> release</li>
+</ul>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>KubeVirt's <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> API contains many advanced options for tuning the performance of a VM that goes beyond what typical users need to be aware of. Users have previously been unable to simply define the storage/network they want assigned to their VM and then declare in broad terms what quality of resources and kind of performance characteristics they need for their VM.</p>
+<p>Instancetypes and preferences provide a way to define a set of resource, performance and other runtime characteristics, allowing users to reuse these definitions across multiple <a href="https://kubevirt.io/api-reference/master/definitions.html#_v1_virtualmachine"><code>VirtualMachines</code></a>.</p>
+<h2 id="virtualmachineinstancetype">VirtualMachineInstancetype<a class="headerlink" href="#virtualmachineinstancetype" title="Permanent link">&para;</a></h2>
+<pre><code class="language-yaml">---
+apiVersion: instancetype.kubevirt.io/v1alpha1
+kind: VirtualMachineInstancetype
+metadata:
+  name: example-instancetype
+spec:
+  cpu:
+    guest: 1
+  memory:
+    guest: 128Mi
+</code></pre>
+<p>KubeVirt provides two Instancetype based <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/"><code>CRDs</code></a>, a cluster wide <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachineclusterinstancetype"><code>VirtualMachineClusterInstancetype</code></a> and a namespaced <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachineinstancetype"><code>VirtualMachineInstancetype</code></a>. These <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/"><code>CRDs</code></a> encapsulate the following resource related characteristics of a <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> through a shared <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachineinstancetypespec"><code>VirtualMachineInstancetypeSpec</code></a>:</p>
+<ul>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_cpuinstancetype">CPU</a> : Required number of vCPUs presented to the guest</li>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_memoryinstancetype">Memory</a> : Required amount of memory presented to the guest</li>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_gpu">GPUs</a> : Optional list of vGPUs to passthrough</li>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_hostdevice">HostDevices</a> : Optional list of HostDevices to passthrough</li>
+<li>IOThreadsPolicy : Optional IOThreadsPolicy to be used</li>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_launchsecurity">LaunchSecurity</a>: Optional LaunchSecurity to be used</li>
+</ul>
+<p>Anything provided within an instancetype cannot be overridden within the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a>. For example as <code>CPU</code> and <code>Memory</code> are both required attributes of an instancetype if a user makes any requests for <code>CPU</code> or <code>Memory</code> resources within the underlying <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> the instancetype will conflict and the request will be rejected during creation.</p>
+<h2 id="virtualmachinepreference">VirtualMachinePreference<a class="headerlink" href="#virtualmachinepreference" title="Permanent link">&para;</a></h2>
+<pre><code class="language-yaml">---
+apiVersion: instancetype.kubevirt.io/v1alpha1
+kind: VirtualMachinePreference
+metadata:
+  name: example-preference
+spec:
+  devices:
+    preferredDiskBus: virtio
+    preferredInterfaceModel: virtio
+</code></pre>
+<p>KubeVirt also provides two further preference based <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/"><code>CRDs</code></a>, again a cluster wide <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachineclusterpreference"><code>VirtualMachineClusterPreference</code></a> and namespaced <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachinepreference"><code>VirtualMachinePreference</code></a>. These <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/"><code>CRDs</code></a> encapsulate the preferred value of any remaining attributes of a <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> required to run a given workload, again this is through a shared <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachinepreferencespec"><code>VirtualMachinePreferenceSpec</code></a>.</p>
+<p>Unlike instancetypes preferences only represent the preferred values and as such can be overridden by values in the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> provided by the user.</p>
+<p>For example as shown below, if a user has provided a <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> with a disk bus already defined within a <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget">DiskTarget</a> <em>and</em> has also selected a set of preferences with <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_devicepreferences">DevicePreference</a> and <code>preferredDiskBus</code> defined the users original choice within the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> and <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget">DiskTarget</a> are used:</p>
+<pre><code class="language-yaml">$ cat &lt;&lt; EOF | kubectl apply -f - 
+---
+apiVersion: instancetype.kubevirt.io/v1alpha1
+kind: VirtualMachinePreference
+metadata:
+  name: example-preference-disk-virtio
+spec:
+  devices:
+    preferredDiskBus: virtio
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: example-preference-user-override
+spec:
+  preference:
+    kind: VirtualMachinePreference
+    name: example-preference-disk-virtio
+  running: false
+  template:
+    spec:
+      domain:
+        memory:
+          guest: 128Mi
+        devices:
+          disks:
+          - disk:
+              bus: sata
+            name: containerdisk
+          - disk: {}
+            name: cloudinitdisk
+        resources: {}
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - containerDisk:
+          image: registry:5000/kubevirt/cirros-container-disk-demo:devel
+        name: containerdisk
+      - cloudInitNoCloud:
+          userData: |
+            #!/bin/sh
+
+            echo 'printed from cloud-init userdata'
+        name: cloudinitdisk
+EOF
+virtualmachinepreference.instancetype.kubevirt.io/example-preference-disk-virtio created
+virtualmachine.kubevirt.io/example-preference-user-override configured
+
+
+$ virtctl start example-preference-user-override
+VM example-preference-user-override was scheduled to start
+
+# We can see the original request from the user within the VirtualMachine lists `containerdisk` with a `SATA` bus
+$ kubectl get vms/example-preference-user-override -o json | jq .spec.template.spec.domain.devices.disks
+[
+  {
+    &quot;disk&quot;: {
+      &quot;bus&quot;: &quot;sata&quot;
+    },
+    &quot;name&quot;: &quot;containerdisk&quot;
+  },
+  {
+    &quot;disk&quot;: {},
+    &quot;name&quot;: &quot;cloudinitdisk&quot;
+  }
+]
+
+# This is still the case in the VirtualMachineInstance with the remaining disk using the `preferredDiskBus` from the preference of `virtio`
+$ kubectl get vmis/example-preference-user-override -o json | jq .spec.domain.devices.disks
+[
+  {
+    &quot;disk&quot;: {
+      &quot;bus&quot;: &quot;sata&quot;
+    },
+    &quot;name&quot;: &quot;containerdisk&quot;
+  },
+  {
+    &quot;disk&quot;: {
+      &quot;bus&quot;: &quot;virtio&quot;
+    },
+    &quot;name&quot;: &quot;cloudinitdisk&quot;
+  }
+]
+
+
+</code></pre>
+<h2 id="virtualmachine">VirtualMachine<a class="headerlink" href="#virtualmachine" title="Permanent link">&para;</a></h2>
+<pre><code class="language-yaml">---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: example-vm
+spec:
+  instancetype:
+    kind: VirtualMachineInstancetype
+    name: example-instancetype
+  preference:
+    kind: VirtualMachinePreference
+    name: example-preference
+</code></pre>
+<p>The previous instancetype and preference CRDs are matched to a given <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> through the use of a matcher. Each matcher consists of the following:</p>
+<ul>
+<li>Name (string): Name of the resource being referenced</li>
+<li>Kind (string):  Optional, defaults to the cluster wide CRD kinds of <code>VirtualMachineClusterInstancetype</code> or <code>VirtualMachineClusterPreference</code> if not provided</li>
+<li>RevisionName (string) : Optional, name of a <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevision</a> containing a copy of the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachineinstancetypespec"><code>VirtualMachineInstancetypeSpec</code></a> or <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachinepreferencespec"><code>VirtualMachinePreferenceSpec</code></a> taken when the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> is first started. See the <a href="#versioning">Versioning</a> section below for more details on how and why this is captured.</li>
+</ul>
+<h2 id="versioning">Versioning<a class="headerlink" href="#versioning" title="Permanent link">&para;</a></h2>
+<p>Versioning of these resources is required to ensure the eventual <code>VirtualMachineInstance</code> created when starting a <code>VirtualMachine</code> does not change between restarts if any referenced instancetype or set of preferences are updated during the lifetime of the <code>VirtualMachine</code>.</p>
+<p>This is currently achieved by using <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevision</a> to retain a copy of the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachineinstancetypespec"><code>VirtualMachineInstancetypeSpec</code></a> or <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachinepreferencespec"><code>VirtualMachinePreferenceSpec</code></a> at the time the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> is first started. A reference to these <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevisions</a> are then retained in the VirtualMachineInstancetypeMatcher and VirtualMachinePreferenceMatcher within the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> for future use.</p>
+<pre><code class="language-yaml">$ kubectl.sh apply -f examples/csmall.yaml -f examples/vm-cirros-csmall.yaml
+virtualmachineinstancetype.instancetype.kubevirt.io/csmall created
+virtualmachine.kubevirt.io/vm-cirros-csmall created
+
+$ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
+{
+  &quot;kind&quot;: &quot;VirtualMachineInstancetype&quot;,
+  &quot;name&quot;: &quot;csmall&quot;,
+}
+
+$ virtctl start vm-cirros-csmall
+VM vm-cirros-csmall was scheduled to start
+
+$ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
+{
+  &quot;kind&quot;: &quot;VirtualMachineInstancetype&quot;,
+  &quot;name&quot;: &quot;csmall&quot;,
+  &quot;revisionName&quot;: &quot;vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1&quot;
+}
+
+$ kubectl get controllerrevision/vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1 -o json | jq .
+{
+  &quot;apiVersion&quot;: &quot;apps/v1&quot;,
+  &quot;data&quot;: {
+    &quot;apiVersion&quot;: &quot;&quot;,
+    &quot;spec&quot;: &quot;eyJjcHUiOnsiZ3Vlc3QiOjF9LCJtZW1vcnkiOnsiZ3Vlc3QiOiIxMjhNaSJ9fQ==&quot;
+  },
+  &quot;kind&quot;: &quot;ControllerRevision&quot;,
+  &quot;metadata&quot;: {
+    &quot;creationTimestamp&quot;: &quot;2022-08-02T11:56:29Z&quot;,
+    &quot;name&quot;: &quot;vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1&quot;,
+    &quot;namespace&quot;: &quot;default&quot;,
+    &quot;ownerReferences&quot;: [
+      {
+        &quot;apiVersion&quot;: &quot;kubevirt.io/v1&quot;,
+        &quot;blockOwnerDeletion&quot;: true,
+        &quot;controller&quot;: true,
+        &quot;kind&quot;: &quot;VirtualMachine&quot;,
+        &quot;name&quot;: &quot;vm-cirros-csmall&quot;,
+        &quot;uid&quot;: &quot;7ad77f47-ee51-4024-8d5b-4141aec7b04c&quot;
+      }
+    ],
+    &quot;resourceVersion&quot;: &quot;7819&quot;,
+    &quot;uid&quot;: &quot;df3767bc-9413-4881-a961-2254f985dfd2&quot;
+  },
+  &quot;revision&quot;: 0
+}
+
+$ kubectl delete vm/vm-cirros-csmall
+virtualmachine.kubevirt.io &quot;vm-cirros-csmall&quot; deleted
+
+$ kubectl get controllerrevision/vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1 
+Error from server (NotFound): controllerrevisions.apps &quot;vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1&quot; not found
+
+
+</code></pre>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<p>Various examples are available within the <a href="https://github.com/kubevirt/kubevirt"><code>kubevirt</code></a> repo under <a href="https://github.com/kubevirt/kubevirt/tree/main/examples"><code>/examples</code></a>. The following uses an example <code>VirtualMachine</code> provided by the <a href="https://quay.io/repository/containerdisks/fedora"><code>containerdisk/fedora</code> repo</a> and replaces much of the <code>DomainSpec</code> with the equivalent instancetype and preferences:</p>
+<pre><code class="language-yaml">cat &lt;&lt; EOF | kubectl apply -f - 
+---
+apiVersion: instancetype.kubevirt.io/v1alpha1
+kind: VirtualMachineInstancetype
+metadata:
+  name: cmedium
+spec:
+  cpu:
+    guest: 1
+  memory:
+    guest: 1Gi
+---
+apiVersion: instancetype.kubevirt.io/v1alpha1
+kind: VirtualMachinePreference
+metadata:
+  name: fedora
+spec:
+  devices:
+    preferredDiskBus: virtio
+    preferredInterfaceModel: virtio
+    preferredRng: {}
+  features:
+    preferredAcpi: {}
+    preferredSmm: {}
+  firmware:
+    preferredUseEfi: true
+    preferredUseSecureBoot: true    
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  creationTimestamp: null
+  name: fedora
+spec:
+  instancetype:
+    name: cmedium
+    kind: virtualMachineInstancetype
+  preference:
+    name: fedora
+    kind: virtualMachinePreference
+  runStrategy: Always
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      domain:
+        devices: {}
+      volumes:
+      - containerDisk:
+          image: quay.io/containerdisks/fedora:latest
+        name: containerdisk
+      - cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            users:
+              - name: admin
+                sudo: ALL=(ALL) NOPASSWD:ALL
+                ssh_authorized_keys:
+                  - ssh-rsa AAAA...
+        name: cloudinit
+EOF
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../run_strategies/" class="btn btn-neutral float-left" title="Run Strategies"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../presets/" class="btn btn-neutral float-right" title="Presets">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../run_strategies/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../presets/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme_extra.js" defer></script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
