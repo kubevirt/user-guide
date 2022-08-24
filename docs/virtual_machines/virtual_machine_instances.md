@@ -66,6 +66,9 @@ require a provisioner in your cluster.
 
 ## Additional Information
 
+-   Using instancetypes and preferences with a VirtualMachine:
+    [Instancetypes and preferences](./instancetypes.md)
+
 -   More information about persistent and ephemeral volumes:
     [Disks and Volumes](./disks_and_volumes.md)
 
