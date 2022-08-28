@@ -682,6 +682,12 @@ Without enabling the feature, network performance does not scale as the
 number of vCPUs increases. Guests cannot transmit or retrieve packets in
 parallel, as virtio-net has only one TX and RX queue.
 
+Virtio interfaces advertise on their status.interfaces.interface entry a field named queueCount.  
+The queueCount field indicates how many queues were assigned to the interface.  
+Queue count value is derived from the domain XML.  
+In case the number of queues can't be determined (i.e interface that is reported by quest-agent only),
+it will be omitted.
+
 
 *NOTE*: Although the virtio-net multiqueue feature provides a
 performance benefit, it has some limitations and therefore should not be
