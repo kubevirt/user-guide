@@ -106,9 +106,11 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#listing-virtual-machines">Listing virtual machines</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#retrieving-a-virtual-machine-definition">Retrieving a virtual machine definition</a>
+    <li class="toctree-l2"><a class="reference internal" href="#retrieving-a-virtual-machine-instance-definition">Retrieving a virtual machine instance definition</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#stopping-a-virtual-machine">Stopping a virtual machine</a>
+    <li class="toctree-l2"><a class="reference internal" href="#stopping-a-virtual-machine-instance">Stopping a virtual machine instance</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#starting-and-stopping-a-virtual-machine">Starting and stopping a virtual machine</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#pausing-and-unpausing-a-virtual-machine">Pausing and unpausing a virtual machine</a>
     </li>
@@ -217,12 +219,12 @@ equivalent to how Pods behave.</p>
 VirtualMachineInstance objects:</p>
 <pre><code>$ kubectl get vmis
 </code></pre>
-<h2 id="retrieving-a-virtual-machine-definition">Retrieving a virtual machine definition<a class="headerlink" href="#retrieving-a-virtual-machine-definition" title="Permanent link">&para;</a></h2>
+<h2 id="retrieving-a-virtual-machine-instance-definition">Retrieving a virtual machine instance definition<a class="headerlink" href="#retrieving-a-virtual-machine-instance-definition" title="Permanent link">&para;</a></h2>
 <p>A single VirtualMachineInstance definition can be retrieved by getting
 the specific VirtualMachineInstance object:</p>
 <pre><code>$ kubectl get vmis testvmi
 </code></pre>
-<h2 id="stopping-a-virtual-machine">Stopping a virtual machine<a class="headerlink" href="#stopping-a-virtual-machine" title="Permanent link">&para;</a></h2>
+<h2 id="stopping-a-virtual-machine-instance">Stopping a virtual machine instance<a class="headerlink" href="#stopping-a-virtual-machine-instance" title="Permanent link">&para;</a></h2>
 <p>To stop the VirtualMachineInstance, you just need to delete the
 corresponding <code>VirtualMachineInstance</code> object using <code>kubectl</code>.</p>
 <pre><code>$ kubectl delete -f vmi.yaml
@@ -230,13 +232,27 @@ corresponding <code>VirtualMachineInstance</code> object using <code>kubectl</co
 $ kubectl delete vmis testvmi
 </code></pre>
 <blockquote>
-<p>Note: Stopping a VirtualMachineInstance implies that it will be
+<p><strong>Note:</strong> Stopping a VirtualMachineInstance implies that it will be
 deleted from the cluster. You will not be able to start this
 VirtualMachineInstance object again.</p>
 </blockquote>
+<h2 id="starting-and-stopping-a-virtual-machine">Starting and stopping a virtual machine<a class="headerlink" href="#starting-and-stopping-a-virtual-machine" title="Permanent link">&para;</a></h2>
+<p>Virtual machines, in contrast to VirtualMachineInstances, have a running state. Thus on VM you can define if it
+should be running, or not. VirtualMachineInstances are, if they are defined in the cluster, always running and consuming resources.</p>
+<p><code>virtctl</code> is used in order to start and stop a VirtualMachine:</p>
+<pre><code>$ virtctl start my-vm
+$ virtctl stop my-vm
+</code></pre>
+<blockquote>
+<p><strong>Note:</strong> You can force stop a VM (which is like pulling the power cord,
+with all its implications like data inconsistencies or
+[in the worst case] data loss) by</p>
+</blockquote>
+<pre><code>$ virtctl stop my-vm --grace-period 0 --force
+</code></pre>
 <h2 id="pausing-and-unpausing-a-virtual-machine">Pausing and unpausing a virtual machine<a class="headerlink" href="#pausing-and-unpausing-a-virtual-machine" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>Note: Pausing in this context refers to libvirt's <code>virDomainSuspend</code> command:<br />
+<p><strong>Note:</strong> Pausing in this context refers to libvirt's <code>virDomainSuspend</code> command:<br />
 "The process is frozen without further access to CPU resources and I/O but the memory used by the domain at the hypervisor level will stay allocated"</p>
 </blockquote>
 <p>To pause a virtual machine, you need the <code>virtctl</code> command line tool. Its <code>pause</code> command works on either <code>VirtualMachine</code> s
@@ -256,7 +272,7 @@ $ virtctl unpause vmi testvm
 </code></pre>
 <h2 id="renaming-a-virtual-machine">Renaming a Virtual Machine<a class="headerlink" href="#renaming-a-virtual-machine" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>Note: Renaming a Virtual Machine is only possible when a Virtual Machine
+<p><strong>Note:</strong> Renaming a Virtual Machine is only possible when a Virtual Machine
 is stopped, or has a 'Halted' run strategy.</p>
 </blockquote>
 <pre><code>$ virtctl rename vm_name new_vm_name
