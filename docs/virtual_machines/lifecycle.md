@@ -41,7 +41,7 @@ corresponding `VirtualMachineInstance` object using `kubectl`.
     # OR
     $ kubectl delete vmis testvmi
 
-> Note: Stopping a VirtualMachineInstance implies that it will be
+> **Note:** Stopping a VirtualMachineInstance implies that it will be
 > deleted from the cluster. You will not be able to start this
 > VirtualMachineInstance object again.
 
@@ -55,14 +55,15 @@ should be running, or not. VirtualMachineInstances are, if they are defined in t
     $ virtctl start my-vm
     $ virtctl stop my-vm
     
-    # Or force stop a VM (which is like pulling the power cord,
-    # with all it's implications like data inconcistencies or
-    # [in the worst case] data loss) by
+> **Note:** You can force stop a VM (which is like pulling the power cord,
+> with all its implications like data inconsistencies or
+> [in the worst case] data loss) by
+
     $ virtctl stop my-vm --grace-period 0 --force
 
 ## Pausing and unpausing a virtual machine
 
-> Note: Pausing in this context refers to libvirt's `virDomainSuspend` command:  
+> **Note:** Pausing in this context refers to libvirt's `virDomainSuspend` command:  
 > "The process is frozen without further access to CPU resources and I/O but the memory used by the domain at the hypervisor level will stay allocated"
 
 To pause a virtual machine, you need the `virtctl` command line tool. Its `pause` command works on either `VirtualMachine` s
@@ -86,7 +87,7 @@ Unpausing works similar to pausing:
 
 ## Renaming a Virtual Machine
 
-> Note: Renaming a Virtual Machine is only possible when a Virtual Machine
+> **Note:** Renaming a Virtual Machine is only possible when a Virtual Machine
 > is stopped, or has a 'Halted' run strategy.
 
     $ virtctl rename vm_name new_vm_name
