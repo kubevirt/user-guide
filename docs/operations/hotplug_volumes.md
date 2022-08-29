@@ -39,6 +39,9 @@ $ virtctl addvolume vmi-fedora --volume-name=example-volume-hotplug
 
 This will hotplug the volume into the running VMI, and set the serial of the disk to the volume name. In this example it is set to example-hotplug-volume.
 
+#### Why virtio-scsi
+The bus of hotplug disk is specified as a `scsi` disk. Why is it not specified as `virtio` instead, like regular disks? The reason is a limitation of `virtio` disks that each disk uses a pcie slot in the virtual machine and there is a maximum of 32 slots. This means there is a low limit on the maximum number of disks you can hotplug especially given that other things will also need pcie slots. Another issue is these slots need to be reserved ahead of time. So if the number of hotplugged disks is not known ahead of time, it is impossible to properly reserve the required number of slots. To work around this issue, each VM has a virtio-scsi controller, which allows the use of a `scsi` bus for hotplugged disks. This controller allows for hotplugging of over 4 million disks. `virtio-scsi` is [very close in performance](https://mpolednik.github.io/2017/01/23/virtio-blk-vs-virtio-scsi/) to `virtio`
+
 #### Serial
 You can change the serial of the disk by specifying the --serial parameter, for example:
 ```bash
@@ -72,6 +75,9 @@ The format and length of serials are specified according to the libvirt document
     Hypervisors may also start rejecting overly long serials instead of truncating them in the future so it's advised to avoid the implicit truncation by testing the desired serial length range with the desired device and hypervisor combination.
 
 ```
+
+### Retain hotplugged volumes after restart
+In many cases it is desirable to keep hotplugged volumes after a VM restart. It may also be desirable to be able to unplug these volumes after the restart. The `persist` option makes it impossible to unplug the disks after a restart. If you don't specify `persist` the default behaviour is to retain hotplugged volumes as hotplugged volumes after a VM restart. This makes the `persist` flag mostly obsolete unless you want to make a volume permanent on restart.
 
 ### Persist
 In some cases you want a hotplugged volume to become part of the standard disks after a restart of the VM.
