@@ -222,6 +222,8 @@ spec:
 <pre><code class="language-bash">$ virtctl addvolume vmi-fedora --volume-name=example-volume-hotplug
 </code></pre>
 <p>This will hotplug the volume into the running VMI, and set the serial of the disk to the volume name. In this example it is set to example-hotplug-volume.</p>
+<h4 id="why-virtio-scsi">Why virtio-scsi<a class="headerlink" href="#why-virtio-scsi" title="Permanent link">&para;</a></h4>
+<p>The bus of hotplug disk is specified as a <code>scsi</code> disk. Why is it not specified as <code>virtio</code> instead, like regular disks? The reason is a limitation of <code>virtio</code> disks that each disk uses a pcie slot in the virtual machine and there is a maximum of 32 slots. This means there is a low limit on the maximum number of disks you can hotplug especially given that other things will also need pcie slots. Another issue is these slots need to be reserved ahead of time. So if the number of hotplugged disks is not known ahead of time, it is impossible to properly reserve the required number of slots. To work around this issue, each VM has a virtio-scsi controller, which allows the use of a <code>scsi</code> bus for hotplugged disks. This controller allows for hotplugging of over 4 million disks. <code>virtio-scsi</code> is <a href="https://mpolednik.github.io/2017/01/23/virtio-blk-vs-virtio-scsi/">very close in performance</a> to <code>virtio</code></p>
 <h4 id="serial">Serial<a class="headerlink" href="#serial" title="Permanent link">&para;</a></h4>
 <p>You can change the serial of the disk by specifying the --serial parameter, for example:</p>
 <pre><code class="language-bash">$ virtctl addvolume vmi-fedora --volume-name=example-volume-hotplug --serial=1234567890
@@ -250,6 +252,8 @@ scsi-0QEMU_QEMU_HARDDISK_1234567890
     Hypervisors may also start rejecting overly long serials instead of truncating them in the future so it's advised to avoid the implicit truncation by testing the desired serial length range with the desired device and hypervisor combination.
 
 </code></pre>
+<h3 id="retain-hotplugged-volumes-after-restart">Retain hotplugged volumes after restart<a class="headerlink" href="#retain-hotplugged-volumes-after-restart" title="Permanent link">&para;</a></h3>
+<p>In many cases it is desirable to keep hotplugged volumes after a VM restart. It may also be desirable to be able to unplug these volumes after the restart. The <code>persist</code> option makes it impossible to unplug the disks after a restart. If you don't specify <code>persist</code> the default behaviour is to retain hotplugged volumes as hotplugged volumes after a VM restart. This makes the <code>persist</code> flag mostly obsolete unless you want to make a volume permanent on restart.</p>
 <h3 id="persist">Persist<a class="headerlink" href="#persist" title="Permanent link">&para;</a></h3>
 <p>In some cases you want a hotplugged volume to become part of the standard disks after a restart of the VM.
 For instance if you added some permanent storage to the VM. We also assume that the running VMI has a matching VM that defines it specification.
