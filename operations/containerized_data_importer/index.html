@@ -223,7 +223,8 @@ virtctl in your path.</p>
 <h2 id="install-cdi">Install CDI<a class="headerlink" href="#install-cdi" title="Permanent link">&para;</a></h2>
 <p>Install the latest CDI release
 <a href="https://github.com/kubevirt/containerized-data-importer/releases">here</a></p>
-<pre><code>VERSION=$(curl -s https://github.com/kubevirt/containerized-data-importer/releases/latest | grep -o "v[0-9]\.[0-9]*\.[0-9]*")
+<pre><code>export TAG=$(curl -s -w %{redirect_url} https://github.com/kubevirt/containerized-data-importer/releases/latest)
+export VERSION=$(echo ${TAG##*/})
 kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml
 kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml
 </code></pre>
