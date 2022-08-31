@@ -1,5 +1,27 @@
 # KubeVirt release notes
 
+## v0.56.0
+
+Released on: Thu Aug 18 20:10:29 2022 +0000
+
+- [PR #7599][iholder-redhat] Introduce a mechanism to abort non-running migrations - fixes "Unable to cancel live-migration if virt-launcher pod in pending state" bug
+- [PR #8027][alaypatel07] Wait deletion to succeed all the way till objects are finalized in perfscale tests
+- [PR #8198][rmohr] Improve path handling for non-root virt-launcher workloads
+- [PR #8136][iholder-redhat] Fix cgroups unit tests: mock out underlying runc cgroup manager
+- [PR #8047][iholder-redhat] Deprecate live migration feature gate
+- [PR #7986][iholder-redhat] [Bug-fix]: Windows VM with WSL2 guest fails to migrate
+- [PR #7814][machadovilaca] Add VMI filesystem usage metrics
+- [PR #7849][AlonaKaplan] [TECH PREVIEW] Introducing passt - a new approach to user-mode networking for virtual machines
+- [PR #7991][ShellyKa13] Virtctl memory dump with create flag to create a new pvc
+- [PR #8039][lyarwood] The flavor API and associated CRDs of `VirtualMachine{Flavor,ClusterFlavor}` are renamed to instancetype and `VirtualMachine{Instancetype,ClusterInstancetype}`.
+- [PR #8112][AlonaKaplan] Changing the default of `virtctl expose` `ip-family` parameter to be empty value instead of IPv4.
+- [PR #8073][orenc1] Bump runc to v1.1.2
+- [PR #8092][Barakmor1] Bump the version of emicklei/go-restful from 2.15.0 to 2.16.0
+- [PR #8053][alromeros] [Bug-fix]: Fix mechanism to fetch fs overhead when CDI resource has a different name
+- [PR #8035][0xFelix] Add option to wrap local scp client to scp command
+- [PR #7981][lyarwood] Conflicts will now be raised when using flavors if the `VirtualMachine` defines any `CPU` or `Memory` resource requests.
+- [PR #8068][awels] Set cache mode to match regular disks on hotplugged disks.
+
 ## v0.55.0
 
 Released on: Thu Jul 14 16:33:25 2022 +0000
