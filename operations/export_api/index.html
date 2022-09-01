@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/operations/export_api/" />
+      <link rel="shortcut icon" href="../../assets/favicon.ico" />
+    <title>Export API - KubeVirt User-Guide</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Export API";
+        var mkdocs_page_input_path = "operations/export_api.md";
+        var mkdocs_page_url = "/user-guide/operations/export_api/";
+      </script>
+    
+    <script src="../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/yaml.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> KubeVirt User-Guide
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../release_notes/">KubeVirt release notes</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Operations</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../updating_and_deletion/">Updating and deletion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../basic_use/">Basic use</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../api_validation/">API Validation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug/">Debug</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../virtctl_client_tool/">virtctl Client Tool</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../live_migration/">Live Migration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hotplug_volumes/">Hotplug Volumes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../snapshot_restore_api/">Snapshot Restore API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../component_monitoring/">Component monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../authorization/">Authorization</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../annotations_and_labels/">Annotations and labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node_assignment/">Node assignment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node_maintenance/">Node maintenance</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node_overcommit/">Node overcommit</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../unresponsive_nodes/">Unresponsive nodes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../activating_feature_gates/">Activating feature gates</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mediated_devices_configuration/">Mediated devices and virtual GPUs</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Virtual machines</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/lifecycle/">Lifecycle</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/run_strategies/">Run Strategies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/instancetypes/">Instancetypes and preferences</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/presets/">Presets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/numa/">NUMA</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/istio_service_mesh/">Istio service mesh</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/host-devices/">Host Devices Assignment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_virtio_drivers/">Windows virtio drivers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/accessing_virtual_machines/">Accessing Virtual Machines</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/startup_scripts/">Startup Scripts</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/service_objects/">Service objects</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/templates/">Templates</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/tekton_tasks/">KubeVirt Tekton</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dns/">DNS records</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/boot_from_external_source/">Booting From External Source</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/confidential_computing/">Confidential computing</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Appendix</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">KubeVirt User-Guide</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Operations &raquo;</li>
+      <li>Export API</li>
+    <li class="wy-breadcrumbs-aside">
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/export_api.md"
+          class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="export-api">Export API<a class="headerlink" href="#export-api" title="Permanent link">&para;</a></h1>
+<p>It can be desireable to export a Virtual Machine and its related disks out of a cluster so you can import that Virtual Machine into another system or cluster. The Virtual Machine disks are the most prominent things you will want to export. The export API makes it possible to declaratively export Virtual Machine disks. It is also possible to export individual PVCs and their contents, for instance when you have created a memory dump from a VM or are using virtio-fs to have a Virtual Machine populate a PVC.</p>
+<p>In order not to overload the kubernetes API server the data is transferred through a dedicated export proxy server. The proxy server can then be exposed to the outside world through a service associated with an Ingress/Route or NodePort.</p>
+<h3 id="export-feature-gate">Export Feature Gate<a class="headerlink" href="#export-feature-gate" title="Permanent link">&para;</a></h3>
+<p>VMExport support must be enabled in the feature gates to be available. The
+<a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gates</a>
+field in the KubeVirt CR must be expanded by adding the <code>VMExport</code> to it.</p>
+<h3 id="export-token">Export token<a class="headerlink" href="#export-token" title="Permanent link">&para;</a></h3>
+<p>In order to securely export a Virtual Machine Disk, you must create a token that is used to authorize users accessing the export endpoint. This token must be in the same namespace as the Virtual Machine. The contents of the secret can be passed as a token header or parameter to the export URL. The name of the header or argument is <code>x-kubevirt-export-token</code> with a value that matches the content of the secret. The secret can be named any valid secret in the namespace. We recommend you generate an alpha numeric token of at least 12 characters. The data key should be <code>token</code>. For example:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: example-token
+stringData:
+  token: 1234567890ab
+</code></pre>
+<h3 id="export-virtual-machine-volumes">Export Virtual Machine volumes<a class="headerlink" href="#export-virtual-machine-volumes" title="Permanent link">&para;</a></h3>
+<p>After you have created the token you can now create a VMExport CR that identifies the Virtual Machine you want to export. You can create a VMExport that looks like this:</p>
+<pre><code class="language-yaml">apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+spec:
+  tokenSecretRef: example-token
+  source:
+    apiGroup: &quot;kubevirt.io&quot;
+    kind: VirtualMachine
+    name: example-vm
+</code></pre>
+<p>The following volumes present in the VM will be exported:</p>
+<ul>
+<li>PersistentVolumeClaims</li>
+<li>DataVolumes</li>
+<li>MemoryDump</li>
+</ul>
+<p>All other volume types are not exported. To avoid the export of inconsistent data, a Virtual Machine can only be exported while it is powered off. Any active VM exports will be terminated if the Virtual Machine is started. To export data from a running Virtual Machine you must first create a Virtual Machine Snapshot (see below).</p>
+<p>If the VM contains multiple volumes that can be exported, each volume will get its own URL links. If the VM contains no volumes that can be exported, the VMExport will go into a <code>Skipped</code> phase, and no export server is started.</p>
+<h3 id="export-virtual-machine-snapshot-volumes">Export Virtual Machine Snapshot volumes<a class="headerlink" href="#export-virtual-machine-snapshot-volumes" title="Permanent link">&para;</a></h3>
+<p>You can create a VMExport CR that identifies the Virtual Machine Snapshot you want to export. You can create a VMExport that looks like this:</p>
+<pre><code class="language-yaml">apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+spec:
+  tokenSecretRef: example-token
+  source:
+    apiGroup: &quot;snapshot.kubevirt.io&quot;
+    kind: VirtualMachineSnapshot
+    name: example-vmsnapshot
+</code></pre>
+<p>When you create a VMExport based on a Virtual Machine Snapshot, the controller will attempt to create PVCs from the volume snapshots contained in Virtual Machine Snapshot. Once all the PVCs are ready, the export server will start and you can begin the export. If the Virtual Machine Snapshot contains multiple volumes that can be exported, each volume will get its own URL links. If the Virtual Machine snapshot contains no volumes that can be exported, the VMExport will go into a <code>skipped</code> phase, and no export server is started.</p>
+<h3 id="export-persistent-volume-claim">Export Persistent Volume Claim<a class="headerlink" href="#export-persistent-volume-claim" title="Permanent link">&para;</a></h3>
+<p>You can create a VMExport CR that identifies the Persistent Volume Claim (PVC) you want to export. You can create a VMExport that looks like this:</p>
+<pre><code class="language-yaml">apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+spec:
+  tokenSecretRef: example-token
+  source:
+    apiGroup: &quot;&quot;
+    kind: PersistentVolumeClaim
+    name: example-pvc
+</code></pre>
+<p>In this example the PVC name is <code>example-pvc</code>. Note the PVC doesn't need to contain a Virtual Machine Disk, it can contain any content, but the main use case is exporting Virtual Machine Disks. After you post this yaml to the cluster, a new export server is created in the same namespace as the PVC. If the source PVC is <em>in use by another pod</em> (such as the virt-launcher pod) then the export will remain pending until the PVC is no longer in use. If the exporter server is active and another pod starts using the PVC, the exporter server will be terminated until the PVC is not in use anymore.</p>
+<h3 id="export-status-links">Export status links<a class="headerlink" href="#export-status-links" title="Permanent link">&para;</a></h3>
+<p>The VirtualMachineExport CR will contain a status with internal and external links to the export service. The internal links are only valid inside the cluster, and the external links are valid for external access through an Ingress or Route. The <code>cert</code> field will contain the CA that signed the certificate of the export server for internal links, or the CA that signed the Route or Ingress.</p>
+<h4 id="kubevirt-content-type">KubeVirt content-type<a class="headerlink" href="#kubevirt-content-type" title="Permanent link">&para;</a></h4>
+<p>The following is an example of exporting a PVC that contains a KubeVirt disk image. The controller determines if the PVC contains a kubevirt disk by checking if there is a special annotation on the PVC, or if there is a DataVolume ownerReference on the PVC, or if the PVC has a volumeMode of block.</p>
+<pre><code class="language-yaml">apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+  namespace: example
+spec:
+  source:
+    apiGroup: &quot;&quot;
+    kind: PersistentVolumeClaim
+    name: example-pvc
+  tokenSecretRef: example-token
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: &quot;2022-06-21T14:10:09Z&quot;
+    reason: podReady
+    status: &quot;True&quot;
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: &quot;2022-06-21T14:09:02Z&quot;
+    reason: pvcBound
+    status: &quot;True&quot;
+    type: PVCReady
+  links:
+    external:
+      cert: |-
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      volumes:
+      - formats:
+        - format: raw
+          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-disk/disk.img
+        - format: gzip
+          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-disk/disk.img.gz
+        name: example-disk
+    internal:
+      cert: |-
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      volumes:
+      - formats:
+        - format: raw
+          url: https://virt-export-example-export.example.svc/volumes/example-disk/disk.img
+        - format: gzip
+          url: https://virt-export-example-export.example.svc/volumes/example-disk/disk.img.gz
+        name: example-disk
+  phase: Ready
+  serviceName: virt-export-example-export
+</code></pre>
+<h4 id="archive-content-type">Archive content-type<a class="headerlink" href="#archive-content-type" title="Permanent link">&para;</a></h4>
+<p>Archive content-type is automatically selected if we are unable to determine the PVC contains a KubeVirt disk. The archive will contain all the files that are in the PVC.</p>
+<pre><code class="language-yaml">apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+  namespace: example
+spec:
+  source:
+    apiGroup: &quot;&quot;
+    kind: PersistentVolumeClaim
+    name: example-pvc
+  tokenSecretRef: example-token
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: &quot;2022-06-21T14:10:09Z&quot;
+    reason: podReady
+    status: &quot;True&quot;
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: &quot;2022-06-21T14:09:02Z&quot;
+    reason: pvcBound
+    status: &quot;True&quot;
+    type: PVCReady
+  links:
+    external:
+      cert: |-
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      volumes:
+      - formats:
+        - format: dir
+          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example/dir
+        - format: tar.gz
+          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example/disk.tar.gz
+        name: example-disk
+    internal:
+      cert: |-
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      volumes:
+      - formats:
+        - format: dir
+          url: https://virt-export-example-export.example.svc/volumes/example/dir
+        - format: tar.gz
+          url: https://virt-export-example-export.example.svc/volumes/example/disk.tar.gz
+        name: example-disk
+  phase: Ready
+  serviceName: virt-export-example-export
+</code></pre>
+<h4 id="format-types">Format types<a class="headerlink" href="#format-types" title="Permanent link">&para;</a></h4>
+<p>There are 4 format types that are possible:</p>
+<ul>
+<li>Raw. The unaltered raw KubeVirt disk image.</li>
+<li>Gzip. The raw KubeVirt disk image but gzipped to help with transferring efficiency.</li>
+<li>Dir. A directory listing, allowing you to find the files contained in the PVC.</li>
+<li>Tar.gz The contents of the PVC tarred and gzipped in a single file.</li>
+</ul>
+<p>Raw and Gzip will be selected if the PVC is determined to be a KubeVirt disk. KubeVirt disks contain a single disk.img file (or are a block device). Dir will return a list of the files in the PVC, to download a specific file you can replace <code>/dir</code> in the URL with the path and file name. For instance if the PVC contains the file <code>/example/data.txt</code> you can replace <code>/dir</code> with <code>/example/data.txt</code> to download just data.txt file. Or you can use the tar.gz URL to get all the contents of the PVC in a tar file.</p>
+<h4 id="internal-link-certificates">Internal link certificates<a class="headerlink" href="#internal-link-certificates" title="Permanent link">&para;</a></h4>
+<p>The export server certificate is valid for 7 days after which it is rotated by deleting the export server pod and associated secret and generating a new one. If for whatever reason the export server pod dies, the associated secret is also automatically deleted and a new pod and secret are generated. The VirtualMachineExport object status will be automatically updated to reflect the new certificate.</p>
+<h4 id="external-link-certificates">External link certificates<a class="headerlink" href="#external-link-certificates" title="Permanent link">&para;</a></h4>
+<p>The external link certificates are associated with the Ingress/Route that points to the service created by the KubeVirt operator. The CA that signed the Ingress/Route will part of the certificates. </p>
+<h3 id="virtctl-integration">virtctl integration<a class="headerlink" href="#virtctl-integration" title="Permanent link">&para;</a></h3>
+<p><strong>TODO</strong></p>
+<h3 id="use-cases">Use cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h3>
+<h4 id="clone-vm-from-one-cluster-to-another-cluster">Clone VM from one cluster to another cluster<a class="headerlink" href="#clone-vm-from-one-cluster-to-another-cluster" title="Permanent link">&para;</a></h4>
+<p>If you want to transfer KubeVirt disk images from a source cluster to another target cluster, you can use the VMExport in the source to expose the disks and Containerized Data Importer (CDI) in the target cluster to import the image into the target cluster. Let's assume we have an Ingress or Route in the source cluster that exposes the export proxy with the following example domain <code>virt-exportproxy-example.example.com</code> and we have a Virtual Machine in the source cluster with one disk, which looks like this:</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-example-datavolume
+  name: example-vm
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: example-dv
+    spec:
+      storage:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: local
+      source:
+        registry:
+          url: docker://quay.io/containerdisks/centos-stream:9
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-example-datavolume
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: datavolumedisk1
+        resources:
+          requests:
+            memory: 2Gi
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - dataVolume:
+          name: example-dv
+        name: datavolumedisk1
+</code></pre>
+<p>This is a VM that has a DataVolume (DV) <code>example-dv</code> that is populated from a container disk and we want to export that disk to the target cluster. To export this VM we have to create a token that we can use in the target cluster to get access to the export. For example</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: example-token
+stringData:
+  token: 1234567890ab
+</code></pre>
+<p>The value of the token is <code>1234567890ab</code> hardly a secure token, but it is an example. We can now create a VMExport that looks like this:</p>
+<pre><code class="language-yaml">apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+spec:
+  tokenSecretRef: example-token
+  source:
+    apiGroup: &quot;kubevirt.io&quot;
+    kind: VirtualMachine
+    name: example-vm
+</code></pre>
+<p>If the VM is not running the status of the VMExport object will get updated once the export-server pod is running to look something like this:</p>
+<pre><code class="language-yaml">apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+  namespace: example
+spec:
+  tokenSecretRef: example-token
+  source:
+    apiGroup: &quot;kubevirt.io&quot;
+    kind: VirtualMachine
+    name: example-vm
+status:
+  conditions:
+  - lastProbeTime: null
+    reason: podReady
+    status: &quot;True&quot;
+    type: Ready
+  - lastProbeTime: null
+    reason: pvcBound
+    status: &quot;True&quot;
+    type: PVCReady
+  links:
+    external:
+      cert: |-
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      volumes:
+      - formats:
+        - format: raw
+          url: https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img
+        - format: gzip
+          url: https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img.gz
+        name: example-disk
+    internal:
+      cert: |-
+        -----BEGIN CERTIFICATE-----
+        ...
+        -----END CERTIFICATE-----
+      volumes:
+      - formats:
+        - format: raw
+          url: https://virt-export-example-export.example.svc/volumes/example-dv/disk.img
+        - format: gzip
+          url: https://virt-export-example-export.example.svc/volumes/example-dv/disk.img.gz
+        name: example-disk
+  phase: Ready
+  serviceName: virt-export-example-export
+</code></pre>
+<p>Note in this example we are in the <code>example</code> namespace in the source cluster, which is why the internal links domain ends with <code>.example.svc</code>. The external links are what will be visible to outside of the source cluster, so we can use that for when we import into the target cluster.</p>
+<p>Now we are ready to import this disk into the target cluster. In order for CDI to import, we will need to provide it the CA certificate that signed the Ingress/Route that we will be connecting to. Luckily the <code>cert</code> field of the external links will contain the entire certificate chain. You can use the contents of the <code>cert</code> field to populate the configMap. In the target cluster create the configmap in the namespace you will import the disk into:</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: router-cert
+data:
+  ca.pem: |
+    -----BEGIN CERTIFICATE-----
+    ...
+    -----END CERTIFICATE-----
+</code></pre>
+<p>Next create a secret in the same namespace on the target cluster. Note: the token value will be a header that is passed to the server by CDI.</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-headers
+stringData:
+  token: &quot;x-kubevirt-export-token:1234567890ab&quot;
+</code></pre>
+<p>Note: make sure there is no <code></code> between the <code>:</code> and the actual token, otherwise the space is sent as part of the header, the authentication will fail.
+Now we can go ahead and import the disk image into the target cluster using a data volume. For convenience, I put the data volume inside a data volume template section of the same VM spec as the source:</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-example-datavolume
+  name: example-target-vm
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: example-dv
+    spec:
+      source:
+        http:
+          url: &quot;https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img.gz&quot;
+          certConfigMap: router-cert
+          secretExtraHeaders:
+          - secret-headers
+      storage:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: target-local
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-example-datavolume
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: datavolumedisk1
+        resources:
+          requests:
+            memory: 2Gi
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - dataVolume:
+          name: example-dv
+        name: datavolumedisk1
+</code></pre>
+<p>After the import completes you should be able to start the VM in the target cluster.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../debug/" class="btn btn-neutral float-left" title="Debug"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../hotplug_volumes/" class="btn btn-neutral float-right" title="Hotplug Volumes">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../debug/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../hotplug_volumes/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme_extra.js" defer></script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
