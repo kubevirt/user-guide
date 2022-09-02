@@ -333,27 +333,22 @@ cpu model for features. Both features can be set via KubeVirt CR:</p>
     spec:
       ...
       configuration:
-        minCPUModel: &quot;Penryn&quot;
         obsoleteCPUModels:
           486: true
           pentium: true
     ...
 </code></pre>
 <p>Obsolete cpus will not be inserted in labels. If KubeVirt CR doesn't 
-contain <code>obsoleteCPUModels</code> or <code>minCPUModel</code> variables, Labeller sets default values 
-(for <code>obsoleteCPUModels</code> "pentium, pentium2, pentium3, pentiumpro, coreduo, n270, 
-core2duo, Conroe, athlon, phenom, kvm32, kvm64, qemu32, qemu64" and for <code>minCPUModel</code> 
-"Penryn"). In minCPU user can set baseline cpu model. CPU features, which have this model, 
-are used as basic features. These basic features are not in the label list. Feature
-labels are created as subtraction between set of newer cpu features and
-set of basic cpu features, e.g.: Haswell has: aes, apic, clflush Penryr
-has: apic, clflush subtraction is: aes. So label will be created only
-with aes feature.</p>
-<p>User can change obsoleteCPUModels or minCPUModel by adding / removing cpu model in config map.
+contain <code>obsoleteCPUModels</code> variable, Labeller sets default values
+("pentium, pentium2, pentium3, pentiumpro, coreduo, n270, 
+core2duo, Conroe, athlon, phenom, kvm32, kvm64, qemu32 and qemu64").</p>
+<p>User can change obsoleteCPUModels by adding / removing cpu model in config map.
 Kubevirt then update nodes with new labels.</p>
+<p>For homogenous cluster / clusters without live migration enabled it's possible
+to disable the node labeler and avoid adding labels to the nodes by adding the 
+following annotation to the nodes:</p>
+<p><code>node-labeller.kubevirt.io/skip-node</code>.</p>
 <h4 id="model">Model<a class="headerlink" href="#model" title="Permanent link">&para;</a></h4>
-<p><strong>Note</strong>: Be sure that node CPU model where you run a VM, has the same
-or higher CPU family.</p>
 <p><strong>Note</strong>: If CPU model wasn't defined, the VM will have CPU model
 closest to one that used on the node where the VM is running.</p>
 <p><strong>Note</strong>: CPU model is case sensitive.</p>
