@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/operations/mediated_devices_configuration/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/operations/migration_policies/" />
       <link rel="shortcut icon" href="../../assets/favicon.ico" />
-    <title>Mediated devices and virtual GPUs - KubeVirt User-Guide</title>
+    <title>Migration Policies - KubeVirt User-Guide</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Mediated devices and virtual GPUs";
-        var mkdocs_page_input_path = "operations/mediated_devices_configuration.md";
-        var mkdocs_page_url = "/user-guide/operations/mediated_devices_configuration/";
+        var mkdocs_page_name = "Migration Policies";
+        var mkdocs_page_input_path = "operations/migration_policies.md";
+        var mkdocs_page_url = "/user-guide/operations/migration_policies/";
       </script>
     
     <script src="../../js/jquery-3.6.0.min.js" defer></script>
@@ -93,15 +93,17 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../activating_feature_gates/">Activating feature gates</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Mediated devices and virtual GPUs</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../mediated_devices_configuration/">Mediated devices and virtual GPUs</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Migration Policies</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#configuration-scenarios">Configuration scenarios</a>
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#assigning-vgpumdev-to-a-virtual-machine">Assigning vGPU/MDEV to a Virtual Machine</a>
+    <li class="toctree-l2"><a class="reference internal" href="#api-examples">API Examples</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#policies-precedence">Policies' Precedence</a>
     </li>
     </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../migration_policies/">Migration Policies</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Virtual machines</span></p>
@@ -183,9 +185,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
           <li>Operations &raquo;</li>
-      <li>Mediated devices and virtual GPUs</li>
+      <li>Migration Policies</li>
     <li class="wy-breadcrumbs-aside">
-        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/mediated_devices_configuration.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/migration_policies.md"
           class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
@@ -194,126 +196,171 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="mediated-devices-and-virtual-gpus">Mediated devices and virtual GPUs<a class="headerlink" href="#mediated-devices-and-virtual-gpus" title="Permanent link">&para;</a></h1>
-<p>KubeVirt aims to facilitate the configuration of mediated devices on large clusters.
-The new <code>mediatedDevicesConfiguration</code> API in KubeVirt CR allows administrators to
-create or remove mediated devices in a declarative way, by providing a list of the desired mediated devices types  that they expect to be configured in the cluster.</p>
-<p>It would also be possible to provide a more specific configuration that targets a specific node or a group of nodes directly.
-This can be achieved by using the <code>nodeMediatedDeviceTypes</code>, however, it must be used in a combination with <code>mediatedDevicesTypes</code>, to override the global
-configuration set in <code>mediatedDevicesTypes</code> section. Therefore, using <code>nodeMediatedDeviceTypes</code> without the <code>mediatedDevicesTypes</code> section is not supported.</p>
-<p>KubeVirt will use the provided configuration to automatically create the relevant mdev/vGPU devices on nodes that can support it.</p>
-<p>Currently, a single mdev type per card will be configured.
-The maximum amount of instances of the selected mdev type will be configured per card.</p>
-<blockquote>
-<p>Note: Some vendors, such as NVIDIA, require a driver to be installed on the nodes to provide mediated devices, including vGPUs.</p>
-</blockquote>
-<p>Here's an example of a configuration that can be provided to KubeVirt CR:</p>
-<pre><code>spec:  
-  configuration:  
-     mediatedDevicesConfiguration:  
-       mediatedDevicesTypes:  
-       - nvidia-222  
-       - nvidia-228  
-       nodeMediatedDeviceTypes:  
-       - nodeSelector:  
-           kubernetes.io/hostname: nodeName  
-         mediatedDevicesTypes:  
-         - nvidia-234
+                <h1 id="migration-policies">Migration Policies<a class="headerlink" href="#migration-policies" title="Permanent link">&para;</a></h1>
+<p>Migration policies provides a new way of applying migration configurations to Virtual Machines. The policies
+can refine Kubevirt CR's <code>MigrationConfiguration</code> that sets the cluster-wide migration configurations. This way,
+the cluster-wide settings serve as a default that can be refined (i.e. changed, removed or added) by the migration
+policy.</p>
+<p>Please bear in mind that migration policies are in version <code>v1alpha1</code>. This means that this API is not fully stable
+yet and that APIs may change in the future.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>KubeVirt supports <a href="../live_migration/">Live Migrations</a> of Virtual Machine workloads.
+Before migration policies were introduced, migration settings could be configurable only on the cluster-wide
+scope by editing <a href="https://kubevirt.io/api-reference/master/definitions.html#_v1_kubevirtspec">KubevirtCR's spec</a>
+or more specifically <a href="https://kubevirt.io/api-reference/master/definitions.html#_v1_migrationconfiguration">MigrationConfiguration</a>
+CRD.</p>
+<p>Several aspects (although not all) of migration behaviour that can be customized are:
+- Bandwidth
+- Auto-convergence
+- Post/Pre-copy
+- Max number of parallel migrations
+- Timeout</p>
+<p>Migration policies generalize the concept of defining migration configurations, so it would be
+possible to apply different configurations to specific groups of VMs.</p>
+<p>Such capability can be useful for a lot of different use cases on which there is a need to differentiate
+between different workloads. Differentiation of different configurations could be needed because different
+workloads are considered to be in different priorities, security segregation, workloads with different
+requirements, help to converge workloads which aren't migration-friendly, and many other reasons.</p>
+<h2 id="api-examples">API Examples<a class="headerlink" href="#api-examples" title="Permanent link">&para;</a></h2>
+<h4 id="migration-configurations">Migration Configurations<a class="headerlink" href="#migration-configurations" title="Permanent link">&para;</a></h4>
+<p>Currently the MigrationPolicy spec will only include the following configurations from KubevirtCR's
+MigrationConfiguration (in the future more configurations that aren't part of Kubevirt CR are intended to be added):</p>
+<pre><code class="language-yaml">apiVersion: migrations.kubevirt.io/v1alpha1
+kind: MigrationPolicy
+  spec:
+    allowAutoConverge: true
+    bandwidthPerMigration: 217Ki
+    completionTimeoutPerGiB: 23
+    allowPostCopy: false
 </code></pre>
-<h2 id="configuration-scenarios">Configuration scenarios<a class="headerlink" href="#configuration-scenarios" title="Permanent link">&para;</a></h2>
-<h3 id="large-cluster-with-multiple-cards-on-each-node">Large cluster with multiple cards on each node<a class="headerlink" href="#large-cluster-with-multiple-cards-on-each-node" title="Permanent link">&para;</a></h3>
-<p>On nodes with multiple cards that can support similar vGPU types, the relevant desired types will be created in a round-robin manner.  </p>
-<h4 id="for-example-considering-the-following-configuration">For example, considering the following configuration:<a class="headerlink" href="#for-example-considering-the-following-configuration" title="Permanent link">&para;</a></h4>
-<pre><code>mediatedDevicesConfiguration:
-  mediatedDevicesTypes:
-  - nvidia-222
-  - nvidia-228
-  - nvidia-105
-  - nvidia-108
+<p>All above fields are optional. When omitted, the configuration will be applied as defined in
+KubevirtCR's MigrationConfiguration. This way, KubevirtCR will serve as a configurable set of defaults for both
+VMs that are not bound to any MigrationPolicy and VMs that are bound to a MigrationPolicy that does not
+define all fields of the configurations.</p>
+<h4 id="matching-policies-to-vms">Matching Policies to VMs<a class="headerlink" href="#matching-policies-to-vms" title="Permanent link">&para;</a></h4>
+<p>Next in the spec are the selectors that define the group of VMs on which to apply the policy. The options to do so
+are the following.</p>
+<p><strong>This policy applies to the VMs in namespaces that have all the required labels:</strong></p>
+<pre><code class="language-yaml">apiVersion: migrations.kubevirt.io/v1alpha1
+kind: MigrationPolicy
+  spec:
+  selectors:
+    namespaceSelector:
+      matchLabels:
+        hpc-workloads: true       # Matches a key and a value 
 </code></pre>
+<p><strong>This policy applies for the VMs that have all the required labels:</strong></p>
+<pre><code class="language-yaml">apiVersion: migrations.kubevirt.io/v1alpha1
+kind: MigrationPolicy
+  spec:
+  selectors:
+    virtualMachineInstanceSelector:
+      matchLabels:
+        workload-type: db       # Matches a key and a value 
+</code></pre>
+<p><strong>It is also possible to combine the previous two:</strong></p>
+<pre><code class="language-yaml">apiVersion: migrations.kubevirt.io/v1alpha1
+kind: MigrationPolicy
+  spec:
+  selectors:
+    namespaceSelector:
+      matchLabels:
+        hpc-workloads: true
+    virtualMachineInstanceSelector:
+      matchLabels:
+        workload-type: db
+</code></pre>
+<h4 id="full-manifest">Full Manifest:<a class="headerlink" href="#full-manifest" title="Permanent link">&para;</a></h4>
+<pre><code class="language-yaml">apiVersion: migrations.kubevirt.io/v1alpha1
+kind: MigrationPolicy
+metadata:
+  name: my-awesome-policy
+spec:
+  # Migration Configuration
+  allowAutoConverge: true
+  bandwidthPerMigration: 217Ki
+  completionTimeoutPerGiB: 23
+  allowPostCopy: false
+
+  # Matching to VMs
+  selectors:
+    namespaceSelector:
+      matchLabels:
+        hpc-workloads: true
+    virtualMachineInstanceSelector:
+      matchLabels:
+        workload-type: db
+</code></pre>
+<h2 id="policies-precedence">Policies' Precedence<a class="headerlink" href="#policies-precedence" title="Permanent link">&para;</a></h2>
+<p>It is possible that multiple policies apply to the same VMI. In such cases, the precedence is in the
+same order as the bullets above (VMI labels first, then namespace labels). It is not allowed to define
+two policies with the exact same selectors.</p>
+<p>If multiple policies apply to the same VMI:
+* The most detailed policy will be applied, that is, the policy with the highest number of matching labels</p>
 <ul>
-<li>Nodes with 2 Tesla T4 cards</li>
-<li>Each card can support multiple types:<ul>
-<li>nvidia-222</li>
-<li>nvidia-223</li>
-<li>nvidia-228</li>
-<li>...</li>
+<li>If multiple policies match to a VMI with the same number of matching labels, the policies will be sorted by the
+lexicographic order of the matching labels keys. The first one in this order will be applied.</li>
 </ul>
-</li>
-<li>Nodes with 2 Tesla V100 cards</li>
-<li>Each card can support multiple types:<ul>
-<li>nvidia-105</li>
-<li>...</li>
-<li>nvidia-108</li>
-<li>nvidia-217</li>
-<li>nvidia-299</li>
-<li>...</li>
-</ul>
-</li>
-</ul>
-<p>KubeVirt will create the following devices:</p>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<p>For example, let's imagine a VMI with the following labels:</p>
 <ul>
-<li>Nodes with 3 Tesla T4 cards will be configured with</li>
-<li>16 vGPUs of type nvidia-222 on card 1</li>
-<li>2 vGPUs of type nvidia-228 on card 2</li>
-<li>16 vGPUs of type nvidia-222 on card 3</li>
-<li>Nodes with 2 Tesla V100 cards will be configured with</li>
-<li>16 vGPUs of type nvidia-105 on card 1</li>
-<li>2 vGPUs of type nvidia-108 on card 2</li>
-</ul>
-<h3 id="single-card-on-a-node-multiple-desired-vgpu-types-are-supported">Single card on a node, multiple desired vGPU types are supported<a class="headerlink" href="#single-card-on-a-node-multiple-desired-vgpu-types-are-supported" title="Permanent link">&para;</a></h3>
-<p>The first supported type from the list will be configured  </p>
-<h5 id="for-example-consider-the-following-list-of-desired-types-where-nvidia-223-and-nvidia-224-are-supported">For example, consider the following list of desired types, where nvidia-223 and nvidia-224 are supported:<a class="headerlink" href="#for-example-consider-the-following-list-of-desired-types-where-nvidia-223-and-nvidia-224-are-supported" title="Permanent link">&para;</a></h5>
-<pre><code>mediatedDevicesConfiguration:
-  mediatedDevicesTypes:  
-  - nvidia-22  
-  - nvidia-223  
-  - nvidia-224
-</code></pre>
-<p>In this case, nvidia-223 will be configured on the node.</p>
-<h3 id="overriding-configuration-on-a-specifc-node">Overriding configuration on a specifc node<a class="headerlink" href="#overriding-configuration-on-a-specifc-node" title="Permanent link">&para;</a></h3>
-<p><code>nodeMediatedDeviceTypes</code> needs to be used along with <code>mediatedDevicesTypes</code>, to override the global config brought in by, <code>mediatedDevicesTypes</code>.</p>
-<h4 id="for-example-considering-the-following-configuration_1">For example, considering the following configuration:<a class="headerlink" href="#for-example-considering-the-following-configuration_1" title="Permanent link">&para;</a></h4>
-<pre><code>mediatedDevicesConfiguration:
-  mediatedDevicesTypes:  
-  - nvidia-230
-  - nvidia-223  
-  - nvidia-224
-  nodeMediatedDeviceTypes:  
-  - nodeSelector:  
-      kubernetes.io/hostname: node2  
-    mediatedDevicesTypes:  
-    - nvidia-234
-</code></pre>
-<ul>
-<li>Two nodes has 2 Tesla T4 cards</li>
-<li>Each card can support a long list of types:<ul>
-<li>nvidia-222</li>
-<li>nvidia-223</li>
-<li>nvidia-224</li>
-<li>nvidia-230</li>
-<li>...</li>
-</ul>
+<li>
+<p>size: small</p>
+</li>
+<li>
+<p>os: fedora</p>
+</li>
+<li>
+<p>gpu: nvidia</p>
 </li>
 </ul>
-<p>KubeVirt will create the following devices:
-* Node 1
-  * type nvidia-230 on card 1
-  * type nvidia-223 on card 2
-* Node 2
-  * type nvidia-234 on card 1 and card 2</p>
-<h3 id="updating-and-removing-vgpu-types">Updating and Removing vGPU types<a class="headerlink" href="#updating-and-removing-vgpu-types" title="Permanent link">&para;</a></h3>
-<p>Changes made to the mediatedDevicesTypes section of the KubeVirt CR will trigger a re-evaluation of the configured mdevs/vGPU types on the cluster nodes.</p>
-<p>Any change to the node labels that match the nodeMediatedDeviceTypes nodeSelector in the KubeVirt CR will trigger a similar re-evaluation.</p>
-<p>Consequently, mediated devices will be reconfigured or entirely removed based on the updated configuration.</p>
-<h2 id="assigning-vgpumdev-to-a-virtual-machine">Assigning vGPU/MDEV to a Virtual Machine<a class="headerlink" href="#assigning-vgpumdev-to-a-virtual-machine" title="Permanent link">&para;</a></h2>
-<p>See the <a href="../../virtual_machines/host-devices/">Host Devices Assignment</a> to learn how to consume the newly created mediated devices/vGPUs</p>
+<p>And let's say the namespace to which the VMI belongs contains the following labels:</p>
+<ul>
+<li>
+<p>priority: high</p>
+</li>
+<li>
+<p>bandwidth: medium</p>
+</li>
+<li>
+<p>hpc-workload: true</p>
+</li>
+</ul>
+<p>The following policies are listed by their precedence (high to low):</p>
+<p>1) VMI labels: <code>{size: small, gpu: nvidia}</code>, Namespace labels: <code>{priority:high, bandwidth: medium}</code></p>
+<ul>
+<li>Matching labels: 4, First key in lexicographic order: <code>bandwidth</code>.</li>
+</ul>
+<p>2) VMI labels: <code>{size: small, gpu: nvidia}</code>, Namespace labels: <code>{priority:high, hpc-workload:true}</code></p>
+<ul>
+<li>Matching labels: 4, First key in lexicographic order: <code>gpu</code>.</li>
+</ul>
+<p>3) VMI labels: <code>{size: small, gpu: nvidia}</code>, Namespace labels: <code>{priority:high}</code></p>
+<ul>
+<li>Matching labels: 3, First key in lexicographic order: <code>gpu</code>.</li>
+</ul>
+<p>4) VMI labels: <code>{size: small}</code>, Namespace labels: <code>{priority:high, hpc-workload:true}</code></p>
+<ul>
+<li>Matching labels: 3, First key in lexicographic order: <code>hpc-workload</code>.</li>
+</ul>
+<p>5) VMI labels: <code>{gpu: nvidia}</code>, Namespace labels: <code>{priority:high}</code></p>
+<ul>
+<li>Matching labels: 2, First key in lexicographic order: <code>gpu</code>.</li>
+</ul>
+<p>6) VMI labels: <code>{gpu: nvidia}</code>, Namespace labels: <code>{}</code></p>
+<ul>
+<li>Matching labels: 1, First key in lexicographic order: <code>gpu</code>.</li>
+</ul>
+<p>7) VMI labels: <code>{gpu: intel}</code>, Namespace labels: <code>{priority:high}</code></p>
+<ul>
+<li>VMI label does not match - policy cannot be applied.</li>
+</ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../activating_feature_gates/" class="btn btn-neutral float-left" title="Activating feature gates"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../migration_policies/" class="btn btn-neutral float-right" title="Migration Policies">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../mediated_devices_configuration/" class="btn btn-neutral float-left" title="Mediated devices and virtual GPUs"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../virtual_machines/virtual_machine_instances/" class="btn btn-neutral float-right" title="Virtual Machines Instances">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -340,10 +387,10 @@ The maximum amount of instances of the selected mdev type will be configured per
         </span>
     
     
-      <span><a href="../activating_feature_gates/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../mediated_devices_configuration/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../migration_policies/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../virtual_machines/virtual_machine_instances/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
