@@ -90,8 +90,8 @@ KubeVirt-specific Tekton tasks, which are focused on:
 - copy-template - Copies the given template and creates a new one (works only on OpenShift).
 - modify-vm-template - Modifies a template with user provided data (works only on OpenShift).
 
-#### Create DataVolumes
-- create-datavolume-from-manifest - Create a datavolume from a manifest.
+#### Modify Data Objects
+- modify-data-object - Creates / modifies / deletes a datavolume / datasource
 
 #### Generate SSH Keys
 - generate-ssh-keys - Generates a private and public key pair, and injects it into a VM.
@@ -111,6 +111,7 @@ KubeVirt-specific Tekton tasks, which are focused on:
 All these tasks can be used for creating [pipelines](https://github.com/tektoncd/pipeline/blob/main/docs/pipelines.md).
 TTO is creating multiple example pipelines, e.g.:
 
-- [Windows 10 installer](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows10-installer.yaml) - Pipeline will prepare a template and Windows 10 datavolume. User has to provide a link to working Windows 10 iso file.
+- [Windows 10 installer](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows10-installer.yaml) - Pipeline will prepare a template and Windows 10 datavolume vith virtio drivers installed. User has to provide a link to working Windows 10 iso file. 
+More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows10-installer)
 
-- [Windows 10 customize](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows10-customize.yaml) - Pipeline will install sql server in windows 10 VM
+- [Windows 10 customize](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows10-customize.yaml) - Pipeline will install sql server in windows 10 VM. More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows10-customize)
