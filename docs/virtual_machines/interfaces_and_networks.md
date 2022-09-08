@@ -609,7 +609,7 @@ Its main benefits are:
 manually).
 
 |                                                                | Masquerade                                                                                             | Bridge                                                                    | Passt                                                                                                   |
-|----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | Supports migration                                             | Yes                                                                                                    | No                                                                        | No<br/>(will be supported in the future)                                                                |
 | VM uses Pod IP                                                 | No                                                                                                     | Yes                                                                       | Yes<br/>(in the future it will be possible to configure the VM IP. Currently the default is the pod IP) |
 | Service Mesh out of the box                                    | No<br/>(only ISTIO is supported, adjustmets on both ISTIO and kubevirt had to be done to make it work) | No                                                                        | Yes                                                                                                     |
@@ -949,7 +949,7 @@ spec:
   config: '{
       "cniVersion": "0.3.1",
       "name": "macvtapnetwork",
-      "type": "macvtap"
+      "type": "macvtap",
       "mtu": 1500
     }'
 ```
