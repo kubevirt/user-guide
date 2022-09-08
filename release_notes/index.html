@@ -52,6 +52,8 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">KubeVirt release notes</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#v0560">v0.56.0</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#v0550">v0.55.0</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#v0540">v0.54.0</a>
@@ -462,6 +464,27 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="kubevirt-release-notes">KubeVirt release notes<a class="headerlink" href="#kubevirt-release-notes" title="Permanent link">&para;</a></h1>
+<h2 id="v0560">v0.56.0<a class="headerlink" href="#v0560" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Aug 18 20:10:29 2022 +0000</p>
+<ul>
+<li>[PR #7599][iholder-redhat] Introduce a mechanism to abort non-running migrations - fixes "Unable to cancel live-migration if virt-launcher pod in pending state" bug</li>
+<li>[PR #8027][alaypatel07] Wait deletion to succeed all the way till objects are finalized in perfscale tests</li>
+<li>[PR #8198][rmohr] Improve path handling for non-root virt-launcher workloads</li>
+<li>[PR #8136][iholder-redhat] Fix cgroups unit tests: mock out underlying runc cgroup manager</li>
+<li>[PR #8047][iholder-redhat] Deprecate live migration feature gate</li>
+<li>[PR #7986][iholder-redhat] [Bug-fix]: Windows VM with WSL2 guest fails to migrate</li>
+<li>[PR #7814][machadovilaca] Add VMI filesystem usage metrics</li>
+<li>[PR #7849][AlonaKaplan] [TECH PREVIEW] Introducing passt - a new approach to user-mode networking for virtual machines</li>
+<li>[PR #7991][ShellyKa13] Virtctl memory dump with create flag to create a new pvc</li>
+<li>[PR #8039][lyarwood] The flavor API and associated CRDs of <code>VirtualMachine{Flavor,ClusterFlavor}</code> are renamed to instancetype and <code>VirtualMachine{Instancetype,ClusterInstancetype}</code>.</li>
+<li>[PR #8112][AlonaKaplan] Changing the default of <code>virtctl expose</code> <code>ip-family</code> parameter to be empty value instead of IPv4.</li>
+<li>[PR #8073][orenc1] Bump runc to v1.1.2</li>
+<li>[PR #8092][Barakmor1] Bump the version of emicklei/go-restful from 2.15.0 to 2.16.0</li>
+<li>[PR #8053][alromeros] [Bug-fix]: Fix mechanism to fetch fs overhead when CDI resource has a different name</li>
+<li>[PR #8035][0xFelix] Add option to wrap local scp client to scp command</li>
+<li>[PR #7981][lyarwood] Conflicts will now be raised when using flavors if the <code>VirtualMachine</code> defines any <code>CPU</code> or <code>Memory</code> resource requests.</li>
+<li>[PR #8068][awels] Set cache mode to match regular disks on hotplugged disks.</li>
+</ul>
 <h2 id="v0550">v0.55.0<a class="headerlink" href="#v0550" title="Permanent link">&para;</a></h2>
 <p>Released on: Thu Jul 14 16:33:25 2022 +0000</p>
 <ul>
