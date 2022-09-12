@@ -28,47 +28,54 @@ VirtualMachineInstance, after an initial delay of 120 seconds. The
 VirtualMachineInstance itself installs and runs a minimal HTTP server on
 port 1500 via cloud-init.
 
-    apiVersion: kubevirt.io/v1alpha3
-    kind: VirtualMachineInstance
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    kubevirt.io/vm: vmi-fedora-vmi
+  name: vmi-fedora
+spec:
+  template:
     metadata:
       labels:
-        special: vmi-fedora
-      name: vmi-fedora
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-        resources:
-          requests:
-            memory: 1024M
-      livenessProbe:
-        initialDelaySeconds: 120
-        periodSeconds: 20
-        httpGet:
-          port: 1500
-        timeoutSeconds: 10
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: containerdisk
-        registryDisk:
-          image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
-      - cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
-            bootcmd:
-              - setenforce 0
-              - dnf install -y nmap-ncat
-              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!'
+        kubevirt.io/domain: vmi-fedora
+        kubevirt.io/vm: vmi-fedora
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
         name: cloudinitdisk
-
+      rng: {}
+    resources:
+      requests:
+        memory: 1024M
+  livenessProve:
+    initialDelaySeconds: 120
+    periodSeconds: 20
+    httpGet:
+      port: 1500
+    timeoutSeconds: 10
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: quay.io/containerdisks/fedora:latest
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        user: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          - ["sudo", "dnf", "install", "-y", "nmap-ncat"]
+          - ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
+    name: cloudinitdisk
+```
 ## Define a TCP Liveness Probe
 
 The following VirtualMachineInstance configures a TCP Liveness Probe via
@@ -77,46 +84,54 @@ VirtualMachineInstance, after an initial delay of 120 seconds. The
 VirtualMachineInstance itself installs and runs a minimal HTTP server on
 port 1500 via cloud-init.
 
-    apiVersion: kubevirt.io/v1alpha3
-    kind: VirtualMachineInstance
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    kubevirt.io/vm: vmi-fedora-vmi
+  name: vmi-fedora
+spec:
+  template:
     metadata:
       labels:
-        special: vmi-fedora
-      name: vmi-fedora
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-        resources:
-          requests:
-            memory: 1024M
-      livenessProbe:
-        initialDelaySeconds: 120
-        periodSeconds: 20
-        tcpSocket:
-          port: 1500
-        timeoutSeconds: 10
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: containerdisk
-        registryDisk:
-          image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
-      - cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
-            bootcmd:
-              - setenforce 0
-              - dnf install -y nmap-ncat
-              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!'
+        kubevirt.io/domain: vmi-fedora
+        kubevirt.io/vm: vmi-fedora
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
         name: cloudinitdisk
+      rng: {}
+    resources:
+      requests:
+        memory: 1024M
+  livenessProbe:
+    initialDelaySeconds: 120
+    periodSeconds: 20
+    tcpSocket:
+      port: 1500
+    timeoutSeconds: 10
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: quay.io/containerdisks/fedora:latest
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        user: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          - ["sudo", "dnf", "install", "-y", "nmap-ncat"]
+          - ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
+    name: cloudinitdisk
+```
 
 ## Define Readiness Probes
 
@@ -124,48 +139,56 @@ Readiness Probes are configured in a similar way like liveness probes.
 Instead of `spec.livenessProbe`, `spec.readinessProbe` needs to be
 filled:
 
-    apiVersion: kubevirt.io/v1alpha3
-    kind: VirtualMachineInstance
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    kubevirt.io/vm: vmi-fedora-vmi
+  name: vmi-fedora
+spec:
+  template:
     metadata:
       labels:
-        special: vmi-fedora
-      name: vmi-fedora
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-        resources:
-          requests:
-            memory: 1024M
-      readinessProbe:
-        httpGet:
-          port: 1500
-        initialDelaySeconds: 120
-        periodSeconds: 20
-        timeoutSeconds: 10
-        failureThreshold: 3
-        successThreshold: 3
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: containerdisk
-        registryDisk:
-          image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
-      - cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
-            bootcmd:
-              - setenforce 0
-              - dnf install -y nmap-ncat
-              - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
+        kubevirt.io/domain: vmi-fedora
+        kubevirt.io/vm: vmi-fedora
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
         name: cloudinitdisk
+      rng: {}
+    resources:
+      requests:
+        memory: 1024M
+  readinessProbe:
+    initialDelaySeconds: 120
+    periodSeconds: 20
+    timeoutSeconds: 10
+    failureThreshold: 3
+    successThreshold: 3
+    httpGet:
+      port: 1500
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: quay.io/containerdisks/fedora:latest
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        user: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          - ["sudo", "dnf", "install", "-y", "nmap-ncat"]
+          - ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
+    name: cloudinitdisk
+```
 
 Note that in the case of Readiness Probes, it is also possible to set a
 `failureThreshold` and a `successThreashold` to only flip between ready
@@ -200,7 +223,6 @@ Operating System is focused on. One can configure the `i6300esb` watchdog
 device:
 
 ```yaml
----
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
@@ -218,26 +240,38 @@ spec:
       - disk:
           bus: virtio
         name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
     machine:
       type: ""
     resources:
       requests:
-        memory: 512M
+        memory: 1024M
   terminationGracePeriodSeconds: 0
   volumes:
   - containerDisk:
-      image: quay.io/kubevirt/alpine-container-disk-demo
+      image: quay.io/containerdisks/fedora:latest
     name: containerdisk
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        user: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          - ["sudo", "dnf", "install", "-y", "busybox"]
+    name: cloudinitdisk
 ```
 
 The example above configures it with the `poweroff` action. It defines what will
 happen if the OS can't respond anymore. Other possible actions are `reset`
-and `shutdown`. The Alpine VM in this example will have the device exposed
+and `shutdown`. The VM in this example will have the device exposed
 as `/dev/watchdog`. This device can then be used by the `watchdog`
 binary. For example, if root executes this command inside the VM:
 
 ```bash
-watchdog -t 2000ms -T 4000ms /dev/watchdog
+sudo busybox watchdog -t 2000ms -T 4000ms /dev/watchdog
 ```
 
 the watchdog will send a heartbeat every two seconds to `/dev/watchdog` and
