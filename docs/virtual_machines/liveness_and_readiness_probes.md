@@ -20,6 +20,13 @@ complement the probes which are more workload centric. Watchdogs require kernel
 support from the guest and additional tooling like the commonly used `watchdog`
 binary.
 
+Exec probes are Liveness or Readiness probes specifically intended for VMs.
+These probes run a command inside the VM and determine the VM ready/live state based
+on its success.
+For running commands inside the VMs, the qemu-guest-agent package is used.
+A command supplied to an exec probe will be wrapped by `virt-probe` in the 
+operator and forwarded to the guest.
+
 ## Define a HTTP Liveness Probe
 
 The following VirtualMachineInstance configures a HTTP Liveness Probe
@@ -243,3 +250,100 @@ watchdog -t 2000ms -T 4000ms /dev/watchdog
 the watchdog will send a heartbeat every two seconds to `/dev/watchdog` and
 after four seconds without a heartbeat the defined action will be executed. In
 this case a hard `poweroff`.
+
+## Defining Guest-Agent Ping Probes
+
+Guest-Agent probes are based on qemu-guest-agent `guest-ping`.  This will ping
+the guest and return an error if the guest is not up and running.  To easily
+define this on VM spec, specify `guestAgentPing: {}` in VM's 
+`spec.template.spec.readinessProbe`.  `virt-controller` will translate this 
+into a corresponding command wrapped by `virt-probe`.
+
+> Note: You can only define one of the type of probe, i.e. guest-agent exec 
+> or ping probes.
+
+
+**Important:** If the qemu-guest-agent is not installed **and** enabled inside
+the VM, the probe will fail.  Many images don't enable the agent by default so
+make sure you either run one that does or enable it. 
+
+Make sure to provide enough delay and failureThreshold for the VM and the agent
+to be online.
+
+In the following example the Fedora image does have qemu-guest-agent available
+by default. Nevertheless, in case qemu-guest-agent is not installed, it will be
+installed and enabled via cloud-init as shown in the example below.  Also,
+cloud-init assigns the proper SELinux context, i.e. virt_qemu_ga_exec_t, to the
+`/tmp/healthy.txt` file.  Otherwise, SELinux will deny the attempts to open the
+`/tmp/healthy.txt` file causing the probe to fail.
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    kubevirt.io/vm: vmi-guest-probe-vmi
+  name: vmi-fedora
+spec:
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: vmi-guest-probe
+        kubevirt.io/vm: vmi-guest-probe
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      rng: {}
+    resources:
+      requests:
+        memory: 1024M
+  readinessProbe:
+    exec:
+      command: ["cat", "/tmp/healthy.txt"]
+    failureThreshold: 10
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+  terminationGracePeriodSeconds: 180
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: quay.io/containerdisks/fedora
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        user: fedora
+        chpasswd: { expire: False }
+        packages:
+          qemu-guest-agent
+        runcmd:
+          - ["touch", "/tmp/healthy.txt"]
+          - ["sudo", "chcon", "-t", "virt_qemu_ga_exec_t", "/tmp/healthy.txt"]
+          - ["sudo", "systemctl", "enable", "--now", "qemu-guest-agent"]
+    name: cloudinitdisk
+```
+
+Note that, in the above example if SELinux is not installed in your container
+disk image, the command `chcon` should be removed from the VM manifest shown
+below. Otherwise, the `chcon`  command will fail.
+
+The `.status.ready` field will switch to `true` indicating that probes are
+returning successfully:
+
+```sh 
+kubectl wait vmis/vmi-guest-probe --for=condition=Ready --timeout=5m
+```
+
+Additionally, the following command can be used inside the VM to watch the
+incoming qemu-ga commands:
+
+```sh 
+journalctl _COMM=qemu-ga --follow 
+```
