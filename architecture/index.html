@@ -294,9 +294,11 @@ communicate with Kubernetes and where the additional types are stored:</p>
 </ul>
 <p>VirtualMachineInstance (VMI) is the custom resource that represents the basic ephemeral building block of an instance.
 In a lot of cases this object won't be created directly by the user but by a high level resource.
-High level resources for VMI can be:
-* VirtualMachine (VM) - StateFul VM that can be stopped and started while keeping the VM data and state.
-* VirtualMachineInstanceReplicaSet (VMIRS) - Similar to pods ReplicaSet, a group of ephemeral VMIs with similar configuration defined in a template.</p>
+High level resources for VMI can be:</p>
+<ul>
+<li>VirtualMachine (VM) - StateFul VM that can be stopped and started while keeping the VM data and state.</li>
+<li>VirtualMachineInstanceReplicaSet (VMIRS) - Similar to pods ReplicaSet, a group of ephemeral VMIs with similar configuration defined in a template.</li>
+</ul>
 <h2 id="native-workloads">Native Workloads<a class="headerlink" href="#native-workloads" title="Permanent link">&para;</a></h2>
 <p>KubeVirt is deployed on top of a Kubernetes cluster.
 This means that you can continue to run your Kubernetes-native workloads next
