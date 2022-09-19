@@ -146,6 +146,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#defining-a-watchdog">Defining a Watchdog</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#defining-guest-agent-ping-probes">Defining Guest-Agent Ping Probes</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../accessing_virtual_machines/">Accessing Virtual Machines</a>
@@ -219,6 +221,12 @@ the Endpoints which back services until the probe recovers.</p>
 complement the probes which are more workload centric. Watchdogs require kernel
 support from the guest and additional tooling like the commonly used <code>watchdog</code>
 binary.</p>
+<p>Exec probes are Liveness or Readiness probes specifically intended for VMs.
+These probes run a command inside the VM and determine the VM ready/live state based
+on its success.
+For running commands inside the VMs, the qemu-guest-agent package is used.
+A command supplied to an exec probe will be wrapped by <code>virt-probe</code> in the 
+operator and forwarded to the guest.</p>
 <h2 id="define-a-http-liveness-probe">Define a HTTP Liveness Probe<a class="headerlink" href="#define-a-http-liveness-probe" title="Permanent link">&para;</a></h2>
 <p>The following VirtualMachineInstance configures a HTTP Liveness Probe
 via <code>spec.livenessProbe.httpGet</code>, which will query port 1500 of the
@@ -424,6 +432,89 @@ binary. For example, if root executes this command inside the VM:</p>
 <p>the watchdog will send a heartbeat every two seconds to <code>/dev/watchdog</code> and
 after four seconds without a heartbeat the defined action will be executed. In
 this case a hard <code>poweroff</code>.</p>
+<h2 id="defining-guest-agent-ping-probes">Defining Guest-Agent Ping Probes<a class="headerlink" href="#defining-guest-agent-ping-probes" title="Permanent link">&para;</a></h2>
+<p>Guest-Agent probes are based on qemu-guest-agent <code>guest-ping</code>.  This will ping
+the guest and return an error if the guest is not up and running.  To easily
+define this on VM spec, specify <code>guestAgentPing: {}</code> in VM's 
+<code>spec.template.spec.readinessProbe</code>.  <code>virt-controller</code> will translate this 
+into a corresponding command wrapped by <code>virt-probe</code>.</p>
+<blockquote>
+<p>Note: You can only define one of the type of probe, i.e. guest-agent exec 
+or ping probes.</p>
+</blockquote>
+<p><strong>Important:</strong> If the qemu-guest-agent is not installed <strong>and</strong> enabled inside
+the VM, the probe will fail.  Many images don't enable the agent by default so
+make sure you either run one that does or enable it. </p>
+<p>Make sure to provide enough delay and failureThreshold for the VM and the agent
+to be online.</p>
+<p>In the following example the Fedora image does have qemu-guest-agent available
+by default. Nevertheless, in case qemu-guest-agent is not installed, it will be
+installed and enabled via cloud-init as shown in the example below.  Also,
+cloud-init assigns the proper SELinux context, i.e. virt_qemu_ga_exec_t, to the
+<code>/tmp/healthy.txt</code> file.  Otherwise, SELinux will deny the attempts to open the
+<code>/tmp/healthy.txt</code> file causing the probe to fail.</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    kubevirt.io/vm: vmi-guest-probe-vmi
+  name: vmi-fedora
+spec:
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: vmi-guest-probe
+        kubevirt.io/vm: vmi-guest-probe
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      rng: {}
+    resources:
+      requests:
+        memory: 1024M
+  readinessProbe:
+    exec:
+      command: [&quot;cat&quot;, &quot;/tmp/healthy.txt&quot;]
+    failureThreshold: 10
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+  terminationGracePeriodSeconds: 180
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: quay.io/containerdisks/fedora
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        user: fedora
+        chpasswd: { expire: False }
+        packages:
+          qemu-guest-agent
+        runcmd:
+          - [&quot;touch&quot;, &quot;/tmp/healthy.txt&quot;]
+          - [&quot;sudo&quot;, &quot;chcon&quot;, &quot;-t&quot;, &quot;virt_qemu_ga_exec_t&quot;, &quot;/tmp/healthy.txt&quot;]
+          - [&quot;sudo&quot;, &quot;systemctl&quot;, &quot;enable&quot;, &quot;--now&quot;, &quot;qemu-guest-agent&quot;]
+    name: cloudinitdisk
+</code></pre>
+<p>Note that, in the above example if SELinux is not installed in your container
+disk image, the command <code>chcon</code> should be removed from the VM manifest shown
+below. Otherwise, the <code>chcon</code>  command will fail.</p>
+<p>The <code>.status.ready</code> field will switch to <code>true</code> indicating that probes are
+returning successfully:</p>
+<pre><code class="language-sh">kubectl wait vmis/vmi-guest-probe --for=condition=Ready --timeout=5m
+</code></pre>
+<p>Additionally, the following command can be used inside the VM to watch the
+incoming qemu-ga commands:</p>
+<pre><code class="language-sh">journalctl _COMM=qemu-ga --follow 
+</code></pre>
               
             </div>
           </div><footer>
