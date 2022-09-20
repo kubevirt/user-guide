@@ -822,10 +822,10 @@ spec:
 sysctl -w net.core.wmem_max = 33554432
 </code></pre>
 <ol>
-<li>To run multiple passt VMs with no explicit ports, the node's <code>fs.file_max</code> should be increased
+<li>To run multiple passt VMs with no explicit ports, the node's <code>fs.file-max</code> should be increased
    (for a VM forwards all IPv4 and IPv6 ports, for TCP and UDP, passt needs to create ~2^18 sockets):</li>
 </ol>
-<pre><code>sysctl -w fs.file_max = 9223372036854775807
+<pre><code>sysctl -w fs.file-max = 9223372036854775807
 </code></pre>
 <ol>
 <li>The <code>vmi.Spec.Domain.Resources.Requests.Memory</code> of a passt VM with no explicit ports should be at least 2048M.</li>
