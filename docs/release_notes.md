@@ -1,5 +1,29 @@
 # KubeVirt release notes
 
+## v0.57.0
+
+Released on: Mon Sep 12 14:00:44 2022 +0000
+
+- [PR #8129][mlhnono68] Fixes virtctl to support connection to clusters proxied by RANCHER or having special paths
+- [PR #8337][0xFelix] virtctl's native SSH client is now useable in the Windows console without workarounds
+- [PR #8257][awels] VirtualMachineExport now supports VM export source type.
+- [PR #8367][vladikr] fix the guest memory conversion by setting it to resources.requests.memory when guest memory is not explicitly provided
+- [PR #7990][ormergi] Deprecate SR-IOV live migration feature gate.
+- [PR #8069][lyarwood] The VirtualMachineInstancePreset resource has been deprecated ahead of removal in a future release. Users should instead use the VirtualMachineInstancetype and VirtualMachinePreference resources to encapsulate any shared resource or preferences characteristics shared by their VirtualMachines.
+- [PR #8326][0xFelix] virtctl: Do not log wrapped ssh command by default
+- [PR #8325][rhrazdil] Enable route_localnet sysctl option for masquerade binding at virt-handler
+- [PR #8159][acardace] Add support for USB disks
+- [PR #8006][lyarwood] `AutoattachInputDevice` has been added to `Devices` allowing an `Input` device to be automatically attached to a `VirtualMachine` on start up.  `PreferredAutoattachInputDevice` has also been added to `DevicePreferences` allowing users to control this behaviour with a set of preferences.
+- [PR #8134][arnongilboa] Support DataVolume garbage collection
+- [PR #8157][StefanKro] TrilioVault for Kubernetes now supports KubeVirt for backup and recovery.
+- [PR #8273][alaypatel07] add server-side validations for spec.topologySpreadConstraints during object creation
+- [PR #8049][alicefr] Set RunAsNonRoot as default for the guestfs pod
+- [PR #8107][awels] Allow VirtualMachineSnapshot as a VirtualMachineExport source
+- [PR #7846][janeczku] Added support for configuring topology spread constraints for virtual machines.
+- [PR #8215][alaypatel07] support validation for spec.affinity fields during vmi creation
+- [PR #8071][oshoval] Relax networkInterfaceMultiqueue semantics: multi queue will configure only what it can (virtio interfaces).
+- [PR #7549][akrejcir] Added new API subresources to expand instancetype and preference.
+
 ## v0.56.0
 
 Released on: Thu Aug 18 20:10:29 2022 +0000
