@@ -118,8 +118,8 @@ You can manage the dump in one of the following ways:
     $ kubectl cp default/consumer-pod:/dev/pvc/ memory-dump
     ```
 - Create a pod with troubleshooting tools that will mount the PVC and inspect it within the pod.
-- Use Export mechanism by:
-    - [Exporting the PVC](https://github.com/kubevirt/user-guide/blob/main/docs/operations/export_api.md)
-    - Include the memory dump in the VMSnapshot and export the whole VMSnapshot (will include both the memory dump and the disks) (not supported yet) 
+- Use [Export mechanism](https://github.com/kubevirt/user-guide/blob/main/docs/operations/export_api.md) by:
+    - Exporting the PVC
+    - Include the memory dump in the VMSnapshot and export the whole VMSnapshot (will include both the memory dump and the disks)
 
 The output of the memory dump can be inspected with memory analysis tools for example [Volatility3](https://github.com/volatilityfoundation/volatility3)
