@@ -218,10 +218,10 @@ The export server certificate is valid for 7 days after which it is rotated by d
 The external link certificates are associated with the Ingress/Route that points to the service created by the KubeVirt operator. The CA that signed the Ingress/Route will part of the certificates. 
 
 ### virtctl integration: vmexport
-The virtctl `vmexport` command allows users to operate with the export API in an easy-to-use way.
+The virtctl `vmexport` command allows users to interact with the export API in an easy-to-use way.
 
 `vmexport` uses two mandatory arguments:
-1. The vmexport **function** (create|delete|download).
+1. The vmexport **functions** (create|delete|download).
 2. The VirtualMachineExport **name**.
 
 These three **functions** are:
@@ -269,7 +269,7 @@ Usage:
   virtctl vmexport [flags]
 
 Examples:
-# Create a VirtualMachineExport to export a volume from a virtual machine:
+  # Create a VirtualMachineExport to export a volume from a virtual machine:
 	virtctl vmexport create vm1-export --vm=vm1
 
 	# Create a VirtualMachineExport to export a volume from a virtual machine snapshot
