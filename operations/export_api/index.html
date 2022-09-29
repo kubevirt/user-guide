@@ -109,7 +109,7 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#export-status-links">Export status links</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#virtctl-integration">virtctl integration</a>
+    <li class="toctree-l2"><a class="reference internal" href="#virtctl-integration-vmexport">virtctl integration: vmexport</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#use-cases">Use cases</a>
     </li>
@@ -214,7 +214,7 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="export-api">Export API<a class="headerlink" href="#export-api" title="Permanent link">&para;</a></h1>
-<p>It can be desireable to export a Virtual Machine and its related disks out of a cluster so you can import that Virtual Machine into another system or cluster. The Virtual Machine disks are the most prominent things you will want to export. The export API makes it possible to declaratively export Virtual Machine disks. It is also possible to export individual PVCs and their contents, for instance when you have created a memory dump from a VM or are using virtio-fs to have a Virtual Machine populate a PVC.</p>
+<p>It can be desirable to export a Virtual Machine and its related disks out of a cluster so you can import that Virtual Machine into another system or cluster. The Virtual Machine disks are the most prominent things you will want to export. The export API makes it possible to declaratively export Virtual Machine disks. It is also possible to export individual PVCs and their contents, for instance when you have created a memory dump from a VM or are using virtio-fs to have a Virtual Machine populate a PVC.</p>
 <p>In order not to overload the kubernetes API server the data is transferred through a dedicated export proxy server. The proxy server can then be exposed to the outside world through a service associated with an Ingress/Route or NodePort.</p>
 <h3 id="export-feature-gate">Export Feature Gate<a class="headerlink" href="#export-feature-gate" title="Permanent link">&para;</a></h3>
 <p>VMExport support must be enabled in the feature gates to be available. The
@@ -399,8 +399,78 @@ status:
 <p>The export server certificate is valid for 7 days after which it is rotated by deleting the export server pod and associated secret and generating a new one. If for whatever reason the export server pod dies, the associated secret is also automatically deleted and a new pod and secret are generated. The VirtualMachineExport object status will be automatically updated to reflect the new certificate.</p>
 <h4 id="external-link-certificates">External link certificates<a class="headerlink" href="#external-link-certificates" title="Permanent link">&para;</a></h4>
 <p>The external link certificates are associated with the Ingress/Route that points to the service created by the KubeVirt operator. The CA that signed the Ingress/Route will part of the certificates. </p>
-<h3 id="virtctl-integration">virtctl integration<a class="headerlink" href="#virtctl-integration" title="Permanent link">&para;</a></h3>
-<p><strong>TODO</strong></p>
+<h3 id="virtctl-integration-vmexport">virtctl integration: vmexport<a class="headerlink" href="#virtctl-integration-vmexport" title="Permanent link">&para;</a></h3>
+<p>The virtctl <code>vmexport</code> command allows users to interact with the export API in an easy-to-use way.</p>
+<p><code>vmexport</code> uses two mandatory arguments:
+1. The vmexport <strong>functions</strong> (create|delete|download).
+2. The VirtualMachineExport <strong>name</strong>.</p>
+<p>These three <strong>functions</strong> are:</p>
+<h4 id="create">Create<a class="headerlink" href="#create" title="Permanent link">&para;</a></h4>
+<pre><code class="language-sh"># Creates a VMExport object according to the specified flag.
+
+# The flag should either be:
+
+# --pvc, to specify the name of the pvc to export.
+# --snapshot, to specify the name of the VM snapshot to export.
+# --vm, to specify the name of the Virtual Machine to export.
+
+$ virtctl vmexport create name [flags]
+</code></pre>
+<h4 id="delete">Delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h4>
+<pre><code class="language-sh"># Deletes the specified VMExport object.
+
+$ virtctl vmexport delete name
+</code></pre>
+<h4 id="download">Download<a class="headerlink" href="#download" title="Permanent link">&para;</a></h4>
+<pre><code class="language-sh"># Downloads a volume from the defined VMExport object.
+
+# The main available flags are:
+
+# --output, mandatory flag to specify the output file.
+# --volume, optional flag to specify the name of the downloadable volume.
+# --vm|--snapshot|--pvc, if specified, are used to create the VMExport object assuming it doesn't exist. The name of the object to export has to be specified.
+
+$ virtctl vmexport download name [flags]
+</code></pre>
+<p>For more information about usage and examples:</p>
+<pre><code>$ virtctl vmexport --help
+
+Export a VM volume.
+
+Usage:
+  virtctl vmexport [flags]
+
+Examples:
+  # Create a VirtualMachineExport to export a volume from a virtual machine:
+    virtctl vmexport create vm1-export --vm=vm1
+
+    # Create a VirtualMachineExport to export a volume from a virtual machine snapshot
+    virtctl vmexport create snap1-export --snapshot=snap1
+
+    # Create a VirtualMachineExport to export a volume from a PVC
+    virtctl vmexport create pvc1-export --pvc=pvc1
+
+    # Delete a VirtualMachineExport resource
+    virtctl vmexport delete snap1-export
+
+    # Download a volume from an already existing VirtualMachineExport (--volume is optional when only one volume is available)
+    virtctl vmexport download vm1-export --volume=volume1 --output=disk.img.gz
+
+    # Create a VirtualMachineExport and download the requested volume from it
+    virtctl vmexport download vm1-export --vm=vm1 --volume=volume1 --output=disk.img.gz
+
+Flags:
+  -h, --help              help for vmexport
+      --insecure          When used with the 'download' option, specifies that the http request should be insecure.
+      --keep-vme          When used with the 'download' option, specifies that the vmexport object should not be deleted after the download finishes.
+      --output string     Specifies the output path of the volume to be downloaded.
+      --pvc string        Sets PersistentVolumeClaim as vmexport kind and specifies the PVC name.
+      --snapshot string   Sets VirtualMachineSnapshot as vmexport kind and specifies the snapshot name.
+      --vm string         Sets VirtualMachine as vmexport kind and specifies the vm name.
+      --volume string     Specifies the volume to be downloaded.
+
+Use &quot;virtctl options&quot; for a list of global command-line options (applies to all commands).
+</code></pre>
 <h3 id="use-cases">Use cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h3>
 <h4 id="clone-vm-from-one-cluster-to-another-cluster">Clone VM from one cluster to another cluster<a class="headerlink" href="#clone-vm-from-one-cluster-to-another-cluster" title="Permanent link">&para;</a></h4>
 <p>If you want to transfer KubeVirt disk images from a source cluster to another target cluster, you can use the VMExport in the source to expose the disks and Containerized Data Importer (CDI) in the target cluster to import the image into the target cluster. Let's assume we have an Ingress or Route in the source cluster that exposes the export proxy with the following example domain <code>virt-exportproxy-example.example.com</code> and we have a Virtual Machine in the source cluster with one disk, which looks like this:</p>
@@ -586,6 +656,78 @@ spec:
         name: datavolumedisk1
 </code></pre>
 <p>After the import completes you should be able to start the VM in the target cluster.</p>
+<h4 id="download-a-vm-volume-locally-using-virtctl-vmexport">Download a VM volume locally using virtctl vmexport<a class="headerlink" href="#download-a-vm-volume-locally-using-virtctl-vmexport" title="Permanent link">&para;</a></h4>
+<p>Several steps from the previous section can be simplified considerably by using the <code>vmexport</code> command.</p>
+<p>Again, let's assume we have an Ingress or Route in our cluster that exposes the export proxy, and that we have a Virtual Machine in the cluster with one disk like this:</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-example-datavolume
+  name: example-vm
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: example-dv
+    spec:
+      storage:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: local
+      source:
+        registry:
+          url: docker://quay.io/containerdisks/centos-stream:9
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-example-datavolume
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: datavolumedisk1
+        resources:
+          requests:
+            memory: 2Gi
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - dataVolume:
+          name: example-dv
+        name: datavolumedisk1
+</code></pre>
+<p>Once we meet these requirements, the process of downloading the volume locally can be accomplished by different means:</p>
+<h5 id="performing-each-step-separately">Performing each step separately<a class="headerlink" href="#performing-each-step-separately" title="Permanent link">&para;</a></h5>
+<p>We can download the volume by performing every single step in a different command. We start by creating the export object:</p>
+<pre><code class="language-bash"># We use an arbitrary name for the VMExport object, but specify our VM name in the flag.
+
+$ virtctl vmexport create vmexportname --vm=example-vm
+</code></pre>
+<p>Then, we download the volume in the specified output:</p>
+<pre><code class="language-bash"># Since our virtual machine only has one volume, there's no need to specify the volume name with the --volume flag.
+
+# After the download, the VMExport object is deleted by default, so we are using the optional --keep-vme flag to delete it manually.
+
+$ virtctl vmexport download vmexportname --output=/tmp/disk.img --keep-vme
+</code></pre>
+<p>Lastly, we delete the VMExport object:</p>
+<pre><code class="language-bash">$ virtctl vmexport delete vmexportname
+</code></pre>
+<h5 id="performing-one-single-step">Performing one single step<a class="headerlink" href="#performing-one-single-step" title="Permanent link">&para;</a></h5>
+<p>All the previous steps can be simplified in one, single command:</p>
+<pre><code class="language-bash"># Since we are using a create flag (--vm) with download, the command creates the object assuming the VMExport doesn't exist.
+
+# Also, since we are not using --keep-vme, the VMExport object is deleted after the download.
+
+$ virtctl vmexport download vmexportname --vm=example-vm --output=/tmp/disk.img
+</code></pre>
+<p>After the download finishes, we can find our disk in <code>/tmp/disk.img</code>.</p>
               
             </div>
           </div><footer>
