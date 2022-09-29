@@ -1,5 +1,5 @@
 # Export API
-It can be desireable to export a Virtual Machine and its related disks out of a cluster so you can import that Virtual Machine into another system or cluster. The Virtual Machine disks are the most prominent things you will want to export. The export API makes it possible to declaratively export Virtual Machine disks. It is also possible to export individual PVCs and their contents, for instance when you have created a memory dump from a VM or are using virtio-fs to have a Virtual Machine populate a PVC.
+It can be desirable to export a Virtual Machine and its related disks out of a cluster so you can import that Virtual Machine into another system or cluster. The Virtual Machine disks are the most prominent things you will want to export. The export API makes it possible to declaratively export Virtual Machine disks. It is also possible to export individual PVCs and their contents, for instance when you have created a memory dump from a VM or are using virtio-fs to have a Virtual Machine populate a PVC.
 
 In order not to overload the kubernetes API server the data is transferred through a dedicated export proxy server. The proxy server can then be exposed to the outside world through a service associated with an Ingress/Route or NodePort.
 
@@ -217,8 +217,89 @@ The export server certificate is valid for 7 days after which it is rotated by d
 #### External link certificates
 The external link certificates are associated with the Ingress/Route that points to the service created by the KubeVirt operator. The CA that signed the Ingress/Route will part of the certificates. 
 
-### virtctl integration
-__TODO__
+### virtctl integration: vmexport
+The virtctl `vmexport` command allows users to interact with the export API in an easy-to-use way.
+
+`vmexport` uses two mandatory arguments:
+1. The vmexport **functions** (create|delete|download).
+2. The VirtualMachineExport **name**.
+
+These three **functions** are:
+
+#### Create
+```sh
+# Creates a VMExport object according to the specified flag.
+
+# The flag should either be:
+
+# --pvc, to specify the name of the pvc to export.
+# --snapshot, to specify the name of the VM snapshot to export.
+# --vm, to specify the name of the Virtual Machine to export.
+
+$ virtctl vmexport create name [flags]
+```
+
+#### Delete
+```sh
+# Deletes the specified VMExport object.
+
+$ virtctl vmexport delete name
+```
+#### Download
+```sh
+# Downloads a volume from the defined VMExport object.
+
+# The main available flags are:
+
+# --output, mandatory flag to specify the output file.
+# --volume, optional flag to specify the name of the downloadable volume.
+# --vm|--snapshot|--pvc, if specified, are used to create the VMExport object assuming it doesn't exist. The name of the object to export has to be specified.
+
+$ virtctl vmexport download name [flags]
+```
+
+For more information about usage and examples:
+
+```
+$ virtctl vmexport --help
+
+Export a VM volume.
+
+Usage:
+  virtctl vmexport [flags]
+
+Examples:
+  # Create a VirtualMachineExport to export a volume from a virtual machine:
+	virtctl vmexport create vm1-export --vm=vm1
+
+	# Create a VirtualMachineExport to export a volume from a virtual machine snapshot
+	virtctl vmexport create snap1-export --snapshot=snap1
+
+	# Create a VirtualMachineExport to export a volume from a PVC
+	virtctl vmexport create pvc1-export --pvc=pvc1
+
+	# Delete a VirtualMachineExport resource
+	virtctl vmexport delete snap1-export
+
+	# Download a volume from an already existing VirtualMachineExport (--volume is optional when only one volume is available)
+	virtctl vmexport download vm1-export --volume=volume1 --output=disk.img.gz
+
+	# Create a VirtualMachineExport and download the requested volume from it
+	virtctl vmexport download vm1-export --vm=vm1 --volume=volume1 --output=disk.img.gz
+
+Flags:
+  -h, --help              help for vmexport
+      --insecure          When used with the 'download' option, specifies that the http request should be insecure.
+      --keep-vme          When used with the 'download' option, specifies that the vmexport object should not be deleted after the download finishes.
+      --output string     Specifies the output path of the volume to be downloaded.
+      --pvc string        Sets PersistentVolumeClaim as vmexport kind and specifies the PVC name.
+      --snapshot string   Sets VirtualMachineSnapshot as vmexport kind and specifies the snapshot name.
+      --vm string         Sets VirtualMachine as vmexport kind and specifies the vm name.
+      --volume string     Specifies the volume to be downloaded.
+
+Use "virtctl options" for a list of global command-line options (applies to all commands).
+```
+
 
 ### Use cases
 
@@ -425,3 +506,96 @@ spec:
 ```
 
 After the import completes you should be able to start the VM in the target cluster.
+
+#### Download a VM volume locally using virtctl vmexport
+
+Several steps from the previous section can be simplified considerably by using the `vmexport` command.
+
+Again, let's assume we have an Ingress or Route in our cluster that exposes the export proxy, and that we have a Virtual Machine in the cluster with one disk like this:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-example-datavolume
+  name: example-vm
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: example-dv
+    spec:
+      storage:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 20Gi
+        storageClassName: local
+      source:
+        registry:
+          url: docker://quay.io/containerdisks/centos-stream:9
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/vm: vm-example-datavolume
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: datavolumedisk1
+        resources:
+          requests:
+            memory: 2Gi
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - dataVolume:
+          name: example-dv
+        name: datavolumedisk1
+```
+
+Once we meet these requirements, the process of downloading the volume locally can be accomplished by different means:
+
+##### Performing each step separately
+
+We can download the volume by performing every single step in a different command. We start by creating the export object:
+
+```bash
+# We use an arbitrary name for the VMExport object, but specify our VM name in the flag.
+
+$ virtctl vmexport create vmexportname --vm=example-vm
+```
+
+Then, we download the volume in the specified output:
+
+```bash
+# Since our virtual machine only has one volume, there's no need to specify the volume name with the --volume flag.
+
+# After the download, the VMExport object is deleted by default, so we are using the optional --keep-vme flag to delete it manually.
+
+$ virtctl vmexport download vmexportname --output=/tmp/disk.img --keep-vme
+```
+
+Lastly, we delete the VMExport object:
+
+```bash
+$ virtctl vmexport delete vmexportname
+```
+
+##### Performing one single step
+
+All the previous steps can be simplified in one, single command:
+
+```bash
+# Since we are using a create flag (--vm) with download, the command creates the object assuming the VMExport doesn't exist.
+
+# Also, since we are not using --keep-vme, the VMExport object is deleted after the download.
+
+$ virtctl vmexport download vmexportname --vm=example-vm --output=/tmp/disk.img
+```
+
+After the download finishes, we can find our disk in `/tmp/disk.img`.
