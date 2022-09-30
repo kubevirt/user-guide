@@ -3,6 +3,9 @@
 **FEATURE STATE:** 
 
 * `v1alpha1` (Experimental) as of the [`v0.56.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.56.0) release
+* `v1alpha2` (Experimental) as of the [`v0.58.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.58.0) release
+  * This version now captures complete `VirtualMachine{Instancetype,ClusterInstnacetype,Preference,ClusterPreference}` objects within the created `ControllerRevisions`
+  * This version is backwardly compatible with `v1alpha1`, no modifications are required to existing instancetypes, preferences or controllerrevisions.
 
 ## Introduction
 
@@ -14,7 +17,7 @@ Instancetypes and preferences provide a way to define a set of resource, perform
 
 ```yaml
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha1
+apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachineInstancetype
 metadata:
   name: example-instancetype
@@ -40,7 +43,7 @@ Anything provided within an instancetype cannot be overridden within the [`Virtu
 
 ```yaml
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha1
+apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachinePreference
 metadata:
   name: example-preference
@@ -59,7 +62,7 @@ For example as shown below, if a user has provided a [`VirtualMachine`](https://
 ```yaml
 $ cat << EOF | kubectl apply -f - 
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha1
+apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachinePreference
 metadata:
   name: example-preference-disk-virtio
@@ -170,7 +173,7 @@ The previous instancetype and preference CRDs are matched to a given [`VirtualMa
 
 Versioning of these resources is required to ensure the eventual `VirtualMachineInstance` created when starting a `VirtualMachine` does not change between restarts if any referenced instancetype or set of preferences are updated during the lifetime of the `VirtualMachine`.
 
-This is currently achieved by using [ControllerRevision](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) to retain a copy of the [`VirtualMachineInstancetypeSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachineinstancetypespec) or [`VirtualMachinePreferenceSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachinepreferencespec) at the time the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) is first started. A reference to these [ControllerRevisions](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) are then retained in the VirtualMachineInstancetypeMatcher and VirtualMachinePreferenceMatcher within the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) for future use.
+This is currently achieved by using [ControllerRevision](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) to retain a copy of the [`VirtualMachineInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype) or [`VirtualMachinePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference) at the time the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) is first started. A reference to these [ControllerRevisions](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) are then retained in the VirtualMachineInstancetypeMatcher and VirtualMachinePreferenceMatcher within the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) for future use.
 
 
 ```yaml
@@ -191,20 +194,36 @@ $ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
 {
   "kind": "VirtualMachineInstancetype",
   "name": "csmall",
-  "revisionName": "vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1"
+  "revisionName": "vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1"
 }
 
-$ kubectl get controllerrevision/vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1 -o json | jq .
+$ kubectl get controllerrevision/vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1 -o json | jq .
 {
   "apiVersion": "apps/v1",
   "data": {
-    "apiVersion": "",
-    "spec": "eyJjcHUiOnsiZ3Vlc3QiOjF9LCJtZW1vcnkiOnsiZ3Vlc3QiOiIxMjhNaSJ9fQ=="
+    "apiVersion": "instancetype.kubevirt.io/v1alpha2",
+    "kind": "VirtualMachineInstancetype",
+    "metadata": {
+      "creationTimestamp": "2022-09-30T12:20:19Z",
+      "generation": 1,
+      "name": "csmall",
+      "namespace": "default",
+      "resourceVersion": "10303",
+      "uid": "72c3a35b-6e18-487d-bebf-f73c7d4f4a40"
+    },
+    "spec": {
+      "cpu": {
+        "guest": 1
+      },
+      "memory": {
+        "guest": "128Mi"
+      }
+    }
   },
   "kind": "ControllerRevision",
   "metadata": {
-    "creationTimestamp": "2022-08-02T11:56:29Z",
-    "name": "vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1",
+    "creationTimestamp": "2022-09-30T12:20:19Z",
+    "name": "vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1",
     "namespace": "default",
     "ownerReferences": [
       {
@@ -213,21 +232,21 @@ $ kubectl get controllerrevision/vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff
         "controller": true,
         "kind": "VirtualMachine",
         "name": "vm-cirros-csmall",
-        "uid": "7ad77f47-ee51-4024-8d5b-4141aec7b04c"
+        "uid": "5216527a-1d31-4637-ad3a-b640cb9949a2"
       }
     ],
-    "resourceVersion": "7819",
-    "uid": "df3767bc-9413-4881-a961-2254f985dfd2"
+    "resourceVersion": "10307",
+    "uid": "a7bc784b-4cea-45d7-8432-15418e1dd7d3"
   },
   "revision": 0
 }
 
+
 $ kubectl delete vm/vm-cirros-csmall
 virtualmachine.kubevirt.io "vm-cirros-csmall" deleted
 
-$ kubectl get controllerrevision/vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1 
-Error from server (NotFound): controllerrevisions.apps "vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1" not found
-
+$ kubectl get controllerrevision/controllerrevision/vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1
+Error from server (NotFound): controllerrevisions.apps "vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1" not found
 
 ```
 
@@ -238,7 +257,7 @@ Various examples are available within the [`kubevirt`](https://github.com/kubevi
 ```yaml
 cat << EOF | kubectl apply -f - 
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha1
+apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachineInstancetype
 metadata:
   name: cmedium
@@ -248,7 +267,7 @@ spec:
   memory:
     guest: 1Gi
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha1
+apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachinePreference
 metadata:
   name: fedora
