@@ -213,13 +213,16 @@
 <p><strong>FEATURE STATE:</strong> </p>
 <ul>
 <li><code>v1alpha1</code> (Experimental) as of the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v0.56.0"><code>v0.56.0</code></a> release</li>
+<li><code>v1alpha2</code> (Experimental) as of the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v0.58.0"><code>v0.58.0</code></a> release</li>
+<li>This version now captures complete <code>VirtualMachine{Instancetype,ClusterInstnacetype,Preference,ClusterPreference}</code> objects within the created <code>ControllerRevisions</code></li>
+<li>This version is backwardly compatible with <code>v1alpha1</code>, no modifications are required to existing instancetypes, preferences or controllerrevisions.</li>
 </ul>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
 <p>KubeVirt's <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> API contains many advanced options for tuning the performance of a VM that goes beyond what typical users need to be aware of. Users have previously been unable to simply define the storage/network they want assigned to their VM and then declare in broad terms what quality of resources and kind of performance characteristics they need for their VM.</p>
 <p>Instancetypes and preferences provide a way to define a set of resource, performance and other runtime characteristics, allowing users to reuse these definitions across multiple <a href="https://kubevirt.io/api-reference/master/definitions.html#_v1_virtualmachine"><code>VirtualMachines</code></a>.</p>
 <h2 id="virtualmachineinstancetype">VirtualMachineInstancetype<a class="headerlink" href="#virtualmachineinstancetype" title="Permanent link">&para;</a></h2>
 <pre><code class="language-yaml">---
-apiVersion: instancetype.kubevirt.io/v1alpha1
+apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachineInstancetype
 metadata:
   name: example-instancetype
@@ -241,7 +244,7 @@ spec:
 <p>Anything provided within an instancetype cannot be overridden within the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a>. For example as <code>CPU</code> and <code>Memory</code> are both required attributes of an instancetype if a user makes any requests for <code>CPU</code> or <code>Memory</code> resources within the underlying <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> the instancetype will conflict and the request will be rejected during creation.</p>
 <h2 id="virtualmachinepreference">VirtualMachinePreference<a class="headerlink" href="#virtualmachinepreference" title="Permanent link">&para;</a></h2>
 <pre><code class="language-yaml">---
-apiVersion: instancetype.kubevirt.io/v1alpha1
+apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachinePreference
 metadata:
   name: example-preference
@@ -255,7 +258,7 @@ spec:
 <p>For example as shown below, if a user has provided a <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> with a disk bus already defined within a <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget">DiskTarget</a> <em>and</em> has also selected a set of preferences with <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_devicepreferences">DevicePreference</a> and <code>preferredDiskBus</code> defined the users original choice within the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> and <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget">DiskTarget</a> are used:</p>
 <pre><code class="language-yaml">$ cat &lt;&lt; EOF | kubectl apply -f - 
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha1
+apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachinePreference
 metadata:
   name: example-preference-disk-virtio
@@ -360,7 +363,7 @@ spec:
 </ul>
 <h2 id="versioning">Versioning<a class="headerlink" href="#versioning" title="Permanent link">&para;</a></h2>
 <p>Versioning of these resources is required to ensure the eventual <code>VirtualMachineInstance</code> created when starting a <code>VirtualMachine</code> does not change between restarts if any referenced instancetype or set of preferences are updated during the lifetime of the <code>VirtualMachine</code>.</p>
-<p>This is currently achieved by using <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevision</a> to retain a copy of the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachineinstancetypespec"><code>VirtualMachineInstancetypeSpec</code></a> or <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachinepreferencespec"><code>VirtualMachinePreferenceSpec</code></a> at the time the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> is first started. A reference to these <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevisions</a> are then retained in the VirtualMachineInstancetypeMatcher and VirtualMachinePreferenceMatcher within the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> for future use.</p>
+<p>This is currently achieved by using <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevision</a> to retain a copy of the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype"><code>VirtualMachineInstancetype</code></a> or <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference"><code>VirtualMachinePreference</code></a> at the time the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> is first started. A reference to these <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevisions</a> are then retained in the VirtualMachineInstancetypeMatcher and VirtualMachinePreferenceMatcher within the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> for future use.</p>
 <pre><code class="language-yaml">$ kubectl.sh apply -f examples/csmall.yaml -f examples/vm-cirros-csmall.yaml
 virtualmachineinstancetype.instancetype.kubevirt.io/csmall created
 virtualmachine.kubevirt.io/vm-cirros-csmall created
@@ -378,20 +381,36 @@ $ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
 {
   &quot;kind&quot;: &quot;VirtualMachineInstancetype&quot;,
   &quot;name&quot;: &quot;csmall&quot;,
-  &quot;revisionName&quot;: &quot;vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1&quot;
+  &quot;revisionName&quot;: &quot;vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1&quot;
 }
 
-$ kubectl get controllerrevision/vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1 -o json | jq .
+$ kubectl get controllerrevision/vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1 -o json | jq .
 {
   &quot;apiVersion&quot;: &quot;apps/v1&quot;,
   &quot;data&quot;: {
-    &quot;apiVersion&quot;: &quot;&quot;,
-    &quot;spec&quot;: &quot;eyJjcHUiOnsiZ3Vlc3QiOjF9LCJtZW1vcnkiOnsiZ3Vlc3QiOiIxMjhNaSJ9fQ==&quot;
+    &quot;apiVersion&quot;: &quot;instancetype.kubevirt.io/v1alpha2&quot;,
+    &quot;kind&quot;: &quot;VirtualMachineInstancetype&quot;,
+    &quot;metadata&quot;: {
+      &quot;creationTimestamp&quot;: &quot;2022-09-30T12:20:19Z&quot;,
+      &quot;generation&quot;: 1,
+      &quot;name&quot;: &quot;csmall&quot;,
+      &quot;namespace&quot;: &quot;default&quot;,
+      &quot;resourceVersion&quot;: &quot;10303&quot;,
+      &quot;uid&quot;: &quot;72c3a35b-6e18-487d-bebf-f73c7d4f4a40&quot;
+    },
+    &quot;spec&quot;: {
+      &quot;cpu&quot;: {
+        &quot;guest&quot;: 1
+      },
+      &quot;memory&quot;: {
+        &quot;guest&quot;: &quot;128Mi&quot;
+      }
+    }
   },
   &quot;kind&quot;: &quot;ControllerRevision&quot;,
   &quot;metadata&quot;: {
-    &quot;creationTimestamp&quot;: &quot;2022-08-02T11:56:29Z&quot;,
-    &quot;name&quot;: &quot;vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1&quot;,
+    &quot;creationTimestamp&quot;: &quot;2022-09-30T12:20:19Z&quot;,
+    &quot;name&quot;: &quot;vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1&quot;,
     &quot;namespace&quot;: &quot;default&quot;,
     &quot;ownerReferences&quot;: [
       {
@@ -400,28 +419,28 @@ $ kubectl get controllerrevision/vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff
         &quot;controller&quot;: true,
         &quot;kind&quot;: &quot;VirtualMachine&quot;,
         &quot;name&quot;: &quot;vm-cirros-csmall&quot;,
-        &quot;uid&quot;: &quot;7ad77f47-ee51-4024-8d5b-4141aec7b04c&quot;
+        &quot;uid&quot;: &quot;5216527a-1d31-4637-ad3a-b640cb9949a2&quot;
       }
     ],
-    &quot;resourceVersion&quot;: &quot;7819&quot;,
-    &quot;uid&quot;: &quot;df3767bc-9413-4881-a961-2254f985dfd2&quot;
+    &quot;resourceVersion&quot;: &quot;10307&quot;,
+    &quot;uid&quot;: &quot;a7bc784b-4cea-45d7-8432-15418e1dd7d3&quot;
   },
   &quot;revision&quot;: 0
 }
 
+
 $ kubectl delete vm/vm-cirros-csmall
 virtualmachine.kubevirt.io &quot;vm-cirros-csmall&quot; deleted
 
-$ kubectl get controllerrevision/vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1 
-Error from server (NotFound): controllerrevisions.apps &quot;vm-cirros-csmall-csmall-6709b990-f717-44fe-a8ff-cb441d20b904-1&quot; not found
-
+$ kubectl get controllerrevision/controllerrevision/vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1
+Error from server (NotFound): controllerrevisions.apps &quot;vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1&quot; not found
 
 </code></pre>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <p>Various examples are available within the <a href="https://github.com/kubevirt/kubevirt"><code>kubevirt</code></a> repo under <a href="https://github.com/kubevirt/kubevirt/tree/main/examples"><code>/examples</code></a>. The following uses an example <code>VirtualMachine</code> provided by the <a href="https://quay.io/repository/containerdisks/fedora"><code>containerdisk/fedora</code> repo</a> and replaces much of the <code>DomainSpec</code> with the equivalent instancetype and preferences:</p>
 <pre><code class="language-yaml">cat &lt;&lt; EOF | kubectl apply -f - 
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha1
+apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachineInstancetype
 metadata:
   name: cmedium
@@ -431,7 +450,7 @@ spec:
   memory:
     guest: 1Gi
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha1
+apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachinePreference
 metadata:
   name: fedora
