@@ -173,22 +173,13 @@ The previous instancetype and preference CRDs are matched to a given [`VirtualMa
 
 Versioning of these resources is required to ensure the eventual `VirtualMachineInstance` created when starting a `VirtualMachine` does not change between restarts if any referenced instancetype or set of preferences are updated during the lifetime of the `VirtualMachine`.
 
-This is currently achieved by using [ControllerRevision](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) to retain a copy of the [`VirtualMachineInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype) or [`VirtualMachinePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference) at the time the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) is first started. A reference to these [ControllerRevisions](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) are then retained in the VirtualMachineInstancetypeMatcher and VirtualMachinePreferenceMatcher within the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) for future use.
+This is currently achieved by using [ControllerRevision](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) to retain a copy of the [`VirtualMachineInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype) or [`VirtualMachinePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference) at the time the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) is created. A reference to these [ControllerRevisions](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) are then retained in the VirtualMachineInstancetypeMatcher and VirtualMachinePreferenceMatcher within the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) for future use.
 
 
 ```yaml
 $ kubectl.sh apply -f examples/csmall.yaml -f examples/vm-cirros-csmall.yaml
 virtualmachineinstancetype.instancetype.kubevirt.io/csmall created
 virtualmachine.kubevirt.io/vm-cirros-csmall created
-
-$ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
-{
-  "kind": "VirtualMachineInstancetype",
-  "name": "csmall",
-}
-
-$ virtctl start vm-cirros-csmall
-VM vm-cirros-csmall was scheduled to start
 
 $ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
 {
