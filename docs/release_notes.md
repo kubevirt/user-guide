@@ -1,5 +1,32 @@
 # KubeVirt release notes
 
+## v0.58.0
+
+Released on: Thu Oct 13 00:24:51 2022 +0000
+
+- [PR #8578][rhrazdil] When using Passt binding, virl-launcher has unprivileged_port_start set to 0, so that passt may bind to all ports.
+- [PR #8463][Barakmor1] Improve metrics documentation
+- [PR #8282][akrejcir] Improves instancetype and preference controller revisions. This is a backwards incompatible change and introduces a new v1alpha2 api for instancetype and preferences.
+- [PR #8272][jean-edouard] No more empty section in the kubevirt-cr manifest
+- [PR #8536][qinqon] Don't show a failure if ConfigDrive cloud init has UserDataSecretRef and not NetworkDataSecretRef
+- [PR #8375][xpivarc] Virtiofs can be used with Nonroot feature gate
+- [PR #8465][rmohr] Add a vnc screenshot REST endpoint and a "virtctl vnc screenshot" command for UI and script integration
+- [PR #8418][alromeros] Enable automatic token generation for VirtualMachineExport objects
+- [PR #8488][0xFelix] virtctl: Be less verbose when using the local ssh client
+- [PR #8396][alicefr] Add group flag for setting the gid and fsgroup in guestfs
+- [PR #8476][iholder-redhat] Allow setting virt-operator log verbosity through Kubevirt CR
+- [PR #8366][rthallisey] Move KubeVirt to a 15 week release cadence
+- [PR #8479][arnongilboa] Enable DataVolume GC by default in cluster-deploy
+- [PR #8474][vasiliy-ul] Fixed migration failure of VMs with containerdisks on systems with containerd
+- [PR #8316][ShellyKa13] Fix possible race when deleting unready vmsnapshot and the vm remaining frozen
+- [PR #8436][xpivarc] Kubevirt is able to run with restricted Pod Security Standard enabled with an automatic escalation of namespace privileges.
+- [PR #8197][alromeros] Add vmexport command to virtctl
+- [PR #8252][fossedihelm] Add `tlsConfiguration` to Kubevirt Configuration
+- [PR #8431][rmohr] Fix shadow status updates and periodic status updates on VMs, performed by the snapshot controller
+- [PR #8359][iholder-redhat] [Bugfix]: HyperV Reenlightenment VMIs should be able to start when TSC Frequency is not exposed
+- [PR #8330][jean-edouard] Important: If you use docker with SELinux enabled, set the `DockerSELinuxMCSWorkaround` feature gate before upgrading
+- [PR #8401][machadovilaca] Rename metrics to follow the naming convention
+
 ## v0.57.0
 
 Released on: Mon Sep 12 14:00:44 2022 +0000
