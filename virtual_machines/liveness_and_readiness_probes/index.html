@@ -238,13 +238,18 @@ via <code>spec.livenessProbe.httpGet</code>, which will query port 1500 of the
 VirtualMachineInstance, after an initial delay of 120 seconds. The
 VirtualMachineInstance itself installs and runs a minimal HTTP server on
 port 1500 via cloud-init.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
-    special: vmi-fedora
+    kubevirt.io/vm: vmi-fedora-vmi
   name: vmi-fedora
 spec:
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: vmi-fedora
+        kubevirt.io/vm: vmi-fedora
   domain:
     devices:
       disks:
@@ -254,10 +259,11 @@ spec:
       - disk:
           bus: virtio
         name: cloudinitdisk
+      rng: {}
     resources:
       requests:
         memory: 1024M
-  livenessProbe:
+  livenessProve:
     initialDelaySeconds: 120
     periodSeconds: 20
     httpGet:
@@ -266,17 +272,17 @@ spec:
   terminationGracePeriodSeconds: 0
   volumes:
   - name: containerdisk
-    registryDisk:
-      image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
+    containerDisk:
+      image: quay.io/containerdisks/fedora:latest
   - cloudInitNoCloud:
       userData: |-
         #cloud-config
         password: fedora
+        user: fedora
         chpasswd: { expire: False }
         bootcmd:
-          - setenforce 0
-          - dnf install -y nmap-ncat
-          - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!'
+          - [&quot;sudo&quot;, &quot;dnf&quot;, &quot;install&quot;, &quot;-y&quot;, &quot;nmap-ncat&quot;]
+          - [&quot;sudo&quot;, &quot;systemd-run&quot;, &quot;--unit=httpserver&quot;, &quot;nc&quot;, &quot;-klp&quot;, &quot;1500&quot;, &quot;-e&quot;, '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
     name: cloudinitdisk
 </code></pre>
 <h2 id="define-a-tcp-liveness-probe">Define a TCP Liveness Probe<a class="headerlink" href="#define-a-tcp-liveness-probe" title="Permanent link">&para;</a></h2>
@@ -285,13 +291,18 @@ spec:
 VirtualMachineInstance, after an initial delay of 120 seconds. The
 VirtualMachineInstance itself installs and runs a minimal HTTP server on
 port 1500 via cloud-init.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
-    special: vmi-fedora
+    kubevirt.io/vm: vmi-fedora-vmi
   name: vmi-fedora
 spec:
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: vmi-fedora
+        kubevirt.io/vm: vmi-fedora
   domain:
     devices:
       disks:
@@ -301,6 +312,7 @@ spec:
       - disk:
           bus: virtio
         name: cloudinitdisk
+      rng: {}
     resources:
       requests:
         memory: 1024M
@@ -313,30 +325,35 @@ spec:
   terminationGracePeriodSeconds: 0
   volumes:
   - name: containerdisk
-    registryDisk:
-      image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
+    containerDisk:
+      image: quay.io/containerdisks/fedora:latest
   - cloudInitNoCloud:
       userData: |-
         #cloud-config
         password: fedora
+        user: fedora
         chpasswd: { expire: False }
         bootcmd:
-          - setenforce 0
-          - dnf install -y nmap-ncat
-          - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!'
+          - [&quot;sudo&quot;, &quot;dnf&quot;, &quot;install&quot;, &quot;-y&quot;, &quot;nmap-ncat&quot;]
+          - [&quot;sudo&quot;, &quot;systemd-run&quot;, &quot;--unit=httpserver&quot;, &quot;nc&quot;, &quot;-klp&quot;, &quot;1500&quot;, &quot;-e&quot;, '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
     name: cloudinitdisk
 </code></pre>
 <h2 id="define-readiness-probes">Define Readiness Probes<a class="headerlink" href="#define-readiness-probes" title="Permanent link">&para;</a></h2>
 <p>Readiness Probes are configured in a similar way like liveness probes.
 Instead of <code>spec.livenessProbe</code>, <code>spec.readinessProbe</code> needs to be
 filled:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
-    special: vmi-fedora
+    kubevirt.io/vm: vmi-fedora-vmi
   name: vmi-fedora
 spec:
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: vmi-fedora
+        kubevirt.io/vm: vmi-fedora
   domain:
     devices:
       disks:
@@ -346,31 +363,32 @@ spec:
       - disk:
           bus: virtio
         name: cloudinitdisk
+      rng: {}
     resources:
       requests:
         memory: 1024M
   readinessProbe:
-    httpGet:
-      port: 1500
     initialDelaySeconds: 120
     periodSeconds: 20
     timeoutSeconds: 10
     failureThreshold: 3
     successThreshold: 3
+    httpGet:
+      port: 1500
   terminationGracePeriodSeconds: 0
   volumes:
   - name: containerdisk
-    registryDisk:
-      image: registry:5000/kubevirt/fedora-cloud-registry-disk-demo:devel
+    containerDisk:
+      image: quay.io/containerdisks/fedora:latest
   - cloudInitNoCloud:
       userData: |-
         #cloud-config
         password: fedora
+        user: fedora
         chpasswd: { expire: False }
         bootcmd:
-          - setenforce 0
-          - dnf install -y nmap-ncat
-          - systemd-run --unit=httpserver nc -klp 1500 -e '/usr/bin/echo -e HTTP/1.1 200 OK\\n\\nHello World!'
+          - [&quot;sudo&quot;, &quot;dnf&quot;, &quot;install&quot;, &quot;-y&quot;, &quot;nmap-ncat&quot;]
+          - [&quot;sudo&quot;, &quot;systemd-run&quot;, &quot;--unit=httpserver&quot;, &quot;nc&quot;, &quot;-klp&quot;, &quot;1500&quot;, &quot;-e&quot;, '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
     name: cloudinitdisk
 </code></pre>
 <p>Note that in the case of Readiness Probes, it is also possible to set a
@@ -398,8 +416,7 @@ possible to pre-provision the probe's host field.</p>
 <p>A watchdog is a more VM centric approach where the responsiveness of the
 Operating System is focused on. One can configure the <code>i6300esb</code> watchdog
 device:</p>
-<pre><code class="language-yaml">---
-apiVersion: kubevirt.io/v1
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -416,23 +433,35 @@ spec:
       - disk:
           bus: virtio
         name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
     machine:
       type: &quot;&quot;
     resources:
       requests:
-        memory: 512M
+        memory: 1024M
   terminationGracePeriodSeconds: 0
   volumes:
   - containerDisk:
-      image: quay.io/kubevirt/alpine-container-disk-demo
+      image: quay.io/containerdisks/fedora:latest
     name: containerdisk
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        user: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          - [&quot;sudo&quot;, &quot;dnf&quot;, &quot;install&quot;, &quot;-y&quot;, &quot;busybox&quot;]
+    name: cloudinitdisk
 </code></pre>
 <p>The example above configures it with the <code>poweroff</code> action. It defines what will
 happen if the OS can't respond anymore. Other possible actions are <code>reset</code>
-and <code>shutdown</code>. The Alpine VM in this example will have the device exposed
+and <code>shutdown</code>. The VM in this example will have the device exposed
 as <code>/dev/watchdog</code>. This device can then be used by the <code>watchdog</code>
 binary. For example, if root executes this command inside the VM:</p>
-<pre><code class="language-bash">watchdog -t 2000ms -T 4000ms /dev/watchdog
+<pre><code class="language-bash">sudo busybox watchdog -t 2000ms -T 4000ms /dev/watchdog
 </code></pre>
 <p>the watchdog will send a heartbeat every two seconds to <code>/dev/watchdog</code> and
 after four seconds without a heartbeat the defined action will be executed. In
