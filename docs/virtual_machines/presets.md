@@ -1,5 +1,10 @@
 # Presets
 
+**FEATURE STATE:** 
+
+* `VirtualMachineInstancePresets` are deprecated as of the [`v0.57.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.57.0) release and will be removed in a future release. 
+* Users should instead look to use [Instancetypes and preferences](./instancetypes.md) as a replacement.
+
 `VirtualMachineInstancePresets` are an extension to general
 `VirtualMachineInstance` configuration behaving much like `PodPresets`
 from Kubernetes. When a `VirtualMachineInstance` is created, any
