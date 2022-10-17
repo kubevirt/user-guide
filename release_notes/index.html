@@ -52,6 +52,8 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">KubeVirt release notes</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#v0580">v0.58.0</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#v0570">v0.57.0</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#v0560">v0.56.0</a>
@@ -471,6 +473,32 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="kubevirt-release-notes">KubeVirt release notes<a class="headerlink" href="#kubevirt-release-notes" title="Permanent link">&para;</a></h1>
+<h2 id="v0580">v0.58.0<a class="headerlink" href="#v0580" title="Permanent link">&para;</a></h2>
+<p>Released on: Thu Oct 13 00:24:51 2022 +0000</p>
+<ul>
+<li>[PR #8578][rhrazdil] When using Passt binding, virl-launcher has unprivileged_port_start set to 0, so that passt may bind to all ports.</li>
+<li>[PR #8463][Barakmor1] Improve metrics documentation</li>
+<li>[PR #8282][akrejcir] Improves instancetype and preference controller revisions. This is a backwards incompatible change and introduces a new v1alpha2 api for instancetype and preferences.</li>
+<li>[PR #8272][jean-edouard] No more empty section in the kubevirt-cr manifest</li>
+<li>[PR #8536][qinqon] Don't show a failure if ConfigDrive cloud init has UserDataSecretRef and not NetworkDataSecretRef</li>
+<li>[PR #8375][xpivarc] Virtiofs can be used with Nonroot feature gate</li>
+<li>[PR #8465][rmohr] Add a vnc screenshot REST endpoint and a "virtctl vnc screenshot" command for UI and script integration</li>
+<li>[PR #8418][alromeros] Enable automatic token generation for VirtualMachineExport objects</li>
+<li>[PR #8488][0xFelix] virtctl: Be less verbose when using the local ssh client</li>
+<li>[PR #8396][alicefr] Add group flag for setting the gid and fsgroup in guestfs</li>
+<li>[PR #8476][iholder-redhat] Allow setting virt-operator log verbosity through Kubevirt CR</li>
+<li>[PR #8366][rthallisey] Move KubeVirt to a 15 week release cadence</li>
+<li>[PR #8479][arnongilboa] Enable DataVolume GC by default in cluster-deploy</li>
+<li>[PR #8474][vasiliy-ul] Fixed migration failure of VMs with containerdisks on systems with containerd</li>
+<li>[PR #8316][ShellyKa13] Fix possible race when deleting unready vmsnapshot and the vm remaining frozen</li>
+<li>[PR #8436][xpivarc] Kubevirt is able to run with restricted Pod Security Standard enabled with an automatic escalation of namespace privileges.</li>
+<li>[PR #8197][alromeros] Add vmexport command to virtctl</li>
+<li>[PR #8252][fossedihelm] Add <code>tlsConfiguration</code> to Kubevirt Configuration</li>
+<li>[PR #8431][rmohr] Fix shadow status updates and periodic status updates on VMs, performed by the snapshot controller</li>
+<li>[PR #8359][iholder-redhat] [Bugfix]: HyperV Reenlightenment VMIs should be able to start when TSC Frequency is not exposed</li>
+<li>[PR #8330][jean-edouard] Important: If you use docker with SELinux enabled, set the <code>DockerSELinuxMCSWorkaround</code> feature gate before upgrading</li>
+<li>[PR #8401][machadovilaca] Rename metrics to follow the naming convention</li>
+</ul>
 <h2 id="v0570">v0.57.0<a class="headerlink" href="#v0570" title="Permanent link">&para;</a></h2>
 <p>Released on: Mon Sep 12 14:00:44 2022 +0000</p>
 <ul>
