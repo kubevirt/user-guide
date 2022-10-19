@@ -203,8 +203,8 @@
               
                 <h1 id="accessing-virtual-machines">Accessing Virtual Machines<a class="headerlink" href="#accessing-virtual-machines" title="Permanent link">&para;</a></h1>
 <h2 id="graphical-and-serial-console-access">Graphical and Serial Console Access<a class="headerlink" href="#graphical-and-serial-console-access" title="Permanent link">&para;</a></h2>
-<p>Once a virtual machine is started you are able to connect to the
-consoles it exposes. Usually there are two types of consoles:</p>
+<p>Once a virtual machine is started you are able to connect to the consoles it
+exposes. Usually there are two types of consoles:</p>
 <ul>
 <li>Serial Console</li>
 <li>Graphical Console (VNC)</li>
@@ -214,143 +214,96 @@ consoles it exposes. Usually there are two types of consoles:</p>
 <a href="../../operations/virtctl_client_tool/">installed</a> to gain
 access to the VirtualMachineInstance.</p>
 </blockquote>
-<h3 id="accessing-the-serial-console">Accessing the serial console<a class="headerlink" href="#accessing-the-serial-console" title="Permanent link">&para;</a></h3>
-<p>The serial console of a virtual machine can be accessed by using the
-<code>console</code> command:</p>
-<pre><code>$ virtctl console --kubeconfig=$KUBECONFIG testvmi
+<h3 id="accessing-the-serial-console">Accessing the Serial Console<a class="headerlink" href="#accessing-the-serial-console" title="Permanent link">&para;</a></h3>
+<p>The serial console of a virtual machine can be accessed by using the <code>console</code>
+command:</p>
+<pre><code class="language-shell">virtctl console testvm
 </code></pre>
-<h3 id="accessing-the-graphical-console-vnc">Accessing the graphical console (VNC)<a class="headerlink" href="#accessing-the-graphical-console-vnc" title="Permanent link">&para;</a></h3>
-<p>Accessing the graphical console of a virtual machine is usually done
-through VNC, which requires <code>remote-viewer</code>. Once the tool is installed
-you can access the graphical console using:</p>
-<pre><code>$ virtctl vnc --kubeconfig=$KUBECONFIG testvmi
+<h3 id="accessing-the-graphical-console-vnc">Accessing the Graphical Console (VNC)<a class="headerlink" href="#accessing-the-graphical-console-vnc" title="Permanent link">&para;</a></h3>
+<p>To access the graphical console of a virtual machine the VNC protocol is
+typically used. This requires <code>remote-viewer</code> to be installed. Once the
+tool is installed, you can access the graphical console using:</p>
+<pre><code class="language-shell">virtctl vnc testvm
 </code></pre>
-<p>If you need to open only a vnc-proxy without executing the <code>remote-viewer</code> command, it can be done using:</p>
-<pre><code>$ virtctl vnc --kubeconfig=$KUBECONFIG --proxy-only testvmi
+<p>If you only want to open a vnc-proxy without executing the <code>remote-viewer</code>
+command, it can be accomplished with:</p>
+<pre><code class="language-shell">virtctl vnc --proxy-only testvm
 </code></pre>
-<p>this would print the port number on your machine where you can manually connect using any of the vnc viewers</p>
+<p>This would print the port number on your machine where you can manually connect
+using any VNC viewer.</p>
 <h3 id="debugging-console-access">Debugging console access<a class="headerlink" href="#debugging-console-access" title="Permanent link">&para;</a></h3>
-<p>Should the connection fail, you can use the <code>-v</code> flag to get more output
-from both <code>virtctl</code> and the <code>remote-viewer</code> tool, to troubleshoot the
+<p>If the connection fails, you can use the <code>-v</code> flag to get more verbose
+output from both <code>virtctl</code> and the <code>remote-viewer</code> tool to troubleshoot the
 problem.</p>
-<pre><code>$ virtctl vnc --kubeconfig=$KUBECONFIG testvmi -v 4
+<pre><code class="language-shell">virtctl vnc testvm -v 4
 </code></pre>
 <blockquote>
-<p><strong>Note:</strong> If you are using virtctl via ssh on a remote machine, you
-need to forward the X session to your machine (Look up the -X and -Y
-flags of <code>ssh</code> if you are not familiar with that). As an alternative
-you can proxy the apiserver port with ssh to your machine (either
-direct or in combination with <code>kubectl proxy</code>)</p>
+<p><strong>Note:</strong> If you are using virtctl via SSH on a remote machine, you need to
+forward the X session to your machine. Look up the -X and -Y flags of <code>ssh</code> if
+you are not familiar with that. As an alternative you can proxy the API server
+port with SSH to your machine (either direct or in combination
+with <code>kubectl proxy</code>).</p>
 </blockquote>
-<h3 id="rbac-permissions-for-consolevnc-access">RBAC Permissions for Console/VNC Access<a class="headerlink" href="#rbac-permissions-for-consolevnc-access" title="Permanent link">&para;</a></h3>
-<h4 id="using-default-rbac-clusterroles">Using Default RBAC ClusterRoles<a class="headerlink" href="#using-default-rbac-clusterroles" title="Permanent link">&para;</a></h4>
-<p>Every KubeVirt installation after version v0.5.1 comes a set of default
-RBAC cluster roles that can be used to grant users access to
-VirtualMachineInstances.</p>
-<p>The <strong>kubevirt.io:admin</strong> and <strong>kubevirt.io:edit</strong> ClusterRoles have
-console and VNC access permissions built into them. By binding either of
-these roles to a user, they will have the ability to use virtctl to
-access console and VNC.</p>
-<h4 id="with-custom-rbac-clusterrole">With Custom RBAC ClusterRole<a class="headerlink" href="#with-custom-rbac-clusterrole" title="Permanent link">&para;</a></h4>
-<p>The default KubeVirt ClusterRoles give access to more than just console
-in VNC. In the event that an Admin would like to craft a custom role
-that targets only console and VNC, the ClusterRole below demonstrates
-how that can be done.</p>
-<pre><code>apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
-metadata:
-  name: allow-vnc-console-access
-rules:
-  - apiGroups:
-      - subresources.kubevirt.io
-    resources:
-      - virtualmachineinstances/console
-      - virtualmachineinstances/vnc
-    verbs:
-      - get
-</code></pre>
-<p>The ClusterRole above provides access to virtual machines across all
-namespaces.</p>
-<p>In order to reduce the scope to a single namespace, bind this
-ClusterRole using a RoleBinding that targets a single namespace.</p>
 <h2 id="ssh-access">SSH Access<a class="headerlink" href="#ssh-access" title="Permanent link">&para;</a></h2>
 <p>A common operational pattern used when managing virtual machines is to inject
-public ssh keys into the virtual machines at boot. This allows automation tools
-(like ansible) to provision the virtual machine. It also gives operators a way
-of gaining secure passwordless access to a virtual machine.</p>
-<p>KubeVirt provides multiple ways to inject ssh public keys into a virtual
-machine. In general, these methods fall into two categories. <a href="./#static-ssh-key-injection-via-cloud-init">Static key injection</a>,
- which places keys on the virtual machine the first time it is
-booted, and <a href="./#dynamic-ssh-key-injection-via-qemu-user-agent">dynamic injection</a>, which allows keys to be dynamically updated
-both at boot and during runtime.</p>
-<h3 id="static-ssh-key-injection-via-cloud-init">Static SSH Key Injection via Cloud Init<a class="headerlink" href="#static-ssh-key-injection-via-cloud-init" title="Permanent link">&para;</a></h3>
-<p>Users creating virtual machines have the ability to provide startup scripts to
-their virtual machines which allow any number of custom operations to take place.
-Placing public ssh keys into a <a href="../startup_scripts/#cloud-init">cloud-init startup script</a> is one option people
-have for getting their public keys into the virtual machine, however there are
-some other options that grant more flexibility.</p>
-<p>The VM's access credential api allows statically injecting ssh public keys at creation
-time independently of the cloud-init user data by placing the ssh public key
-in a Kubernetes secret. This is useful because it allows people creating virtual
-machines to separate the application data in their cloud-init user data from the
-credentials used to access the virtual machine.</p>
-<p>For example, someone can put their ssh key into a Kubernetes secret like this.</p>
-<pre><code># Place ssh key into a secret
-
-kubectl create secret generic my-pub-key --from-file=key1=/id_rsa.pub
+SSH public keys into the virtual machines at boot. This allows automation tools
+(like Ansible) to provision the virtual machine. It also gives operators a way
+of gaining secure and passwordless access to a virtual machine.</p>
+<p>KubeVirt provides multiple ways to inject SSH public keys into a virtual
+machine.</p>
+<p>In general, these methods fall into two categories:
+ - <a href="./#static-ssh-key-injection-via-cloud-init">Static key injection</a>,
+which places keys on the virtual machine the first time it is booted.
+ - <a href="./#dynamic-ssh-key-injection-via-qemu-user-agent">Dynamic key injection</a>,
+which allows keys to be dynamically updated both at boot and during runtime.</p>
+<p>Once a SSH public key is injected into the virtual machine, it can be
+accessed via <code>virtctl</code>.</p>
+<h3 id="static-ssh-public-key-injection-via-cloud-init">Static SSH public key injection via cloud-init<a class="headerlink" href="#static-ssh-public-key-injection-via-cloud-init" title="Permanent link">&para;</a></h3>
+<p>Users creating virtual machines can provide startup scripts to their virtual
+machines, allowing multiple customization operations.</p>
+<p>One option for injecting public SSH keys into a VM is via
+<a href="../startup_scripts/#cloud-init">cloud-init startup script</a>.
+However, there are more flexible options available.</p>
+<p>The virtual machine's access credential API allows statically injecting SSH
+public keys at startup time independently of the cloud-init user data by
+placing the SSH public key into a Kubernetes <code>Secret</code>. This allows keeping the
+application data in the cloud-init user data separate from the credentials
+used to access the virtual machine.</p>
+<p>A Kubernetes <code>Secret</code> can be created from an SSH public key like this:</p>
+<pre><code class="language-shell"># Place SSH public key into a Secret
+kubectl create secret generic my-pub-key --from-file=key1=id_rsa.pub
 </code></pre>
-<p>Then assign that key to the virtual machine with the access credentials api
-using the configDrive propagation method. Note here how the cloud-init user
-data is not touched. KubeVirt is injecting the ssh key into the virtual machine
-using the machine generated cloud-init metadata, and not the user data. This
-keeps the application user date separate from credentials.</p>
-<pre><code>#Create a vm yaml that references the secret in using the access credentials api.
-
-
-cat &lt;&lt; END &gt; my-vm.yaml
+<p>The <code>Secret</code> containing the public key is then assigned to a virtual machine
+using the access credentials API with the <code>configDrive</code> propagation method.</p>
+<p>KubeVirt injects the SSH public key into the virtual machine by using the
+generated cloud-init metadata instead of the user data. This separates
+the application user data and user credentials.</p>
+<blockquote>
+<p>Note: The cloud-init <code>userData</code> is not touched.</p>
+</blockquote>
+<pre><code class="language-shell"># Create a VM referencing the Secret using propagation method configDrive
+kubectl create -f - &lt;&lt;EOF
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  labels:
-    kubevirt.io/vm: my-vm
-  name: my-vm
+  name: testvm
 spec:
-  dataVolumeTemplates:
-  - metadata:
-      creationTimestamp: null
-      name: fedora-dv
-    spec:
-      pvc:
-        accessModes:
-        - ReadWriteOnce
-        resources:
-          requests:
-            storage: 5Gi
-        storageClassName: local
-      source:
-        registry:
-          url: docker://quay.io/kubevirt/fedora-cloud-container-disk-demo
-  running: false
+  running: true
   template:
-    metadata:
-      labels:
-        kubevirt.io/vm: my-vm
     spec:
       domain:
         devices:
           disks:
           - disk:
               bus: virtio
-            name: disk0
+            name: containerdisk
           - disk:
               bus: virtio
-            name: disk1
-        machine:
-          type: &quot;&quot;
+            name: cloudinitdisk
+          rng: {}
         resources:
           requests:
-            cpu: 1000m
-            memory: 1G
+            memory: 1024M
       terminationGracePeriodSeconds: 0
       accessCredentials:
       - sshPublicKey:
@@ -360,89 +313,66 @@ spec:
           propagationMethod:
             configDrive: {}
       volumes:
-      - dataVolume:
-          name: fedora-dv
-        name: disk0
+      - containerDisk:
+          image: quay.io/containerdisks/fedora:latest
+        name: containerdisk
       - cloudInitConfigDrive:
-          userData: |
-            #!/bin/bash
-            echo &quot;Application setup goes here&quot;
-        name: disk1
-END
-
-kubectl create -f my-vm.yaml
-
+          userData: |-
+            #cloud-config
+            password: fedora
+            chpasswd: { expire: False }
+        name: cloudinitdisk
+EOF
 </code></pre>
-<h3 id="dynamic-ssh-key-injection-via-qemu-user-agent">Dynamic SSH Key Injection via Qemu User Agent<a class="headerlink" href="#dynamic-ssh-key-injection-via-qemu-user-agent" title="Permanent link">&para;</a></h3>
-<p>KubeVirt supports dynamically injecting public ssh keys at run time through the
-use of the qemu guest agent. This is achieved through the access credentials
-api by using the qemuGuestAgent propagation method.</p>
+<h3 id="dynamic-ssh-public-key-injection-via-qemu-guest-agent">Dynamic SSH public key injection via qemu-guest-agent<a class="headerlink" href="#dynamic-ssh-public-key-injection-via-qemu-guest-agent" title="Permanent link">&para;</a></h3>
+<p>KubeVirt supports dynamic injection of SSH public keys at runtime by using
+the qemu-guest-agent. This is configured by using the access
+credentials API with the <code>qemuGuestAgent</code> propagation method.</p>
 <blockquote>
-<p>Note: This requires the qemu guest agent to be installed within the guest</p>
-<p>Note: When using qemuGuestAgent propagation, the <code>/home/$USER/.ssh/authorized_keys</code>
-file will be owned by the guest agent. Changes to that file that are made
-outside of the qemu guest agent's control will get deleted.</p>
-<p>Note: More information about the motivation behind the access credentials
-api can be found in the <a href="https://github.com/kubevirt/kubevirt/pull/4195">pull request description</a> that introduced this api.</p>
+<p>Note: This requires the qemu-guest-agent to be installed within the guest.</p>
+<p>Note: When using qemuGuestAgent propagation,
+the <code>/home/$USER/.ssh/authorized_keys</code> file will be owned by the guest agent.
+Changes to the file not made by the guest agent will be lost.</p>
+<p>Note: More information about the motivation behind the access credentials API
+can be found in the
+<a href="https://github.com/kubevirt/kubevirt/pull/4195">pull request description</a>
+that introduced the API.</p>
 </blockquote>
-<p>In the example below, a secret contains an ssh key. When attached to the
-VM via the access credential api with the qemuGuestAgent propagation method,
-the contents of the secret can be updated at any time which will automatically
-get applied to a running VM. The secret can contain multiple public keys.</p>
-<pre><code># Place ssh key into a secret
-
-kubectl create secret generic my-pub-key --from-file=key1=/id_rsa.pub
+<p>In the example below the <code>Secret</code> containing the SSH public key is
+attached to the virtual machine via the access credentials API with the
+<code>qemuGuestAgent</code> propagation method. This allows updating the contents of
+the <code>Secret</code> at any time, which will result in the changes getting applied
+to the running virtual machine immediately. The <code>Secret</code> may also contain
+multiple SSH public keys.</p>
+<pre><code class="language-shell"># Place SSH public key into a secret
+kubectl create secret generic my-pub-key --from-file=key1=id_rsa.pub
 </code></pre>
-<p>Now reference this secret on the VM with the access credentials api using
-qemuGuestAgent propagation. This example installs and starts the qemu guest
-agent using a cloud-init script in order to ensure the agent is available.</p>
-<pre><code># Create a vm yaml that references the secret in using the access credentials api.
-
-
-cat &lt;&lt; END &gt; my-vm.yaml
+<p>Now reference this secret in the <code>VirtualMachine</code> spec with the access
+credentials API using
+<code>qemuGuestAgent</code> propagation.</p>
+<pre><code class="language-shell"># Create a VM referencing the Secret using propagation method qemuGuestAgent
+kubectl create -f - &lt;&lt;EOF
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  labels:
-    kubevirt.io/vm: my-vm
-  name: my-vm
+  name: testvm
 spec:
-  dataVolumeTemplates:
-  - metadata:
-      creationTimestamp: null
-      name: fedora-dv
-    spec:
-      pvc:
-        accessModes:
-        - ReadWriteOnce
-        resources:
-          requests:
-            storage: 5Gi
-        storageClassName: local
-      source:
-        registry:
-          url: docker://quay.io/kubevirt/fedora-cloud-container-disk-demo
-  running: false
+  running: true
   template:
-    metadata:
-      labels:
-        kubevirt.io/vm: my-vm
     spec:
       domain:
         devices:
           disks:
           - disk:
               bus: virtio
-            name: disk0
+            name: containerdisk
           - disk:
               bus: virtio
-            name: disk1
-        machine:
-          type: &quot;&quot;
+            name: cloudinitdisk
+          rng: {}
         resources:
           requests:
-            cpu: 1000m
-            memory: 1G
+            memory: 1024M
       terminationGracePeriodSeconds: 0
       accessCredentials:
       - sshPublicKey:
@@ -452,24 +382,145 @@ spec:
           propagationMethod:
             qemuGuestAgent:
               users:
-              - &quot;fedora&quot;
+              - fedora
       volumes:
-      - dataVolume:
-          name: fedora-dv
-        name: disk0
+      - containerDisk:
+          image: quay.io/containerdisks/fedora:latest
+        name: containerdisk
       - cloudInitConfigDrive:
-          userData: |
-            #!/bin/bash
-
-            sudo setenforce Permissive
-            sudo yum install -y qemu-guest-agent
-            sudo systemctl start qemu-guest-agent
-        name: disk1
-END
-
-kubectl create -f my-vm.yaml
-
+          userData: |-
+            #cloud-config
+            password: fedora
+            chpasswd: { expire: False }
+            # Disable SELinux for now, so qemu-guest-agent can write the authorized_keys file
+            # The selinux-policy is too restrictive currently, see open bugs:
+            #   - https://bugzilla.redhat.com/show_bug.cgi?id=1917024
+            #   - https://bugzilla.redhat.com/show_bug.cgi?id=2028762
+            #   - https://bugzilla.redhat.com/show_bug.cgi?id=2057310
+            bootcmd:
+              - setenforce 0
+        name: cloudinitdisk
+EOF
 </code></pre>
+<h3 id="accessing-the-vmi-using-virtctl">Accessing the VMI using virtctl<a class="headerlink" href="#accessing-the-vmi-using-virtctl" title="Permanent link">&para;</a></h3>
+<p>The user can create a websocket backed network tunnel to a port inside the
+instance by using the <code>virtualmachineinstances/portforward</code> subresource of the
+<code>VirtualMachineInstance</code>.</p>
+<p>One use-case for this subresource is to forward SSH traffic into
+the <code>VirtualMachineInstance</code> either from the CLI or a web-UI.</p>
+<p>To connect to a <code>VirtualMachineInstance</code> from your local machine, <code>virtctl</code>
+provides a lightweight SSH client with the <code>ssh</code> command, that uses port
+forwarding. Refer to the command's help for more details.</p>
+<pre><code class="language-shell">virtctl ssh
+</code></pre>
+<p>To transfer files from or to a <code>VirtualMachineInstance</code> <code>virtctl</code> also
+provides a lightweight SCP client with the <code>scp</code> command. Its usage is
+similar to the <code>ssh</code> command. Refer to the command's help for more details.</p>
+<pre><code class="language-shell">virtctl scp
+</code></pre>
+<h4 id="using-virtctl-as-proxy">Using virtctl as proxy<a class="headerlink" href="#using-virtctl-as-proxy" title="Permanent link">&para;</a></h4>
+<p>If you prefer to use your local OpenSSH client, there are two ways of doing
+that in combination with virtctl.</p>
+<blockquote>
+<p>Note: Most of this applies to the <code>virtctl scp</code> command too.</p>
+</blockquote>
+<ol>
+<li>The <code>virtctl ssh</code> command has a <code>--local-ssh</code> option. With this option
+   <code>virtctl</code> wraps the local OpenSSH client transparently to the user. The
+   executed SSH command can be viewed by increasing the verbosity (<code>-v 3</code>).</li>
+</ol>
+<pre><code class="language-shell">virtctl ssh --local-ssh -v 3 testvm
+</code></pre>
+<ol>
+<li>The <code>virtctl port-forward</code> command provides an option to tunnel a single
+   port to your local stdout/stdin. This allows the command to be used in
+   combination with the OpenSSH client's <code>ProxyCommand</code> option.</li>
+</ol>
+<pre><code class="language-shell">ssh -o 'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22' fedora@testvm.mynamespace
+</code></pre>
+<p>To provide easier access to arbitrary virtual machines you can add the following
+lines to your SSH <code>config</code>:</p>
+<pre><code>Host vmi/*
+   ProxyCommand virtctl port-forward --stdio=true %h %p
+Host vm/*
+   ProxyCommand virtctl port-forward --stdio=true %h %p
+</code></pre>
+<p>This allows you to simply call <code>ssh user@vmi/testvmi.mynamespace</code> and your
+SSH config and virtctl will do the rest. Using this method it becomes easy
+to set up different identities for different namespaces inside your SSH
+<code>config</code>.</p>
+<p>This feature can also be used with Ansible to automate configuration of virtual
+machines running on KubeVirt. You can put the snippet above into its own
+file (e.g. <code>~/.ssh/virtctl-proxy-config</code>) and add the following lines to
+your <code>.ansible.cfg</code>:</p>
+<pre><code>[ssh_connection]
+ssh_args = -F ~/.ssh/virtctl-proxy-config
+</code></pre>
+<p>Note that all port forwarding traffic will be sent over the Kubernetes
+control plane. A high amount of connections and traffic can increase
+pressure on the API server. If you regularly need a high amount of connections
+and traffic consider using a dedicated Kubernetes <code>Service</code> instead.</p>
+<h4 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h4>
+<ol>
+<li>
+<p>Create virtual machine and inject SSH public key as explained above</p>
+</li>
+<li>
+<p>SSH into virtual machine</p>
+</li>
+</ol>
+<pre><code class="language-shell"># Add --local-ssh to transparently use local OpenSSH client
+virtctl ssh -i id_rsa fedora@testvm
+</code></pre>
+<p>or</p>
+<pre><code class="language-shell">ssh -o 'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22' -i id_rsa fedora@vmi/testvm.mynamespace
+</code></pre>
+<ol>
+<li>SCP file to the virtual machine</li>
+</ol>
+<pre><code class="language-shell"># Add --local-ssh to transparently use local OpenSSH client
+virtctl scp -i id_rsa testfile fedora@testvm:/tmp
+</code></pre>
+<p>or</p>
+<pre><code class="language-shell">scp -o 'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22' -i id_rsa testfile fedora@testvm.mynamespace:/tmp
+</code></pre>
+<h4 id="rbac-permissions-for-consolevncssh-access">RBAC permissions for Console/VNC/SSH access<a class="headerlink" href="#rbac-permissions-for-consolevncssh-access" title="Permanent link">&para;</a></h4>
+<h5 id="using-default-rbac-cluster-roles">Using default RBAC cluster roles<a class="headerlink" href="#using-default-rbac-cluster-roles" title="Permanent link">&para;</a></h5>
+<p>Every KubeVirt installation starting with version v0.5.1 ships a set of default
+RBAC cluster roles that can be used to grant users access to
+VirtualMachineInstances.</p>
+<p>The <code>kubevirt.io:admin</code> and <code>kubevirt.io:edit</code> cluster roles have console,
+VNC and SSH respectively port-forwarding access permissions built into them. By
+binding either of these roles to a user, they will have the ability to use
+virtctl to access the console, VNC and SSH.</p>
+<h5 id="using-custom-rbac-cluster-role">Using custom RBAC cluster role<a class="headerlink" href="#using-custom-rbac-cluster-role" title="Permanent link">&para;</a></h5>
+<p>The default KubeVirt cluster roles grant access to more than just the
+console, VNC and port-forwarding. The <code>ClusterRole</code> below demonstrates how
+to craft a custom role, that only allows access to the console, VNC and
+port-forwarding.</p>
+<pre><code class="language-yaml">apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: allow-console-vnc-port-forward-access
+rules:
+  - apiGroups:
+      - subresources.kubevirt.io
+    resources:
+      - virtualmachineinstances/console
+      - virtualmachineinstances/vnc
+    verbs:
+      - get
+  - apiGroups:
+      - subresources.kubevirt.io
+    resources:
+      - virtualmachineinstances/portforward
+    verbs:
+      - update
+</code></pre>
+<p>When bound with a <code>ClusterRoleBinding</code> the <code>ClusterRole</code> above grants access
+to virtual machines across all namespaces.</p>
+<p>In order to reduce the scope to a single namespace, bind this <code>ClusterRole</code>
+using a <code>RoleBinding</code> that targets a single namespace.</p>
               
             </div>
           </div><footer>
