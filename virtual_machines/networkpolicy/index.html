@@ -134,6 +134,10 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#create-networkpolicy-to-deny-all-traffic">Create NetworkPolicy to Deny All Traffic</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#create-networkpolicy-to-only-accept-connections-from-vmis-within-namespaces">Create NetworkPolicy to only Accept connections from vmis within namespaces</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#create-networkpolicy-to-only-allow-http-and-https-traffic">Create NetworkPolicy to only allow HTTP and HTTPS traffic</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#create-networkpolicy-to-deny-traffic-by-labels">Create NetworkPolicy to deny traffic by labels</a>
     </li>
     </ul>
@@ -217,7 +221,7 @@ on the policy.</p>
 <h2 id="create-networkpolicy-to-deny-all-traffic">Create NetworkPolicy to Deny All Traffic<a class="headerlink" href="#create-networkpolicy-to-deny-all-traffic" title="Permanent link">&para;</a></h2>
 <p>To make a project "deny by default" add a NetworkPolicy object that
 matches all vmis but accepts no traffic.</p>
-<pre><code>kind: NetworkPolicy
+<pre><code class="language-yaml">kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
   name: deny-by-default
@@ -225,13 +229,10 @@ spec:
   podSelector: {}
   ingress: []
 </code></pre>
-<p>Create NetworkPolicy to only Accept connections from vmis within
-namespaces</p>
-<pre><code>To make vmis accept connections from other vmis in the same namespace,
-but reject all other connections from vmis in other namespaces:
-
-....
-kind: NetworkPolicy
+<h2 id="create-networkpolicy-to-only-accept-connections-from-vmis-within-namespaces">Create NetworkPolicy to only Accept connections from vmis within namespaces<a class="headerlink" href="#create-networkpolicy-to-only-accept-connections-from-vmis-within-namespaces" title="Permanent link">&para;</a></h2>
+<p>To make vmis accept connections from other vmis in the same namespace,
+but reject all other connections from vmis in other namespaces:</p>
+<pre><code class="language-yaml">kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
   name: allow-same-namespace
@@ -240,13 +241,11 @@ spec:
   ingress:
   - from:
     - podSelector: {}
-....
-
-Create NetworkPolicy to only allow HTTP and HTTPS traffic
 </code></pre>
+<h2 id="create-networkpolicy-to-only-allow-http-and-https-traffic">Create NetworkPolicy to only allow HTTP and HTTPS traffic<a class="headerlink" href="#create-networkpolicy-to-only-allow-http-and-https-traffic" title="Permanent link">&para;</a></h2>
 <p>To enable only HTTP and HTTPS access to the vmis, add a NetworkPolicy
 object similar to:</p>
-<pre><code>kind: NetworkPolicy
+<pre><code class="language-yaml">kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
   name: allow-http-https
@@ -262,7 +261,7 @@ spec:
 <h2 id="create-networkpolicy-to-deny-traffic-by-labels">Create NetworkPolicy to deny traffic by labels<a class="headerlink" href="#create-networkpolicy-to-deny-traffic-by-labels" title="Permanent link">&para;</a></h2>
 <p>To make one specific vmi with a label <code>type: test</code> to reject all traffic
 from other vmis, create:</p>
-<pre><code>kind: NetworkPolicy
+<pre><code class="language-yaml">kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
   name: deny-by-label
