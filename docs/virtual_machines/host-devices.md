@@ -85,6 +85,10 @@ configuration:
 
         $ lspci -nnv|grep -i nvidia
         65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)
+   * If `lspci` isn't available,  the following command can be used to list all of the pci devices on the host:
+    `cat /sys/bus/usb/devices/*/product`. If the device exists in this list, its path needs to be located (something
+     similar to `/sys/bus/usb/devices/usb2/2-4`). Under this path the `idProduct` and `idVendor` files would exist with
+     the relevant IDs.
 
  * `mdevNameSelector` is a name of a Mediated device type that can identify specific types of Mediated devices on a host.
 
