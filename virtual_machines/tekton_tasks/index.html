@@ -242,6 +242,12 @@ spec:
   featureGates:
     deployTektonTaskResources: true
 </code></pre>
+<p>User can use this command to enable <code>deployTektonTaskResources</code> feature gate in HCO CR</p>
+<pre><code class="language-console">oc patch hco kubevirt-hyperconverged  --type=merge -p '{&quot;spec&quot;:{&quot;featureGates&quot;: {&quot;deployTektonTaskResources&quot;: true}}}'
+</code></pre>
+<p>or in TTO CR if TTO is deployed as a stand-alone without HCO</p>
+<pre><code class="language-console">oc patch TektonTasks tektontasks  --type=merge -p '{&quot;spec&quot;:{&quot;featureGates&quot;: {&quot;deployTektonTaskResources&quot;: true}}}'
+</code></pre>
 <p>Once <code>spec.featureGates.deployTektonTaskResources</code> is set to <code>true</code>, TTO will not delete any cluster 
 tasks or pipeline examples even if it is reverted back to false.</p>
 <p>The user can set in which namespace example pipelines will be deployed by setting <code>spec.tektonPipelinesNamespace</code> in HCO CR:</p>
