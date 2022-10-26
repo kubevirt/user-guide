@@ -1402,3 +1402,69 @@ Test awesome shareable disks150+0 records in
 ```
 
 If you are using local devices or RWO PVCs, setting the affinity on the VMs that share the storage guarantees they will be scheduled on the same node. In the example, we set the affinity on the second VM using the label used on the first VM. If you are using shared storage with RWX PVCs, then the affinity rule is not necessary as the storage can be attached simultaneously on multiple nodes.
+
+## File Systems
+
+Currently, only `virtIO-FS` file system is supported.
+### virtIO-FS
+
+`virtIO-FS` makes a Persistent Volume Claim visible in the `kubevirt` VM.
+
+> **Note:** The **ExperimentalVirtiofsSupport** feature gate
+> [must be enabled](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+> to use this volume. This feature is available starting with KubeVirt v0.36.0.
+
+Example:
+
+```yaml
+    metadata:
+      name: testvmi-fs
+    apiVersion: kubevirt.io/v1
+    kind: VirtualMachineInstance
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+          filesystems:
+          - name: virtiofs-disk
+            virtiofs: {}
+        resources:
+          requests:
+            memory: 1024Mi
+      volumes:
+        - name: containerdisk
+          containerDisk:
+            image: quay.io/containerdisks/fedora:latest
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              password: fedora
+              chpasswd: { expire: False }
+          name: cloudinitdisk
+        - name: virtiofs-disk
+          persistentVolumeClaim:
+            claimName: mypvc
+```
+
+### File System Mounting
+
+`virtIO-FS` filesystem will not be available automatically once the VM launches. It needs to be mounted after the VM starts.
+
+This can be done in using startup script. See [cloudInitNoCloud](#cloudInitNoCloud) section for more details. Here are examples of how to mount it in a linux and windows VMs:
+
+- Linux Example
+
+```bash
+      sudo mkdir -p /mnt/disks/virtio
+      sudo mount -t virtiofs virtiofs-disk /mnt/disks/virtio
+```
+
+- Windows Example
+
+   See [this](https://virtio-fs.gitlab.io/howto-windows.html) guide for details on startup steps needed for Windows VMs.
