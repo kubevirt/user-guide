@@ -111,7 +111,7 @@ needs to be aware of KubeVirt and create migrations, instead of
 
 #### Example
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstanceReplicaSet
     metadata:
       name: testreplicaset
@@ -149,14 +149,14 @@ Kubernetes will create three virtual machines based on the template.
     Namespace:    default
     Labels:       <none>
     Annotations:  <none>
-    API Version:  kubevirt.io/v1alpha3
+    API Version:  kubevirt.io/v1
     Kind:         VirtualMachineInstanceReplicaSet
     Metadata:
       Cluster Name:
       Creation Timestamp:  2018-01-03T12:42:30Z
       Generation:          0
       Resource Version:    6380
-      Self Link:           /apis/kubevirt.io/v1alpha3/namespaces/default/virtualmachineinstancereplicasets/testreplicaset
+      Self Link:           /apis/kubevirt.io/v1/namespaces/default/virtualmachineinstancereplicasets/testreplicaset
       UID:                 903a9ea0-f083-11e7-9094-525400ee45b0
     Spec:
       Replicas:  3
@@ -227,7 +227,7 @@ reference it in the spec of the autoscaler:
       scaleTargetRef:
         kind: VirtualMachineInstanceReplicaSet
         name: vmi-replicaset-cirros
-        apiVersion: kubevirt.io/v1alpha3
+        apiVersion: kubevirt.io/v1
       minReplicas: 3
       maxReplicas: 10
       targetCPUUtilizationPercentage: 50

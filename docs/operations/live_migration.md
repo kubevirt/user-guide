@@ -29,7 +29,7 @@ Live migration is initiated by posting a VirtualMachineInstanceMigration
 process for a virtual machine instance `vmi-fedora`
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstanceMigration
 metadata:
   name: migration-job

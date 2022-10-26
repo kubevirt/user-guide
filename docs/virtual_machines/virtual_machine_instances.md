@@ -24,7 +24,7 @@ with any other API resource.
 
 Here is an example of a VirtualMachineInstance object:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: testvmi-nocloud

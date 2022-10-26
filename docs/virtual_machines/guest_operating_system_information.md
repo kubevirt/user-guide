@@ -51,7 +51,7 @@ release.
 
 ### Windows Server 2012R2 `VirtualMachineInstancePreset` Example
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     metadata:
       name: windows-server-2012r2
@@ -84,7 +84,7 @@ release.
               tickPolicy: catchup
             hyperv: {}
     ---
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       labels:
@@ -108,12 +108,12 @@ release.
 Once the `VirtualMachineInstancePreset` is applied to the
 `VirtualMachineInstance`, the resulting resource would look like this:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       annotations:
-        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-        virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1alpha3
+        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1
+        virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1
       labels:
         kubevirt.io/os: win2k12r2
       name: windows2012r2
@@ -176,7 +176,7 @@ To enable strict host checking, the user may expand the `featureGates`
 field in the KubeVirt CR by adding the `HypervStrictCheck` to it.
 
 ```
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
       name: kubevirt

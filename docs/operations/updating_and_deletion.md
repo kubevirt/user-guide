@@ -143,7 +143,7 @@ resource and then delete the KubeVirt operator.
 
     $ export RELEASE=v0.17.0
     $ kubectl delete -n kubevirt kubevirt kubevirt --wait=true # --wait=true should anyway be default
-    $ kubectl delete apiservices v1alpha3.subresources.kubevirt.io # this needs to be deleted to avoid stuck terminating namespaces
+    $ kubectl delete apiservices v1.subresources.kubevirt.io # this needs to be deleted to avoid stuck terminating namespaces
     $ kubectl delete mutatingwebhookconfigurations virt-api-mutator # not blocking but would be left over
     $ kubectl delete validatingwebhookconfigurations virt-operator-validator # not blocking but would be left over
     $ kubectl delete validatingwebhookconfigurations virt-api-validator # not blocking but would be left over

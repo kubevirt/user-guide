@@ -36,7 +36,7 @@ request the additional overhead by setting
 `spec.domain.resources.overcommitGuestOverhead` to `true`:
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: testvmi-nocloud

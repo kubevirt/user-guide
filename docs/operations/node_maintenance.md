@@ -75,7 +75,7 @@ a VM ensures that the VMI is migrated during node eviction:
 
 Here a full VMI:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: testvmi-nocloud

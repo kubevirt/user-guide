@@ -452,7 +452,7 @@ fields.
 > should set the following option to `false`:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: Kubevirt
 metadata:
   name: kubevirt
@@ -808,7 +808,7 @@ to the following VMI spec:
 
 ```yaml
 ---
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -962,7 +962,7 @@ to the following VMI spec:
 
 ```yaml
 ---
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:

@@ -127,7 +127,7 @@ For example, trying to upload to the IP address 192.168.39.32 at port 31001 woul
 
      0 B / 193.89 MiB [-------------------------------------------------------]   0.00% 0s
 
-    Post https://192.168.39.32:31001/v1alpha1/upload: x509: cannot validate certificate for 192.168.39.32 because it doesn't contain any IP SANs
+    Post https://192.168.39.32:31001/v1beta1/upload: x509: cannot validate certificate for 192.168.39.32 because it doesn't contain any IP SANs
 
 
 It is easily fixed by adding an entry it your local name resolution service.
@@ -188,7 +188,7 @@ This happens because the cdi-uploadproxy certificate is self signed and the syst
 
      0 B / 193.89 MiB [-------------------------------------------------------]   0.00% 0s
 
-    Post https://cdi-uploadproxy:31001/v1alpha1/upload: x509: certificate signed by unknown authority
+    Post https://cdi-uploadproxy:31001/v1beta1/upload: x509: certificate signed by unknown authority
 
 This can be fixed by adding the certificate to the systems trust store.
 Download the cdi-uploadproxy-server-cert.
@@ -244,7 +244,7 @@ To create a `VirtualMachineInstance` from a DataVolume, you can execute the
 following:
 
     cat <<EOF | kubectl apply -f -
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: cirros-vm

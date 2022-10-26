@@ -314,7 +314,7 @@ will try to make sure it stays running.
 ### Example
 
 ```
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
   labels:
@@ -380,14 +380,14 @@ Name:         vm-cirros
 Namespace:    default
 Labels:       kubevirt.io/vm=vm-cirros
 Annotations:  <none>
-API Version:  kubevirt.io/v1alpha3
+API Version:  kubevirt.io/v1
 Kind:         VirtualMachine
 Metadata:
   Cluster Name:
   Creation Timestamp:  2018-04-30T09:25:08Z
   Generation:          0
   Resource Version:    6418
-  Self Link:           /apis/kubevirt.io/v1alpha3/namespaces/default/virtualmachines/vm-cirros
+  Self Link:           /apis/kubevirt.io/v1/namespaces/default/virtualmachines/vm-cirros
   UID:                 60043358-4c58-11e8-8653-525500d15501
 Spec:
   Running:  true
