@@ -1442,10 +1442,10 @@ Example:
           containerDisk:
             image: quay.io/containerdisks/fedora:latest
         - cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
+            userData: |-
+              #cloud-config
+              password: fedora
+              chpasswd: { expire: False }
           name: cloudinitdisk
         - name: virtiofs-disk
           persistentVolumeClaim:
