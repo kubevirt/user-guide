@@ -36,7 +36,7 @@ as a `lun` device to the VM:
 
     metadata:
       name: testvmi-lun
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -62,7 +62,7 @@ as a `disk` device to the VM:
 
     metadata:
       name: testvmi-disk
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -84,7 +84,7 @@ depends on the chipset the VM is configured to use:
 
     metadata:
       name: testvmi-disk
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -117,7 +117,7 @@ as a `floppy` device to the VM:
 
     metadata:
       name: testvmi-floppy
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -144,7 +144,7 @@ as a `cdrom` device to the VM:
 
     metadata:
       name: testvmi-cdrom
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -207,7 +207,7 @@ datasource may look like this:
 
     metadata:
       name: testvmi-cloudinitnocloud
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -240,7 +240,7 @@ datasource may look like this:
 
     metadata:
       name: testvmi-cloudinitconfigdrive
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -297,7 +297,7 @@ may look like this:
 
     metadata:
       name: testvmi-pvc
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -326,7 +326,7 @@ creation and import is automated on behalf of the user.
 DataVolumes can be defined in the VM spec directly by adding the
 DataVolumes to the `dataVolumeTemplates` list. Below is an example.
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachine
     metadata:
       labels:
@@ -394,7 +394,7 @@ manifest to the cluster while the DataVolume is still having data
 imported. KubeVirt knows not to start the VMI until all referenced
 DataVolumes have finished their clone and import phases.
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       labels:
@@ -458,7 +458,7 @@ API](http://kubevirt.io/api-reference/master/definitions.html#_v1_ephemeralvolum
 
     metadata:
       name: testvmi-ephemeral-pvc
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -540,7 +540,7 @@ Example: Attach the ContainerDisk as an ephemeral disk to a VM.
 
     metadata:
       name: testvmi-containerdisk
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -582,7 +582,7 @@ Create VMI with container disk pointing to the custom location:
 
     metadata:
       name: testvmi-containerdisk
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -608,7 +608,7 @@ re-creation. The disk `capacity` needs to be specified.
 
 Example: Boot cirros with an extra `emptyDisk` with a size of `2GiB`:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: testvmi-nocloud
@@ -660,7 +660,7 @@ Note: you need to enable the HostDisk feature gate.
 Example: Create a 1Gi disk image located at /data/disk.img and attach it
 to a VM.
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       labels:
@@ -708,7 +708,7 @@ the created kubernetes `ConfigMap`.
 Example: Attach the `configMap` to a VM and use `cloudInit` to mount the
 `iso` disk:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       labels:
@@ -774,7 +774,7 @@ the created kubernetes `Secret`.
 Example: Attach the `secret` to a VM and use `cloudInit` to mount the
 `iso` disk:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       labels:
@@ -830,7 +830,7 @@ examples above.
 
 Example:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       labels:
@@ -998,7 +998,7 @@ emulator thread.
 
 #### Shared IOThreads
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       labels:
@@ -1074,7 +1074,7 @@ In this example, emptydisk and emptydisk2 both request a dedicated IOThread. vmi
 
 #### Auto IOThreads
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       labels:
@@ -1188,7 +1188,7 @@ of this feature.
 
     metadata:
       name: testvmi-disk
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -1230,7 +1230,7 @@ KubeVirt supports `none` and `writethrough` KVM/QEMU cache modes.
 
 Example: force `writethrough` cache mode
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       labels:

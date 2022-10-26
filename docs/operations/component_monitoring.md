@@ -83,7 +83,7 @@ then these values can be omitted.
 
 An example of the KubeVirt resource depicting these default values:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: KubeVirt
     metadata:
       name: kubevirt

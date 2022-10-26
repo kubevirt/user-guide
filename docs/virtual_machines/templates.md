@@ -130,7 +130,7 @@ And the output:
 ```console
     apiVersion: v1
     items:
-    - apiVersion: kubevirt.io/v1alpha3
+    - apiVersion: kubevirt.io/v1
       kind: VirtualMachine
       metadata:
         annotations:
@@ -347,7 +347,7 @@ document.
 ```console
 apiversion: v1
 items:
-- apiversion: kubevirt.io/v1alpha3
+- apiversion: kubevirt.io/v1
   kind: virtualmachine
   metadata:
     labels:
@@ -387,7 +387,7 @@ once processed becomes:
 `demo-vm.yaml`
 
 ```console
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
   labels:
@@ -509,7 +509,7 @@ metadata:
     template.kubevirt.io/type: "base"
     template.kubevirt.io/version: "0.11.3"
 objects:
-- apiVersion: kubevirt.io/v1alpha3
+- apiVersion: kubevirt.io/v1
   kind: VirtualMachine
   metadata:
     name: ${NAME}
@@ -698,7 +698,7 @@ Namespace:    myproject
 Labels:       kubevirt-vm=vm-testvm
               kubevirt.io/os=fedora33
 Annotations:  <none>
-API Version:  kubevirt.io/v1alpha3
+API Version:  kubevirt.io/v1
 Kind:         VirtualMachine
 ```
 

@@ -44,7 +44,7 @@ All virtual machines use BIOS by default for booting.
 It is possible to utilize UEFI/OVMF by setting a value via
 `spec.firmware.bootloader`:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       labels:
@@ -154,7 +154,7 @@ Node-labeller supports obsolete list of cpu models and minimal baseline
 cpu model for features. Both features can be set via KubeVirt CR:
 
 ```console
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
       name: kubevirt
@@ -192,7 +192,7 @@ closest to one that used on the node where the VM is running.
 Setting the CPU model is possible via `spec.domain.cpu.model`. The
 following VM will have a CPU with the `Conroe` model:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: myvmi
@@ -218,7 +218,7 @@ To enable the default cpu model, user may add the `cpuModel`
 field in the KubeVirt CR.
 
 ```
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: KubeVirt
     metadata:
       name: kubevirt
@@ -489,7 +489,7 @@ boot. Most noteworthy are
 
 A common feature configuration is shown by the following example:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: myvmi
@@ -526,7 +526,7 @@ An optional resource request can be specified by the users to allow the
 scheduler to make a better decision in finding the most suitable Node to
 place the VM.
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: myvmi
@@ -618,7 +618,7 @@ Kubevirt supports input devices. The only type which is supported is
 `tablet`. Tablet input device supports only `virtio` and `usb` bus. Bus
 can be empty. In that case, `usb` will be selected.
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachine
     metadata:
       name: myvm

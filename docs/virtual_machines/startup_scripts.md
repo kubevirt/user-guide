@@ -117,7 +117,7 @@ device.
     # a cloudInitNoCloud volume's userData field.
 
     cat << END > my-vmi.yaml
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: myvmi
@@ -174,7 +174,7 @@ further down in the document illustrate how that is done.*
     # a cloudInitNoCloud volume's userDataBase64 field.
 
     cat << END > my-vmi.yaml
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: myvmi
@@ -231,7 +231,7 @@ startup script and reference that Secret in the VM's spec.
     # Volume's secretRef field
 
     cat << END > my-vmi.yaml
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: myvmi
@@ -288,7 +288,7 @@ default user (fedora in this case) of a [Fedora Atomic](https://www.projectatomi
 
     # Create the VM spec
     cat << END > my-vmi.yaml
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: sshvmi
@@ -343,7 +343,7 @@ user using a script instead of cloud-config.
 
     # Create the VM spec
     cat << END > my-vmi.yaml
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: sshvmi

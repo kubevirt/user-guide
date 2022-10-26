@@ -16,7 +16,7 @@ VirtualMachineInstance. Currently, three types of service are supported:
 
 Give a VirtualMachineInstance with the label `special: key`:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: vmi-ephemeral

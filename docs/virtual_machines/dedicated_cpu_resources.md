@@ -55,7 +55,7 @@ takes value from `spec.domain.resources.requests.cpu` or
 
 All inconsistent requirements will be rejected.
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -71,7 +71,7 @@ All inconsistent requirements will be rejected.
 
 OR
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:
@@ -102,7 +102,7 @@ with a `dedicatedCpuPlacement: true`.
 
 Example:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       domain:

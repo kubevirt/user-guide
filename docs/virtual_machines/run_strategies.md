@@ -97,7 +97,7 @@ on RunStrategy.
 
 An example usage of the Always RunStrategy.
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachine
     metadata:
       labels:

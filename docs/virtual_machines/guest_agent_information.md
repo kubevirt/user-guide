@@ -71,7 +71,7 @@ There are three new subresources added to the VirtualMachineInstance object:
 
 The whole GA data is returned via `guestosinfo` subresource available behind the API endpoint.
 
-    /apis/subresources.kubevirt.io/v1alpha3/namespaces/{namespace}/virtualmachineinstances/{name}/guestosinfo
+    /apis/subresources.kubevirt.io/v1/namespaces/{namespace}/virtualmachineinstances/{name}/guestosinfo
 
 
 GuestOSInfo sample data:
@@ -111,7 +111,7 @@ Items FSInfo and UserList are capped to the max capacity of 10 items, as a preca
 Full list of Filesystems is available through the subresource `filesystemlist` which is available as endpoint.
 
 
-    /apis/subresources.kubevirt.io/v1alpha3/namespaces/{namespace}/virtualmachineinstances/{name}/filesystemlist
+    /apis/subresources.kubevirt.io/v1/namespaces/{namespace}/virtualmachineinstances/{name}/filesystemlist
 
 Filesystem sample data:
 
@@ -130,7 +130,7 @@ Filesystem sample data:
 
 Full list of the Users is available through the subresource `userlist` which is available as endpoint.
 
-    /apis/subresources.kubevirt.io/v1alpha3/namespaces/{namespace}/virtualmachineinstances/{name}/userlist
+    /apis/subresources.kubevirt.io/v1/namespaces/{namespace}/virtualmachineinstances/{name}/userlist
 
 
 

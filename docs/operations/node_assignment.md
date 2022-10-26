@@ -17,7 +17,7 @@ following example the vmi contains the labels `cpu: slow` and
 
     metadata:
       name: testvmi-ephemeral
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       nodeSelector:
@@ -54,7 +54,7 @@ An example for `podAffinity` and `podAntiAffinity` may look like this:
 
     metadata:
       name: testvmi-ephemeral
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       nodeSelector:
@@ -121,7 +121,7 @@ An example for `tolerations` may look like this:
 
     metadata:
       name: testvmi-ephemeral
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
       nodeSelector:

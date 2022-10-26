@@ -13,7 +13,7 @@ The following example consists of a VirtualMachine and a headless
 Service which matches the labels and the subdomain of the
 VirtualMachineInstance:
 
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
       name: vmi-fedora
