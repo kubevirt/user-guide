@@ -209,7 +209,7 @@
 <p>Valid resource types are: Deployment, DaemonSet, Service, ValidatingWebhookConfiguraton, MutatingWebhookConfiguration, APIService, and CertificateSecret. More information can be found in the <a href="http://kubevirt.io/api-reference/master/definitions.html#_v1_customizecomponentspatch">API spec</a>.</p>
 <p>Example customization patch:</p>
 <pre><code>---
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: KubeVirt
 metadata:
   name: kubevirt
@@ -234,7 +234,7 @@ spec:
 <p>:warning: If the flags are invalid or become invalid on update the component will not be able to run</p>
 </blockquote>
 <p>By using the customize flag option, whichever component the flags are to be applied to, all default flags will be removed and only the flags specified will be used. The available resources to change the flags on are <code>api</code>, <code>controller</code> and <code>handler</code>. You can find our more details about the API in the <a href="http://kubevirt.io/api-reference/master/definitions.html#_v1_flags">API spec</a>.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: KubeVirt
 metadata:
   name: kubevirt

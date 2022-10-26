@@ -245,7 +245,7 @@ VirtualMachineInstance that have and match the <code>kubevirt.io/os</code> label
 <p>Default presets for the OS identifiers above are included in the current
 release.</p>
 <h3 id="windows-server-2012r2-virtualmachineinstancepreset-example">Windows Server 2012R2 <code>VirtualMachineInstancePreset</code> Example<a class="headerlink" href="#windows-server-2012r2-virtualmachineinstancepreset-example" title="Permanent link">&para;</a></h3>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstancePreset
 metadata:
   name: windows-server-2012r2
@@ -278,7 +278,7 @@ spec:
           tickPolicy: catchup
         hyperv: {}
 ---
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -301,12 +301,12 @@ spec:
 </code></pre>
 <p>Once the <code>VirtualMachineInstancePreset</code> is applied to the
 <code>VirtualMachineInstance</code>, the resulting resource would look like this:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   annotations:
-    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1alpha3
-    virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1alpha3
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1
+    virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1
   labels:
     kubevirt.io/os: win2k12r2
   name: windows2012r2
@@ -363,7 +363,7 @@ backward compatibility and because they depend on the
 and on extra configuration.</p>
 <p>To enable strict host checking, the user may expand the <code>featureGates</code>
 field in the KubeVirt CR by adding the <code>HypervStrictCheck</code> to it.</p>
-<pre><code>    apiVersion: kubevirt.io/v1alpha3
+<pre><code>    apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
       name: kubevirt

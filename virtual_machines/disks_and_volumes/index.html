@@ -237,7 +237,7 @@ allows the VM to execute arbitrary iSCSI command passthrough.</p>
 as a <code>lun</code> device to the VM:</p>
 <pre><code>metadata:
   name: testvmi-lun
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -260,7 +260,7 @@ spec:
 as a <code>disk</code> device to the VM:</p>
 <pre><code>metadata:
   name: testvmi-disk
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -281,7 +281,7 @@ spec:
 depends on the chipset the VM is configured to use:</p>
 <pre><code>metadata:
   name: testvmi-disk
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -312,7 +312,7 @@ future version.</p>
 as a <code>floppy</code> device to the VM:</p>
 <pre><code>metadata:
   name: testvmi-floppy
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -336,7 +336,7 @@ read-only by default.</p>
 as a <code>cdrom</code> device to the VM:</p>
 <pre><code>metadata:
   name: testvmi-cdrom
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -407,7 +407,7 @@ user-data source.</p>
 datasource may look like this:</p>
 <pre><code>metadata:
   name: testvmi-cloudinitnocloud
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -437,7 +437,7 @@ user-data source.</p>
 datasource may look like this:</p>
 <pre><code>metadata:
   name: testvmi-cloudinitconfigdrive
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -494,7 +494,7 @@ KubeVirt CR (<code>kubectl edit kubevirt kubevirt -n kubevirt</code>).</p>
 may look like this:</p>
 <pre><code>metadata:
   name: testvmi-pvc
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -519,7 +519,7 @@ creation and import is automated on behalf of the user.</p>
 <h4 id="datavolume-vm-behavior">DataVolume VM Behavior<a class="headerlink" href="#datavolume-vm-behavior" title="Permanent link">&para;</a></h4>
 <p>DataVolumes can be defined in the VM spec directly by adding the
 DataVolumes to the <code>dataVolumeTemplates</code> list. Below is an example.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
   labels:
@@ -581,7 +581,7 @@ posting the VMI manifest to the cluster. It is okay to post the VMI
 manifest to the cluster while the DataVolume is still having data
 imported. KubeVirt knows not to start the VMI until all referenced
 DataVolumes have finished their clone and import phases.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -634,7 +634,7 @@ of the ephemeral volume.</p>
 API</a>.</p>
 <pre><code>metadata:
   name: testvmi-ephemeral-pvc
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -702,7 +702,7 @@ END
 <p>Example: Attach the ContainerDisk as an ephemeral disk to a VM.</p>
 <pre><code>metadata:
   name: testvmi-containerdisk
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -739,7 +739,7 @@ docker push vmidisks/fedora25:latest
 <p>Create VMI with container disk pointing to the custom location:</p>
 <pre><code>metadata:
   name: testvmi-containerdisk
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -762,7 +762,7 @@ sparse <code>qcow2</code> disk will be allocated and it will live as long as the
 VM. Thus it will survive guest side VM reboots, but not a VM
 re-creation. The disk <code>capacity</code> needs to be specified.</p>
 <p>Example: Boot cirros with an extra <code>emptyDisk</code> with a size of <code>2GiB</code>:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: testvmi-nocloud
@@ -812,7 +812,7 @@ Kubernetes and provides two usage types:</p>
 <p>Note: you need to enable the HostDisk feature gate.</p>
 <p>Example: Create a 1Gi disk image located at /data/disk.img and attach it
 to a VM.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -857,7 +857,7 @@ projected.</p>
 </blockquote>
 <p>Example: Attach the <code>configMap</code> to a VM and use <code>cloudInit</code> to mount the
 <code>iso</code> disk:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -920,7 +920,7 @@ projected.</p>
 </blockquote>
 <p>Example: Attach the <code>secret</code> to a VM and use <code>cloudInit</code> to mount the
 <code>iso</code> disk:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -973,7 +973,7 @@ account (<code>namespace</code>, <code>token</code> and <code>ca.crt</code>), wh
 in the VM. For automatic mounting, see the <code>configMap</code> and <code>secret</code>
 examples above.</p>
 <p>Example:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -1120,7 +1120,7 @@ of the VMI. When <code>ioThreadsPolicy</code> is set to <code>auto</code> IOThre
 emulator thread.</p>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
 <h4 id="shared-iothreads">Shared IOThreads<a class="headerlink" href="#shared-iothreads" title="Permanent link">&para;</a></h4>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -1194,7 +1194,7 @@ emptydisk5:   1
 emptydisk6:   1
 </code></pre>
 <h4 id="auto-iothreads">Auto IOThreads<a class="headerlink" href="#auto-iothreads" title="Permanent link">&para;</a></h4>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -1301,7 +1301,7 @@ of this feature.</p>
 <h4 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h4>
 <pre><code>metadata:
   name: testvmi-disk
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -1343,7 +1343,7 @@ supports direct I/O, otherwise, <code>writethrough</code> is used.</p>
 direct I/O then started VMI will return an error.</p>
 </blockquote>
 <p>Example: force <code>writethrough</code> cache mode</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:

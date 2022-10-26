@@ -295,7 +295,7 @@ However, migratable backing store support has not officially landed
 yet in KubeVirt and is untested.</p>
 </blockquote>
 <h4 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h4>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstanceReplicaSet
 metadata:
   name: testreplicaset
@@ -332,14 +332,14 @@ Name:         testreplicaset
 Namespace:    default
 Labels:       &lt;none&gt;
 Annotations:  &lt;none&gt;
-API Version:  kubevirt.io/v1alpha3
+API Version:  kubevirt.io/v1
 Kind:         VirtualMachineInstanceReplicaSet
 Metadata:
   Cluster Name:
   Creation Timestamp:  2018-01-03T12:42:30Z
   Generation:          0
   Resource Version:    6380
-  Self Link:           /apis/kubevirt.io/v1alpha3/namespaces/default/virtualmachineinstancereplicasets/testreplicaset
+  Self Link:           /apis/kubevirt.io/v1/namespaces/default/virtualmachineinstancereplicasets/testreplicaset
   UID:                 903a9ea0-f083-11e7-9094-525400ee45b0
 Spec:
   Replicas:  3
@@ -406,7 +406,7 @@ spec:
   scaleTargetRef:
     kind: VirtualMachineInstanceReplicaSet
     name: vmi-replicaset-cirros
-    apiVersion: kubevirt.io/v1alpha3
+    apiVersion: kubevirt.io/v1
   minReplicas: 3
   maxReplicas: 10
   targetCPUUtilizationPercentage: 50

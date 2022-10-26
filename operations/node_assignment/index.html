@@ -220,7 +220,7 @@ following example the vmi contains the labels <code>cpu: slow</code> and
 <code>storage: fast</code>:</p>
 <pre><code>metadata:
   name: testvmi-ephemeral
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   nodeSelector:
@@ -252,7 +252,7 @@ Pod-affinity affects VMs as well.</p>
 <p>An example for <code>podAffinity</code> and <code>podAntiAffinity</code> may look like this:</p>
 <pre><code>metadata:
   name: testvmi-ephemeral
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   nodeSelector:
@@ -312,7 +312,7 @@ not require) the VMs to schedule onto nodes with matching taints.</p>
 <p>An example for <code>tolerations</code> may look like this:</p>
 <pre><code>metadata:
   name: testvmi-ephemeral
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   nodeSelector:

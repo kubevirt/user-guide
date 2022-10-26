@@ -316,7 +316,7 @@ same namespace as the VM.</p>
 <p>And the output:</p>
 <pre><code class="language-console">    apiVersion: v1
     items:
-    - apiVersion: kubevirt.io/v1alpha3
+    - apiVersion: kubevirt.io/v1
       kind: VirtualMachine
       metadata:
         annotations:
@@ -494,7 +494,7 @@ document.</p>
 <p><code>demo-template.yaml</code></p>
 <pre><code class="language-console">apiversion: v1
 items:
-- apiversion: kubevirt.io/v1alpha3
+- apiversion: kubevirt.io/v1
   kind: virtualmachine
   metadata:
     labels:
@@ -531,7 +531,7 @@ metadata: {}
 </code></pre>
 <p>once processed becomes:
 <code>demo-vm.yaml</code></p>
-<pre><code class="language-console">apiVersion: kubevirt.io/v1alpha3
+<pre><code class="language-console">apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
   labels:
@@ -639,7 +639,7 @@ metadata:
     template.kubevirt.io/type: &quot;base&quot;
     template.kubevirt.io/version: &quot;0.11.3&quot;
 objects:
-- apiVersion: kubevirt.io/v1alpha3
+- apiVersion: kubevirt.io/v1
   kind: VirtualMachine
   metadata:
     name: ${NAME}
@@ -805,7 +805,7 @@ Namespace:    myproject
 Labels:       kubevirt-vm=vm-testvm
               kubevirt.io/os=fedora33
 Annotations:  &lt;none&gt;
-API Version:  kubevirt.io/v1alpha3
+API Version:  kubevirt.io/v1
 Kind:         VirtualMachine
 </code></pre>
 <h2 id="cloud-init-script-and-parameters">Cloud-init script and parameters<a class="headerlink" href="#cloud-init-script-and-parameters" title="Permanent link">&para;</a></h2>

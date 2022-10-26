@@ -257,7 +257,7 @@ performance advantage when using <code>spec.domain.cpu.sockets</code> instead of
 <code>spec.domain.cpu.cores</code>.</p>
 </blockquote>
 <p>All inconsistent requirements will be rejected.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -272,7 +272,7 @@ spec:
 [...]
 </code></pre>
 <p>OR</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -299,7 +299,7 @@ In case <code>ioThreadsPolicy</code> is set to <code>auto</code> IOThreads will 
 section. Naturally, this setting has to be specified in a combination
 with a <code>dedicatedCpuPlacement: true</code>.</p>
 <p>Example:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 spec:
   domain:

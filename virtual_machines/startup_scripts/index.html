@@ -307,7 +307,7 @@ device.</p>
 # a cloudInitNoCloud volume's userData field.
 
 cat &lt;&lt; END &gt; my-vmi.yaml
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: myvmi
@@ -361,7 +361,7 @@ END
 # a cloudInitNoCloud volume's userDataBase64 field.
 
 cat &lt;&lt; END &gt; my-vmi.yaml
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: myvmi
@@ -414,7 +414,7 @@ kubectl create secret generic my-vmi-secret --from-file=userdata=startup-script.
 # Volume's secretRef field
 
 cat &lt;&lt; END &gt; my-vmi.yaml
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: myvmi
@@ -468,7 +468,7 @@ END
 
 # Create the VM spec
 cat &lt;&lt; END &gt; my-vmi.yaml
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: sshvmi
@@ -520,7 +520,7 @@ END
 
 # Create the VM spec
 cat &lt;&lt; END &gt; my-vmi.yaml
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: sshvmi

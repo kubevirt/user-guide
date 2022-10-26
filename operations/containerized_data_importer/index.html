@@ -330,7 +330,7 @@ Uploading data to https://192.168.39.32:31001
 
  0 B / 193.89 MiB [-------------------------------------------------------]   0.00% 0s
 
-Post https://192.168.39.32:31001/v1alpha1/upload: x509: cannot validate certificate for 192.168.39.32 because it doesn't contain any IP SANs
+Post https://192.168.39.32:31001/v1beta1/upload: x509: cannot validate certificate for 192.168.39.32 because it doesn't contain any IP SANs
 </code></pre>
 <p>It is easily fixed by adding an entry it your local name resolution service.
 This could be a DNS server or the local hosts file.
@@ -383,7 +383,7 @@ Uploading data to https://cdi-uploadproxy:31001
 
  0 B / 193.89 MiB [-------------------------------------------------------]   0.00% 0s
 
-Post https://cdi-uploadproxy:31001/v1alpha1/upload: x509: certificate signed by unknown authority
+Post https://cdi-uploadproxy:31001/v1beta1/upload: x509: certificate signed by unknown authority
 </code></pre>
 <p>This can be fixed by adding the certificate to the systems trust store.
 Download the cdi-uploadproxy-server-cert.</p>
@@ -428,7 +428,7 @@ An IP address could also be used instead of the dns name.</p>
 <p>To create a <code>VirtualMachineInstance</code> from a DataVolume, you can execute the
 following:</p>
 <pre><code>cat &lt;&lt;EOF | kubectl apply -f -
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: cirros-vm

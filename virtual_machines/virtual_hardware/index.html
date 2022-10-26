@@ -240,7 +240,7 @@ wiki</a>.</p>
 <p>All virtual machines use BIOS by default for booting.</p>
 <p>It is possible to utilize UEFI/OVMF by setting a value via
 <code>spec.firmware.bootloader</code>:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -334,7 +334,7 @@ Kubevirt can then schedule VM on node which has support for VM cpu model and
 features.</p>
 <p>Node-labeller supports obsolete list of cpu models and minimal baseline
 cpu model for features. Both features can be set via KubeVirt CR:</p>
-<pre><code class="language-console">    apiVersion: kubevirt.io/v1alpha3
+<pre><code class="language-console">    apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
       name: kubevirt
@@ -363,7 +363,7 @@ closest to one that used on the node where the VM is running.</p>
 <p><strong>Note</strong>: CPU model is case sensitive.</p>
 <p>Setting the CPU model is possible via <code>spec.domain.cpu.model</code>. The
 following VM will have a CPU with the <code>Conroe</code> model:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: myvmi
@@ -384,7 +384,7 @@ model, then no node selector is created.</p>
 <h4 id="enabling-default-cluster-cpu-model">Enabling default cluster cpu model<a class="headerlink" href="#enabling-default-cluster-cpu-model" title="Permanent link">&para;</a></h4>
 <p>To enable the default cpu model, user may add the <code>cpuModel</code>
 field in the KubeVirt CR.</p>
-<pre><code>    apiVersion: kubevirt.io/v1alpha3
+<pre><code>    apiVersion: kubevirt.io/v1
     kind: KubeVirt
     metadata:
       name: kubevirt
@@ -635,7 +635,7 @@ boot. Most noteworthy are</p>
 </li>
 </ul>
 <p>A common feature configuration is shown by the following example:</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: myvmi
@@ -669,7 +669,7 @@ for all available features and configuration options.</p>
 <p>An optional resource request can be specified by the users to allow the
 scheduler to make a better decision in finding the most suitable Node to
 place the VM.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: myvmi
@@ -754,7 +754,7 @@ regular memory it will use node hugepages of the size of <code>2Mi</code>.</p>
 <p>Kubevirt supports input devices. The only type which is supported is
 <code>tablet</code>. Tablet input device supports only <code>virtio</code> and <code>usb</code> bus. Bus
 can be empty. In that case, <code>usb</code> will be selected.</p>
-<pre><code>apiVersion: kubevirt.io/v1alpha3
+<pre><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
   name: myvm

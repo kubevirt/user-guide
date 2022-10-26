@@ -626,7 +626,7 @@ work in this mode.</p>
 networks via a designated configuration flag. To achieve it, the admin
 should set the following option to <code>false</code>:</p>
 </blockquote>
-<pre><code class="language-yaml">apiVersion: kubevirt.io/v1alpha3
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
 kind: Kubevirt
 metadata:
   name: kubevirt
@@ -980,7 +980,7 @@ spec:
 <p>Finally, to create a VM that will attach to the aforementioned Network, refer
 to the following VMI spec:</p>
 <pre><code class="language-yaml">---
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -1117,7 +1117,7 @@ exposed host interface (via the <code>master</code> attribute, on the
 <p>Finally, to create a VM that will attach to the aforementioned Network, refer
 to the following VMI spec:</p>
 <pre><code class="language-yaml">---
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
