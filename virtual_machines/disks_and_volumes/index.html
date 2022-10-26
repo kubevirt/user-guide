@@ -132,6 +132,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#high-performance-features">High Performance Features</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#file-systems">File Systems</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../interfaces_and_networks/">Interfaces and Networks</a>
@@ -1507,6 +1509,63 @@ Test awesome shareable disks150+0 records in
 150 bytes copied, 0.136753 s, 1.1 kB/s
 </code></pre>
 <p>If you are using local devices or RWO PVCs, setting the affinity on the VMs that share the storage guarantees they will be scheduled on the same node. In the example, we set the affinity on the second VM using the label used on the first VM. If you are using shared storage with RWX PVCs, then the affinity rule is not necessary as the storage can be attached simultaneously on multiple nodes.</p>
+<h2 id="file-systems">File Systems<a class="headerlink" href="#file-systems" title="Permanent link">&para;</a></h2>
+<p>Currently, only <code>virtIO-FS</code> file system is supported.</p>
+<h3 id="virtio-fs">virtIO-FS<a class="headerlink" href="#virtio-fs" title="Permanent link">&para;</a></h3>
+<p><code>virtIO-FS</code> makes a Persistent Volume Claim visible in the <code>kubevirt</code> VM.</p>
+<blockquote>
+<p><strong>Note:</strong> The <strong>ExperimentalVirtiofsSupport</strong> feature gate
+<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">must be enabled</a>
+to use this volume. This feature is available starting with KubeVirt v0.36.0.</p>
+</blockquote>
+<p>Example:</p>
+<pre><code class="language-yaml">    metadata:
+      name: testvmi-fs
+    apiVersion: kubevirt.io/v1
+    kind: VirtualMachineInstance
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+          filesystems:
+          - name: virtiofs-disk
+            virtiofs: {}
+        resources:
+          requests:
+            memory: 1024Mi
+      volumes:
+        - name: containerdisk
+          containerDisk:
+            image: quay.io/containerdisks/fedora:latest
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              password: fedora
+              chpasswd: { expire: False }
+          name: cloudinitdisk
+        - name: virtiofs-disk
+          persistentVolumeClaim:
+            claimName: mypvc
+</code></pre>
+<h3 id="file-system-mounting">File System Mounting<a class="headerlink" href="#file-system-mounting" title="Permanent link">&para;</a></h3>
+<p><code>virtIO-FS</code> filesystem will not be available automatically once the VM launches. It needs to be mounted after the VM starts.</p>
+<p>This can be done in using startup script. See <a href="#cloudInitNoCloud">cloudInitNoCloud</a> section for more details. Here are examples of how to mount it in a linux and windows VMs:</p>
+<ul>
+<li>Linux Example</li>
+</ul>
+<pre><code class="language-bash">      sudo mkdir -p /mnt/disks/virtio
+      sudo mount -t virtiofs virtiofs-disk /mnt/disks/virtio
+</code></pre>
+<ul>
+<li>Windows Example</li>
+</ul>
+<p>See <a href="https://virtio-fs.gitlab.io/howto-windows.html">this</a> guide for details on startup steps needed for Windows VMs.</p>
               
             </div>
           </div><footer>
