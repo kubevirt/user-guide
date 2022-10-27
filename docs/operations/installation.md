@@ -27,6 +27,59 @@ KubeVirt is currently supported on the following container runtimes:
 Other container runtimes, which do not use virtualization features,
 should work too. However, the mentioned ones are the main target.
 
+### Integration with AppArmor
+
+In most of the scenarios, KubeVirt can run normally on systems with
+AppArmor. However, there are several known use cases that may require
+additional user interaction.
+
+-   On a system with AppArmor enabled, the locally installed profiles
+    may block the execution of the KubeVirt privileged containers. That
+    usually results in initialization failure of the `virt-handler`
+    pod:
+
+        $ kubectl get pods -n kubevirt
+        NAME                               READY   STATUS       RESTARTS         AGE
+        virt-api-77df5c4f87-7mqv4          1/1     Running      1 (17m ago)      27m
+        virt-api-77df5c4f87-wcq44          1/1     Running      1 (17m ago)      27m
+        virt-controller-749d8d99d4-56gb7   1/1     Running      1 (17m ago)      27m
+        virt-controller-749d8d99d4-78j6x   1/1     Running      1 (17m ago)      27m
+        virt-handler-4w99d                 0/1     Init:Error   14 (5m18s ago)   27m
+        virt-operator-564f568975-g9wh4     1/1     Running      1 (17m ago)      31m
+        virt-operator-564f568975-wnpz8     1/1     Running      1 (17m ago)      31m
+
+        $ kubectl logs -n kubevirt virt-handler-4w99d virt-launcher
+        error: failed to get emulator capabilities
+
+        error: internal error: Failed to start QEMU binary /usr/libexec/qemu-kvm for probing: libvirt: error : cannot execute binary /usr/libexec/qemu-kvm: Permission denied
+
+        $ journalctl -b | grep DEN
+        ...
+        May 18 16:44:20 debian audit[6316]: AVC apparmor="DENIED" operation="exec" profile="libvirtd" name="/usr/libexec/qemu-kvm" pid=6316 comm="rpc-worker" requested_mask="x" denied_mask="x" fsuid=107 ouid=0
+        May 18 16:44:20 debian kernel: audit: type=1400 audit(1652888660.539:39): apparmor="DENIED" operation="exec" profile="libvirtd" name="/usr/libexec/qemu-kvm" pid=6316 comm="rpc-worker" requested_mask="x" denied_mask="x" fsuid=107 ouid=0
+        ...
+
+    Here, the host AppArmor profile for `libvirtd` does not allow the
+    execution of the `/usr/libexec/qemu-kvm` binary. To solve the issue,
+    the following rule needs to be added into the profile definition
+    (usually `/etc/apparmor.d/usr.sbin.libvirtd`):
+
+        # vim /etc/apparmor.d/usr.sbin.libvirtd
+        ...
+        /usr/libexec/qemu-kvm PUx,
+        ...
+        # apparmor_parser -r /etc/apparmor.d/usr.sbin.libvirtd # or systemctl reload apparmor.service
+
+-   The default AppArmor profile used by the container runtimes usually
+    denies `mount` call for the workloads. That may prevent from
+    running VMs with [VirtIO-FS](../virtual_machines/disks_and_volumes.md#virtio-fs).
+    This is a [known issue](https://github.com/kubevirt/kubevirt/issues/4290).
+    The current workaround is to run such a VM as `unconfined` by adding the
+    following annotation to the VM or VMI object:
+
+        annotations:
+          container.apparmor.security.beta.kubernetes.io/compute: unconfined
+
 ### Validate Hardware Virtualization Support
 
 Hardware with virtualization support is recommended. You can use
