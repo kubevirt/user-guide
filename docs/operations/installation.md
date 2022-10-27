@@ -21,11 +21,11 @@ A few requirements need to be met before you can begin:
 
 KubeVirt is currently supported on the following container runtimes:
 
--   docker
+-   containerd
 -   crio (with runv)
 
 Other container runtimes, which do not use virtualization features,
-should work too. However, they are not tested.
+should work too. However, the mentioned ones are the main target.
 
 ### Validate Hardware Virtualization Support
 
