@@ -217,12 +217,31 @@ The export server certificate is valid for 7 days after which it is rotated by d
 #### External link certificates
 The external link certificates are associated with the Ingress/Route that points to the service created by the KubeVirt operator. The CA that signed the Ingress/Route will part of the certificates. 
 
+### TTL (Time to live) for an Export
+For various reasons (security being one), users should be able to specify a TTL for the VMExport objects that limits the lifetime of an export.  
+This is done via the `ttlDuration` field which accepts a k8s [duration](https://godoc.org/k8s.io/apimachinery/pkg/apis/meta/v1#Duration),  
+which defaults to 2 hours when not specified.
+```yaml
+apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+    name: example-export
+spec:
+    source:
+        apiGroup: "kubevirt.io"
+        kind: VirtualMachine
+        name: example-vm
+    tokenSecretRef: example-token
+    ttlDuration: 1h
+```
+
 ### virtctl integration: vmexport
 The virtctl `vmexport` command allows users to interact with the export API in an easy-to-use way.
 
 `vmexport` uses two mandatory arguments:
-1. The vmexport **functions** (create|delete|download).
-2. The VirtualMachineExport **name**.
+
+* The vmexport **functions** (create|delete|download).
+* The VirtualMachineExport **name**.
 
 These three **functions** are:
 
@@ -256,6 +275,12 @@ $ virtctl vmexport delete name
 # --vm|--snapshot|--pvc, if specified, are used to create the VMExport object assuming it doesn't exist. The name of the object to export has to be specified.
 
 $ virtctl vmexport download name [flags]
+```
+
+#### TTL (Time to live)
+TTL can also be added when creating a VMExport via virtctl
+```sh
+$ virtctl vmexport create name --ttl=1h
 ```
 
 For more information about usage and examples:
