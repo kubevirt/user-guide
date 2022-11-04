@@ -13,6 +13,16 @@ This page is provided as the entrypoint to the different topics of this user-gui
 
 - Kubevirt on cloud providers: <https://kubevirt.io/quickstart_cloud/>
 
+## KubeVirt Labs
+
+- [Use KubeVirt](https://kubevirt.io/labs/kubernetes/lab1.html)
+
+- [Experiment with Containerized Data Importer (CDI)](https://kubevirt.io/labs/kubernetes/lab2.html)
+
+- [Experiment with KubeVirt Upgrades](https://kubevirt.io/labs/kubernetes/lab3.html)
+
+- [Live Migration](https://kubevirt.io/labs/kubernetes/migration.html)
+
 ## Getting help
 
 - File a bug: <https://github.com/kubevirt/kubevirt/issues>
