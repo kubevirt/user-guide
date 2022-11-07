@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/run_strategies/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/vsock/" />
       <link rel="shortcut icon" href="../../assets/favicon.ico" />
-    <title>Run Strategies - KubeVirt User-Guide</title>
+    <title>VSOCK - KubeVirt User-Guide</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Run Strategies";
-        var mkdocs_page_input_path = "virtual_machines/run_strategies.md";
-        var mkdocs_page_url = "/user-guide/virtual_machines/run_strategies/";
+        var mkdocs_page_name = "VSOCK";
+        var mkdocs_page_input_path = "virtual_machines/vsock.md";
+        var mkdocs_page_url = "/user-guide/virtual_machines/vsock/";
       </script>
     
     <script src="../../js/jquery-3.6.0.min.js" defer></script>
@@ -116,15 +116,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../lifecycle/">Lifecycle</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Run Strategies</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#runstrategy">RunStrategy</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#runstrategy-examples">RunStrategy Examples</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../run_strategies/">Run Strategies</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../instancetypes/">Instancetypes and preferences</a>
                   </li>
@@ -172,7 +164,15 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../confidential_computing/">Confidential computing</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../vsock/">VSOCK</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">VSOCK</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#background">Background</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#security">Security</a>
+    </li>
+    </ul>
                   </li>
               </ul>
               <ul>
@@ -199,9 +199,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
           <li>Virtual machines &raquo;</li>
-      <li>Run Strategies</li>
+      <li>VSOCK</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/run_strategies.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/vsock.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -209,130 +209,78 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="run-strategies">Run Strategies<a class="headerlink" href="#run-strategies" title="Permanent link">&para;</a></h1>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>VirtualMachines have a <code>Running</code> setting that determines whether or not
-there should be a guest running or not. Because KubeVirt will always
-immediately restart a VirtualMachineInstance for VirtualMachines with
-<code>spec.running: true</code>, a simple boolean is not always enough to fully
-describe desired behavior. For instance, there are cases when a user
-would like the ability to shut down a guest from inside the virtual
-machine. With <code>spec.running: true</code>, KubeVirt would immediately restart
-the VirtualMachineInstance.</p>
-<h2 id="runstrategy">RunStrategy<a class="headerlink" href="#runstrategy" title="Permanent link">&para;</a></h2>
-<p>To allow for greater variation of user states, the <code>RunStrategy</code> field
-has been introduced. This is mutually exclusive with <code>Running</code> as they
-have somewhat overlapping conditions. There are currently four
-RunStrategies defined:</p>
+                <h1 id="vsock">VSOCK<a class="headerlink" href="#vsock" title="Permanent link">&para;</a></h1>
+<p>VM Sockets (vsock) is a fast and efficient guest-host communication mechanism.</p>
+<h2 id="background">Background<a class="headerlink" href="#background" title="Permanent link">&para;</a></h2>
+<p>Right now KubeVirt uses virtio-serial for local guest-host communication. Currently it used in KubeVirt by libvirt and qemu to communicate with the qemu-guest-agent. Virtio-serial can also be used by other agents, but it is a little bit cumbersome due to:</p>
 <ul>
-<li>
-<p>Always: A VirtualMachineInstance will always be present. If the
-    VirtualMachineInstance crashed, a new one will be spawned. This is
-    the same behavior as <code>spec.running: true</code>.</p>
-</li>
-<li>
-<p>RerunOnFailure: A VirtualMachineInstance will be respawned if the
-    previous instance failed in an error state. It will not be
-    re-created if the guest stopped successfully (e.g. shut down from
-    inside guest).</p>
-</li>
-<li>
-<p>Manual: The presence of a VirtualMachineInstance or lack thereof is
-    controlled exclusively by the start/stop/restart VirtualMachine
-    subresource endpoints.</p>
-</li>
-<li>
-<p>Halted: No VirtualMachineInstance will be present. If a guest is
-    already running, it will be stopped. This is the same behavior as
-    <code>spec.running: false</code>.</p>
-</li>
+<li>A small set of ports on the virtio-serial device</li>
+<li>Low bandwidth</li>
+<li>No socket based communication possible, which requires every agent to establish their own protocols, or work with translation layers like SLIP to be able to use protocols like gRPC for reliable communication.</li>
+<li>No easy and supportable way to get a virtio-serial socket assigned and being able to access it without entering the virt-launcher pod.</li>
+<li>Due to the point above, privileges are required for services.</li>
 </ul>
-<p><em>Note</em>: RunStrategy and Running are mutually exclusive, because they can
-be contradictory. The API server will reject VirtualMachine resources
-that define both.</p>
-<h3 id="virtctl">Virtctl<a class="headerlink" href="#virtctl" title="Permanent link">&para;</a></h3>
-<p>The <code>start</code>, <code>stop</code> and <code>restart</code> methods of virtctl will invoke their
-respective subresources of VirtualMachines. This can have an effect on
-the runStrategy of the VirtualMachine as below:</p>
-<table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>RunStrategy</th>
-<th>start</th>
-<th>stop</th>
-<th>restart</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><strong>Always</strong></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>Halted</code></p></td>
-<td><p><code>Always</code></p></td>
-</tr>
-<tr class="even">
-<td><p><strong>RerunOnFailure</strong></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>Halted</code></p></td>
-<td><p><code>RerunOnFailure</code></p></td>
-</tr>
-<tr class="odd">
-<td><p><strong>Manual</strong></p></td>
-<td><p><code>Manual</code></p></td>
-<td><p><code>Manual</code></p></td>
-<td><p><code>Manual</code></p></td>
-</tr>
-<tr class="even">
-<td><p><strong>Halted</strong></p></td>
-<td><p><code>Always</code></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>-</code></p></td>
-</tr>
-</tbody>
-</table>
-
-<p>Table entries marked with <code>-</code> don't make sense, so won't have an effect
-on RunStrategy.</p>
-<h2 id="runstrategy-examples">RunStrategy Examples<a class="headerlink" href="#runstrategy-examples" title="Permanent link">&para;</a></h2>
-<h3 id="always">Always<a class="headerlink" href="#always" title="Permanent link">&para;</a></h3>
-<p>An example usage of the Always RunStrategy.</p>
-<pre><code>apiVersion: kubevirt.io/v1
-kind: VirtualMachine
+<p>With <a href="https://man7.org/linux/man-pages/man7/vsock.7.html">virtio-vsock</a> we get support for easy guest-host communication which solves the above issues from a user/admin perspective.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<h3 id="feature-gate">Feature Gate<a class="headerlink" href="#feature-gate" title="Permanent link">&para;</a></h3>
+<p>To enable VSOCK in KubeVirt cluster, the user may expand the <code>featureGates</code>
+field in the KubeVirt CR by adding the <code>VSOCK</code> to it.</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
+kind: Kubevirt
 metadata:
-  labels:
-    kubevirt.io/vm: vm-cirros
-  name: vm-cirros
+  name: kubevirt
+  namespace: kubevirt
 spec:
-  runStrategy: Always
-  template:
-    metadata:
-      labels:
-        kubevirt.io/vm: vm-cirros
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - containerDisk:
-          image: kubevirt/cirros-container-disk-demo:latest
-        name: containerdisk
+  ...
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - &quot;VSOCK&quot;
 </code></pre>
+<p>Alternatively, users can edit an existing kubevirt CR:</p>
+<p><code>kubectl edit kubevirt kubevirt -n kubevirt</code></p>
+<pre><code class="language-yaml">    ...
+    spec:
+      configuration:
+        developerConfiguration:
+          featureGates:
+            - &quot;VSOCK&quot;
+</code></pre>
+<h3 id="virtual-machine-instance">Virtual Machine Instance<a class="headerlink" href="#virtual-machine-instance" title="Permanent link">&para;</a></h3>
+<p>To attach VSOCK device to a Virtual Machine, the user has to add <code>autoattachVSOCK: true</code> in a <code>devices</code> section of Virtual Machine Instance specification:</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-vsock
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      autoattachVSOCK: true
+</code></pre>
+<p>This will expose VSOCK device to the VM. The <code>CID</code> will be assigned randomly by <code>virt-controller</code>, and exposed to the Virtual Machine Instance status:</p>
+<pre><code class="language-yaml">    status:
+      VSOCKCID: 123
+</code></pre>
+<h2 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong><em>NOTE:</em></strong>  The <code>/dev/vhost-vsock</code> device is <em>NOT NEEDED</em> to connect or bind to a VSOCK socket.</p>
+</blockquote>
+<p>To make VSOCK feature secure, following measures are put in place:</p>
+<ul>
+<li>The whole VSOCK features will live behind a feature gate.</li>
+<li>By default the first 1024 ports of a vsock device are privileged. Services trying to bind to those require <code>CAP_NET_BIND_SERVICE</code> capability.</li>
+<li><code>AF_VSOCK</code> socket syscall gets blocked in containerd 1.7+ (containerd/containerd#7442). It is right now the responsibility of the vendor to ensure that the used CRI selects a default seccomp policy which blocks VSOCK socket calls in a similar way like it was done for containerd.</li>
+<li>CIDs are assigned by <code>virt-controller</code> and are unique per Virtual Machine Instance to ensure that <code>virt-handler</code> has an easy way of tracking the identity without races. While this still allows <code>virt-launcher</code> to fake-use an assigned CID, it eliminates possible assignment races which attackers could make use-of to redirect VSOCK calls.</li>
+</ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../lifecycle/" class="btn btn-neutral float-left" title="Lifecycle"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../instancetypes/" class="btn btn-neutral float-right" title="Instancetypes and preferences">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../confidential_computing/" class="btn btn-neutral float-left" title="Confidential computing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../web_console/" class="btn btn-neutral float-right" title="Web Console">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -359,10 +307,10 @@ spec:
         </span>
     
     
-      <span><a href="../lifecycle/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../confidential_computing/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../instancetypes/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../web_console/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
