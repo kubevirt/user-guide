@@ -15,7 +15,7 @@ RESET  := $(shell tput -Txterm sgr0)
 
 TARGET_MAX_CHAR_NUM=20
 
-PYTHON ?= python3.7
+PYTHON ?= python3.8
 PIP ?= pip3
 
 LOCAL_SERVER_PORT ?= 8000
