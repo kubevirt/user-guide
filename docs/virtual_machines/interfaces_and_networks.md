@@ -643,7 +643,9 @@ sysctl -w net.core.wmem_max = 33554432
 ```
 sysctl -w fs.file-max = 9223372036854775807
 ```
-3. The `vmi.Spec.Domain.Resources.Requests.Memory` of a passt VM with no explicit ports should be at least 2048M.
+
+*NOTE*: To achieve optimal memory consumption with Passt binding, specify ports required for your workload.
+When no ports are explicitly specified, all ports are forwarded, leading to memory overhead of up to 800 Mi.
 
 #### Temporary restrictions: 
 1. `passt` currently only supported as primary network and doesn't allow extra multus networks to be configured on the VM.
