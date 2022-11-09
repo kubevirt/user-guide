@@ -60,8 +60,17 @@ additional user interaction.
         ...
 
     Here, the host AppArmor profile for `libvirtd` does not allow the
-    execution of the `/usr/libexec/qemu-kvm` binary. To solve the issue,
-    the following rule needs to be added into the profile definition
+    execution of the `/usr/libexec/qemu-kvm` binary. In the future
+    this will hopefully work out of the box
+    ([tracking issue](https://github.com/kubevirt/kubevirt/issues/8744)),
+    but until then there are a couple of possible workarounds.
+
+    The first (and simplest) one is to remove the libvirt package
+    from the host: assuming the host is a dedicated Kubernetes node,
+    you likely won't need it anyway.
+
+    If you actually need libvirt to be present on the host, then you
+    can add the following rule to the AppArmor profile for libvirtd
     (usually `/etc/apparmor.d/usr.sbin.libvirtd`):
 
         # vim /etc/apparmor.d/usr.sbin.libvirtd
