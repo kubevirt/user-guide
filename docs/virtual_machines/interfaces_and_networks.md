@@ -649,7 +649,6 @@ When no ports are explicitly specified, all ports are forwarded, leading to memo
 
 #### Temporary restrictions: 
 1. `passt` currently only supported as primary network and doesn't allow extra multus networks to be configured on the VM.
-2. A VM with passt binding cannot bind to low ports (less than 1024).
 
 passt interfaces are feature gated; to enable the feature, follow
 [these](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
