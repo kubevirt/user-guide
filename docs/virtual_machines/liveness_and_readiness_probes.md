@@ -61,7 +61,7 @@ spec:
     resources:
       requests:
         memory: 1024M
-  livenessProve:
+  livenessProbe:
     initialDelaySeconds: 120
     periodSeconds: 20
     httpGet:
