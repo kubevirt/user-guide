@@ -1403,68 +1403,217 @@ Test awesome shareable disks150+0 records in
 
 If you are using local devices or RWO PVCs, setting the affinity on the VMs that share the storage guarantees they will be scheduled on the same node. In the example, we set the affinity on the second VM using the label used on the first VM. If you are using shared storage with RWX PVCs, then the affinity rule is not necessary as the storage can be attached simultaneously on multiple nodes.
 
-## File Systems
+## Sharing Directories with VMs
 
-Currently, only `virtIO-FS` file system is supported.
-### virtIO-FS
-
-`virtIO-FS` makes a Persistent Volume Claim visible in the `kubevirt` VM.
+`Virtiofs` allows to make visible external filesystems to `KubeVirt` VMs.
+`Virtiofs` is a shared file system that lets VMs access a directory tree on the host.
+Further details can be found at [Official Virtiofs Site](https://virtio-fs.gitlab.io/).
 
 > **Note:** The **ExperimentalVirtiofsSupport** feature gate
 > [must be enabled](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
-> to use this volume. This feature is available starting with KubeVirt v0.36.0.
+> to share directories with VMs. This feature is available starting with KubeVirt v0.36.0.
 
+### Sharing Persistent Volume Claims
+#### Cluster Configuration
+
+We need to create a new VM definition including the `spec.devices.disk.filesystems.virtiofs` and a PVC.
 Example:
 
 ```yaml
-    metadata:
-      name: testvmi-fs
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-          filesystems:
-          - name: virtiofs-disk
-            virtiofs: {}
-        resources:
-          requests:
-            memory: 1024Mi
-      volumes:
-        - name: containerdisk
-          containerDisk:
-            image: quay.io/containerdisks/fedora:latest
-        - cloudInitNoCloud:
-            userData: |-
-              #cloud-config
-              password: fedora
-              chpasswd: { expire: False }
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-fs
+spec:
+  domain:
+    devices:
+      disks:
+        - disk:
+            bus: virtio
+          name: containerdisk
+        - disk:
+            bus: virtio
           name: cloudinitdisk
+      filesystems:
         - name: virtiofs-disk
-          persistentVolumeClaim:
-            claimName: mypvc
+          virtiofs: {}
+    resources:
+      requests:
+        memory: 1024Mi
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: quay.io/containerdisks/fedora:latest
+    - cloudInitNoCloud:
+        userData: |-
+          #cloud-config
+          password: fedora
+          chpasswd: { expire: False }
+      name: cloudinitdisk
+    - name: virtiofs-disk
+      persistentVolumeClaim:
+        claimName: mypvc
 ```
 
-### File System Mounting
-
-`virtIO-FS` filesystem will not be available automatically once the VM launches. It needs to be mounted after the VM starts.
-
-This can be done in using startup script. See [cloudInitNoCloud](#cloudInitNoCloud) section for more details. Here are examples of how to mount it in a linux and windows VMs:
+#### Configuration Inside the VM
+The following configuration can be done in using startup script. See [cloudInitNoCloud](#cloudinitnocloud) section for 
+more details. 
+However, we can do it manually by logging in to the VM and mounting it. 
+Here are examples of how to mount it in a linux and windows VMs:
 
 - Linux Example
 
 ```bash
-      sudo mkdir -p /mnt/disks/virtio
-      sudo mount -t virtiofs virtiofs-disk /mnt/disks/virtio
+$ sudo mkdir -p /mnt/disks/virtio
+$ sudo mount -t virtiofs virtiofs-disk /mnt/disks/virtio
 ```
 
 - Windows Example
 
-   See [this](https://virtio-fs.gitlab.io/howto-windows.html) guide for details on startup steps needed for Windows VMs.
+  See [this](https://virtio-fs.gitlab.io/howto-windows.html) guide for details on startup steps needed for Windows VMs.
+
+### Sharing Node Directories
+
+It is allowed using [hostpaths](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath).
+The following configuration example is shown for illustrative purposes.
+However, the [PVCs](#sharing-persistent-volume-claims) method is preferred since using hostpath is generally discouraged for
+security reasons.
+
+
+#### Configuration Inside the Node
+
+To share the directory with the VMs, we need to log in to the node, create the shared directory (if it does not already
+exist), and set the proper SELinux context label `container_file_t` to the shared directory.
+In this example we are going to share a new directory `/mnt/data` (if the desired directory is an existing one, you can
+skip the `mkdir` command):
+
+```shell
+$ mkdir /tmp/data
+$ sudo chcon -t container_file_t /tmp/data
+```
+
+> **Note:** If you are attempting to share an existing directory, you must first check the SELinux context label with the
+> command `ls -Z <directory>`. In the case that the label is not present or is not `container_file_t` you need to label 
+> it with the `chcon`  command.
+
+#### Cluster Configuration
+
+We need a `StorageClass` which uses the provider `no-provisioner`:
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: no-provisioner-storage-class
+provisioner: kubernetes.io/no-provisioner
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+```
+
+To make the shared directory available for VMs, we need to create a PV and a PVC that could be consumed by the VMs:
+
+```yaml
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: hostpath
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/tmp/data"
+  storageClassName: "no-provisioner-storage-class"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node01
+---  
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hostpath-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "no-provisioner-storage-class"
+  resources:
+    requests:
+      storage: 10Gi
+```
+> **Note:** Change the `node01` value for the node name where you want the shared directory will be located.
+
+
+The VM definitions have to request the PVC `hostpath-claim` and attach it as a virtiofs filesystem:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: hostpath-vm
+  name: hostpath
+spec:
+  running: true
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: hostpath
+        kubevirt.io/vm: hostpath
+    spec:
+      domain:
+        cpu:
+          cores: 1
+          sockets: 1
+          threads: 1
+        devices:
+          filesystems:
+            - name: vm-hostpath
+              virtiofs: {}
+          disks:
+            - name: containerdisk
+              disk:
+                bus: virtio
+            - name: cloudinitdisk
+              disk:
+                bus: virtio
+          interfaces:
+            - name: default
+              masquerade: {}
+          rng: {}
+        resources:
+          requests:
+            memory: 1Gi
+      networks:
+        - name: default
+          pod: {}
+      terminationGracePeriodSeconds: 180
+      volumes:
+        - containerDisk:
+            image: quay.io/containerdisks/fedora:latest
+          name: containerdisk
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              chpasswd:
+                expire: false
+              password: password
+              user: fedora
+          name: cloudinitdisk
+        - name: vm-hostpath
+          persistentVolumeClaim:
+            claimName: hostpath-claim
+```
+
+#### Configuration Inside the VM
+
+We need to log in to the VM and mount the shared directory:
+
+```shell
+$ sudo mount -t virtiofs vm-hostpath /mnt
+```
