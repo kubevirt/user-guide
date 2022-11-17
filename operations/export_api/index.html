@@ -113,6 +113,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#export-status-links">Export status links</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ttl-time-to-live-for-an-export">TTL (Time to live) for an Export</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#virtctl-integration-vmexport">virtctl integration: vmexport</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#use-cases">Use cases</a>
@@ -405,11 +407,29 @@ status:
 <p>The export server certificate is valid for 7 days after which it is rotated by deleting the export server pod and associated secret and generating a new one. If for whatever reason the export server pod dies, the associated secret is also automatically deleted and a new pod and secret are generated. The VirtualMachineExport object status will be automatically updated to reflect the new certificate.</p>
 <h4 id="external-link-certificates">External link certificates<a class="headerlink" href="#external-link-certificates" title="Permanent link">&para;</a></h4>
 <p>The external link certificates are associated with the Ingress/Route that points to the service created by the KubeVirt operator. The CA that signed the Ingress/Route will part of the certificates. </p>
+<h3 id="ttl-time-to-live-for-an-export">TTL (Time to live) for an Export<a class="headerlink" href="#ttl-time-to-live-for-an-export" title="Permanent link">&para;</a></h3>
+<p>For various reasons (security being one), users should be able to specify a TTL for the VMExport objects that limits the lifetime of an export.<br />
+This is done via the <code>ttlDuration</code> field which accepts a k8s <a href="https://godoc.org/k8s.io/apimachinery/pkg/apis/meta/v1#Duration">duration</a>,<br />
+which defaults to 2 hours when not specified.</p>
+<pre><code class="language-yaml">apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+    name: example-export
+spec:
+    source:
+        apiGroup: &quot;kubevirt.io&quot;
+        kind: VirtualMachine
+        name: example-vm
+    tokenSecretRef: example-token
+    ttlDuration: 1h
+</code></pre>
 <h3 id="virtctl-integration-vmexport">virtctl integration: vmexport<a class="headerlink" href="#virtctl-integration-vmexport" title="Permanent link">&para;</a></h3>
 <p>The virtctl <code>vmexport</code> command allows users to interact with the export API in an easy-to-use way.</p>
-<p><code>vmexport</code> uses two mandatory arguments:
-1. The vmexport <strong>functions</strong> (create|delete|download).
-2. The VirtualMachineExport <strong>name</strong>.</p>
+<p><code>vmexport</code> uses two mandatory arguments:</p>
+<ul>
+<li>The vmexport <strong>functions</strong> (create|delete|download).</li>
+<li>The VirtualMachineExport <strong>name</strong>.</li>
+</ul>
 <p>These three <strong>functions</strong> are:</p>
 <h4 id="create">Create<a class="headerlink" href="#create" title="Permanent link">&para;</a></h4>
 <pre><code class="language-sh"># Creates a VMExport object according to the specified flag.
@@ -437,6 +457,10 @@ $ virtctl vmexport delete name
 # --vm|--snapshot|--pvc, if specified, are used to create the VMExport object assuming it doesn't exist. The name of the object to export has to be specified.
 
 $ virtctl vmexport download name [flags]
+</code></pre>
+<h4 id="ttl-time-to-live">TTL (Time to live)<a class="headerlink" href="#ttl-time-to-live" title="Permanent link">&para;</a></h4>
+<p>TTL can also be added when creating a VMExport via virtctl</p>
+<pre><code class="language-sh">$ virtctl vmexport create name --ttl=1h
 </code></pre>
 <p>For more information about usage and examples:</p>
 <pre><code>$ virtctl vmexport --help
