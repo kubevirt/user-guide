@@ -1270,7 +1270,7 @@ metadata:
   name: block-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   volumeMode: Block
   resources:
     requests:
