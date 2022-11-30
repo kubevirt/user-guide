@@ -103,6 +103,12 @@ virtualization workloads:
       QEMU: Checking if device /dev/net/tun exists                               : PASS
     ...
 
+### SELinux support
+
+SELinux-enabled nodes need [Container-selinux](https://github.com/containers/container-selinux) installed. The minimum version is documented inside the kubevirt/kubevirt repository, in docs/getting-started.md, under "SELinux support".
+
+For (older) release branches that don't specify a container-selinux version, version 2.170.0 or newer is recommended.
+
 ## Installing KubeVirt on Kubernetes
 
 KubeVirt can be installed using the KubeVirt operator, which manages the
