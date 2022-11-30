@@ -112,7 +112,6 @@ endif
 ## Build site. This target should only be used by Netlify and Prow
 build: envvar
 	@echo "${GREEN}Makefile: Build mkdocs site${RESET}"
-	which $(PYTHON)
 	$(PYTHON) -m venv /tmp/venv
 	. /tmp/venv/bin/activate
 	$(PIP) install mkdocs mkdocs-awesome-pages-plugin mkdocs-htmlproofer-plugin
