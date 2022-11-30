@@ -207,7 +207,8 @@
           <li>Virtual machines &raquo;</li>
       <li>Instancetypes and preferences</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/instancetypes.md" class="icon icon-github"> Edit on GitHub</a>
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/instancetypes.md"
+          class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -369,19 +370,10 @@ spec:
 </ul>
 <h2 id="versioning">Versioning<a class="headerlink" href="#versioning" title="Permanent link">&para;</a></h2>
 <p>Versioning of these resources is required to ensure the eventual <code>VirtualMachineInstance</code> created when starting a <code>VirtualMachine</code> does not change between restarts if any referenced instancetype or set of preferences are updated during the lifetime of the <code>VirtualMachine</code>.</p>
-<p>This is currently achieved by using <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevision</a> to retain a copy of the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype"><code>VirtualMachineInstancetype</code></a> or <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference"><code>VirtualMachinePreference</code></a> at the time the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> is first started. A reference to these <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevisions</a> are then retained in the VirtualMachineInstancetypeMatcher and VirtualMachinePreferenceMatcher within the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> for future use.</p>
+<p>This is currently achieved by using <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevision</a> to retain a copy of the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype"><code>VirtualMachineInstancetype</code></a> or <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference"><code>VirtualMachinePreference</code></a> at the time the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> is created. A reference to these <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/">ControllerRevisions</a> are then retained in the VirtualMachineInstancetypeMatcher and VirtualMachinePreferenceMatcher within the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachine</code></a> for future use.</p>
 <pre><code class="language-yaml">$ kubectl.sh apply -f examples/csmall.yaml -f examples/vm-cirros-csmall.yaml
 virtualmachineinstancetype.instancetype.kubevirt.io/csmall created
 virtualmachine.kubevirt.io/vm-cirros-csmall created
-
-$ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
-{
-  &quot;kind&quot;: &quot;VirtualMachineInstancetype&quot;,
-  &quot;name&quot;: &quot;csmall&quot;,
-}
-
-$ virtctl start vm-cirros-csmall
-VM vm-cirros-csmall was scheduled to start
 
 $ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
 {
