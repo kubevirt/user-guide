@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/operations/scheduler/" />
+      <link rel="shortcut icon" href="../../assets/favicon.ico" />
+    <title>KubeVirt Scheduler - KubeVirt User-Guide</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "KubeVirt Scheduler";
+        var mkdocs_page_input_path = "operations/scheduler.md";
+        var mkdocs_page_url = "/user-guide/operations/scheduler/";
+      </script>
+    
+    <script src="../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/yaml.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> KubeVirt User-Guide
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../quickstarts/">Quickstarts</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../release_notes/">KubeVirt release notes</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Operations</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../updating_and_deletion/">Updating and deletion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../basic_use/">Basic use</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../customize_components/">Customize components</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../api_validation/">API Validation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../debug/">Debug</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../virtctl_client_tool/">virtctl Client Tool</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../live_migration/">Live Migration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hotplug_volumes/">Hotplug Volumes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../snapshot_restore_api/">Snapshot Restore API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../component_monitoring/">Component monitoring</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../authorization/">Authorization</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../annotations_and_labels/">Annotations and labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node_assignment/">Node assignment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node_maintenance/">Node maintenance</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../node_overcommit/">Node overcommit</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../unresponsive_nodes/">Unresponsive nodes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../containerized_data_importer/">Containerized Data Importer</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../activating_feature_gates/">Activating feature gates</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../export_api/">Export API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../clone_api/">Clone API</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../memory_dump/">Virtual machine memory dump</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../mediated_devices_configuration/">Mediated devices and virtual GPUs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../migration_policies/">Migration Policies</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Virtual machines</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/lifecycle/">Lifecycle</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/run_strategies/">Run Strategies</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/instancetypes/">Instancetypes and preferences</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/presets/">Presets</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/virtual_hardware/">Virtual hardware</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/numa/">NUMA</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/istio_service_mesh/">Istio service mesh</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/networkpolicy/">NetworkPolicy</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/host-devices/">Host Devices Assignment</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/windows_virtio_drivers/">Windows virtio drivers</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/guest_agent_information/">Guest Agent information</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/accessing_virtual_machines/">Accessing Virtual Machines</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/startup_scripts/">Startup Scripts</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/service_objects/">Service objects</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/templates/">Templates</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/tekton_tasks/">KubeVirt Tekton</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/dns/">DNS records</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/boot_from_external_source/">Booting From External Source</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/confidential_computing/">Confidential computing</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../virtual_machines/vsock/">VSOCK</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Appendix</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">KubeVirt User-Guide</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+          <li>Operations &raquo;</li>
+      <li>KubeVirt Scheduler</li>
+    <li class="wy-breadcrumbs-aside">
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/scheduler.md"
+          class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="kubevirt-scheduler">KubeVirt Scheduler<a class="headerlink" href="#kubevirt-scheduler" title="Permanent link">&para;</a></h1>
+<p>Scheduling is the process of matching Pods/VMs to Nodes. By default, the scheduler used is 
+<a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/">kube-scheduler</a>.
+Further details can be found at <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/kube-scheduler/">Kubernetes Scheduler Documentation</a>.</p>
+<p>Custom schedulers can be used if the default scheduler does not satisfy your needs. For instance, you might want to schedule
+VMs using a load aware scheduler such as <a href="https://cloud.redhat.com/blog/improving-the-resource-efficiency-for-openshift-clusters-via-trimaran-schedulers">Trimaran Schedulers</a>.</p>
+<h2 id="creating-a-custom-scheduler">Creating a Custom Scheduler<a class="headerlink" href="#creating-a-custom-scheduler" title="Permanent link">&para;</a></h2>
+<p>KubeVirt is compatible with custom schedulers. The configuration steps are described in the <a href="https://kubernetes.io/docs/tasks/extend-kubernetes/configure-multiple-schedulers">Official Kubernetes 
+Documentation</a>.
+Please note, the Kubernetes version KubeVirt is running on and the Kubernetes version used to build the custom
+scheduler have to match.
+To get the Kubernetes version KubeVirt is running on, you can run the following command:</p>
+<pre><code class="language-shell">$ kubectl version
+Client Version: version.Info{Major:&quot;1&quot;, Minor:&quot;22&quot;, GitVersion:&quot;v1.22.13&quot;, GitCommit:&quot;a43c0904d0de10f92aa3956c74489c45e6453d6e&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2022-08-17T18:28:56Z&quot;, GoVersion:&quot;go1.16.15&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;}
+Server Version: version.Info{Major:&quot;1&quot;, Minor:&quot;22&quot;, GitVersion:&quot;v1.22.13&quot;, GitCommit:&quot;a43c0904d0de10f92aa3956c74489c45e6453d6e&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2022-08-17T18:23:45Z&quot;, GoVersion:&quot;go1.16.15&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;}
+</code></pre>
+<p>Pay attention to the <code>Server</code> line. 
+In this case, the Kubernetes version is <code>v1.22.13</code>.
+You have to checkout the matching Kubernetes version and <a href="https://kubernetes.io/docs/tasks/extend-kubernetes/configure-multiple-schedulers/#package-the-scheduler">build the Kubernetes project</a>:</p>
+<pre><code class="language-shell">$ cd kubernetes
+$ git checkout v1.22.13
+$ make
+</code></pre>
+<p>Then, you can follow the configuration steps described <a href="https://kubernetes.io/docs/tasks/extend-kubernetes/configure-multiple-schedulers/">here</a>.
+Additionally, the ClusterRole <code>system:kube-scheduler</code> needs permissions to use the verbs <code>watch</code>, <code>list</code> and <code>get</code> on StorageClasses.</p>
+<pre><code class="language-yaml">- apiGroups:                                                                                                   
+  - storage.k8s.io                                                                                             
+  resources:                                                                                                   
+  - storageclasses                                                                                             
+  verbs:                                                                                                       
+  - watch                                                                                                      
+  - list                                                                                                       
+  - get 
+</code></pre>
+<h2 id="scheduling-vms-with-the-custom-scheduler">Scheduling VMs with the Custom Scheduler<a class="headerlink" href="#scheduling-vms-with-the-custom-scheduler" title="Permanent link">&para;</a></h2>
+<p>The second scheduler should be up and running. You can check it with:</p>
+<pre><code class="language-shell">$ kubectl get all -n kube-system
+</code></pre>
+<p>The deployment <code>my-scheduler</code> should be up and running if everything is setup properly.
+In order to launch the VM using the custom scheduler, you need to set the <code>SchedulerName</code> in the VM's spec to <code>my-scheduler</code>.
+Here is an example VM definition:</p>
+<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-fedora
+spec:
+  running: true
+  template:
+    spec:
+      schedulerName: my-scheduler
+      domain:
+        devices:
+          disks:
+            - name: containerdisk
+              disk:
+                bus: virtio
+            - name: cloudinitdisk
+              disk:
+                bus: virtio
+          rng: {}
+        resources:
+          requests:
+            memory: 1Gi
+      terminationGracePeriodSeconds: 180
+      volumes:
+        - containerDisk:
+            image: quay.io/containerdisks/fedora:latest
+          name: containerdisk
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              chpasswd:
+                expire: false
+              password: fedora
+              user: fedora
+          name: cloudinitdisk
+</code></pre>
+<p>In case the specified <code>SchedulerName</code> does not match any existing scheduler, the <code>virt-launcher</code> pod will stay in state
+<a href="https://kubernetes.io/docs/tasks/extend-kubernetes/configure-multiple-schedulers/#verifying-that-the-pods-were-scheduled-using-the-desired-schedulers">Pending</a>, 
+until the specified scheduler can be found.
+You can check if the VM has been scheduled using the <code>my-scheduler</code> checking the <code>virt-launcher</code> pod events associated
+with the VM. The pod should have been scheduled with <code>my-scheduler</code>.</p>
+<pre><code class="language-shell">$ kubectl get pods
+NAME                             READY   STATUS    RESTARTS   AGE
+virt-launcher-vm-fedora-dpc87    2/2     Running   0          24m
+
+$ kubectl describe pod virt-launcher-vm-fedora-dpc87
+[...] 
+Events:
+  Type    Reason     Age   From              Message
+  ----    ------     ----  ----              -------
+  Normal  Scheduled  21m   my-scheduler  Successfully assigned default/virt-launcher-vm-fedora-dpc87 to node01
+[...]
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../node_overcommit/" class="btn btn-neutral float-left" title="Node overcommit"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../snapshot_restore_api/" class="btn btn-neutral float-right" title="Snapshot Restore API">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../node_overcommit/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../snapshot_restore_api/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme_extra.js" defer></script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
