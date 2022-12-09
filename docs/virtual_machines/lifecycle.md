@@ -84,10 +84,3 @@ Unpausing works similar to pausing:
     # OR
     $ virtctl unpause vmi testvm
 
-
-## Renaming a Virtual Machine
-
-> **Note:** Renaming a Virtual Machine is only possible when a Virtual Machine
-> is stopped, or has a 'Halted' run strategy.
-
-    $ virtctl rename vm_name new_vm_name
