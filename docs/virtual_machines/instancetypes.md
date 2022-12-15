@@ -323,6 +323,19 @@ kubectl get vms/cirros -o json | jq '.spec.instancetype, .spec.preference'
 }
 ```
 
+### Common Instance Types
+
+A set of common instance types and preferences are provided through the [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) project. To install all resources provided by the project simply build with `kustomize` and apply:
+
+```yaml
+$ kubectl kustomize https://github.com/kubevirt/common-instancetypes.git | kubectl apply -f -
+```
+
+Alternatively targets for each of the available custom resource types are available for example for `VirtualMachineClusterInstancetype`:
+
+```yaml
+$ kubectl kustomize https://github.com/kubevirt/common-instancetypes.git/VirtualMachineClusterInstancetypes | kubectl apply -f -
+```
 
 ## Examples
 
