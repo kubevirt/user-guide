@@ -168,6 +168,7 @@ The previous instancetype and preference CRDs are matched to a given [`VirtualMa
 * Name (string): Name of the resource being referenced
 * Kind (string):  Optional, defaults to the cluster wide CRD kinds of `VirtualMachineClusterInstancetype` or `VirtualMachineClusterPreference` if not provided
 * RevisionName (string) : Optional, name of a [ControllerRevision](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) containing a copy of the [`VirtualMachineInstancetypeSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachineinstancetypespec) or [`VirtualMachinePreferenceSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachinepreferencespec) taken when the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) is first started. See the [Versioning](#versioning) section below for more details on how and why this is captured.
+* InferFromVolume (string): Optional, see the `Inferring defaults from Volumes` section below for more details.
 
 ## Versioning
 
@@ -177,7 +178,7 @@ This is currently achieved by using [ControllerRevision](https://kubernetes.io/d
 
 
 ```yaml
-$ kubectl.sh apply -f examples/csmall.yaml -f examples/vm-cirros-csmall.yaml
+$ kubectl apply -f examples/csmall.yaml -f examples/vm-cirros-csmall.yaml
 virtualmachineinstancetype.instancetype.kubevirt.io/csmall created
 virtualmachine.kubevirt.io/vm-cirros-csmall created
 
@@ -238,8 +239,90 @@ virtualmachine.kubevirt.io "vm-cirros-csmall" deleted
 
 $ kubectl get controllerrevision/controllerrevision/vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1
 Error from server (NotFound): controllerrevisions.apps "vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1" not found
-
 ```
+
+### Inferring defaults from a Volume
+
+The `inferFromVolume` attribute of both the `InstancetypeMatcher` and `PreferenceMatcher` allows a user to request that defaults are inferred from a volume. When requested KubeVirt will look for the following labels on the underlying `PVC`, `DataSource` or `DataVolume` to determine the default name and kind:
+
+* `instancetype.kubevirt.io/default-instancetype`
+* `instancetype.kubevirt.io/default-instancetype-kind` (optional, defaults to `VirtualMachineClusterInstancetype`)
+* `instancetype.kubevirt.io/default-preference`
+* `instancetype.kubevirt.io/default-preference-kind` (optional, defaults to `VirtualMachineClusterPreference`)
+
+These values are then written into the appropriate matcher by the mutation webhook and used during validation before the `VirtualMachine` is formally accepted.
+
+Failure to find the referenced `Volume` or labels on an underlying resource will cause the request to be rejected.
+
+```yaml
+$ kubectl kustomize https://github.com/kubevirt/common-instancetypes.git | kubectl apply -f -
+[..]
+$ virtctl image-upload pvc cirros-pvc --size=1Gi --image-path=./cirros-0.5.2-x86_64-disk.img
+[..]
+$ kubectl label pvc/cirros-pvc \
+  instancetype.kubevirt.io/default-instancetype=server.tiny \
+  instancetype.kubevirt.io/default-preference=cirros
+[..]
+$ cat <<EOF | kubectl apply -f -
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataSource
+metadata:
+  name: cirros-datasource
+spec:
+  source:
+    pvc:
+      name: cirros-pvc
+      namespace: default
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: cirros
+spec:
+  instancetype:
+    inferFromVolume: cirros-volume
+  preference:
+    inferFromVolume: cirros-volume
+  running: false
+  dataVolumeTemplates:
+    - metadata:
+        name: cirros-datavolume
+      spec:
+        pvc:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          storageClassName: local
+        sourceRef:
+          kind: DataSource
+          name: cirros-datasource
+          namespace: default
+  template:
+    spec:
+      domain:
+        devices: {}
+      volumes:
+        - dataVolume:
+            name: cirros-datavolume
+          name: cirros-volume
+EOF
+[..]
+kubectl get vms/cirros -o json | jq '.spec.instancetype, .spec.preference'
+{
+  "kind": "virtualmachineclusterinstancetype",
+  "name": "server.tiny",
+  "revisionName": "cirros-server.tiny-76454433-3d82-43df-a7e5-586e48c71f68-1"
+}
+{
+  "kind": "virtualmachineclusterpreference",
+  "name": "cirros",
+  "revisionName": "cirros-cirros-85823ddc-9e8c-4d23-a94c-143571b5489c-1"
+}
+```
+
 
 ## Examples
 
