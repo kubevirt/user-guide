@@ -269,7 +269,7 @@ spec:
 </code></pre>
 <p>In order to set an infinite deadline you can set it to 0 (not recommended).</p>
 <h2 id="restoring-a-virtualmachine">Restoring a VirtualMachine<a class="headerlink" href="#restoring-a-virtualmachine" title="Permanent link">&para;</a></h2>
-<p>To restore the <code>VirtualMachine</code> <code>larry</code> from <code>VirtualMachineSnapshot</code> <code>snap-larry</code>, apply the following yaml.</p>
+<p>To restore the <code>VirtualMachine</code> <code>larry</code> from <code>VirtualMachineSnapshot</code> <code>snap-larry</code>, Stop the VM, wait for it to be stopped and then apply the following yaml.</p>
 <pre><code class="language-yaml">apiVersion: snapshot.kubevirt.io/v1alpha1
 kind: VirtualMachineRestore
 metadata:
