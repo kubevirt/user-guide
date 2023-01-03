@@ -84,7 +84,7 @@ In order to set an infinite deadline you can set it to 0 (not recommended).
 
 ## Restoring a VirtualMachine
 
-To restore the `VirtualMachine` `larry` from `VirtualMachineSnapshot` `snap-larry`, apply the following yaml.
+To restore the `VirtualMachine` `larry` from `VirtualMachineSnapshot` `snap-larry`, Stop the VM, wait for it to be stopped and then apply the following yaml.
 
 ```yaml
 apiVersion: snapshot.kubevirt.io/v1alpha1
