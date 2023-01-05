@@ -4,7 +4,7 @@
 
 * `v1alpha1` (Experimental) as of the [`v0.56.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.56.0) release
 * `v1alpha2` (Experimental) as of the [`v0.58.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.58.0) release
-  * This version now captures complete `VirtualMachine{Instancetype,ClusterInstnacetype,Preference,ClusterPreference}` objects within the created `ControllerRevisions`
+  * This version now captures complete `VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}` objects within the created `ControllerRevisions`
   * This version is backwardly compatible with `v1alpha1`, no modifications are required to existing instancetypes, preferences or controllerrevisions.
 
 ## Introduction
