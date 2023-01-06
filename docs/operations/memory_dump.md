@@ -57,6 +57,21 @@ $ virtctl memory-dump get my-vm --claim-name=new-pvc --create-claim
 
 A PVC with size big enough for the dump will be created. We can also request specific storage class and access mode with appropriate flags.
 
+#### Download memory dump
+By adding the `--output` flag, the memory will be dumped to the PVC and then downloaded to the given output path.
+
+```bash
+$ virtctl memory-dump get myvm --claim-name=memoryvolume --create-claim --output=memoryDump.dump.gz
+```
+
+For downloading the last memory dump from the PVC associated with the VM, without triggering another memory dump, use the memory dump download command.
+
+```bash
+$ virtctl memory-dump download myvm --output=memoryDump.dump.gz
+```
+
+For downloading a memory dump from a PVC already disassociated from the VM you can use the [virtctl vmexport command](https://github.com/kubevirt/user-guide/blob/main/docs/operations/export_api.md)
+
 ### Monitoring the memory dump
 Information regarding the memory dump process will be available on the VM's status section
 ```yaml
@@ -92,34 +107,8 @@ $ virtctl memory-dump remove my-vm
 ## Handle the memory dump
 Once the memory dump process is completed the PVC will hold the output.
 You can manage the dump in one of the following ways:
-- Create a consumer pod for the PVC that will mount the PVC as a device, then copy the content out from the pod using `kubectl cp`
-    yaml example:
-    ```yaml
-    apiVersion: v1
-    kind: Pod
-    metadata:
-      name: consumer-pod
-    spec:
-      volumes:
-        - name: my-pvc
-          persistentVolumeClaim:
-            claimName: my-pvc
-      containers:
-      - name: pod-container
-        image: busybox
-        command: ['/bin/sh', '-c', 'while true; do echo hello; sleep 2;done']
-        volumeMounts:
-          - mountPath: /dev/pvc
-            name: my-pvc
-    ```
-
-    kubectl cp example:
-    ```bash
-    $ kubectl cp default/consumer-pod:/dev/pvc/ memory-dump
-    ```
+- Download the memory dump
 - Create a pod with troubleshooting tools that will mount the PVC and inspect it within the pod.
-- Use [Export mechanism](https://github.com/kubevirt/user-guide/blob/main/docs/operations/export_api.md) by:
-    - Exporting the PVC
-    - Include the memory dump in the VMSnapshot and export the whole VMSnapshot (will include both the memory dump and the disks)
+- Include the memory dump in the VM Snapshot (will include both the memory dump and the disks) to save a snapshot of the VM in that point of time and inspect it when needed. (The VM Snapshot can be exported and downloaded).
 
 The output of the memory dump can be inspected with memory analysis tools for example [Volatility3](https://github.com/volatilityfoundation/volatility3)
