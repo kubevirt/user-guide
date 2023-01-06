@@ -251,6 +251,14 @@ spec:
 <pre><code class="language-bash">$ virtctl memory-dump get my-vm --claim-name=new-pvc --create-claim
 </code></pre>
 <p>A PVC with size big enough for the dump will be created. We can also request specific storage class and access mode with appropriate flags.</p>
+<h4 id="download-memory-dump">Download memory dump<a class="headerlink" href="#download-memory-dump" title="Permanent link">&para;</a></h4>
+<p>By adding the <code>--output</code> flag, the memory will be dumped to the PVC and then downloaded to the given output path.</p>
+<pre><code class="language-bash">$ virtctl memory-dump get myvm --claim-name=memoryvolume --create-claim --output=memoryDump.dump.gz
+</code></pre>
+<p>For downloading the last memory dump from the PVC associated with the VM, without triggering another memory dump, use the memory dump download command.</p>
+<pre><code class="language-bash">$ virtctl memory-dump download myvm --output=memoryDump.dump.gz
+</code></pre>
+<p>For downloading a memory dump from a PVC already disassociated from the VM you can use the <a href="https://github.com/kubevirt/user-guide/blob/main/docs/operations/export_api.md">virtctl vmexport command</a></p>
 <h3 id="monitoring-the-memory-dump">Monitoring the memory dump<a class="headerlink" href="#monitoring-the-memory-dump" title="Permanent link">&para;</a></h3>
 <p>Information regarding the memory dump process will be available on the VM's status section</p>
 <pre><code class="language-yaml">    memoryDumpRequest:
@@ -277,38 +285,9 @@ A memory dump annotation will be added to the PVC with the memory dump file name
 <h2 id="handle-the-memory-dump">Handle the memory dump<a class="headerlink" href="#handle-the-memory-dump" title="Permanent link">&para;</a></h2>
 <p>Once the memory dump process is completed the PVC will hold the output.
 You can manage the dump in one of the following ways:
-- Create a consumer pod for the PVC that will mount the PVC as a device, then copy the content out from the pod using <code>kubectl cp</code>
-    yaml example:
-    <code>yaml
-    apiVersion: v1
-    kind: Pod
-    metadata:
-      name: consumer-pod
-    spec:
-      volumes:
-        - name: my-pvc
-          persistentVolumeClaim:
-            claimName: my-pvc
-      containers:
-      - name: pod-container
-        image: busybox
-        command: ['/bin/sh', '-c', 'while true; do echo hello; sleep 2;done']
-        volumeMounts:
-          - mountPath: /dev/pvc
-            name: my-pvc</code></p>
-<pre><code>kubectl cp example:
-```bash
-$ kubectl cp default/consumer-pod:/dev/pvc/ memory-dump
-```
-</code></pre>
-<ul>
-<li>Create a pod with troubleshooting tools that will mount the PVC and inspect it within the pod.</li>
-<li>Use <a href="https://github.com/kubevirt/user-guide/blob/main/docs/operations/export_api.md">Export mechanism</a> by:<ul>
-<li>Exporting the PVC</li>
-<li>Include the memory dump in the VMSnapshot and export the whole VMSnapshot (will include both the memory dump and the disks)</li>
-</ul>
-</li>
-</ul>
+- Download the memory dump
+- Create a pod with troubleshooting tools that will mount the PVC and inspect it within the pod.
+- Include the memory dump in the VM Snapshot (will include both the memory dump and the disks) to save a snapshot of the VM in that point of time and inspect it when needed. (The VM Snapshot can be exported and downloaded).</p>
 <p>The output of the memory dump can be inspected with memory analysis tools for example <a href="https://github.com/volatilityfoundation/volatility3">Volatility3</a></p>
               
             </div>
