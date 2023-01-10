@@ -171,20 +171,90 @@
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">Web Console</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#managing-virtual-machines">Managing Virtual Machines</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#creating-a-virtual-machine-with-the-interactive-wizard">Creating a Virtual Machine with the Interactive Wizard</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#creating-a-virtual-machine-using-a-yaml-configuration-file">Creating a Virtual Machine Using a YAML Configuration File</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#editing-a-virtual-machine">Editing a Virtual Machine</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#editing-the-yaml-of-a-virtual-machine">Editing the YAML of a Virtual Machine</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#viewing-the-events-of-a-virtual-machine">Viewing the Events of a Virtual Machine</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#deleting-a-virtual-machine">Deleting a Virtual Machine</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#controlling-virtual-machines">Controlling Virtual Machines</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#starting-a-virtual-machine">Starting a Virtual Machine</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#stopping-a-virtual-machine">Stopping a Virtual Machine</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#restarting-a-virtual-machine">Restarting a Virtual Machine</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#live-migrating-a-virtual-machine">Live Migrating a Virtual Machine</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cancelling-a-virtual-machine-live-migration">Cancelling a Virtual Machine Live Migration</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#accessing-virtual-machine-consoles">Accessing Virtual Machine Consoles</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#virtual-machine-console-sessions">Virtual Machine Console Sessions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#connecting-to-the-serial-console">Connecting to the Serial Console</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#connecting-to-the-vnc-console">Connecting to the VNC Console</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#using-desktop-viewer-to-connect-to-rdp-console-windows-only">Using Desktop Viewer to connect to RDP Console (Windows only)</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#managing-virtual-machine-nics">Managing Virtual Machine NICs</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#creating-a-nic-for-a-virtual-machine">Creating a NIC for a Virtual Machine</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#deleting-a-nic-from-a-virtual-machine">Deleting a NIC from a Virtual Machine</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#managing-virtual-machine-disks">Managing Virtual Machine Disks</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#creating-a-disk-for-a-virtual-machine">Creating a Disk for a Virtual Machine</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#deleting-a-disk-from-a-virtual-machine">Deleting a Disk from a Virtual Machine</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#virtual-machine-templates-in-the-web-console">Virtual Machine Templates in the Web Console</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#creating-a-virtual-machine-template-with-the-interactive-wizard">Creating a Virtual Machine Template with the Interactive Wizard</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#editing-the-yaml-of-a-virtual-machine-template">Editing the YAML of a Virtual Machine Template</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#deleting-a-virtual-machine-template">Deleting a Virtual Machine Template</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#virtual-machine-wizard-fields">Virtual Machine Wizard Fields</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#virtual-machine-template-wizard-fields">Virtual Machine Template Wizard Fields</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cloud-init-fields">Cloud-init Fields</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#networking-fields">Networking Fields</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#storage-fields">Storage Fields</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#virtual-machine-actions">Virtual Machine Actions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pxe-booting-with-a-specified-mac-address">PXE Booting with a Specified MAC Address</a>
+    </li>
+        </ul>
     </li>
     </ul>
                 </li>
@@ -1311,7 +1381,7 @@ virtualmachineinstance.kubevirt.io "vmi-pxe-boot" created
       <script src="../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
-            SphinxRtdTheme.Navigation.enable(true);
+            SphinxRtdTheme.Navigation.enable(false);
         };
     </script>
 

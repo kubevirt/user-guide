@@ -149,8 +149,32 @@
                   <li class="toctree-l1 current"><a class="reference internal current" href="./">Accessing Virtual Machines</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#graphical-and-serial-console-access">Graphical and Serial Console Access</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#accessing-the-serial-console">Accessing the Serial Console</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#accessing-the-graphical-console-vnc">Accessing the Graphical Console (VNC)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#debugging-console-access">Debugging console access</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#ssh-access">SSH Access</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#static-ssh-public-key-injection-via-cloud-init">Static SSH public key injection via cloud-init</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#dynamic-ssh-public-key-injection-via-qemu-guest-agent">Dynamic SSH public key injection via qemu-guest-agent</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#accessing-the-vmi-using-virtctl">Accessing the VMI using virtctl</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#using-virtctl-as-proxy">Using virtctl as proxy</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#example">Example</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#rbac-permissions-for-consolevncssh-access">RBAC permissions for Console/VNC/SSH access</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
     </li>
     </ul>
                   </li>
@@ -573,7 +597,7 @@ using a <code>RoleBinding</code> that targets a single namespace.</p>
       <script src="../../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
-            SphinxRtdTheme.Navigation.enable(true);
+            SphinxRtdTheme.Navigation.enable(false);
         };
     </script>
 

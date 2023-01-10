@@ -131,12 +131,122 @@
                   <li class="toctree-l1 current"><a class="reference internal current" href="./">Disks and Volumes</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#disks">Disks</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#lun">lun</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#disk">disk</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#floppy">floppy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cdrom">cdrom</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#volumes">Volumes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#cloudinitnocloud">cloudInitNoCloud</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cloudinitconfigdrive">cloudInitConfigDrive</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#persistentvolumeclaim">persistentVolumeClaim</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#datavolume">dataVolume</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#datavolume-vm-behavior">DataVolume VM Behavior</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#datavolume-vmi-behavior">DataVolume VMI Behavior</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#enabling-datavolume-support">Enabling DataVolume support.</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ephemeral">ephemeral</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#containerdisk">containerDisk</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#when-to-use-a-containerdisk">When to use a containerDisk</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#when-not-to-use-a-containerdisk">When Not to use a containerDisk</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#containerdisk-workflow-example">containerDisk Workflow Example</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#custom-disk-image-path">Custom disk image path</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#emptydisk">emptyDisk</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#when-to-use-an-emptydisk">When to use an emptyDisk</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#hostdisk">hostDisk</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configmap">configMap</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#secret">secret</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#serviceaccount">serviceAccount</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#downwardmetrics">downwardMetrics</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#high-performance-features">High Performance Features</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#iothreads">IOThreads</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#shared">Shared</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#auto">Auto</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#iothreads-with-dedicated-pinned-cpus">IOThreads with Dedicated (pinned) CPUs</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#iothreads-with-qemu-emulator-thread-and-dedicated-pinned-cpus">IOThreads with QEMU Emulator thread and Dedicated (pinned) CPUs</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#shared-iothreads">Shared IOThreads</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#auto-iothreads">Auto IOThreads</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#virtio-block-multi-queue">Virtio Block Multi-Queue</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#example">Example</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#disk-device-cache">Disk device cache</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#disk-sharing">Disk sharing</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#sharing-directories-with-vms">Sharing Directories with VMs</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#sharing-persistent-volume-claims">Sharing Persistent Volume Claims</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#cluster-configuration">Cluster Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#configuration-inside-the-vm">Configuration Inside the VM</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sharing-node-directories">Sharing Node Directories</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#configuration-inside-the-node">Configuration Inside the Node</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cluster-configuration_1">Cluster Configuration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#configuration-inside-the-vm_1">Configuration Inside the VM</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
     </li>
     </ul>
                   </li>
@@ -1750,7 +1860,7 @@ spec:
       <script src="../../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
-            SphinxRtdTheme.Navigation.enable(true);
+            SphinxRtdTheme.Navigation.enable(false);
         };
     </script>
 

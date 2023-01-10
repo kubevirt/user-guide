@@ -133,10 +133,76 @@
                   <li class="toctree-l1 current"><a class="reference internal current" href="./">Interfaces and Networks</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#backend">Backend</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pod">pod</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#multus">multus</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#invalid-cnis-for-secondary-networks">Invalid CNIs for secondary networks</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#frontend">Frontend</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#ports">Ports</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bridge">bridge</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#slirp">slirp</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#masquerade">masquerade</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#masquerade-ipv4-and-ipv6-dual-stack-support">masquerade - IPv4 and IPv6 dual-stack support</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#masquerade-ipv6-single-stack-support">masquerade - IPv6 single-stack support</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#passt">passt</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#requirementsrecommendations">Requirements/Recommendations:</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#temporary-restrictions">Temporary restrictions:</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#virtio-net-multiqueue">virtio-net multiqueue</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#some-known-limitations">Some known limitations</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sriov">sriov</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#how-to-expose-sr-iov-vfs-to-kubevirt">How to expose SR-IOV VFs to KubeVirt</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#start-an-sr-iov-vm">Start an SR-IOV VM</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#macvtap">Macvtap</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#limitations">Limitations</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#how-to-expose-host-interface-to-the-macvtap-device-plugin">How to expose host interface to the macvtap device plugin</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#start-a-vm-with-macvtap-interfaces">Start a VM with macvtap interfaces</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#security">Security</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#mac-spoof-check">MAC spoof check</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#limitations_1">Limitations</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
     </li>
     </ul>
                   </li>
@@ -1266,7 +1332,7 @@ the node must support nftables and have the <code>nft</code> binary deployed.</l
       <script src="../../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
-            SphinxRtdTheme.Navigation.enable(true);
+            SphinxRtdTheme.Navigation.enable(false);
         };
     </script>
 

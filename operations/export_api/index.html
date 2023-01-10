@@ -112,12 +112,46 @@
     <li class="toctree-l2"><a class="reference internal" href="#export-persistent-volume-claim">Export Persistent Volume Claim</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#export-status-links">Export status links</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#kubevirt-content-type">KubeVirt content-type</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#archive-content-type">Archive content-type</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#format-types">Format types</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#internal-link-certificates">Internal link certificates</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#external-link-certificates">External link certificates</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#ttl-time-to-live-for-an-export">TTL (Time to live) for an Export</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#virtctl-integration-vmexport">virtctl integration: vmexport</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#create">Create</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#delete">Delete</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#download">Download</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ttl-time-to-live">TTL (Time to live)</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#use-cases">Use cases</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#clone-vm-from-one-cluster-to-another-cluster">Clone VM from one cluster to another cluster</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#download-a-vm-volume-locally-using-virtctl-vmexport">Download a VM volume locally using virtctl vmexport</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#performing-each-step-separately">Performing each step separately</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#performing-one-single-step">Performing one single step</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
     </li>
     </ul>
                   </li>
@@ -804,7 +838,7 @@ $ virtctl vmexport download vmexportname --vm=example-vm --output=/tmp/disk.img
       <script src="../../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
-            SphinxRtdTheme.Navigation.enable(true);
+            SphinxRtdTheme.Navigation.enable(false);
         };
     </script>
 
