@@ -1,4 +1,4 @@
-site_name: KubeVirt User-Guide
+site_name: KubeVirt user guide
 site_url: https://kubevirt.io/user-guide
 site_description: Documentation for KubeVirt
 docs_dir: docs
@@ -8,24 +8,34 @@ plugins:
   - search
   - awesome-pages
 
-repo_url: https://github.com/kubevirt/user-guide/
 remote_branch: main
 site_favicon: assets/favicon.ico
-edit_uri: edit/main/docs/
+edit_uri: https://github.com/kubevirt/user-guide/edit/main/docs/
 
 markdown_extensions:
-    - admonition
-    - toc:
-        permalink: true
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+extra_css:
+  - stylesheets/extra.css
 
 theme:
-  name: readthedocs
-  navigation_depth: 4
-  prev_next_buttons_location: bottom
-  include_search_page: true
-  search_index_only: false
-  titles_only: false
-  highlightjs: true
-  hljs_languages:
-    - yaml
-  sticky_navigation: false
+  name: material
+  logo: assets/KubeVirt_icon.png
+  favicon: assets/favicon32x32.png
+  palette:
+    primary: teal
+    accent: teal
+  features:
+    - navigation.sections  
+    - navigation.footer
+    - content.action.view
+    - content.action.edit

@@ -114,7 +114,7 @@ build: envvar
 	@echo "${GREEN}Makefile: Build mkdocs site${RESET}"
 	$(PYTHON) -m venv /tmp/venv
 	. /tmp/venv/bin/activate
-	$(PIP) install mkdocs mkdocs-awesome-pages-plugin mkdocs-htmlproofer-plugin
+	$(PIP) install mkdocs mkdocs-awesome-pages-plugin mkdocs-htmlproofer-plugin mkdocs-material
 	@echo
 	@echo '*** BEGIN cat mkdocs.yml ***'
 	@cat mkdocs.yml
