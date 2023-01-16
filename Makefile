@@ -199,7 +199,7 @@ run: | envvar stop
 		--name userguide \
 		-p ${LOCAL_SERVER_PORT}:8000 \
 		-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
-		-v /dev/null:/srv/Gemfile.lock:rw${SELINUX_ENABLED} \
+		-v /dev/null:/srv/Gemfile.lock:rw \
 		--mount type=tmpfs,destination=/srv/site \
 		${IMGTAG} \
 		/bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
