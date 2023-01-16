@@ -183,7 +183,14 @@ check_spelling: | envvar stop
 		echo; \
 	fi; \
 	if `jq -C  . yaspeller.json > /dev/null 2>&1`; then \
-		${CONTAINER_ENGINE} run -it --rm --name userguide -v ${PWD}:/srv:ro${SELINUX_ENABLED} -v ${PWD}/yaspeller.json:/srv/yaspeller.json:ro${SELINUX_ENABLED} --workdir=/srv ${IMGTAG} /bin/bash -c 'yaspeller -c /srv/yaspeller.json --only-errors --ignore-tags iframe,img,code,kbd,object,samp,script,style,var /srv' | sed -e 's/\/srv/./g'; \
+		${CONTAINER_ENGINE} run \
+			-it \
+			--rm \
+			--name userguide \
+			-v ${PWD}:/srv:ro${SELINUX_ENABLED} \
+			-v ${PWD}/yaspeller.json:/srv/yaspeller.json:ro${SELINUX_ENABLED} \
+			--workdir=/srv ${IMGTAG} \
+			/bin/bash -c 'yaspeller -c /srv/yaspeller.json --only-errors --ignore-tags iframe,img,code,kbd,object,samp,script,style,var /srv' | sed -e 's/\/srv/./g'; \
 	else \
 		echo "${RED}ERROR: yaspeller dictionary file does not exist or is invalid json ${RESET}"; \
 		exit 1; \
