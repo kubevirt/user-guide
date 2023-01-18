@@ -85,7 +85,7 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#using-bus-and-device-address">Using Bus and Device address</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a>
+    <li class="toctree-l3"><a class="reference internal" href="#requirements-for-virtctl-usbredir">Requirements for virtctl usbredir</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#usbredirect">usbredirect</a>
     </li>
@@ -252,17 +252,19 @@ Bus 001 Device 010: ID 0781:55ae SanDisk Corp. Extreme 55AE
 <p>Redirecting the integrated camera</p>
 <pre><code>virtctl usbredir 01-03 vmi-name
 </code></pre>
-<h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h3>
+<h3 id="requirements-for-virtctl-usbredir">Requirements for <code>virtctl usbredir</code><a class="headerlink" href="#requirements-for-virtctl-usbredir" title="Permanent link">&para;</a></h3>
+<p>The <code>virtctl</code> command uses an application called <code>usbredirect</code> to handle client's USB device by
+unplugging the device from the Client OS and channeling the communication between the device and the
+VMI.</p>
 <h4 id="usbredirect">usbredirect<a class="headerlink" href="#usbredirect" title="Permanent link">&para;</a></h4>
-<p>The <code>usbredirect</code> binary is used by virtctl to handle client's USB device. It comes from the
-<a href="">usbredir</a> project and is supported by most Linux distros. You can either fetch the <a href="https://www.spice-space.org/download/usbredir/">latest release</a>
-or <a href="">MSI installer</a> for Windows support.</p>
+<p>The <code>usbredirect</code> binary comes from the <a href="https://gitlab.freedesktop.org/spice/usbredir/">usbredir</a> project and is supported by most Linux distros.
+You can either fetch the <a href="https://www.spice-space.org/download/usbredir/">latest release</a> or <a href="https://www.spice-space.org/download/windows/usbredirect/">MSI installer</a> for Windows support.</p>
 <h4 id="permissions">Permissions<a class="headerlink" href="#permissions" title="Permanent link">&para;</a></h4>
 <p>Managing USB devices requires privileged access in most Operation Systems. The user running
 <code>virtctl usbredir</code> would need to be privileged or run it in a privileged manner (e.g: with <code>sudo</code>)</p>
 <h4 id="windows-support">Windows support<a class="headerlink" href="#windows-support" title="Permanent link">&para;</a></h4>
 <ul>
-<li>Redirecting USB devices on Windows requires the installation of <a href="">UsbDk</a>.</li>
+<li>Redirecting USB devices on Windows requires the installation of <a href="https://github.com/daynix/UsbDk">UsbDk</a>.</li>
 <li>Be sure to have <code>usbredirect</code> included in the PATH Enviroment Variable.</li>
 </ul>
               
