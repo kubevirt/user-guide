@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/operations/hugepages/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/operations/client_passthrough/" />
       <link rel="shortcut icon" href="../../assets/favicon.ico" />
-    <title>Hugepages support - KubeVirt User-Guide</title>
+    <title>Client Passthrough - KubeVirt User-Guide</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Hugepages support";
-        var mkdocs_page_input_path = "operations/hugepages.md";
-        var mkdocs_page_url = "/user-guide/operations/hugepages/";
+        var mkdocs_page_name = "Client Passthrough";
+        var mkdocs_page_input_path = "operations/client_passthrough.md";
+        var mkdocs_page_url = "/user-guide/operations/client_passthrough/";
       </script>
     
     <script src="../../js/jquery-3.6.0.min.js" defer></script>
@@ -77,17 +77,31 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../hotplug_volumes/">Hotplug Volumes</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../client_passthrough/">Client Passthrough</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Client Passthrough</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#usb-redirection">USB Redirection</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#using-vendor-and-product">Using Vendor and Product</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#using-bus-and-device-address">Using Bus and Device address</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#usbredirect">usbredirect</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#permissions">Permissions</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#windows-support">Windows support</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../snapshot_restore_api/">Snapshot Restore API</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Hugepages support</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#enable-feature-gate">Enable feature-gate</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#pre-allocate-hugepages-on-a-node">Pre-allocate hugepages on a node</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../hugepages/">Hugepages support</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../component_monitoring/">Component monitoring</a>
                   </li>
@@ -199,9 +213,9 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
           <li>Operations &raquo;</li>
-      <li>Hugepages support</li>
+      <li>Client Passthrough</li>
     <li class="wy-breadcrumbs-aside">
-        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/hugepages.md"
+        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/client_passthrough.md"
           class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
@@ -210,25 +224,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="hugepages-support">Hugepages support<a class="headerlink" href="#hugepages-support" title="Permanent link">&para;</a></h1>
-<p>For hugepages support you need at least Kubernetes version <code>1.9</code>.</p>
-<h2 id="enable-feature-gate">Enable feature-gate<a class="headerlink" href="#enable-feature-gate" title="Permanent link">&para;</a></h2>
-<p>To enable hugepages on Kubernetes, check the <a href="https://kubernetes.io/docs/tasks/manage-hugepages/scheduling-hugepages/">official
-documentation</a>.</p>
-<p>To enable hugepages on OKD, check the <a href="https://docs.openshift.org/3.9/scaling_performance/managing_hugepages.html#huge-pages-prerequisites">official
-documentation</a>.</p>
-<h2 id="pre-allocate-hugepages-on-a-node">Pre-allocate hugepages on a node<a class="headerlink" href="#pre-allocate-hugepages-on-a-node" title="Permanent link">&para;</a></h2>
-<p>To pre-allocate hugepages on boot time, you will need to specify
-hugepages under kernel boot parameters <code>hugepagesz=2M hugepages=64</code> and
-restart your machine.</p>
-<p>You can find more about hugepages under <a href="https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt">official
-documentation</a>.</p>
+                <h1 id="client-passthrough">Client Passthrough<a class="headerlink" href="#client-passthrough" title="Permanent link">&para;</a></h1>
+<p>KubeVirt included support for redirecting devices from the client's machine to the VMI with the
+support of virtctl command.</p>
+<h2 id="usb-redirection">USB Redirection<a class="headerlink" href="#usb-redirection" title="Permanent link">&para;</a></h2>
+<p>Support for redirection of client's USB device was introduced in release v0.44. This feature is not
+enabled by default. To enable it, add an empty <code>clientPassthrough</code> under devices, as such:</p>
+<pre><code class="language-yaml">spec:
+  domain:
+    devices:
+      clientPassthrough: {}
+</code></pre>
+<p>This configuration currently adds 4 USB slots to the VMI that can only be used with virtctl.</p>
+<p>There are two ways of redirecting the same USB devices: Either using its device's vendor and product
+information or the actual bus and device address information. In Linux, you can gather this info
+with <code>lsusb</code>, a redacted example below:</p>
+<pre><code class="language-shell">&gt; lsusb
+Bus 002 Device 008: ID 0951:1666 Kingston Technology DataTraveler 100 G3/G4/SE9 G2/50
+Bus 001 Device 003: ID 13d3:5406 IMC Networks Integrated Camera
+Bus 001 Device 010: ID 0781:55ae SanDisk Corp. Extreme 55AE
+</code></pre>
+<h3 id="using-vendor-and-product">Using Vendor and Product<a class="headerlink" href="#using-vendor-and-product" title="Permanent link">&para;</a></h3>
+<p>Redirecting the Kingston storage device.</p>
+<pre><code>virtctl usbredir 0951:1666 vmi-name
+</code></pre>
+<h3 id="using-bus-and-device-address">Using Bus and Device address<a class="headerlink" href="#using-bus-and-device-address" title="Permanent link">&para;</a></h3>
+<p>Redirecting the integrated camera</p>
+<pre><code>virtctl usbredir 01-03 vmi-name
+</code></pre>
+<h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h3>
+<h4 id="usbredirect">usbredirect<a class="headerlink" href="#usbredirect" title="Permanent link">&para;</a></h4>
+<p>The <code>usbredirect</code> binary is used by virtctl to handle client's USB device. It comes from the
+<a href="">usbredir</a> project and is supported by most Linux distros. You can either fetch the <a href="https://www.spice-space.org/download/usbredir/">latest release</a>
+or <a href="">MSI installer</a> for Windows support.</p>
+<h4 id="permissions">Permissions<a class="headerlink" href="#permissions" title="Permanent link">&para;</a></h4>
+<p>Managing USB devices requires privileged access in most Operation Systems. The user running
+<code>virtctl usbredir</code> would need to be privileged or run it in a privileged manner (e.g: with <code>sudo</code>)</p>
+<h4 id="windows-support">Windows support<a class="headerlink" href="#windows-support" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Redirecting USB devices on Windows requires the installation of <a href="">UsbDk</a>.</li>
+<li>Be sure to have <code>usbredirect</code> included in the PATH Enviroment Variable.</li>
+</ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../snapshot_restore_api/" class="btn btn-neutral float-left" title="Snapshot Restore API"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../component_monitoring/" class="btn btn-neutral float-right" title="Component monitoring">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../hotplug_volumes/" class="btn btn-neutral float-left" title="Hotplug Volumes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../snapshot_restore_api/" class="btn btn-neutral float-right" title="Snapshot Restore API">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -255,10 +297,10 @@ documentation</a>.</p>
         </span>
     
     
-      <span><a href="../snapshot_restore_api/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../hotplug_volumes/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../component_monitoring/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../snapshot_restore_api/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
