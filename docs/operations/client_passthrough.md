@@ -43,13 +43,16 @@ Redirecting the integrated camera
 virtctl usbredir 01-03 vmi-name
 ```
 
-### Requirements
+### Requirements for `virtctl usbredir`
+
+The `virtctl` command uses an application called `usbredirect` to handle client's USB device by
+unplugging the device from the Client OS and channeling the communication between the device and the
+VMI.
 
 #### usbredirect
 
-The `usbredirect` binary is used by virtctl to handle client's USB device. It comes from the
-[usbredir]() project and is supported by most Linux distros. You can either fetch the [latest release]
-or [MSI installer]() for Windows support.
+The `usbredirect` binary comes from the [usbredir][] project and is supported by most Linux distros.
+You can either fetch the [latest release][] or [MSI installer][] for Windows support.
 
 [usbredir]: https://gitlab.freedesktop.org/spice/usbredir/
 [latest release]: https://www.spice-space.org/download/usbredir/
@@ -62,7 +65,7 @@ Managing USB devices requires privileged access in most Operation Systems. The u
 
 #### Windows support
 
-- Redirecting USB devices on Windows requires the installation of [UsbDk]().
+- Redirecting USB devices on Windows requires the installation of [UsbDk][].
 - Be sure to have `usbredirect` included in the PATH Enviroment Variable.
 
 [UsbDk]: https://github.com/daynix/UsbDk
