@@ -1,255 +1,1502 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/architecture/" />
-      <link rel="shortcut icon" href="../assets/favicon.ico" />
-    <title>Architecture - KubeVirt User-Guide</title>
-    <link rel="stylesheet" href="../css/theme.css" />
-    <link rel="stylesheet" href="../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
     
-      <script>
-        // Current page data
-        var mkdocs_page_name = "Architecture";
-        var mkdocs_page_input_path = "architecture.md";
-        var mkdocs_page_url = "/user-guide/architecture/";
-      </script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for KubeVirt">
+      
+      
+      
+        <link rel="canonical" href="https://kubevirt.io/user-guide/architecture/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../quickstarts/">
+      
+      <link rel="icon" href="../assets/favicon32x32.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
     
-    <script src="../js/jquery-3.6.0.min.js" defer></script>
-    <!--[if lt IE 9]>
-      <script src="../js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/yaml.min.js"></script>
-      <script>hljs.initHighlightingOnLoad();</script> 
-</head>
+    
+      
+        <title>Architecture - KubeVirt user guide</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
 
-<body class="wy-body-for-nav" role="document">
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href=".." class="icon icon-home"> KubeVirt User-Guide
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="..">Welcome</a>
-                </li>
-              </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Architecture</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#stack">Stack</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#additional-services">Additional Services</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#application-layout">Application Layout</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#native-workloads">Native Workloads</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#the-razor">The Razor</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#virtualmachine">VirtualMachine</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#how-to-use-a-virtualmachine">How to use a VirtualMachine</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#starting-and-stopping">Starting and stopping</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#controller-status">Controller status</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#restarting">Restarting</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#fencing-considerations">Fencing considerations</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#exposing-as-a-service">Exposing as a Service</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#when-to-use-a-virtualmachine">When to use a VirtualMachine</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#when-api-stability-is-required-between-restarts">When API stability is required between restarts</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#when-config-updates-should-be-picked-up-on-the-next-restart">When config updates should be picked up on the next restart</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#when-you-want-to-let-the-cluster-manage-your-individual-virtualmachineinstance">When you want to let the cluster manage your individual VirtualMachineInstance</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#example">Example</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#kubectl-commandline-interactions">Kubectl commandline interactions</a>
-    </li>
-        </ul>
-    </li>
-    </ul>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../quickstarts/">Quickstarts</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../release_notes/">KubeVirt release notes</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Operations</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/installation/">Installation</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/updating_and_deletion/">Updating and deletion</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/basic_use/">Basic use</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/customize_components/">Customize components</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/api_validation/">API Validation</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/debug/">Debug</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/virtctl_client_tool/">virtctl Client Tool</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/live_migration/">Live Migration</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/hotplug_volumes/">Hotplug Volumes</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/client_passthrough/">Client Passthrough</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/snapshot_restore_api/">Snapshot Restore API</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/hugepages/">Hugepages support</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/component_monitoring/">Component monitoring</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/authorization/">Authorization</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/annotations_and_labels/">Annotations and labels</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/node_assignment/">Node assignment</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/node_maintenance/">Node maintenance</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/node_overcommit/">Node overcommit</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/unresponsive_nodes/">Unresponsive nodes</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/containerized_data_importer/">Containerized Data Importer</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/activating_feature_gates/">Activating feature gates</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/export_api/">Export API</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/clone_api/">Clone API</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/memory_dump/">Virtual machine memory dump</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/mediated_devices_configuration/">Mediated devices and virtual GPUs</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../operations/migration_policies/">Migration Policies</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Virtual machines</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/virtual_machine_instances/">Virtual Machines Instances</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/lifecycle/">Lifecycle</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/run_strategies/">Run Strategies</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/instancetypes/">Instancetypes and preferences</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/presets/">Presets</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/virtual_hardware/">Virtual hardware</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/dedicated_cpu_resources/">Dedicated CPU resources</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/numa/">NUMA</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/disks_and_volumes/">Disks and Volumes</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/interfaces_and_networks/">Interfaces and Networks</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/istio_service_mesh/">Istio service mesh</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/networkpolicy/">NetworkPolicy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/host-devices/">Host Devices Assignment</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/windows_virtio_drivers/">Windows virtio drivers</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/guest_operating_system_information/">Guest Operating System Information</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/guest_agent_information/">Guest Agent information</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/accessing_virtual_machines/">Accessing Virtual Machines</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/startup_scripts/">Startup Scripts</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/service_objects/">Service objects</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/templates/">Templates</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/tekton_tasks/">KubeVirt Tekton</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/replicaset/">VirtualMachineInstanceReplicaSet</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/dns/">DNS records</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/boot_from_external_source/">Booting From External Source</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/confidential_computing/">Confidential computing</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machines/vsock/">VSOCK</a>
-                  </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../web_console/">Web Console</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Appendix</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../appendix/contributing/">Contributing</a>
-                  </li>
-              </ul>
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="KubeVirt user guide" class="md-header__button md-logo" aria-label="KubeVirt user guide" data-md-component="logo">
+      
+  <img src="../assets/KubeVirt_icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            KubeVirt user guide
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture
+            
+          </span>
+        </div>
       </div>
     </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="..">KubeVirt User-Guide</a>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
         
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
       </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>Architecture</li>
-    <li class="wy-breadcrumbs-aside">
-        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/architecture.md"
-          class="icon icon-github"> Edit on GitHub</a>
-    </li>
-  </ul>
-  <hr/>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
               
-                <h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="KubeVirt user guide" class="md-nav__button md-logo" aria-label="KubeVirt user guide" data-md-component="logo">
+      
+  <img src="../assets/KubeVirt_icon.png" alt="logo">
+
+    </a>
+    KubeVirt user guide
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Architecture
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Architecture
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    Stack
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-services" class="md-nav__link">
+    Additional Services
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-layout" class="md-nav__link">
+    Application Layout
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#native-workloads" class="md-nav__link">
+    Native Workloads
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-razor" class="md-nav__link">
+    The Razor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#virtualmachine" class="md-nav__link">
+    VirtualMachine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-a-virtualmachine" class="md-nav__link">
+    How to use a VirtualMachine
+  </a>
+  
+    <nav class="md-nav" aria-label="How to use a VirtualMachine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starting-and-stopping" class="md-nav__link">
+    Starting and stopping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controller-status" class="md-nav__link">
+    Controller status
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restarting" class="md-nav__link">
+    Restarting
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fencing-considerations" class="md-nav__link">
+    Fencing considerations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exposing-as-a-service" class="md-nav__link">
+    Exposing as a Service
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-a-virtualmachine" class="md-nav__link">
+    When to use a VirtualMachine
+  </a>
+  
+    <nav class="md-nav" aria-label="When to use a VirtualMachine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-api-stability-is-required-between-restarts" class="md-nav__link">
+    When API stability is required between restarts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-config-updates-should-be-picked-up-on-the-next-restart" class="md-nav__link">
+    When config updates should be picked up on the next restart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-you-want-to-let-the-cluster-manage-your-individual-virtualmachineinstance" class="md-nav__link">
+    When you want to let the cluster manage your individual VirtualMachineInstance
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubectl-commandline-interactions" class="md-nav__link">
+    Kubectl commandline interactions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstarts/" class="md-nav__link">
+        Quickstarts
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release_notes/" class="md-nav__link">
+        KubeVirt release notes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" tabindex="0" aria-expanded="false">
+          Operations
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Operations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Operations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/updating_and_deletion/" class="md-nav__link">
+        Updating and deletion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/basic_use/" class="md-nav__link">
+        Basic use
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/customize_components/" class="md-nav__link">
+        Customize components
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/api_validation/" class="md-nav__link">
+        API Validation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/debug/" class="md-nav__link">
+        Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/virtctl_client_tool/" class="md-nav__link">
+        virtctl Client Tool
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/live_migration/" class="md-nav__link">
+        Live Migration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/hotplug_volumes/" class="md-nav__link">
+        Hotplug Volumes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/client_passthrough/" class="md-nav__link">
+        Client Passthrough
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/snapshot_restore_api/" class="md-nav__link">
+        Snapshot Restore API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/hugepages/" class="md-nav__link">
+        Hugepages support
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/component_monitoring/" class="md-nav__link">
+        Component monitoring
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/authorization/" class="md-nav__link">
+        Authorization
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/annotations_and_labels/" class="md-nav__link">
+        Annotations and labels
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/node_assignment/" class="md-nav__link">
+        Node assignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/node_maintenance/" class="md-nav__link">
+        Node maintenance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/node_overcommit/" class="md-nav__link">
+        Node overcommit
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/unresponsive_nodes/" class="md-nav__link">
+        Unresponsive nodes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/containerized_data_importer/" class="md-nav__link">
+        Containerized Data Importer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/activating_feature_gates/" class="md-nav__link">
+        Activating feature gates
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/export_api/" class="md-nav__link">
+        Export API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/clone_api/" class="md-nav__link">
+        Clone API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/memory_dump/" class="md-nav__link">
+        Virtual machine memory dump
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/mediated_devices_configuration/" class="md-nav__link">
+        Mediated devices and virtual GPUs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations/migration_policies/" class="md-nav__link">
+        Migration Policies
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" tabindex="0" aria-expanded="false">
+          Virtual machines
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Virtual machines" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Virtual machines
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/virtual_machine_instances/" class="md-nav__link">
+        Virtual Machines Instances
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/lifecycle/" class="md-nav__link">
+        Lifecycle
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/run_strategies/" class="md-nav__link">
+        Run Strategies
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/instancetypes/" class="md-nav__link">
+        Instancetypes and preferences
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/presets/" class="md-nav__link">
+        Presets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/virtual_hardware/" class="md-nav__link">
+        Virtual hardware
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/dedicated_cpu_resources/" class="md-nav__link">
+        Dedicated CPU resources
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/numa/" class="md-nav__link">
+        NUMA
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/disks_and_volumes/" class="md-nav__link">
+        Disks and Volumes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/interfaces_and_networks/" class="md-nav__link">
+        Interfaces and Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/istio_service_mesh/" class="md-nav__link">
+        Istio service mesh
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/networkpolicy/" class="md-nav__link">
+        NetworkPolicy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/host-devices/" class="md-nav__link">
+        Host Devices Assignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/windows_virtio_drivers/" class="md-nav__link">
+        Windows virtio drivers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/guest_operating_system_information/" class="md-nav__link">
+        Guest Operating System Information
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/guest_agent_information/" class="md-nav__link">
+        Guest Agent information
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/liveness_and_readiness_probes/" class="md-nav__link">
+        Liveness and Readiness Probes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/accessing_virtual_machines/" class="md-nav__link">
+        Accessing Virtual Machines
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/startup_scripts/" class="md-nav__link">
+        Startup Scripts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/service_objects/" class="md-nav__link">
+        Service objects
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/templates/" class="md-nav__link">
+        Templates
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/tekton_tasks/" class="md-nav__link">
+        KubeVirt Tekton
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/replicaset/" class="md-nav__link">
+        VirtualMachineInstanceReplicaSet
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/dns/" class="md-nav__link">
+        DNS records
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/boot_from_external_source/" class="md-nav__link">
+        Booting From External Source
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/confidential_computing/" class="md-nav__link">
+        Confidential computing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machines/vsock/" class="md-nav__link">
+        VSOCK
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../web_console/" class="md-nav__link">
+        Web Console
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" tabindex="0" aria-expanded="false">
+          Appendix
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Appendix" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Appendix
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../appendix/contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    Stack
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-services" class="md-nav__link">
+    Additional Services
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-layout" class="md-nav__link">
+    Application Layout
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#native-workloads" class="md-nav__link">
+    Native Workloads
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-razor" class="md-nav__link">
+    The Razor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#virtualmachine" class="md-nav__link">
+    VirtualMachine
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-a-virtualmachine" class="md-nav__link">
+    How to use a VirtualMachine
+  </a>
+  
+    <nav class="md-nav" aria-label="How to use a VirtualMachine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#starting-and-stopping" class="md-nav__link">
+    Starting and stopping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controller-status" class="md-nav__link">
+    Controller status
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restarting" class="md-nav__link">
+    Restarting
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fencing-considerations" class="md-nav__link">
+    Fencing considerations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exposing-as-a-service" class="md-nav__link">
+    Exposing as a Service
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use-a-virtualmachine" class="md-nav__link">
+    When to use a VirtualMachine
+  </a>
+  
+    <nav class="md-nav" aria-label="When to use a VirtualMachine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-api-stability-is-required-between-restarts" class="md-nav__link">
+    When API stability is required between restarts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-config-updates-should-be-picked-up-on-the-next-restart" class="md-nav__link">
+    When config updates should be picked up on the next restart
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-you-want-to-let-the-cluster-manage-your-individual-virtualmachineinstance" class="md-nav__link">
+    When you want to let the cluster manage your individual VirtualMachineInstance
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubectl-commandline-interactions" class="md-nav__link">
+    Kubectl commandline interactions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/architecture.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/architecture.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
+    </a>
+  
+
+
+
+<h1 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h1>
 <p>KubeVirt is built using a service oriented architecture and a choreography
 pattern.</p>
 <h2 id="stack">Stack<a class="headerlink" href="#stack" title="Permanent link">&para;</a></h2>
-<pre><code>  +---------------------+
+<div class="highlight"><pre><span></span><code>  +---------------------+
   | KubeVirt            |
 ~~+---------------------+~~
   | Orchestration (K8s) |
@@ -264,7 +1511,7 @@ pattern.</p>
 ~~+---------------------+~~
   | Physical            |
   +---------------------+
-</code></pre>
+</code></pre></div>
 <p>Users requiring virtualization services are speaking to the Virtualization API
 (see below) which in turn is speaking to the Kubernetes cluster to schedule
 requested Virtual Machine Instances (VMIs). Scheduling, networking, and storage 
@@ -400,21 +1647,21 @@ exclusive.</p>
 found in <a href="../virtual_machines/run_strategies/">Run Strategies</a></p>
 <h3 id="starting-and-stopping">Starting and stopping<a class="headerlink" href="#starting-and-stopping" title="Permanent link">&para;</a></h3>
 <p>After creating a VirtualMachine it can be switched on or off like this:</p>
-<pre><code># Start the virtual machine:
+<div class="highlight"><pre><span></span><code># Start the virtual machine:
 virtctl start vm
 
 # Stop the virtual machine:
 virtctl stop vm
-</code></pre>
+</code></pre></div>
 <p><code>kubectl</code> can be used too:</p>
-<pre><code># Start the virtual machine:
+<div class="highlight"><pre><span></span><code># Start the virtual machine:
 kubectl patch virtualmachine vm --type merge -p \
-    '{"spec":{"running":true}}'
+    &#39;{&quot;spec&quot;:{&quot;running&quot;:true}}&#39;
 
 # Stop the virtual machine:
 kubectl patch virtualmachine vm --type merge -p \
-    '{"spec":{"running":false}}'
-</code></pre>
+    &#39;{&quot;spec&quot;:{&quot;running&quot;:false}}&#39;
+</code></pre></div>
 <p>Find more details about <a href="../virtual_machines/lifecycle/">a VM's life-cycle in the relevant section</a></p>
 <h3 id="controller-status">Controller status<a class="headerlink" href="#controller-status" title="Permanent link">&para;</a></h3>
 <p>Once a VirtualMachineInstance is created, its state will be tracked via
@@ -428,11 +1675,11 @@ equals <code>true</code>, the VirtualMachine controller will set <code>status.re
 <p>Additionally, the <code>status.printableStatus</code> field provides high-level summary
 information about the state of the VirtualMachine. This information is also displayed
 when listing VirtualMachines using the CLI:</p>
-<pre><code>$ kubectl get virtualmachines
-NAME     AGE   STATUS    VOLUME
-vm1      4m    Running
-vm2      11s   Stopped
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ kubectl get virtualmachines
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>NAME     AGE   STATUS    VOLUME
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>vm1      4m    Running
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>vm2      11s   Stopped
+</code></pre></div>
 <p>Here's the list of states currently supported and their meanings.
 Note that states may be added/removed in future releases, so caution
 should be used if consumed by automated programs.</p>
@@ -451,17 +1698,17 @@ should be used if consumed by automated programs.</p>
 <p>A VirtualMachineInstance restart can be triggered by deleting the
 VirtualMachineInstance. This will also propagate configuration changes
 from the template in the VirtualMachine:</p>
-<pre><code># Restart the virtual machine (you delete the instance!):
+<div class="highlight"><pre><span></span><code># Restart the virtual machine (you delete the instance!):
 kubectl delete virtualmachineinstance vm
-</code></pre>
+</code></pre></div>
 <p>To restart a VirtualMachine named vm using virtctl:</p>
-<pre><code>$ virtctl restart vm
-</code></pre>
+<div class="highlight"><pre><span></span><code>$ virtctl restart vm
+</code></pre></div>
 <p>This would perform a normal restart for the VirtualMachineInstance and
 would reschedule the VirtualMachineInstance on a new virt-launcher Pod</p>
 <p>To force restart a VirtualMachine named vm using virtctl:</p>
-<pre><code>$ virtctl restart vm --force --grace-period=0
-</code></pre>
+<div class="highlight"><pre><span></span><code>$ virtctl restart vm --force --grace-period=0
+</code></pre></div>
 <p>This would try to perform a normal restart, and would also delete the
 virt-launcher Pod of the VirtualMachineInstance with setting
 GracePeriodSeconds to the seconds passed in the command.</p>
@@ -481,8 +1728,8 @@ available once the VirtualMachineInstance starts without additional
 interaction.</p>
 <p>For example, exposing SSH port (22) as a <code>ClusterIP</code> service using <code>virtctl</code>
 after the VirtualMachine was created, but before it started:</p>
-<pre><code>$ virtctl expose virtualmachine vmi-ephemeral --name vmiservice --port 27017 --target-port 22
-</code></pre>
+<div class="highlight"><pre><span></span><code>$ virtctl expose virtualmachine vmi-ephemeral --name vmiservice --port 27017 --target-port 22
+</code></pre></div>
 <p>All service exposure options that apply to a VirtualMachineInstance apply to a VirtualMachine.</p>
 <p>See <a href="../virtual_machines/service_objects/">Service Objects</a> for more details.</p>
 <h2 id="when-to-use-a-virtualmachine">When to use a VirtualMachine<a class="headerlink" href="#when-to-use-a-virtualmachine" title="Permanent link">&para;</a></h2>
@@ -511,191 +1758,223 @@ down if they were switched off. Restart policies may be added if needed.
 Please provide your use-case if you need this!</p>
 </blockquote>
 <h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
-<pre><code>apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  labels:
-    kubevirt.io/vm: vm-cirros
-  name: vm-cirros
-spec:
-  running: false
-  template:
-    metadata:
-      labels:
-        kubevirt.io/vm: vm-cirros
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-        machine:
-          type: &quot;&quot;
-        resources:
-          requests:
-            memory: 64M
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: containerdisk
-        containerDisk:
-          image: kubevirt/cirros-container-disk-demo:latest
-      - cloudInitNoCloud:
-          userDataBase64: IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK
-        name: cloudinitdisk
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>apiVersion: kubevirt.io/v1
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>kind: VirtualMachine
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>metadata:
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  labels:
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    kubevirt.io/vm: vm-cirros
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  name: vm-cirros
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>spec:
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  running: false
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  template:
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    metadata:
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>      labels:
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        kubevirt.io/vm: vm-cirros
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    spec:
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>      domain:
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        devices:
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>          disks:
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>          - disk:
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>              bus: virtio
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>            name: containerdisk
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>          - disk:
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>              bus: virtio
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>            name: cloudinitdisk
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        machine:
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>          type: &quot;&quot;
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>        resources:
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>          requests:
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>            memory: 64M
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>      terminationGracePeriodSeconds: 0
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>      volumes:
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>      - name: containerdisk
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        containerDisk:
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>          image: kubevirt/cirros-container-disk-demo:latest
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>      - cloudInitNoCloud:
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>          userDataBase64: IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>        name: cloudinitdisk
+</code></pre></div>
 <p>Saving this manifest into <code>vm.yaml</code> and submitting it to Kubernetes will
 create the controller instance:</p>
-<pre><code>$ kubectl create -f vm.yaml
-virtualmachine &quot;vm-cirros&quot; created
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$ kubectl create -f vm.yaml
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>virtualmachine &quot;vm-cirros&quot; created
+</code></pre></div>
 <p>Since <code>spec.running</code> is set to <code>false</code>, no vmi will be created:</p>
-<pre><code>$ kubectl get vmis
-No resources found.
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$ kubectl get vmis
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>No resources found.
+</code></pre></div>
 <p>Let's start the VirtualMachine:</p>
-<pre><code>$ virtctl start vm vm-cirros
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ virtctl start vm vm-cirros
+</code></pre></div>
 <p>As expected, a VirtualMachineInstance called <code>vm-cirros</code> got created:</p>
-<pre><code>$ kubectl describe vm vm-cirros
-Name:         vm-cirros
-Namespace:    default
-Labels:       kubevirt.io/vm=vm-cirros
-Annotations:  &lt;none&gt;
-API Version:  kubevirt.io/v1
-Kind:         VirtualMachine
-Metadata:
-  Cluster Name:
-  Creation Timestamp:  2018-04-30T09:25:08Z
-  Generation:          0
-  Resource Version:    6418
-  Self Link:           /apis/kubevirt.io/v1/namespaces/default/virtualmachines/vm-cirros
-  UID:                 60043358-4c58-11e8-8653-525500d15501
-Spec:
-  Running:  true
-  Template:
-    Metadata:
-      Creation Timestamp:  &lt;nil&gt;
-      Labels:
-        Kubevirt . Io / Ovmi:  vm-cirros
-    Spec:
-      Domain:
-        Devices:
-          Disks:
-            Disk:
-              Bus:        virtio
-            Name:         containerdisk
-            Volume Name:  containerdisk
-            Disk:
-              Bus:        virtio
-            Name:         cloudinitdisk
-            Volume Name:  cloudinitdisk
-        Machine:
-          Type:
-        Resources:
-          Requests:
-            Memory:                      64M
-      Termination Grace Period Seconds:  0
-      Volumes:
-        Name:  containerdisk
-        Registry Disk:
-          Image:  kubevirt/cirros-registry-disk-demo:latest
-        Cloud Init No Cloud:
-          User Data Base 64:  IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK
-        Name:                 cloudinitdisk
-Status:
-  Created:  true
-  Ready:    true
-Events:
-  Type    Reason            Age   From                              Message
-  ----    ------            ----  ----                              -------
-  Normal  SuccessfulCreate  15s   virtualmachine-controller  Created virtual machine: vm-cirros
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ kubectl describe vm vm-cirros
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Name:         vm-cirros
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Namespace:    default
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Labels:       kubevirt.io/vm=vm-cirros
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Annotations:  &lt;none&gt;
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>API Version:  kubevirt.io/v1
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Kind:         VirtualMachine
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Metadata:
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>  Cluster Name:
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>  Creation Timestamp:  2018-04-30T09:25:08Z
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>  Generation:          0
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>  Resource Version:    6418
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>  Self Link:           /apis/kubevirt.io/v1/namespaces/default/virtualmachines/vm-cirros
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>  UID:                 60043358-4c58-11e8-8653-525500d15501
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>Spec:
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>  Running:  true
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>  Template:
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    Metadata:
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>      Creation Timestamp:  &lt;nil&gt;
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>      Labels:
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>        Kubevirt . Io / Ovmi:  vm-cirros
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    Spec:
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>      Domain:
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>        Devices:
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>          Disks:
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>            Disk:
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>              Bus:        virtio
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>            Name:         containerdisk
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>            Volume Name:  containerdisk
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>            Disk:
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>              Bus:        virtio
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>            Name:         cloudinitdisk
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>            Volume Name:  cloudinitdisk
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>        Machine:
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>          Type:
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>        Resources:
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>          Requests:
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a>            Memory:                      64M
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>      Termination Grace Period Seconds:  0
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>      Volumes:
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>        Name:  containerdisk
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a>        Registry Disk:
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>          Image:  kubevirt/cirros-registry-disk-demo:latest
+<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a>        Cloud Init No Cloud:
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a>          User Data Base 64:  IyEvYmluL3NoCgplY2hvICdwcmludGVkIGZyb20gY2xvdWQtaW5pdCB1c2VyZGF0YScK
+<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a>        Name:                 cloudinitdisk
+<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a>Status:
+<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a>  Created:  true
+<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a>  Ready:    true
+<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a>Events:
+<a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a>  Type    Reason            Age   From                              Message
+<a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a>  ----    ------            ----  ----                              -------
+<a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a>  Normal  SuccessfulCreate  15s   virtualmachine-controller  Created virtual machine: vm-cirros
+</code></pre></div>
 <h3 id="kubectl-commandline-interactions">Kubectl commandline interactions<a class="headerlink" href="#kubectl-commandline-interactions" title="Permanent link">&para;</a></h3>
 <p>Whenever you want to manipulate the VirtualMachine through the
 commandline you can use the kubectl command. The following are examples
 demonstrating how to do it.</p>
-<pre><code>    # Define a virtual machine:
-    kubectl create -f vm.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>    # Define a virtual machine:
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    kubectl create -f vm.yaml
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    # Start the virtual machine:
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    kubectl patch virtualmachine vm --type merge -p \
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        &#39;{&quot;spec&quot;:{&quot;running&quot;:true}}&#39;
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    # Look at virtual machine status and associated events:
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    kubectl describe virtualmachine vm
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    # Look at the now created virtual machine instance status and associated events:
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    kubectl describe virtualmachineinstance vm
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>    # Stop the virtual machine instance:
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>    kubectl patch virtualmachine vm --type merge -p \
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>        &#39;{&quot;spec&quot;:{&quot;running&quot;:false}}&#39;
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>    # Restart the virtual machine (you delete the instance!):
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>    kubectl delete virtualmachineinstance vm
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>    # Implicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    kubectl delete virtualmachine vm
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>    # Explicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>    kubectl delete virtualmachine vm --cascade=true
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>    # Orphan delete (The running virtual machine is only detached, not deleted)
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a>    # Recreating the virtual machine would lead to the adoption of the virtual machine instance
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a>    kubectl delete virtualmachine vm --cascade=false
+</code></pre></div>
 
-    # Start the virtual machine:
-    kubectl patch virtualmachine vm --type merge -p \
-        '{&quot;spec&quot;:{&quot;running&quot;:true}}'
 
-    # Look at virtual machine status and associated events:
-    kubectl describe virtualmachine vm
 
-    # Look at the now created virtual machine instance status and associated events:
-    kubectl describe virtualmachineinstance vm
 
-    # Stop the virtual machine instance:
-    kubectl patch virtualmachine vm --type merge -p \
-        '{&quot;spec&quot;:{&quot;running&quot;:false}}'
 
-    # Restart the virtual machine (you delete the instance!):
-    kubectl delete virtualmachineinstance vm
-
-    # Implicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
-    kubectl delete virtualmachine vm
-
-    # Explicit cascade delete (first deletes the virtual machine and then the virtual machine instance)
-    kubectl delete virtualmachine vm --cascade=true
-
-    # Orphan delete (The running virtual machine is only detached, not deleted)
-    # Recreating the virtual machine would lead to the adoption of the virtual machine instance
-    kubectl delete virtualmachine vm --cascade=false
-</code></pre>
-              
+                
+              </article>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href=".." class="btn btn-neutral float-left" title="Welcome"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../quickstarts/" class="btn btn-neutral float-right" title="Quickstarts">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
+          
           
         </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
+        
+      </main>
+      
+        <footer class="md-footer">
+  
     
-        <span>
-          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
-        </span>
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Welcome" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Previous
+                </span>
+                Welcome
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../quickstarts/" class="md-footer__link md-footer__link--next" aria-label="Next: Quickstarts" rel="next">
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Next
+                </span>
+                Quickstarts
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
-    
-      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../quickstarts/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
 </div>
-    <script>var base_url = '..';</script>
-    <script src="../js/theme_extra.js" defer></script>
-    <script src="../js/theme.js" defer></script>
-      <script src="../search/main.js" defer></script>
-    <script defer>
-        window.onload = function () {
-            SphinxRtdTheme.Navigation.enable(false);
-        };
-    </script>
-
-</body>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.footer", "content.action.view", "content.action.edit"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
 </html>

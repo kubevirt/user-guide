@@ -1,240 +1,1454 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/accessing_virtual_machines/" />
-      <link rel="shortcut icon" href="../../assets/favicon.ico" />
-    <title>Accessing Virtual Machines - KubeVirt User-Guide</title>
-    <link rel="stylesheet" href="../../css/theme.css" />
-    <link rel="stylesheet" href="../../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
     
-      <script>
-        // Current page data
-        var mkdocs_page_name = "Accessing Virtual Machines";
-        var mkdocs_page_input_path = "virtual_machines/accessing_virtual_machines.md";
-        var mkdocs_page_url = "/user-guide/virtual_machines/accessing_virtual_machines/";
-      </script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for KubeVirt">
+      
+      
+      
+        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/accessing_virtual_machines/">
+      
+      
+        <link rel="prev" href="../liveness_and_readiness_probes/">
+      
+      
+        <link rel="next" href="../startup_scripts/">
+      
+      <link rel="icon" href="../../assets/favicon32x32.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
     
-    <script src="../../js/jquery-3.6.0.min.js" defer></script>
-    <!--[if lt IE 9]>
-      <script src="../../js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/yaml.min.js"></script>
-      <script>hljs.initHighlightingOnLoad();</script> 
-</head>
+    
+      
+        <title>Accessing Virtual Machines - KubeVirt user guide</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
+      
+      
 
-<body class="wy-body-for-nav" role="document">
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href="../.." class="icon icon-home"> KubeVirt User-Guide
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#accessing-virtual-machines" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../../quickstarts/">Quickstarts</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../../release_notes/">KubeVirt release notes</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Operations</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/installation/">Installation</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/updating_and_deletion/">Updating and deletion</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/basic_use/">Basic use</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/customize_components/">Customize components</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/api_validation/">API Validation</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/debug/">Debug</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/virtctl_client_tool/">virtctl Client Tool</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/live_migration/">Live Migration</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/hotplug_volumes/">Hotplug Volumes</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/client_passthrough/">Client Passthrough</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/snapshot_restore_api/">Snapshot Restore API</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/hugepages/">Hugepages support</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/component_monitoring/">Component monitoring</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/authorization/">Authorization</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/annotations_and_labels/">Annotations and labels</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/node_assignment/">Node assignment</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/node_maintenance/">Node maintenance</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/node_overcommit/">Node overcommit</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/unresponsive_nodes/">Unresponsive nodes</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/containerized_data_importer/">Containerized Data Importer</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/activating_feature_gates/">Activating feature gates</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/export_api/">Export API</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/clone_api/">Clone API</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/memory_dump/">Virtual machine memory dump</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/mediated_devices_configuration/">Mediated devices and virtual GPUs</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/migration_policies/">Migration Policies</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Virtual machines</span></p>
-              <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machine_instances/">Virtual Machines Instances</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../lifecycle/">Lifecycle</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../run_strategies/">Run Strategies</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../instancetypes/">Instancetypes and preferences</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../presets/">Presets</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_hardware/">Virtual hardware</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../dedicated_cpu_resources/">Dedicated CPU resources</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../numa/">NUMA</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../disks_and_volumes/">Disks and Volumes</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../interfaces_and_networks/">Interfaces and Networks</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../istio_service_mesh/">Istio service mesh</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../host-devices/">Host Devices Assignment</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../windows_virtio_drivers/">Windows virtio drivers</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../guest_operating_system_information/">Guest Operating System Information</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../guest_agent_information/">Guest Agent information</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
-                  </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Accessing Virtual Machines</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#graphical-and-serial-console-access">Graphical and Serial Console Access</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#accessing-the-serial-console">Accessing the Serial Console</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#accessing-the-graphical-console-vnc">Accessing the Graphical Console (VNC)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#debugging-console-access">Debugging console access</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#ssh-access">SSH Access</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#static-ssh-public-key-injection-via-cloud-init">Static SSH public key injection via cloud-init</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#dynamic-ssh-public-key-injection-via-qemu-guest-agent">Dynamic SSH public key injection via qemu-guest-agent</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#accessing-the-vmi-using-virtctl">Accessing the VMI using virtctl</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#using-virtctl-as-proxy">Using virtctl as proxy</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#example">Example</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#rbac-permissions-for-consolevncssh-access">RBAC permissions for Console/VNC/SSH access</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
-    </li>
-    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../startup_scripts/">Startup Scripts</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../service_objects/">Service objects</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../templates/">Templates</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../tekton_tasks/">KubeVirt Tekton</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../replicaset/">VirtualMachineInstanceReplicaSet</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../dns/">DNS records</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../boot_from_external_source/">Booting From External Source</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../confidential_computing/">Confidential computing</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../vsock/">VSOCK</a>
-                  </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Appendix</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
-                  </li>
-              </ul>
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="KubeVirt user guide" class="md-header__button md-logo" aria-label="KubeVirt user guide" data-md-component="logo">
+      
+  <img src="../../assets/KubeVirt_icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            KubeVirt user guide
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Accessing Virtual Machines
+            
+          </span>
+        </div>
       </div>
     </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../..">KubeVirt User-Guide</a>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
         
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
       </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-          <li>Virtual machines &raquo;</li>
-      <li>Accessing Virtual Machines</li>
-    <li class="wy-breadcrumbs-aside">
-        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/accessing_virtual_machines.md"
-          class="icon icon-github"> Edit on GitHub</a>
-    </li>
-  </ul>
-  <hr/>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
               
-                <h1 id="accessing-virtual-machines">Accessing Virtual Machines<a class="headerlink" href="#accessing-virtual-machines" title="Permanent link">&para;</a></h1>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="KubeVirt user guide" class="md-nav__button md-logo" aria-label="KubeVirt user guide" data-md-component="logo">
+      
+  <img src="../../assets/KubeVirt_icon.png" alt="logo">
+
+    </a>
+    KubeVirt user guide
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        Architecture
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstarts/" class="md-nav__link">
+        Quickstarts
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release_notes/" class="md-nav__link">
+        KubeVirt release notes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" tabindex="0" aria-expanded="false">
+          Operations
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Operations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Operations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/updating_and_deletion/" class="md-nav__link">
+        Updating and deletion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/basic_use/" class="md-nav__link">
+        Basic use
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/customize_components/" class="md-nav__link">
+        Customize components
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/api_validation/" class="md-nav__link">
+        API Validation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/debug/" class="md-nav__link">
+        Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/virtctl_client_tool/" class="md-nav__link">
+        virtctl Client Tool
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/live_migration/" class="md-nav__link">
+        Live Migration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/hotplug_volumes/" class="md-nav__link">
+        Hotplug Volumes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/client_passthrough/" class="md-nav__link">
+        Client Passthrough
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/snapshot_restore_api/" class="md-nav__link">
+        Snapshot Restore API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/hugepages/" class="md-nav__link">
+        Hugepages support
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/component_monitoring/" class="md-nav__link">
+        Component monitoring
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/authorization/" class="md-nav__link">
+        Authorization
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/annotations_and_labels/" class="md-nav__link">
+        Annotations and labels
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/node_assignment/" class="md-nav__link">
+        Node assignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/node_maintenance/" class="md-nav__link">
+        Node maintenance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/node_overcommit/" class="md-nav__link">
+        Node overcommit
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/unresponsive_nodes/" class="md-nav__link">
+        Unresponsive nodes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/containerized_data_importer/" class="md-nav__link">
+        Containerized Data Importer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/activating_feature_gates/" class="md-nav__link">
+        Activating feature gates
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/export_api/" class="md-nav__link">
+        Export API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/clone_api/" class="md-nav__link">
+        Clone API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/memory_dump/" class="md-nav__link">
+        Virtual machine memory dump
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/mediated_devices_configuration/" class="md-nav__link">
+        Mediated devices and virtual GPUs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/migration_policies/" class="md-nav__link">
+        Migration Policies
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" tabindex="0" aria-expanded="true">
+          Virtual machines
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Virtual machines" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Virtual machines
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machine_instances/" class="md-nav__link">
+        Virtual Machines Instances
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lifecycle/" class="md-nav__link">
+        Lifecycle
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../run_strategies/" class="md-nav__link">
+        Run Strategies
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instancetypes/" class="md-nav__link">
+        Instancetypes and preferences
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../presets/" class="md-nav__link">
+        Presets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_hardware/" class="md-nav__link">
+        Virtual hardware
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated_cpu_resources/" class="md-nav__link">
+        Dedicated CPU resources
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../numa/" class="md-nav__link">
+        NUMA
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../disks_and_volumes/" class="md-nav__link">
+        Disks and Volumes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interfaces_and_networks/" class="md-nav__link">
+        Interfaces and Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../istio_service_mesh/" class="md-nav__link">
+        Istio service mesh
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../networkpolicy/" class="md-nav__link">
+        NetworkPolicy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-devices/" class="md-nav__link">
+        Host Devices Assignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows_virtio_drivers/" class="md-nav__link">
+        Windows virtio drivers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guest_operating_system_information/" class="md-nav__link">
+        Guest Operating System Information
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guest_agent_information/" class="md-nav__link">
+        Guest Agent information
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../liveness_and_readiness_probes/" class="md-nav__link">
+        Liveness and Readiness Probes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Accessing Virtual Machines
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Accessing Virtual Machines
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#graphical-and-serial-console-access" class="md-nav__link">
+    Graphical and Serial Console Access
+  </a>
+  
+    <nav class="md-nav" aria-label="Graphical and Serial Console Access">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accessing-the-serial-console" class="md-nav__link">
+    Accessing the Serial Console
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-the-graphical-console-vnc" class="md-nav__link">
+    Accessing the Graphical Console (VNC)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugging-console-access" class="md-nav__link">
+    Debugging console access
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssh-access" class="md-nav__link">
+    SSH Access
+  </a>
+  
+    <nav class="md-nav" aria-label="SSH Access">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#static-ssh-public-key-injection-via-cloud-init" class="md-nav__link">
+    Static SSH public key injection via cloud-init
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-ssh-public-key-injection-via-qemu-guest-agent" class="md-nav__link">
+    Dynamic SSH public key injection via qemu-guest-agent
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-the-vmi-using-virtctl" class="md-nav__link">
+    Accessing the VMI using virtctl
+  </a>
+  
+    <nav class="md-nav" aria-label="Accessing the VMI using virtctl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-virtctl-as-proxy" class="md-nav__link">
+    Using virtctl as proxy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rbac-permissions-for-consolevncssh-access" class="md-nav__link">
+    RBAC permissions for Console/VNC/SSH access
+  </a>
+  
+    <nav class="md-nav" aria-label="RBAC permissions for Console/VNC/SSH access">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-default-rbac-cluster-roles" class="md-nav__link">
+    Using default RBAC cluster roles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-custom-rbac-cluster-role" class="md-nav__link">
+    Using custom RBAC cluster role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../startup_scripts/" class="md-nav__link">
+        Startup Scripts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service_objects/" class="md-nav__link">
+        Service objects
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../templates/" class="md-nav__link">
+        Templates
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tekton_tasks/" class="md-nav__link">
+        KubeVirt Tekton
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../replicaset/" class="md-nav__link">
+        VirtualMachineInstanceReplicaSet
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dns/" class="md-nav__link">
+        DNS records
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boot_from_external_source/" class="md-nav__link">
+        Booting From External Source
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../confidential_computing/" class="md-nav__link">
+        Confidential computing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vsock/" class="md-nav__link">
+        VSOCK
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web_console/" class="md-nav__link">
+        Web Console
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" tabindex="0" aria-expanded="false">
+          Appendix
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Appendix" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Appendix
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#graphical-and-serial-console-access" class="md-nav__link">
+    Graphical and Serial Console Access
+  </a>
+  
+    <nav class="md-nav" aria-label="Graphical and Serial Console Access">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#accessing-the-serial-console" class="md-nav__link">
+    Accessing the Serial Console
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-the-graphical-console-vnc" class="md-nav__link">
+    Accessing the Graphical Console (VNC)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugging-console-access" class="md-nav__link">
+    Debugging console access
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ssh-access" class="md-nav__link">
+    SSH Access
+  </a>
+  
+    <nav class="md-nav" aria-label="SSH Access">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#static-ssh-public-key-injection-via-cloud-init" class="md-nav__link">
+    Static SSH public key injection via cloud-init
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-ssh-public-key-injection-via-qemu-guest-agent" class="md-nav__link">
+    Dynamic SSH public key injection via qemu-guest-agent
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-the-vmi-using-virtctl" class="md-nav__link">
+    Accessing the VMI using virtctl
+  </a>
+  
+    <nav class="md-nav" aria-label="Accessing the VMI using virtctl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-virtctl-as-proxy" class="md-nav__link">
+    Using virtctl as proxy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rbac-permissions-for-consolevncssh-access" class="md-nav__link">
+    RBAC permissions for Console/VNC/SSH access
+  </a>
+  
+    <nav class="md-nav" aria-label="RBAC permissions for Console/VNC/SSH access">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-default-rbac-cluster-roles" class="md-nav__link">
+    Using default RBAC cluster roles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-custom-rbac-cluster-role" class="md-nav__link">
+    Using custom RBAC cluster role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/accessing_virtual_machines.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/accessing_virtual_machines.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
+    </a>
+  
+
+
+
+<h1 id="accessing-virtual-machines">Accessing Virtual Machines<a class="headerlink" href="#accessing-virtual-machines" title="Permanent link">&para;</a></h1>
 <h2 id="graphical-and-serial-console-access">Graphical and Serial Console Access<a class="headerlink" href="#graphical-and-serial-console-access" title="Permanent link">&para;</a></h2>
 <p>Once a virtual machine is started you are able to connect to the consoles it
 exposes. Usually there are two types of consoles:</p>
@@ -250,26 +1464,26 @@ access to the VirtualMachineInstance.</p>
 <h3 id="accessing-the-serial-console">Accessing the Serial Console<a class="headerlink" href="#accessing-the-serial-console" title="Permanent link">&para;</a></h3>
 <p>The serial console of a virtual machine can be accessed by using the <code>console</code>
 command:</p>
-<pre><code class="language-shell">virtctl console testvm
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>virtctl<span class="w"> </span>console<span class="w"> </span>testvm
+</code></pre></div>
 <h3 id="accessing-the-graphical-console-vnc">Accessing the Graphical Console (VNC)<a class="headerlink" href="#accessing-the-graphical-console-vnc" title="Permanent link">&para;</a></h3>
 <p>To access the graphical console of a virtual machine the VNC protocol is
 typically used. This requires <code>remote-viewer</code> to be installed. Once the
 tool is installed, you can access the graphical console using:</p>
-<pre><code class="language-shell">virtctl vnc testvm
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>virtctl<span class="w"> </span>vnc<span class="w"> </span>testvm
+</code></pre></div>
 <p>If you only want to open a vnc-proxy without executing the <code>remote-viewer</code>
 command, it can be accomplished with:</p>
-<pre><code class="language-shell">virtctl vnc --proxy-only testvm
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>virtctl<span class="w"> </span>vnc<span class="w"> </span>--proxy-only<span class="w"> </span>testvm
+</code></pre></div>
 <p>This would print the port number on your machine where you can manually connect
 using any VNC viewer.</p>
 <h3 id="debugging-console-access">Debugging console access<a class="headerlink" href="#debugging-console-access" title="Permanent link">&para;</a></h3>
 <p>If the connection fails, you can use the <code>-v</code> flag to get more verbose
 output from both <code>virtctl</code> and the <code>remote-viewer</code> tool to troubleshoot the
 problem.</p>
-<pre><code class="language-shell">virtctl vnc testvm -v 4
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>virtctl<span class="w"> </span>vnc<span class="w"> </span>testvm<span class="w"> </span>-v<span class="w"> </span><span class="m">4</span>
+</code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> If you are using virtctl via SSH on a remote machine, you need to
 forward the X session to your machine. Look up the -X and -Y flags of <code>ssh</code> if
@@ -303,9 +1517,9 @@ placing the SSH public key into a Kubernetes <code>Secret</code>. This allows ke
 application data in the cloud-init user data separate from the credentials
 used to access the virtual machine.</p>
 <p>A Kubernetes <code>Secret</code> can be created from an SSH public key like this:</p>
-<pre><code class="language-shell"># Place SSH public key into a Secret
-kubectl create secret generic my-pub-key --from-file=key1=id_rsa.pub
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Place SSH public key into a Secret</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-pub-key<span class="w"> </span>--from-file<span class="o">=</span><span class="nv">key1</span><span class="o">=</span>id_rsa.pub
+</code></pre></div>
 <p>The <code>Secret</code> containing the public key is then assigned to a virtual machine
 using the access credentials API with the <code>configDrive</code> propagation method.</p>
 <p>KubeVirt injects the SSH public key into the virtual machine by using the
@@ -314,49 +1528,49 @@ the application user data and user credentials.</p>
 <blockquote>
 <p>Note: The cloud-init <code>userData</code> is not touched.</p>
 </blockquote>
-<pre><code class="language-shell"># Create a VM referencing the Secret using propagation method configDrive
-kubectl create -f - &lt;&lt;EOF
-apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  name: testvm
-spec:
-  running: true
-  template:
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-          rng: {}
-        resources:
-          requests:
-            memory: 1024M
-      terminationGracePeriodSeconds: 0
-      accessCredentials:
-      - sshPublicKey:
-          source:
-            secret:
-              secretName: my-pub-key
-          propagationMethod:
-            configDrive: {}
-      volumes:
-      - containerDisk:
-          image: quay.io/containerdisks/fedora:latest
-        name: containerdisk
-      - cloudInitConfigDrive:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
-        name: cloudinitdisk
-EOF
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Create a VM referencing the Secret using propagation method configDrive</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="s">apiVersion: kubevirt.io/v1</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="s">kind: VirtualMachine</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="s">metadata:</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="s">  name: testvm</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="s">spec:</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="s">  running: true</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="s">  template:</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="s">    spec:</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="s">      domain:</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="s">        devices:</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="s">          disks:</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="s">          - disk:</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="s">              bus: virtio</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="s">            name: containerdisk</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="s">          - disk:</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="s">              bus: virtio</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="s">            name: cloudinitdisk</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="s">          rng: {}</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="s">        resources:</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="s">          requests:</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="s">            memory: 1024M</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="s">      terminationGracePeriodSeconds: 0</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="s">      accessCredentials:</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="s">      - sshPublicKey:</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="s">          source:</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="s">            secret:</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="s">              secretName: my-pub-key</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="s">          propagationMethod:</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="s">            configDrive: {}</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="s">      volumes:</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="s">      - containerDisk:</span>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="s">          image: quay.io/containerdisks/fedora:latest</span>
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="s">        name: containerdisk</span>
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="s">      - cloudInitConfigDrive:</span>
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="s">          userData: |-</span>
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="s">            #cloud-config</span>
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a><span class="s">            password: fedora</span>
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="s">            chpasswd: { expire: False }</span>
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="s">        name: cloudinitdisk</span>
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="s">EOF</span>
+</code></pre></div>
 <h3 id="dynamic-ssh-public-key-injection-via-qemu-guest-agent">Dynamic SSH public key injection via qemu-guest-agent<a class="headerlink" href="#dynamic-ssh-public-key-injection-via-qemu-guest-agent" title="Permanent link">&para;</a></h3>
 <p>KubeVirt supports dynamic injection of SSH public keys at runtime by using
 the qemu-guest-agent. This is configured by using the access
@@ -377,64 +1591,64 @@ attached to the virtual machine via the access credentials API with the
 the <code>Secret</code> at any time, which will result in the changes getting applied
 to the running virtual machine immediately. The <code>Secret</code> may also contain
 multiple SSH public keys.</p>
-<pre><code class="language-shell"># Place SSH public key into a secret
-kubectl create secret generic my-pub-key --from-file=key1=id_rsa.pub
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Place SSH public key into a secret</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-pub-key<span class="w"> </span>--from-file<span class="o">=</span><span class="nv">key1</span><span class="o">=</span>id_rsa.pub
+</code></pre></div>
 <p>Now reference this secret in the <code>VirtualMachine</code> spec with the access
 credentials API using
 <code>qemuGuestAgent</code> propagation.</p>
-<pre><code class="language-shell"># Create a VM referencing the Secret using propagation method qemuGuestAgent
-kubectl create -f - &lt;&lt;EOF
-apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  name: testvm
-spec:
-  running: true
-  template:
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-          rng: {}
-        resources:
-          requests:
-            memory: 1024M
-      terminationGracePeriodSeconds: 0
-      accessCredentials:
-      - sshPublicKey:
-          source:
-            secret:
-              secretName: my-pub-key
-          propagationMethod:
-            qemuGuestAgent:
-              users:
-              - fedora
-      volumes:
-      - containerDisk:
-          image: quay.io/containerdisks/fedora:latest
-        name: containerdisk
-      - cloudInitConfigDrive:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
-            # Disable SELinux for now, so qemu-guest-agent can write the authorized_keys file
-            # The selinux-policy is too restrictive currently, see open bugs:
-            #   - https://bugzilla.redhat.com/show_bug.cgi?id=1917024
-            #   - https://bugzilla.redhat.com/show_bug.cgi?id=2028762
-            #   - https://bugzilla.redhat.com/show_bug.cgi?id=2057310
-            bootcmd:
-              - setenforce 0
-        name: cloudinitdisk
-EOF
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Create a VM referencing the Secret using propagation method qemuGuestAgent</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>-<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="s">apiVersion: kubevirt.io/v1</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="s">kind: VirtualMachine</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s">metadata:</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s">  name: testvm</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="s">spec:</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="s">  running: true</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="s">  template:</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="s">    spec:</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="s">      domain:</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="s">        devices:</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="s">          disks:</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="s">          - disk:</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="s">              bus: virtio</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="s">            name: containerdisk</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="s">          - disk:</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="s">              bus: virtio</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="s">            name: cloudinitdisk</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="s">          rng: {}</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="s">        resources:</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="s">          requests:</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="s">            memory: 1024M</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="s">      terminationGracePeriodSeconds: 0</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="s">      accessCredentials:</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="s">      - sshPublicKey:</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="s">          source:</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="s">            secret:</span>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="s">              secretName: my-pub-key</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="s">          propagationMethod:</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="s">            qemuGuestAgent:</span>
+<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="s">              users:</span>
+<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a><span class="s">              - fedora</span>
+<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="s">      volumes:</span>
+<a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="s">      - containerDisk:</span>
+<a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a><span class="s">          image: quay.io/containerdisks/fedora:latest</span>
+<a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a><span class="s">        name: containerdisk</span>
+<a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a><span class="s">      - cloudInitConfigDrive:</span>
+<a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a><span class="s">          userData: |-</span>
+<a id="__codelineno-7-40" name="__codelineno-7-40" href="#__codelineno-7-40"></a><span class="s">            #cloud-config</span>
+<a id="__codelineno-7-41" name="__codelineno-7-41" href="#__codelineno-7-41"></a><span class="s">            password: fedora</span>
+<a id="__codelineno-7-42" name="__codelineno-7-42" href="#__codelineno-7-42"></a><span class="s">            chpasswd: { expire: False }</span>
+<a id="__codelineno-7-43" name="__codelineno-7-43" href="#__codelineno-7-43"></a><span class="s">            # Disable SELinux for now, so qemu-guest-agent can write the authorized_keys file</span>
+<a id="__codelineno-7-44" name="__codelineno-7-44" href="#__codelineno-7-44"></a><span class="s">            # The selinux-policy is too restrictive currently, see open bugs:</span>
+<a id="__codelineno-7-45" name="__codelineno-7-45" href="#__codelineno-7-45"></a><span class="s">            #   - https://bugzilla.redhat.com/show_bug.cgi?id=1917024</span>
+<a id="__codelineno-7-46" name="__codelineno-7-46" href="#__codelineno-7-46"></a><span class="s">            #   - https://bugzilla.redhat.com/show_bug.cgi?id=2028762</span>
+<a id="__codelineno-7-47" name="__codelineno-7-47" href="#__codelineno-7-47"></a><span class="s">            #   - https://bugzilla.redhat.com/show_bug.cgi?id=2057310</span>
+<a id="__codelineno-7-48" name="__codelineno-7-48" href="#__codelineno-7-48"></a><span class="s">            bootcmd:</span>
+<a id="__codelineno-7-49" name="__codelineno-7-49" href="#__codelineno-7-49"></a><span class="s">              - setenforce 0</span>
+<a id="__codelineno-7-50" name="__codelineno-7-50" href="#__codelineno-7-50"></a><span class="s">        name: cloudinitdisk</span>
+<a id="__codelineno-7-51" name="__codelineno-7-51" href="#__codelineno-7-51"></a><span class="s">EOF</span>
+</code></pre></div>
 <h3 id="accessing-the-vmi-using-virtctl">Accessing the VMI using virtctl<a class="headerlink" href="#accessing-the-vmi-using-virtctl" title="Permanent link">&para;</a></h3>
 <p>The user can create a websocket backed network tunnel to a port inside the
 instance by using the <code>virtualmachineinstances/portforward</code> subresource of the
@@ -444,13 +1658,13 @@ the <code>VirtualMachineInstance</code> either from the CLI or a web-UI.</p>
 <p>To connect to a <code>VirtualMachineInstance</code> from your local machine, <code>virtctl</code>
 provides a lightweight SSH client with the <code>ssh</code> command, that uses port
 forwarding. Refer to the command's help for more details.</p>
-<pre><code class="language-shell">virtctl ssh
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>virtctl<span class="w"> </span>ssh
+</code></pre></div>
 <p>To transfer files from or to a <code>VirtualMachineInstance</code> <code>virtctl</code> also
 provides a lightweight SCP client with the <code>scp</code> command. Its usage is
 similar to the <code>ssh</code> command. Refer to the command's help for more details.</p>
-<pre><code class="language-shell">virtctl scp
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>virtctl<span class="w"> </span>scp
+</code></pre></div>
 <h4 id="using-virtctl-as-proxy">Using virtctl as proxy<a class="headerlink" href="#using-virtctl-as-proxy" title="Permanent link">&para;</a></h4>
 <p>If you prefer to use your local OpenSSH client, there are two ways of doing
 that in combination with virtctl.</p>
@@ -462,22 +1676,22 @@ that in combination with virtctl.</p>
    <code>virtctl</code> wraps the local OpenSSH client transparently to the user. The
    executed SSH command can be viewed by increasing the verbosity (<code>-v 3</code>).</li>
 </ol>
-<pre><code class="language-shell">virtctl ssh --local-ssh -v 3 testvm
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>virtctl<span class="w"> </span>ssh<span class="w"> </span>--local-ssh<span class="w"> </span>-v<span class="w"> </span><span class="m">3</span><span class="w"> </span>testvm
+</code></pre></div>
 <ol>
 <li>The <code>virtctl port-forward</code> command provides an option to tunnel a single
    port to your local stdout/stdin. This allows the command to be used in
    combination with the OpenSSH client's <code>ProxyCommand</code> option.</li>
 </ol>
-<pre><code class="language-shell">ssh -o 'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22' fedora@testvm.mynamespace
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22&#39;</span><span class="w"> </span>fedora@testvm.mynamespace
+</code></pre></div>
 <p>To provide easier access to arbitrary virtual machines you can add the following
 lines to your SSH <code>config</code>:</p>
-<pre><code>Host vmi/*
-   ProxyCommand virtctl port-forward --stdio=true %h %p
-Host vm/*
-   ProxyCommand virtctl port-forward --stdio=true %h %p
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Host vmi/*
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>   ProxyCommand virtctl port-forward --stdio=true %h %p
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Host vm/*
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>   ProxyCommand virtctl port-forward --stdio=true %h %p
+</code></pre></div>
 <p>This allows you to simply call <code>ssh user@vmi/testvmi.mynamespace</code> and your
 SSH config and virtctl will do the rest. Using this method it becomes easy
 to set up different identities for different namespaces inside your SSH
@@ -486,9 +1700,9 @@ to set up different identities for different namespaces inside your SSH
 machines running on KubeVirt. You can put the snippet above into its own
 file (e.g. <code>~/.ssh/virtctl-proxy-config</code>) and add the following lines to
 your <code>.ansible.cfg</code>:</p>
-<pre><code>[ssh_connection]
-ssh_args = -F ~/.ssh/virtctl-proxy-config
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>[ssh_connection]
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>ssh_args = -F ~/.ssh/virtctl-proxy-config
+</code></pre></div>
 <p>Note that all port forwarding traffic will be sent over the Kubernetes
 control plane. A high amount of connections and traffic can increase
 pressure on the API server. If you regularly need a high amount of connections
@@ -502,21 +1716,21 @@ and traffic consider using a dedicated Kubernetes <code>Service</code> instead.<
 <p>SSH into virtual machine</p>
 </li>
 </ol>
-<pre><code class="language-shell"># Add --local-ssh to transparently use local OpenSSH client
-virtctl ssh -i id_rsa fedora@testvm
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Add --local-ssh to transparently use local OpenSSH client</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>virtctl<span class="w"> </span>ssh<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>fedora@testvm
+</code></pre></div>
 <p>or</p>
-<pre><code class="language-shell">ssh -o 'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22' -i id_rsa fedora@vmi/testvm.mynamespace
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22&#39;</span><span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>fedora@vmi/testvm.mynamespace
+</code></pre></div>
 <ol>
 <li>SCP file to the virtual machine</li>
 </ol>
-<pre><code class="language-shell"># Add --local-ssh to transparently use local OpenSSH client
-virtctl scp -i id_rsa testfile fedora@testvm:/tmp
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Add --local-ssh to transparently use local OpenSSH client</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>virtctl<span class="w"> </span>scp<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>testfile<span class="w"> </span>fedora@testvm:/tmp
+</code></pre></div>
 <p>or</p>
-<pre><code class="language-shell">scp -o 'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22' -i id_rsa testfile fedora@testvm.mynamespace:/tmp
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>scp<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22&#39;</span><span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>testfile<span class="w"> </span>fedora@testvm.mynamespace:/tmp
+</code></pre></div>
 <h4 id="rbac-permissions-for-consolevncssh-access">RBAC permissions for Console/VNC/SSH access<a class="headerlink" href="#rbac-permissions-for-consolevncssh-access" title="Permanent link">&para;</a></h4>
 <h5 id="using-default-rbac-cluster-roles">Using default RBAC cluster roles<a class="headerlink" href="#using-default-rbac-cluster-roles" title="Permanent link">&para;</a></h5>
 <p>Every KubeVirt installation starting with version v0.5.1 ships a set of default
@@ -531,77 +1745,109 @@ virtctl to access the console, VNC and SSH.</p>
 console, VNC and port-forwarding. The <code>ClusterRole</code> below demonstrates how
 to craft a custom role, that only allows access to the console, VNC and
 port-forwarding.</p>
-<pre><code class="language-yaml">apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
-metadata:
-  name: allow-console-vnc-port-forward-access
-rules:
-  - apiGroups:
-      - subresources.kubevirt.io
-    resources:
-      - virtualmachineinstances/console
-      - virtualmachineinstances/vnc
-    verbs:
-      - get
-  - apiGroups:
-      - subresources.kubevirt.io
-    resources:
-      - virtualmachineinstances/portforward
-    verbs:
-      - update
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1beta1</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterRole</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">allow-console-vnc-port-forward-access</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="nt">rules</span><span class="p">:</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">apiGroups</span><span class="p">:</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subresources.kubevirt.io</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtualmachineinstances/console</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtualmachineinstances/vnc</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">    </span><span class="nt">verbs</span><span class="p">:</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">get</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">apiGroups</span><span class="p">:</span>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subresources.kubevirt.io</span>
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">    </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtualmachineinstances/portforward</span>
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="w">    </span><span class="nt">verbs</span><span class="p">:</span>
+<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">update</span>
+</code></pre></div>
 <p>When bound with a <code>ClusterRoleBinding</code> the <code>ClusterRole</code> above grants access
 to virtual machines across all namespaces.</p>
 <p>In order to reduce the scope to a single namespace, bind this <code>ClusterRole</code>
 using a <code>RoleBinding</code> that targets a single namespace.</p>
-              
+
+
+
+
+
+                
+              </article>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../liveness_and_readiness_probes/" class="btn btn-neutral float-left" title="Liveness and Readiness Probes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../startup_scripts/" class="btn btn-neutral float-right" title="Startup Scripts">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
+          
           
         </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
+        
+      </main>
+      
+        <footer class="md-footer">
+  
     
-        <span>
-          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
-        </span>
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../liveness_and_readiness_probes/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Liveness and Readiness Probes" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Previous
+                </span>
+                Liveness and Readiness Probes
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../startup_scripts/" class="md-footer__link md-footer__link--next" aria-label="Next: Startup Scripts" rel="next">
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Next
+                </span>
+                Startup Scripts
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
-    
-      <span><a href="../liveness_and_readiness_probes/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../startup_scripts/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
 </div>
-    <script>var base_url = '../..';</script>
-    <script src="../../js/theme_extra.js" defer></script>
-    <script src="../../js/theme.js" defer></script>
-      <script src="../../search/main.js" defer></script>
-    <script defer>
-        window.onload = function () {
-            SphinxRtdTheme.Navigation.enable(false);
-        };
-    </script>
-
-</body>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
 </html>

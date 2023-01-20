@@ -1,330 +1,2026 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/disks_and_volumes/" />
-      <link rel="shortcut icon" href="../../assets/favicon.ico" />
-    <title>Disks and Volumes - KubeVirt User-Guide</title>
-    <link rel="stylesheet" href="../../css/theme.css" />
-    <link rel="stylesheet" href="../../css/theme_extra.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
     
-      <script>
-        // Current page data
-        var mkdocs_page_name = "Disks and Volumes";
-        var mkdocs_page_input_path = "virtual_machines/disks_and_volumes.md";
-        var mkdocs_page_url = "/user-guide/virtual_machines/disks_and_volumes/";
-      </script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for KubeVirt">
+      
+      
+      
+        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/disks_and_volumes/">
+      
+      
+        <link rel="prev" href="../numa/">
+      
+      
+        <link rel="next" href="../interfaces_and_networks/">
+      
+      <link rel="icon" href="../../assets/favicon32x32.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
     
-    <script src="../../js/jquery-3.6.0.min.js" defer></script>
-    <!--[if lt IE 9]>
-      <script src="../../js/html5shiv.min.js"></script>
-    <![endif]-->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/languages/yaml.min.js"></script>
-      <script>hljs.initHighlightingOnLoad();</script> 
-</head>
+    
+      
+        <title>Disks and Volumes - KubeVirt user guide</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
+      
+      
 
-<body class="wy-body-for-nav" role="document">
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
-    <div class="wy-side-scroll">
-      <div class="wy-side-nav-search">
-          <a href="../.." class="icon icon-home"> KubeVirt User-Guide
-        </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
-  </form>
-</div>
-      </div>
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#disks-and-volumes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../..">Welcome</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../../quickstarts/">Quickstarts</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../../release_notes/">KubeVirt release notes</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Operations</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/installation/">Installation</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/updating_and_deletion/">Updating and deletion</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/basic_use/">Basic use</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/customize_components/">Customize components</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/api_validation/">API Validation</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/debug/">Debug</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/virtctl_client_tool/">virtctl Client Tool</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/live_migration/">Live Migration</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/hotplug_volumes/">Hotplug Volumes</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/client_passthrough/">Client Passthrough</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/snapshot_restore_api/">Snapshot Restore API</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/hugepages/">Hugepages support</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/component_monitoring/">Component monitoring</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/authorization/">Authorization</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/annotations_and_labels/">Annotations and labels</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/node_assignment/">Node assignment</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/node_maintenance/">Node maintenance</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/node_overcommit/">Node overcommit</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/unresponsive_nodes/">Unresponsive nodes</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/containerized_data_importer/">Containerized Data Importer</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/activating_feature_gates/">Activating feature gates</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/export_api/">Export API</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/clone_api/">Clone API</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/memory_dump/">Virtual machine memory dump</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/mediated_devices_configuration/">Mediated devices and virtual GPUs</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../../operations/migration_policies/">Migration Policies</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Virtual machines</span></p>
-              <ul class="current">
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_machine_instances/">Virtual Machines Instances</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../lifecycle/">Lifecycle</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../run_strategies/">Run Strategies</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../instancetypes/">Instancetypes and preferences</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../presets/">Presets</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../virtual_hardware/">Virtual hardware</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../dedicated_cpu_resources/">Dedicated CPU resources</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../numa/">NUMA</a>
-                  </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="./">Disks and Volumes</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#disks">Disks</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#lun">lun</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#disk">disk</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#floppy">floppy</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#cdrom">cdrom</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#volumes">Volumes</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#cloudinitnocloud">cloudInitNoCloud</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#cloudinitconfigdrive">cloudInitConfigDrive</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#persistentvolumeclaim">persistentVolumeClaim</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#datavolume">dataVolume</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#datavolume-vm-behavior">DataVolume VM Behavior</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#datavolume-vmi-behavior">DataVolume VMI Behavior</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#enabling-datavolume-support">Enabling DataVolume support.</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#ephemeral">ephemeral</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#containerdisk">containerDisk</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#when-to-use-a-containerdisk">When to use a containerDisk</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#when-not-to-use-a-containerdisk">When Not to use a containerDisk</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#containerdisk-workflow-example">containerDisk Workflow Example</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#custom-disk-image-path">Custom disk image path</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#emptydisk">emptyDisk</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#when-to-use-an-emptydisk">When to use an emptyDisk</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#hostdisk">hostDisk</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#configmap">configMap</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#secret">secret</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#serviceaccount">serviceAccount</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#downwardmetrics">downwardMetrics</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#high-performance-features">High Performance Features</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#iothreads">IOThreads</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#shared">Shared</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#auto">Auto</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#iothreads-with-dedicated-pinned-cpus">IOThreads with Dedicated (pinned) CPUs</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#iothreads-with-qemu-emulator-thread-and-dedicated-pinned-cpus">IOThreads with QEMU Emulator thread and Dedicated (pinned) CPUs</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#shared-iothreads">Shared IOThreads</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#auto-iothreads">Auto IOThreads</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#virtio-block-multi-queue">Virtio Block Multi-Queue</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#example">Example</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#disk-device-cache">Disk device cache</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#disk-sharing">Disk sharing</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#sharing-directories-with-vms">Sharing Directories with VMs</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#sharing-persistent-volume-claims">Sharing Persistent Volume Claims</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#cluster-configuration">Cluster Configuration</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#configuration-inside-the-vm">Configuration Inside the VM</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#sharing-node-directories">Sharing Node Directories</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#configuration-inside-the-node">Configuration Inside the Node</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#cluster-configuration_1">Cluster Configuration</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#configuration-inside-the-vm_1">Configuration Inside the VM</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
-    </li>
-    </ul>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../interfaces_and_networks/">Interfaces and Networks</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../istio_service_mesh/">Istio service mesh</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../networkpolicy/">NetworkPolicy</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../host-devices/">Host Devices Assignment</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../windows_virtio_drivers/">Windows virtio drivers</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../guest_operating_system_information/">Guest Operating System Information</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../guest_agent_information/">Guest Agent information</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../liveness_and_readiness_probes/">Liveness and Readiness Probes</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../accessing_virtual_machines/">Accessing Virtual Machines</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../startup_scripts/">Startup Scripts</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../service_objects/">Service objects</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../templates/">Templates</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../tekton_tasks/">KubeVirt Tekton</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../replicaset/">VirtualMachineInstanceReplicaSet</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../dns/">DNS records</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../boot_from_external_source/">Booting From External Source</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../confidential_computing/">Confidential computing</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../vsock/">VSOCK</a>
-                  </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../../web_console/">Web Console</a>
-                </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Appendix</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../appendix/contributing/">Contributing</a>
-                  </li>
-              </ul>
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="KubeVirt user guide" class="md-header__button md-logo" aria-label="KubeVirt user guide" data-md-component="logo">
+      
+  <img src="../../assets/KubeVirt_icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            KubeVirt user guide
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Disks and Volumes
+            
+          </span>
+        </div>
       </div>
     </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../..">KubeVirt User-Guide</a>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
         
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
       </nav>
-      <div class="wy-nav-content">
-        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
-  <ul class="wy-breadcrumbs">
-    <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-          <li>Virtual machines &raquo;</li>
-      <li>Disks and Volumes</li>
-    <li class="wy-breadcrumbs-aside">
-        <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/disks_and_volumes.md"
-          class="icon icon-github"> Edit on GitHub</a>
-    </li>
-  </ul>
-  <hr/>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-            <div class="section" itemprop="articleBody">
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
               
-                <h1 id="disks-and-volumes">Disks and Volumes<a class="headerlink" href="#disks-and-volumes" title="Permanent link">&para;</a></h1>
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="KubeVirt user guide" class="md-nav__button md-logo" aria-label="KubeVirt user guide" data-md-component="logo">
+      
+  <img src="../../assets/KubeVirt_icon.png" alt="logo">
+
+    </a>
+    KubeVirt user guide
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Welcome
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        Architecture
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstarts/" class="md-nav__link">
+        Quickstarts
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release_notes/" class="md-nav__link">
+        KubeVirt release notes
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" tabindex="0" aria-expanded="false">
+          Operations
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Operations" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Operations
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/updating_and_deletion/" class="md-nav__link">
+        Updating and deletion
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/basic_use/" class="md-nav__link">
+        Basic use
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/customize_components/" class="md-nav__link">
+        Customize components
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/api_validation/" class="md-nav__link">
+        API Validation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/debug/" class="md-nav__link">
+        Debug
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/virtctl_client_tool/" class="md-nav__link">
+        virtctl Client Tool
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/live_migration/" class="md-nav__link">
+        Live Migration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/hotplug_volumes/" class="md-nav__link">
+        Hotplug Volumes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/client_passthrough/" class="md-nav__link">
+        Client Passthrough
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/snapshot_restore_api/" class="md-nav__link">
+        Snapshot Restore API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/hugepages/" class="md-nav__link">
+        Hugepages support
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/component_monitoring/" class="md-nav__link">
+        Component monitoring
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/authorization/" class="md-nav__link">
+        Authorization
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/annotations_and_labels/" class="md-nav__link">
+        Annotations and labels
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/node_assignment/" class="md-nav__link">
+        Node assignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/node_maintenance/" class="md-nav__link">
+        Node maintenance
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/node_overcommit/" class="md-nav__link">
+        Node overcommit
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/unresponsive_nodes/" class="md-nav__link">
+        Unresponsive nodes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/containerized_data_importer/" class="md-nav__link">
+        Containerized Data Importer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/activating_feature_gates/" class="md-nav__link">
+        Activating feature gates
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/export_api/" class="md-nav__link">
+        Export API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/clone_api/" class="md-nav__link">
+        Clone API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/memory_dump/" class="md-nav__link">
+        Virtual machine memory dump
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/mediated_devices_configuration/" class="md-nav__link">
+        Mediated devices and virtual GPUs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../operations/migration_policies/" class="md-nav__link">
+        Migration Policies
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" tabindex="0" aria-expanded="true">
+          Virtual machines
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Virtual machines" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Virtual machines
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_machine_instances/" class="md-nav__link">
+        Virtual Machines Instances
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lifecycle/" class="md-nav__link">
+        Lifecycle
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../run_strategies/" class="md-nav__link">
+        Run Strategies
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../instancetypes/" class="md-nav__link">
+        Instancetypes and preferences
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../presets/" class="md-nav__link">
+        Presets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtual_hardware/" class="md-nav__link">
+        Virtual hardware
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dedicated_cpu_resources/" class="md-nav__link">
+        Dedicated CPU resources
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../numa/" class="md-nav__link">
+        NUMA
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Disks and Volumes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Disks and Volumes
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#disks" class="md-nav__link">
+    Disks
+  </a>
+  
+    <nav class="md-nav" aria-label="Disks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lun" class="md-nav__link">
+    lun
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk" class="md-nav__link">
+    disk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#floppy" class="md-nav__link">
+    floppy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cdrom" class="md-nav__link">
+    cdrom
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volumes" class="md-nav__link">
+    Volumes
+  </a>
+  
+    <nav class="md-nav" aria-label="Volumes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cloudinitnocloud" class="md-nav__link">
+    cloudInitNoCloud
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudinitconfigdrive" class="md-nav__link">
+    cloudInitConfigDrive
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistentvolumeclaim" class="md-nav__link">
+    persistentVolumeClaim
+  </a>
+  
+    <nav class="md-nav" aria-label="persistentVolumeClaim">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datavolume" class="md-nav__link">
+    dataVolume
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datavolume-vm-behavior" class="md-nav__link">
+    DataVolume VM Behavior
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datavolume-vmi-behavior" class="md-nav__link">
+    DataVolume VMI Behavior
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enabling-datavolume-support" class="md-nav__link">
+    Enabling DataVolume support.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ephemeral" class="md-nav__link">
+    ephemeral
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#containerdisk" class="md-nav__link">
+    containerDisk
+  </a>
+  
+    <nav class="md-nav" aria-label="containerDisk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-a-containerdisk" class="md-nav__link">
+    When to use a containerDisk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-a-containerdisk" class="md-nav__link">
+    When Not to use a containerDisk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#containerdisk-workflow-example" class="md-nav__link">
+    containerDisk Workflow Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-disk-image-path" class="md-nav__link">
+    Custom disk image path
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emptydisk" class="md-nav__link">
+    emptyDisk
+  </a>
+  
+    <nav class="md-nav" aria-label="emptyDisk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-an-emptydisk" class="md-nav__link">
+    When to use an emptyDisk
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hostdisk" class="md-nav__link">
+    hostDisk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configmap" class="md-nav__link">
+    configMap
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secret" class="md-nav__link">
+    secret
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serviceaccount" class="md-nav__link">
+    serviceAccount
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downwardmetrics" class="md-nav__link">
+    downwardMetrics
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-performance-features" class="md-nav__link">
+    High Performance Features
+  </a>
+  
+    <nav class="md-nav" aria-label="High Performance Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iothreads" class="md-nav__link">
+    IOThreads
+  </a>
+  
+    <nav class="md-nav" aria-label="IOThreads">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared" class="md-nav__link">
+    Shared
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto" class="md-nav__link">
+    Auto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iothreads-with-dedicated-pinned-cpus" class="md-nav__link">
+    IOThreads with Dedicated (pinned) CPUs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iothreads-with-qemu-emulator-thread-and-dedicated-pinned-cpus" class="md-nav__link">
+    IOThreads with QEMU Emulator thread and Dedicated (pinned) CPUs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared-iothreads" class="md-nav__link">
+    Shared IOThreads
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-iothreads" class="md-nav__link">
+    Auto IOThreads
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtio-block-multi-queue" class="md-nav__link">
+    Virtio Block Multi-Queue
+  </a>
+  
+    <nav class="md-nav" aria-label="Virtio Block Multi-Queue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk-device-cache" class="md-nav__link">
+    Disk device cache
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk-sharing" class="md-nav__link">
+    Disk sharing
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sharing-directories-with-vms" class="md-nav__link">
+    Sharing Directories with VMs
+  </a>
+  
+    <nav class="md-nav" aria-label="Sharing Directories with VMs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sharing-persistent-volume-claims" class="md-nav__link">
+    Sharing Persistent Volume Claims
+  </a>
+  
+    <nav class="md-nav" aria-label="Sharing Persistent Volume Claims">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cluster-configuration" class="md-nav__link">
+    Cluster Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-inside-the-vm" class="md-nav__link">
+    Configuration Inside the VM
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sharing-node-directories" class="md-nav__link">
+    Sharing Node Directories
+  </a>
+  
+    <nav class="md-nav" aria-label="Sharing Node Directories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-inside-the-node" class="md-nav__link">
+    Configuration Inside the Node
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-configuration_1" class="md-nav__link">
+    Cluster Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-inside-the-vm_1" class="md-nav__link">
+    Configuration Inside the VM
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interfaces_and_networks/" class="md-nav__link">
+        Interfaces and Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../istio_service_mesh/" class="md-nav__link">
+        Istio service mesh
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../networkpolicy/" class="md-nav__link">
+        NetworkPolicy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../host-devices/" class="md-nav__link">
+        Host Devices Assignment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows_virtio_drivers/" class="md-nav__link">
+        Windows virtio drivers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guest_operating_system_information/" class="md-nav__link">
+        Guest Operating System Information
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guest_agent_information/" class="md-nav__link">
+        Guest Agent information
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../liveness_and_readiness_probes/" class="md-nav__link">
+        Liveness and Readiness Probes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../accessing_virtual_machines/" class="md-nav__link">
+        Accessing Virtual Machines
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../startup_scripts/" class="md-nav__link">
+        Startup Scripts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../service_objects/" class="md-nav__link">
+        Service objects
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../templates/" class="md-nav__link">
+        Templates
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tekton_tasks/" class="md-nav__link">
+        KubeVirt Tekton
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../replicaset/" class="md-nav__link">
+        VirtualMachineInstanceReplicaSet
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dns/" class="md-nav__link">
+        DNS records
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../boot_from_external_source/" class="md-nav__link">
+        Booting From External Source
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../confidential_computing/" class="md-nav__link">
+        Confidential computing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vsock/" class="md-nav__link">
+        VSOCK
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../web_console/" class="md-nav__link">
+        Web Console
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" tabindex="0" aria-expanded="false">
+          Appendix
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Appendix" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Appendix
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../appendix/contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#disks" class="md-nav__link">
+    Disks
+  </a>
+  
+    <nav class="md-nav" aria-label="Disks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lun" class="md-nav__link">
+    lun
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk" class="md-nav__link">
+    disk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#floppy" class="md-nav__link">
+    floppy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cdrom" class="md-nav__link">
+    cdrom
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volumes" class="md-nav__link">
+    Volumes
+  </a>
+  
+    <nav class="md-nav" aria-label="Volumes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cloudinitnocloud" class="md-nav__link">
+    cloudInitNoCloud
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudinitconfigdrive" class="md-nav__link">
+    cloudInitConfigDrive
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistentvolumeclaim" class="md-nav__link">
+    persistentVolumeClaim
+  </a>
+  
+    <nav class="md-nav" aria-label="persistentVolumeClaim">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datavolume" class="md-nav__link">
+    dataVolume
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datavolume-vm-behavior" class="md-nav__link">
+    DataVolume VM Behavior
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datavolume-vmi-behavior" class="md-nav__link">
+    DataVolume VMI Behavior
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enabling-datavolume-support" class="md-nav__link">
+    Enabling DataVolume support.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ephemeral" class="md-nav__link">
+    ephemeral
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#containerdisk" class="md-nav__link">
+    containerDisk
+  </a>
+  
+    <nav class="md-nav" aria-label="containerDisk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-a-containerdisk" class="md-nav__link">
+    When to use a containerDisk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-not-to-use-a-containerdisk" class="md-nav__link">
+    When Not to use a containerDisk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#containerdisk-workflow-example" class="md-nav__link">
+    containerDisk Workflow Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-disk-image-path" class="md-nav__link">
+    Custom disk image path
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emptydisk" class="md-nav__link">
+    emptyDisk
+  </a>
+  
+    <nav class="md-nav" aria-label="emptyDisk">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#when-to-use-an-emptydisk" class="md-nav__link">
+    When to use an emptyDisk
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hostdisk" class="md-nav__link">
+    hostDisk
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configmap" class="md-nav__link">
+    configMap
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secret" class="md-nav__link">
+    secret
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serviceaccount" class="md-nav__link">
+    serviceAccount
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downwardmetrics" class="md-nav__link">
+    downwardMetrics
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-performance-features" class="md-nav__link">
+    High Performance Features
+  </a>
+  
+    <nav class="md-nav" aria-label="High Performance Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iothreads" class="md-nav__link">
+    IOThreads
+  </a>
+  
+    <nav class="md-nav" aria-label="IOThreads">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared" class="md-nav__link">
+    Shared
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto" class="md-nav__link">
+    Auto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iothreads-with-dedicated-pinned-cpus" class="md-nav__link">
+    IOThreads with Dedicated (pinned) CPUs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iothreads-with-qemu-emulator-thread-and-dedicated-pinned-cpus" class="md-nav__link">
+    IOThreads with QEMU Emulator thread and Dedicated (pinned) CPUs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#shared-iothreads" class="md-nav__link">
+    Shared IOThreads
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-iothreads" class="md-nav__link">
+    Auto IOThreads
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtio-block-multi-queue" class="md-nav__link">
+    Virtio Block Multi-Queue
+  </a>
+  
+    <nav class="md-nav" aria-label="Virtio Block Multi-Queue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk-device-cache" class="md-nav__link">
+    Disk device cache
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disk-sharing" class="md-nav__link">
+    Disk sharing
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sharing-directories-with-vms" class="md-nav__link">
+    Sharing Directories with VMs
+  </a>
+  
+    <nav class="md-nav" aria-label="Sharing Directories with VMs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sharing-persistent-volume-claims" class="md-nav__link">
+    Sharing Persistent Volume Claims
+  </a>
+  
+    <nav class="md-nav" aria-label="Sharing Persistent Volume Claims">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cluster-configuration" class="md-nav__link">
+    Cluster Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-inside-the-vm" class="md-nav__link">
+    Configuration Inside the VM
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sharing-node-directories" class="md-nav__link">
+    Sharing Node Directories
+  </a>
+  
+    <nav class="md-nav" aria-label="Sharing Node Directories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration-inside-the-node" class="md-nav__link">
+    Configuration Inside the Node
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-configuration_1" class="md-nav__link">
+    Cluster Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-inside-the-vm_1" class="md-nav__link">
+    Configuration Inside the VM
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/disks_and_volumes.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/disks_and_volumes.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
+    </a>
+  
+
+
+
+<h1 id="disks-and-volumes">Disks and Volumes<a class="headerlink" href="#disks-and-volumes" title="Permanent link">&para;</a></h1>
 <p>Making persistent storage in the cluster (<strong>volumes</strong>) accessible to VMs consists of three parts. First, volumes are specified in <code>spec.volumes</code>. Second, disks are added to the VM by specifying them in <code>spec.domain.devices.disks</code>. Finally, a reference to the specified volume is added to the disk specification by name.</p>
 <h2 id="disks">Disks<a class="headerlink" href="#disks" title="Permanent link">&para;</a></h2>
 <p>Like all other vmi devices a <code>spec.domain.devices.disks</code> element has a
@@ -356,7 +2052,7 @@ the <code>bus</code> attribute: they are always attached to the <code>fdc</code>
 allows the VM to execute arbitrary iSCSI command passthrough.</p>
 <p>A minimal example which attaches a <code>PersistentVolumeClaim</code> named <code>mypvc</code>
 as a <code>lun</code> device to the VM:</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-lun
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -374,12 +2070,12 @@ spec:
     - name: mypvcdisk
       persistentVolumeClaim:
         claimName: mypvc
-</code></pre>
+</code></pre></div>
 <h3 id="disk">disk<a class="headerlink" href="#disk" title="Permanent link">&para;</a></h3>
 <p>A <code>disk</code> disk will expose the volume as an ordinary disk to the VM.</p>
 <p>A minimal example which attaches a <code>PersistentVolumeClaim</code> named <code>mypvc</code>
 as a <code>disk</code> device to the VM:</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-disk
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -397,10 +2093,10 @@ spec:
     - name: mypvcdisk
       persistentVolumeClaim:
         claimName: mypvc
-</code></pre>
+</code></pre></div>
 <p>You can set the disk <code>bus</code> type, overriding the defaults, which in turn
 depends on the chipset the VM is configured to use:</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-disk
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -421,7 +2117,7 @@ spec:
     - name: mypvcdisk
       persistentVolumeClaim:
         claimName: mypvc
-</code></pre>
+</code></pre></div>
 <h3 id="floppy">floppy<a class="headerlink" href="#floppy" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p><strong>Note</strong>: Starting with version 0.16.0, floppy disks are deprecated
@@ -431,7 +2127,7 @@ future version.</p>
 <p>A <code>floppy</code> disk will expose the volume as a floppy drive to the VM.</p>
 <p>A minimal example which attaches a <code>PersistentVolumeClaim</code> named <code>mypvc</code>
 as a <code>floppy</code> device to the VM:</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-floppy
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -449,13 +2145,13 @@ spec:
     - name: mypvcdisk
       persistentVolumeClaim:
         claimName: mypvc
-</code></pre>
+</code></pre></div>
 <h3 id="cdrom">cdrom<a class="headerlink" href="#cdrom" title="Permanent link">&para;</a></h3>
 <p>A <code>cdrom</code> disk will expose the volume as a cdrom drive to the VM. It is
 read-only by default.</p>
 <p>A minimal example which attaches a <code>PersistentVolumeClaim</code> named <code>mypvc</code>
 as a <code>cdrom</code> device to the VM:</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-cdrom
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -477,7 +2173,7 @@ spec:
     - name: mypvcdisk
       persistentVolumeClaim:
         claimName: mypvc
-</code></pre>
+</code></pre></div>
 <h2 id="volumes">Volumes<a class="headerlink" href="#volumes" title="Permanent link">&para;</a></h2>
 <p>Supported volume sources are</p>
 <ul>
@@ -526,7 +2222,7 @@ contains a proper cloud-init setup, it will pick up the disk as a
 user-data source.</p>
 <p>A simple example which attaches a <code>Secret</code> as a cloud-init <code>disk</code>
 datasource may look like this:</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-cloudinitnocloud
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -549,14 +2245,14 @@ spec:
       cloudInitNoCloud:
         secretRef:
           name: testsecret
-</code></pre>
+</code></pre></div>
 <h3 id="cloudinitconfigdrive">cloudInitConfigDrive<a class="headerlink" href="#cloudinitconfigdrive" title="Permanent link">&para;</a></h3>
 <p>Allows attaching <code>cloudInitConfigDrive</code> data-sources to the VM. If the
 VM contains a proper cloud-init setup, it will pick up the disk as a
 user-data source.</p>
 <p>A simple example which attaches a <code>Secret</code> as a cloud-init <code>disk</code>
 datasource may look like this:</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-cloudinitconfigdrive
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -579,7 +2275,7 @@ spec:
       cloudInitConfigDrive:
         secretRef:
           name: testsecret
-</code></pre>
+</code></pre></div>
 <h3 id="persistentvolumeclaim">persistentVolumeClaim<a class="headerlink" href="#persistentvolumeclaim" title="Permanent link">&para;</a></h3>
 <p>Allows connecting a <code>PersistentVolumeClaim</code> to a VM disk.</p>
 <p>Use a PersistentVolumeClaim when the VirtualMachineInstance's disk needs
@@ -613,7 +2309,7 @@ KubeVirt CR (<code>kubectl edit kubevirt kubevirt -n kubevirt</code>).</p>
 </ul>
 <p>A simple example which attaches a <code>PersistentVolumeClaim</code> as a <code>disk</code>
 may look like this:</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-pvc
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -630,7 +2326,7 @@ spec:
     - name: mypvcdisk
       persistentVolumeClaim:
         claimName: mypvc
-</code></pre>
+</code></pre></div>
 <h4 id="datavolume">dataVolume<a class="headerlink" href="#datavolume" title="Permanent link">&para;</a></h4>
 <p>DataVolumes are a way to automate importing virtual machine disks onto
 PVCs during the virtual machine's launch flow. Without using a
@@ -640,7 +2336,7 @@ creation and import is automated on behalf of the user.</p>
 <h4 id="datavolume-vm-behavior">DataVolume VM Behavior<a class="headerlink" href="#datavolume-vm-behavior" title="Permanent link">&para;</a></h4>
 <p>DataVolumes can be defined in the VM spec directly by adding the
 DataVolumes to the <code>dataVolumeTemplates</code> list. Below is an example.</p>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
   labels:
@@ -679,7 +2375,7 @@ spec:
       source:
         http:
           url: http://cdi-http-import-server.kubevirt/images/alpine.iso
-</code></pre>
+</code></pre></div>
 <p>You can see the DataVolume defined in the dataVolumeTemplates section
 has two parts. The <strong>source</strong> and <strong>pvc</strong></p>
 <p>The <strong>source</strong> part declares that there is a disk image living on an
@@ -702,7 +2398,7 @@ posting the VMI manifest to the cluster. It is okay to post the VMI
 manifest to the cluster while the DataVolume is still having data
 imported. KubeVirt knows not to start the VMI until all referenced
 DataVolumes have finished their clone and import phases.</p>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -716,7 +2412,7 @@ spec:
           bus: virtio
         name: disk1
     machine:
-      type: ""
+      type: &quot;&quot;
     resources:
       requests:
         memory: 64M
@@ -725,7 +2421,7 @@ spec:
   - name: disk1
     dataVolume:
       name: alpine-datavolume
-</code></pre>
+</code></pre></div>
 <h4 id="enabling-datavolume-support">Enabling DataVolume support.<a class="headerlink" href="#enabling-datavolume-support" title="Permanent link">&para;</a></h4>
 <p>A DataVolume is a custom resource provided by the Containerized Data
 Importer (CDI) project. KubeVirt integrates with CDI in order to provide
@@ -753,7 +2449,7 @@ of the ephemeral volume.</p>
 <p>Up-to-date information on supported backing stores can be found in the
 <a href="http://kubevirt.io/api-reference/master/definitions.html#_v1_ephemeralvolumesource">KubeVirt
 API</a>.</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-ephemeral-pvc
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -771,7 +2467,7 @@ spec:
       ephemeral:
         persistentVolumeClaim:
           claimName: mypvc
-</code></pre>
+</code></pre></div>
 <h3 id="containerdisk">containerDisk<a class="headerlink" href="#containerdisk" title="Permanent link">&para;</a></h3>
 <p><strong>containerDisk was originally registryDisk, please update your code
 when needed.</strong></p>
@@ -804,24 +2500,24 @@ have <strong>kubevirt/container-disk-v1alpha</strong> as base image.</p>
 107 (qemu).</p>
 </blockquote>
 <p>Example: Inject a local VirtualMachineInstance disk into a container image.</p>
-<pre><code>cat &lt;&lt; END &gt; Dockerfile
+<div class="highlight"><pre><span></span><code>cat &lt;&lt; END &gt; Dockerfile
 FROM scratch
 ADD --chown=107:107 fedora25.qcow2 /disk/
 END
 
 docker build -t vmidisks/fedora25:latest .
-</code></pre>
+</code></pre></div>
 <p>Example: Inject a remote VirtualMachineInstance disk into a container image.</p>
-<pre><code>cat &lt;&lt; END &gt; Dockerfile
+<div class="highlight"><pre><span></span><code>cat &lt;&lt; END &gt; Dockerfile
 FROM scratch
 ADD --chown=107:107 https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2 /disk/
 END
-</code></pre>
+</code></pre></div>
 <p>Example: Upload the ContainerDisk container image to a registry.</p>
-<pre><code>docker push vmidisks/fedora25:latest
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker push vmidisks/fedora25:latest
+</code></pre></div>
 <p>Example: Attach the ContainerDisk as an ephemeral disk to a VM.</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-containerdisk
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -838,7 +2534,7 @@ spec:
     - name: containerdisk
       containerDisk:
         image: vmidisks/fedora25:latest
-</code></pre>
+</code></pre></div>
 <p>Note that a <code>containerDisk</code> is file-based and therefore cannot be
 attached as a <code>lun</code> device to the VM.</p>
 <h4 id="custom-disk-image-path">Custom disk image path<a class="headerlink" href="#custom-disk-image-path" title="Permanent link">&para;</a></h4>
@@ -849,16 +2545,16 @@ your responsibility to provide full path for the disk image. Providing
 image <code>path</code> is optional. When no <code>path</code> is provided, kubevirt searches
 for disk images in default location: <code>/disk</code>.</p>
 <p>Example: Build container disk image:</p>
-<pre><code>cat &lt;&lt; END &gt; Dockerfile
+<div class="highlight"><pre><span></span><code>cat &lt;&lt; END &gt; Dockerfile
 FROM scratch
 ADD fedora25.qcow2 /custom-disk-path/fedora25.qcow2
 END
 
 docker build -t vmidisks/fedora25:latest .
 docker push vmidisks/fedora25:latest
-</code></pre>
+</code></pre></div>
 <p>Create VMI with container disk pointing to the custom location:</p>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-containerdisk
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -876,14 +2572,14 @@ spec:
       containerDisk:
         image: vmidisks/fedora25:latest
         path: /custom-disk-path/fedora25.qcow2
-</code></pre>
+</code></pre></div>
 <h3 id="emptydisk">emptyDisk<a class="headerlink" href="#emptydisk" title="Permanent link">&para;</a></h3>
 <p>An <code>emptyDisk</code> works similar to an <code>emptyDir</code> in Kubernetes. An extra
 sparse <code>qcow2</code> disk will be allocated and it will live as long as the
 VM. Thus it will survive guest side VM reboots, but not a VM
 re-creation. The disk <code>capacity</code> needs to be specified.</p>
 <p>Example: Boot cirros with an extra <code>emptyDisk</code> with a size of <code>2GiB</code>:</p>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: testvmi-nocloud
@@ -908,7 +2604,7 @@ spec:
     - name: emptydisk
       emptyDisk:
         capacity: 2Gi
-</code></pre>
+</code></pre></div>
 <h4 id="when-to-use-an-emptydisk">When to use an emptyDisk<a class="headerlink" href="#when-to-use-an-emptydisk" title="Permanent link">&para;</a></h4>
 <p>Ephemeral VMs very often come with read-only root images and limited
 tmpfs space. In many cases this is not enough to install application
@@ -933,7 +2629,7 @@ Kubernetes and provides two usage types:</p>
 <p>Note: you need to enable the HostDisk feature gate.</p>
 <p>Example: Create a 1Gi disk image located at /data/disk.img and attach it
 to a VM.</p>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -947,7 +2643,7 @@ spec:
           bus: virtio
         name: host-disk
     machine:
-      type: ""
+      type: &quot;&quot;
     resources:
       requests:
         memory: 64M
@@ -959,7 +2655,7 @@ spec:
       type: DiskOrCreate
     name: host-disk
 status: {}
-</code></pre>
+</code></pre></div>
 <h3 id="configmap">configMap<a class="headerlink" href="#configmap" title="Permanent link">&para;</a></h3>
 <p>A <code>configMap</code> is a reference to a
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/">ConfigMap</a>
@@ -978,7 +2674,7 @@ projected.</p>
 </blockquote>
 <p>Example: Attach the <code>configMap</code> to a VM and use <code>cloudInit</code> to mount the
 <code>iso</code> disk:</p>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -999,7 +2695,7 @@ spec:
         # set serial
         serial: CVLY623300HK240D
     machine:
-      type: ""
+      type: &quot;&quot;
     resources:
       requests:
         memory: 1024M
@@ -1015,14 +2711,14 @@ spec:
         chpasswd: { expire: False }
         bootcmd:
           # mount the ConfigMap
-          - "mkdir /mnt/app-config"
-          - "mount /dev/$(lsblk --nodeps -no name,serial | grep CVLY623300HK240D | cut -f1 -d' ') /mnt/app-config"
+          - &quot;mkdir /mnt/app-config&quot;
+          - &quot;mount /dev/$(lsblk --nodeps -no name,serial | grep CVLY623300HK240D | cut -f1 -d&#39; &#39;) /mnt/app-config&quot;
     name: cloudinitdisk
   - configMap:
       name: app-config
     name: app-config-disk
 status: {}
-</code></pre>
+</code></pre></div>
 <h3 id="secret">secret<a class="headerlink" href="#secret" title="Permanent link">&para;</a></h3>
 <p>A <code>secret</code> is a reference to a
 <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Secret</a> in
@@ -1041,7 +2737,7 @@ projected.</p>
 </blockquote>
 <p>Example: Attach the <code>secret</code> to a VM and use <code>cloudInit</code> to mount the
 <code>iso</code> disk:</p>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -1062,7 +2758,7 @@ spec:
         # set serial
         serial: D23YZ9W6WA5DJ487
     machine:
-      type: ""
+      type: &quot;&quot;
     resources:
       requests:
         memory: 1024M
@@ -1078,14 +2774,14 @@ spec:
         chpasswd: { expire: False }
         bootcmd:
           # mount the Secret
-          - "mkdir /mnt/app-secret"
-          - "mount /dev/$(lsblk --nodeps -no name,serial | grep D23YZ9W6WA5DJ487 | cut -f1 -d' ') /mnt/app-secret"
+          - &quot;mkdir /mnt/app-secret&quot;
+          - &quot;mount /dev/$(lsblk --nodeps -no name,serial | grep D23YZ9W6WA5DJ487 | cut -f1 -d&#39; &#39;) /mnt/app-secret&quot;
     name: cloudinitdisk
   - secret:
       secretName: app-secret
     name: app-secret-disk
 status: {}
-</code></pre>
+</code></pre></div>
 <h3 id="serviceaccount">serviceAccount<a class="headerlink" href="#serviceaccount" title="Permanent link">&para;</a></h3>
 <p>A <code>serviceAccount</code> volume references a Kubernetes
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/"><code>ServiceAccount</code></a>.
@@ -1094,7 +2790,7 @@ account (<code>namespace</code>, <code>token</code> and <code>ca.crt</code>), wh
 in the VM. For automatic mounting, see the <code>configMap</code> and <code>secret</code>
 examples above.</p>
 <p>Example:</p>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -1111,7 +2807,7 @@ spec:
           bus: virtio
         name: serviceaccountdisk
     machine:
-      type: ""
+      type: &quot;&quot;
     resources:
       requests:
         memory: 1024M
@@ -1123,7 +2819,7 @@ spec:
   - name: serviceaccountdisk
     serviceAccount:
       serviceAccountName: default
-</code></pre>
+</code></pre></div>
 <h3 id="downwardmetrics">downwardMetrics<a class="headerlink" href="#downwardmetrics" title="Permanent link">&para;</a></h3>
 <p>A <code>downwardMetrics</code> volume exposes a limited set of VM and host metrics to the
 guest as a raw block volume. The format of the block volume is compatible with
@@ -1132,7 +2828,7 @@ guest as a raw block volume. The format of the block volume is compatible with
 third-parties diagnosing performance issues on their appliances. One prominent
 example is SAP HANA.</p>
 <p>Example:</p>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -1149,7 +2845,7 @@ spec:
           bus: virtio
         name: metrics
     machine:
-      type: ""
+      type: &quot;&quot;
     resources:
       requests:
         memory: 1024M
@@ -1160,25 +2856,25 @@ spec:
       image: kubevirt/fedora-cloud-container-disk-demo:latest
   - name: metrics
     downwardMetrics: {}
-</code></pre>
+</code></pre></div>
 <p>The <code>vm-dump-metrics</code> tool can be used to read the metrics:</p>
-<pre><code>$ dnf install -y vm-dump-metrics
+<div class="highlight"><pre><span></span><code>$ dnf install -y vm-dump-metrics
 $ vm-dump-metrics
 &lt;metrics&gt;
-  &lt;metric type="string" context="host"&gt;
+  &lt;metric type=&quot;string&quot; context=&quot;host&quot;&gt;
     &lt;name&gt;HostName&lt;/name&gt;
     &lt;value&gt;node01&lt;/value&gt;
 [...]
-  &lt;metric type="int64" context="host" unit="s"&gt;
+  &lt;metric type=&quot;int64&quot; context=&quot;host&quot; unit=&quot;s&quot;&gt;
     &lt;name&gt;Time&lt;/name&gt;
     &lt;value&gt;1619008605&lt;/value&gt;
   &lt;/metric&gt;
-  &lt;metric type="string" context="host"&gt;
+  &lt;metric type=&quot;string&quot; context=&quot;host&quot;&gt;
     &lt;name&gt;VirtualizationVendor&lt;/name&gt;
     &lt;value&gt;kubevirt.io&lt;/value&gt;
   &lt;/metric&gt;
 &lt;/metrics&gt;
-</code></pre>
+</code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> The <strong>DownwardMetrics</strong> feature gate
 <a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">must be enabled</a>
@@ -1241,7 +2937,7 @@ of the VMI. When <code>ioThreadsPolicy</code> is set to <code>auto</code> IOThre
 emulator thread.</p>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
 <h4 id="shared-iothreads">Shared IOThreads<a class="headerlink" href="#shared-iothreads" title="Permanent link">&para;</a></h4>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -1278,7 +2974,7 @@ spec:
           bus: virtio
         name: emptydisk6
     machine:
-      type: ""
+      type: &quot;&quot;
     resources:
       requests:
         memory: 64M
@@ -1304,18 +3000,18 @@ spec:
   - emptyDisk:
       capacity: 1Gi
     name: emptydisk6
-</code></pre>
+</code></pre></div>
 <p>In this example, emptydisk and emptydisk2 both request a dedicated IOThread. vmi-shared_disk, and emptydisk 3 through 6 will all shared one IOThread.</p>
-<pre><code>mypvc:        1
+<div class="highlight"><pre><span></span><code>mypvc:        1
 emptydisk:    2
 emptydisk2:   3
 emptydisk3:   1
 emptydisk4:   1
 emptydisk5:   1
 emptydisk6:   1
-</code></pre>
+</code></pre></div>
 <h4 id="auto-iothreads">Auto IOThreads<a class="headerlink" href="#auto-iothreads" title="Permanent link">&para;</a></h4>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -1352,7 +3048,7 @@ spec:
           bus: virtio
         name: emptydisk6
     machine:
-      type: ""
+      type: &quot;&quot;
     resources:
       requests:
         memory: 64M
@@ -1378,20 +3074,20 @@ spec:
   - emptyDisk:
       capacity: 1Gi
     name: emptydisk6
-</code></pre>
+</code></pre></div>
 <p>This VM is identical to the first, except it requests auto IOThreads.
 <code>emptydisk</code> and <code>emptydisk2</code> will still be allocated individual
 IOThreads, but the rest of the disks will be split across 2 separate
 iothreads (twice the number of CPU cores is 4).</p>
 <p>Disks will be assigned to IOThreads like this:</p>
-<pre><code>mypvc:        1
+<div class="highlight"><pre><span></span><code>mypvc:        1
 emptydisk:    3
 emptydisk2:   4
 emptydisk3:   2
 emptydisk4:   1
 emptydisk5:   2
 emptydisk6:   1
-</code></pre>
+</code></pre></div>
 <h3 id="virtio-block-multi-queue">Virtio Block Multi-Queue<a class="headerlink" href="#virtio-block-multi-queue" title="Permanent link">&para;</a></h3>
 <p>Block Multi-Queue is a framework for the Linux block layer that maps
 Device I/O queries to multiple queues. This splits I/O processing up
@@ -1400,7 +3096,7 @@ that the number of queues used should match the number of CPUs allocated
 for optimal performance.</p>
 <p>This feature is enabled by the <code>BlockMultiQueue</code> setting under
 <code>Devices</code>:</p>
-<pre><code>spec:
+<div class="highlight"><pre><span></span><code>spec:
   domain:
     devices:
       blockMultiQueue: true
@@ -1408,7 +3104,7 @@ for optimal performance.</p>
       - disk:
           bus: virtio
         name: mydisk
-</code></pre>
+</code></pre></div>
 <p><strong>Note:</strong> Due to the way KubeVirt implements CPU allocation,
 blockMultiQueue can only be used if a specific CPU allocation is
 requested. If a specific number of CPUs hasn't been allocated to a
@@ -1420,7 +3116,7 @@ over-allocation scenarios. To avoid this, KubeVirt enforces that a
 specific slice of CPU resources is requested in order to take advantage
 of this feature.</p>
 <h4 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h4>
-<pre><code>metadata:
+<div class="highlight"><pre><span></span><code>metadata:
   name: testvmi-disk
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
@@ -1440,7 +3136,7 @@ spec:
     - name: mypvcdisk
       persistentVolumeClaim:
         claimName: mypvc
-</code></pre>
+</code></pre></div>
 <p>This example will enable Block Multi-Queue for the disk <code>mypvcdisk</code> and
 allocate 4 queues (to match the number of CPUs requested).</p>
 <h3 id="disk-device-cache">Disk device cache<a class="headerlink" href="#disk-device-cache" title="Permanent link">&para;</a></h3>
@@ -1464,7 +3160,7 @@ supports direct I/O, otherwise, <code>writethrough</code> is used.</p>
 direct I/O then started VMI will return an error.</p>
 </blockquote>
 <p>Example: force <code>writethrough</code> cache mode</p>
-<pre><code>apiVersion: kubevirt.io/v1
+<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   labels:
@@ -1479,7 +3175,7 @@ spec:
         name: pvcdisk
         cache: writethrough
     machine:
-      type: ""
+      type: &quot;&quot;
     resources:
       requests:
         memory: 64M
@@ -1489,144 +3185,144 @@ spec:
     persistentVolumeClaim:
       claimName: disk-alpine
 status: {}
-</code></pre>
+</code></pre></div>
 <h3 id="disk-sharing">Disk sharing<a class="headerlink" href="#disk-sharing" title="Permanent link">&para;</a></h3>
 <p>Shareable disks allow multiple VMs to share the same underlying storage. In order to use this feature, special care is required because this could lead to data corruption and the loss of important data. Shareable disks demand either data synchronization at the application level or the use of clustered filesystems. These advanced configurations are not within the scope of this documentation and are use-case specific.</p>
 <p>If the <code>shareable</code> option is set, it indicates to libvirt/QEMU that the disk is going to be accessed by multiple VMs and not to create a lock for the writes.</p>
-<p>In this example, we use Rook Ceph in order to dynamically provisioning the PVC.</p>
-<pre><code class="language-yaml">apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: block-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Block
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: rook-ceph-block
-</code></pre>
-<pre><code class="language-bash">$ kubectl get pvc
-NAME        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
-block-pvc   Bound    pvc-0a161bb2-57c7-4d97-be96-0a20ff0222e2   1Gi        RWO            rook-ceph-block   51s
-</code></pre>
-<p>Then, we can declare 2 VMs and set the <code>shareable</code> option to true for the shared disk.</p>
-<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  labels:
-    kubevirt.io/vm: vm-block-1
-  name: vm-block-1
-spec:
-  running: true
-  template:
-    metadata:
-      labels:
-        kubevirt.io/vm: vm-block-1
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-          - disk:
-              bus: virtio
-            shareable: true
-            name: block-disk
-        machine:
-          type: &quot;&quot;
-        resources:
-          requests:
-            memory: 2G
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - containerDisk:
-          image: registry:5000/kubevirt/fedora-with-test-tooling-container-disk:devel
-        name: containerdisk
-      - cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
-        name: cloudinitdisk
-      - name: block-disk
-        persistentVolumeClaim:
-          claimName: block-pvc
----
-apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  labels:
-    kubevirt.io/vm: vm-block-2
-  name: vm-block-2
-spec:
-  running: true
-  template:
-    metadata:
-      labels:
-        kubevirt.io/vm: vm-block-2
-    spec:
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: kubevirt.io/vm
-                operator: In
-                values:
-                - vm-block-1
-            topologyKey: &quot;kubernetes.io/hostname&quot;
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-          - disk:
-              bus: virtio
-            shareable: true
-            name: block-disk
-        machine:
-          type: &quot;&quot;
-        resources:
-          requests:
-            memory: 2G
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - containerDisk:
-          image: registry:5000/kubevirt/fedora-with-test-tooling-container-disk:devel
-        name: containerdisk
-      - cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
-        name: cloudinitdisk
-      - name: block-disk
-        persistentVolumeClaim:
-          claimName: block-pvc                                        
-</code></pre>
-<p>We can now attempt to write a string from the first guest and then read the string from the second guest to test that the sharing is working.</p>
-<pre><code class="language-bash">$ virtctl console vm-block-1
-$ printf &quot;Test awesome shareable disks&quot; | sudo dd  of=/dev/vdc bs=1 count=150 conv=notrunc
-28+0 records in
-28+0 records out
-28 bytes copied, 0.0264182 s, 1.1 kB/s
-# Log into the second guest
-$ virtctl console vm-block-2
-$ sudo dd  if=/dev/vdc bs=1 count=150 conv=notrunc
-Test awesome shareable disks150+0 records in
-150+0 records out
-150 bytes copied, 0.136753 s, 1.1 kB/s
-</code></pre>
+<p>In this example, we use Rook Ceph in order to dynamically provisioning the PVC.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersistentVolumeClaim</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block-pvc</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReadWriteMany</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Block</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rook-ceph-block</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pvc
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>NAME<span class="w">        </span>STATUS<span class="w">   </span>VOLUME<span class="w">                                     </span>CAPACITY<span class="w">   </span>ACCESS<span class="w"> </span>MODES<span class="w">   </span>STORAGECLASS<span class="w">      </span>AGE
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>block-pvc<span class="w">   </span>Bound<span class="w">    </span>pvc-0a161bb2-57c7-4d97-be96-0a20ff0222e2<span class="w">   </span>1Gi<span class="w">        </span>RWO<span class="w">            </span>rook-ceph-block<span class="w">   </span>51s
+</code></pre></div>
+Then, we can declare 2 VMs and set the <code>shareable</code> option to true for the shared disk.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-block-1</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-block-1</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="nt">running</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">        </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-block-1</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">            </span><span class="nt">shareable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block-disk</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">        </span><span class="nt">machine</span><span class="p">:</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2G</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">      </span><span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry:5000/kubevirt/fedora-with-test-tooling-container-disk:devel</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cloudInitNoCloud</span><span class="p">:</span>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="w">          </span><span class="nt">userData</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="w">            </span><span class="no">#cloud-config</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">            </span><span class="no">password: fedora</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">            </span><span class="no">chpasswd: { expire: False }</span>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block-disk</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a><span class="w">          </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block-pvc</span>
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a><span class="nn">---</span>
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a><span class="w">    </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-block-2</span>
+<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-block-2</span>
+<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a><span class="w">  </span><span class="nt">running</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a><span class="w">        </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-block-2</span>
+<a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a><span class="w">      </span><span class="nt">affinity</span><span class="p">:</span>
+<a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a><span class="w">        </span><span class="nt">podAffinity</span><span class="p">:</span>
+<a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a><span class="w">          </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
+<a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">labelSelector</span><span class="p">:</span>
+<a id="__codelineno-2-64" name="__codelineno-2-64" href="#__codelineno-2-64"></a><span class="w">              </span><span class="nt">matchExpressions</span><span class="p">:</span>
+<a id="__codelineno-2-65" name="__codelineno-2-65" href="#__codelineno-2-65"></a><span class="w">              </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/vm</span>
+<a id="__codelineno-2-66" name="__codelineno-2-66" href="#__codelineno-2-66"></a><span class="w">                </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
+<a id="__codelineno-2-67" name="__codelineno-2-67" href="#__codelineno-2-67"></a><span class="w">                </span><span class="nt">values</span><span class="p">:</span>
+<a id="__codelineno-2-68" name="__codelineno-2-68" href="#__codelineno-2-68"></a><span class="w">                </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-block-1</span>
+<a id="__codelineno-2-69" name="__codelineno-2-69" href="#__codelineno-2-69"></a><span class="w">            </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kubernetes.io/hostname&quot;</span>
+<a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
+<a id="__codelineno-2-79" name="__codelineno-2-79" href="#__codelineno-2-79"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-2-80" name="__codelineno-2-80" href="#__codelineno-2-80"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-2-81" name="__codelineno-2-81" href="#__codelineno-2-81"></a><span class="w">            </span><span class="nt">shareable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-2-82" name="__codelineno-2-82" href="#__codelineno-2-82"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block-disk</span>
+<a id="__codelineno-2-83" name="__codelineno-2-83" href="#__codelineno-2-83"></a><span class="w">        </span><span class="nt">machine</span><span class="p">:</span>
+<a id="__codelineno-2-84" name="__codelineno-2-84" href="#__codelineno-2-84"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<a id="__codelineno-2-85" name="__codelineno-2-85" href="#__codelineno-2-85"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-2-86" name="__codelineno-2-86" href="#__codelineno-2-86"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-2-87" name="__codelineno-2-87" href="#__codelineno-2-87"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2G</span>
+<a id="__codelineno-2-88" name="__codelineno-2-88" href="#__codelineno-2-88"></a><span class="w">      </span><span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<a id="__codelineno-2-89" name="__codelineno-2-89" href="#__codelineno-2-89"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-2-90" name="__codelineno-2-90" href="#__codelineno-2-90"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-2-91" name="__codelineno-2-91" href="#__codelineno-2-91"></a><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry:5000/kubevirt/fedora-with-test-tooling-container-disk:devel</span>
+<a id="__codelineno-2-92" name="__codelineno-2-92" href="#__codelineno-2-92"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-2-93" name="__codelineno-2-93" href="#__codelineno-2-93"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cloudInitNoCloud</span><span class="p">:</span>
+<a id="__codelineno-2-94" name="__codelineno-2-94" href="#__codelineno-2-94"></a><span class="w">          </span><span class="nt">userData</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-2-95" name="__codelineno-2-95" href="#__codelineno-2-95"></a><span class="w">            </span><span class="no">#cloud-config</span>
+<a id="__codelineno-2-96" name="__codelineno-2-96" href="#__codelineno-2-96"></a><span class="w">            </span><span class="no">password: fedora</span>
+<a id="__codelineno-2-97" name="__codelineno-2-97" href="#__codelineno-2-97"></a><span class="w">            </span><span class="no">chpasswd: { expire: False }</span>
+<a id="__codelineno-2-98" name="__codelineno-2-98" href="#__codelineno-2-98"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
+<a id="__codelineno-2-99" name="__codelineno-2-99" href="#__codelineno-2-99"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block-disk</span>
+<a id="__codelineno-2-100" name="__codelineno-2-100" href="#__codelineno-2-100"></a><span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<a id="__codelineno-2-101" name="__codelineno-2-101" href="#__codelineno-2-101"></a><span class="w">          </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block-pvc</span><span class="w">                                        </span>
+</code></pre></div>
+We can now attempt to write a string from the first guest and then read the string from the second guest to test that the sharing is working.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>console<span class="w"> </span>vm-block-1
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>$<span class="w"> </span><span class="nb">printf</span><span class="w"> </span><span class="s2">&quot;Test awesome shareable disks&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>dd<span class="w">  </span><span class="nv">of</span><span class="o">=</span>/dev/vdc<span class="w"> </span><span class="nv">bs</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">count</span><span class="o">=</span><span class="m">150</span><span class="w"> </span><span class="nv">conv</span><span class="o">=</span>notrunc
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="m">28</span>+0<span class="w"> </span>records<span class="w"> </span><span class="k">in</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="m">28</span>+0<span class="w"> </span>records<span class="w"> </span>out
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="m">28</span><span class="w"> </span>bytes<span class="w"> </span>copied,<span class="w"> </span><span class="m">0</span>.0264182<span class="w"> </span>s,<span class="w"> </span><span class="m">1</span>.1<span class="w"> </span>kB/s
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># Log into the second guest</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>$<span class="w"> </span>virtctl<span class="w"> </span>console<span class="w"> </span>vm-block-2
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>$<span class="w"> </span>sudo<span class="w"> </span>dd<span class="w">  </span><span class="k">if</span><span class="o">=</span>/dev/vdc<span class="w"> </span><span class="nv">bs</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">count</span><span class="o">=</span><span class="m">150</span><span class="w"> </span><span class="nv">conv</span><span class="o">=</span>notrunc
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Test<span class="w"> </span>awesome<span class="w"> </span>shareable<span class="w"> </span>disks150+0<span class="w"> </span>records<span class="w"> </span><span class="k">in</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="m">150</span>+0<span class="w"> </span>records<span class="w"> </span>out
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="m">150</span><span class="w"> </span>bytes<span class="w"> </span>copied,<span class="w"> </span><span class="m">0</span>.136753<span class="w"> </span>s,<span class="w"> </span><span class="m">1</span>.1<span class="w"> </span>kB/s
+</code></pre></div></p>
 <p>If you are using local devices or RWO PVCs, setting the affinity on the VMs that share the storage guarantees they will be scheduled on the same node. In the example, we set the affinity on the second VM using the label used on the first VM. If you are using shared storage with RWX PVCs, then the affinity rule is not necessary as the storage can be attached simultaneously on multiple nodes.</p>
 <h2 id="sharing-directories-with-vms">Sharing Directories with VMs<a class="headerlink" href="#sharing-directories-with-vms" title="Permanent link">&para;</a></h2>
 <p><code>Virtiofs</code> allows to make visible external filesystems to <code>KubeVirt</code> VMs.
@@ -1641,40 +3337,40 @@ to share directories with VMs. This feature is available starting with KubeVirt 
 <h4 id="cluster-configuration">Cluster Configuration<a class="headerlink" href="#cluster-configuration" title="Permanent link">&para;</a></h4>
 <p>We need to create a new VM definition including the <code>spec.devices.disk.filesystems.virtiofs</code> and a PVC.
 Example:</p>
-<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
-metadata:
-  name: testvmi-fs
-spec:
-  domain:
-    devices:
-      disks:
-        - disk:
-            bus: virtio
-          name: containerdisk
-        - disk:
-            bus: virtio
-          name: cloudinitdisk
-      filesystems:
-        - name: virtiofs-disk
-          virtiofs: {}
-    resources:
-      requests:
-        memory: 1024Mi
-  volumes:
-    - name: containerdisk
-      containerDisk:
-        image: quay.io/containerdisks/fedora:latest
-    - cloudInitNoCloud:
-        userData: |-
-          #cloud-config
-          password: fedora
-          chpasswd: { expire: False }
-      name: cloudinitdisk
-    - name: virtiofs-disk
-      persistentVolumeClaim:
-        claimName: mypvc
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">testvmi-fs</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">      </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">            </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">            </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">      </span><span class="nt">filesystems</span><span class="p">:</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtiofs-disk</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">          </span><span class="nt">virtiofs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">    </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">      </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024Mi</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">      </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/containerdisks/fedora:latest</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cloudInitNoCloud</span><span class="p">:</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="w">        </span><span class="nt">userData</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="w">          </span><span class="no">#cloud-config</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="w">          </span><span class="no">password: fedora</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="w">          </span><span class="no">chpasswd: { expire: False }</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtiofs-disk</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mypvc</span>
+</code></pre></div>
 <h4 id="configuration-inside-the-vm">Configuration Inside the VM<a class="headerlink" href="#configuration-inside-the-vm" title="Permanent link">&para;</a></h4>
 <p>The following configuration can be done in using startup script. See <a href="#cloudinitnocloud">cloudInitNoCloud</a> section for 
 more details. 
@@ -1683,9 +3379,9 @@ Here are examples of how to mount it in a linux and windows VMs:</p>
 <ul>
 <li>Linux Example</li>
 </ul>
-<pre><code class="language-bash">$ sudo mkdir -p /mnt/disks/virtio
-$ sudo mount -t virtiofs virtiofs-disk /mnt/disks/virtio
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$<span class="w"> </span>sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/mnt/disks/virtio
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>$<span class="w"> </span>sudo<span class="w"> </span>mount<span class="w"> </span>-t<span class="w"> </span>virtiofs<span class="w"> </span>virtiofs-disk<span class="w"> </span>/mnt/disks/virtio
+</code></pre></div>
 <ul>
 <li>Windows Example</li>
 </ul>
@@ -1700,9 +3396,9 @@ security reasons.</p>
 exist), and set the proper SELinux context label <code>container_file_t</code> to the shared directory.
 In this example we are going to share a new directory <code>/mnt/data</code> (if the desired directory is an existing one, you can
 skip the <code>mkdir</code> command):</p>
-<pre><code class="language-shell">$ mkdir /tmp/data
-$ sudo chcon -t container_file_t /tmp/data
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$<span class="w"> </span>mkdir<span class="w"> </span>/tmp/data
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>$<span class="w"> </span>sudo<span class="w"> </span>chcon<span class="w"> </span>-t<span class="w"> </span>container_file_t<span class="w"> </span>/tmp/data
+</code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> If you are attempting to share an existing directory, you must first check the SELinux context label with the
 command <code>ls -Z &lt;directory&gt;</code>. In the case that the label is not present or is not <code>container_file_t</code> you need to label 
@@ -1710,161 +3406,193 @@ it with the <code>chcon</code>  command.</p>
 </blockquote>
 <h4 id="cluster-configuration_1">Cluster Configuration<a class="headerlink" href="#cluster-configuration_1" title="Permanent link">&para;</a></h4>
 <p>We need a <code>StorageClass</code> which uses the provider <code>no-provisioner</code>:</p>
-<pre><code class="language-yaml">apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-   name: no-provisioner-storage-class
-provisioner: kubernetes.io/no-provisioner
-reclaimPolicy: Delete
-volumeBindingMode: WaitForFirstConsumer
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">storage.k8s.io/v1</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StorageClass</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">   </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-provisioner-storage-class</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nt">provisioner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/no-provisioner</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Delete</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="nt">volumeBindingMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WaitForFirstConsumer</span>
+</code></pre></div>
 <p>To make the shared directory available for VMs, we need to create a PV and a PVC that could be consumed by the VMs:</p>
-<pre><code class="language-yaml">kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: hostpath
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: &quot;/tmp/data&quot;
-  storageClassName: &quot;no-provisioner-storage-class&quot;
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - node01
----  
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: hostpath-claim
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: &quot;no-provisioner-storage-class&quot;
-  resources:
-    requests:
-      storage: 10Gi
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersistentVolume</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostpath</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="nt">capacity</span><span class="p">:</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10Gi</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReadWriteMany</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span><span class="nt">hostPath</span><span class="p">:</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/tmp/data&quot;</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;no-provisioner-storage-class&quot;</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">  </span><span class="nt">nodeAffinity</span><span class="p">:</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">    </span><span class="nt">required</span><span class="p">:</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">      </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matchExpressions</span><span class="p">:</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/hostname</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">          </span><span class="nt">values</span><span class="p">:</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node01</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="nn">---</span><span class="w">  </span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersistentVolumeClaim</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostpath-claim</span>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReadWriteMany</span>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;no-provisioner-storage-class&quot;</span>
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="w">  </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="w">    </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10Gi</span>
+</code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> Change the <code>node01</code> value for the node name where you want the shared directory will be located.</p>
 </blockquote>
 <p>The VM definitions have to request the PVC <code>hostpath-claim</code> and attach it as a virtiofs filesystem:</p>
-<pre><code class="language-yaml">apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  labels:
-    kubevirt.io/vm: hostpath-vm
-  name: hostpath
-spec:
-  running: true
-  template:
-    metadata:
-      labels:
-        kubevirt.io/domain: hostpath
-        kubevirt.io/vm: hostpath
-    spec:
-      domain:
-        cpu:
-          cores: 1
-          sockets: 1
-          threads: 1
-        devices:
-          filesystems:
-            - name: vm-hostpath
-              virtiofs: {}
-          disks:
-            - name: containerdisk
-              disk:
-                bus: virtio
-            - name: cloudinitdisk
-              disk:
-                bus: virtio
-          interfaces:
-            - name: default
-              masquerade: {}
-          rng: {}
-        resources:
-          requests:
-            memory: 1Gi
-      networks:
-        - name: default
-          pod: {}
-      terminationGracePeriodSeconds: 180
-      volumes:
-        - containerDisk:
-            image: quay.io/containerdisks/fedora:latest
-          name: containerdisk
-        - cloudInitNoCloud:
-            userData: |-
-              #cloud-config
-              chpasswd:
-                expire: false
-              password: password
-              user: fedora
-          name: cloudinitdisk
-        - name: vm-hostpath
-          persistentVolumeClaim:
-            claimName: hostpath-claim
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostpath-vm</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostpath</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">  </span><span class="nt">running</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">        </span><span class="nt">kubevirt.io/domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostpath</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">        </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostpath</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">        </span><span class="nt">cpu</span><span class="p">:</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">          </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">          </span><span class="nt">sockets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="w">          </span><span class="nt">threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">          </span><span class="nt">filesystems</span><span class="p">:</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-hostpath</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">              </span><span class="nt">virtiofs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="w">              </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="w">                </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="w">              </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="w">                </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="w">          </span><span class="nt">interfaces</span><span class="p">:</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="w">              </span><span class="nt">masquerade</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="w">          </span><span class="nt">rng</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
+<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a><span class="w">      </span><span class="nt">networks</span><span class="p">:</span>
+<a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a><span class="w">          </span><span class="nt">pod</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a><span class="w">      </span><span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span>
+<a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a><span class="w">            </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/containerdisks/fedora:latest</span>
+<a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cloudInitNoCloud</span><span class="p">:</span>
+<a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a><span class="w">            </span><span class="nt">userData</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a><span class="w">              </span><span class="no">#cloud-config</span>
+<a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a><span class="w">              </span><span class="no">chpasswd:</span>
+<a id="__codelineno-9-50" name="__codelineno-9-50" href="#__codelineno-9-50"></a><span class="w">                </span><span class="no">expire: false</span>
+<a id="__codelineno-9-51" name="__codelineno-9-51" href="#__codelineno-9-51"></a><span class="w">              </span><span class="no">password: password</span>
+<a id="__codelineno-9-52" name="__codelineno-9-52" href="#__codelineno-9-52"></a><span class="w">              </span><span class="no">user: fedora</span>
+<a id="__codelineno-9-53" name="__codelineno-9-53" href="#__codelineno-9-53"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
+<a id="__codelineno-9-54" name="__codelineno-9-54" href="#__codelineno-9-54"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-hostpath</span>
+<a id="__codelineno-9-55" name="__codelineno-9-55" href="#__codelineno-9-55"></a><span class="w">          </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<a id="__codelineno-9-56" name="__codelineno-9-56" href="#__codelineno-9-56"></a><span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostpath-claim</span>
+</code></pre></div>
 <h4 id="configuration-inside-the-vm_1">Configuration Inside the VM<a class="headerlink" href="#configuration-inside-the-vm_1" title="Permanent link">&para;</a></h4>
 <p>We need to log in to the VM and mount the shared directory:</p>
-<pre><code class="language-shell">$ sudo mount -t virtiofs vm-hostpath /mnt
-</code></pre>
-              
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$<span class="w"> </span>sudo<span class="w"> </span>mount<span class="w"> </span>-t<span class="w"> </span>virtiofs<span class="w"> </span>vm-hostpath<span class="w"> </span>/mnt
+</code></pre></div>
+
+
+
+
+
+                
+              </article>
             </div>
-          </div><footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../numa/" class="btn btn-neutral float-left" title="NUMA"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../interfaces_and_networks/" class="btn btn-neutral float-right" title="Interfaces and Networks">Next <span class="icon icon-circle-arrow-right"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <!-- Copyright etc -->
-  </div>
-
-  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-</footer>
+          
           
         </div>
-      </div>
-
-    </section>
-
-  </div>
-
-  <div class="rst-versions" role="note" aria-label="Versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
+        
+      </main>
+      
+        <footer class="md-footer">
+  
     
-        <span>
-          <a href="https://github.com/kubevirt/user-guide/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
-        </span>
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../numa/" class="md-footer__link md-footer__link--prev" aria-label="Previous: NUMA" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Previous
+                </span>
+                NUMA
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../interfaces_and_networks/" class="md-footer__link md-footer__link--next" aria-label="Next: Interfaces and Networks" rel="next">
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Next
+                </span>
+                Interfaces and Networks
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
-    
-      <span><a href="../numa/" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../interfaces_and_networks/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
 </div>
-    <script>var base_url = '../..';</script>
-    <script src="../../js/theme_extra.js" defer></script>
-    <script src="../../js/theme.js" defer></script>
-      <script src="../../search/main.js" defer></script>
-    <script defer>
-        window.onload = function () {
-            SphinxRtdTheme.Navigation.enable(false);
-        };
-    </script>
-
-</body>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
 </html>
