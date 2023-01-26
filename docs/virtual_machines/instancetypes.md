@@ -60,7 +60,7 @@ Unlike instance types preferences only represent the preferred values and as suc
 For example as shown below, if a user has provided a [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) with a disk bus already defined within a [DiskTarget](https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget) *and* has also selected a set of preferences with [DevicePreference](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_devicepreferences) and `preferredDiskBus` defined the users original choice within the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) and [DiskTarget](https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget) are used:
 
 ```yaml
-$ cat << EOF | kubectl apply -f - 
+$ kubectl apply -f - << EOF
 ---
 apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachinePreference
@@ -263,7 +263,7 @@ $ kubectl label pvc/cirros-pvc \
   instancetype.kubevirt.io/default-instancetype=server.tiny \
   instancetype.kubevirt.io/default-preference=cirros
 [..]
-$ cat <<EOF | kubectl apply -f -
+$ kubectl apply -f - << EOF
 ---
 apiVersion: cdi.kubevirt.io/v1beta1
 kind: DataSource
@@ -342,7 +342,7 @@ $ kubectl kustomize https://github.com/kubevirt/common-instancetypes.git/Virtual
 Various examples are available within the [`kubevirt`](https://github.com/kubevirt/kubevirt) repo under [`/examples`](https://github.com/kubevirt/kubevirt/tree/main/examples). The following uses an example `VirtualMachine` provided by the [`containerdisk/fedora` repo](https://quay.io/repository/containerdisks/fedora) and replaces much of the `DomainSpec` with the equivalent instance type and preferences:
 
 ```yaml
-cat << EOF | kubectl apply -f - 
+$ kubectl apply -f - << EOF
 ---
 apiVersion: instancetype.kubevirt.io/v1alpha2
 kind: VirtualMachineInstancetype
