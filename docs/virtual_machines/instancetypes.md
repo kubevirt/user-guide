@@ -4,8 +4,8 @@
 
 * `v1alpha1` (Experimental) as of the [`v0.56.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.56.0) release
 * `v1alpha2` (Experimental) as of the [`v0.58.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.58.0) release
-  * This version now captures complete `VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}` objects within the created `ControllerRevisions`
-  * This version is backwardly compatible with `v1alpha1`, no modifications are required to existing instancetypes, preferences or controllerrevisions.
+
+See the [Version History](#version-history) section for more details.
 
 ## Introduction
 
@@ -404,3 +404,15 @@ spec:
         name: cloudinit
 EOF
 ```
+
+## Version History
+
+### `v1alpha1` (Experimental)
+
+* Initial development version.
+
+### `v1alpha2` (Experimental)
+
+* This version now captures complete `VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}` objects within the created `ControllerRevisions`
+
+* This version is backwardly compatible with `v1alpha1`, no modifications are required to existing  `VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}` or `ControllerRevisions`.
