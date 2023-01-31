@@ -241,6 +241,69 @@ $ kubectl get controllerrevision/controllerrevision/vm-cirros-csmall-csmall-72c3
 Error from server (NotFound): controllerrevisions.apps "vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1" not found
 ```
 
+Users can opt-in to moving to a newer generation of an instance type or preference by removing the referenced `revisionName` from the appropriate `matcher` within the `VirtualMachine` object. This will result in fresh `ControllerRevisions` being captured and used.
+
+The following example creates a `VirtualMachine` using an initial version of the `csmall` instance type before increasing the number of vCPUs provided by the instance type:
+
+```yaml
+$ kubectl apply -f examples/csmall.yaml -f examples/vm-cirros-csmall.yaml
+virtualmachineinstancetype.instancetype.kubevirt.io/csmall created
+virtualmachine.kubevirt.io/vm-cirros-csmall created
+
+$ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
+{
+  "kind": "VirtualMachineInstancetype",
+  "name": "csmall",
+  "revisionName": "vm-cirros-csmall-csmall-3e86e367-9cd7-4426-9507-b14c27a08671-1"
+}
+
+$ virtctl start vm-cirros-csmall
+VM vm-cirros-csmall was scheduled to start
+
+$ kubectl get vmi/vm-cirros-csmall -o json | jq .spec.domain.cpu
+{
+  "cores": 1,
+  "model": "host-model",
+  "sockets": 1,
+  "threads": 1
+}
+
+$ kubectl patch VirtualMachineInstancetype/csmall --type merge -p '{"spec":{"cpu":{"guest":2}}}'
+virtualmachineinstancetype.instancetype.kubevirt.io/csmall patched
+```
+
+In order for this change to be picked up within the `VirtualMachine` we need to stop the running `VirtualMachine` and clear the `revisionName` referenced by the `InstancetypeMatcher`:
+
+```yaml
+$ virtctl stop vm-cirros-csmall
+VM vm-cirros-csmall was scheduled to stop
+
+$ kubectl patch vm/vm-cirros-csmall --type merge -p '{"spec":{"instancetype":{"revisionName":""}}}'
+virtualmachine.kubevirt.io/vm-cirros-csmall patched
+
+$ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
+{
+  "kind": "VirtualMachineInstancetype",
+  "name": "csmall",
+  "revisionName": "vm-cirros-csmall-csmall-3e86e367-9cd7-4426-9507-b14c27a08671-2"
+}
+```
+
+As you can see above the `InstancetypeMatcher` now references a new `ControllerRevision` containing generation 2 of the instance type. We can now start the `VirtualMachine` again and see the new number of vCPUs being used by the `VirtualMachineInstance`:
+
+```yaml
+$ virtctl start vm-cirros-csmall
+VM vm-cirros-csmall was scheduled to start
+
+$ kubectl get vmi/vm-cirros-csmall -o json | jq .spec.domain.cpu
+{
+  "cores": 1,
+  "model": "host-model",
+  "sockets": 2,
+  "threads": 1
+}
+```
+
 ### Inferring defaults from a Volume
 
 The `inferFromVolume` attribute of both the `InstancetypeMatcher` and `PreferenceMatcher` allows a user to request that defaults are inferred from a volume. When requested KubeVirt will look for the following labels on the underlying `PVC`, `DataSource` or `DataVolume` to determine the default name and kind:
