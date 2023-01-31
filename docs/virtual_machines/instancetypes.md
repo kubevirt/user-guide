@@ -11,7 +11,7 @@ See the [Version History](#version-history) section for more details.
 
 KubeVirt's [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) API contains many advanced options for tuning the performance of a VM that goes beyond what typical users need to be aware of. Users have previously been unable to simply define the storage/network they want assigned to their VM and then declare in broad terms what quality of resources and kind of performance characteristics they need for their VM.
 
-Instance types and preferences provide a way to define a set of resource, performance and other runtime characteristics, allowing users to reuse these definitions across multiple [`VirtualMachines`](https://kubevirt.io/api-reference/master/definitions.html#_v1_virtualmachine).
+Instance types and preferences provide a way to define a set of resource, performance and other runtime characteristics, allowing users to reuse these definitions across multiple `VirtualMachines`.
 
 ## VirtualMachineInstancetype
 
@@ -28,16 +28,16 @@ spec:
     guest: 128Mi
 ```
 
-KubeVirt provides two Instancetype based [`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/), a cluster wide [`VirtualMachineClusterInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineclusterinstancetype) and a namespaced [`VirtualMachineInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype). These [`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) encapsulate the following resource related characteristics of a [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) through a shared [`VirtualMachineInstancetypeSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetypespec):
+KubeVirt provides two Instancetype based [`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/), a cluster wide [`VirtualMachineClusterInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineclusterinstancetype) and a namespaced [`VirtualMachineInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype). These `CRDs` encapsulate the following resource related characteristics of a `VirtualMachine` through a shared [`VirtualMachineInstancetypeSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetypespec):
 
-* [CPU](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_cpuinstancetype) : Required number of vCPUs presented to the guest
-* [Memory](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_memoryinstancetype) : Required amount of memory presented to the guest
-* [GPUs](https://kubevirt.io/api-reference/main/definitions.html#_v1_gpu) : Optional list of vGPUs to passthrough
-* [HostDevices](https://kubevirt.io/api-reference/main/definitions.html#_v1_hostdevice) : Optional list of HostDevices to passthrough
-* IOThreadsPolicy : Optional IOThreadsPolicy to be used
-* [LaunchSecurity](https://kubevirt.io/api-reference/main/definitions.html#_v1_launchsecurity): Optional LaunchSecurity to be used
+* [`CPU`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_cpuinstancetype) : Required number of vCPUs presented to the guest
+* [`Memory`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_memoryinstancetype) : Required amount of memory presented to the guest
+* [`GPUs`](https://kubevirt.io/api-reference/main/definitions.html#_v1_gpu) : Optional list of vGPUs to passthrough
+* [`HostDevices`](https://kubevirt.io/api-reference/main/definitions.html#_v1_hostdevice) : Optional list of `HostDevices` to passthrough
+* `IOThreadsPolicy` : Optional `IOThreadsPolicy` to be used
+* [`LaunchSecurity`](https://kubevirt.io/api-reference/main/definitions.html#_v1_launchsecurity): Optional `LaunchSecurity` to be used
 
-Anything provided within an instance type cannot be overridden within the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine). For example as `CPU` and `Memory` are both required attributes of an instance type if a user makes any requests for `CPU` or `Memory` resources within the underlying [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) the instance type will conflict and the request will be rejected during creation.
+Anything provided within an instance type cannot be overridden within the `VirtualMachine`. For example as `CPU` and `Memory` are both required attributes of an instance type if a user makes any requests for `CPU` or `Memory` resources within the underlying `VirtualMachine` the instance type will conflict and the request will be rejected during creation.
 
 ## VirtualMachinePreference
 
@@ -53,11 +53,11 @@ spec:
     preferredInterfaceModel: virtio
 ```
 
-KubeVirt also provides two further preference based [`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/), again a cluster wide [`VirtualMachineClusterPreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineclusterpreference) and namespaced [`VirtualMachinePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference). These [`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) encapsulate the preferred value of any remaining attributes of a [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) required to run a given workload, again this is through a shared [`VirtualMachinePreferenceSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreferencespec).
+KubeVirt also provides two further preference based `CRDs`, again a cluster wide [`VirtualMachineClusterPreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineclusterpreference) and namespaced [`VirtualMachinePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference). These `CRDs`encapsulate the preferred value of any remaining attributes of a `VirtualMachine` required to run a given workload, again this is through a shared [`VirtualMachinePreferenceSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreferencespec).
 
-Unlike instance types preferences only represent the preferred values and as such can be overridden by values in the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) provided by the user.
+Unlike instance types preferences only represent the preferred values and as such can be overridden by values in the `VirtualMachine` provided by the user.
 
-For example as shown below, if a user has provided a [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) with a disk bus already defined within a [DiskTarget](https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget) *and* has also selected a set of preferences with [DevicePreference](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_devicepreferences) and `preferredDiskBus` defined the users original choice within the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) and [DiskTarget](https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget) are used:
+For example as shown below, if a user has provided a `VirtualMachine` with a disk bus already defined within a [`DiskTarget`](https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget) *and* has also selected a set of preferences with [`DevicePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_devicepreferences) and `preferredDiskBus` defined the users original choice within the `VirtualMachine` and `DiskTarget` are used:
 
 ```yaml
 $ kubectl apply -f - << EOF
@@ -163,18 +163,18 @@ spec:
     name: example-preference
 ```
 
-The previous instance type and preference CRDs are matched to a given [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) through the use of a matcher. Each matcher consists of the following:
+The previous instance type and preference CRDs are matched to a given `VirtualMachine` through the use of a matcher. Each matcher consists of the following:
 
-* Name (string): Name of the resource being referenced
-* Kind (string):  Optional, defaults to the cluster wide CRD kinds of `VirtualMachineClusterInstancetype` or `VirtualMachineClusterPreference` if not provided
-* RevisionName (string) : Optional, name of a [ControllerRevision](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) containing a copy of the [`VirtualMachineInstancetypeSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetypespec) or [`VirtualMachinePreferenceSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreferencespec) taken when the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#__virtualmachine) is first started. See the [Versioning](#versioning) section below for more details on how and why this is captured.
-* InferFromVolume (string): Optional, see the `Inferring defaults from Volumes` section below for more details.
+* `Name` (string): Name of the resource being referenced
+* `Kind` (string):  Optional, defaults to the cluster wide CRD kinds of `VirtualMachineClusterInstancetype` or `VirtualMachineClusterPreference` if not provided
+* `RevisionName` (string) : Optional, name of a [`ControllerRevision`](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) containing a copy of the `VirtualMachineInstancetypeSpec` or `VirtualMachinePreferenceSpec` taken when the `VirtualMachine` is first created. See the [Versioning](#versioning) section below for more details on how and why this is captured.
+* `InferFromVolume` (string): Optional, see the [Inferring defaults from a Volume](#inferring-defaults-from-a-volume) section below for more details.
 
 ## Versioning
 
 Versioning of these resources is required to ensure the eventual `VirtualMachineInstance` created when starting a `VirtualMachine` does not change between restarts if any referenced instance type or set of preferences are updated during the lifetime of the `VirtualMachine`.
 
-This is currently achieved by using [ControllerRevision](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) to retain a copy of the [`VirtualMachineInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype) or [`VirtualMachinePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference) at the time the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) is created. A reference to these [ControllerRevisions](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) are then retained in the VirtualMachineInstancetypeMatcher and VirtualMachinePreferenceMatcher within the [`VirtualMachine`](https://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine) for future use.
+This is currently achieved by using `ControllerRevision` to retain a copy of the `VirtualMachineInstancetype` or `VirtualMachinePreference` at the time the `VirtualMachine` is created. A reference to these `ControllerRevisions` are then retained in the [`InstancetypeMatcher`](https://kubevirt.io/api-reference/main/definitions.html#_v1_instancetypematcher) and [`PreferenceMatcher`](https://kubevirt.io/api-reference/main/definitions.html#_v1_preferencematcher) within the `VirtualMachine` for future use.
 
 
 ```yaml
@@ -241,9 +241,9 @@ $ kubectl get controllerrevision/controllerrevision/vm-cirros-csmall-csmall-72c3
 Error from server (NotFound): controllerrevisions.apps "vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1" not found
 ```
 
-Users can opt-in to moving to a newer generation of an instance type or preference by removing the referenced `revisionName` from the appropriate `matcher` within the `VirtualMachine` object. This will result in fresh `ControllerRevisions` being captured and used.
+Users can opt-in to moving to a newer generation of an instance type or preference by removing the referenced `revisionName` from the appropriate matcher within the `VirtualMachine` object. This will result in fresh `ControllerRevisions` being captured and used.
 
-The following example creates a `VirtualMachine` using an initial version of the `csmall` instance type before increasing the number of vCPUs provided by the instance type:
+The following example creates a `VirtualMachine` using an initial version of the csmall instance type before increasing the number of vCPUs provided by the instance type:
 
 ```yaml
 $ kubectl apply -f examples/csmall.yaml -f examples/vm-cirros-csmall.yaml
