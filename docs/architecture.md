@@ -254,9 +254,9 @@ GracePeriodSeconds to the seconds passed in the command.
 
 Currently, only setting grace-period=0 is supported.
 
-> Note: Force restart can cause data corruption, and should be used in
-> cases of kernel panic or VirtualMachine being unresponsive to normal
-> restarts.
+!!! warning "Note"
+    Force restart can cause data corruption, and should be used in cases of
+    kernel panic or VirtualMachine being unresponsive to normal restarts.
 
 ### Fencing considerations
 
@@ -305,11 +305,12 @@ VirtualMachineInstance. You tell it that you want this
 VirtualMachineInstance with your application running, the VirtualMachine
 will try to make sure it stays running.
 
-> Note: The current belief is that if it is defined that the
-> VirtualMachineInstance should be running, it should be running. This is
-> different to many classical virtualization platforms, where VMs stay
-> down if they were switched off. Restart policies may be added if needed.
-> Please provide your use-case if you need this!
+!!! info "Note"
+    The current belief is that if it is defined that the
+    VirtualMachineInstance should be running, it should be running. This is
+    different from many classical virtualization platforms, where VMs stay
+    down if they were switched off. Restart policies may be added if needed.
+    Please provide your use-case if you need this!
 
 ### Example
 
