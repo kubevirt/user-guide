@@ -398,8 +398,10 @@ Declare ports listen by the virtual machine
 > **Tip:** Use `e1000` model if your guest image doesn't ship with
 > virtio drivers.
 
-> **Note:** Windows machines need the latest virtio network driver to
-> configure the correct MTU on the interface.
+> **Note:** To configure the correct MTU on the interface, guest machines
+> need new enough virtio network driver that understands the data passed
+> into the guest via a PCI config register in the emulated device.
+> Or a DHCP client that is able to read the MTU from the DHCP server response.
 
 If `spec.domain.devices.interfaces` is omitted, the virtual machine is
 connected using the default pod network interface of `bridge` type. If
