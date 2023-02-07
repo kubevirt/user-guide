@@ -115,11 +115,19 @@ KubeVirt-specific Tekton tasks, which are focused on:
 #### Wait for Virtual Machine Instance Status
 - wait-for-vmi-status - Waits for a VMI to be running.
 
+#### Modify Windows iso
+- modify-windows-iso-file - modifies windows iso (replaces prompt bootloader with no-prompt bootloader) and replaces original iso 
+  in PVC with updated one. This helps with automated installation of Windows in EFI boot mode. By default Windows in EFI boot mode 
+  uses a prompt bootloader, which will not continue with the boot process until a key is pressed. By replacing it with the non-prompt 
+  bootloader no key press is required to boot into the Windows installer.
+
 ### Example pipeline
 All these tasks can be used for creating [pipelines](https://github.com/tektoncd/pipeline/blob/main/docs/pipelines.md).
 TTO is creating multiple example pipelines, e.g.:
 
-- [Windows 10 installer](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows10-installer.yaml) - Pipeline will prepare a template and Windows 10 datavolume vith virtio drivers installed. User has to provide a link to working Windows 10 iso file. 
-More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows10-installer)
+- [Windows bios installer](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows-bios-installer.yaml) - Pipeline will prepare a template and Windows datavolume vith virtio drivers installed. User has to provide a link to working Windows 10 iso file. Pipeline is suitable 
+for Windows versions, which uses bios. More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-bios-installer)
 
-- [Windows 10 customize](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows10-customize.yaml) - Pipeline will install sql server in windows 10 VM. More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows10-customize)
+- [Windows efi installer](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows-efi-installer.yaml) - Pipeline will prepare a template and Windows 11/2k22 datavolume vith virtio drivers installed. User has to provide a link to working Windows 11/2k22 iso file. Pipeline is suitable for Windows versions, which requires EFI (e.g. Windows 11/2k22). More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-efi-installer)
+
+- [Windows customize](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows-customize.yaml) - Pipeline will install sql server or vs code in windows VM. More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-customize)
