@@ -403,6 +403,9 @@ Declare ports listen by the virtual machine
 > into the guest via a PCI config register in the emulated device.
 > Or a DHCP client that is able to read the MTU from the DHCP server response.
 
+> **Note (Windows):** MTU has to be set manually using `netsh` or other tool on Windows guest non virtio interfaces
+> since the Windows DHCP client doesn't request/read the MTU.
+
 If `spec.domain.devices.interfaces` is omitted, the virtual machine is
 connected using the default pod network interface of `bridge` type. If
 you'd like to have a virtual machine instance without any network
