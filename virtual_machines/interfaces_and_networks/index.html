@@ -2121,6 +2121,8 @@ virtio drivers.</p>
 need new enough virtio network driver that understands the data passed
 into the guest via a PCI config register in the emulated device.
 Or a DHCP client that is able to read the MTU from the DHCP server response.</p>
+<p><strong>Note (Windows):</strong> MTU has to be set manually using <code>netsh</code> or other tool on Windows guest non virtio interfaces
+since the Windows DHCP client doesn't request/read the MTU.</p>
 </blockquote>
 <p>If <code>spec.domain.devices.interfaces</code> is omitted, the virtual machine is
 connected using the default pod network interface of <code>bridge</code> type. If
