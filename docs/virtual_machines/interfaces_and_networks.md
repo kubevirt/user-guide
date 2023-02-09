@@ -398,14 +398,6 @@ Declare ports listen by the virtual machine
 > **Tip:** Use `e1000` model if your guest image doesn't ship with
 > virtio drivers.
 
-> **Note:** To configure the correct MTU on the interface, guest machines
-> need new enough virtio network driver that understands the data passed
-> into the guest via a PCI config register in the emulated device.
-> Or a DHCP client that is able to read the MTU from the DHCP server response.
-
-> **Note (Windows):** MTU has to be set manually using `netsh` or other tool on Windows guest non virtio interfaces
-> since the Windows DHCP client doesn't request/read the MTU.
-
 If `spec.domain.devices.interfaces` is omitted, the virtual machine is
 connected using the default pod network interface of `bridge` type. If
 you'd like to have a virtual machine instance without any network
@@ -419,10 +411,30 @@ spec:
       autoattachPodInterface: false
 ```
 
+### MTU
+There are two methods for the MTU to be propagated to the guest interface.
+
+* Libvirt - for this the guest machine needs new enough virtio network driver that understands
+the data passed into the guest via a PCI config register in the emulated device.
+* DHCP - for this the guest DHCP client should be able to read the MTU from the DHCP server response.
+
+On **Windows** guest non virtio interfaces, MTU has to be set manually using `netsh` or other tool
+since the Windows DHCP client doesn't request/read the MTU.
+
+The table below is summarizing the MTU propagation to the guest.
+
+|     | masquerade     | bridge with CNI IP | bridge with no CNI IP | Windows |
+|-----|----------------|--------------------|-----------------------|---------|
+| virtio    | DHCP & libvirt | DHCP & libvirt     | libvirt               | libvirt |
+| non-virtio    | DHCP           | DHCP               | X                     | X       |
+
+* bridge with CNI IP - means the CNI gives IP to the pod interface and bridge binding is used
+to bind the pod interface to the guest.
+
 ### bridge
 
 In `bridge` mode, virtual machines are connected to the network backend
-through a linux "bridge". The pod network IPv4 address is delegated to
+through a linux "bridge". The pod network IPv4 address (if exists) is delegated to
 the virtual machine via DHCPv4. The virtual machine should be configured
 to use DHCP to acquire IPv4 addresses.
 
