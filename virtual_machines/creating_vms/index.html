@@ -10,20 +10,20 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/dedicated_cpu_resources/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/creating_vms/">
       
       
-        <link rel="prev" href="../virtual_hardware/">
+        <link rel="prev" href="../virtual_machine_instances/">
       
       
-        <link rel="next" href="../numa/">
+        <link rel="next" href="../lifecycle/">
       
       <link rel="icon" href="../../assets/favicon32x32.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
     
     
       
-        <title>Dedicated CPU resources - KubeVirt user guide</title>
+        <title>Creating VirtualMachines - KubeVirt user guide</title>
       
     
     
@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#dedicated-cpu-resources" class="md-skip">
+        <a href="#creating-virtualmachines" class="md-skip">
           Skip to content
         </a>
       
@@ -109,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Dedicated CPU resources
+              Creating VirtualMachines
             
           </span>
         </div>
@@ -732,11 +732,80 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../creating_vms/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Creating VirtualMachines
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Creating VirtualMachines
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-virtualmachines-on-a-cluster" class="md-nav__link">
+    Creating VirtualMachines on a cluster
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#specifying-or-inferring-instance-types-and-preferences" class="md-nav__link">
+    Specifying or inferring instance types and preferences
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boot-order-of-added-volumes" class="md-nav__link">
+    Boot order of added volumes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#specifying-cloud-init-user-data" class="md-nav__link">
+    Specifying cloud-init user data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -816,80 +885,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Dedicated CPU resources
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../dedicated_cpu_resources/" class="md-nav__link">
         Dedicated CPU resources
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#kubernetes-cpu-manager" class="md-nav__link">
-    Kubernetes CPU manager
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#requesting-dedicated-cpu-resources" class="md-nav__link">
-    Requesting dedicated CPU resources
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#requesting-dedicated-cpu-for-qemu-emulator" class="md-nav__link">
-    Requesting dedicated CPU for QEMU emulator
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#identifying-nodes-with-a-running-cpu-manager" class="md-nav__link">
-    Identifying nodes with a running CPU manager
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sidecar-containers-and-cpu-allocation-overhead" class="md-nav__link">
-    Sidecar containers and CPU allocation overhead
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1274,36 +1274,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#kubernetes-cpu-manager" class="md-nav__link">
-    Kubernetes CPU manager
+  <a href="#creating-virtualmachines-on-a-cluster" class="md-nav__link">
+    Creating VirtualMachines on a cluster
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#requesting-dedicated-cpu-resources" class="md-nav__link">
-    Requesting dedicated CPU resources
+  <a href="#specifying-or-inferring-instance-types-and-preferences" class="md-nav__link">
+    Specifying or inferring instance types and preferences
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#requesting-dedicated-cpu-for-qemu-emulator" class="md-nav__link">
-    Requesting dedicated CPU for QEMU emulator
+  <a href="#boot-order-of-added-volumes" class="md-nav__link">
+    Boot order of added volumes
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#identifying-nodes-with-a-running-cpu-manager" class="md-nav__link">
-    Identifying nodes with a running CPU manager
+  <a href="#specifying-cloud-init-user-data" class="md-nav__link">
+    Specifying cloud-init user data
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#sidecar-containers-and-cpu-allocation-overhead" class="md-nav__link">
-    Sidecar containers and CPU allocation overhead
+  <a href="#examples" class="md-nav__link">
+    Examples
   </a>
   
 </li>
@@ -1323,7 +1323,7 @@
                   
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/dedicated_cpu_resources.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/creating_vms.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -1332,157 +1332,147 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/dedicated_cpu_resources.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/creating_vms.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-<h1 id="dedicated-cpu-resources">Dedicated CPU resources<a class="headerlink" href="#dedicated-cpu-resources" title="Permanent link">&para;</a></h1>
-<p>Certain workloads, requiring a predictable latency and enhanced
-performance during its execution would benefit from obtaining dedicated
-CPU resources. KubeVirt, relying on the Kubernetes CPU manager, is able
-to pin guest's vCPUs to the host's pCPUs.</p>
-<h2 id="kubernetes-cpu-manager"><a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/">Kubernetes CPU manager</a><a class="headerlink" href="#kubernetes-cpu-manager" title="Permanent link">&para;</a></h2>
-<p>Kubernetes CPU manager is a mechanism that affects the scheduling of
-workloads, placing it on a host which can allocate <code>Guaranteed</code>
-resources and pin certain Pod's containers to host pCPUs, if the
-following requirements are met:</p>
-<ul>
-<li><a href="https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/#create-a-pod-that-gets-assigned-a-qos-class-of-guaranteed">Pod's QoS</a> is Guaranteed<ul>
-<li>resources requests and limits are equal</li>
-<li>all containers in the Pod express CPU and memory requirements</li>
-</ul>
-</li>
-<li>Requested number of CPUs is an Integer</li>
-</ul>
-<p>Additional information: </p>
-<ul>
-<li><a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/">Enabling the CPU manager on Kubernetes</a></li>
-<li><a href="https://docs.openshift.com/container-platform/4.10/scalability_and_performance/using-cpu-manager.html">Enabling the CPU manager on OKD</a></li>
-<li><a href="https://kubernetes.io/blog/2018/07/24/feature-highlight-cpu-manager/">Kubernetes blog explaining the feature</a></li>
-</ul>
-<h2 id="requesting-dedicated-cpu-resources">Requesting dedicated CPU resources<a class="headerlink" href="#requesting-dedicated-cpu-resources" title="Permanent link">&para;</a></h2>
-<p>Setting <code>spec.domain.cpu.dedicatedCpuPlacement</code> to <code>true</code> in a VMI spec
-will indicate the desire to allocate dedicated CPU resource to the VMI</p>
-<p>Kubevirt will verify that all the necessary conditions are met, for the
-Kubernetes CPU manager to pin the virt-launcher container to dedicated
-host CPUs. Once, virt-launcher is running, the VMI's vCPUs will be
-pinned to the pCPUS that has been dedicated for the virt-launcher
-container.</p>
-<p>Expressing the desired amount of VMI's vCPUs can be done by either
-setting the guest topology in <code>spec.domain.cpu</code> (<code>sockets</code>, <code>cores</code>,
-<code>threads</code>) or <code>spec.domain.resources.[requests/limits].cpu</code> to a whole
-number integer ([1-9]+) indicating the number of vCPUs
-requested for the VMI. Number of vCPUs is counted as
-<code>sockets * cores * threads</code> or if <code>spec.domain.cpu</code> is empty then it
-takes value from <code>spec.domain.resources.requests.cpu</code> or
-<code>spec.domain.resources.limits.cpu</code>.</p>
-<blockquote>
-<p><strong>Note:</strong> Users should not specify both <code>spec.domain.cpu</code> and
-<code>spec.domain.resources.[requests/limits].cpu</code></p>
-<p><strong>Note:</strong> <code>spec.domain.resources.requests.cpu</code> must be equal to
-<code>spec.domain.resources.limits.cpu</code></p>
-<p><strong>Note:</strong> Multiple cpu-bound microbenchmarks show a significant
-performance advantage when using <code>spec.domain.cpu.sockets</code> instead of
-<code>spec.domain.cpu.cores</code>.</p>
-</blockquote>
-<p>All inconsistent requirements will be rejected.</p>
-<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
-spec:
-  domain:
-    cpu:
-      sockets: 2
-      cores: 1
-      threads: 1
-      dedicatedCpuPlacement: true
-    resources:
-      limits:
-        memory: 2Gi
-[...]
+<h1 id="creating-virtualmachines">Creating VirtualMachines<a class="headerlink" href="#creating-virtualmachines" title="Permanent link">&para;</a></h1>
+<p>The virtctl sub command <code>create vm</code> allows easy creation of VirtualMachine
+manifests from the command line. It
+leverages <a href="../instancetypes/">instance types and preferences</a>
+and provides several flags to control details of the created virtual machine.</p>
+<p>For example there are flags to specify the name or run strategy of a
+virtual machine or flags to add volumes to a virtual machine. Instance types
+and preferences can either be specified directly or it is possible to let
+KubeVirt infer those from the volume used to boot the virtual machine.</p>
+<p>For a full set of flags and their description use the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>-h
 </code></pre></div>
-<p>OR</p>
-<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
-spec:
-  domain:
-    cpu:
-      dedicatedCpuPlacement: true
-    resources:
-      limits:
-        cpu: 2
-        memory: 2Gi
-[...]
+<h2 id="creating-virtualmachines-on-a-cluster">Creating VirtualMachines on a cluster<a class="headerlink" href="#creating-virtualmachines-on-a-cluster" title="Permanent link">&para;</a></h2>
+<p>The output of virtctl <code>create vm</code> can be piped into <code>kubectl</code> to directly
+create a VirtualMachine on a cluster, e.g.:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Create a VM with name my-vm on the cluster</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--name<span class="w"> </span>my-vm<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>-
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>virtualmachine.kubevirt.io/my-vm<span class="w"> </span>created
 </code></pre></div>
-<h2 id="requesting-dedicated-cpu-for-qemu-emulator">Requesting dedicated CPU for QEMU emulator<a class="headerlink" href="#requesting-dedicated-cpu-for-qemu-emulator" title="Permanent link">&para;</a></h2>
-<p>A number of QEMU threads, such as QEMU main event loop, async I/O
-operation completion, etc., also execute on the same physical CPUs as
-the VMI's vCPUs. This may affect the expected latency of a vCPU. In
-order to enhance the real-time support in KubeVirt and provide improved
-latency, KubeVirt will allocate an additional dedicated CPU, exclusively
-for the emulator thread, to which it will be pinned. This will
-effectively "isolate" the emulator thread from the vCPUs of the VMI.
-In case <code>ioThreadsPolicy</code> is set to <code>auto</code> IOThreads will also be
-"isolated" and placed on the same physical CPU as the QEMU emulator thread.</p>
-<p>This functionality can be enabled by specifying
-<code>isolateEmulatorThread: true</code> inside VMI spec's <code>Spec.Domain.CPU</code>
-section. Naturally, this setting has to be specified in a combination
-with a <code>dedicatedCpuPlacement: true</code>.</p>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
-spec:
-  domain:
-    cpu:
-      dedicatedCpuPlacement: true
-      isolateEmulatorThread: true
-    resources:
-      limits:
-        cpu: 2
-        memory: 2Gi
+<h2 id="specifying-or-inferring-instance-types-and-preferences">Specifying or inferring instance types and preferences<a class="headerlink" href="#specifying-or-inferring-instance-types-and-preferences" title="Permanent link">&para;</a></h2>
+<p>Instance types and preference can be specified with the appropriate flags, e.g.:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="w"> </span>my-instancetype<span class="w"> </span>--preference<span class="w"> </span>my-preference
 </code></pre></div>
-<h2 id="identifying-nodes-with-a-running-cpu-manager">Identifying nodes with a running CPU manager<a class="headerlink" href="#identifying-nodes-with-a-running-cpu-manager" title="Permanent link">&para;</a></h2>
-<p>At this time, <a href="https://github.com/kubernetes/kubernetes/issues/66525">Kubernetes doesn't label the
-nodes</a> that has
-CPU manager running on it.</p>
-<p>KubeVirt has a mechanism to identify which nodes has the CPU manager
-running and manually add a <code>cpumanager=true</code> label. This label will be
-removed when KubeVirt will identify that CPU manager is no longer
-running on the node. This automatic identification should be viewed as a
-temporary workaround until Kubernetes will provide the required
-functionality. Therefore, this feature should be manually enabled by
-activating the <code>CPUManager</code>
-<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
-to the KubeVirt CR.</p>
-<p>When automatic identification is disabled, cluster administrator may
-manually add the above label to all the nodes when CPU Manager is
-running.</p>
-<ul>
-<li>
-<p>Nodes' labels are view-able: <code>kubectl describe nodes</code></p>
-</li>
-<li>
-<p>Administrators may manually label a missing node:
-    <code>kubectl label node [node_name] cpumanager=true</code></p>
-</li>
-</ul>
-<h2 id="sidecar-containers-and-cpu-allocation-overhead">Sidecar containers and CPU allocation overhead<a class="headerlink" href="#sidecar-containers-and-cpu-allocation-overhead" title="Permanent link">&para;</a></h2>
-<p><strong>Note:</strong> In order to run sidecar containers, KubeVirt requires the
-<code>Sidecar</code>
-<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
-to be enabled in KubeVirt's CR.</p>
-<p>According to the Kubernetes CPU manager model, in order the POD would
-reach the required QOS level <code>Guaranteed</code>, all containers in the POD
-must express CPU and memory requirements. At this time, Kubevirt often
-uses a sidecar container to mount VMI's registry disk. It also uses a
-sidecar container of it's hooking mechanism. These additional resources
-can be viewed as an overhead and should be taken into account when
-calculating a node capacity.</p>
-<p><strong>Note:</strong> The current defaults for sidecar's resources: <code>CPU: 200m</code>
-<code>Memory: 64M</code> As the CPU resource is not expressed as a whole number,
-CPU manager will not attempt to pin the sidecar container to a host CPU.</p>
+<p>The type of the instance type or preference (namespaced or cluster scope)
+can be
+controlled by prefixing the instance type or preference name with the
+corresponding CRD name, e.g.:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Using a cluster scoped instancetype and a namespaced preference</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>--instancetype<span class="w"> </span>virtualmachineclusterinstancetype/my-instancetype<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span>--preference<span class="w"> </span>virtualmachinepreference/my-preference
+</code></pre></div>
+<p>If a prefix was not supplied the cluster scoped resources will be used by
+default.</p>
+<p>To
+infer <a href="../instancetypes/#inferring-defaults-from-a-volume">instance types and/or preferences</a>
+from the volume used to boot the virtual machine add the following flags:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--infer-instancetype<span class="w"> </span>--infer-preference
+</code></pre></div>
+<h2 id="boot-order-of-added-volumes">Boot order of added volumes<a class="headerlink" href="#boot-order-of-added-volumes" title="Permanent link">&para;</a></h2>
+<p>Please note that volumes of different kinds currently have the following fixed
+boot order regardless of the order their flags were specified on the
+command line:</p>
+<ol>
+<li>ContainerDisk</li>
+<li>DataSource</li>
+<li>Cloned PVC</li>
+<li>Directly used PVC</li>
+</ol>
+<p>If multiple volumes of the same kind were specified their order is
+determined by the order in which their flags were specified.</p>
+<h2 id="specifying-cloud-init-user-data">Specifying cloud-init user data<a class="headerlink" href="#specifying-cloud-init-user-data" title="Permanent link">&para;</a></h2>
+<p>To pass cloud-init user data to virtctl it needs to be encoded into a base64
+string. Here is an example how to do it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Put your cloud-init user data into a file</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>$<span class="w"> </span>cat<span class="w"> </span>cloud-init.txt
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1">#cloud-config</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>users:
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span>-<span class="w"> </span>name:<span class="w"> </span>admin
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span>sudo:<span class="w"> </span><span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span><span class="w"> </span>NOPASSWD:ALL
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span>ssh_authorized_keys:
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span>-<span class="w"> </span>ssh-rsa<span class="w"> </span>AAAA...
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1"># Base64 encode the contents of the file without line wraps and store it in a variable</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>$<span class="w"> </span><span class="nv">CLOUD_INIT_USERDATA</span><span class="o">=</span><span class="k">$(</span>base64<span class="w"> </span>-w<span class="w"> </span><span class="m">0</span><span class="w"> </span>cloud-init.txt<span class="k">)</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="c1"># Show the contents of the variable</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$CLOUD_INIT_USERDATA</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="nv">I2Nsb3VkLWNvbmZpZwp1c2VyczoKICAtIG5hbWU6IGFkbWluCiAgICBzdWRvOiBBTEw9KEFMTCkgTk9QQVNTV0Q6QUxMCiAgICBzc2hfYXV0aG9yaXplZF9rZXlzOgogICAgICAtIHNzaC1yc2EgQUFBQS4uLgo</span><span class="o">=</span>
+</code></pre></div>
+<p>You can now use this variable as an argument to the <code>--cloud-init-user-data</code>
+flag:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--cloud-init-user-data<span class="w"> </span><span class="nv">$CLOUD_INIT_USERDATA</span>
+</code></pre></div>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
+<p>Create a manifest for a VirtualMachine with a random name:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified name and RunStrategy
+Always</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--name<span class="o">=</span>my-vm<span class="w"> </span>--run-strategy<span class="o">=</span>Always
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified
+VirtualMachineClusterInstancetype</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified
+VirtualMachineInstancetype (namespaced)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>virtualmachineinstancetype/my-instancetype
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified
+VirtualMachineClusterPreference</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--preference<span class="o">=</span>my-preference
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified
+VirtualMachinePreference (namespaced)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--preference<span class="o">=</span>virtualmachinepreference/my-preference
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with an ephemeral containerdisk volume</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-containerdisk<span class="o">=</span>src:my.registry/my-image:my-tag
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a cloned DataSource in namespace and
+specified size</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-ns/my-ds,size:50Gi
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a cloned DataSource and inferred
+instancetype and preference</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-annotated-ds<span class="w"> </span>--infer-instancetype<span class="w"> </span>--infer-preference
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified
+VirtualMachineCluster{Instancetype,Preference} and cloned PVC</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-clone-pvc<span class="o">=</span>my-ns/my-pvc
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified
+VirtualMachineCluster{Instancetype,Preference} and directly used PVC</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-pvc<span class="o">=</span>my-pvc
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a clone DataSource and a blank
+volume</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-ns/my-ds<span class="w"> </span>--volume-blank<span class="o">=</span>size:50Gi
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified
+VirtualMachineCluster{Instancetype,Preference} and cloned DataSource</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype<span class="w"> </span>--preference<span class="o">=</span>my-preference<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-ds
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified
+VirtualMachineCluster{Instancetype,Preference} and two cloned DataSources (flag
+can be provided multiple times)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype<span class="w"> </span>--preference<span class="o">=</span>my-preference<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-ds1<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-ds2
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified
+VirtualMachineCluster{Instancetype,Preference} and directly used PVC</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype<span class="w"> </span>--preference<span class="o">=</span>my-preference<span class="w"> </span>--volume-pvc<span class="o">=</span>my-pvc
+</code></pre></div>
 
 
 
@@ -1504,7 +1494,7 @@ CPU manager will not attempt to pin the sidecar container to a host CPU.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../virtual_hardware/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Virtual hardware" rel="prev">
+          <a href="../virtual_machine_instances/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Virtual Machines Instances" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1513,20 +1503,20 @@ CPU manager will not attempt to pin the sidecar container to a host CPU.</p>
                 <span class="md-footer__direction">
                   Previous
                 </span>
-                Virtual hardware
+                Virtual Machines Instances
               </div>
             </div>
           </a>
         
         
           
-          <a href="../numa/" class="md-footer__link md-footer__link--next" aria-label="Next: NUMA" rel="next">
+          <a href="../lifecycle/" class="md-footer__link md-footer__link--next" aria-label="Next: Lifecycle" rel="next">
             <div class="md-footer__title">
               <div class="md-ellipsis">
                 <span class="md-footer__direction">
                   Next
                 </span>
-                NUMA
+                Lifecycle
               </div>
             </div>
             <div class="md-footer__button md-icon">
