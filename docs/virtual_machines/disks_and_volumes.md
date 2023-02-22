@@ -16,15 +16,11 @@ A disk can be made accessible via four different types:
 
 -   [**cdrom**](#cdrom)
 
--   [**floppy**](#floppy) *DEPRECATED*
-
 All possible configuration options are available in the [Disk API
 Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk).
 
-All types, with the exception of **floppy**, allow you to specify the
-`bus` attribute. The `bus` attribute determines how the disk will be
-presented to the guest operating system. **floppy** disks don't support
-the `bus` attribute: they are always attached to the `fdc` bus.
+All types allow you to specify the `bus` attribute. The `bus` attribute
+determines how the disk will be presented to the guest operating system.
 
 ### lun
 
@@ -99,36 +95,6 @@ depends on the chipset the VM is configured to use:
               # This makes it exposed as /dev/vda, being the only and thus first
               # disk attached to the VM
               bus: virtio
-      volumes:
-        - name: mypvcdisk
-          persistentVolumeClaim:
-            claimName: mypvc
-
-### floppy
-
-> **Note**: Starting with version 0.16.0, floppy disks are deprecated
-> and will be **rejected**. They will be removed from the API in a
-> future version.
-
-A `floppy` disk will expose the volume as a floppy drive to the VM.
-
-A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
-as a `floppy` device to the VM:
-
-    metadata:
-      name: testvmi-floppy
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mypvcdisk
-            # This makes it a floppy
-            floppy: {}
       volumes:
         - name: mypvcdisk
           persistentVolumeClaim:
