@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 # KubeVirt release notes
 
 ## v0.58.0
