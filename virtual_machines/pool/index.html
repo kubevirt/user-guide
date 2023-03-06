@@ -10,20 +10,20 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/boot_from_external_source/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/pool/">
       
       
-        <link rel="prev" href="../dns/">
+        <link rel="prev" href="../replicaset/">
       
       
-        <link rel="next" href="../confidential_computing/">
+        <link rel="next" href="../dns/">
       
       <link rel="icon" href="../../assets/favicon32x32.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.1">
     
     
       
-        <title>Booting From External Source - KubeVirt user guide</title>
+        <title>VirtualMachinePool - KubeVirt user guide</title>
       
     
     
@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#booting-from-external-source" class="md-skip">
+        <a href="#virtualmachinepool" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Booting From External Source
+              VirtualMachinePool
             
           </span>
         </div>
@@ -1056,11 +1056,120 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../pool/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          VirtualMachinePool
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         VirtualMachinePool
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#using-virtualmachinepool" class="md-nav__link">
+    Using VirtualMachinePool
+  </a>
+  
+    <nav class="md-nav" aria-label="Using VirtualMachinePool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-virtualmachinepool" class="md-nav__link">
+    Creating a VirtualMachinePool
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a VirtualMachinePool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-via-the-scale-subresource" class="md-nav__link">
+    Scaling via the Scale Subresource
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removing-a-virtualmachine-from-virtualmachinepool" class="md-nav__link">
+    Removing a VirtualMachine from VirtualMachinePool
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-the-horizontal-pod-autoscaler" class="md-nav__link">
+    Using the Horizontal Pod Autoscaler
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exposing-a-virtualmachinepool-as-a-service" class="md-nav__link">
+    Exposing a VirtualMachinePool as a Service
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-persistent-storage" class="md-nav__link">
+    Using Persistent Storage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-unique-cloudinit-and-configmap-volumes-with-virtualmachinepools" class="md-nav__link">
+    Using Unique CloudInit and ConfigMap Volumes with VirtualMachinePools
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1084,59 +1193,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Booting From External Source
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../boot_from_external_source/" class="md-nav__link">
         Booting From External Source
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#use-cases" class="md-nav__link">
-    Use cases
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#workflow" class="md-nav__link">
-    Workflow
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1269,15 +1330,76 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#use-cases" class="md-nav__link">
-    Use cases
+  <a href="#using-virtualmachinepool" class="md-nav__link">
+    Using VirtualMachinePool
+  </a>
+  
+    <nav class="md-nav" aria-label="Using VirtualMachinePool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-virtualmachinepool" class="md-nav__link">
+    Creating a VirtualMachinePool
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a VirtualMachinePool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-via-the-scale-subresource" class="md-nav__link">
+    Scaling via the Scale Subresource
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removing-a-virtualmachine-from-virtualmachinepool" class="md-nav__link">
+    Removing a VirtualMachine from VirtualMachinePool
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-the-horizontal-pod-autoscaler" class="md-nav__link">
+    Using the Horizontal Pod Autoscaler
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exposing-a-virtualmachinepool-as-a-service" class="md-nav__link">
+    Exposing a VirtualMachinePool as a Service
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#workflow" class="md-nav__link">
-    Workflow
+  <a href="#using-persistent-storage" class="md-nav__link">
+    Using Persistent Storage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-unique-cloudinit-and-configmap-volumes-with-virtualmachinepools" class="md-nav__link">
+    Using Unique CloudInit and ConfigMap Volumes with VirtualMachinePools
   </a>
   
 </li>
@@ -1297,7 +1419,7 @@
                   
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/boot_from_external_source.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/pool.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -1306,74 +1428,248 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/boot_from_external_source.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/pool.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-<h1 id="booting-from-external-source">Booting From External Source<a class="headerlink" href="#booting-from-external-source" title="Permanent link">&para;</a></h1>
-<p>When installing a new guest virtual machine OS, it is often useful to boot directly from a kernel and initrd stored in
-the host physical machine OS, allowing command line arguments to be passed directly to the installer.</p>
-<p>Booting from an external source is supported in Kubevirt starting from <a href="https://github.com/kubevirt/kubevirt/releases/tag/v0.42.0-rc.0">version v0.42.0-rc.0</a>.
-This enables the capability to define a Virtual Machine that will use a custom kernel / initrd binary, with possible
-custom arguments, during its boot process.</p>
-<p>The binaries are provided though a container image.
-The container is pulled from the container registry and resides on the local node hosting the VMs.</p>
-<h2 id="use-cases">Use cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h2>
-<p>Some use cases for this may be:
-- For a kernel developer it may be very convenient to launch VMs that are defined to boot from the latest kernel binary
-that is often being changed.
-- Initrd can be set with files that need to reside on-memory during all the VM's life-cycle.</p>
-<h2 id="workflow">Workflow<a class="headerlink" href="#workflow" title="Permanent link">&para;</a></h2>
-<p>Defining an external boot source can be done in the following way:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ext-kernel-boot-vm</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">runStrategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Manual</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="nt">firmware</span><span class="p">:</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">          </span><span class="nt">kernelBoot</span><span class="p">:</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">            </span><span class="nt">container</span><span class="p">:</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">              </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vmi_ext_boot/kernel_initrd_binaries_container:latest</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">              </span><span class="nt">initrdPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/boot/initramfs-virt</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">              </span><span class="nt">kernelPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/boot/vmlinuz-virt</span>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">              </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">              </span><span class="nt">imagePullSecret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">            </span><span class="nt">kernelArgs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">console=ttyS0</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
-</code></pre></div></p>
-<p>Notes:</p>
-<ul>
-<li>
-<p><code>initrdPath</code> and <code>kernelPath</code> define the path for the binaries inside the container.</p>
-</li>
-<li>
-<p>Kernel and Initrd binaries must be owned by <code>qemu</code> user &amp; group.</p>
-</li>
-<li>
-<p>To change ownership: <code>chown qemu:qemu &lt;binary&gt;</code> when <code>&lt;binary&gt;</code> is the binary file.</p>
-</li>
-<li>
-<p><code>kernelArgs</code> can only be provided if a kernel binary is provided (i.e. <code>kernelPath</code> not defined). These
-arguments will be passed to the default kernel the VM boots from.</p>
-</li>
-<li>
-<p><code>imagePullSecret</code> and <code>imagePullPolicy</code> are optional</p>
-</li>
-<li>
-<p>if <code>imagePullPolicy</code> is <code>Always</code> and the container image is updated then the VM will be booted
-  into the new kernel when VM restarts</p>
-</li>
-</ul>
+<h1 id="virtualmachinepool">VirtualMachinePool<a class="headerlink" href="#virtualmachinepool" title="Permanent link">&para;</a></h1>
+<p>A <em>VirtualMachinePool</em> tries to ensure that a specified
+number of VirtualMachine replicas and their respective
+VirtualMachineInstances are in the ready state at any time.
+In other words, a <em>VirtualMachinePool</em> makes sure that a
+VirtualMachine or a set of VirtualMachines is always up
+and ready. </p>
+<p>No state is kept and no guarantees are made about the maximum number
+of VirtualMachineInstance replicas running at any time.
+For example, the <em>VirtualMachinePool</em> may decide to create
+new replicas if possibly still running VMs are entering an
+unknown state.</p>
+<h2 id="using-virtualmachinepool">Using VirtualMachinePool<a class="headerlink" href="#using-virtualmachinepool" title="Permanent link">&para;</a></h2>
+<p>The <em>VirtualMachinePool</em> allows us to specify a <em>VirtualMachineTemplate</em>
+in <code>spec.virtualMachineTemplate</code>. It consists of <code>ObjectMetadata</code> in
+<code>spec.virtualMachineTemplate.metadata</code>, and a <code>VirtualMachineSpec</code> in
+<code>spec.virtualMachineTemplate.spec</code>. The specification of the virtual machine
+is equal to the specification of the virtual machine in the
+<code>VirtualMachine</code> workload.</p>
+<p><code>spec.replicas</code> can be used to specify how many replicas are wanted. If
+unspecified, the default value is 1. This value can be updated anytime.
+The controller will react to the changes.</p>
+<p><code>spec.selector</code> is used by the controller to keep track of managed
+virtual machines. The selector specified there must be able to match the
+virtual machine labels as specified in <code>spec.virtualMachineTemplate.metadata.labels</code>.
+If the selector does not match these labels, or they are empty, the
+controller will simply do nothing except log an error. The user
+is responsible for avoiding the creation of other virtual machines or
+<em>VirtualMachinePools</em> which may conflict with the selector and
+the template labels.</p>
+<h3 id="creating-a-virtualmachinepool">Creating a VirtualMachinePool<a class="headerlink" href="#creating-a-virtualmachinepool" title="Permanent link">&para;</a></h3>
+<p>VirtualMachinePool is part of the Kubevirt API <code>pool.kubevirt.io/v1alpha1</code>.</p>
+<p>The example below shows how to create a simple <code>VirtualMachinePool</code>:</p>
+<h4 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>apiVersion: pool.kubevirt.io/v1alpha1
+kind: VirtualMachinePool
+metadata:
+  name: vm-pool-cirros
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      kubevirt.io/vmpool: vm-pool-cirros
+  virtualMachineTemplate:
+    metadata:
+      creationTimestamp: null
+      labels:
+        kubevirt.io/vmpool: vm-pool-cirros
+    spec:
+      running: true
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            kubevirt.io/vmpool: vm-pool-cirros
+        spec:
+          domain:
+            devices:
+              disks:
+              - disk:
+                  bus: virtio
+                name: containerdisk
+            resources:
+              requests:
+                memory: 128Mi
+          terminationGracePeriodSeconds: 0
+          volumes:
+          - containerDisk:
+              image: kubevirt/cirros-container-disk-demo:latest
+            name: containerdisk
+</code></pre></div>
+<p>Saving this manifest into <code>vm-pool-cirros.yaml</code> and submitting it to
+Kubernetes will create three virtual machines based on the template.</p>
+<div class="highlight"><pre><span></span><code>$ kubectl create -f vm-pool-cirros.yaml
+virtualmachinepool.pool.kubevirt.io/vm-pool-cirros created
+$ kubectl describe vmpool vm-pool-cirros
+Name:         vm-pool-cirros
+Namespace:    default
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+API Version:  pool.kubevirt.io/v1alpha1
+Kind:         VirtualMachinePool
+Metadata:
+  Creation Timestamp:  2023-02-09T18:30:08Z
+  Generation:          1
+    Manager:      kubectl-create
+    Operation:    Update
+    Time:         2023-02-09T18:30:08Z
+    API Version:  pool.kubevirt.io/v1alpha1
+    Fields Type:  FieldsV1
+    fieldsV1:
+      f:status:
+        .:
+        f:labelSelector:
+        f:readyReplicas:
+        f:replicas:
+    Manager:         virt-controller
+    Operation:       Update
+    Subresource:     status
+    Time:            2023-02-09T18:30:44Z
+  Resource Version:  6606
+  UID:               ba51daf4-f99f-433c-89e5-93f39bc9989d
+Spec:
+  Replicas:  3
+  Selector:
+    Match Labels:
+      kubevirt.io/vmpool:  vm-pool-cirros
+  Virtual Machine Template:
+    Metadata:
+      Creation Timestamp:  &lt;nil&gt;
+      Labels:
+        kubevirt.io/vmpool:  vm-pool-cirros
+    Spec:
+      Running:  true
+      Template:
+        Metadata:
+          Creation Timestamp:  &lt;nil&gt;
+          Labels:
+            kubevirt.io/vmpool:  vm-pool-cirros
+        Spec:
+          Domain:
+            Devices:
+              Disks:
+                Disk:
+                  Bus:  virtio
+                Name:   containerdisk
+            Resources:
+              Requests:
+                Memory:                      128Mi
+          Termination Grace Period Seconds:  0
+          Volumes:
+            Container Disk:
+              Image:  kubevirt/cirros-container-disk-demo:latest
+            Name:     containerdisk
+Status:
+  Label Selector:  kubevirt.io/vmpool=vm-pool-cirros
+  Ready Replicas:  2
+  Replicas:        3
+Events:
+  Type    Reason            Age   From                           Message
+  ----    ------            ----  ----                           -------
+  Normal  SuccessfulCreate  17s   virtualmachinepool-controller  Created VM default/vm-pool-cirros-0
+  Normal  SuccessfulCreate  17s   virtualmachinepool-controller  Created VM default/vm-pool-cirros-2
+  Normal  SuccessfulCreate  17s   virtualmachinepool-controller  Created VM default/vm-pool-cirros-1
+</code></pre></div>
+<p><code>Replicas</code> is <code>3</code> and <code>Ready Replicas</code> is <code>2</code>. This means that at the
+moment when showing the status, three Virtual Machines were already
+created, but only two are running and ready.</p>
+<h3 id="scaling-via-the-scale-subresource">Scaling via the Scale Subresource<a class="headerlink" href="#scaling-via-the-scale-subresource" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Note:</strong> This requires KubeVirt 0.59 or newer.</p>
+</blockquote>
+<p>The <code>VirtualMachinePool</code> supports the <code>scale</code> subresource.
+As a consequence it is possible to scale it via <code>kubectl</code>:</p>
+<div class="highlight"><pre><span></span><code>$ kubectl scale vmpool vm-pool-cirros --replicas 5
+</code></pre></div>
+<h3 id="removing-a-virtualmachine-from-virtualmachinepool">Removing a VirtualMachine from VirtualMachinePool<a class="headerlink" href="#removing-a-virtualmachine-from-virtualmachinepool" title="Permanent link">&para;</a></h3>
+<p>It is also possible to remove a <code>VirtualMachine</code> from its <code>VirtualMachinePool</code>.</p>
+<p>In this scenario, the <code>ownerReferences</code> needs to be removed from the <code>VirtualMachine</code>.
+This can be achieved either by using <code>kubectl edit</code> or <code>kubectl patch</code>.
+Using <code>kubectl patch</code> it would look like:</p>
+<div class="highlight"><pre><span></span><code>kubectl patch vm vm-pool-cirros-0 --type merge --patch &#39;{&quot;metadata&quot;:{&quot;ownerReferences&quot;:null}}&#39;
+</code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> You may want to update your VirtualMachine labels as well to avoid impact on selectors.</p>
+</blockquote>
+<h3 id="using-the-horizontal-pod-autoscaler">Using the Horizontal Pod Autoscaler<a class="headerlink" href="#using-the-horizontal-pod-autoscaler" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Note:</strong> This requires KubeVirt 0.59 or newer.</p>
+</blockquote>
+<p>The
+<a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/">HorizontalPodAutoscaler</a>
+(HPA) can be used with a <code>VirtualMachinePool</code>. Simply
+reference it in the spec of the autoscaler:</p>
+<div class="highlight"><pre><span></span><code>apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: vm-pool-cirros
+spec:
+  maxReplicas: 10
+  minReplicas: 3
+  scaleTargetRef:
+    apiVersion: pool.kubevirt.io/v1alpha1
+    kind: VirtualMachinePool
+    name: vm-pool-cirros
+  targetCPUUtilizationPercentage: 50
+</code></pre></div>
+<p>or use <code>kubectl autoscale</code> to define the HPA via the commandline:</p>
+<div class="highlight"><pre><span></span><code>$ kubectl autoscale vmpool vm-pool-cirros --min=3 --max=10 --cpu-percent=50
+</code></pre></div>
+<h2 id="exposing-a-virtualmachinepool-as-a-service">Exposing a VirtualMachinePool as a Service<a class="headerlink" href="#exposing-a-virtualmachinepool-as-a-service" title="Permanent link">&para;</a></h2>
+<p>A VirtualMachinePool may be exposed as a service. When
+this is done, one of the VirtualMachine replicas will be picked
+for the actual delivery of the service.</p>
+<p>For example, exposing SSH port (22) as a ClusterIP service:</p>
+<div class="highlight"><pre><span></span><code>apiVersion: v1
+kind: Service
+metadata:
+  name: vm-pool-cirros-ssh
+spec:
+  type: ClusterIP
+  selector:
+    kubevirt.io/vmpool: vm-pool-cirros
+  ports:
+    - protocol: TCP
+      port: 2222
+      targetPort: 22
+</code></pre></div>
+<p>Saving this manifest into <code>vm-pool-cirros-ssh.yaml</code> and submitting it to
+Kubernetes will create the <code>ClusterIP</code> service listening on port 2222 and
+forwarding to port 22.</p>
+<p>See <a href="http://kubevirt.io/user-guide/virtual_machines/service_objects/">Service
+Objects</a>
+for more details.</p>
+<h2 id="using-persistent-storage">Using Persistent Storage<a class="headerlink" href="#using-persistent-storage" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p><strong>Note:</strong> DataVolumes are part of <a href="https://kubevirt.io/user-guide/operations/containerized_data_importer/">CDI</a></p>
+</blockquote>
+<p>Usage of a <code>DataVolumeTemplates</code> within a <code>spec.virtualMachineTemplate.spec</code> will result in the creation
+of unique persistent storage for each VM within a VMPool. The <code>DataVolumeTemplate</code>
+name will have the VM's sequential postfix appended to it when the VM is created from the
+<code>spec.virtualMachineTemplate.spec.dataVolumeTemplates</code>. This makes each VM a completely unique stateful workload.</p>
+<h2 id="using-unique-cloudinit-and-configmap-volumes-with-virtualmachinepools">Using Unique CloudInit and ConfigMap Volumes with VirtualMachinePools<a class="headerlink" href="#using-unique-cloudinit-and-configmap-volumes-with-virtualmachinepools" title="Permanent link">&para;</a></h2>
+<p>By default, any secrets or configMaps references in a <code>spec.virtualMachineTemplate.spec.template</code>
+Volume section will be used directly as is, without any modification to the naming. This
+means if you specify a secret in a <code>CloudInitNoCloud</code> volume, that every VM instance spawned
+from the VirtualMachinePool with this volume will get the exact same secret used for their cloud-init
+user data.</p>
+<p>This default behavior can be modified by setting the <code>AppendPostfixToSecretReferences</code> and
+<code>AppendPostfixToConfigMapReferences</code> booleans to true on the VMPool spec. When these booleans
+are enabled, references to secret and configMap names will have the VM's sequential postfix
+appended to the secret and configmap name. This allows someone to pre-generate unique per VM
+<code>secret</code> and <code>configMap</code> data for a VirtualMachinePool ahead of time in a way that will be predictably
+assigned to VMs within the VirtualMachinePool.</p>
 
 
 
@@ -1395,7 +1691,7 @@ arguments will be passed to the default kernel the VM boots from.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../dns/" class="md-footer__link md-footer__link--prev" aria-label="Previous: DNS records" rel="prev">
+          <a href="../replicaset/" class="md-footer__link md-footer__link--prev" aria-label="Previous: VirtualMachineInstanceReplicaSet" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1404,20 +1700,20 @@ arguments will be passed to the default kernel the VM boots from.</p>
                 <span class="md-footer__direction">
                   Previous
                 </span>
-                DNS records
+                VirtualMachineInstanceReplicaSet
               </div>
             </div>
           </a>
         
         
           
-          <a href="../confidential_computing/" class="md-footer__link md-footer__link--next" aria-label="Next: Confidential computing" rel="next">
+          <a href="../dns/" class="md-footer__link md-footer__link--next" aria-label="Next: DNS records" rel="next">
             <div class="md-footer__title">
               <div class="md-ellipsis">
                 <span class="md-footer__direction">
                   Next
                 </span>
-                Confidential computing
+                DNS records
               </div>
             </div>
             <div class="md-footer__button md-icon">
