@@ -37,7 +37,7 @@ KubeVirt provides two Instancetype based [`CRDs`](https://kubernetes.io/docs/con
 * `IOThreadsPolicy` : Optional `IOThreadsPolicy` to be used
 * [`LaunchSecurity`](https://kubevirt.io/api-reference/main/definitions.html#_v1_launchsecurity): Optional `LaunchSecurity` to be used
 
-Anything provided within an instance type cannot be overridden within the `VirtualMachine`. For example as `CPU` and `Memory` are both required attributes of an instance type if a user makes any requests for `CPU` or `Memory` resources within the underlying `VirtualMachine` the instance type will conflict and the request will be rejected during creation.
+Anything provided within an instance type cannot be overridden within the `VirtualMachine`. For example, as `CPU` and `Memory` are both required attributes of an instance type, if a user makes any requests for `CPU` or `Memory` resources within the underlying `VirtualMachine`, the instance type will conflict and the request will be rejected during creation.
 
 ## VirtualMachinePreference
 
@@ -55,9 +55,9 @@ spec:
 
 KubeVirt also provides two further preference based `CRDs`, again a cluster wide [`VirtualMachineClusterPreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineclusterpreference) and namespaced [`VirtualMachinePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference). These `CRDs`encapsulate the preferred value of any remaining attributes of a `VirtualMachine` required to run a given workload, again this is through a shared [`VirtualMachinePreferenceSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreferencespec).
 
-Unlike instance types preferences only represent the preferred values and as such can be overridden by values in the `VirtualMachine` provided by the user.
+Unlike instance types, preferences only represent the preferred values and as such, they can be overridden by values in the `VirtualMachine` provided by the user.
 
-For example as shown below, if a user has provided a `VirtualMachine` with a disk bus already defined within a [`DiskTarget`](https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget) *and* has also selected a set of preferences with [`DevicePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_devicepreferences) and `preferredDiskBus` defined the users original choice within the `VirtualMachine` and `DiskTarget` are used:
+In the example shown below, a user has provided a `VirtualMachine` with a disk bus already defined within a [`DiskTarget`](https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget) *and* has also selected a set of preferences with [`DevicePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_devicepreferences) and `preferredDiskBus` , so the user's original choice within the `VirtualMachine` and `DiskTarget` are used:
 
 ```yaml
 $ kubectl apply -f - << EOF
@@ -241,7 +241,7 @@ $ kubectl get controllerrevision/controllerrevision/vm-cirros-csmall-csmall-72c3
 Error from server (NotFound): controllerrevisions.apps "vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1" not found
 ```
 
-Users can opt-in to moving to a newer generation of an instance type or preference by removing the referenced `revisionName` from the appropriate matcher within the `VirtualMachine` object. This will result in fresh `ControllerRevisions` being captured and used.
+Users can opt in to moving to a newer generation of an instance type or preference by removing the referenced `revisionName` from the appropriate matcher within the `VirtualMachine` object. This will result in fresh `ControllerRevisions` being captured and used.
 
 The following example creates a `VirtualMachine` using an initial version of the csmall instance type before increasing the number of vCPUs provided by the instance type:
 
@@ -272,7 +272,7 @@ $ kubectl patch VirtualMachineInstancetype/csmall --type merge -p '{"spec":{"cpu
 virtualmachineinstancetype.instancetype.kubevirt.io/csmall patched
 ```
 
-In order for this change to be picked up within the `VirtualMachine` we need to stop the running `VirtualMachine` and clear the `revisionName` referenced by the `InstancetypeMatcher`:
+In order for this change to be picked up within the `VirtualMachine`, we need to stop the running `VirtualMachine` and clear the `revisionName` referenced by the `InstancetypeMatcher`:
 
 ```yaml
 $ virtctl stop vm-cirros-csmall
@@ -289,7 +289,7 @@ $ kubectl get vm/vm-cirros-csmall -o json | jq .spec.instancetype
 }
 ```
 
-As you can see above the `InstancetypeMatcher` now references a new `ControllerRevision` containing generation 2 of the instance type. We can now start the `VirtualMachine` again and see the new number of vCPUs being used by the `VirtualMachineInstance`:
+As you can see above, the `InstancetypeMatcher` now references a new `ControllerRevision` containing generation 2 of the instance type. We can now start the `VirtualMachine` again and see the new number of vCPUs being used by the `VirtualMachineInstance`:
 
 ```yaml
 $ virtctl start vm-cirros-csmall
@@ -306,7 +306,7 @@ $ kubectl get vmi/vm-cirros-csmall -o json | jq .spec.domain.cpu
 
 ### Inferring defaults from a Volume
 
-The `inferFromVolume` attribute of both the `InstancetypeMatcher` and `PreferenceMatcher` allows a user to request that defaults are inferred from a volume. When requested KubeVirt will look for the following labels on the underlying `PVC`, `DataSource` or `DataVolume` to determine the default name and kind:
+The `inferFromVolume` attribute of both the `InstancetypeMatcher` and `PreferenceMatcher` allows a user to request that defaults are inferred from a volume. When requested, KubeVirt will look for the following labels on the underlying `PVC`, `DataSource` or `DataVolume` to determine the default name and kind:
 
 * `instancetype.kubevirt.io/default-instancetype`
 * `instancetype.kubevirt.io/default-instancetype-kind` (optional, defaults to `VirtualMachineClusterInstancetype`)
@@ -388,7 +388,7 @@ kubectl get vms/cirros -o json | jq '.spec.instancetype, .spec.preference'
 
 ### Common Instance Types
 
-A set of common instance types and preferences are provided through the [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) project. To install all resources provided by the project simply build with `kustomize` and apply:
+A set of common instance types and preferences are provided through the [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) project. To install all resources provided by the project, simply build with `kustomize` and apply:
 
 ```yaml
 $ kubectl kustomize https://github.com/kubevirt/common-instancetypes.git | kubectl apply -f -
