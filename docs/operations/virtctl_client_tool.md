@@ -1,6 +1,6 @@
-# virtctl Client Tool
+# Download and Install the virtctl Command Line Interface
 
-## Retrieving the `virtctl` client tool
+## Download the `virtctl` client tool
 
 Basic VirtualMachineInstance operations can be performed with the stock
 `kubectl` utility. However, the `virtctl` binary utility is required to
