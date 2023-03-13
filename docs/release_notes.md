@@ -90,7 +90,6 @@ Released on:   Wed Mar 1 16:49:27 2023 +0000
 - [PR #8402][jean-edouard] Most VMIs now run under the SELinux type container_t
 - [PR #8513][alromeros] [Bug-fix] Fix error handling in virtctl image-upload ---
 
-
 ## v0.58.0
 
 Released on: Thu Oct 13 00:24:51 2022 +0000
