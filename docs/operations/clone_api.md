@@ -11,7 +11,7 @@ yet and that APIs may change in the future.
 ### Snapshot / Restore
 
 Under the hood, the clone API relies upon Snapshot & Restore APIs. Therefore, in order to be able to use the clone API,
-please see [Snapshot & Restore prerequesites](./snapshot_restore_api.md/#prerequesites).
+please see [Snapshot & Restore prerequesites](./snapshot_restore_api.md#prerequesites).
 
 ### Snapshot Feature Gate
 

@@ -135,7 +135,7 @@ Targets:
 
 ## Developer
 
-- Start contributing: <https://kubevirt.io/user-guide/appendix/contributing>
+- Start contributing: <https://kubevirt.io/user-guide/contributing>
 
 ## Privacy
 

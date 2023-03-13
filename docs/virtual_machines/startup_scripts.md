@@ -379,7 +379,7 @@ user using a script instead of cloud-config.
 ### Network Config
 
 A cloud-init [network version
-1](https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v1.html)
+1](https://cloudinit.readthedocs.io/en/latest/reference/network-config-format-v1.html)
 configuration can be set to configure the network at boot.
 
 Cloud-init [user-data](#user-data) **must** be set for cloud-init to

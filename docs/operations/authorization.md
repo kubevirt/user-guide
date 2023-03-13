@@ -83,7 +83,7 @@ ClusterRoleBinding involving one of the default Kubernetes roles will
 automatically gain access to the equivalent KubeVirt roles as well.
 
 More information about aggregated cluster roles can be found
-[here](https://kubernetes.io/docs/admin/authorization/rbac/#aggregated-clusterroles)
+[here](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles)
 
 ## Creating Custom RBAC Roles
 
