@@ -553,12 +553,12 @@ Details** screen.
 | Description || Optional description field |
 | Template || Template from which to create the virtual machine<br><br>* Selecting a template will automatically fill other fields |
 | Provision Source | PXE ||
-| URL | Provision virtual machine from an image available from an *HTTP* or *S3* endpoint ||
-| Container | Provision virtual machine from a bootable operating system container located in a registry accessible from the cluster<br><br>* Example: `_kubevirt/cirros-registry-disk-demo_` ||
+|| URL | Provision virtual machine from an image available from an *HTTP* or *S3* endpoint |
+|| Container | Provision virtual machine from a bootable operating system container located in a registry accessible from the cluster<br><br>* Example: `_kubevirt/cirros-registry-disk-demo_` |
 | Operating System || A list of operating systems available in the cluster<br><br>* This is the primary operating system for the virtual machine |
 | Flavor || Presets that determine the amount of CPU and memory allocated to the virtual machine |
-| Workload Profile || A general configuration that balances performance and compatibility for a broad range of workloads |
-| highperformance | The virtual machine has a more efficient configuration optimized for high performance loads ||
+| Workload Profile | generic | A general configuration that balances performance and compatibility for a broad range of workloads |
+|| highperformance | The virtual machine has a more efficient configuration optimized for high performance loads |
 | Start virtual machine on creation || Select this checkbox to automatically start the virtual machine upon creation |
 | cloud-init || Select this checkbox to enable the [cloud-init fields](#cloud-init-fields) |
 
@@ -568,15 +568,14 @@ Details** screen.
 |------|-----------|-------------|
 | Name || The name of the virtual machine<br><br>* Alphanumeric characters only (63 characters max) |
 | Description || Optional description field |
-| Provision Source | PXE ||
-| Template || Template from which to create the virtual machine<br><br>* Selecting a template will automatically fill other fields. |
 | Provision Source || Provision virtual machine from PXE menu<br><br>* Requires a PXE-capable NIC in the cluster |
-| URL | Provision virtual machines from an image available from a *HTTP* or *S3* endpoint. ||
-| Container | Provision virtual machines from a bootable operating system container located in a registry accessible from the cluster<br><br>* Example: `_kubevirt/cirros-registry-disk-demo_` ||
+|| PXE ||
+|| URL | Provision virtual machines from an image available from a *HTTP* or *S3* endpoint. |
+|| Container | Provision virtual machines from a bootable operating system container located in a registry accessible from the cluster<br><br>* Example: `_kubevirt/cirros-registry-disk-demo_` |
 | Operating System || A list of operating systems available in the cluster. This is the primary operating system for the virtual machine. |
 | Flavor | small, medium, large, tiny, Custom | Presets that determine the amount of CPU and memory allocated to the virtual machine |
 | Workload Profile | generic | A general configuration that balances performance and compatibility for a broad range of workloads |
-| highperformance | Virtual machines have a more efficient configuration optimized for high performance loads ||
+|| highperformance | Virtual machines have a more efficient configuration optimized for high performance loads |
 | cloud-init || Select this checkbox to enable the [cloud-init fields](#cloud-init-fields) |
 
 ### Cloud-init Fields
