@@ -5,6 +5,92 @@ hide:
 
 # KubeVirt release notes
 
+## v0.59.0
+
+Released on:   Wed Mar 1 16:49:27 2023 +0000
+
+- [PR #9311][kubevirt-bot] fixes the requests/limits CPU number mismatch for VMs with isolatedEmulatorThread
+- [PR #9276][fossedihelm] Added foreground finalizer to  virtual machine
+- [PR #9295][kubevirt-bot] Fix bug of possible re-trigger of memory dump
+- [PR #9270][kubevirt-bot] BugFix: Guestfs image url not constructed correctly
+- [PR #9234][kubevirt-bot] The `dedicatedCPUPlacement` attribute is once again supported within the `VirtualMachineInstancetype` and `VirtualMachineClusterInstancetype` CRDs after a recent bugfix improved `VirtualMachine` validations, ensuring defaults are applied before any attempt to validate.
+- [PR #9267][fossedihelm] This version of KubeVirt includes upgraded virtualization technology based on libvirt 9.0.0 and QEMU 7.2.0.
+- [PR #9197][kubevirt-bot] Fix addvolume not rejecting adding existing volume source, fix removevolume allowing to remove non hotpluggable volume
+- [PR #9120][0xFelix] Fix access to portforwarding on VMs/VMIs with the cluster roles kubevirt.io:admin and kubevirt.io:edit
+- [PR #9116][EdDev] Allow the specification of the ACPI Index on a network interface.
+- [PR #8774][avlitman] Added new Virtual machines CPU metrics:
+- [PR #9087][zhuchenwang] Open `/dev/vhost-vsock` explicitly to ensure that the right vsock module is loaded
+- [PR #9020][feitnomore] Adding support for status/scale subresources so that VirtualMachinePool now supports HorizontalPodAutoscaler
+- [PR #9085][0xFelix] virtctl: Add options to infer instancetype and preference when creating a VM
+- [PR #8917][xpivarc] Kubevirt can be configured with Seccomp profile. It now ships a custom profile for the launcher.
+- [PR #9054][enp0s3] do not inject LimitRange defaults into VMI
+- [PR #7862][vladikr] Store the finalized VMI migration status in the migration objects.
+- [PR #8878][0xFelix] Add 'create vm' command to virtctl
+- [PR #9048][jean-edouard] DisableCustomSELinuxPolicy feature gate introduced to disable our custom SELinux policy
+- [PR #8953][awels] VMExport now has endpoint containing entire VM definition.
+- [PR #8976][iholder101] Fix podman CRI detection
+- [PR #9043][iholder101] Adjust operator functional tests to custom images specification
+- [PR #8875][machadovilaca] Rename migration metrics removing 'total' keyword
+- [PR #9040][lyarwood] `inferFromVolume` now uses labels instead of annotations to lookup default instance type and preference details from a referenced `Volume`. This has changed in order to provide users with a way of looking up suitably decorated resources through these labels before pointing to them within the `VirtualMachine`.
+- [PR #9039][orelmisan] client-go: Added context to additional VirtualMachineInstance's methods.
+- [PR #9018][orelmisan] client-go: Added context to additional VirtualMachineInstance's methods.
+- [PR #9025][akalenyu] BugFix: Hotplug pods have hardcoded resource req which don't comply with LimitRange maxLimitRequestRatio of 1
+- [PR #8908][orelmisan] client-go: Added context to some of VirtualMachineInstance's methods.
+- [PR #6863][rmohr] The install strategy job will respect the infra node placement from now on
+- [PR #8948][iholder101] Bugfix: virt-handler socket leak
+- [PR #8649][acardace] KubeVirt is now able to run VMs inside restricted namespaces.
+- [PR #8992][iholder101] Align with k8s fix for default limit range requirements
+- [PR #8889][rmohr] Add basic TLS encryption support for vsock websocket connections
+- [PR #8660][huyinhou] Fix remoteAddress field in virt-api log being truncated when it is an ipv6 address
+- [PR #8961][rmohr] Bump distroless base images
+- [PR #8952][rmohr] Fix read-only sata disk validation
+- [PR #8657][fossedihelm] Use an increasingly exponential backoff before retrying to start the VM, when an I/O error occurs.
+- [PR #8480][lyarwood] New `inferFromVolume` attributes have been introduced to the `{Instancetype,Preference}Matchers` of a `VirtualMachine`. When provided the `Volume` referenced by the attribute is checked for the following annotations with which to populate the `{Instancetype,Preference}Matchers`:
+- [PR #7762][VirrageS] Service `kubevirt-prometheus-metrics` now sets `ClusterIP` to `None` to make it a headless service.
+- [PR #8599][machadovilaca] Change KubevirtVmHighMemoryUsage threshold from 20MB to 50MB
+- [PR #7761][VirrageS] imagePullSecrets field has been added to KubeVirt CR to support deployments form private registries
+- [PR #8887][iholder101] Bugfix: use virt operator image if provided
+- [PR #8750][jordigilh] Fixes an issue that prevented running real time workloads in non-root configurations due to libvirt's dependency on CAP_SYS_NICE to change the vcpu's thread's scheduling and priority to FIFO and 1. The change of priority and scheduling is now executed in the virt-launcher for both root and non-root configurations, removing the dependency in libvirt.
+- [PR #8845][lyarwood] An empty `Timer` is now correctly omitted from `Clock` fixing bug #8844.
+- [PR #8842][andreabolognani] The virt-launcher pod no longer needs the SYS_PTRACE capability.
+- [PR #8734][alicefr] Change libguestfs-tools image using root appliance in qcow2 format
+- [PR #8764][ShellyKa13] Add list of included and excluded volumes in vmSnapshot
+- [PR #8811][iholder101] Custom components: support gs
+- [PR #8770][dhiller] Add Ginkgo V2 Serial decorator to serial tests as preparation to simplify parallel vs. serial test run logic
+- [PR #8808][acardace] Apply migration backoff only for evacuation migrations.
+- [PR #8525][jean-edouard] CR option mediatedDevicesTypes is deprecated in favor of mediatedDeviceTypes
+- [PR #8792][iholder101] Expose new custom components env vars to csv-generator and manifest-templator
+- [PR #8701][enp0s3] Consider the ParallelOutboundMigrationsPerNode when evicting VMs
+- [PR #8740][iholder101] Fix: Align Reenlightenment flows between converter.go and template.go
+- [PR #8530][acardace] Use exponential backoff for failing migrations
+- [PR #8720][0xFelix] The expand-spec subresource endpoint was renamed to expand-vm-spec and made namespaced
+- [PR #8458][iholder101] Introduce support for clones with a snapshot source (e.g. clone snapshot -> VM)
+- [PR #8716][rhrazdil] Add overhead of interface with Passt binding when no ports are specified
+- [PR #8619][fossedihelm] virt-launcher: use `virtqemud` daemon instead of `libvirtd`
+- [PR #8736][knopt] Added more precise rest_client_request_latency_seconds histogram buckets
+- [PR #8624][zhuchenwang] Add the REST API to be able to talk to the application in the guest VM via VSOCK.
+- [PR #8625][AlonaKaplan] iptables are no longer used by masquerade binding. Nodes with iptables only won't be able to run VMs with masquerade binding.
+- [PR #8673][iholder101] Allow specifying custom images for core components
+- [PR #8622][jean-edouard] Built with golang 1.19
+- [PR #8336][alicefr] Flag for setting the guestfs uid and gid
+- [PR #8667][huyinhou] connect VM vnc failed when virt-launcher work directory is not /
+- [PR #8368][machadovilaca] Use collector to set migration metrics
+- [PR #8558][xpivarc] Bug-fix: LimitRange integration now works when VMI is missing namespace
+- [PR #8404][andreabolognani] This version of KubeVirt includes upgraded virtualization technology based on libvirt 8.7.0, QEMU 7.1.0 and CentOS Stream 9.
+- [PR #8652][akalenyu] BugFix: Exporter pod does not comply with restricted PSA
+- [PR #8563][xpivarc] Kubevirt now runs with nonroot user by default
+- [PR #8442][kvaps] Add Deckhouse to the Adopters list
+- [PR #8546][zhuchenwang] Provides the Vsock feature for KubeVirt VMs.
+- [PR #8598][acardace] VMs configured with hugepages can now run using the default container_t SELinux type
+- [PR #8594][kylealexlane] Fix permission denied on on selinux relabeling on some kernel versions
+- [PR #8521][akalenyu] Add an option to specify a TTL for VMExport objects
+- [PR #7918][machadovilaca] Add alerts for VMs unhealthy states
+- [PR #8516][rhrazdil] When using Passt binding, virl-launcher has unprivileged_port_start set to 0, so that passt may bind to all ports.
+- [PR #7772][jean-edouard] The SELinux policy for virt-launcher is down to 4 rules, 1 for hugepages and 3 for virtiofs.
+- [PR #8402][jean-edouard] Most VMIs now run under the SELinux type container_t
+- [PR #8513][alromeros] [Bug-fix] Fix error handling in virtctl image-upload ---
+
+
 ## v0.58.0
 
 Released on: Thu Oct 13 00:24:51 2022 +0000
@@ -1702,4 +1788,4 @@ Released on: Mon Sep 4 21:12:46 2017 +0200
 - Use glide instead of govendor
 - Container based ephemeral disks
 - Contributing guide improvements
-- Support for Kubernetes Namespaces
+- Support for Kubernetes Namespaces 
