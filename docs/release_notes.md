@@ -1788,4 +1788,4 @@ Released on: Mon Sep 4 21:12:46 2017 +0200
 - Use glide instead of govendor
 - Container based ephemeral disks
 - Contributing guide improvements
-- Support for Kubernetes Namespaces 
+- Support for Kubernetes Namespaces
