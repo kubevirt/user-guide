@@ -37,7 +37,7 @@ This page is provided as the entrypoint to the different topics of this user-gui
 
 ## Developer
 
-- Start contributing: [Appendix/Contributing](./appendix/contributing.md)
+- Start contributing: [Contributing](./contributing.md)
 
 - API Reference: <http://kubevirt.io/api-reference/>
 
