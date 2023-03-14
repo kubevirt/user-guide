@@ -7,7 +7,7 @@ hide:
 
 ## v0.59.0
 
-Released on:   Wed Mar 1 16:49:27 2023 +0000
+Released on: Wed Mar 1 16:49:27 2023 +0000
 
 - [PR #9311][kubevirt-bot] fixes the requests/limits CPU number mismatch for VMs with isolatedEmulatorThread
 - [PR #9276][fossedihelm] Added foreground finalizer to  virtual machine
@@ -88,7 +88,32 @@ Released on:   Wed Mar 1 16:49:27 2023 +0000
 - [PR #8516][rhrazdil] When using Passt binding, virl-launcher has unprivileged_port_start set to 0, so that passt may bind to all ports.
 - [PR #7772][jean-edouard] The SELinux policy for virt-launcher is down to 4 rules, 1 for hugepages and 3 for virtiofs.
 - [PR #8402][jean-edouard] Most VMIs now run under the SELinux type container_t
-- [PR #8513][alromeros] [Bug-fix] Fix error handling in virtctl image-upload ---
+- [PR #8513][alromeros] [Bug-fix] Fix error handling in virtctl image-upload
+
+## v0.58.1
+
+Released on: Thu Feb 11 00:08:46 2023 +0000
+
+- [PR #9203][jean-edouard] Most VMIs now run under the SELinux type container_t
+- [PR #9191][kubevirt-bot] Default RBAC for clone and export
+- [PR #9150][kubevirt-bot] Fix access to portforwarding on VMs/VMIs with the cluster roles kubevirt.io:admin and kubevirt.io:edit
+- [PR #9128][kubevirt-bot] Rename migration metrics removing 'total' keyword
+- [PR #9034][akalenyu] BugFix: Hotplug pods have hardcoded resource req which don't comply with LimitRange maxLimitRequestRatio of 1
+- [PR #9002][iholder101] Bugfix: virt-handler socket leak
+- [PR #8907][kubevirt-bot] Bugfix: use virt operator image if provided
+- [PR #8784][kubevirt-bot] Use exponential backoff for failing migrations
+- [PR #8816][iholder101] Expose new custom components env vars to csv-generator, manifest-templator and gs
+- [PR #8798][iholder101] Fix: Align Reenlightenment flows between converter.go and template.go
+- [PR #8731][kubevirt-bot] Allow specifying custom images for core components
+- [PR #8785][0xFelix] The expand-spec subresource endpoint was renamed to expand-vm-spec and made namespaced
+- [PR #8806][kubevirt-bot] Consider the ParallelOutboundMigrationsPerNode when evicting VMs
+- [PR #8738][machadovilaca] Use collector to set migration metrics
+- [PR #8747][kubevirt-bot] Add alerts for VMs unhealthy states
+- [PR #8685][kubevirt-bot] BugFix: Exporter pod does not comply with restricted PSA
+- [PR #8647][akalenyu] BugFix: Add an option to specify a TTL for VMExport objects
+- [PR #8609][kubevirt-bot] Fix permission denied on on selinux relabeling on some kernel versions
+- [PR #8578][rhrazdil] When using Passt binding, virl-launcher has unprivileged_port_start set to 0, so that passt may bind to all ports.
+
 
 ## v0.58.0
 
