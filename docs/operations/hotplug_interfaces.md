@@ -1,0 +1,133 @@
+# Hotplug Network Interfaces
+KubeVirt now supports hotplugging network interfaces into a running Virtual
+Machine Instance (VMI). Hotplug is only supported for interfaces using the
+`virtio` model connected through
+[bridge binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge).
+
+## Requirements
+Adding an interface to a KubeVirt Virtual Machine requires first an interface
+to be added to a running pod. This is not trivial, and has some requirements:
+
+- [multus dynamic networks controller](https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller):
+  this daemon will listen to annotation changes, and trigger multus to configure
+  a new attachment for this pod.
+- multus running as a [thick plugin](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md):
+  this multus version exposes an endpoint to create attachments for a given pod
+  on demand.
+
+### Enabling network interface hotplug support
+Network interface hotplug support must be enabled via a
+[feature gate](https://kubevirt.io/user-guide/operations/activating_feature_gates/#how-to-activate-a-feature-gate).
+The feature gates array in the KubeVirt CR must feature `HotplugNICs`.
+
+## Adding an interface to a running VMI
+First start a VMI. You can refer to the following example:
+```yaml
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      interfaces:
+      - masquerade: {}
+        name: defaultnetwork
+      rng: {}
+    resources:
+      requests:
+        memory: 1024M
+  networks:
+  - name: defaultnetwork
+    pod: {}
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - containerDisk:
+      image: quay.io/kubevirt/fedora-with-test-tooling-container-disk:devel
+    name: containerdisk
+  - cloudInitNoCloud:
+      networkData: |
+        version: 2
+        ethernets:
+          eth0:
+            dhcp4: true
+      userData: |-
+        #!/bin/bash
+        echo "fedora" |passwd fedora --stdin
+    name: cloudinitdisk
+```
+
+You should configure a network attachment definition - where the pod interface
+configuration is held. The snippet below shows an example of a very simple one:
+```yaml
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: new-fancy-net
+spec:
+    config: '{
+      "cniVersion": "0.3.1",
+      "type": "bridge",
+      "mtu": 1300,
+      "name":"new-fancy-net"
+    }'
+```
+
+Please refer to the
+[multus documentation](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/how-to-use.md#create-network-attachment-definition)
+for more info.
+
+Once the virtual machine is running, and the attachment configuration
+provisioned, the user can request the interface hotplug operation. Please refer
+to the following snippet:
+```bash
+virtctl addinterface vmi-fedora --network-name new-fancy-net --iface-name dyniface1
+```
+
+**NOTE**: You can use the `--help` parameter for more information on each
+parameter.
+
+You can now check the VMI status for the presence of this new interface:
+```bash
+kubectl get vmi vmi-fedora -ojsonpath="{ @.status.interfaces }"
+```
+
+### Virtio Limitations
+The hotplugged interfaces have `model: virtio`. This imposes several
+limitations: each interface will consume a PCI slot in the VM, and there are a
+total maximum of 32. Furthermore, other devices will also use these PCI slots
+(e.g. disks, guest-agent, etc).
+
+For the `q35` machine type, the issue is even worse: the users will be able to
+hotplug a **single** network interface into the guest. You can find more
+information in the
+[libvirt documentation](https://libvirt.org/pci-hotplug.html#q35-machine-type).
+
+## Persisting Hotplugged Interfaces
+Users may want an hotplugged interface to become part of the standard networks /
+interfaces after a restart. This use case requires users to template the
+running VMI from a VM object.
+
+To achieve this use case, users should invoke `addinterface` with the
+`--persist` flag: this will add the interface to the running VMI object, and
+also mutate the VM spec template:
+
+```bash
+virtctl addinterface vmi-fedora --network-name new-fancy-net --iface-name dyniface1 --persist
+```
+
+Thus, upon a VM restart, the new interface will be made available in the VMI;
+this mitigates the single hotplug interface per `q35` machine type limitation.
+
+**NOTE**: the user can execute this command against a stopped VM - i.e. a VM
+without an associated VMI. When this happens, KubeVirt mutates the VM spec
+template on behalf of the user.
+
