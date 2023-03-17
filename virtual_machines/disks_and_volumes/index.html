@@ -1004,13 +1004,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#floppy" class="md-nav__link">
-    floppy
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#cdrom" class="md-nav__link">
     cdrom
   </a>
@@ -1742,13 +1735,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#floppy" class="md-nav__link">
-    floppy
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#cdrom" class="md-nav__link">
     cdrom
   </a>
@@ -2168,16 +2154,11 @@ mandatory <code>name</code>, and furthermore, the disk's <code>name</code> must 
 <li>
 <p><a href="#cdrom"><strong>cdrom</strong></a></p>
 </li>
-<li>
-<p><a href="#floppy"><strong>floppy</strong></a> <em>DEPRECATED</em></p>
-</li>
 </ul>
 <p>All possible configuration options are available in the <a href="https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk">Disk API
 Reference</a>.</p>
-<p>All types, with the exception of <strong>floppy</strong>, allow you to specify the
-<code>bus</code> attribute. The <code>bus</code> attribute determines how the disk will be
-presented to the guest operating system. <strong>floppy</strong> disks don't support
-the <code>bus</code> attribute: they are always attached to the <code>fdc</code> bus.</p>
+<p>All types allow you to specify the <code>bus</code> attribute. The <code>bus</code> attribute
+determines how the disk will be presented to the guest operating system.</p>
 <h3 id="lun">lun<a class="headerlink" href="#lun" title="Permanent link">&para;</a></h3>
 <p>A <code>lun</code> disk will expose the volume as a LUN device to the VM. This
 allows the VM to execute arbitrary iSCSI command passthrough.</p>
@@ -2244,34 +2225,6 @@ spec:
           # This makes it exposed as /dev/vda, being the only and thus first
           # disk attached to the VM
           bus: virtio
-  volumes:
-    - name: mypvcdisk
-      persistentVolumeClaim:
-        claimName: mypvc
-</code></pre></div>
-<h3 id="floppy">floppy<a class="headerlink" href="#floppy" title="Permanent link">&para;</a></h3>
-<blockquote>
-<p><strong>Note</strong>: Starting with version 0.16.0, floppy disks are deprecated
-and will be <strong>rejected</strong>. They will be removed from the API in a
-future version.</p>
-</blockquote>
-<p>A <code>floppy</code> disk will expose the volume as a floppy drive to the VM.</p>
-<p>A minimal example which attaches a <code>PersistentVolumeClaim</code> named <code>mypvc</code>
-as a <code>floppy</code> device to the VM:</p>
-<div class="highlight"><pre><span></span><code>metadata:
-  name: testvmi-floppy
-apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
-spec:
-  domain:
-    resources:
-      requests:
-        memory: 64M
-    devices:
-      disks:
-      - name: mypvcdisk
-        # This makes it a floppy
-        floppy: {}
   volumes:
     - name: mypvcdisk
       persistentVolumeClaim:
