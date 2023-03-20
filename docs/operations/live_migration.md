@@ -153,9 +153,6 @@ These values can be changed in the `kubevirt` CR:
       namespace: kubevirt
     spec:
       configuration:
-        developerConfiguration:
-          featureGates:
-          - LiveMigration
         migrations:
           parallelMigrationsPerCluster: 5
           parallelOutboundMigrationsPerNode: 2
@@ -163,7 +160,14 @@ These values can be changed in the `kubevirt` CR:
           completionTimeoutPerGiB: 800
           progressTimeout: 150
           disableTLS: false
+          nodeDrainTaintKey: "kubevirt.io/drain"
+          allowAutoConverge: false
+          allowPostCopy: false
+          unsafeMigrationOverride: false
 ```
+
+Bear in mind that most of these configuration can be overridden and fine-tuned to
+a specified group of VMs. For more information, please see [Migration Policies](./migration_policies.md).
 
 ## Using a different network for migrations
 
