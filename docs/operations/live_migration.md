@@ -169,6 +169,81 @@ These values can be changed in the `kubevirt` CR:
 Bear in mind that most of these configuration can be overridden and fine-tuned to
 a specified group of VMs. For more information, please see [Migration Policies](./migration_policies.md).
 
+## Understanding different migration strategies
+Live migration is a complex process. During a migration, the source VM needs to transfer its
+whole state (mainly RAM) to the target VM. If there are enough resources available, such as
+network bandwidth and CPU power, migrations should converge nicely. If this is not the scenario,
+however, the migration might get stuck without an ability to progress.
+
+The main factor that affects migrations from the guest perspective is its `dirty rate`, which is the
+rate by which the VM dirties memory. Guests with high dirty rate lead to a race during migration. On the
+one hand, memory would be transferred continuously to the target, and on the other, the same memory
+would get dirty by the guest. On such scenarios, one could consider to use more advanced migration
+strategies.
+
+Let's explain the 3 supported migration strategies as of today.
+
+### Pre-copy
+Pre-copy is the default strategy. It should be used for most cases.
+
+The way it works is as following:
+1. The target VM is created, but the guest keeps running on the source VM.
+2. The source starts sending chunks of VM state (mostly memory) to the target. This continues until
+all of the state has been transferred to the target.
+3. The guest starts executing on the target VM.
+4. The source VM is being removed.
+
+Pre-copy is the safest and fastest strategy for most cases. Furthermore, it can be easily cancelled,
+can utilize multithreading, and more. If there is no real reason to use another strategy, this is
+definitely the strategy to go with.
+
+However, on some cases migrations might not converge easily, that is, by the time the chunk of source
+VM state would be received by the source VM, it would already be mutated by the source VM (which is
+the VM the guest executes on). There are many reasons for migrations to fail converging, such as a
+high dirty-rate or low resources like network bandwidth and CPU. On such scenarios, see the following
+alternative strategies below.
+
+### Post-copy
+The way post-copy migrations work is as following:
+1. The target VM is created.
+2. The guest is being run on the **target VM**.
+3. The source starts sending chunks of VM state (mostly memory) to the target.
+4. When the guest, running on the target VM, would access memory:
+   1. If the memory exists on the target VM, the guest can access it.
+   2. Otherwise, the target VM asks for a chunk of memory from the source VM.
+5. Once all of the memory state is updated at the target VM, the source VM is being removed.
+
+The main idea here is that the guest starts to run immediately on the target VM. This approach
+has advantages and disadvantages:
+
+<u>advantages</u>:
+* The same memory chink is never being transferred twice. This is possible due to the fact that
+with post-copy it doesn't matter that a page had been dirtied since the guest is already running
+on the target VM.
+  * This means that a high dirty-rate has much less effect.
+* Consumes less network bandwidth.
+
+<u>disadvantages</u>:
+* When using post-copy, the VM state has no one source of truth. When the guest (running on the
+target VM) writes to memory, this memory is one part of the guest's state, but some other parts of
+it may still be updated only at the source VM. This situation is generally dangerous, since, for 
+example, if either the target or guest VMs crash the state cannot be recovered.
+* Slow warmup: when the guest starts executing, no memory is present at the target VM. Therefore,
+the guest would have to wait for a lot of memory in a short period of time.
+* Slower than pre-copy on most cases.
+* Harder to cancel a migration.
+
+### Auto-converge
+Auto-converge is a technique to help pre-copy migrations converge faster without changing the core
+algorithm of how the migration works.
+
+Since a high dirty-rate is usually the most significant factor for migrations to not converge,
+auto-converge simply throttles the guest's CPU. If the migration would converge fast enough,
+the guest's CPU would not be throttled or throttled negligibly. But, if the migration would
+not converge fast enough, the CPU would be throttled more and more as time goes.
+
+This technique dramatically increases the probability of the migration converging eventually.
+
 ## Using a different network for migrations
 
 Live migrations can be configured to happen on a different network than
