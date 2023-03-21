@@ -615,6 +615,40 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#understanding-different-migration-strategies" class="md-nav__link">
+    Understanding different migration strategies
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding different migration strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-copy" class="md-nav__link">
+    Pre-copy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-copy" class="md-nav__link">
+    Post-copy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-converge" class="md-nav__link">
+    Auto-converge
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#using-a-different-network-for-migrations" class="md-nav__link">
     Using a different network for migrations
   </a>
@@ -1563,6 +1597,40 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#understanding-different-migration-strategies" class="md-nav__link">
+    Understanding different migration strategies
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding different migration strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-copy" class="md-nav__link">
+    Pre-copy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#post-copy" class="md-nav__link">
+    Post-copy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-converge" class="md-nav__link">
+    Auto-converge
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#using-a-different-network-for-migrations" class="md-nav__link">
     Using a different network for migrations
   </a>
@@ -1788,17 +1856,81 @@ of <code>64MiB/s</code>.</p>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>      namespace: kubevirt
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    spec:
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>      configuration:
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        developerConfiguration:
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>          featureGates:
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>          - LiveMigration
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>        migrations:
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>          parallelMigrationsPerCluster: 5
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>          parallelOutboundMigrationsPerNode: 2
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>          bandwidthPerMigration: 64Mi
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>          completionTimeoutPerGiB: 800
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>          progressTimeout: 150
-<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>          disableTLS: false
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        migrations:
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>          parallelMigrationsPerCluster: 5
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>          parallelOutboundMigrationsPerNode: 2
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>          bandwidthPerMigration: 64Mi
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>          completionTimeoutPerGiB: 800
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>          progressTimeout: 150
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>          disableTLS: false
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>          nodeDrainTaintKey: &quot;kubevirt.io/drain&quot;
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>          allowAutoConverge: false
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>          allowPostCopy: false
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>          unsafeMigrationOverride: false
 </code></pre></div>
+<p>Bear in mind that most of these configuration can be overridden and fine-tuned to
+a specified group of VMs. For more information, please see <a href="../migration_policies/">Migration Policies</a>.</p>
+<h2 id="understanding-different-migration-strategies">Understanding different migration strategies<a class="headerlink" href="#understanding-different-migration-strategies" title="Permanent link">&para;</a></h2>
+<p>Live migration is a complex process. During a migration, the source VM needs to transfer its
+whole state (mainly RAM) to the target VM. If there are enough resources available, such as
+network bandwidth and CPU power, migrations should converge nicely. If this is not the scenario,
+however, the migration might get stuck without an ability to progress.</p>
+<p>The main factor that affects migrations from the guest perspective is its <code>dirty rate</code>, which is the
+rate by which the VM dirties memory. Guests with high dirty rate lead to a race during migration. On the
+one hand, memory would be transferred continuously to the target, and on the other, the same memory
+would get dirty by the guest. On such scenarios, one could consider to use more advanced migration
+strategies.</p>
+<p>Let's explain the 3 supported migration strategies as of today.</p>
+<h3 id="pre-copy">Pre-copy<a class="headerlink" href="#pre-copy" title="Permanent link">&para;</a></h3>
+<p>Pre-copy is the default strategy. It should be used for most cases.</p>
+<p>The way it works is as following:
+1. The target VM is created, but the guest keeps running on the source VM.
+2. The source starts sending chunks of VM state (mostly memory) to the target. This continues until
+all of the state has been transferred to the target.
+3. The guest starts executing on the target VM.
+4. The source VM is being removed.</p>
+<p>Pre-copy is the safest and fastest strategy for most cases. Furthermore, it can be easily cancelled,
+can utilize multithreading, and more. If there is no real reason to use another strategy, this is
+definitely the strategy to go with.</p>
+<p>However, on some cases migrations might not converge easily, that is, by the time the chunk of source
+VM state would be received by the source VM, it would already be mutated by the source VM (which is
+the VM the guest executes on). There are many reasons for migrations to fail converging, such as a
+high dirty-rate or low resources like network bandwidth and CPU. On such scenarios, see the following
+alternative strategies below.</p>
+<h3 id="post-copy">Post-copy<a class="headerlink" href="#post-copy" title="Permanent link">&para;</a></h3>
+<p>The way post-copy migrations work is as following:
+1. The target VM is created.
+2. The guest is being run on the <strong>target VM</strong>.
+3. The source starts sending chunks of VM state (mostly memory) to the target.
+4. When the guest, running on the target VM, would access memory:
+   1. If the memory exists on the target VM, the guest can access it.
+   2. Otherwise, the target VM asks for a chunk of memory from the source VM.
+5. Once all of the memory state is updated at the target VM, the source VM is being removed.</p>
+<p>The main idea here is that the guest starts to run immediately on the target VM. This approach
+has advantages and disadvantages:</p>
+<p><u>advantages</u>:
+* The same memory chink is never being transferred twice. This is possible due to the fact that
+with post-copy it doesn't matter that a page had been dirtied since the guest is already running
+on the target VM.
+  * This means that a high dirty-rate has much less effect.
+* Consumes less network bandwidth.</p>
+<p><u>disadvantages</u>:
+* When using post-copy, the VM state has no one source of truth. When the guest (running on the
+target VM) writes to memory, this memory is one part of the guest's state, but some other parts of
+it may still be updated only at the source VM. This situation is generally dangerous, since, for 
+example, if either the target or guest VMs crash the state cannot be recovered.
+* Slow warmup: when the guest starts executing, no memory is present at the target VM. Therefore,
+the guest would have to wait for a lot of memory in a short period of time.
+* Slower than pre-copy on most cases.
+* Harder to cancel a migration.</p>
+<h3 id="auto-converge">Auto-converge<a class="headerlink" href="#auto-converge" title="Permanent link">&para;</a></h3>
+<p>Auto-converge is a technique to help pre-copy migrations converge faster without changing the core
+algorithm of how the migration works.</p>
+<p>Since a high dirty-rate is usually the most significant factor for migrations to not converge,
+auto-converge simply throttles the guest's CPU. If the migration would converge fast enough,
+the guest's CPU would not be throttled or throttled negligibly. But, if the migration would
+not converge fast enough, the CPU would be throttled more and more as time goes.</p>
+<p>This technique dramatically increases the probability of the migration converging eventually.</p>
 <h2 id="using-a-different-network-for-migrations">Using a different network for migrations<a class="headerlink" href="#using-a-different-network-for-migrations" title="Permanent link">&para;</a></h2>
 <p>Live migrations can be configured to happen on a different network than
 the one Kubernetes is configured to use.
