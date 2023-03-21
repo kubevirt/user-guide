@@ -51,7 +51,7 @@ If a prefix was not supplied the cluster scoped resources will be used by
 default.
 
 To
-infer [instance types and/or preferences](./instancetypes.md#inferring-defaults-from-a-volume)
+infer [instance types and/or preferences](./instancetypes.md#inferFromVolume)
 from the volume used to boot the virtual machine add the following flags:
 
 ```shell
