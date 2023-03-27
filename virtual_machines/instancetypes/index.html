@@ -944,25 +944,19 @@
     Versioning
   </a>
   
-    <nav class="md-nav" aria-label="Versioning">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#inferring-defaults-from-a-volume" class="md-nav__link">
-    Inferring defaults from a Volume
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inferfromvolume" class="md-nav__link">
+    inferFromVolume
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#common-instance-types" class="md-nav__link">
-    Common Instance Types
+      
+        <li class="md-nav__item">
+  <a href="#common-instancetypes" class="md-nav__link">
+    common-instancetypes
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1440,25 +1434,19 @@
     Versioning
   </a>
   
-    <nav class="md-nav" aria-label="Versioning">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#inferring-defaults-from-a-volume" class="md-nav__link">
-    Inferring defaults from a Volume
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inferfromvolume" class="md-nav__link">
+    inferFromVolume
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#common-instance-types" class="md-nav__link">
-    Common Instance Types
+      
+        <li class="md-nav__item">
+  <a href="#common-instancetypes" class="md-nav__link">
+    common-instancetypes
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1795,7 +1783,7 @@
 <a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">  </span><span class="s">&quot;threads&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="err">}</span>
 </code></pre></div>
-<h3 id="inferring-defaults-from-a-volume">Inferring defaults from a Volume<a class="headerlink" href="#inferring-defaults-from-a-volume" title="Permanent link">&para;</a></h3>
+<h2 id="inferfromvolume">inferFromVolume<a class="headerlink" href="#inferfromvolume" title="Permanent link">&para;</a></h2>
 <p>The <code>inferFromVolume</code> attribute of both the <code>InstancetypeMatcher</code> and <code>PreferenceMatcher</code> allows a user to request that defaults are inferred from a volume. When requested, KubeVirt will look for the following labels on the underlying <code>PVC</code>, <code>DataSource</code> or <code>DataVolume</code> to determine the default name and kind:</p>
 <ul>
 <li><code>instancetype.kubevirt.io/default-instancetype</code></li>
@@ -1872,7 +1860,7 @@
 <a id="__codelineno-8-65" name="__codelineno-8-65" href="#__codelineno-8-65"></a><span class="w">  </span><span class="s">&quot;revisionName&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;cirros-cirros-85823ddc-9e8c-4d23-a94c-143571b5489c-1&quot;</span>
 <a id="__codelineno-8-66" name="__codelineno-8-66" href="#__codelineno-8-66"></a><span class="p p-Indicator">}</span>
 </code></pre></div>
-<h3 id="common-instance-types">Common Instance Types<a class="headerlink" href="#common-instance-types" title="Permanent link">&para;</a></h3>
+<h2 id="common-instancetypes">common-instancetypes<a class="headerlink" href="#common-instancetypes" title="Permanent link">&para;</a></h2>
 <p>A set of common instance types and preferences are provided through the <a href="https://github.com/kubevirt/common-instancetypes"><code>kubevirt/common-instancetypes</code></a> project. To install all resources provided by the project, simply build with <code>kustomize</code> and apply:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl kustomize https://github.com/kubevirt/common-instancetypes.git | kubectl apply -f -</span>
 </code></pre></div>
