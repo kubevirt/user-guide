@@ -89,7 +89,7 @@ Once the virtual machine is running, and the attachment configuration
 provisioned, the user can request the interface hotplug operation. Please refer
 to the following snippet:
 ```bash
-virtctl addinterface vmi-fedora --network-name new-fancy-net --iface-name dyniface1
+virtctl addinterface vmi-fedora --network-attachment-definition-name new-fancy-net --name dyniface1
 ```
 
 **NOTE**: You can use the `--help` parameter for more information on each
@@ -121,7 +121,7 @@ To achieve this use case, users should invoke `addinterface` with the
 also mutate the VM spec template:
 
 ```bash
-virtctl addinterface vmi-fedora --network-name new-fancy-net --iface-name dyniface1 --persist
+virtctl addinterface vmi-fedora --network-attachment-definition-name new-fancy-net --name dyniface1 --persist
 ```
 
 Thus, upon a VM restart, the new interface will be made available in the VMI;
