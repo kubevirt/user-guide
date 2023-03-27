@@ -304,7 +304,7 @@ $ kubectl get vmi/vm-cirros-csmall -o json | jq .spec.domain.cpu
 }
 ```
 
-### Inferring defaults from a Volume
+## inferFromVolume
 
 The `inferFromVolume` attribute of both the `InstancetypeMatcher` and `PreferenceMatcher` allows a user to request that defaults are inferred from a volume. When requested, KubeVirt will look for the following labels on the underlying `PVC`, `DataSource` or `DataVolume` to determine the default name and kind:
 
@@ -386,7 +386,7 @@ kubectl get vms/cirros -o json | jq '.spec.instancetype, .spec.preference'
 }
 ```
 
-### Common Instance Types
+## common-instancetypes
 
 A set of common instance types and preferences are provided through the [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) project. To install all resources provided by the project, simply build with `kustomize` and apply:
 
