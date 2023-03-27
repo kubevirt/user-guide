@@ -200,6 +200,55 @@ status:
   phase: Ready
   serviceName: virt-export-example-export
 ```
+
+#### Manifests
+The VirtualMachine manifests can be retrieved by accessing the `manifests` in the VirtualMachineExport status. The `all` type will return the VirtualMachine manifest, any DataVolumes, and a configMap that contains the public CA certificate of the Ingress/Route of the external URL, or the CA of the export server of the internal URL. The `auth-header-secret` will be a secret that contains a Containerized Data Import (CDI) compatible header. This header contains a text version of the export token.
+
+Both internal and external links will contain a `manifests` field. If there are no external links, then there will not be any external manifests either.
+
+```yaml
+apiVersion: export.kubevirt.io/v1alpha1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+  namespace: example
+spec:
+  source:
+    apiGroup: ""
+    kind: PersistentVolumeClaim
+    name: example-pvc
+  tokenSecretRef: example-token
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2022-06-21T14:10:09Z"
+    reason: podReady
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2022-06-21T14:09:02Z"
+    reason: pvcBound
+    status: "True"
+    type: PVCReady
+  links:
+    external:
+      ...
+      manifests:
+      - type: all
+        url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/external/manifests/all
+      - type: auth-header-secret
+        url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/external/manifests/secret
+    internal:
+      ...
+      manifests:
+      - type: all
+        url: https://virt-export-export-pvc.default.svc/internal/manifests/all
+      - type: auth-header-secret
+        url: https://virt-export-export-pvc.default.svc/internal/manifests/secret
+  phase: Ready
+  serviceName: virt-export-example-export
+```
+
 #### Format types
 There are 4 format types that are possible:
 
@@ -330,7 +379,7 @@ Use "virtctl options" for a list of global command-line options (applies to all 
 
 #### Clone VM from one cluster to another cluster
 
-If you want to transfer KubeVirt disk images from a source cluster to another target cluster, you can use the VMExport in the source to expose the disks and Containerized Data Importer (CDI) in the target cluster to import the image into the target cluster. Let's assume we have an Ingress or Route in the source cluster that exposes the export proxy with the following example domain `virt-exportproxy-example.example.com` and we have a Virtual Machine in the source cluster with one disk, which looks like this:
+If you want to transfer KubeVirt disk images from a source cluster to another target cluster, you can use the VMExport in the source to expose the disks and use Containerized Data Importer (CDI) in the target cluster to import the image into the target cluster. Let's assume we have an Ingress or Route in the source cluster that exposes the export proxy with the following example domain `virt-exportproxy-example.example.com` and we have a Virtual Machine in the source cluster with one disk, which looks like this:
 
 ```yaml
 apiVersion: kubevirt.io/v1
@@ -377,7 +426,7 @@ spec:
         name: datavolumedisk1
 ```
 
-This is a VM that has a DataVolume (DV) `example-dv` that is populated from a container disk and we want to export that disk to the target cluster. To export this VM we have to create a token that we can use in the target cluster to get access to the export. For example
+This is a VM that has a DataVolume (DV) `example-dv` that is populated from a container disk and we want to export that disk to the target cluster. To export this VM we have to create a token that we can use in the target cluster to get access to the export, or we can let the export controller generate one for us. For example
 
 ```yaml
 apiVersion: v1
@@ -395,7 +444,7 @@ kind: VirtualMachineExport
 metadata:
   name: example-export
 spec:
-  tokenSecretRef: example-token
+  tokenSecretRef: example-token #optional, if omitted the export controller will generate a token
   source:
     apiGroup: "kubevirt.io"
     kind: VirtualMachine
@@ -455,80 +504,22 @@ status:
 ```
 Note in this example we are in the `example` namespace in the source cluster, which is why the internal links domain ends with `.example.svc`. The external links are what will be visible to outside of the source cluster, so we can use that for when we import into the target cluster.
 
-Now we are ready to import this disk into the target cluster. In order for CDI to import, we will need to provide it the CA certificate that signed the Ingress/Route that we will be connecting to. Luckily the `cert` field of the external links will contain the entire certificate chain. You can use the contents of the `cert` field to populate the configMap. In the target cluster create the configmap in the namespace you will import the disk into:
+Now we are ready to import this disk into the target cluster. In order for CDI to import, we will need to provide appropriate yaml that contains the following:
+- CA cert (as config map)
+- The token needed to access the disk images in a CDI compatible format
+- The VM yaml
+- DataVolume yaml (optional if not part of the VM definition)
 
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: router-cert
-data:
-  ca.pem: |
-    -----BEGIN CERTIFICATE-----
-    ...
-    -----END CERTIFICATE-----
+virtctl provides an additional argument to the download command called `--manifest` that will retrieve the appropriate information from the export server, and either save it to a file with the `--output` argument or write to standard out. By default this output will not contain the header secret as it contains the token in plaintext. To get the header secret you specify the `--include-secret` argument. The default output format is `yaml` but it is possible to get `json` output as well.
+
+Assuming there is a running Virtual Machine export called `example-export` and the same namespace exists in the target cluster. The name of the kubeconfig of the target cluster is named `kubeconfig-target`, to clone the vm into the target cluster run the following commands:
+
+```bash
+$ virtctl vmexport download example-export --manifest --include-secret --output=import.yaml
+$ kubectl apply -f import.yaml --kubeconfig=kubeconfig-target
 ```
 
-Next create a secret in the same namespace on the target cluster. Note: the token value will be a header that is passed to the server by CDI.
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: secret-headers
-stringData:
-  token: "x-kubevirt-export-token:1234567890ab"
-```
-Note: make sure there is no ` ` between the `:` and the actual token, otherwise the space is sent as part of the header, the authentication will fail.
-Now we can go ahead and import the disk image into the target cluster using a data volume. For convenience, I put the data volume inside a data volume template section of the same VM spec as the source:
-
-```yaml
-apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  labels:
-    kubevirt.io/vm: vm-example-datavolume
-  name: example-target-vm
-spec:
-  dataVolumeTemplates:
-  - metadata:
-      creationTimestamp: null
-      name: example-dv
-    spec:
-      source:
-        http:
-          url: "https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img.gz"
-          certConfigMap: router-cert
-          secretExtraHeaders:
-          - secret-headers
-      storage:
-        accessModes:
-        - ReadWriteOnce
-        resources:
-          requests:
-            storage: 20Gi
-        storageClassName: target-local
-  running: false
-  template:
-    metadata:
-      labels:
-        kubevirt.io/vm: vm-example-datavolume
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: datavolumedisk1
-        resources:
-          requests:
-            memory: 2Gi
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - dataVolume:
-          name: example-dv
-        name: datavolumedisk1
-```
+The first command generates the yaml and writes it to `import.yaml`. The second command applies the yaml to the target cluster. It is possible to combine the two commands by not writing to a file, and reading from standard in in the second command. Use this option if the export token should not be written to a file anywhere. This will create the VM in the target cluster, and provides CDI in the target cluster with everything required to import the disk images into the target cluster.
 
 After the import completes you should be able to start the VM in the target cluster.
 
