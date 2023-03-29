@@ -100,6 +100,32 @@ You can now check the VMI status for the presence of this new interface:
 kubectl get vmi vmi-fedora -ojsonpath="{ @.status.interfaces }"
 ```
 
+## Migration based hotplug
+In case your cluster doesn't run Multus as [thick plugin](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md) and [Multus Dynamic Networks controller](https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller), it's possible to hotplug an interface by migrating the VM.
+
+The actual attachment won't take place immediately, and the new interface will be available in the guest once the migration is completed.
+
+### Add new interface
+```bash
+virtctl addinterface vmi-fedora --network-attachment-definition-name new-fancy-net --name dyniface1
+```
+At this point the new interface is added to the spec but will not be attached to the running VM. 
+
+### Migrate the VM
+```bash
+cat <<EOF kubectl apply -f -
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstanceMigration
+metadata:
+  name: migration-job
+spec:
+  vmiName: vmi-fedora
+EOF
+```
+See the [Live Migration](./live_migration.md) docs for more details.
+
+Once the migration is completed the VM will have the new interface attached.
+
 ### Virtio Limitations
 The hotplugged interfaces have `model: virtio`. This imposes several
 limitations: each interface will consume a PCI slot in the VM, and there are a
