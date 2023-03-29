@@ -565,8 +565,29 @@
     Adding an interface to a running VMI
   </a>
   
-    <nav class="md-nav" aria-label="Adding an interface to a running VMI">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-based-hotplug" class="md-nav__link">
+    Migration based hotplug
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration based hotplug">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-new-interface" class="md-nav__link">
+    Add new interface
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migrate-the-vm" class="md-nav__link">
+    Migrate the VM
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#virtio-limitations" class="md-nav__link">
@@ -1390,8 +1411,29 @@
     Adding an interface to a running VMI
   </a>
   
-    <nav class="md-nav" aria-label="Adding an interface to a running VMI">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-based-hotplug" class="md-nav__link">
+    Migration based hotplug
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration based hotplug">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-new-interface" class="md-nav__link">
+    Add new interface
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migrate-the-vm" class="md-nav__link">
+    Migrate the VM
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#virtio-limitations" class="md-nav__link">
@@ -1533,6 +1575,25 @@ parameter.</p>
 <p>You can now check the VMI status for the presence of this new interface:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>vmi<span class="w"> </span>vmi-fedora<span class="w"> </span>-ojsonpath<span class="o">=</span><span class="s2">&quot;{ @.status.interfaces }&quot;</span>
 </code></pre></div></p>
+<h2 id="migration-based-hotplug">Migration based hotplug<a class="headerlink" href="#migration-based-hotplug" title="Permanent link">&para;</a></h2>
+<p>In case your cluster doesn't run Multus as <a href="https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md">thick plugin</a> and <a href="https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller">Multus Dynamic Networks controller</a>, it's possible to hotplug an interface by migrating the VM.</p>
+<p>The actual attachment won't take place immediately, and the new interface will be available in the guest once the migration is completed.</p>
+<h3 id="add-new-interface">Add new interface<a class="headerlink" href="#add-new-interface" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>virtctl<span class="w"> </span>addinterface<span class="w"> </span>vmi-fedora<span class="w"> </span>--network-attachment-definition-name<span class="w"> </span>new-fancy-net<span class="w"> </span>--name<span class="w"> </span>dyniface1
+</code></pre></div>
+At this point the new interface is added to the spec but will not be attached to the running VM. </p>
+<h3 id="migrate-the-vm">Migrate the VM<a class="headerlink" href="#migrate-the-vm" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF kubectl apply -f -</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="s">apiVersion: kubevirt.io/v1</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="s">kind: VirtualMachineInstanceMigration</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="s">metadata:</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="s">  name: migration-job</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="s">spec:</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="s">  vmiName: vmi-fedora</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="s">EOF</span>
+</code></pre></div>
+See the <a href="../live_migration/">Live Migration</a> docs for more details.</p>
+<p>Once the migration is completed the VM will have the new interface attached.</p>
 <h3 id="virtio-limitations">Virtio Limitations<a class="headerlink" href="#virtio-limitations" title="Permanent link">&para;</a></h3>
 <p>The hotplugged interfaces have <code>model: virtio</code>. This imposes several
 limitations: each interface will consume a PCI slot in the VM, and there are a
@@ -1549,7 +1610,7 @@ running VMI from a VM object.</p>
 <p>To achieve this use case, users should invoke <code>addinterface</code> with the
 <code>--persist</code> flag: this will add the interface to the running VMI object, and
 also mutate the VM spec template:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>virtctl<span class="w"> </span>addinterface<span class="w"> </span>vmi-fedora<span class="w"> </span>--network-attachment-definition-name<span class="w"> </span>new-fancy-net<span class="w"> </span>--name<span class="w"> </span>dyniface1<span class="w"> </span>--persist
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>virtctl<span class="w"> </span>addinterface<span class="w"> </span>vmi-fedora<span class="w"> </span>--network-attachment-definition-name<span class="w"> </span>new-fancy-net<span class="w"> </span>--name<span class="w"> </span>dyniface1<span class="w"> </span>--persist
 </code></pre></div>
 <p>Thus, upon a VM restart, the new interface will be made available in the VMI;
 this mitigates the single hotplug interface per <code>q35</code> machine type limitation.</p>
