@@ -228,6 +228,9 @@ datasource may look like this:
             secretRef:
               name: testsecret
 
+The `cloudInitConfigDrive` can also be used to configure VMs with Ignition.
+You just need to replace the cloud-init data by the Ignition data.
+
 ### persistentVolumeClaim
 
 Allows connecting a `PersistentVolumeClaim` to a VM disk.
