@@ -109,4 +109,4 @@ kubectl wait vmrestore restore-larry --for condition=Ready
 
 Keep `VirtualMachineSnapshots` (and their corresponding `VirtualMachineSnapshotContents`) around as long as you may want to restore from them again.
 
-Feel free to delete `larry-restore` as it is not needed once the restore is complete.
+Feel free to delete `restore-larry` as it is not needed once the restore is complete.
