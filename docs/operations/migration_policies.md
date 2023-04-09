@@ -63,8 +63,7 @@ kind: MigrationPolicy
   spec:
   selectors:
     namespaceSelector:
-      matchLabels:
-        hpc-workloads: true       # Matches a key and a value 
+      hpc-workloads: true       # Matches a key and a value 
 ```
 
 **This policy applies for the VMs that have all the required labels:**
@@ -74,8 +73,7 @@ kind: MigrationPolicy
   spec:
   selectors:
     virtualMachineInstanceSelector:
-      matchLabels:
-        workload-type: db       # Matches a key and a value 
+      workload-type: db       # Matches a key and a value 
 ```
 
 **It is also possible to combine the previous two:**
@@ -85,11 +83,9 @@ kind: MigrationPolicy
   spec:
   selectors:
     namespaceSelector:
-      matchLabels:
-        hpc-workloads: true
+      hpc-workloads: true
     virtualMachineInstanceSelector:
-      matchLabels:
-        workload-type: db
+      workload-type: db
 ```
 
 #### Full Manifest:
@@ -109,11 +105,9 @@ spec:
   # Matching to VMs
   selectors:
     namespaceSelector:
-      matchLabels:
-        hpc-workloads: true
+      hpc-workloads: true
     virtualMachineInstanceSelector:
-      matchLabels:
-        workload-type: db
+      workload-type: db
 ```
 ## Policies' Precedence
 
