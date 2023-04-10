@@ -61,9 +61,9 @@ kubectl wait vmsnapshot snap-larry --for condition=Ready
 ```
 
 You can check the vmSnapshot phase in the vmSnapshot status. It can be one of the following:
-* InProgress
-* Succeeded
-* Failed.
+- InProgress
+- Succeeded
+- Failed.
 
 The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not succeessfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a [duration](https://pkg.go.dev/time#ParseDuration) string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m"
 
