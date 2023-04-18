@@ -64,8 +64,9 @@ In the next section I will go through the different settings to elaborate them.
 
 The source and target indicate the source/target API group, kind and name. A few important notes:
 
-* Currently, the only supported kind is `VirtualMachine`, but more types are expected to be supported in the future.
-  See "future roadmap" below for more info.
+* Currently, the only supported kinds are `VirtualMachine` (of `kubevirt.io` api group) and `VirtualMachineSnapshot` (
+of `snapshot.kubevirt.io` api group), but more types are expected to be supported in the future.
+See "future roadmap" below for more info.
 
 * The target name is **optional**. If unspecified, the clone controller will generate a name for the target automatically.
 
@@ -139,14 +140,13 @@ kubectl get vm vm-clone-target -o yaml
 The clone API is in an early alpha version and may change dramatically. There are many improvements and features
 that are expected to be added, the most significant goals are:
 
-* Add more supported source types. The most important is `VirtualMachineSnapshot` (see section below for more info). We
-  also intend to support `VirtualMachineInstace` types in the future.
+* Add more supported source types like `VirtualMachineInstace` in the future.
 * Add a cross-namespace clone support. This needs to be supported for snapshots / restores first.
 
 ### Using clones as a "golden VM image"
 
-One of the great things that could be accomplished with the clone API when `VirtualMachineSnapshot`s are supported
-as source types is to create "golden VM images" (a.k.a. Templates / Bookmark VMs / etc). In other words, the following
+One of the great things that could be accomplished with the clone API when the source is of kind `VirtualMachineSnapshot`
+is to create "golden VM images" (a.k.a. Templates / Bookmark VMs / etc). In other words, the following
 workflow would be available:
 
 **Create a golden image**
