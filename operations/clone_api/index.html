@@ -1617,8 +1617,9 @@ for such an object is:
 <p>The source and target indicate the source/target API group, kind and name. A few important notes:</p>
 <ul>
 <li>
-<p>Currently, the only supported kind is <code>VirtualMachine</code>, but more types are expected to be supported in the future.
-  See "future roadmap" below for more info.</p>
+<p>Currently, the only supported kinds are <code>VirtualMachine</code> (of <code>kubevirt.io</code> api group) and <code>VirtualMachineSnapshot</code> (
+of <code>snapshot.kubevirt.io</code> api group), but more types are expected to be supported in the future.
+See "future roadmap" below for more info.</p>
 </li>
 <li>
 <p>The target name is <strong>optional</strong>. If unspecified, the clone controller will generate a name for the target automatically.</p>
@@ -1689,13 +1690,12 @@ deployed in the cluster which would automatically assign the target with a fresh
 <p>The clone API is in an early alpha version and may change dramatically. There are many improvements and features
 that are expected to be added, the most significant goals are:</p>
 <ul>
-<li>Add more supported source types. The most important is <code>VirtualMachineSnapshot</code> (see section below for more info). We
-  also intend to support <code>VirtualMachineInstace</code> types in the future.</li>
+<li>Add more supported source types like <code>VirtualMachineInstace</code> in the future.</li>
 <li>Add a cross-namespace clone support. This needs to be supported for snapshots / restores first.</li>
 </ul>
 <h3 id="using-clones-as-a-golden-vm-image">Using clones as a "golden VM image"<a class="headerlink" href="#using-clones-as-a-golden-vm-image" title="Permanent link">&para;</a></h3>
-<p>One of the great things that could be accomplished with the clone API when <code>VirtualMachineSnapshot</code>s are supported
-as source types is to create "golden VM images" (a.k.a. Templates / Bookmark VMs / etc). In other words, the following
+<p>One of the great things that could be accomplished with the clone API when the source is of kind <code>VirtualMachineSnapshot</code>
+is to create "golden VM images" (a.k.a. Templates / Bookmark VMs / etc). In other words, the following
 workflow would be available:</p>
 <p><strong>Create a golden image</strong></p>
 <ul>
