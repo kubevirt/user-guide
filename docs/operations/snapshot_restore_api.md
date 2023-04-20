@@ -61,6 +61,7 @@ kubectl wait vmsnapshot snap-larry --for condition=Ready
 ```
 
 You can check the vmSnapshot phase in the vmSnapshot status. It can be one of the following:
+
 - InProgress
 - Succeeded
 - Failed.
