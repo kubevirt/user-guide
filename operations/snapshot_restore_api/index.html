@@ -1484,10 +1484,12 @@ field in the KubeVirt CR must be expanded by adding the <code>Snapshot</code> to
 <p>To wait for a snapshot to complete, execute:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>vmsnapshot<span class="w"> </span>snap-larry<span class="w"> </span>--for<span class="w"> </span><span class="nv">condition</span><span class="o">=</span>Ready
 </code></pre></div>
-<p>You can check the vmSnapshot phase in the vmSnapshot status. It can be one of the following:
-* InProgress
-* Succeeded
-* Failed.</p>
+<p>You can check the vmSnapshot phase in the vmSnapshot status. It can be one of the following:</p>
+<ul>
+<li>InProgress</li>
+<li>Succeeded</li>
+<li>Failed.</li>
+</ul>
 <p>The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not succeessfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a <a href="https://pkg.go.dev/time#ParseDuration">duration</a> string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m"</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot.kubevirt.io/v1alpha1</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineSnapshot</span>
@@ -1519,7 +1521,7 @@ field in the KubeVirt CR must be expanded by adding the <code>Snapshot</code> to
 </code></pre></div>
 <h2 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h2>
 <p>Keep <code>VirtualMachineSnapshots</code> (and their corresponding <code>VirtualMachineSnapshotContents</code>) around as long as you may want to restore from them again.</p>
-<p>Feel free to delete <code>larry-restore</code> as it is not needed once the restore is complete.</p>
+<p>Feel free to delete <code>restore-larry</code> as it is not needed once the restore is complete.</p>
 
 
 
