@@ -1014,6 +1014,19 @@
     lun
   </a>
   
+    <nav class="md-nav" aria-label="lun">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#persistent-reservation" class="md-nav__link">
+    persistent reservation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1745,6 +1758,19 @@
     lun
   </a>
   
+    <nav class="md-nav" aria-label="lun">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#persistent-reservation" class="md-nav__link">
+    persistent reservation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2202,6 +2228,22 @@ spec:
     - name: mypvcdisk
       persistentVolumeClaim:
         claimName: mypvc
+</code></pre></div>
+<h4 id="persistent-reservation">persistent reservation<a class="headerlink" href="#persistent-reservation" title="Permanent link">&para;</a></h4>
+<p>It is possible to reserve a LUN through the the SCSI Persistent Reserve commands.
+In order to issue privileged SCSI ioctls, the VM requires activation of the
+persistent resevation flag:</p>
+<div class="highlight"><pre><span></span><code>    devices:
+      disks:
+      - name: mypvcdisk
+        lun:
+          reservation: true
+</code></pre></div>
+<p>This feature is enabled by the feature gate <code>PersistentReservation</code>:</p>
+<div class="highlight"><pre><span></span><code>configuration:
+  developerConfiguration:
+    featureGates:
+    -  PersistentReservation
 </code></pre></div>
 <h3 id="disk">disk<a class="headerlink" href="#disk" title="Permanent link">&para;</a></h3>
 <p>A <code>disk</code> disk will expose the volume as an ordinary disk to the VM.</p>
