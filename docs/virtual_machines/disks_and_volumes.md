@@ -49,6 +49,24 @@ as a `lun` device to the VM:
           persistentVolumeClaim:
             claimName: mypvc
 
+#### persistent reservation
+It is possible to reserve a LUN through the the SCSI Persistent Reserve commands.
+In order to issue privileged SCSI ioctls, the VM requires activation of the
+persistent resevation flag:
+
+        devices:
+          disks:
+          - name: mypvcdisk
+            lun:
+              reservation: true
+
+This feature is enabled by the feature gate `PersistentReservation`:
+
+    configuration:
+      developerConfiguration:
+        featureGates:
+        -  PersistentReservation
+
 ### disk
 
 A `disk` disk will expose the volume as an ordinary disk to the VM.
