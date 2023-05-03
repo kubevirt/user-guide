@@ -80,7 +80,7 @@ is installed across your cluster and a corresponding
 The following example defines a network which uses the [ovs-cni
 plugin](https://github.com/kubevirt/ovs-cni), which will connect the VMI
 to Open vSwitch's bridge `br1` and VLAN 100. Other CNI plugins such as
-ptp, bridge, macvlan or Flannel might be used as well. For their
+ptp, bridge, or Flannel might be used as well. For their
 installation and usage refer to the respective project documentation.
 
 First the `NetworkAttachmentDefinition` needs to be created. That is
@@ -150,12 +150,13 @@ Create a `NetworkAttachmentDefinition` with IPAM.
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: macvlan-test
+  name: bridge-test
 spec:
   config: '{
-      "type": "macvlan",
-      "master": "eth0",
-      "mode": "bridge",
+      "cniVersion": "0.3.1",
+      "name": "bridge-test",
+      "type": "bridge",
+      "bridge": "br1",
       "ipam": {
         "type": "host-local",
         "subnet": "10.250.250.0/24"
@@ -178,7 +179,7 @@ spec:
   - name: test1
     multus: # Multus network as default
       default: true
-      networkName: macvlan-test
+      networkName: bridge-test
 ```
 
 #### Invalid CNIs for secondary networks
