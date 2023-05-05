@@ -202,9 +202,9 @@ status:
 ```
 
 #### Manifests
-The VirtualMachine manifests can be retrieved by accessing the `manifests` in the VirtualMachineExport status. The `all` type will return the VirtualMachine manifest, any DataVolumes, and a configMap that contains the public CA certificate of the Ingress/Route of the external URL, or the CA of the export server of the internal URL. The `auth-header-secret` will be a secret that contains a Containerized Data Import (CDI) compatible header. This header contains a text version of the export token.
+The VirtualMachine manifests can be retrieved by accessing the `manifests` in the VirtualMachineExport status. The `all` type will return the VirtualMachine manifest, any DataVolumes, and a configMap that contains the public CA certificate of the Ingress/Route of the external URL, or the CA of the export server of the internal URL. The `auth-header-secret` will be a secret that contains a Containerized Data Importer (CDI) compatible header. This header contains a text version of the export token.
 
-Both internal and external links will contain a `manifests` field. If there are no external links, then there will not be any external manifests either.
+Both internal and external links will contain a `manifests` field. If there are no external links, then there will not be any external manifests either. The virtualMachine `manifests` field is only available if the source is a `VirtualMachine` or `VirtualMachineSnapshot`. Exporting a `PersistentVolumeClaim` will not generate a Virtual Machine manifest.
 
 ```yaml
 apiVersion: export.kubevirt.io/v1alpha1
@@ -512,14 +512,14 @@ Now we are ready to import this disk into the target cluster. In order for CDI t
 
 virtctl provides an additional argument to the download command called `--manifest` that will retrieve the appropriate information from the export server, and either save it to a file with the `--output` argument or write to standard out. By default this output will not contain the header secret as it contains the token in plaintext. To get the header secret you specify the `--include-secret` argument. The default output format is `yaml` but it is possible to get `json` output as well.
 
-Assuming there is a running Virtual Machine export called `example-export` and the same namespace exists in the target cluster. The name of the kubeconfig of the target cluster is named `kubeconfig-target`, to clone the vm into the target cluster run the following commands:
+Assuming there is a running VirtualMachineExport called `example-export` and the same namespace exists in the target cluster. The name of the kubeconfig of the target cluster is named `kubeconfig-target`, to clone the vm into the target cluster run the following commands:
 
 ```bash
 $ virtctl vmexport download example-export --manifest --include-secret --output=import.yaml
 $ kubectl apply -f import.yaml --kubeconfig=kubeconfig-target
 ```
 
-The first command generates the yaml and writes it to `import.yaml`. The second command applies the yaml to the target cluster. It is possible to combine the two commands by not writing to a file, and reading from standard in in the second command. Use this option if the export token should not be written to a file anywhere. This will create the VM in the target cluster, and provides CDI in the target cluster with everything required to import the disk images into the target cluster.
+The first command generates the yaml and writes it to `import.yaml`. The second command applies the generated yaml to the target cluster. It is possible to combine the two commands writing to standard `out` with the first command, and piping it into the second command. Use this option if the export token should not be written to a file anywhere. This will create the VM in the target cluster, and provides CDI in the target cluster with everything required to import the disk images.
 
 After the import completes you should be able to start the VM in the target cluster.
 
