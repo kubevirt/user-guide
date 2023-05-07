@@ -49,9 +49,10 @@ metadata:
 spec:
   configuration:
     developerConfiguration:
-      nodeVerbosity:
-        "node01": 4
-        "otherNodeName": 6
+      logVerbosity
+        nodeVerbosity:
+          "node01": 4
+          "otherNodeName": 6
 ```
 
 `nodeVerbosity` is essentially a map from string to int when the key is the node name and the value is the verbosity
