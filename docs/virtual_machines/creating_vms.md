@@ -78,21 +78,19 @@ To pass cloud-init user data to virtctl it needs to be encoded into a base64
 string. Here is an example how to do it:
 
 ```shell
-# Put your cloud-init user data into a file
+# Put your cloud-init user data into a file.
+# This will add an authorized key to the default user.
+# To get the default username read the documentation for the cloud image
 $ cat cloud-init.txt
 #cloud-config
-users:
-  - name: admin
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    ssh_authorized_keys:
-      - ssh-rsa AAAA...
+ssh_authorized_keys:
+  - ssh-rsa AAAA...
 
 # Base64 encode the contents of the file without line wraps and store it in a variable
 $ CLOUD_INIT_USERDATA=$(base64 -w 0 cloud-init.txt)
 
 # Show the contents of the variable
-$ echo $CLOUD_INIT_USERDATA
-I2Nsb3VkLWNvbmZpZwp1c2VyczoKICAtIG5hbWU6IGFkbWluCiAgICBzdWRvOiBBTEw9KEFMTCkgTk9QQVNTV0Q6QUxMCiAgICBzc2hfYXV0aG9yaXplZF9rZXlzOgogICAgICAtIHNzaC1yc2EgQUFBQS4uLgo=
+$ echo $CLOUD_INIT_USERDATA I2Nsb3VkLWNvbmZpZwpzc2hfYXV0aG9yaXplZF9rZXlzOgogIC0gc3NoLXJzYSBBQUFBLi4uCg==
 ```
 
 You can now use this variable as an argument to the `--cloud-init-user-data`
