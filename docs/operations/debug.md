@@ -49,7 +49,7 @@ metadata:
 spec:
   configuration:
     developerConfiguration:
-      logVerbosity
+      logVerbosity:
         nodeVerbosity:
           "node01": 4
           "otherNodeName": 6
