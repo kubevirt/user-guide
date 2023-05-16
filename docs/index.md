@@ -7,6 +7,19 @@ hide:
 
 This page is provided as the entrypoint to the different topics of this user-guide.
 
+The KubeVirt User Guide is divided into the following sections:
+
+* Architecture: Technical and conceptual overview of KubeVirt components
+* Quickstarts: A list of resources to help you learn KubeVirt basics
+* Administration: Cluster-level administration concepts and tasks
+* Compute: Features and resource allocation for the virtualization layer
+* Monitoring: Monitoring KubeVirt resources
+* Network: Concepts and tasks for the networking and service layers 
+* Storage: Concepts and tasks for the storage layer, including importing and exporting.
+* User: Booting, using, and accessing virtual machines
+* Workloads: Different resource types for managing virtual workloads
+
+
 ## Try it out
 
 - Kubevirt on Killercoda: <https://killercoda.com/kubevirt>
