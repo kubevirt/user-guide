@@ -38,6 +38,25 @@ spec:
 
 This option is best for debugging specific components.
 
+#### libvirt virtqemud.conf set log_filters according to virt-launcher log Verbosity
+
+Verbosity level | log_filters in virtqemud.conf
+-- | --
+5 | log_filters="3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 3:qemu.qemu_monitor 3:qemu.qemu_monitor_json 3:conf.domain_addr 1:*" |
+6 | 3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 3:qemu.qemu_monitor 1:*
+7 | 3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 1:*
+8 and above | 3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 1:*
+
+User can set self-defined log-filters via the annotations tag `kubevirt.io/libvirt-log-filters` in VMI configuration. e.g.
+```yaml
+kind: VirtualMachineInstance
+metadata:
+  name: my-vmi
+  annotations:
+    kubevirt.io/libvirt-log-filters: "3:remote 4:event 1:*"
+
+```
+
 ### Setting verbosity per nodes
 Another way is to set verbosity level per node:
 ```yaml
