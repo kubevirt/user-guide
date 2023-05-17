@@ -56,6 +56,9 @@ development
 --admission-control='Initializers,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota'
 ```
 
+Note that the old --admission-control flag was deprecated in 1.10 and replaced with --enable-admission-plugins.
+**MutatingAdmissionWebhook** and **ValidatingAdmissionWebhook** are enabled by default.
+
 ### Enabling KubeVirt Admission Controller on OKD
 
 OKD also requires the admission control webhooks to be enabled at
