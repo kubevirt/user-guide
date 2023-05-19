@@ -520,7 +520,7 @@ More information about SLIRP mode can be found in [QEMU
 Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29).
 
 > **Note**: Since v1.1.0, Kubevirt delegates Slirp network configuration to
-> the [Slirp network binding plugin](net_binding_plugins/slirp.md#slirp-network-binding-plugin) by default.
+> the [Slirp network binding plugin](net_binding-slirp.md#slirp-network-binding-plugin) by default.
 > In case the binding plugin is not registered,
 > Kubevirt will use the following default image:
 > `quay.io/kubevirt/network-slirp-binding:20230830_638c60fc8`.
@@ -637,7 +637,8 @@ Tracking issue - https://github.com/kubevirt/kubevirt/issues/7184
 > **Warning**: The core binding is being deprecated and targeted for removal
 > in v1.3 .
 > As an alternative, the same functionality is introduced and available as a
-> [binding plugin](net_binding_plugins/passt.md).
+> [binding plugin](net_binding-passt.md).
+
 
 `passt` is a new approach for user-mode networking which can be used as a simple replacement for Slirp (which is practically dead).
 
@@ -914,7 +915,7 @@ spec:
 
 > **Note**: The core binding will be deprecated soon.
 > As an alternative, the same functionality is introduced and available as a
-> [binding plugin](net_binding_plugins/macvtap.md).
+> [binding plugin](net_binding-macvtap.md).
 
 In `macvtap` mode, virtual machines are directly exposed to the Kubernetes
 nodes L2 network. This is achieved by 'extending' an existing network interface
