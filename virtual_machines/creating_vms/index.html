@@ -19,7 +19,7 @@
         <link rel="next" href="../lifecycle/">
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.13">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
     
     
       
@@ -1493,21 +1493,19 @@ determined by the order in which their flags were specified.</p>
 <h2 id="specifying-cloud-init-user-data">Specifying cloud-init user data<a class="headerlink" href="#specifying-cloud-init-user-data" title="Permanent link">&para;</a></h2>
 <p>To pass cloud-init user data to virtctl it needs to be encoded into a base64
 string. Here is an example how to do it:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Put your cloud-init user data into a file</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>$<span class="w"> </span>cat<span class="w"> </span>cloud-init.txt
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1">#cloud-config</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>users:
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span>-<span class="w"> </span>name:<span class="w"> </span>admin
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span>sudo:<span class="w"> </span><span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span><span class="w"> </span>NOPASSWD:ALL
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span>ssh_authorized_keys:
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span>-<span class="w"> </span>ssh-rsa<span class="w"> </span>AAAA...
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1"># Base64 encode the contents of the file without line wraps and store it in a variable</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>$<span class="w"> </span><span class="nv">CLOUD_INIT_USERDATA</span><span class="o">=</span><span class="k">$(</span>base64<span class="w"> </span>-w<span class="w"> </span><span class="m">0</span><span class="w"> </span>cloud-init.txt<span class="k">)</span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="c1"># Show the contents of the variable</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$CLOUD_INIT_USERDATA</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="nv">I2Nsb3VkLWNvbmZpZwp1c2VyczoKICAtIG5hbWU6IGFkbWluCiAgICBzdWRvOiBBTEw9KEFMTCkgTk9QQVNTV0Q6QUxMCiAgICBzc2hfYXV0aG9yaXplZF9rZXlzOgogICAgICAtIHNzaC1yc2EgQUFBQS4uLgo</span><span class="o">=</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Put your cloud-init user data into a file.</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># This will add an authorized key to the default user.</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># To get the default username read the documentation for the cloud image</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>$<span class="w"> </span>cat<span class="w"> </span>cloud-init.txt
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1">#cloud-config</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>ssh_authorized_keys:
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span>-<span class="w"> </span>ssh-rsa<span class="w"> </span>AAAA...
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Base64 encode the contents of the file without line wraps and store it in a variable</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>$<span class="w"> </span><span class="nv">CLOUD_INIT_USERDATA</span><span class="o">=</span><span class="k">$(</span>base64<span class="w"> </span>-w<span class="w"> </span><span class="m">0</span><span class="w"> </span>cloud-init.txt<span class="k">)</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="c1"># Show the contents of the variable</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$CLOUD_INIT_USERDATA</span><span class="w"> </span><span class="nv">I2Nsb3VkLWNvbmZpZwpzc2hfYXV0aG9yaXplZF9rZXlzOgogIC0gc3NoLXJzYSBBQUFBLi4uCg</span><span class="o">==</span>
 </code></pre></div>
 <p>You can now use this variable as an argument to the <code>--cloud-init-user-data</code>
 flag:</p>
