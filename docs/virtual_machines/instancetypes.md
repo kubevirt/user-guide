@@ -459,11 +459,8 @@ spec:
       - cloudInitNoCloud:
           userData: |-
             #cloud-config
-            users:
-              - name: admin
-                sudo: ALL=(ALL) NOPASSWD:ALL
-                ssh_authorized_keys:
-                  - ssh-rsa AAAA...
+            ssh_authorized_keys:
+              - ssh-rsa AAAA...
         name: cloudinit
 EOF
 ```
