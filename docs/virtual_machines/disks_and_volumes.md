@@ -1,4 +1,4 @@
-# Disks and Volumes
+# Filesystems, Disks and Volumes
 
 Making persistent storage in the cluster (**volumes**) accessible to VMs consists of three parts. First, volumes are specified in `spec.volumes`. Second, disks are added to the VM by specifying them in `spec.domain.devices.disks`. Finally, a reference to the specified volume is added to the disk specification by name.
 
@@ -15,6 +15,8 @@ A disk can be made accessible via four different types:
 -   [**disk**](#disk)
 
 -   [**cdrom**](#cdrom)
+
+-   [**fileystems**](#filesystems)
 
 All possible configuration options are available in the [Disk API
 Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_disk).
@@ -148,6 +150,70 @@ as a `cdrom` device to the VM:
         - name: mypvcdisk
           persistentVolumeClaim:
             claimName: mypvc
+
+### filesystems
+A `filesystem` device will expose the volume as a filesystem to the VM.
+`filesystems` rely on `virtiofs` to make visible external filesystems to `KubeVirt` VMs. 
+Further information about `virtiofs` can be found at the [Official Virtiofs Site](https://virtio-fs.gitlab.io/).
+
+Compared with `disk`, `filesystems` allow changes in the source to be dynamically reflected in the volumes inside the VM.
+For instance, if a given `configMap` is shared with `filesystems` any change made on it will be reflected in the
+VMs.
+However, it is important to note that `filesystems` **do not allow live migration**.
+
+Additionally, `filesystem` devices must be mounted inside the VM.
+This can be done through [cloudInitNoCloud](#cloudinitnocloud) or manually connecting to the VM shell and targeting the same
+command.
+The main challenge is to understand how the device tag used to identify the new filesystem and mount it with the 
+`mount -t virtiofs [device tag] [path]` command.
+For that purpose, the tag is assigned to the filesystem in the VM spec `spec.domain.devices.filesystems.name`.
+For instance, if in a given VM spec is `spec.domain.devices.filesystems.name: foo`, the required command inside the VM
+to mount the filesystem in the `/tmp/foo` path will be `mount -t virtiofs foo /tmp/foo`:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-filesystems
+spec:
+  domain:
+    devices:
+      filesystems:
+        - name: foo
+          virtiofs: {}
+      disks:
+        - name: containerdisk
+          disk:
+            bus: virtio
+        - name: cloudinitdisk
+          disk:
+            bus: virtio
+    volumes:
+      - containerDisk:
+          image: quay.io/containerdisks/fedora:latest
+        name: containerdisk 
+      - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              chpasswd:
+                expire: false
+              password: fedora
+              user: fedora
+              bootcmd:
+                - "sudo mkdir /tmp/foo"
+                - "sudo mount -t virtiofs foo /tmp/foo"
+      - persistentVolumeClaim:
+          clainName: mypvc
+        name: foo
+```
+> **Note:** As stated, `filesystems` rely on `virtiofs`. Moreover, `virtiofs` requires kernel linux support to work in 
+> the VM.
+> To check if the linux image of the VM has the required support, you can address the following command: `modprobe virtiofs`.
+> If the command output is `modprobe: FATAL: Module virtiofs not found`, **the linux image of the VM does not support virtiofs**.
+> Also, you can check if the kernel version is up to 5.4 in any linux distribution or up to 4.18 in centos/rhel. 
+> To check this, you can target the following command: `uname -r`.
+
+Refer to section [Sharing Directories with VMs](#sharing-directories-with-vms) for usage examples of `filesystems`.
 
 ## Volumes
 
@@ -672,12 +738,19 @@ to a VM.
     status: {}
 
 ### configMap
-
 A `configMap` is a reference to a
 [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
-in Kubernetes. An extra `iso` disk will be allocated which has to be
+in Kubernetes. 
+A `configMap` can be presented to the VM as disks or as a filesystem. Each method is described in the following
+sections and both have some advantages and disadvantages, e.g. `disk` does not support dynamic change propagation and
+`filesystem` does not support live migration.
+Therefore, depending on the use-case, one or the other may be more suitable.
+ 
+
+#### As a disk
+By using disk, an extra `iso` disk will be allocated which has to be
 mounted on a VM. To mount the `configMap` users can use `cloudInit` and
-the disks serial number. The `name` needs to be set for a reference to
+the disk's serial number. The `name` needs to be set for a reference to
 the created kubernetes `ConfigMap`.
 
 > **Note:** Currently, ConfigMap update is not propagate into the VMI. If
@@ -692,56 +765,118 @@ the created kubernetes `ConfigMap`.
 Example: Attach the `configMap` to a VM and use `cloudInit` to mount the
 `iso` disk:
 
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        special: vmi-fedora
-      name: vmi-fedora
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-          - disk: {}
-            name: app-config-disk
-            # set serial
-            serial: CVLY623300HK240D
-        machine:
-          type: ""
-        resources:
-          requests:
-            memory: 1024M
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: containerdisk
-        containerDisk:
-          image: kubevirt/fedora-cloud-container-disk-demo:latest
-      - cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
-            bootcmd:
-              # mount the ConfigMap
-              - "mkdir /mnt/app-config"
-              - "mount /dev/$(lsblk --nodeps -no name,serial | grep CVLY623300HK240D | cut -f1 -d' ') /mnt/app-config"
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
         name: cloudinitdisk
-      - configMap:
-          name: app-config
+      - disk:
         name: app-config-disk
-    status: {}
+        # set serial
+        serial: CVLY623300HK240D
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          # mount the ConfigMap
+          - "sudo mkdir /mnt/app-config"
+          - "sudo mount /dev/$(lsblk --nodeps -no name,serial | grep CVLY623300HK240D | cut -f1 -d' ') /mnt/app-config"
+    name: cloudinitdisk
+  - configMap:
+      name: app-config
+    name: app-config-disk
+status: {}
+```
+
+#### As a filesystem
+
+By using filesystem, `configMaps` are shared through `virtiofs`. In contrast with using disk for sharing `configMaps`,
+`filesystem` allows you to dynamically propagate changes on `configMaps` to VMIs (i.e. the VM does not need to be rebooted).
+
+> **Note:** Currently, VMIs can not be live migrated since `virtiofs` does not support live migration.
+ 
+To share a given `configMap`, the following VM definition could be used:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      filesystems:
+        - name: config-fs
+          virtiofs: {}
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: quay.io/containerdisks/fedora:latest
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        chpasswd:
+          expire: false
+        password: fedora
+        user: fedora
+        bootcmd:
+          # mount the ConfigMap
+          - "sudo mkdir /mnt/app-config"
+          - "sudo mount -t virtiofs config-fs /mnt/app-config"
+    name: cloudinitdisk      
+  - configMap:
+      name: app-config
+    name: config-fs
+```
 
 ### secret
 
 A `secret` is a reference to a
 [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) in
-Kubernetes. An extra `iso` disk will be allocated which has to be
+Kubernetes.
+A `secret` can be presented to the VM as disks or as a filesystem. Each method is described in the following
+sections and both have some advantages and disadvantages, e.g. `disk` does not support dynamic change propagation and
+`filesystem` does not support live migration.
+Therefore, depending on the use-case, one or the other may be more suitable.
+
+#### As a disk
+By using disk, an extra `iso` disk will be allocated which has to be
 mounted on a VM. To mount the `secret` users can use `cloudInit` and the
 disks serial number. The `secretName` needs to be set for a reference to
 the created kubernetes `Secret`.
@@ -758,91 +893,208 @@ the created kubernetes `Secret`.
 Example: Attach the `secret` to a VM and use `cloudInit` to mount the
 `iso` disk:
 
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        special: vmi-fedora
-      name: vmi-fedora
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-          - disk: {}
-            name: app-secret-disk
-            # set serial
-            serial: D23YZ9W6WA5DJ487
-        machine:
-          type: ""
-        resources:
-          requests:
-            memory: 1024M
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: containerdisk
-        containerDisk:
-          image: kubevirt/fedora-cloud-container-disk-demo:latest
-      - cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
-            bootcmd:
-              # mount the Secret
-              - "mkdir /mnt/app-secret"
-              - "mount /dev/$(lsblk --nodeps -no name,serial | grep D23YZ9W6WA5DJ487 | cut -f1 -d' ') /mnt/app-secret"
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
         name: cloudinitdisk
-      - secret:
-          secretName: app-secret
+      - disk:
         name: app-secret-disk
-    status: {}
+        # set serial
+        serial: D23YZ9W6WA5DJ487
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+        bootcmd:
+          # mount the Secret
+          - "sudo mkdir /mnt/app-secret"
+          - "sudo mount /dev/$(lsblk --nodeps -no name,serial | grep D23YZ9W6WA5DJ487 | cut -f1 -d' ') /mnt/app-secret"
+    name: cloudinitdisk
+  - secret:
+      secretName: app-secret
+    name: app-secret-disk
+status: {}
+```
+
+#### As a filesystem
+
+By using filesystem, `secrets` are shared through `virtiofs`. In contrast with using disk for sharing `secrets`,
+`filesystem` allows you to dynamically propagate changes on `secrets` to VMIs (i.e. the VM does not need to be rebooted).
+
+> **Note:** Currently, VMIs can not be live migrated since `virtiofs` does not support live migration.
+ 
+To share a given `secret`, the following VM definition could be used:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      filesystems:
+        - name: app-secret-fs
+          virtiofs: {}
+      disks:
+        - disk:
+            bus: virtio
+          name: containerdisk
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: quay.io/containerdisks/fedora:latest
+    - cloudInitNoCloud:
+        userData: |-
+          #cloud-config
+          chpasswd:
+            expire: false
+          password: fedora
+          user: fedora
+          bootcmd:
+            # mount the Secret
+            - "sudo mkdir /mnt/app-secret"
+            - "sudo mount -t virtiofs app-secret-fs /mnt/app-secret"
+      name: cloudinitdisk
+    - secret:
+        secretName: app-secret
+      name: app-secret-fs
+```
 
 ### serviceAccount
 
 A `serviceAccount` volume references a Kubernetes
 [`ServiceAccount`](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/).
-A new `iso` disk will be allocated with the content of the service
+A `serviceAccount` can be presented to the VM as disks or as a filesystem. Each method is described in the following
+sections and both have some advantages and disadvantages, e.g. `disk` does not support dynamic change propagation and
+`filesystem` does not support live migration.
+Therefore, depending on the use-case, one or the other may be more suitable.
+
+#### As a disk
+By using disk, a new `iso` disk will be allocated with the content of the service
 account (`namespace`, `token` and `ca.crt`), which needs to be mounted
 in the VM. For automatic mounting, see the `configMap` and `secret`
 examples above.
 
-Example:
+> **Note:** Currently, ServiceAccount update propagation is not supported. If a
+> ServiceAccount is updated, only a pod will be aware of changes, not running
+> VMIs.
 
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        special: vmi-fedora
-      name: vmi-fedora
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: serviceaccountdisk
-        machine:
-          type: ""
-        resources:
-          requests:
-            memory: 1024M
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: containerdisk
-        containerDisk:
-          image: kubevirt/fedora-cloud-container-disk-demo:latest
-      - name: serviceaccountdisk
-        serviceAccount:
-          serviceAccountName: default
+Example:
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+        name: containerdisk
+      - disk:
+        name: serviceaccountdisk
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - name: serviceaccountdisk
+    serviceAccount:
+      serviceAccountName: default
+```
+
+#### As a filesystem
+
+By using filesystem, `serviceAccounts` are shared through `virtiofs`. In contrast with using disk for sharing `serviceAccounts`,
+`filesystem` allows you to dynamically propagate changes on `serviceAccounts` to VMIs (i.e. the VM does not need to be rebooted).
+
+> **Note:** Currently, VMIs can not be live migrated since `virtiofs` does not support live migration.
+ 
+To share a given `serviceAccount`, the following VM definition could be used:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      filesystems:
+        - name: serviceaccount-fs
+          virtiofs: {}
+      disks:
+        - disk:
+            bus: virtio
+          name: containerdisk
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: quay.io/containerdisks/fedora:latest
+    - cloudInitNoCloud:
+        userData: |-
+          #cloud-config
+          chpasswd:
+            expire: false
+          password: fedora
+          user: fedora
+          bootcmd:
+            # mount the ConfigMap
+            - "sudo mkdir /mnt/serviceaccount"
+            - "sudo mount -t virtiofs serviceaccount-fs /mnt/serviceaccount"
+      name: cloudinitdisk
+    - name: serviceaccount-fs
+      serviceAccount:
+        serviceAccountName: default
+```
 
 ### downwardMetrics
 
