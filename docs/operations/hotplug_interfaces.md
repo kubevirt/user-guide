@@ -1,6 +1,6 @@
 # Hotplug Network Interfaces
 KubeVirt now supports hotplugging network interfaces into a running Virtual
-Machine Instance (VMI). Hotplug is only supported for interfaces using the
+Machine (VM). Hotplug is only supported for interfaces using the
 `virtio` model connected through
 [bridge binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge).
 
@@ -20,49 +20,39 @@ Network interface hotplug support must be enabled via a
 [feature gate](https://kubevirt.io/user-guide/operations/activating_feature_gates/#how-to-activate-a-feature-gate).
 The feature gates array in the KubeVirt CR must feature `HotplugNICs`.
 
-## Adding an interface to a running VMI
-First start a VMI. You can refer to the following example:
+## Adding an interface to a running VM
+First start a VM. You can refer to the following example:
 ```yaml
 ---
 apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
+kind: VirtualMachine
 metadata:
-  name: vmi-fedora
+  name: vm-fedora
 spec:
-  domain:
-    devices:
-      disks:
-      - disk:
-          bus: virtio
+  running: true
+  template:
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          interfaces:
+          - masquerade: {}
+            name: defaultnetwork
+          rng: {}
+        resources:
+          requests:
+            memory: 1024M
+      networks:
+      - name: defaultnetwork
+        pod: {}
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - containerDisk:
+          image: quay.io/kubevirt/fedora-with-test-tooling-container-disk:devel
         name: containerdisk
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-      interfaces:
-      - masquerade: {}
-        name: defaultnetwork
-      rng: {}
-    resources:
-      requests:
-        memory: 1024M
-  networks:
-  - name: defaultnetwork
-    pod: {}
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - containerDisk:
-      image: quay.io/kubevirt/fedora-with-test-tooling-container-disk:devel
-    name: containerdisk
-  - cloudInitNoCloud:
-      networkData: |
-        version: 2
-        ethernets:
-          eth0:
-            dhcp4: true
-      userData: |-
-        #!/bin/bash
-        echo "fedora" |passwd fedora --stdin
-    name: cloudinitdisk
 ```
 
 You should configure a network attachment definition - where the pod interface
@@ -89,7 +79,7 @@ Once the virtual machine is running, and the attachment configuration
 provisioned, the user can request the interface hotplug operation. Please refer
 to the following snippet:
 ```bash
-virtctl addinterface vmi-fedora --network-attachment-definition-name new-fancy-net --name dyniface1
+virtctl addinterface vm-fedora --network-attachment-definition-name new-fancy-net --name dyniface1
 ```
 
 **NOTE**: You can use the `--help` parameter for more information on each
@@ -97,7 +87,7 @@ parameter.
 
 You can now check the VMI status for the presence of this new interface:
 ```bash
-kubectl get vmi vmi-fedora -ojsonpath="{ @.status.interfaces }"
+kubectl get vmi vm-fedora -ojsonpath="{ @.status.interfaces }"
 ```
 
 ## Migration based hotplug
@@ -107,7 +97,7 @@ The actual attachment won't take place immediately, and the new interface will b
 
 ### Add new interface
 ```bash
-virtctl addinterface vmi-fedora --network-attachment-definition-name new-fancy-net --name dyniface1
+virtctl addinterface vm-fedora --network-attachment-definition-name new-fancy-net --name dyniface1
 ```
 At this point the new interface is added to the spec but will not be attached to the running VM. 
 
@@ -147,7 +137,7 @@ To achieve this use case, users should invoke `addinterface` with the
 also mutate the VM spec template:
 
 ```bash
-virtctl addinterface vmi-fedora --network-attachment-definition-name new-fancy-net --name dyniface1 --persist
+virtctl addinterface vm-fedora --network-attachment-definition-name new-fancy-net --name dyniface1 --persist
 ```
 
 Thus, upon a VM restart, the new interface will be made available in the VMI;
