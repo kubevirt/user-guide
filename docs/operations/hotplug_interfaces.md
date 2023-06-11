@@ -122,10 +122,11 @@ limitations: each interface will consume a PCI slot in the VM, and there are a
 total maximum of 32. Furthermore, other devices will also use these PCI slots
 (e.g. disks, guest-agent, etc).
 
-For the `q35` machine type, the issue is even worse: the users will be able to
-hotplug a **single** network interface into the guest. You can find more
-information in the
-[libvirt documentation](https://libvirt.org/pci-hotplug.html#q35-machine-type).
+Kubevirt reserves resources for 4 interface to allow later hotplug operations.
+The actual maximum amount of available resources depends on the machine
+type (e.g. q35 adds another PCI slot).
+For more information on maximum limits, see
+[libvirt documentation](https://libvirt.org/pci-hotplug.html).
 
 ## Persisting Hotplugged Interfaces
 Users may want an hotplugged interface to become part of the standard networks /
@@ -141,7 +142,7 @@ virtctl addinterface vm-fedora --network-attachment-definition-name new-fancy-ne
 ```
 
 Thus, upon a VM restart, the new interface will be made available in the VMI;
-this mitigates the single hotplug interface per `q35` machine type limitation.
+this mitigates the maximum hotplug interfaces (per machine type) limitation.
 
 **NOTE**: the user can execute this command against a stopped VM - i.e. a VM
 without an associated VMI. When this happens, KubeVirt mutates the VM spec
