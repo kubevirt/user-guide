@@ -1609,10 +1609,11 @@ See the <a href="../live_migration/">Live Migration</a> docs for more details.</
 limitations: each interface will consume a PCI slot in the VM, and there are a
 total maximum of 32. Furthermore, other devices will also use these PCI slots
 (e.g. disks, guest-agent, etc).</p>
-<p>For the <code>q35</code> machine type, the issue is even worse: the users will be able to
-hotplug a <strong>single</strong> network interface into the guest. You can find more
-information in the
-<a href="https://libvirt.org/pci-hotplug.html#q35-machine-type">libvirt documentation</a>.</p>
+<p>Kubevirt reserves resources for 4 interface to allow later hotplug operations.
+The actual maximum amount of available resources depends on the machine
+type (e.g. q35 adds another PCI slot).
+For more information on maximum limits, see
+<a href="https://libvirt.org/pci-hotplug.html">libvirt documentation</a>.</p>
 <h2 id="persisting-hotplugged-interfaces">Persisting Hotplugged Interfaces<a class="headerlink" href="#persisting-hotplugged-interfaces" title="Permanent link">&para;</a></h2>
 <p>Users may want an hotplugged interface to become part of the standard networks /
 interfaces after a restart. This use case requires users to template the
@@ -1623,7 +1624,7 @@ also mutate the VM spec template:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>virtctl<span class="w"> </span>addinterface<span class="w"> </span>vm-fedora<span class="w"> </span>--network-attachment-definition-name<span class="w"> </span>new-fancy-net<span class="w"> </span>--name<span class="w"> </span>dyniface1<span class="w"> </span>--persist
 </code></pre></div>
 <p>Thus, upon a VM restart, the new interface will be made available in the VMI;
-this mitigates the single hotplug interface per <code>q35</code> machine type limitation.</p>
+this mitigates the maximum hotplug interfaces (per machine type) limitation.</p>
 <p><strong>NOTE</strong>: the user can execute this command against a stopped VM - i.e. a VM
 without an associated VMI. When this happens, KubeVirt mutates the VM spec
 template on behalf of the user.</p>
