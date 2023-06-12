@@ -2,8 +2,9 @@
 
 **FEATURE STATE:** 
 
-* `v1alpha1` (Experimental) as of the [`v0.56.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.56.0) release
-* `v1alpha2` (Experimental) as of the [`v0.58.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.58.0) release
+* `instancetype.kubevirt.io/v1alpha1` (Experimental) as of the [`v0.56.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.56.0) KubeVirt release
+* `instancetype.kubevirt.io/v1alpha2` (Experimental) as of the [`v0.58.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.58.0) KubeVirt release
+* `instancetype.kubevirt.io/v1beta1` as of the [`v1.0.0`](https://github.com/kubevirt/kubevirt/releases/tag/v1.0.0) KubeVirt release
 
 See the [Version History](#version-history) section for more details.
 
@@ -17,7 +18,7 @@ Instance types and preferences provide a way to define a set of resource, perfor
 
 ```yaml
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha2
+apiVersion: instancetype.kubevirt.io/v1beta1
 kind: VirtualMachineInstancetype
 metadata:
   name: example-instancetype
@@ -28,10 +29,10 @@ spec:
     guest: 128Mi
 ```
 
-KubeVirt provides two Instancetype based [`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/), a cluster wide [`VirtualMachineClusterInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineclusterinstancetype) and a namespaced [`VirtualMachineInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype). These `CRDs` encapsulate the following resource related characteristics of a `VirtualMachine` through a shared [`VirtualMachineInstancetypeSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetypespec):
+KubeVirt provides two Instancetype based [`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/), a cluster wide [`VirtualMachineClusterInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineclusterinstancetype) and a namespaced [`VirtualMachineInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineinstancetype). These `CRDs` encapsulate the following resource related characteristics of a `VirtualMachine` through a shared [`VirtualMachineInstancetypeSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineinstancetypespec):
 
-* [`CPU`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_cpuinstancetype) : Required number of vCPUs presented to the guest
-* [`Memory`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_memoryinstancetype) : Required amount of memory presented to the guest
+* [`CPU`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_cpuinstancetype) : Required number of vCPUs presented to the guest
+* [`Memory`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_memoryinstancetype) : Required amount of memory presented to the guest
 * [`GPUs`](https://kubevirt.io/api-reference/main/definitions.html#_v1_gpu) : Optional list of vGPUs to passthrough
 * [`HostDevices`](https://kubevirt.io/api-reference/main/definitions.html#_v1_hostdevice) : Optional list of `HostDevices` to passthrough
 * `IOThreadsPolicy` : Optional `IOThreadsPolicy` to be used
@@ -43,7 +44,7 @@ Anything provided within an instance type cannot be overridden within the `Virtu
 
 ```yaml
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha2
+apiVersion: instancetype.kubevirt.io/v1beta1
 kind: VirtualMachinePreference
 metadata:
   name: example-preference
@@ -53,16 +54,16 @@ spec:
     preferredInterfaceModel: virtio
 ```
 
-KubeVirt also provides two further preference based `CRDs`, again a cluster wide [`VirtualMachineClusterPreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineclusterpreference) and namespaced [`VirtualMachinePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference). These `CRDs`encapsulate the preferred value of any remaining attributes of a `VirtualMachine` required to run a given workload, again this is through a shared [`VirtualMachinePreferenceSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreferencespec).
+KubeVirt also provides two further preference based `CRDs`, again a cluster wide [`VirtualMachineClusterPreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineclusterpreference) and namespaced [`VirtualMachinePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachinepreference). These `CRDs`encapsulate the preferred value of any remaining attributes of a `VirtualMachine` required to run a given workload, again this is through a shared [`VirtualMachinePreferenceSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachinepreferencespec).
 
 Unlike instance types, preferences only represent the preferred values and as such, they can be overridden by values in the `VirtualMachine` provided by the user.
 
-In the example shown below, a user has provided a `VirtualMachine` with a disk bus already defined within a [`DiskTarget`](https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget) *and* has also selected a set of preferences with [`DevicePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_devicepreferences) and `preferredDiskBus` , so the user's original choice within the `VirtualMachine` and `DiskTarget` are used:
+In the example shown below, a user has provided a `VirtualMachine` with a disk bus already defined within a [`DiskTarget`](https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget) *and* has also selected a set of preferences with [`DevicePreference`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_devicepreferences) and `preferredDiskBus` , so the user's original choice within the `VirtualMachine` and `DiskTarget` are used:
 
 ```yaml
 $ kubectl apply -f - << EOF
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha2
+apiVersion: instancetype.kubevirt.io/v1beta1
 kind: VirtualMachinePreference
 metadata:
   name: example-preference-disk-virtio
@@ -193,7 +194,7 @@ $ kubectl get controllerrevision/vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf
 {
   "apiVersion": "apps/v1",
   "data": {
-    "apiVersion": "instancetype.kubevirt.io/v1alpha2",
+    "apiVersion": "instancetype.kubevirt.io/v1beta1",
     "kind": "VirtualMachineInstancetype",
     "metadata": {
       "creationTimestamp": "2022-09-30T12:20:19Z",
@@ -399,7 +400,6 @@ Alternatively targets for each of the available custom resource types are availa
 ```yaml
 $ kubectl kustomize https://github.com/kubevirt/common-instancetypes.git/VirtualMachineClusterInstancetypes | kubectl apply -f -
 ```
-
 ## Examples
 
 Various examples are available within the [`kubevirt`](https://github.com/kubevirt/kubevirt) repo under [`/examples`](https://github.com/kubevirt/kubevirt/tree/main/examples). The following uses an example `VirtualMachine` provided by the [`containerdisk/fedora` repo](https://quay.io/repository/containerdisks/fedora) and replaces much of the `DomainSpec` with the equivalent instance type and preferences:
@@ -407,7 +407,7 @@ Various examples are available within the [`kubevirt`](https://github.com/kubevi
 ```yaml
 $ kubectl apply -f - << EOF
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha2
+apiVersion: instancetype.kubevirt.io/v1beta1
 kind: VirtualMachineInstancetype
 metadata:
   name: cmedium
@@ -417,7 +417,7 @@ spec:
   memory:
     guest: 1Gi
 ---
-apiVersion: instancetype.kubevirt.io/v1alpha2
+apiVersion: instancetype.kubevirt.io/v1beta1
 kind: VirtualMachinePreference
 metadata:
   name: fedora
@@ -467,12 +467,27 @@ EOF
 
 ## Version History
 
-### `v1alpha1` (Experimental)
+### `instancetype.kubevirt.io/v1alpha1` (Experimental)
 
 * Initial development version.
 
-### `v1alpha2` (Experimental)
+### `instancetype.kubevirt.io/v1alpha2` (Experimental)
 
-* This version now captures complete `VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}` objects within the created `ControllerRevisions`
+* This version captured complete `VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}` objects within the created `ControllerRevisions`
 
-* This version is backwardly compatible with `v1alpha1`, no modifications are required to existing  `VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}` or `ControllerRevisions`.
+* This version is backwardly compatible with `instancetype.kubevirt.io/v1alpha1`.
+### `instancetype.kubevirt.io/v1beta1`
+
+* The following instance type attribute has been added:
+  * [`Spec.Memory.OvercommitPercent`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_memoryinstancetype)
+
+* The following preference attributes have been added:
+  * [`Spec.CPU.PreferredCPUFeatures`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_cpupreferences)
+  * [`Spec.Devices.PreferredInterfaceMasquerade`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_devicepreferences)
+  * [`Spec.PreferredSubdomain`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachinepreferencespec)
+  * [`Spec.PreferredTerminationGracePeriodSeconds`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachinepreferencespec)
+  * [`Spec.Requirements`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_preferencerequirements)
+
+* This version is backwardly compatible with `instancetype.kubevirt.io/v1alpha1` and `instancetype.kubevirt.io/v1alpha2` objects, no modifications are required to existing  `VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}` or `ControllerRevisions`.
+
+* As with the migration to [`kubevirt.io/v1`](https://github.com/kubevirt/kubevirt/blob/main/docs/updates.md#v100-migration-to-new-storage-versions) it is recommend previous users of `instancetype.kubevirt.io/v1alpha1` or `instancetype.kubevirt.io/v1alpha2` use [`kube-storage-version-migrator`](https://github.com/kubernetes-sigs/kube-storage-version-migrator) to upgrade any stored objects to `instancetype.kubevirt.io/v1beta1`.
