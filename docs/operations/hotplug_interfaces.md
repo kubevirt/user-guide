@@ -1,4 +1,7 @@
 # Hotplug Network Interfaces
+
+**Warning**: The feature is in alpha stage and its API may be changed in the future.
+
 KubeVirt now supports hotplugging network interfaces into a running Virtual
 Machine (VM). Hotplug is only supported for interfaces using the
 `virtio` model connected through
@@ -81,6 +84,7 @@ to the following snippet:
 ```bash
 virtctl addinterface vm-fedora --network-attachment-definition-name new-fancy-net --name dyniface1
 ```
+This will add the interface and network to the VM spec template and to the running VMI object.
 
 **NOTE**: You can use the `--help` parameter for more information on each
 parameter.
@@ -128,20 +132,7 @@ type (e.g. q35 adds another PCI slot).
 For more information on maximum limits, see
 [libvirt documentation](https://libvirt.org/pci-hotplug.html).
 
-## Persisting Hotplugged Interfaces
-Users may want an hotplugged interface to become part of the standard networks /
-interfaces after a restart. This use case requires users to template the
-running VMI from a VM object.
-
-To achieve this use case, users should invoke `addinterface` with the
-`--persist` flag: this will add the interface to the running VMI object, and
-also mutate the VM spec template:
-
-```bash
-virtctl addinterface vm-fedora --network-attachment-definition-name new-fancy-net --name dyniface1 --persist
-```
-
-Thus, upon a VM restart, the new interface will be made available in the VMI;
+Yet, upon a VM restart, the hotplugged interface will become part of the standard networks;
 this mitigates the maximum hotplug interfaces (per machine type) limitation.
 
 **NOTE**: the user can execute this command against a stopped VM - i.e. a VM
