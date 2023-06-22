@@ -28,6 +28,14 @@ which involve injecting startup scripts into a VM instance through the
 use of an ephemeral disk. VMs with the cloud-init package installed will
 detect the ephemeral disk and execute custom userdata scripts at boot.
 
+## Ignition
+
+Ignition is an alternative to cloud-init which allows for configuring the
+VM disk on first boot. You can find the Ignition documentation [here](https://coreos.github.io/ignition/). 
+You can also find a comparison between cloud-init and Ignition [here](https://www.flatcar.org/docs/latest/provisioning/ignition/#ignition-vs-coreos-cloudinit).
+
+Ignition can be used with Kubevirt by using the `cloudInitConfigDrive` volume.
+
 ## Sysprep
 
 Sysprep is an automation tool for Windows that automates Windows
@@ -637,6 +645,116 @@ The metadata will be available in the guests config drive `openstack/latest/meta
     },
   ]
 }
+```
+
+## Ignition Examples
+
+Ignition data can be passed into a `cloudInitConfigDrive` source using 
+either clear text, a base64 string or a k8s Secret.
+
+Some examples of Ignition configurations can be found 
+[in the examples](https://coreos.github.io/ignition/examples/) 
+given by the Ignition documentation.
+
+### Ignition as clear text
+
+Here is a complete example of a Kubevirt VM using Ignition to add an ssh key to the 
+`coreos` user at first boot : 
+
+```yaml
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  name: ign-demo
+spec:
+  running: false
+  template:
+    metadata:
+      labels:
+        kubevirt.io/size: small
+        kubevirt.io/domain: ign-demo
+    spec:
+      domain:
+        devices:
+          disks:
+            - name: containerdisk
+              disk:
+                bus: virtio
+            - name: cloudinitdisk
+              disk:
+                bus: virtio
+          interfaces:
+            - name: default
+              masquerade: {}
+        resources:
+          requests:
+            memory: 2G
+      networks:
+        - name: default
+          pod: {}
+      volumes:
+        - name: containerdisk
+          containerDisk:
+            image: quay.io/containerdisks/rhcos:4.9
+        - name: cloudinitdisk
+          cloudInitConfigDrive:
+            userData: |
+              {
+                "ignition": {
+                  "config": {},
+                  "proxy": {},
+                  "security": {},
+                  "timeouts": {},
+                  "version": "3.2.0"
+                },
+                "passwd": {
+                  "users": [
+                    {
+                      "name": "coreos",
+                      "sshAuthorizedKeys": [
+                        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPL3axFGHI3db9iJWkPXVbYzD7OaWTtHuqmxLvj+DztB user@example"
+                      ]
+                    }
+                  ]
+                },
+                "storage": {},
+                "systemd": {}
+              }
+```
+
+See that the Ignition config is simply passed to the `userData` annotation of the 
+`cloudInitConfigDrive` volume.
+
+### Ignition as base64
+
+You can also pass the Ignition config as a base64 string by using the `userDatabase64`
+annotation : 
+
+```yaml
+...
+cloudInitConfigDrive:
+  userDataBase64: eyJpZ25pdGlvbiI6eyJjb25maWciOnt9LCJwcm94eSI6e30sInNlY3VyaXR5Ijp7fSwidGltZW91dHMiOnt9LCJ2ZXJzaW9uIjoiMy4yLjAifSwicGFzc3dkIjp7InVzZXJzIjpbeyJuYW1lIjoiY29yZW9zIiwic3NoQXV0aG9yaXplZEtleXMiOlsic3NoLWVkMjU1MTlBQUFBQzNOemFDMWxaREkxTlRFNUFBQUFJUEwzYXhGR0hJM2RiOWlKV2tQWFZiWXpEN09hV1R0SHVxbXhMdmorRHp0QiB1c2VyQGV4YW1wbGUiXX1dfSwic3RvcmFnZSI6e30sInN5c3RlbWQiOnt9fQ==
+```
+
+You can obtain the base64 string by doing `cat ignition.json | base64 -w0` in your terminal.
+
+### Ignition as k8s Secret
+
+If you do not want to store the Ignition config into the VM configuration, you can use a k8s Secret.
+
+First, create the secret with the ignition data in it :
+
+```bash
+kubectl create secret generic my-ign-secret --from-file=ignition=ignition.json
+```
+
+Then specify this secret into your VM configuration :
+
+```yaml
+...
+cloudInitConfigDrive:
+  secretRef:
+    name: my-ign-secret
 ```
 
 ## Sysprep Examples
