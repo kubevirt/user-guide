@@ -198,7 +198,7 @@ can utilize multithreading, and more. If there is no real reason to use another 
 definitely the strategy to go with.
 
 However, on some cases migrations might not converge easily, that is, by the time the chunk of source
-VM state would be received by the source VM, it would already be mutated by the source VM (which is
+VM state would be received by the target VM, it would already be mutated by the source VM (which is
 the VM the guest executes on). There are many reasons for migrations to fail converging, such as a
 high dirty-rate or low resources like network bandwidth and CPU. On such scenarios, see the following
 alternative strategies below.

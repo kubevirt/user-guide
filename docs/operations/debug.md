@@ -54,7 +54,7 @@ spec:
         "otherNodeName": 6
 ```
 
-`nodeVerbosity` is essentially a map from string to int when the key is the node name and the value is the verbosity
+`nodeVerbosity` is essentially a map from string to int where the key is the node name and the value is the verbosity
 level. The verbosity level would be defined for all the different components in that node (e.g. `virt-handler`,
 `virt-launcher`, etc).
 
