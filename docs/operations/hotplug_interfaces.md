@@ -94,6 +94,13 @@ You can now check the VMI status for the presence of this new interface:
 kubectl get vmi vm-fedora -ojsonpath="{ @.status.interfaces }"
 ```
 
+## Removing an interface to a running VM
+Following the example above, the user can request an interface unplug operation. Please refer to the following snippet:
+```bash
+virtctl removeinterface vm-fedora --name dyniface1
+```
+The subject interface state will be set as absent in the VM spec template and the running VMI object.  
+
 ## Migration based hotplug
 In case your cluster doesn't run Multus as [thick plugin](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md) and [Multus Dynamic Networks controller](https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller), it's possible to hotplug an interface by migrating the VM.
 
@@ -119,6 +126,27 @@ EOF
 See the [Live Migration](./live_migration.md) docs for more details.
 
 Once the migration is completed the VM will have the new interface attached.
+
+### Remove interface
+```bash
+virtctl removeinterface vm-fedora --name dyniface1
+```
+At this point the new interface should be detached from the guest but exist in the pod.
+
+### Migrate the VM
+```bash
+cat <<EOF kubectl apply -f -
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstanceMigration
+metadata:
+  name: migration-job
+spec:
+  vmiName: vmi-fedora
+EOF
+```
+See the [Live Migration](./live_migration.md) docs for more details.
+
+Once the VM is migrated, the interface will not exist in the migration target pod.
 
 ### Virtio Limitations
 The hotplugged interfaces have `model: virtio`. This imposes several
