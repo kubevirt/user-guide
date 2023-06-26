@@ -203,7 +203,7 @@ spec:
                 - "sudo mkdir /tmp/foo"
                 - "sudo mount -t virtiofs foo /tmp/foo"
       - persistentVolumeClaim:
-          clainName: mypvc
+          claimName: mypvc
         name: foo
 ```
 > **Note:** As stated, `filesystems` rely on `virtiofs`. Moreover, `virtiofs` requires kernel linux support to work in 
