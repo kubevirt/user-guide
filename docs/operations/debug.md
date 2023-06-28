@@ -38,6 +38,25 @@ spec:
 
 This option is best for debugging specific components.
 
+#### libvirt virtqemud.conf set log_filters according to virt-launcher log Verbosity
+
+Verbosity level | log_filters in virtqemud.conf
+-- | --
+5 | log_filters="3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 3:qemu.qemu_monitor 3:qemu.qemu_monitor_json 3:conf.domain_addr 1:*" |
+6 | 3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 3:qemu.qemu_monitor 1:*
+7 | 3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 1:*
+8 and above | 3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 1:*
+
+User can set self-defined log-filters via the annotations tag `kubevirt.io/libvirt-log-filters` in VMI configuration. e.g.
+```yaml
+kind: VirtualMachineInstance
+metadata:
+  name: my-vmi
+  annotations:
+    kubevirt.io/libvirt-log-filters: "3:remote 4:event 1:*"
+
+```
+
 ### Setting verbosity per nodes
 Another way is to set verbosity level per node:
 ```yaml
@@ -92,3 +111,111 @@ $> kubectl logs -n <KubeVirt Install Namespace> virt-handler-2m86x | head -n8
 
 Obviously, for both examples above, `<KubeVirt Install Namespace>` needs to be replaced with the actual namespace
 KubeVirt is installed in.
+
+
+## KubeVirt PProf Profiler
+Using the `cluster-profiler` client tool, a developer can get the PProf profiling data for every component in the Kubevirt Control plane. Here is a user guide:
+
+### Compile `cluster-profiler`
+Build from source code
+```
+$ git clone https://github.com/kubevirt/kubevirt.git
+$ cd kubevirt/tools/cluster-profiler
+$ go build
+```
+
+### Enable the feature gate
+Add `ClusterProfiler` in KubeVirt config
+```
+$ cat << END > enable-feature-gate.yaml
+
+---
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - ClusterProfiler
+END
+
+$ kubectl apply -f enable-feature-gate.yaml
+```
+
+### Do the profiling
+Start CPU profiling
+```
+$ cluster-profiler --cmd start
+
+2023/05/17 09:31:09 SUCCESS: started cpu profiling KubeVirt control plane
+```
+Stop CPU profiling
+```
+$ cluster-profiler --cmd stop
+
+2023/05/17 09:31:14 SUCCESS: stopped cpu profiling KubeVirt control plane
+```
+Dump the pprof result
+```
+$ cluster-profiler --cmd dump
+
+2023/05/17 09:31:18 Moving already existing "cluster-profiler-results" => "cluster-profiler-results-old-67fq"
+SUCCESS: Dumped PProf 6 results for KubeVirt control plane to [cluster-profiler-results]
+```
+The PProf result can be found in the folder `cluster-profiler-results`
+```
+$ tree cluster-profiler-results
+
+cluster-profiler-results
+├── virt-api-5f96f84dcb-lkpb7
+│   ├── allocs.pprof
+│   ├── block.pprof
+│   ├── cpu.pprof
+│   ├── goroutine.pprof
+│   ├── heap.pprof
+│   ├── mutex.pprof
+│   └── threadcreate.pprof
+├── virt-controller-5bbd9554d9-2f8j2
+│   ├── allocs.pprof
+│   ├── block.pprof
+│   ├── cpu.pprof
+│   ├── goroutine.pprof
+│   ├── heap.pprof
+│   ├── mutex.pprof
+│   └── threadcreate.pprof
+├── virt-controller-5bbd9554d9-qct2w
+│   ├── allocs.pprof
+│   ├── block.pprof
+│   ├── cpu.pprof
+│   ├── goroutine.pprof
+│   ├── heap.pprof
+│   ├── mutex.pprof
+│   └── threadcreate.pprof
+├── virt-handler-ccq6c
+│   ├── allocs.pprof
+│   ├── block.pprof
+│   ├── cpu.pprof
+│   ├── goroutine.pprof
+│   ├── heap.pprof
+│   ├── mutex.pprof
+│   └── threadcreate.pprof
+├── virt-operator-cdc677b7-pg9j2
+│   ├── allocs.pprof
+│   ├── block.pprof
+│   ├── cpu.pprof
+│   ├── goroutine.pprof
+│   ├── heap.pprof
+│   ├── mutex.pprof
+│   └── threadcreate.pprof
+└── virt-operator-cdc677b7-pjqdx
+    ├── allocs.pprof
+    ├── block.pprof
+    ├── cpu.pprof
+    ├── goroutine.pprof
+    ├── heap.pprof
+    ├── mutex.pprof
+    └── threadcreate.pprof
+```
