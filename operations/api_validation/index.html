@@ -890,6 +890,34 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations_on_Arm64/" class="md-nav__link">
+        Arm64 Operations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature_gate_status_on_Arm64/" class="md-nav__link">
+        Feature Gate Status on Arm64
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -1331,6 +1359,34 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/virtual_machines_on_Arm64/" class="md-nav__link">
+        Virtual Machines on Arm64
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/device_status_on_Arm64/" class="md-nav__link">
+        Device Status on Arm64
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -1507,6 +1563,8 @@ are present in the Apiserver's <strong>--admission-control</strong> cli argument
 development</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>--admission-control=&#39;Initializers,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota&#39;
 </code></pre></div>
+<p>Note that the old --admission-control flag was deprecated in 1.10 and replaced with --enable-admission-plugins.
+<strong>MutatingAdmissionWebhook</strong> and <strong>ValidatingAdmissionWebhook</strong> are enabled by default.</p>
 <h3 id="enabling-kubevirt-admission-controller-on-okd">Enabling KubeVirt Admission Controller on OKD<a class="headerlink" href="#enabling-kubevirt-admission-controller-on-okd" title="Permanent link">&para;</a></h3>
 <p>OKD also requires the admission control webhooks to be enabled at
 install time. The process is slightly different though. With OKD, we

@@ -10,20 +10,20 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/virtual_machine_instances/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/virtual_machines_on_Arm64/">
       
       
-        <link rel="prev" href="../../operations/feature_gate_status_on_Arm64/">
+        <link rel="prev" href="../vsock/">
       
       
-        <link rel="next" href="../creating_vms/">
+        <link rel="next" href="../device_status_on_Arm64/">
       
       <link rel="icon" href="../../assets/favicon32x32.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
     
     
       
-        <title>Virtual Machines Instances - KubeVirt user guide</title>
+        <title>Virtual Machines on Arm64 - KubeVirt user guide</title>
       
     
     
@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#virtual-machines-instances" class="md-skip">
+        <a href="#virtual-machines-on-arm64" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Virtual Machines Instances
+              Virtual Machines on Arm64
             
           </span>
         </div>
@@ -251,7 +251,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="./" class="md-tabs__link md-tabs__link--active">
+      <a href="../virtual_machine_instances/" class="md-tabs__link md-tabs__link--active">
         Virtual Machines
       </a>
     </li>
@@ -882,66 +882,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Virtual Machines Instances
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../virtual_machine_instances/" class="md-nav__link">
         Virtual Machines Instances
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#api-overview" class="md-nav__link">
-    API Overview
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#virtualmachineinstance-api" class="md-nav__link">
-    VirtualMachineInstance API
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#additional-information" class="md-nav__link">
-    Additional Information
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1343,11 +1288,175 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../virtual_machines_on_Arm64/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Virtual Machines on Arm64
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Virtual Machines on Arm64
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#virtual-hardware" class="md-nav__link">
+    Virtual hardware
+  </a>
+  
+    <nav class="md-nav" aria-label="Virtual hardware">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#machine-type" class="md-nav__link">
+    Machine Type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#biosuefi" class="md-nav__link">
+    BIOS/UEFI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu" class="md-nav__link">
+    CPU
+  </a>
+  
+    <nav class="md-nav" aria-label="CPU">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#node-labeller" class="md-nav__link">
+    Node-labeller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model" class="md-nav__link">
+    Model
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clock" class="md-nav__link">
+    Clock
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#video-and-graphics-device" class="md-nav__link">
+    Video and Graphics Device
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hugepages" class="md-nav__link">
+    Hugepages
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resources-requests-and-limits" class="md-nav__link">
+    Resources Requests and Limits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numa" class="md-nav__link">
+    NUMA
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disks-and-volumes" class="md-nav__link">
+    Disks and Volumes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface-and-networks" class="md-nav__link">
+    Interface and Networks
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface and Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macvlan" class="md-nav__link">
+    macvlan
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sriov" class="md-nav__link">
+    SRIOV
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#liveness-and-readiness-probes" class="md-nav__link">
+    Liveness and Readiness Probes
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1430,22 +1539,131 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#api-overview" class="md-nav__link">
-    API Overview
+  <a href="#virtual-hardware" class="md-nav__link">
+    Virtual hardware
+  </a>
+  
+    <nav class="md-nav" aria-label="Virtual hardware">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#machine-type" class="md-nav__link">
+    Machine Type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#biosuefi" class="md-nav__link">
+    BIOS/UEFI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu" class="md-nav__link">
+    CPU
+  </a>
+  
+    <nav class="md-nav" aria-label="CPU">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#node-labeller" class="md-nav__link">
+    Node-labeller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model" class="md-nav__link">
+    Model
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clock" class="md-nav__link">
+    Clock
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#video-and-graphics-device" class="md-nav__link">
+    Video and Graphics Device
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hugepages" class="md-nav__link">
+    Hugepages
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resources-requests-and-limits" class="md-nav__link">
+    Resources Requests and Limits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numa" class="md-nav__link">
+    NUMA
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#virtualmachineinstance-api" class="md-nav__link">
-    VirtualMachineInstance API
+  <a href="#disks-and-volumes" class="md-nav__link">
+    Disks and Volumes
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#additional-information" class="md-nav__link">
-    Additional Information
+  <a href="#interface-and-networks" class="md-nav__link">
+    Interface and Networks
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface and Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macvlan" class="md-nav__link">
+    macvlan
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sriov" class="md-nav__link">
+    SRIOV
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#liveness-and-readiness-probes" class="md-nav__link">
+    Liveness and Readiness Probes
   </a>
   
 </li>
@@ -1465,7 +1683,7 @@
                   
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/virtual_machine_instances.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/virtual_machines_on_Arm64.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -1474,94 +1692,44 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/virtual_machine_instances.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/virtual_machines_on_Arm64.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-<h1 id="virtual-machines-instances">Virtual Machines Instances<a class="headerlink" href="#virtual-machines-instances" title="Permanent link">&para;</a></h1>
-<p>The <code>VirtualMachineInstance</code> type conceptionally has two parts:</p>
-<ul>
-<li>
-<p>Information for making scheduling decisions</p>
-</li>
-<li>
-<p>Information about the virtual machine API</p>
-</li>
-</ul>
-<p>Every <code>VirtualMachineInstance</code> object represents a single running
-virtual machine instance.</p>
-<h2 id="api-overview">API Overview<a class="headerlink" href="#api-overview" title="Permanent link">&para;</a></h2>
-<p>With the installation of KubeVirt, new types are added to the Kubernetes
-API to manage Virtual Machines.</p>
-<p>You can interact with the new resources (via <code>kubectl</code>) as you would
-with any other API resource.</p>
-<h2 id="virtualmachineinstance-api">VirtualMachineInstance API<a class="headerlink" href="#virtualmachineinstance-api" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p>Note: A full API reference is available at
-<a href="https://kubevirt.io/api-reference/">https://kubevirt.io/api-reference/</a>.</p>
-</blockquote>
-<p>Here is an example of a VirtualMachineInstance object:</p>
-<div class="highlight"><pre><span></span><code>apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
-metadata:
-  name: testvmi-nocloud
-spec:
-  terminationGracePeriodSeconds: 30
-  domain:
-    resources:
-      requests:
-        memory: 1024M
-    devices:
-      disks:
-      - name: containerdisk
-        disk:
-          bus: virtio
-      - name: emptydisk
-        disk:
-          bus: virtio
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-  volumes:
-  - name: containerdisk
-    containerDisk:
-      image: kubevirt/fedora-cloud-container-disk-demo:latest
-  - name: emptydisk
-    emptyDisk:
-      capacity: &quot;2Gi&quot;
-  - name: cloudinitdisk
-    cloudInitNoCloud:
-      userData: |-
-        #cloud-config
-        password: fedora
-        chpasswd: { expire: False }
-</code></pre></div>
-<p>This example uses a fedora cloud image in combination with cloud-init
-and an ephemeral empty disk with a capacity of <code>2Gi</code>. For the sake of
-simplicity, the volume sources in this example are ephemeral and don't
-require a provisioner in your cluster.</p>
-<h2 id="additional-information">Additional Information<a class="headerlink" href="#additional-information" title="Permanent link">&para;</a></h2>
-<ul>
-<li>
-<p>Using instancetypes and preferences with a VirtualMachine:
-    <a href="../instancetypes/">Instancetypes and preferences</a></p>
-</li>
-<li>
-<p>More information about persistent and ephemeral volumes:
-    <a href="../disks_and_volumes/">Disks and Volumes</a></p>
-</li>
-<li>
-<p>How to access a VirtualMachineInstance via <code>console</code> or <code>vnc</code>:
-    <a href="../accessing_virtual_machines/">Console Access</a></p>
-</li>
-<li>
-<p>How to customize VirtualMachineInstances with <code>cloud-init</code>:
-    <a href="../startup_scripts/#cloud-init">Cloud Init</a></p>
-</li>
-</ul>
+<h1 id="virtual-machines-on-arm64">Virtual Machines on Arm64<a class="headerlink" href="#virtual-machines-on-arm64" title="Permanent link">&para;</a></h1>
+<p>This page summaries all unsupported Virtual Machines configurations and different default setups on Arm64 platform.</p>
+<h2 id="virtual-hardware">Virtual hardware<a class="headerlink" href="#virtual-hardware" title="Permanent link">&para;</a></h2>
+<h3 id="machine-type">Machine Type<a class="headerlink" href="#machine-type" title="Permanent link">&para;</a></h3>
+<p>Currently, we only support one machine type, <code>virt</code>, which is set by default.</p>
+<h3 id="biosuefi">BIOS/UEFI<a class="headerlink" href="#biosuefi" title="Permanent link">&para;</a></h3>
+<p>On Arm64 platform, we only support UEFI boot which is set by default. UEFI secure boot is not supported.</p>
+<h3 id="cpu">CPU<a class="headerlink" href="#cpu" title="Permanent link">&para;</a></h3>
+<h4 id="node-labeller">Node-labeller<a class="headerlink" href="#node-labeller" title="Permanent link">&para;</a></h4>
+<p>Currently, Node-labeller is partially supported on Arm64 platform. It does not yet support parsing virsh_domcapabilities.xml and capabilities.xml, and extracting related information such as CPU features.</p>
+<h4 id="model">Model<a class="headerlink" href="#model" title="Permanent link">&para;</a></h4>
+<p><code>host-passthrough</code> is the only model that supported on Arm64. The CPU model is set by default on Arm64 platform.</p>
+<h3 id="clock">Clock<a class="headerlink" href="#clock" title="Permanent link">&para;</a></h3>
+<p><code>kvm</code> and <code>hyperv</code> timers are not supported on Arm64 platform.</p>
+<h3 id="video-and-graphics-device">Video and Graphics Device<a class="headerlink" href="#video-and-graphics-device" title="Permanent link">&para;</a></h3>
+<p>We do not support vga devices but use virtio-gpu by default.</p>
+<h3 id="hugepages">Hugepages<a class="headerlink" href="#hugepages" title="Permanent link">&para;</a></h3>
+<p>Hugepages are not supported on Arm64 platform.</p>
+<h3 id="resources-requests-and-limits">Resources Requests and Limits<a class="headerlink" href="#resources-requests-and-limits" title="Permanent link">&para;</a></h3>
+<p>CPU pinning is supported on Arm64 platform.</p>
+<h2 id="numa">NUMA<a class="headerlink" href="#numa" title="Permanent link">&para;</a></h2>
+<p>As Hugepages are a precondition of the NUMA feature, and Hugepages are not enabled on the Arm64 platform, the NUMA feature does not work on Arm64.</p>
+<h2 id="disks-and-volumes">Disks and Volumes<a class="headerlink" href="#disks-and-volumes" title="Permanent link">&para;</a></h2>
+<p>Arm64 only supports virtio and scsi disk bus types.</p>
+<h2 id="interface-and-networks">Interface and Networks<a class="headerlink" href="#interface-and-networks" title="Permanent link">&para;</a></h2>
+<h3 id="macvlan">macvlan<a class="headerlink" href="#macvlan" title="Permanent link">&para;</a></h3>
+<p>We do not support <code>macvlan</code> network because the project https://github.com/kubevirt/macvtap-cni does not support Arm64.</p>
+<h3 id="sriov">SRIOV<a class="headerlink" href="#sriov" title="Permanent link">&para;</a></h3>
+<p>This class of devices is not verified on the Arm64 platform.</p>
+<h2 id="liveness-and-readiness-probes">Liveness and Readiness Probes<a class="headerlink" href="#liveness-and-readiness-probes" title="Permanent link">&para;</a></h2>
+<p><code>Watchdog</code> device is not supported on Arm64 platform.</p>
 
 
 
@@ -1583,7 +1751,7 @@ require a provisioner in your cluster.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../operations/feature_gate_status_on_Arm64/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Feature Gate Status on Arm64" rel="prev">
+          <a href="../vsock/" class="md-footer__link md-footer__link--prev" aria-label="Previous: VSOCK" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -1592,20 +1760,20 @@ require a provisioner in your cluster.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Feature Gate Status on Arm64
+                VSOCK
               </div>
             </div>
           </a>
         
         
           
-          <a href="../creating_vms/" class="md-footer__link md-footer__link--next" aria-label="Next: Creating VirtualMachines" rel="next">
+          <a href="../device_status_on_Arm64/" class="md-footer__link md-footer__link--next" aria-label="Next: Device Status on Arm64" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Creating VirtualMachines
+                Device Status on Arm64
               </div>
             </div>
             <div class="md-footer__button md-icon">

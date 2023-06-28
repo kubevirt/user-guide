@@ -517,6 +517,19 @@
     Setting verbosity per KubeVirt component
   </a>
   
+    <nav class="md-nav" aria-label="Setting verbosity per KubeVirt component">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#libvirt-virtqemudconf-set-log_filters-according-to-virt-launcher-log-verbosity" class="md-nav__link">
+    libvirt virtqemud.conf set log_filters according to virt-launcher log Verbosity
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -529,6 +542,40 @@
           <li class="md-nav__item">
   <a href="#how-to-retrieve-kubevirt-components-logs" class="md-nav__link">
     How to retrieve KubeVirt components' logs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubevirt-pprof-profiler" class="md-nav__link">
+    KubeVirt PProf Profiler
+  </a>
+  
+    <nav class="md-nav" aria-label="KubeVirt PProf Profiler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compile-cluster-profiler" class="md-nav__link">
+    Compile cluster-profiler
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-the-feature-gate" class="md-nav__link">
+    Enable the feature gate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-the-profiling" class="md-nav__link">
+    Do the profiling
   </a>
   
 </li>
@@ -877,6 +924,34 @@
     <li class="md-nav__item">
       <a href="../gitops/" class="md-nav__link">
         Managing KubeVirt with GitOps
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations_on_Arm64/" class="md-nav__link">
+        Arm64 Operations
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature_gate_status_on_Arm64/" class="md-nav__link">
+        Feature Gate Status on Arm64
       </a>
     </li>
   
@@ -1324,6 +1399,34 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/virtual_machines_on_Arm64/" class="md-nav__link">
+        Virtual Machines on Arm64
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/device_status_on_Arm64/" class="md-nav__link">
+        Device Status on Arm64
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -1399,6 +1502,19 @@
     Setting verbosity per KubeVirt component
   </a>
   
+    <nav class="md-nav" aria-label="Setting verbosity per KubeVirt component">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#libvirt-virtqemudconf-set-log_filters-according-to-virt-launcher-log-verbosity" class="md-nav__link">
+    libvirt virtqemud.conf set log_filters according to virt-launcher log Verbosity
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1411,6 +1527,40 @@
           <li class="md-nav__item">
   <a href="#how-to-retrieve-kubevirt-components-logs" class="md-nav__link">
     How to retrieve KubeVirt components' logs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubevirt-pprof-profiler" class="md-nav__link">
+    KubeVirt PProf Profiler
+  </a>
+  
+    <nav class="md-nav" aria-label="KubeVirt PProf Profiler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compile-cluster-profiler" class="md-nav__link">
+    Compile cluster-profiler
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-the-feature-gate" class="md-nav__link">
+    Enable the feature gate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-the-profiling" class="md-nav__link">
+    Do the profiling
   </a>
   
 </li>
@@ -1482,19 +1632,53 @@ is defined to be equal or greater than <code>3</code>, or else it would be filte
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="nt">virtOperator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
 </code></pre></div></p>
 <p>This option is best for debugging specific components.</p>
+<h4 id="libvirt-virtqemudconf-set-log_filters-according-to-virt-launcher-log-verbosity">libvirt virtqemud.conf set log_filters according to virt-launcher log Verbosity<a class="headerlink" href="#libvirt-virtqemudconf-set-log_filters-according-to-virt-launcher-log-verbosity" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Verbosity level</th>
+<th>log_filters in virtqemud.conf</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>log_filters="3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 3:qemu.qemu_monitor 3:qemu.qemu_monitor_json 3:conf.domain_addr 1:*"</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 3:qemu.qemu_monitor 1:*</td>
+</tr>
+<tr>
+<td>7</td>
+<td>3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 1:*</td>
+</tr>
+<tr>
+<td>8 and above</td>
+<td>3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 1:*</td>
+</tr>
+</tbody>
+</table>
+<p>User can set self-defined log-filters via the annotations tag <code>kubevirt.io/libvirt-log-filters</code> in VMI configuration. e.g.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-vmi</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">kubevirt.io/libvirt-log-filters</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3:remote</span><span class="nv"> </span><span class="s">4:event</span><span class="nv"> </span><span class="s">1:*&quot;</span>
+</code></pre></div></p>
 <h3 id="setting-verbosity-per-nodes">Setting verbosity per nodes<a class="headerlink" href="#setting-verbosity-per-nodes" title="Permanent link">&para;</a></h3>
 <p>Another way is to set verbosity level per node:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="nt">nodeVerbosity</span><span class="p">:</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="s">&quot;node01&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">        </span><span class="s">&quot;otherNodeName&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="nt">nodeVerbosity</span><span class="p">:</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="s">&quot;node01&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">        </span><span class="s">&quot;otherNodeName&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
 </code></pre></div></p>
 <p><code>nodeVerbosity</code> is essentially a map from string to int where the key is the node name and the value is the verbosity
 level. The verbosity level would be defined for all the different components in that node (e.g. <code>virt-handler</code>,
@@ -1503,30 +1687,127 @@ level. The verbosity level would be defined for all the different components in 
 <p>In Kubernetes, logs are defined at the Pod level. Therefore, first it's needed to list the Pods of KubeVirt's core
 components. In order to do that we can first list the Pods under KubeVirt's install namespace.</p>
 <p>For example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$&gt;<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;KubeVirt<span class="w"> </span>Install<span class="w"> </span>Namespace&gt;
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>NAME<span class="w">                               </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>disks-images-provider-7gqbc<span class="w">        </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>disks-images-provider-vg4kx<span class="w">        </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>virt-api-57fcc4497b-7qfmc<span class="w">          </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>31m
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>virt-api-57fcc4497b-tx9nc<span class="w">          </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>31m
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>virt-controller-76c784655f-7fp6m<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>virt-controller-76c784655f-f4pbd<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>virt-handler-2m86x<span class="w">                 </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>virt-handler-9qs6z<span class="w">                 </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>virt-operator-7ccfdbf65f-q5snk<span class="w">     </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>virt-operator-7ccfdbf65f-vllz8<span class="w">     </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$&gt;<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;KubeVirt<span class="w"> </span>Install<span class="w"> </span>Namespace&gt;
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>NAME<span class="w">                               </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>disks-images-provider-7gqbc<span class="w">        </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>disks-images-provider-vg4kx<span class="w">        </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>virt-api-57fcc4497b-7qfmc<span class="w">          </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>31m
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>virt-api-57fcc4497b-tx9nc<span class="w">          </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>31m
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>virt-controller-76c784655f-7fp6m<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>virt-controller-76c784655f-f4pbd<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>virt-handler-2m86x<span class="w">                 </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>virt-handler-9qs6z<span class="w">                 </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>virt-operator-7ccfdbf65f-q5snk<span class="w">     </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>virt-operator-7ccfdbf65f-vllz8<span class="w">     </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
 </code></pre></div></p>
 <p>Then, we can pick one of the pods and fetch its logs. For example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$&gt;<span class="w"> </span>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>&lt;KubeVirt<span class="w"> </span>Install<span class="w"> </span>Namespace&gt;<span class="w"> </span>virt-handler-2m86x<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n8
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;set verbosity to 2&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;virt-handler.go:453&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.373695Z&quot;</span><span class="o">}</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;set verbosity to 2&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;virt-handler.go:453&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.373726Z&quot;</span><span class="o">}</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;setting rate limiter to 5 QPS and 10 Burst&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;virt-handler.go:462&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.373782Z&quot;</span><span class="o">}</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;CPU features of a minimum baseline CPU model: map[apic:true clflush:true cmov:true cx16:true cx8:true de:true fpu:true fxsr:true lahf_lm:true lm:true mca:true mce:true mmx:true msr:true mtrr:true nx:true pae:true pat:true pge:true pni:true pse:true pse36:true sep:true sse:true sse2:true sse4.1:true ssse3:true syscall:true tsc:true]&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;cpu_plugin.go:96&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.390221Z&quot;</span><span class="o">}</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;warning&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;host model mode is expected to contain only one model&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;cpu_plugin.go:103&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.390263Z&quot;</span><span class="o">}</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;node-labeller is running&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;node_labeller.go:94&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.391011Z&quot;</span><span class="o">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$&gt;<span class="w"> </span>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>&lt;KubeVirt<span class="w"> </span>Install<span class="w"> </span>Namespace&gt;<span class="w"> </span>virt-handler-2m86x<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n8
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;set verbosity to 2&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;virt-handler.go:453&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.373695Z&quot;</span><span class="o">}</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;set verbosity to 2&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;virt-handler.go:453&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.373726Z&quot;</span><span class="o">}</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;setting rate limiter to 5 QPS and 10 Burst&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;virt-handler.go:462&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.373782Z&quot;</span><span class="o">}</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;CPU features of a minimum baseline CPU model: map[apic:true clflush:true cmov:true cx16:true cx8:true de:true fpu:true fxsr:true lahf_lm:true lm:true mca:true mce:true mmx:true msr:true mtrr:true nx:true pae:true pat:true pge:true pni:true pse:true pse36:true sep:true sse:true sse2:true sse4.1:true ssse3:true syscall:true tsc:true]&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;cpu_plugin.go:96&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.390221Z&quot;</span><span class="o">}</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;warning&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;host model mode is expected to contain only one model&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;cpu_plugin.go:103&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.390263Z&quot;</span><span class="o">}</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;node-labeller is running&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;node_labeller.go:94&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.391011Z&quot;</span><span class="o">}</span>
 </code></pre></div></p>
 <p>Obviously, for both examples above, <code>&lt;KubeVirt Install Namespace&gt;</code> needs to be replaced with the actual namespace
 KubeVirt is installed in.</p>
+<h2 id="kubevirt-pprof-profiler">KubeVirt PProf Profiler<a class="headerlink" href="#kubevirt-pprof-profiler" title="Permanent link">&para;</a></h2>
+<p>Using the <code>cluster-profiler</code> client tool, a developer can get the PProf profiling data for every component in the Kubevirt Control plane. Here is a user guide:</p>
+<h3 id="compile-cluster-profiler">Compile <code>cluster-profiler</code><a class="headerlink" href="#compile-cluster-profiler" title="Permanent link">&para;</a></h3>
+<p>Build from source code
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ git clone https://github.com/kubevirt/kubevirt.git
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>$ cd kubevirt/tools/cluster-profiler
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>$ go build
+</code></pre></div></p>
+<h3 id="enable-the-feature-gate">Enable the feature gate<a class="headerlink" href="#enable-the-feature-gate" title="Permanent link">&para;</a></h3>
+<p>Add <code>ClusterProfiler</code> in KubeVirt config
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ cat &lt;&lt; END &gt; enable-feature-gate.yaml
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>---
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>apiVersion: kubevirt.io/v1
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>kind: KubeVirt
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>metadata:
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  name: kubevirt
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  namespace: kubevirt
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>spec:
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  configuration:
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    developerConfiguration:
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>      featureGates:
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>        - ClusterProfiler
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>END
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>$ kubectl apply -f enable-feature-gate.yaml
+</code></pre></div></p>
+<h3 id="do-the-profiling">Do the profiling<a class="headerlink" href="#do-the-profiling" title="Permanent link">&para;</a></h3>
+<p>Start CPU profiling
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ cluster-profiler --cmd start
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>2023/05/17 09:31:09 SUCCESS: started cpu profiling KubeVirt control plane
+</code></pre></div>
+Stop CPU profiling
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$ cluster-profiler --cmd stop
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>2023/05/17 09:31:14 SUCCESS: stopped cpu profiling KubeVirt control plane
+</code></pre></div>
+Dump the pprof result
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>$ cluster-profiler --cmd dump
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>2023/05/17 09:31:18 Moving already existing &quot;cluster-profiler-results&quot; =&gt; &quot;cluster-profiler-results-old-67fq&quot;
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>SUCCESS: Dumped PProf 6 results for KubeVirt control plane to [cluster-profiler-results]
+</code></pre></div>
+The PProf result can be found in the folder <code>cluster-profiler-results</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$ tree cluster-profiler-results
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>cluster-profiler-results
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>├── virt-api-5f96f84dcb-lkpb7
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>│   ├── allocs.pprof
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>│   ├── block.pprof
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>│   ├── cpu.pprof
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>│   ├── goroutine.pprof
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>│   ├── heap.pprof
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>│   ├── mutex.pprof
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>│   └── threadcreate.pprof
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>├── virt-controller-5bbd9554d9-2f8j2
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>│   ├── allocs.pprof
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>│   ├── block.pprof
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>│   ├── cpu.pprof
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>│   ├── goroutine.pprof
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>│   ├── heap.pprof
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>│   ├── mutex.pprof
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>│   └── threadcreate.pprof
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>├── virt-controller-5bbd9554d9-qct2w
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>│   ├── allocs.pprof
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>│   ├── block.pprof
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>│   ├── cpu.pprof
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>│   ├── goroutine.pprof
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>│   ├── heap.pprof
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>│   ├── mutex.pprof
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>│   └── threadcreate.pprof
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>├── virt-handler-ccq6c
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>│   ├── allocs.pprof
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>│   ├── block.pprof
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>│   ├── cpu.pprof
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>│   ├── goroutine.pprof
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a>│   ├── heap.pprof
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a>│   ├── mutex.pprof
+<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a>│   └── threadcreate.pprof
+<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a>├── virt-operator-cdc677b7-pg9j2
+<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a>│   ├── allocs.pprof
+<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a>│   ├── block.pprof
+<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a>│   ├── cpu.pprof
+<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a>│   ├── goroutine.pprof
+<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a>│   ├── heap.pprof
+<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a>│   ├── mutex.pprof
+<a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a>│   └── threadcreate.pprof
+<a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a>└── virt-operator-cdc677b7-pjqdx
+<a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a>    ├── allocs.pprof
+<a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a>    ├── block.pprof
+<a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a>    ├── cpu.pprof
+<a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a>    ├── goroutine.pprof
+<a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a>    ├── heap.pprof
+<a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a>    ├── mutex.pprof
+<a id="__codelineno-10-51" name="__codelineno-10-51" href="#__codelineno-10-51"></a>    └── threadcreate.pprof
+</code></pre></div></p>
 
 
 
