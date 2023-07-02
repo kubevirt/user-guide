@@ -574,6 +574,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#removing-an-interface-from-a-running-vm" class="md-nav__link">
+    Removing an interface from a running VM
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#migration-based-hotplug" class="md-nav__link">
     Migration based hotplug
   </a>
@@ -590,6 +597,20 @@
         
           <li class="md-nav__item">
   <a href="#migrate-the-vm" class="md-nav__link">
+    Migrate the VM
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-interface" class="md-nav__link">
+    Remove interface
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migrate-the-vm_1" class="md-nav__link">
     Migrate the VM
   </a>
   
@@ -1497,6 +1518,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#removing-an-interface-from-a-running-vm" class="md-nav__link">
+    Removing an interface from a running VM
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#migration-based-hotplug" class="md-nav__link">
     Migration based hotplug
   </a>
@@ -1513,6 +1541,20 @@
         
           <li class="md-nav__item">
   <a href="#migrate-the-vm" class="md-nav__link">
+    Migrate the VM
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-interface" class="md-nav__link">
+    Remove interface
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migrate-the-vm_1" class="md-nav__link">
     Migrate the VM
   </a>
   
@@ -1643,25 +1685,57 @@ parameter.</p>
 <p>You can now check the VMI status for the presence of this new interface:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>vmi<span class="w"> </span>vm-fedora<span class="w"> </span>-ojsonpath<span class="o">=</span><span class="s2">&quot;{ @.status.interfaces }&quot;</span>
 </code></pre></div></p>
+<h2 id="removing-an-interface-from-a-running-vm">Removing an interface from a running VM<a class="headerlink" href="#removing-an-interface-from-a-running-vm" title="Permanent link">&para;</a></h2>
+<p>Following the example above, the user can request an interface unplug operation. Please refer to the following snippet:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>virtctl<span class="w"> </span>removeinterface<span class="w"> </span>vm-fedora<span class="w"> </span>--name<span class="w"> </span>dyniface1
+</code></pre></div>
+The subject interface state will be set as absent in the VM spec template and the running VMI object.  </p>
+<blockquote>
+<p><strong>Note</strong>: Existing VMs from version v0.59.0 and below does not support hot-unplug interfaces.</p>
+</blockquote>
 <h2 id="migration-based-hotplug">Migration based hotplug<a class="headerlink" href="#migration-based-hotplug" title="Permanent link">&para;</a></h2>
 <p>In case your cluster doesn't run Multus as <a href="https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md">thick plugin</a> and <a href="https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller">Multus Dynamic Networks controller</a>, it's possible to hotplug an interface by migrating the VM.</p>
 <p>The actual attachment won't take place immediately, and the new interface will be available in the guest once the migration is completed.</p>
 <h3 id="add-new-interface">Add new interface<a class="headerlink" href="#add-new-interface" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>virtctl<span class="w"> </span>addinterface<span class="w"> </span>vm-fedora<span class="w"> </span>--network-attachment-definition-name<span class="w"> </span>new-fancy-net<span class="w"> </span>--name<span class="w"> </span>dyniface1
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>virtctl<span class="w"> </span>addinterface<span class="w"> </span>vm-fedora<span class="w"> </span>--network-attachment-definition-name<span class="w"> </span>new-fancy-net<span class="w"> </span>--name<span class="w"> </span>dyniface1
 </code></pre></div>
 At this point the new interface is added to the spec but will not be attached to the running VM. </p>
 <h3 id="migrate-the-vm">Migrate the VM<a class="headerlink" href="#migrate-the-vm" title="Permanent link">&para;</a></h3>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF kubectl apply -f -</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="s">apiVersion: kubevirt.io/v1</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="s">kind: VirtualMachineInstanceMigration</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="s">metadata:</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="s">  name: migration-job</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="s">spec:</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="s">  vmiName: vmi-fedora</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="s">EOF</span>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF kubectl apply -f -</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s">apiVersion: kubevirt.io/v1</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="s">kind: VirtualMachineInstanceMigration</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s">metadata:</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s">  name: migration-job</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="s">spec:</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="s">  vmiName: vmi-fedora</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="s">EOF</span>
 </code></pre></div>
 See the <a href="../live_migration/">Live Migration</a> docs for more details.</p>
 <p>Once the migration is completed the VM will have the new interface attached.</p>
+<blockquote>
+<p><strong>Note</strong>: It is recommended to avoid performing migrations in parallel to a hotplug operation. 
+It is safer to assure hotplug succeeded or at least reached the VMI specification before issuing a migration.</p>
+</blockquote>
+<h3 id="remove-interface">Remove interface<a class="headerlink" href="#remove-interface" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>virtctl<span class="w"> </span>removeinterface<span class="w"> </span>vm-fedora<span class="w"> </span>--name<span class="w"> </span>dyniface1
+</code></pre></div>
+At this point the subject interface should be detached from the guest but exist in the pod.</p>
+<h3 id="migrate-the-vm_1">Migrate the VM<a class="headerlink" href="#migrate-the-vm_1" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF kubectl apply -f -</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="s">apiVersion: kubevirt.io/v1</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="s">kind: VirtualMachineInstanceMigration</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="s">metadata:</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s">  name: migration-job</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="s">spec:</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="s">  vmiName: vmi-fedora</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="s">EOF</span>
+</code></pre></div>
+See the <a href="../live_migration/">Live Migration</a> docs for more details.</p>
+<p>Once the VM is migrated, the interface will not exist in the migration target pod.</p>
+<blockquote>
+<p><strong>Note</strong>: It is recommended to avoid performing migrations in parallel to an unplug operation.
+It is safer to assure unplug succeeded or at least reached the VMI specification before issuing a migration.</p>
+</blockquote>
 <h3 id="virtio-limitations">Virtio Limitations<a class="headerlink" href="#virtio-limitations" title="Permanent link">&para;</a></h3>
 <p>The hotplugged interfaces have <code>model: virtio</code>. This imposes several
 limitations: each interface will consume a PCI slot in the VM, and there are a
