@@ -57,9 +57,9 @@ It is possible to utilize UEFI/OVMF by setting a value via
           - disk:
               bus: virtio
             name: containerdisk
-          features:
-            smm:
-              enabled: true
+        features:
+          smm:
+            enabled: true
         firmware:
           # this sets the bootloader type
           bootloader:
