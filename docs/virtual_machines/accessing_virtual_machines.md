@@ -154,9 +154,12 @@ EOF
 
 ### Dynamic SSH public key injection via qemu-guest-agent
 
-KubeVirt supports dynamic injection of SSH public keys at runtime by using
-the qemu-guest-agent. This is configured by using the access
-credentials API with the `qemuGuestAgent` propagation method.
+KubeVirt allows the dynamic injection of SSH public keys into a VirtualMachine with the access credentials API.
+
+Utilizing the `qemuGuestAgent` propagation method, configured Secrets are attached to a VirtualMachine when the VM is started. 
+This allows for dynamic injection of SSH public keys at runtime by updating the attached Secrets.
+
+Please note that new Secrets cannot be attached to a running VM: You must restart the VM to attach the new Secret.
 
 > Note: This requires the qemu-guest-agent to be installed within the guest.
 >
