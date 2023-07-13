@@ -1,26 +1,23 @@
 # KubeVirt Tekton
 
-## KubeVirt Tekton tasks operator (TTO)
-
 ### Prerequisites
 - [Tekton](https://tekton.dev/)
 - [KubeVirt](https://kubevirt.io/)
 - [CDI](https://github.com/kubevirt/containerized-data-importer)
+- [SSP](https://github.com/kubevirt/ssp-operator)
 
-### Deploying TTO
-[TTO](https://github.com/kubevirt/tekton-tasks-operator) is a Golang based operator, which takes care of deploying 
+### Deploying SSP
+[SSP](https://github.com/kubevirt/ssp-operator) is a Golang based operator, which takes care of deploying 
 [kubevirt-tekton-tasks](https://github.com/kubevirt/kubevirt-tekton-tasks) and example pipelines.
 
-TTO is shipped as a part of [hyperconverged-cluster-operator](https://github.com/kubevirt/hyperconverged-cluster-operator) 
-or it can be deployed by the user as a stand-alone from the latest [release](https://github.com/kubevirt/tekton-tasks-operator/releases/latest).
+SSP is shipped as a part of [hyperconverged-cluster-operator](https://github.com/kubevirt/hyperconverged-cluster-operator) 
+or it can be deployed by the user as a stand-alone from the latest [release](https://github.com/kubevirt/ssp-operator/releases/latest).
 
-!!! Note
-    TTO requires [Tekton](https://tekton.dev/) to work.
+**Note:** SSP requires [Tekton](https://tekton.dev/) to work.
 
-!!! Note
-    TTO does not deploy its resources by default.
+SSP does not deploy KubeVirt Tekton tasks resources by default.
 
-The user has to enable `deployTektonTaskResources` feature gate in HCO CR to deploy all its resources
+The user has to enable `deployTektonTaskResources` feature gate in HCO CR to deploy all its resources:
 
 ```console
 apiVersion: hco.kubevirt.io/v1beta1
@@ -33,12 +30,12 @@ spec:
     deployTektonTaskResources: true
 ```
 
-or in TTO CR:
+or in SSP CR:
 ```console
-apiVersion: tektontasks.kubevirt.io/v1alpha1
-kind: TektonTasks
+apiVersion: ssp.kubevirt.io/v1beta2
+kind: SSP
 metadata:
-  name: tektontasks
+  name: ssp
   namespace: kubevirt
 spec:
   featureGates:
@@ -48,15 +45,14 @@ User can use this command to enable `deployTektonTaskResources` feature gate in 
 ```console
 oc patch hco kubevirt-hyperconverged  --type=merge -p '{"spec":{"featureGates": {"deployTektonTaskResources": true}}}'
 ```
-or in TTO CR if TTO is deployed as a stand-alone without HCO
+or by applying a patch on an existing SSP CR:
 ```console
-oc patch TektonTasks tektontasks  --type=merge -p '{"spec":{"featureGates": {"deployTektonTaskResources": true}}}'
+oc patch ssp ssp  --type=merge -p '{"spec":{"featureGates": {"deployTektonTaskResources": true}}}'
 ```
 
-Once `spec.featureGates.deployTektonTaskResources` is set to `true`, TTO will not delete any cluster 
-tasks or pipeline examples even if it is reverted back to false.
+**Note:** Once `spec.featureGates.deployTektonTaskResources` is set to `true`, SSP will not delete any tasks or pipeline examples even if it is reverted back to false.
 
-The user can set in which namespace example pipelines will be deployed by setting `spec.tektonPipelinesNamespace` in HCO CR:
+The user can set in which namespace example pipelines or tasks will be deployed by setting `spec.tektonPipelinesNamespace` or `spec.tektonTasksNamespace`in HCO CR:
 
 ```console
 apiVersion: hco.kubevirt.io/v1beta1
@@ -66,18 +62,21 @@ metadata:
   namespace: kubevirt-hyperconverged
 spec:
   tektonPipelinesNamespace: userNamespace
+  tektonTasksNamespace: userNamespace
 ```
 
-or in TTO CR by setting `spec.pipelines.namespace`:
+or in SSP CR by setting `spec.tektonPipelines.namespace` or `spec.tektonTasks.namespace`:
 ```console
-apiVersion: tektontasks.kubevirt.io/v1alpha1
-kind: TektonTasks
+apiVersion: ssp.kubevirt.io/v1beta2
+kind: SSP
 metadata:
-  name: tektontasks
+  name: ssp
   namespace: kubevirt
 spec:
-  pipelines:
-    namespace: userNamespace
+  tektonPipelines:
+    namespace: kubevirt
+  tektonTasks:
+    namespace: kubevirt
 ```
 
 ## KubeVirt Tekton tasks 
@@ -91,7 +90,7 @@ KubeVirt-specific Tekton tasks, which are focused on:
 ### Existing tasks
 
 #### Create Virtual Machines
-- create-vm-from-manifest - create a VM from provided manifest.
+- create-vm-from-manifest - create a VM from provided manifest or with virtctl.
 - create-vm-from-template - create a VM from template (works only on OpenShift).
 
 #### Utilize Templates
@@ -123,11 +122,11 @@ KubeVirt-specific Tekton tasks, which are focused on:
 
 ### Example pipeline
 All these tasks can be used for creating [pipelines](https://github.com/tektoncd/pipeline/blob/main/docs/pipelines.md).
-TTO is creating multiple example pipelines, e.g.:
+SSP is creating multiple example pipelines, e.g.:
 
-- [Windows bios installer](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows-bios-installer-pipeline.yaml) - Pipeline will prepare a template and Windows datavolume vith virtio drivers installed. User has to provide a link to working Windows 10 iso file. Pipeline is suitable 
-for Windows versions, which uses bios. More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-bios-installer)
+- [Windows BIOS installer](https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-bios-installer-pipeline.yaml) - Pipeline will prepare a template and Windows datavolume vith virtio drivers installed. User has to provide a link to working Windows 10 iso file. Pipeline is suitable 
+for Windows versions, which uses BIOS. More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-bios-installer)
 
-- [Windows efi installer](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows-efi-installer-pipeline.yaml) - Pipeline will prepare a template and Windows 11/2k22 datavolume vith virtio drivers installed. User has to provide a link to working Windows 11/2k22 iso file. Pipeline is suitable for Windows versions, which requires EFI (e.g. Windows 11/2k22). More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-efi-installer)
+- [Windows efi installer](https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-efi-installer-pipeline.yaml) - Pipeline will prepare a template and Windows 11/2k22 datavolume vith virtio drivers installed. User has to provide a link to working Windows 11/2k22 iso file. Pipeline is suitable for Windows versions, which requires EFI (e.g. Windows 11/2k22). More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-efi-installer)
 
-- [Windows customize](https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows-customize-pipeline.yaml) - Pipeline will install sql server or vs code in windows VM. More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-customize)
+- [Windows customize](https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-customize-pipeline.yaml) - Pipeline will install SQL server or VS Code in Windows VM. More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-customize)
