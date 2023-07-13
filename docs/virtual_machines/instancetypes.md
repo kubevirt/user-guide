@@ -29,7 +29,7 @@ spec:
     guest: 128Mi
 ```
 
-KubeVirt provides two Instancetype based [`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/), a cluster wide [`VirtualMachineClusterInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineclusterinstancetype) and a namespaced [`VirtualMachineInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineinstancetype). These `CRDs` encapsulate the following resource related characteristics of a `VirtualMachine` through a shared [`VirtualMachineInstancetypeSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineinstancetypespec):
+KubeVirt provides two [`CRDs`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) for instance types, a cluster wide [`VirtualMachineClusterInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineclusterinstancetype) and a namespaced [`VirtualMachineInstancetype`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineinstancetype). These `CRDs` encapsulate the following resource related characteristics of a `VirtualMachine` through a shared [`VirtualMachineInstancetypeSpec`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineinstancetypespec):
 
 * [`CPU`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_cpuinstancetype) : Required number of vCPUs presented to the guest
 * [`Memory`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_memoryinstancetype) : Required amount of memory presented to the guest
