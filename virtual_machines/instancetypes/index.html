@@ -19,7 +19,7 @@
         <link rel="next" href="../presets/">
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -1038,15 +1038,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#v1alpha1-experimental" class="md-nav__link">
-    v1alpha1 (Experimental)
+  <a href="#instancetypekubevirtiov1alpha1-experimental" class="md-nav__link">
+    instancetype.kubevirt.io/v1alpha1 (Experimental)
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#v1alpha2-experimental" class="md-nav__link">
-    v1alpha2 (Experimental)
+  <a href="#instancetypekubevirtiov1alpha2-experimental" class="md-nav__link">
+    instancetype.kubevirt.io/v1alpha2 (Experimental)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instancetypekubevirtiov1beta1" class="md-nav__link">
+    instancetype.kubevirt.io/v1beta1
   </a>
   
 </li>
@@ -1556,15 +1563,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#v1alpha1-experimental" class="md-nav__link">
-    v1alpha1 (Experimental)
+  <a href="#instancetypekubevirtiov1alpha1-experimental" class="md-nav__link">
+    instancetype.kubevirt.io/v1alpha1 (Experimental)
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#v1alpha2-experimental" class="md-nav__link">
-    v1alpha2 (Experimental)
+  <a href="#instancetypekubevirtiov1alpha2-experimental" class="md-nav__link">
+    instancetype.kubevirt.io/v1alpha2 (Experimental)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instancetypekubevirtiov1beta1" class="md-nav__link">
+    instancetype.kubevirt.io/v1beta1
   </a>
   
 </li>
@@ -1608,8 +1622,9 @@
 <h1 id="instance-types-and-preferences">Instance types and preferences<a class="headerlink" href="#instance-types-and-preferences" title="Permanent link">&para;</a></h1>
 <p><strong>FEATURE STATE:</strong> </p>
 <ul>
-<li><code>v1alpha1</code> (Experimental) as of the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v0.56.0"><code>v0.56.0</code></a> release</li>
-<li><code>v1alpha2</code> (Experimental) as of the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v0.58.0"><code>v0.58.0</code></a> release</li>
+<li><code>instancetype.kubevirt.io/v1alpha1</code> (Experimental) as of the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v0.56.0"><code>v0.56.0</code></a> KubeVirt release</li>
+<li><code>instancetype.kubevirt.io/v1alpha2</code> (Experimental) as of the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v0.58.0"><code>v0.58.0</code></a> KubeVirt release</li>
+<li><code>instancetype.kubevirt.io/v1beta1</code> as of the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.0.0"><code>v1.0.0</code></a> KubeVirt release</li>
 </ul>
 <p>See the <a href="#version-history">Version History</a> section for more details.</p>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
@@ -1617,7 +1632,7 @@
 <p>Instance types and preferences provide a way to define a set of resource, performance and other runtime characteristics, allowing users to reuse these definitions across multiple <code>VirtualMachines</code>.</p>
 <h2 id="virtualmachineinstancetype">VirtualMachineInstancetype<a class="headerlink" href="#virtualmachineinstancetype" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nn">---</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instancetype.kubevirt.io/v1alpha2</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instancetype.kubevirt.io/v1beta1</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstancetype</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-instancetype</span>
@@ -1627,10 +1642,10 @@
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="nt">memory</span><span class="p">:</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">guest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128Mi</span>
 </code></pre></div>
-<p>KubeVirt provides two Instancetype based <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/"><code>CRDs</code></a>, a cluster wide <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineclusterinstancetype"><code>VirtualMachineClusterInstancetype</code></a> and a namespaced <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetype"><code>VirtualMachineInstancetype</code></a>. These <code>CRDs</code> encapsulate the following resource related characteristics of a <code>VirtualMachine</code> through a shared <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineinstancetypespec"><code>VirtualMachineInstancetypeSpec</code></a>:</p>
+<p>KubeVirt provides two <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/"><code>CRDs</code></a> for instance types, a cluster wide <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineclusterinstancetype"><code>VirtualMachineClusterInstancetype</code></a> and a namespaced <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineinstancetype"><code>VirtualMachineInstancetype</code></a>. These <code>CRDs</code> encapsulate the following resource related characteristics of a <code>VirtualMachine</code> through a shared <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineinstancetypespec"><code>VirtualMachineInstancetypeSpec</code></a>:</p>
 <ul>
-<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_cpuinstancetype"><code>CPU</code></a> : Required number of vCPUs presented to the guest</li>
-<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_memoryinstancetype"><code>Memory</code></a> : Required amount of memory presented to the guest</li>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_cpuinstancetype"><code>CPU</code></a> : Required number of vCPUs presented to the guest</li>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_memoryinstancetype"><code>Memory</code></a> : Required amount of memory presented to the guest</li>
 <li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_gpu"><code>GPUs</code></a> : Optional list of vGPUs to passthrough</li>
 <li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_hostdevice"><code>HostDevices</code></a> : Optional list of <code>HostDevices</code> to passthrough</li>
 <li><code>IOThreadsPolicy</code> : Optional <code>IOThreadsPolicy</code> to be used</li>
@@ -1639,7 +1654,7 @@
 <p>Anything provided within an instance type cannot be overridden within the <code>VirtualMachine</code>. For example, as <code>CPU</code> and <code>Memory</code> are both required attributes of an instance type, if a user makes any requests for <code>CPU</code> or <code>Memory</code> resources within the underlying <code>VirtualMachine</code>, the instance type will conflict and the request will be rejected during creation.</p>
 <h2 id="virtualmachinepreference">VirtualMachinePreference<a class="headerlink" href="#virtualmachinepreference" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nn">---</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instancetype.kubevirt.io/v1alpha2</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instancetype.kubevirt.io/v1beta1</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachinePreference</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-preference</span>
@@ -1648,12 +1663,12 @@
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">preferredDiskBus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">preferredInterfaceModel</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
 </code></pre></div>
-<p>KubeVirt also provides two further preference based <code>CRDs</code>, again a cluster wide <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachineclusterpreference"><code>VirtualMachineClusterPreference</code></a> and namespaced <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreference"><code>VirtualMachinePreference</code></a>. These <code>CRDs</code>encapsulate the preferred value of any remaining attributes of a <code>VirtualMachine</code> required to run a given workload, again this is through a shared <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_virtualmachinepreferencespec"><code>VirtualMachinePreferenceSpec</code></a>.</p>
+<p>KubeVirt also provides two further preference based <code>CRDs</code>, again a cluster wide <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachineclusterpreference"><code>VirtualMachineClusterPreference</code></a> and namespaced <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachinepreference"><code>VirtualMachinePreference</code></a>. These <code>CRDs</code>encapsulate the preferred value of any remaining attributes of a <code>VirtualMachine</code> required to run a given workload, again this is through a shared <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachinepreferencespec"><code>VirtualMachinePreferenceSpec</code></a>.</p>
 <p>Unlike instance types, preferences only represent the preferred values and as such, they can be overridden by values in the <code>VirtualMachine</code> provided by the user.</p>
-<p>In the example shown below, a user has provided a <code>VirtualMachine</code> with a disk bus already defined within a <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget"><code>DiskTarget</code></a> <em>and</em> has also selected a set of preferences with <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha2_devicepreferences"><code>DevicePreference</code></a> and <code>preferredDiskBus</code> , so the user's original choice within the <code>VirtualMachine</code> and <code>DiskTarget</code> are used:</p>
+<p>In the example shown below, a user has provided a <code>VirtualMachine</code> with a disk bus already defined within a <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_disktarget"><code>DiskTarget</code></a> <em>and</em> has also selected a set of preferences with <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_devicepreferences"><code>DevicePreference</code></a> and <code>preferredDiskBus</code> , so the user's original choice within the <code>VirtualMachine</code> and <code>DiskTarget</code> are used:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl apply -f - &lt;&lt; EOF</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nn">---</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instancetype.kubevirt.io/v1alpha2</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instancetype.kubevirt.io/v1beta1</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachinePreference</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-preference-disk-virtio</span>
@@ -1773,7 +1788,7 @@
 <a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="p p-Indicator">{</span>
 <a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">  </span><span class="s">&quot;apiVersion&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;apps/v1&quot;</span><span class="p p-Indicator">,</span>
 <a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">  </span><span class="s">&quot;data&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">    </span><span class="s">&quot;apiVersion&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;instancetype.kubevirt.io/v1alpha2&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">    </span><span class="s">&quot;apiVersion&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;instancetype.kubevirt.io/v1beta1&quot;</span><span class="p p-Indicator">,</span>
 <a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">    </span><span class="s">&quot;kind&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;VirtualMachineInstancetype&quot;</span><span class="p p-Indicator">,</span>
 <a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">    </span><span class="s">&quot;metadata&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
 <a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">      </span><span class="s">&quot;creationTimestamp&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;2022-09-30T12:20:19Z&quot;</span><span class="p p-Indicator">,</span>
@@ -1961,7 +1976,7 @@
 <p>Various examples are available within the <a href="https://github.com/kubevirt/kubevirt"><code>kubevirt</code></a> repo under <a href="https://github.com/kubevirt/kubevirt/tree/main/examples"><code>/examples</code></a>. The following uses an example <code>VirtualMachine</code> provided by the <a href="https://quay.io/repository/containerdisks/fedora"><code>containerdisk/fedora</code> repo</a> and replaces much of the <code>DomainSpec</code> with the equivalent instance type and preferences:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl apply -f - &lt;&lt; EOF</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nn">---</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instancetype.kubevirt.io/v1alpha2</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instancetype.kubevirt.io/v1beta1</span>
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstancetype</span>
 <a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cmedium</span>
@@ -1971,7 +1986,7 @@
 <a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">  </span><span class="nt">memory</span><span class="p">:</span>
 <a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">    </span><span class="nt">guest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
 <a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="nn">---</span>
-<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instancetype.kubevirt.io/v1alpha2</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">instancetype.kubevirt.io/v1beta1</span>
 <a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachinePreference</span>
 <a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fedora</span>
@@ -2019,17 +2034,40 @@
 <a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a><span class="l l-Scalar l-Scalar-Plain">EOF</span>
 </code></pre></div>
 <h2 id="version-history">Version History<a class="headerlink" href="#version-history" title="Permanent link">&para;</a></h2>
-<h3 id="v1alpha1-experimental"><code>v1alpha1</code> (Experimental)<a class="headerlink" href="#v1alpha1-experimental" title="Permanent link">&para;</a></h3>
+<h3 id="instancetypekubevirtiov1alpha1-experimental"><code>instancetype.kubevirt.io/v1alpha1</code> (Experimental)<a class="headerlink" href="#instancetypekubevirtiov1alpha1-experimental" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Initial development version.</li>
 </ul>
-<h3 id="v1alpha2-experimental"><code>v1alpha2</code> (Experimental)<a class="headerlink" href="#v1alpha2-experimental" title="Permanent link">&para;</a></h3>
+<h3 id="instancetypekubevirtiov1alpha2-experimental"><code>instancetype.kubevirt.io/v1alpha2</code> (Experimental)<a class="headerlink" href="#instancetypekubevirtiov1alpha2-experimental" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
-<p>This version now captures complete <code>VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}</code> objects within the created <code>ControllerRevisions</code></p>
+<p>This version captured complete <code>VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}</code> objects within the created <code>ControllerRevisions</code></p>
 </li>
 <li>
-<p>This version is backwardly compatible with <code>v1alpha1</code>, no modifications are required to existing  <code>VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}</code> or <code>ControllerRevisions</code>.</p>
+<p>This version is backwardly compatible with <code>instancetype.kubevirt.io/v1alpha1</code>.</p>
+</li>
+</ul>
+<h3 id="instancetypekubevirtiov1beta1"><code>instancetype.kubevirt.io/v1beta1</code><a class="headerlink" href="#instancetypekubevirtiov1beta1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The following instance type attribute has been added:</li>
+<li>
+<p><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_memoryinstancetype"><code>Spec.Memory.OvercommitPercent</code></a></p>
+</li>
+<li>
+<p>The following preference attributes have been added:</p>
+</li>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_cpupreferences"><code>Spec.CPU.PreferredCPUFeatures</code></a></li>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_devicepreferences"><code>Spec.Devices.PreferredInterfaceMasquerade</code></a></li>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachinepreferencespec"><code>Spec.PreferredSubdomain</code></a></li>
+<li><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_virtualmachinepreferencespec"><code>Spec.PreferredTerminationGracePeriodSeconds</code></a></li>
+<li>
+<p><a href="https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_preferencerequirements"><code>Spec.Requirements</code></a></p>
+</li>
+<li>
+<p>This version is backwardly compatible with <code>instancetype.kubevirt.io/v1alpha1</code> and <code>instancetype.kubevirt.io/v1alpha2</code> objects, no modifications are required to existing  <code>VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}</code> or <code>ControllerRevisions</code>.</p>
+</li>
+<li>
+<p>As with the migration to <a href="https://github.com/kubevirt/kubevirt/blob/main/docs/updates.md#v100-migration-to-new-storage-versions"><code>kubevirt.io/v1</code></a> it is recommend previous users of <code>instancetype.kubevirt.io/v1alpha1</code> or <code>instancetype.kubevirt.io/v1alpha2</code> use <a href="https://github.com/kubernetes-sigs/kube-storage-version-migrator"><code>kube-storage-version-migrator</code></a> to upgrade any stored objects to <code>instancetype.kubevirt.io/v1beta1</code>.</p>
 </li>
 </ul>
 
@@ -2107,10 +2145,10 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.b425cdc4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>
