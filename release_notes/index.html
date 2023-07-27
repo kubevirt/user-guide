@@ -19,7 +19,7 @@
         <link rel="next" href="../contributing/">
       
       <link rel="icon" href="../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
+      <meta name="generator" content="mkdocs-1.5.0, mkdocs-material-9.1.20">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.26e3688c.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.eebd395e.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ecc896b0.min.css">
@@ -299,7 +299,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1362,6 +1364,68 @@
     v1.0.0
   </a>
   
+    <nav class="md-nav" aria-label="v1.0.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-changes" class="md-nav__link">
+    API changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    Bug fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deprecation" class="md-nav__link">
+    Deprecation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sig-compute" class="md-nav__link">
+    SIG-compute
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sig-storage" class="md-nav__link">
+    SIG-storage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sig-network" class="md-nav__link">
+    SIG-network
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sig-infra" class="md-nav__link">
+    SIG-infra
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uncategorized" class="md-nav__link">
+    Uncategorized
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2375,6 +2439,8 @@
             
             
               
+                
+              
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
@@ -2397,6 +2463,68 @@
   <a href="#v100" class="md-nav__link">
     v1.0.0
   </a>
+  
+    <nav class="md-nav" aria-label="v1.0.0">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-changes" class="md-nav__link">
+    API changes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    Bug fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deprecation" class="md-nav__link">
+    Deprecation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sig-compute" class="md-nav__link">
+    SIG-compute
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sig-storage" class="md-nav__link">
+    SIG-storage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sig-network" class="md-nav__link">
+    SIG-network
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sig-infra" class="md-nav__link">
+    SIG-infra
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uncategorized" class="md-nav__link">
+    Uncategorized
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3414,106 +3542,78 @@
 <h1 id="kubevirt-release-notes">KubeVirt release notes<a class="headerlink" href="#kubevirt-release-notes" title="Permanent link">&para;</a></h1>
 <h2 id="v100">v1.0.0<a class="headerlink" href="#v100" title="Permanent link">&para;</a></h2>
 <p>Released on: Thu Jul 11 17:39:42 2023 +0000</p>
+<h3 id="api-changes">API changes<a class="headerlink" href="#api-changes" title="Permanent link">&para;</a></h3>
 <ul>
-<li>[PR #10037][kubevirt-bot] The VM controller now replicates spec interfaces MAC addresses to the corresponding interfaces in the VMI spec.</li>
-<li>[PR #9992][machadovilaca] Fix incorrect KubevirtVmHighMemoryUsage description</li>
-<li>[PR #9965][kubevirt-bot] Disable network interface hotplug/unplug for VMIs. It will be supported for VMs only.</li>
-<li>[PR #9931][kubevirt-bot] Fix for hotplug with WFFC SCI storage class which uses CDI populators</li>
-<li>[PR #9946][kubevirt-bot] On hotunplug - remove bridge, tap and dummy interface from virt-launcher and the caches (file and volatile) from the node.</li>
-<li>[PR #9757][enp0s3] Introduce CPU hotplug</li>
-<li>[PR #9811][machadovilaca] Remove unnecessary marketplace tool</li>
-<li>[PR #7742][Fuzzy-Math] Experimental support for AMD SEV-ES</li>
-<li>[PR #9799][vladikr] Introduce an ability to set memory overcommit percentage in instanceType spec</li>
-<li>[PR #8780][lyarwood] Add basic support for expressing minimum resource requirements for CPU and Memory within VirtualMachine{Preferences,ClusterPreferences}</li>
-<li>[PR #9812][mhenriks] Handle DataVolume PendingPopulation phase</li>
-<li>[PR #9858][fossedihelm] build virtctl for all os/architectures when <code>KUBEVIRT_RELEASE</code> env var is true</li>
-<li>[PR #9765][lyarwood] Allow to define preferred cpu features in VirtualMachine{Preferences,ClusterPreferences}</li>
-<li>[PR #9844][EdDev] Drop the <code>kubevirt.io/interface</code> resource name API for reserving domain resources for network interfaces.</li>
-<li>[PR #9841][ormergi] Support hot-unplug of network interfaces on VirtualMachine objects</li>
-<li>[PR #9851][lxs137] virt-api: portfowrad can handle IPv6 VM</li>
-<li>[PR #9845][lxs137] DHCPv6 server handle request without iana option</li>
-<li>[PR #9769][lyarwood] Allow to define the preferred subdomain in VirtualMachine{Preferences,ClusterPreferences}</li>
-<li>[PR #9246][jean-edouard] Fixed migration issue for VMIs that have RWX disks backed by filesystem storage classes.</li>
-<li>[PR #9808][jcanocan] DownwardMetrics: Rename AllocatedToVirtualServers metric to AllocatedToVirtualServers and add ResourceProcessorLimit metric</li>
-<li>[PR #9832][tiraboschi] build virtctl also for arm64 for linux, darwin and windows</li>
-<li>[PR #9744][lyarwood] Allow to define the preferred termination grace period in VirtualMachine{Preferences,ClusterPreferences}</li>
-<li>[PR #9828][rthallisey] Publish multiarch manifests with each release</li>
-<li>[PR #9761][lyarwood] Allow to define the preferred masquerade configuration in VirtualMachine{Preferences,ClusterPreferences}</li>
-<li>[PR #9768][jean-edouard] New CR option to enable auto CPU limits for virt-launcher on some namespaces</li>
-<li>[PR #9779][EdDev] Support hot-unplug of network interfaces on VMI objects</li>
-<li>[PR #9688][xpivarc] Users are warned about the usage of deprecated fields</li>
-<li>[PR #9798][rmohr] Add LiveMigrateIfPossible eviction strategy to allow admins to express a live migration preference instead of a live migration requirement for evictions.</li>
-<li>[PR #9764][fossedihelm] Cluster admins can enable ksm in a set of nodes via kv configuration</li>
-<li>[PR #9753][lyarwood] The following flags have been added to the <code>virtctl image-upload</code> command allowing users to associate a default instance type and/or preference with an image during upload. <code>--default-instancetype</code>,  <code>--default-instancetype-kind</code>, <code>--default-preference</code> and <code>--default-preference-kind</code>. <a href="https://kubevirt.io/user-guide/virtual_machines/instancetypes/#inferfromvolume">See the user-guide documentation</a> for more details on using the uploaded image with the <code>inferFromVolume</code> feature during <code>VirtualMachine</code> creation.</li>
-<li>[PR #9575][lyarwood] A new <code>v1beta1</code> version of the <code>instancetype.kubevirt.io</code> API and CRDs has been introduced.</li>
-<li>[PR #9738][Barakmor1] Add condition to migrations that indicates that migration was rejected by ResourceQuota</li>
-<li>[PR #9730][assafad] Add <code>kubevirt_vmi_memory_cached_bytes</code> metric</li>
-<li>[PR #9674][fossedihelm] Introduce cluster configuration <code>VirtualMachineOptions</code> to specify virtual machine behavior at cluster level</li>
-<li>[PR #9724][0xFelix] An alert which triggers when KubeVirt APIs marked as deprecated are used was added.</li>
-<li>[PR #9623][rmohr] Bump to apimachinery 1.26</li>
-<li>[PR #9747][lyarwood] action required - With the <code>v1.0.0</code> release of KubeVirt the storage version of all core <code>kubevirt.io</code> APIs will be moving to version <code>v1</code>. To accommodate the eventual removal of the <code>v1alpha3</code> version with KubeVirt &gt;=<code>v1.2.0</code> it is recommended that operators deploy the <a href="https://github.com/kubernetes-sigs/kube-storage-version-migrator"><code>kube-storage-version-migrator</code></a> tool within their environment. This will ensure any existing <code>v1alpha3</code> stored objects are migrated to <code>v1</code> well in advance of the removal of the underlying <code>v1alpha3</code> version.</li>
-<li>[PR #9268][ormergi] virt-launcher pods network interfaces name scheme is changed to hashed names (SHA256), based on the VMI spec network names.</li>
-<li>[PR #9746][EdDev] Introduce the <code>kubevirt.io/interface</code> resource name to reserve domain resources for network interfaces.</li>
-<li>[PR #9652][machadovilaca] Add kubevirt_number_of_vms recording rule</li>
-<li>[PR #9691][fossedihelm] ksm enabled nodes will have <code>kubevirt.io/ksm-enabled</code> label</li>
-<li>[PR #9628][lyarwood] * The <code>kubevirt.io/v1</code> <code>apiVersion</code> is now the default storage version for newly created objects</li>
-<li>[PR #8293][daghaian] Add multi-arch support to KubeVirt. This allows a single KubeVirt installation to run VMs on different node architectures in the same cluster.</li>
-<li>[PR #9686][maiqueb] Fix ownership of macvtap's char devices on non-root pods</li>
-<li>[PR #9631][0xFelix] virtctl: Allow to infer instancetype or preference from specified volume when creating VMs</li>
-<li>[PR #9665][rmohr] Expose the final resolved qemu machine type on the VMI on status.machine</li>
-<li>[PR #9609][germag] Add support for running virtiofsd in an unprivileged container when sharing configuration volumes.</li>
-<li>[PR #9651][0xFelix] virtctl: Allow to specify memory of created VMs. Default to 512Mi if no instancetype was specified or is inferred.</li>
-<li>[PR #9640][jean-edouard] TSC-enabled VMs can now migrate to a node with a non-identical (but close-enough) frequency</li>
-<li>[PR #9629][0xFelix] virtctl: Allow to specify the boot order of volumes when creating VMs</li>
-<li>[PR #9632][toelke] * Add Genesis Cloud to the adopters list</li>
 <li>[PR #9572][fossedihelm] Enable freePageReporting for new non high performance vmi</li>
-<li>[PR #9435][rmohr] Ensure existence of all PVCs attached to the VMI before creating the VM target pod.</li>
 <li>[PR #8156][jean-edouard] TPM VM device can now be set to persistent</li>
 <li>[PR #8575][iholder101] QEMU-level migration parallelism (a.k.a. multifd) + Upgrade QEMU to 7.2.0-11.el9</li>
-<li>[PR #9603][qinqon] Adapt node-labeller.sh script to work at non kvm envs with emulation.</li>
-<li>[PR #9591][awels] BugFix: allow multiple NFS disks to be used/hotplugged</li>
-<li>[PR #9596][iholder101] Add "virtctl create clone" command</li>
+<li>[PR #9322][iholder101] Add guest-to-request memory headroom ratio.</li>
 <li>[PR #9422][awels] Ability to specify cpu/mem request limit for supporting containers (hotplug/container disk/virtiofs/side car)</li>
-<li>[PR #9536][akalenyu] BugFix: virtualmachineclusterinstancetypes/preferences show up for get all -n <namespace></li>
 <li>[PR #9177][alicefr] Adding SCSI persistent reservation</li>
-<li>[PR #9470][machadovilaca] Enable libvirt GetDomainStats on paused VMs</li>
-<li>[PR #9407][assafad] Use env <code>RUNBOOK_URL_TEMPLATE</code> for the runbooks URL template</li>
-<li>[PR #9399][maiqueb] Compute the interfaces to be hotplugged based on the current domain info, rather than on the interface status.</li>
+<li>[PR #9145][awels] Show VirtualMachine name in the VMExport status</li>
 <li>[PR #9491][orelmisan] API, AddInterfaceOptions: Rename NetworkName to NetworkAttachmentDefinitionName and InterfaceName to Name</li>
-<li>[PR #9327][jcanocan] DownwardMetrics: Swap KubeVirt build info with qemu version in VirtProductInfo field</li>
-<li>[PR #9478][xpivarc] Bug fix: Fixes case when migration is not retried if the migration Pod gets denied.</li>
-<li>[PR #9421][lyarwood] Requests to update the target <code>Name</code> of a <code>{Instancetype,Preference}Matcher</code> without also updating the <code>RevisionName</code> are now rejected.</li>
-<li>[PR #9367][machadovilaca] Add VM instancetype and preference label to vmi_phase_count metric</li>
-<li>[PR #9392][awels] virtctl supports retrieving vm manifest for VM export</li>
 <li>[PR #9442][EdDev] Remove the VMI Status interface <code>podConfigDone</code> field in favor of a new source option in <code>infoSource</code>.</li>
-<li>[PR #9376][ShellyKa13] Fix vmrestore with WFFC snapshotable storage class</li>
 <li>[PR #6852][maiqueb] Dev preview: Enables network interface hotplug for VMs / VMIs</li>
+<li>[PR #9193][qinqon] Add annotation for live migration and bridged pod interface</li>
+<li>[PR #9421][lyarwood] Requests to update the target <code>Name</code> of a <code>{Instancetype,Preference}Matcher</code> without also updating the <code>RevisionName</code> are now rejected.</li>
+</ul>
+<h3 id="bug-fixes">Bug fixes<a class="headerlink" href="#bug-fixes" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[PR #9591][awels] BugFix: allow multiple NFS disks to be used/hotplugged</li>
+<li>[PR #9536][akalenyu] BugFix: virtualmachineclusterinstancetypes/preferences show up for get all -n <namespace></li>
 <li>[PR #9300][xpivarc] Bug fix: API and virtctl invoked migration is not rejected when the VM is paused</li>
 <li>[PR #9189][xpivarc] Bug fix: DNS integration continues to work after migration</li>
-<li>[PR #9322][iholder101] Add guest-to-request memory headroom ratio.</li>
+<li>[PR #9241][akalenyu] BugFix: Guestfs image url not constructed correctly</li>
+<li>[PR #9260][ShellyKa13] Fix bug of possible re-trigger of memory dump</li>
+<li>[PR #9478][xpivarc] Bug fix: Fixes case when migration is not retried if the migration Pod gets denied.</li>
+<li>[PR #9330][qinqon] Skip label kubevirt.io/migrationTargetNodeName from virtctl expose service selector</li>
+<li>[PR #9603][qinqon] Adapt node-labeller.sh script to work at non kvm envs with emulation.</li>
+</ul>
+<h3 id="deprecation">Deprecation<a class="headerlink" href="#deprecation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[PR #9047][machadovilaca] Deprecate VM stuck in status alerts</li>
+</ul>
+<h3 id="sig-compute">SIG-compute<a class="headerlink" href="#sig-compute" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[PR #9640][jean-edouard] TSC-enabled VMs can now migrate to a node with a non-identical (but close-enough) frequency</li>
+<li>[PR #9629][0xFelix] virtctl: Allow to specify the boot order of volumes when creating VMs</li>
+<li>[PR #9435][rmohr] Ensure existence of all PVCs attached to the VMI before creating the VM target pod.</li>
+<li>[PR #9470][machadovilaca] Enable libvirt GetDomainStats on paused VMs</li>
+<li>[PR #9163][vladikr] fixes the requests/limits CPU number mismatch for VMs with isolatedEmulatorThread</li>
+<li>[PR #9250][vladikr] externally created mediated devices will not be deleted by virt-handler</li>
+</ul>
+<h3 id="sig-storage">SIG-storage<a class="headerlink" href="#sig-storage" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[PR #9376][ShellyKa13] Fix vmrestore with WFFC snapshotable storage class</li>
+<li>[PR #9392][awels] virtctl supports retrieving vm manifest for VM export</li>
+<li>[PR #9188][awels] Default RBAC for clone and export</li>
+<li>[PR #9133][ShellyKa13] Fix addvolume not rejecting adding existing volume source, fix removevolume allowing to remove non hotpluggable volume</li>
+</ul>
+<h3 id="sig-network">SIG-network<a class="headerlink" href="#sig-network" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[PR #9399][maiqueb] Compute the interfaces to be hotplugged based on the current domain info, rather than on the interface status.</li>
+<li>[PR #9220][orelmisan] client-go: Added context to VirtualMachine's methods.</li>
+</ul>
+<h3 id="sig-infra">SIG-infra<a class="headerlink" href="#sig-infra" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[PR #9651][0xFelix] virtctl: Allow to specify memory of created VMs. Default to 512Mi if no instancetype was specified or is inferred.</li>
+<li>[PR #9169][lyarwood] The <code>dedicatedCPUPlacement</code> attribute is once again supported within the <code>VirtualMachineInstancetype</code> and <code>VirtualMachineClusterInstancetype</code> CRDs after a recent bugfix improved <code>VirtualMachine</code> validations, ensuring defaults are applied before any attempt to validate.</li>
+</ul>
+<h3 id="uncategorized">Uncategorized<a class="headerlink" href="#uncategorized" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[PR #9632][toelke] * Add Genesis Cloud to the adopters list</li>
+<li>[PR #9596][iholder101] Add "virtctl create clone" command</li>
+<li>[PR #9407][assafad] Use env <code>RUNBOOK_URL_TEMPLATE</code> for the runbooks URL template</li>
+<li>[PR #9327][jcanocan] DownwardMetrics: Swap KubeVirt build info with qemu version in VirtProductInfo field</li>
+<li>[PR #9367][machadovilaca] Add VM instancetype and preference label to vmi_phase_count metric</li>
 <li>[PR #8906][machadovilaca] Alert if there are no available nodes to run VMs</li>
 <li>[PR #9320][darfux] node-labeller: Check arch on the handler side</li>
 <li>[PR #9127][fossedihelm] Use ECDSA instead of RSA for key generation</li>
-<li>[PR #9330][qinqon] Skip label kubevirt.io/migrationTargetNodeName from virtctl expose service selector</li>
-<li>[PR #9163][vladikr] fixes the requests/limits CPU number mismatch for VMs with isolatedEmulatorThread</li>
-<li>[PR #9250][vladikr] externally created mediated devices will not be deleted by virt-handler</li>
-<li>[PR #9193][qinqon] Add annotation for live migration and bridged pod interface</li>
-<li>[PR #9260][ShellyKa13] Fix bug of possible re-trigger of memory dump</li>
-<li>[PR #9241][akalenyu] BugFix: Guestfs image url not constructed correctly</li>
-<li>[PR #9220][orelmisan] client-go: Added context to VirtualMachine's methods.</li>
 <li>[PR #9228][rumans] Bump virtiofs container limit</li>
-<li>[PR #9169][lyarwood] The <code>dedicatedCPUPlacement</code> attribute is once again supported within the <code>VirtualMachineInstancetype</code> and <code>VirtualMachineClusterInstancetype</code> CRDs after a recent bugfix improved <code>VirtualMachine</code> validations, ensuring defaults are applied before any attempt to validate.</li>
 <li>[PR #9159][andreabolognani] This version of KubeVirt includes upgraded virtualization technology based on libvirt 9.0.0 and QEMU 7.2.0.</li>
 <li>[PR #8989][rthallisey] Integrate multi-architecture container manifests into the bazel make recipes</li>
-<li>[PR #9188][awels] Default RBAC for clone and export</li>
-<li>[PR #9145][awels] Show VirtualMachine name in the VMExport status</li>
 <li>[PR #8937][fossedihelm] Added foreground finalizer to  virtual machine</li>
-<li>[PR #9133][ShellyKa13] Fix addvolume not rejecting adding existing volume source, fix removevolume allowing to remove non hotpluggable volume</li>
-<li>[PR #9047][machadovilaca] Deprecate VM stuck in status alerts ---
-hide:</li>
-<li>navigation</li>
 </ul>
-<hr />
 <h2 id="v0590">v0.59.0<a class="headerlink" href="#v0590" title="Permanent link">&para;</a></h2>
 <p>Released on: Wed Mar 1 16:49:27 2023 +0000</p>
 <ul>
@@ -5130,6 +5230,8 @@ headless mode</li>
 
 
 
+  
+
 
 
                 
@@ -5144,6 +5246,8 @@ headless mode</li>
         <footer class="md-footer">
   
     
+      
+        
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
