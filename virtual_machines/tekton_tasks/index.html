@@ -19,7 +19,7 @@
         <link rel="next" href="../replicaset/">
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.5.0, mkdocs-material-9.1.20">
+      <meta name="generator" content="mkdocs-1.5.1, mkdocs-material-9.1.21">
     
     
       
@@ -1226,29 +1226,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#kubevirt-tekton-tasks-operator-tto" class="md-nav__link">
-    KubeVirt Tekton tasks operator (TTO)
-  </a>
-  
-    <nav class="md-nav" aria-label="KubeVirt Tekton tasks operator (TTO)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     Prerequisites
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#deploying-tto" class="md-nav__link">
-    Deploying TTO
+      
+        <li class="md-nav__item">
+  <a href="#deploying-ssp" class="md-nav__link">
+    Deploying SSP
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1532,29 +1519,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#kubevirt-tekton-tasks-operator-tto" class="md-nav__link">
-    KubeVirt Tekton tasks operator (TTO)
-  </a>
-  
-    <nav class="md-nav" aria-label="KubeVirt Tekton tasks operator (TTO)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     Prerequisites
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#deploying-tto" class="md-nav__link">
-    Deploying TTO
+      
+        <li class="md-nav__item">
+  <a href="#deploying-ssp" class="md-nav__link">
+    Deploying SSP
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1686,27 +1660,21 @@
 
 
 <h1 id="kubevirt-tekton">KubeVirt Tekton<a class="headerlink" href="#kubevirt-tekton" title="Permanent link">&para;</a></h1>
-<h2 id="kubevirt-tekton-tasks-operator-tto">KubeVirt Tekton tasks operator (TTO)<a class="headerlink" href="#kubevirt-tekton-tasks-operator-tto" title="Permanent link">&para;</a></h2>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <ul>
 <li><a href="https://tekton.dev/">Tekton</a></li>
 <li><a href="https://kubevirt.io/">KubeVirt</a></li>
 <li><a href="https://github.com/kubevirt/containerized-data-importer">CDI</a></li>
+<li><a href="https://github.com/kubevirt/ssp-operator">SSP</a></li>
 </ul>
-<h3 id="deploying-tto">Deploying TTO<a class="headerlink" href="#deploying-tto" title="Permanent link">&para;</a></h3>
-<p><a href="https://github.com/kubevirt/tekton-tasks-operator">TTO</a> is a Golang based operator, which takes care of deploying 
+<h3 id="deploying-ssp">Deploying SSP<a class="headerlink" href="#deploying-ssp" title="Permanent link">&para;</a></h3>
+<p><a href="https://github.com/kubevirt/ssp-operator">SSP</a> is a Golang based operator, which takes care of deploying 
 <a href="https://github.com/kubevirt/kubevirt-tekton-tasks">kubevirt-tekton-tasks</a> and example pipelines.</p>
-<p>TTO is shipped as a part of <a href="https://github.com/kubevirt/hyperconverged-cluster-operator">hyperconverged-cluster-operator</a> 
-or it can be deployed by the user as a stand-alone from the latest <a href="https://github.com/kubevirt/tekton-tasks-operator/releases/latest">release</a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>TTO requires <a href="https://tekton.dev/">Tekton</a> to work.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>TTO does not deploy its resources by default.</p>
-</div>
-<p>The user has to enable <code>deployTektonTaskResources</code> feature gate in HCO CR to deploy all its resources</p>
+<p>SSP is shipped as a part of <a href="https://github.com/kubevirt/hyperconverged-cluster-operator">hyperconverged-cluster-operator</a> 
+or it can be deployed by the user as a stand-alone from the latest <a href="https://github.com/kubevirt/ssp-operator/releases/latest">release</a>.</p>
+<p><strong>Note:</strong> SSP requires <a href="https://tekton.dev/">Tekton</a> to work.</p>
+<p>SSP does not deploy KubeVirt Tekton tasks resources by default.</p>
+<p>The user has to enable <code>deployTektonTaskResources</code> feature gate in HCO CR to deploy all its resources:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">apiVersion: hco.kubevirt.io/v1beta1</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">kind: HyperConverged</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="go">metadata:</span>
@@ -1716,11 +1684,11 @@ or it can be deployed by the user as a stand-alone from the latest <a href="http
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="go">  featureGates:</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="go">    deployTektonTaskResources: true</span>
 </code></pre></div>
-<p>or in TTO CR:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">apiVersion: tektontasks.kubevirt.io/v1alpha1</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">kind: TektonTasks</span>
+<p>or in SSP CR:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">apiVersion: ssp.kubevirt.io/v1beta2</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">kind: SSP</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="go">metadata:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="go">  name: tektontasks</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="go">  name: ssp</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="go">  namespace: kubevirt</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="go">spec:</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="go">  featureGates:</span>
@@ -1729,12 +1697,11 @@ or it can be deployed by the user as a stand-alone from the latest <a href="http
 User can use this command to enable <code>deployTektonTaskResources</code> feature gate in HCO CR
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="go">oc patch hco kubevirt-hyperconverged  --type=merge -p &#39;{&quot;spec&quot;:{&quot;featureGates&quot;: {&quot;deployTektonTaskResources&quot;: true}}}&#39;</span>
 </code></pre></div>
-or in TTO CR if TTO is deployed as a stand-alone without HCO
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="go">oc patch TektonTasks tektontasks  --type=merge -p &#39;{&quot;spec&quot;:{&quot;featureGates&quot;: {&quot;deployTektonTaskResources&quot;: true}}}&#39;</span>
+or by applying a patch on an existing SSP CR:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="go">oc patch ssp ssp  --type=merge -p &#39;{&quot;spec&quot;:{&quot;featureGates&quot;: {&quot;deployTektonTaskResources&quot;: true}}}&#39;</span>
 </code></pre></div></p>
-<p>Once <code>spec.featureGates.deployTektonTaskResources</code> is set to <code>true</code>, TTO will not delete any cluster 
-tasks or pipeline examples even if it is reverted back to false.</p>
-<p>The user can set in which namespace example pipelines will be deployed by setting <code>spec.tektonPipelinesNamespace</code> in HCO CR:</p>
+<p><strong>Note:</strong> Once <code>spec.featureGates.deployTektonTaskResources</code> is set to <code>true</code>, SSP will not delete any tasks or pipeline examples even if it is reverted back to false.</p>
+<p>The user can set in which namespace example pipelines or tasks will be deployed by setting <code>spec.tektonPipelinesNamespace</code> or <code>spec.tektonTasksNamespace</code>in HCO CR:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="go">apiVersion: hco.kubevirt.io/v1beta1</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">kind: HyperConverged</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="go">metadata:</span>
@@ -1742,16 +1709,19 @@ tasks or pipeline examples even if it is reverted back to false.</p>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="go">  namespace: kubevirt-hyperconverged</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="go">spec:</span>
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="go">  tektonPipelinesNamespace: userNamespace</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="go">  tektonTasksNamespace: userNamespace</span>
 </code></pre></div>
-<p>or in TTO CR by setting <code>spec.pipelines.namespace</code>:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">apiVersion: tektontasks.kubevirt.io/v1alpha1</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">kind: TektonTasks</span>
+<p>or in SSP CR by setting <code>spec.tektonPipelines.namespace</code> or <code>spec.tektonTasks.namespace</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">apiVersion: ssp.kubevirt.io/v1beta2</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">kind: SSP</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">metadata:</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="go">  name: tektontasks</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="go">  name: ssp</span>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="go">  namespace: kubevirt</span>
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="go">spec:</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="go">  pipelines:</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="go">    namespace: userNamespace</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="go">  tektonPipelines:</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="go">    namespace: kubevirt</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="go">  tektonTasks:</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="go">    namespace: kubevirt</span>
 </code></pre></div></p>
 <h2 id="kubevirt-tekton-tasks">KubeVirt Tekton tasks<a class="headerlink" href="#kubevirt-tekton-tasks" title="Permanent link">&para;</a></h2>
 <h3 id="what-are-kubevirt-tekton-tasks">What are KubeVirt Tekton tasks?<a class="headerlink" href="#what-are-kubevirt-tekton-tasks" title="Permanent link">&para;</a></h3>
@@ -1764,7 +1734,7 @@ tasks or pipeline examples even if it is reverted back to false.</p>
 <h3 id="existing-tasks">Existing tasks<a class="headerlink" href="#existing-tasks" title="Permanent link">&para;</a></h3>
 <h4 id="create-virtual-machines">Create Virtual Machines<a class="headerlink" href="#create-virtual-machines" title="Permanent link">&para;</a></h4>
 <ul>
-<li>create-vm-from-manifest - create a VM from provided manifest.</li>
+<li>create-vm-from-manifest - create a VM from provided manifest or with virtctl.</li>
 <li>create-vm-from-template - create a VM from template (works only on OpenShift).</li>
 </ul>
 <h4 id="utilize-templates">Utilize Templates<a class="headerlink" href="#utilize-templates" title="Permanent link">&para;</a></h4>
@@ -1803,17 +1773,17 @@ tasks or pipeline examples even if it is reverted back to false.</p>
 </ul>
 <h3 id="example-pipeline">Example pipeline<a class="headerlink" href="#example-pipeline" title="Permanent link">&para;</a></h3>
 <p>All these tasks can be used for creating <a href="https://github.com/tektoncd/pipeline/blob/main/docs/pipelines.md">pipelines</a>.
-TTO is creating multiple example pipelines, e.g.:</p>
+SSP is creating multiple example pipelines, e.g.:</p>
 <ul>
 <li>
-<p><a href="https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows-bios-installer-pipeline.yaml">Windows bios installer</a> - Pipeline will prepare a template and Windows datavolume vith virtio drivers installed. User has to provide a link to working Windows 10 iso file. Pipeline is suitable 
-for Windows versions, which uses bios. More informations about pipeline can be found <a href="https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-bios-installer">here</a></p>
+<p><a href="https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-bios-installer-pipeline.yaml">Windows BIOS installer</a> - Pipeline will prepare a template and Windows datavolume vith virtio drivers installed. User has to provide a link to working Windows 10 iso file. Pipeline is suitable 
+for Windows versions, which uses BIOS. More informations about pipeline can be found <a href="https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-bios-installer">here</a></p>
 </li>
 <li>
-<p><a href="https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows-efi-installer-pipeline.yaml">Windows efi installer</a> - Pipeline will prepare a template and Windows 11/2k22 datavolume vith virtio drivers installed. User has to provide a link to working Windows 11/2k22 iso file. Pipeline is suitable for Windows versions, which requires EFI (e.g. Windows 11/2k22). More informations about pipeline can be found <a href="https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-efi-installer">here</a></p>
+<p><a href="https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-efi-installer-pipeline.yaml">Windows efi installer</a> - Pipeline will prepare a template and Windows 11/2k22 datavolume vith virtio drivers installed. User has to provide a link to working Windows 11/2k22 iso file. Pipeline is suitable for Windows versions, which requires EFI (e.g. Windows 11/2k22). More informations about pipeline can be found <a href="https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-efi-installer">here</a></p>
 </li>
 <li>
-<p><a href="https://github.com/kubevirt/tekton-tasks-operator/blob/main/data/tekton-pipelines/okd/windows-customize-pipeline.yaml">Windows customize</a> - Pipeline will install sql server or vs code in windows VM. More informations about pipeline can be found <a href="https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-customize">here</a></p>
+<p><a href="https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-customize-pipeline.yaml">Windows customize</a> - Pipeline will install SQL server or VS Code in Windows VM. More informations about pipeline can be found <a href="https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-customize">here</a></p>
 </li>
 </ul>
 
