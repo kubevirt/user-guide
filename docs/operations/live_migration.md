@@ -6,7 +6,8 @@ continues to run and remain accessible.
 
 ## Enabling the live-migration support
 
-Live migration must be enabled in the feature gates to be supported. The
+Live migration is enabled by default in recent versions of KubeVirt. Versions
+prior to v0.56, it must be enabled in the feature gates. The
 [feature gates](./activating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `LiveMigration` to it.
 
