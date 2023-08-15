@@ -171,6 +171,10 @@ The previous instance type and preference CRDs are matched to a given `VirtualMa
 * `RevisionName` (string) : Optional, name of a [`ControllerRevision`](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/) containing a copy of the `VirtualMachineInstancetypeSpec` or `VirtualMachinePreferenceSpec` taken when the `VirtualMachine` is first created. See the [Versioning](#versioning) section below for more details on how and why this is captured.
 * `InferFromVolume` (string): Optional, see the [Inferring defaults from a Volume](#inferring-defaults-from-a-volume) section below for more details.
 
+## Creating InstanceTypes, Preferences and VirtualMachines
+
+It is possible to streamline the creation of instance types, preferences, and virtual machines with the usage of the virtctl command-line tool. To read more about it, please see the [Creating VirtualMachines](creating_vms.md#creating-virtualmachines).
+
 ## Versioning
 
 Versioning of these resources is required to ensure the eventual `VirtualMachineInstance` created when starting a `VirtualMachine` does not change between restarts if any referenced instance type or set of preferences are updated during the lifetime of the `VirtualMachine`.
