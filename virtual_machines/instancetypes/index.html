@@ -1002,6 +1002,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#creating-instancetypes-preferences-and-virtualmachines" class="md-nav__link">
+    Creating InstanceTypes, Preferences and VirtualMachines
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#versioning" class="md-nav__link">
     Versioning
   </a>
@@ -1541,6 +1548,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#creating-instancetypes-preferences-and-virtualmachines" class="md-nav__link">
+    Creating InstanceTypes, Preferences and VirtualMachines
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#versioning" class="md-nav__link">
     Versioning
   </a>
@@ -1784,6 +1798,8 @@
 <li><code>RevisionName</code> (string) : Optional, name of a <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/controller-revision-v1/"><code>ControllerRevision</code></a> containing a copy of the <code>VirtualMachineInstancetypeSpec</code> or <code>VirtualMachinePreferenceSpec</code> taken when the <code>VirtualMachine</code> is first created. See the <a href="#versioning">Versioning</a> section below for more details on how and why this is captured.</li>
 <li><code>InferFromVolume</code> (string): Optional, see the <a href="#inferring-defaults-from-a-volume">Inferring defaults from a Volume</a> section below for more details.</li>
 </ul>
+<h2 id="creating-instancetypes-preferences-and-virtualmachines">Creating InstanceTypes, Preferences and VirtualMachines<a class="headerlink" href="#creating-instancetypes-preferences-and-virtualmachines" title="Permanent link">&para;</a></h2>
+<p>It is possible to streamline the creation of instance types, preferences, and virtual machines with the usage of the virtctl command-line tool. To read more about it, please see the <a href="../creating_vms/#creating-virtualmachines">Creating VirtualMachines</a>.</p>
 <h2 id="versioning">Versioning<a class="headerlink" href="#versioning" title="Permanent link">&para;</a></h2>
 <p>Versioning of these resources is required to ensure the eventual <code>VirtualMachineInstance</code> created when starting a <code>VirtualMachine</code> does not change between restarts if any referenced instance type or set of preferences are updated during the lifetime of the <code>VirtualMachine</code>.</p>
 <p>This is currently achieved by using <code>ControllerRevision</code> to retain a copy of the <code>VirtualMachineInstancetype</code> or <code>VirtualMachinePreference</code> at the time the <code>VirtualMachine</code> is created. A reference to these <code>ControllerRevisions</code> are then retained in the <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_instancetypematcher"><code>InstancetypeMatcher</code></a> and <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_preferencematcher"><code>PreferenceMatcher</code></a> within the <code>VirtualMachine</code> for future use.</p>
