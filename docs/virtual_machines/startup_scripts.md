@@ -23,7 +23,8 @@ VMs.
 Cloud-init documentation can be found here: [Cloud-init
 Documentation](https://cloudinit.readthedocs.io/en/latest/).
 
-KubeVirt supports cloud-init's "NoCloud" and "ConfigDrive" datasources
+KubeVirt supports cloud-init's [NoCloud](https://cloudinit.readthedocs.io/en/latest/reference/datasources/nocloud.html) 
+and [ConfigDrive](https://cloudinit.readthedocs.io/en/latest/reference/datasources/configdrive.html) datasources
 which involve injecting startup scripts into a VM instance through the
 use of an ephemeral disk. VMs with the cloud-init package installed will
 detect the ephemeral disk and execute custom userdata scripts at boot.
