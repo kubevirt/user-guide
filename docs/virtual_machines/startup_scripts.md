@@ -23,7 +23,8 @@ VMs.
 Cloud-init documentation can be found here: [Cloud-init
 Documentation](https://cloudinit.readthedocs.io/en/latest/).
 
-KubeVirt supports cloud-init's "NoCloud" and "ConfigDrive" datasources
+KubeVirt supports cloud-init's [NoCloud](https://cloudinit.readthedocs.io/en/latest/reference/datasources/nocloud.html) 
+and [ConfigDrive](https://cloudinit.readthedocs.io/en/latest/reference/datasources/configdrive.html) datasources
 which involve injecting startup scripts into a VM instance through the
 use of an ephemeral disk. VMs with the cloud-init package installed will
 detect the ephemeral disk and execute custom userdata scripts at boot.
@@ -111,6 +112,32 @@ ConfigDrive data source:
       - name: cloudinitvolume
         cloudInitConfigDrive:
           userData: "#cloud-config"
+
+When using the ConfigDrive datasource, the `networkData` part has to be in the
+[OpenStack Metadata Service Network](https://specs.openstack.org/openstack/nova-specs/specs/liberty/implemented/metadata-service-network-info.html) format:
+```
+  spec:
+    domain:
+      interfaces: 
+        - name: secondary-net
+          bridge: {}
+          macAddress: '02:26:19:00:00:30'
+          model: virtio
+    networks: 
+        - multus:
+            networkName: my-ns/my-net
+          name: secondary-net
+    volumes:
+      - name: cloudinitvolume
+        cloudInitConfigDrive:
+          networkData: |
+            {"links":[{"id":"enp2s0","type":"phy","ethernet_mac_address":"02:26:19:00:00:30"}],"networks":[{"id":"NAD1","type":"ipv4","link":"enp2s0","ip_address":"10.184.0.244","netmask":"255.255.240.0","routes":[{"network":"0.0.0.0","netmask":"0.0.0.0","gateway":"23.253.157.1"}],"network_id":""}],"services":[]}
+          userData: "#cloud-config"
+```
+
+> **Note**
+> The MAC address of the secondary interface should be predefined and identical in 
+> the network interface and the cloud-init networkData. 
 
 See the examples below for more complete cloud-init examples.
 
