@@ -1,5 +1,5 @@
 # Contributing guidelines
 
-Please follow the same [contributing guide](https://github.com/kubevirt/community/blob/main/contributors/contributing.md) as you would follow for any other pull request made to Kubevirt.
+Please see the [contributing guide](https://kubevirt.io/user-guide/contributing) for information on how and where to contribute to the project.
 
-This contents of this repository is published to [kubevirt.io/user-guide](https://kubevirt.io/user-guide).
+The contents of this repository is published to [kubevirt.io/user-guide](https://kubevirt.io/user-guide).
