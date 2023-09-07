@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/tekton_tasks/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/resources_requests_and_limits/">
       
       
-        <link rel="prev" href="../templates/">
+        <link rel="prev" href="../persistent_tpm_and_uefi_state/">
       
       
-        <link rel="next" href="../replicaset/">
+        <link rel="next" href="../../release_notes/">
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>KubeVirt Tekton - KubeVirt user guide</title>
+        <title>Resources requests and limits - KubeVirt user guide</title>
       
     
     
@@ -81,7 +81,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kubevirt-tekton" class="md-skip">
+        <a href="#resources-requests-and-limits" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              KubeVirt Tekton
+              Resources requests and limits
             
           </span>
         </div>
@@ -1576,29 +1576,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    KubeVirt Tekton
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../tekton_tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1607,136 +1587,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploying-ssp" class="md-nav__link">
-    Deploying SSP
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#kubevirt-tekton-tasks" class="md-nav__link">
-    KubeVirt Tekton tasks
-  </a>
-  
-    <nav class="md-nav" aria-label="KubeVirt Tekton tasks">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#what-are-kubevirt-tekton-tasks" class="md-nav__link">
-    What are KubeVirt Tekton tasks?
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#existing-tasks" class="md-nav__link">
-    Existing tasks
-  </a>
-  
-    <nav class="md-nav" aria-label="Existing tasks">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#create-virtual-machines" class="md-nav__link">
-    Create Virtual Machines
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#utilize-templates" class="md-nav__link">
-    Utilize Templates
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#modify-data-objects" class="md-nav__link">
-    Modify Data Objects
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generate-ssh-keys" class="md-nav__link">
-    Generate SSH Keys
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#execute-commands-in-virtual-machines" class="md-nav__link">
-    Execute commands in Virtual Machines
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#manipulate-pvcs-with-libguestfs-tools" class="md-nav__link">
-    Manipulate PVCs with libguestfs tools
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#wait-for-virtual-machine-instance-status" class="md-nav__link">
-    Wait for Virtual Machine Instance Status
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#modify-windows-iso" class="md-nav__link">
-    Modify Windows iso
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-pipeline" class="md-nav__link">
-    Example pipeline
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1926,9 +1776,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../resources_requests_and_limits/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Resources requests and limits
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1937,6 +1807,100 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cpu" class="md-nav__link">
+    CPU
+  </a>
+  
+    <nav class="md-nav" aria-label="CPU">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cpu-requests-on-the-container" class="md-nav__link">
+    CPU requests on the container
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-limits-on-the-container" class="md-nav__link">
+    CPU limits on the container
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-cpu-limits" class="md-nav__link">
+    Auto CPU limits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    Memory
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#memory-requests-on-the-container" class="md-nav__link">
+    Memory requests on the container
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-limits-on-the-container" class="md-nav__link">
+    Memory limits on the container
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory limits on the container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#warnings" class="md-nav__link">
+    Warnings
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2014,94 +1978,30 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
+  <a href="#cpu" class="md-nav__link">
+    CPU
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploying-ssp" class="md-nav__link">
-    Deploying SSP
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#kubevirt-tekton-tasks" class="md-nav__link">
-    KubeVirt Tekton tasks
-  </a>
-  
-    <nav class="md-nav" aria-label="KubeVirt Tekton tasks">
+    <nav class="md-nav" aria-label="CPU">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#what-are-kubevirt-tekton-tasks" class="md-nav__link">
-    What are KubeVirt Tekton tasks?
+  <a href="#cpu-requests-on-the-container" class="md-nav__link">
+    CPU requests on the container
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#existing-tasks" class="md-nav__link">
-    Existing tasks
-  </a>
-  
-    <nav class="md-nav" aria-label="Existing tasks">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#create-virtual-machines" class="md-nav__link">
-    Create Virtual Machines
+  <a href="#cpu-limits-on-the-container" class="md-nav__link">
+    CPU limits on the container
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#utilize-templates" class="md-nav__link">
-    Utilize Templates
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#modify-data-objects" class="md-nav__link">
-    Modify Data Objects
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generate-ssh-keys" class="md-nav__link">
-    Generate SSH Keys
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#execute-commands-in-virtual-machines" class="md-nav__link">
-    Execute commands in Virtual Machines
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#manipulate-pvcs-with-libguestfs-tools" class="md-nav__link">
-    Manipulate PVCs with libguestfs tools
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#wait-for-virtual-machine-instance-status" class="md-nav__link">
-    Wait for Virtual Machine Instance Status
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#modify-windows-iso" class="md-nav__link">
-    Modify Windows iso
+  <a href="#auto-cpu-limits" class="md-nav__link">
+    Auto CPU limits
   </a>
   
 </li>
@@ -2110,11 +2010,39 @@
     </nav>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#memory" class="md-nav__link">
+    Memory
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#example-pipeline" class="md-nav__link">
-    Example pipeline
+  <a href="#memory-requests-on-the-container" class="md-nav__link">
+    Memory requests on the container
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-limits-on-the-container" class="md-nav__link">
+    Memory limits on the container
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory limits on the container">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#warnings" class="md-nav__link">
+    Warnings
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -2138,7 +2066,7 @@
                   
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/tekton_tasks.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/resources_requests_and_limits.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -2147,139 +2075,69 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/tekton_tasks.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/resources_requests_and_limits.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-<h1 id="kubevirt-tekton">KubeVirt Tekton<a class="headerlink" href="#kubevirt-tekton" title="Permanent link">&para;</a></h1>
-<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<h1 id="resources-requests-and-limits">Resources requests and limits<a class="headerlink" href="#resources-requests-and-limits" title="Permanent link">&para;</a></h1>
+<p>In this document, we are talking about the resources values set on the virt-launcher compute container, referred to as "the container" below for simplicity.</p>
+<h2 id="cpu">CPU<a class="headerlink" href="#cpu" title="Permanent link">&para;</a></h2>
+<p>Note: dedicated CPUs (and isolated emulator thread) are ignored here as they have a <a href="../dedicated_cpu_resources/">dedicated page</a>.</p>
+<h3 id="cpu-requests-on-the-container">CPU requests on the container<a class="headerlink" href="#cpu-requests-on-the-container" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="https://tekton.dev/">Tekton</a></li>
-<li><a href="https://kubevirt.io/">KubeVirt</a></li>
-<li><a href="https://github.com/kubevirt/containerized-data-importer">CDI</a></li>
-<li><a href="https://github.com/kubevirt/ssp-operator">SSP</a></li>
+<li>By default, the container requests (1/cpuAllocationRatio) CPU per vCPU. The number of vCPUs is sockets<em>cores</em>threads, defaults to 1.</li>
+<li>cpuAllocationRatio defaults to 10 but can be changed in the CR.</li>
+<li>If a CPU limit is manually set on the VM(I) and no CPU request is, the CPU requests on the container will match the CPU limits</li>
+<li>Manually setting CPU requests on the VM(I) will override all of the above and be the CPU requests for the container</li>
 </ul>
-<h3 id="deploying-ssp">Deploying SSP<a class="headerlink" href="#deploying-ssp" title="Permanent link">&para;</a></h3>
-<p><a href="https://github.com/kubevirt/ssp-operator">SSP</a> is a Golang based operator, which takes care of deploying 
-<a href="https://github.com/kubevirt/kubevirt-tekton-tasks">kubevirt-tekton-tasks</a> and example pipelines.</p>
-<p>SSP is shipped as a part of <a href="https://github.com/kubevirt/hyperconverged-cluster-operator">hyperconverged-cluster-operator</a> 
-or it can be deployed by the user as a stand-alone from the latest <a href="https://github.com/kubevirt/ssp-operator/releases/latest">release</a>.</p>
-<p><strong>Note:</strong> SSP requires <a href="https://tekton.dev/">Tekton</a> to work.</p>
-<p>SSP does not deploy KubeVirt Tekton tasks resources by default.</p>
-<p>The user has to enable <code>deployTektonTaskResources</code> feature gate in HCO CR to deploy all its resources:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">apiVersion: hco.kubevirt.io/v1beta1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">kind: HyperConverged</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="go">metadata:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="go">  name: kubevirt-hyperconverged</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="go">  namespace: kubevirt-hyperconverged</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="go">spec:</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="go">  featureGates:</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="go">    deployTektonTaskResources: true</span>
+<h3 id="cpu-limits-on-the-container">CPU limits on the container<a class="headerlink" href="#cpu-limits-on-the-container" title="Permanent link">&para;</a></h3>
+<ul>
+<li>By default, no CPU limit is set on the container</li>
+<li>If auto CPU limits is enabled (see next section), then the container will have a CPU limit of 1 per vCPU</li>
+<li>Manually setting CPU limits on the VM(I) will override all of the above and be the CPU limits for the container</li>
+</ul>
+<h3 id="auto-cpu-limits">Auto CPU limits<a class="headerlink" href="#auto-cpu-limits" title="Permanent link">&para;</a></h3>
+<p>For namespaces that require automatic CPU limits on VM(I)s, a label selector can be defined in the KubeVirt CR.<br />
+Once that label selector is defined, if a namespace matches the selector, all VM(I)s created in it will have a CPU limit of 1 per vCPU.</p>
+<p>Example:
+- CR:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">autoCPULimitNamespaceLabelSelector</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">matchLabels</span><span class="p">:</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nt">autoCpuLimit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
 </code></pre></div>
-<p>or in SSP CR:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">apiVersion: ssp.kubevirt.io/v1beta2</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">kind: SSP</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="go">metadata:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="go">  name: ssp</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="go">  namespace: kubevirt</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="go">spec:</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="go">  featureGates:</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="go">    deployTektonTaskResources: true</span>
-</code></pre></div>
-User can use this command to enable <code>deployTektonTaskResources</code> feature gate in HCO CR
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="go">oc patch hco kubevirt-hyperconverged  --type=merge -p &#39;{&quot;spec&quot;:{&quot;featureGates&quot;: {&quot;deployTektonTaskResources&quot;: true}}}&#39;</span>
-</code></pre></div>
-or by applying a patch on an existing SSP CR:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="go">oc patch ssp ssp  --type=merge -p &#39;{&quot;spec&quot;:{&quot;featureGates&quot;: {&quot;deployTektonTaskResources&quot;: true}}}&#39;</span>
+- Namespace:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespace</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">autoCpuLimit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">kubernetes.io/metadata.name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 </code></pre></div></p>
-<p><strong>Note:</strong> Once <code>spec.featureGates.deployTektonTaskResources</code> is set to <code>true</code>, SSP will not delete any tasks or pipeline examples even if it is reverted back to false.</p>
-<p>The user can set in which namespace example pipelines or tasks will be deployed by setting <code>spec.tektonPipelinesNamespace</code> or <code>spec.tektonTasksNamespace</code>in HCO CR:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="go">apiVersion: hco.kubevirt.io/v1beta1</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">kind: HyperConverged</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="go">metadata:</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="go">  name: kubevirt-hyperconverged</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="go">  namespace: kubevirt-hyperconverged</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="go">spec:</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="go">  tektonPipelinesNamespace: userNamespace</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="go">  tektonTasksNamespace: userNamespace</span>
-</code></pre></div>
-<p>or in SSP CR by setting <code>spec.tektonPipelines.namespace</code> or <code>spec.tektonTasks.namespace</code>:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">apiVersion: ssp.kubevirt.io/v1beta2</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">kind: SSP</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">metadata:</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="go">  name: ssp</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="go">  namespace: kubevirt</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="go">spec:</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="go">  tektonPipelines:</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="go">    namespace: kubevirt</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="go">  tektonTasks:</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="go">    namespace: kubevirt</span>
-</code></pre></div></p>
-<h2 id="kubevirt-tekton-tasks">KubeVirt Tekton tasks<a class="headerlink" href="#kubevirt-tekton-tasks" title="Permanent link">&para;</a></h2>
-<h3 id="what-are-kubevirt-tekton-tasks">What are KubeVirt Tekton tasks?<a class="headerlink" href="#what-are-kubevirt-tekton-tasks" title="Permanent link">&para;</a></h3>
-<p>KubeVirt-specific Tekton tasks, which are focused on:</p>
+<h2 id="memory">Memory<a class="headerlink" href="#memory" title="Permanent link">&para;</a></h2>
+<h3 id="memory-requests-on-the-container">Memory requests on the container<a class="headerlink" href="#memory-requests-on-the-container" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Creating and managing resources (VMs, DataVolumes)</li>
-<li>Executing commands in VMs</li>
-<li>Manipulating disk images with libguestfs tools</li>
+<li>VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the <a href="../../operations/hugepages/">dedicated page</a>). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container.</li>
 </ul>
-<h3 id="existing-tasks">Existing tasks<a class="headerlink" href="#existing-tasks" title="Permanent link">&para;</a></h3>
-<h4 id="create-virtual-machines">Create Virtual Machines<a class="headerlink" href="#create-virtual-machines" title="Permanent link">&para;</a></h4>
+<h3 id="memory-limits-on-the-container">Memory limits on the container<a class="headerlink" href="#memory-limits-on-the-container" title="Permanent link">&para;</a></h3>
 <ul>
-<li>create-vm-from-manifest - create a VM from provided manifest or with virtctl.</li>
-<li>create-vm-from-template - create a VM from template (works only on OpenShift).</li>
+<li>By default, no memory limit is set on the container</li>
+<li>Manually setting a memory limit on the VM(I) will set the same value on the container</li>
 </ul>
-<h4 id="utilize-templates">Utilize Templates<a class="headerlink" href="#utilize-templates" title="Permanent link">&para;</a></h4>
+<h4 id="warnings">Warnings<a class="headerlink" href="#warnings" title="Permanent link">&para;</a></h4>
 <ul>
-<li>copy-template - Copies the given template and creates a new one (works only on OpenShift).</li>
-<li>modify-vm-template - Modifies a template with user provided data (works only on OpenShift).</li>
-</ul>
-<h4 id="modify-data-objects">Modify Data Objects<a class="headerlink" href="#modify-data-objects" title="Permanent link">&para;</a></h4>
-<ul>
-<li>modify-data-object - Creates / modifies / deletes a datavolume / datasource</li>
-</ul>
-<h4 id="generate-ssh-keys">Generate SSH Keys<a class="headerlink" href="#generate-ssh-keys" title="Permanent link">&para;</a></h4>
-<ul>
-<li>generate-ssh-keys - Generates a private and public key pair, and injects it into a VM.</li>
-</ul>
-<h4 id="execute-commands-in-virtual-machines">Execute commands in Virtual Machines<a class="headerlink" href="#execute-commands-in-virtual-machines" title="Permanent link">&para;</a></h4>
-<ul>
-<li>execute-in-vm - Execute commands over SSH in a VM.</li>
-<li>cleanup-vm - Execute commands and/or stop/delete VMs.</li>
-</ul>
-<h4 id="manipulate-pvcs-with-libguestfs-tools">Manipulate PVCs with libguestfs tools<a class="headerlink" href="#manipulate-pvcs-with-libguestfs-tools" title="Permanent link">&para;</a></h4>
-<ul>
-<li>disk-virt-customize - execute virt-customize commands in PVCs.</li>
-<li>disk-virt-sysprep- execute virt-sysprep commands in PVCs.</li>
-</ul>
-<h4 id="wait-for-virtual-machine-instance-status">Wait for Virtual Machine Instance Status<a class="headerlink" href="#wait-for-virtual-machine-instance-status" title="Permanent link">&para;</a></h4>
-<ul>
-<li>wait-for-vmi-status - Waits for a VMI to be running.</li>
-</ul>
-<h4 id="modify-windows-iso">Modify Windows iso<a class="headerlink" href="#modify-windows-iso" title="Permanent link">&para;</a></h4>
-<ul>
-<li>modify-windows-iso-file - modifies windows iso (replaces prompt bootloader with no-prompt bootloader) and replaces original iso 
-  in PVC with updated one. This helps with automated installation of Windows in EFI boot mode. By default Windows in EFI boot mode 
-  uses a prompt bootloader, which will not continue with the boot process until a key is pressed. By replacing it with the non-prompt 
-  bootloader no key press is required to boot into the Windows installer.</li>
-</ul>
-<h3 id="example-pipeline">Example pipeline<a class="headerlink" href="#example-pipeline" title="Permanent link">&para;</a></h3>
-<p>All these tasks can be used for creating <a href="https://github.com/tektoncd/pipeline/blob/main/docs/pipelines.md">pipelines</a>.
-SSP is creating multiple example pipelines, e.g.:</p>
-<ul>
-<li>
-<p><a href="https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-bios-installer-pipeline.yaml">Windows BIOS installer</a> - Pipeline will prepare a template and Windows datavolume vith virtio drivers installed. User has to provide a link to working Windows 10 iso file. Pipeline is suitable 
-for Windows versions, which uses BIOS. More informations about pipeline can be found <a href="https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-bios-installer">here</a></p>
-</li>
-<li>
-<p><a href="https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-efi-installer-pipeline.yaml">Windows efi installer</a> - Pipeline will prepare a template and Windows 11/2k22 datavolume vith virtio drivers installed. User has to provide a link to working Windows 11/2k22 iso file. Pipeline is suitable for Windows versions, which requires EFI (e.g. Windows 11/2k22). More informations about pipeline can be found <a href="https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-efi-installer">here</a></p>
-</li>
-<li>
-<p><a href="https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-customize-pipeline.yaml">Windows customize</a> - Pipeline will install SQL server or VS Code in Windows VM. More informations about pipeline can be found <a href="https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-customize">here</a></p>
-</li>
+<li>Memory limits have to be more than memory requests + overhead, otherwise the container will have memory requests &gt; limits and be rejected by Kubernetes.</li>
+<li>Memory usage bursts could lead to VM crashes when memory limits are set</li>
 </ul>
 
 
@@ -2302,7 +2160,7 @@ for Windows versions, which uses BIOS. More informations about pipeline can be f
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../templates/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Templates" rel="prev">
+          <a href="../persistent_tpm_and_uefi_state/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Persistent TPM and UEFI state" rel="prev">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2312,20 +2170,20 @@ for Windows versions, which uses BIOS. More informations about pipeline can be f
                 Previous
               </span>
               <div class="md-ellipsis">
-                Templates
+                Persistent TPM and UEFI state
               </div>
             </div>
           </a>
         
         
           
-          <a href="../replicaset/" class="md-footer__link md-footer__link--next" aria-label="Next: VirtualMachineInstanceReplicaSet" rel="next">
+          <a href="../../release_notes/" class="md-footer__link md-footer__link--next" aria-label="Next: Release Notes" rel="next">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                VirtualMachineInstanceReplicaSet
+                Release Notes
               </div>
             </div>
             <div class="md-footer__button md-icon">
