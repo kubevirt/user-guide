@@ -18,22 +18,26 @@ has been introduced. This is mutually exclusive with `Running` as they
 have somewhat overlapping conditions. There are currently four
 RunStrategies defined:
 
--   Always: A VirtualMachineInstance will always be present. If the
-    VirtualMachineInstance crashed, a new one will be spawned. This is
-    the same behavior as `spec.running: true`.
+-   Always: The system is asked to always have the VM running.
+    This is achieved by respanwing a VirtualMachineInstance whenever
+    the current one terminated in a controlled (e.g. shutdown from
+    inside the guest) or uncontrolled (e.g. crash) way.
+    This behavior is equal to `spec.running: true`.
 
--   RerunOnFailure: A VirtualMachineInstance will be respawned if the
-    previous instance failed in an error state. It will not be
-    re-created if the guest stopped successfully (e.g. shut down from
-    inside guest).
+-   RerunOnFailure: Similar to `Always`, except that the VM is only
+    restarted if it terminated in an uncontrolled way (e.g. crash).
+    This allows a user to determine when the VM should be shut down
+    by initiating the shut down inside the guest.
 
--   Manual: The presence of a VirtualMachineInstance or lack thereof is
-    controlled exclusively by the start/stop/restart VirtualMachine
-    subresource endpoints.
+-   Manual: The system will turn the VM on or off, instead the user
+    is manually controlling the VM status by issuing start, stop, and
+    restart commands on the VirtualMachine subresource endpoints.
 
--   Halted: No VirtualMachineInstance will be present. If a guest is
-    already running, it will be stopped. This is the same behavior as
-    `spec.running: false`.
+-   Halted: The system is asked to ensure that no VM is running.
+    This is achieved by stopping any VirtualMachineInstance that is
+    associated ith the VM. If a guest is already running, it will be
+    stopped.
+    This behavior is equal to `spec.running: false`.
 
 *Note*: RunStrategy and Running are mutually exclusive, because they can
 be contradictory. The API server will reject VirtualMachine resources
