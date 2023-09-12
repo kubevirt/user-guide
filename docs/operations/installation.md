@@ -113,7 +113,8 @@ For (older) release branches that don't specify a container-selinux version, ver
 
 KubeVirt can be installed using the KubeVirt operator, which manages the
 lifecycle of all the KubeVirt core components. Below is an example of
-how to install KubeVirt's latest official release.
+how to install KubeVirt's latest official release. It supports to deploy KubeVirt
+on both x86_64 and Arm64 platforms.
 
     # Point at latest release
     $ export RELEASE=$(curl https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt)
@@ -216,9 +217,9 @@ To find out which commit this build is based on, run:
     $ curl https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/commit
     d358cf085b5a86cc4fa516215f8b757a4e61def2
 
-### Experimental ARM64 developer builds
+### ARM64 developer builds
 
-Experimental ARM64 developer builds can be installed like this:
+ARM64 developer builds can be installed like this:
 
     $ LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest-arm64)
     $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator-arm64.yaml
