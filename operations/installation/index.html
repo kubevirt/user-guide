@@ -593,8 +593,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#experimental-arm64-developer-builds" class="md-nav__link">
-    Experimental ARM64 developer builds
+  <a href="#arm64-developer-builds" class="md-nav__link">
+    ARM64 developer builds
   </a>
   
 </li>
@@ -2117,8 +2117,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#experimental-arm64-developer-builds" class="md-nav__link">
-    Experimental ARM64 developer builds
+  <a href="#arm64-developer-builds" class="md-nav__link">
+    ARM64 developer builds
   </a>
   
 </li>
@@ -2282,7 +2282,8 @@ virtualization workloads:</p>
 <h2 id="installing-kubevirt-on-kubernetes">Installing KubeVirt on Kubernetes<a class="headerlink" href="#installing-kubevirt-on-kubernetes" title="Permanent link">&para;</a></h2>
 <p>KubeVirt can be installed using the KubeVirt operator, which manages the
 lifecycle of all the KubeVirt core components. Below is an example of
-how to install KubeVirt's latest official release.</p>
+how to install KubeVirt's latest official release. It supports to deploy KubeVirt
+on both x86_64 and Arm64 platforms.</p>
 <div class="highlight"><pre><span></span><code># Point at latest release
 $ export RELEASE=$(curl https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt)
 # Deploy the KubeVirt operator
@@ -2363,8 +2364,8 @@ $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/re
 $ curl https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/commit
 d358cf085b5a86cc4fa516215f8b757a4e61def2
 </code></pre></div>
-<h3 id="experimental-arm64-developer-builds">Experimental ARM64 developer builds<a class="headerlink" href="#experimental-arm64-developer-builds" title="Permanent link">&para;</a></h3>
-<p>Experimental ARM64 developer builds can be installed like this:</p>
+<h3 id="arm64-developer-builds">ARM64 developer builds<a class="headerlink" href="#arm64-developer-builds" title="Permanent link">&para;</a></h3>
+<p>ARM64 developer builds can be installed like this:</p>
 <div class="highlight"><pre><span></span><code>$ LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest-arm64)
 $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator-arm64.yaml
 $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-cr-arm64.yaml
