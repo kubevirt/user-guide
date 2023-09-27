@@ -1101,67 +1101,123 @@ spec:
 
 ### downwardMetrics
 
-A `downwardMetrics` volume exposes a limited set of VM and host metrics to the
-guest as a raw block volume. The format of the block volume is compatible with
-[vhostmd](https://github.com/vhostmd/vhostmd).
+`downwardMetrics` expose a limited set of VM and host metrics to the
+guest. The format is compatible with [vhostmd](https://github.com/vhostmd/vhostmd).
 
 Getting a limited set of host and VM metrics is in some cases required to allow
 third-parties diagnosing performance issues on their appliances. One prominent
 example is SAP HANA.
 
-Example:
-
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        special: vmi-fedora
-      name: vmi-fedora
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: metrics
-        machine:
-          type: ""
-        resources:
-          requests:
-            memory: 1024M
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: containerdisk
-        containerDisk:
-          image: kubevirt/fedora-cloud-container-disk-demo:latest
-      - name: metrics
-        downwardMetrics: {}
-
-The `vm-dump-metrics` tool can be used to read the metrics:
-
-    $ dnf install -y vm-dump-metrics
-    $ vm-dump-metrics
-    <metrics>
-      <metric type="string" context="host">
-        <name>HostName</name>
-        <value>node01</value>
-    [...]
-      <metric type="int64" context="host" unit="s">
-        <name>Time</name>
-        <value>1619008605</value>
-      </metric>
-      <metric type="string" context="host">
-        <name>VirtualizationVendor</name>
-        <value>kubevirt.io</value>
-      </metric>
-    </metrics>
+In order to expose `downwardMetrics` to VMs, the methods `disk` and `virtio-serial port` are supported.
 
 > **Note:** The **DownwardMetrics** feature gate
 > [must be enabled](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
-> to use this volume. Available starting with KubeVirt v0.42.0.
+> to use the metrics. Available starting with KubeVirt v0.42.0.
+ 
+#### Disk
+
+A volume is created, and it is exposed to the guest as a raw block volume. 
+KubeVirt will update it periodically (by default, every 5 seconds).
+
+Example:
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: metrics
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: quay.io/containerdisks/fedora:latest
+  - name: metrics
+    downwardMetrics: {}
+```
+
+#### Virtio-serial port
+
+This method uses a virtio-serial port to expose the metrics data to the VM.
+KubeVirt creates a port named `/dev/virtio-ports/org.github.vhostmd.1` inside the VM, in which the Virtio Transport protocol
+is supported. `downwardMetrics` can be retrieved from this port.
+See [vhostmd documentation](https://github.com/vhostmd/vhostmd/blob/master/README) under `Virtio Transport` for further
+information.
+
+To expose the metrics using a virtio-serial port, a `downwardMetrics` device must be added (i.e.,
+`spec.domain.devices.downwardMetrics: {}`).
+
+Example:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    devices:
+      downwardMetrics: {}
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: quay.io/containerdisks/fedora:latest
+```
+#### Accessing Metrics Data
+
+To access the DownwardMetrics shared with a disk or a virtio-serial port, the `vm-dump-metrics` tool can be used:
+
+```xml
+$ sudo dnf install -y vm-dump-metrics
+$ sudo vm-dump-metrics
+<metrics>
+  <metric type="string" context="host">
+    <name>HostName</name>
+    <value>node01</value>
+[...]
+  <metric type="int64" context="host" unit="s">
+    <name>Time</name>
+    <value>1619008605</value>
+  </metric>
+  <metric type="string" context="host">
+    <name>VirtualizationVendor</name>
+    <value>kubevirt.io</value>
+  </metric>
+</metrics>
+```
+
+`vm-dump-metrics` is useful as a standalone tool to verify the serial port is working and to inspect the metrics. 
+However, applications that consume metrics will usually connect to the virtio-serial port themselves.
+
+> **Note:** The tool `vm-dump-metrics` provides the option `--virtio` in case the virtio-serial port is used.
+> Please, refer to `vm-dump-metrics --help` for further information.
 
 ## High Performance Features
 
