@@ -1,7 +1,7 @@
 # Export API
 It can be desirable to export a Virtual Machine and its related disks out of a cluster so you can import that Virtual Machine into another system or cluster. The Virtual Machine disks are the most prominent things you will want to export. The export API makes it possible to declaratively export Virtual Machine disks. It is also possible to export individual PVCs and their contents, for instance when you have created a memory dump from a VM or are using virtio-fs to have a Virtual Machine populate a PVC.
 
-In order not to overload the kubernetes API server the data is transferred through a dedicated export proxy server. The proxy server can then be exposed to the outside world through a service associated with an Ingress/Route or NodePort.
+In order not to overload the kubernetes API server the data is transferred through a dedicated export proxy server. The proxy server can then be exposed to the outside world through a service associated with an Ingress/Route or NodePort. As an alternative, the `port-forward` flag can be used with the virtctl integration to bypass the need of an Ingress/Route.
 
 ### Export Feature Gate
 
@@ -322,8 +322,17 @@ $ virtctl vmexport delete name
 # --output, mandatory flag to specify the output file.
 # --volume, optional flag to specify the name of the downloadable volume.
 # --vm|--snapshot|--pvc, if specified, are used to create the VMExport object assuming it doesn't exist. The name of the object to export has to be specified.
+# --format, optional flag to specify wether to download the file in compressed (default) or raw format.
+# --port-forward, optional flag to easily download the volume without the need of an ingress or route. Also, the local port can be optionally specified with the --local-port flag.
 
 $ virtctl vmexport download name [flags]
+```
+
+By default, the volume will be downloaded in compressed format. Users can specify the desired format (gzip or raw) by using the `format` flag, as shown below:
+
+```sh
+# Downloads a volume from the defined VMExport object and, if necessary, decompresses it.
+$ virtctl vmexport download name --format=raw [flags]
 ```
 
 #### TTL (Time to live)
