@@ -469,6 +469,32 @@ spec:
 EOF
 ```
 
+## `instancetype.kubevirt.io:view` `ClusterRole`
+
+From version `v1.1.0`, a standalone `instancetype.kubevirt.io:view` [`ClusterRole`](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole) is provided to allow operators to grant users read-only access to `VirtualMachineCluster{Instancetype,Preference}` resources.
+
+This is required as the aggregated `kubevirt.io:view` and default `view` `ClusterRoles` require a `ClusterRoleBinding` to access cluster wide resources. Doing so would also provide users with read only access to all of the associated resources across namespaces etc. As such a separate minimal `ClusterRole` is required to provide more targeted read only access to any to `VirtualMachineCluster{Instancetype,Preference}` resources.
+
+The `instancetype.kubevirt.io:view` `ClusterRole` can be used with a [`ClusterRoleBinding`](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#rolebinding-and-clusterrolebinding) to provide users with this read only to access:
+
+```yaml
+$ kubectl apply -f - << EOF
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: user-instancetype-view-binding
+subjects:
+- kind: User
+  name: username
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: instancetype.kubevirt.io:view
+EOF
+```
+
 ## Version History
 
 ### `instancetype.kubevirt.io/v1alpha1` (Experimental)
