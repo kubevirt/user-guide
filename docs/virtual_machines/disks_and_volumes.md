@@ -1460,9 +1460,9 @@ KubeVirt supports `none`, `writeback`, and `writethrough` KVM/QEMU cache modes.
 -   `writeback` I/O from the guest is cached on the host and written through
     to the physical media when the guest OS issues a flush.
 
--   `writethrough` I/O from the guest is cached on the host but written
-    through to the physical medium on each write.
-
+-   `writethrough` I/O from the guest is cached on the host but must be written
+    through to the physical medium before the write operation completes.
+    
 > **Important:** `none` cache mode is set as default if the file system
 > supports direct I/O, otherwise, `writethrough` is used.
 
