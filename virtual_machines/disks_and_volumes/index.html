@@ -4325,7 +4325,7 @@ spec:
 <p>This example will enable Block Multi-Queue for the disk <code>mypvcdisk</code> and
 allocate 4 queues (to match the number of CPUs requested).</p>
 <h3 id="disk-device-cache">Disk device cache<a class="headerlink" href="#disk-device-cache" title="Permanent link">&para;</a></h3>
-<p>KubeVirt supports <code>none</code> and <code>writethrough</code> KVM/QEMU cache modes.</p>
+<p>KubeVirt supports <code>none</code>, <code>writeback</code>, and <code>writethrough</code> KVM/QEMU cache modes.</p>
 <ul>
 <li>
 <p><code>none</code> I/O from the guest is not cached on the host. Use this option
@@ -4333,8 +4333,12 @@ allocate 4 queues (to match the number of CPUs requested).</p>
     best choice.</p>
 </li>
 <li>
-<p><code>writethrough</code> I/O from the guest is cached on the host but written
-    through to the physical medium.</p>
+<p><code>writeback</code> I/O from the guest is cached on the host and written through
+    to the physical media when the guest OS issues a flush.</p>
+</li>
+<li>
+<p><code>writethrough</code> I/O from the guest is cached on the host but must be written
+    through to the physical medium before the write operation completes.</p>
 </li>
 </ul>
 <blockquote>
