@@ -11,13 +11,13 @@
 [kubevirt-tekton-tasks](https://github.com/kubevirt/kubevirt-tekton-tasks) and example pipelines.
 
 SSP is shipped as a part of [hyperconverged-cluster-operator](https://github.com/kubevirt/hyperconverged-cluster-operator) 
-or it can be deployed by the user as a stand-alone from the latest [release](https://github.com/kubevirt/ssp-operator/releases/latest).
+or it can be deployed as a stand-alone operator from the latest [release](https://github.com/kubevirt/ssp-operator/releases/latest).
 
 **Note:** SSP requires [Tekton](https://tekton.dev/) to work.
 
 SSP does not deploy KubeVirt Tekton tasks resources by default.
 
-The user has to enable `deployTektonTaskResources` feature gate in HCO CR to deploy all its resources:
+You have to enable `deployTektonTaskResources` feature gate in HCO CR to deploy all its resources:
 
 ```console
 apiVersion: hco.kubevirt.io/v1beta1
@@ -41,7 +41,7 @@ spec:
   featureGates:
     deployTektonTaskResources: true
 ```
-User can use this command to enable `deployTektonTaskResources` feature gate in HCO CR
+or you can use this command to enable `deployTektonTaskResources` feature gate in HCO CR
 ```console
 oc patch hco kubevirt-hyperconverged  --type=merge -p '{"spec":{"featureGates": {"deployTektonTaskResources": true}}}'
 ```
@@ -51,33 +51,6 @@ oc patch ssp ssp  --type=merge -p '{"spec":{"featureGates": {"deployTektonTaskRe
 ```
 
 **Note:** Once `spec.featureGates.deployTektonTaskResources` is set to `true`, SSP will not delete any tasks or pipeline examples even if it is reverted back to false.
-
-The user can set in which namespace example pipelines or tasks will be deployed by setting `spec.tektonPipelinesNamespace` or `spec.tektonTasksNamespace`in HCO CR:
-
-```console
-apiVersion: hco.kubevirt.io/v1beta1
-kind: HyperConverged
-metadata:
-  name: kubevirt-hyperconverged
-  namespace: kubevirt-hyperconverged
-spec:
-  tektonPipelinesNamespace: userNamespace
-  tektonTasksNamespace: userNamespace
-```
-
-or in SSP CR by setting `spec.tektonPipelines.namespace` or `spec.tektonTasks.namespace`:
-```console
-apiVersion: ssp.kubevirt.io/v1beta2
-kind: SSP
-metadata:
-  name: ssp
-  namespace: kubevirt
-spec:
-  tektonPipelines:
-    namespace: kubevirt
-  tektonTasks:
-    namespace: kubevirt
-```
 
 ## KubeVirt Tekton tasks 
 ### What are KubeVirt Tekton tasks?
@@ -130,3 +103,38 @@ for Windows versions, which uses BIOS. More informations about pipeline can be f
 - [Windows efi installer](https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-efi-installer-pipeline.yaml) - Pipeline will prepare a template and Windows 11/2k22 datavolume vith virtio drivers installed. User has to provide a link to working Windows 11/2k22 iso file. Pipeline is suitable for Windows versions, which requires EFI (e.g. Windows 11/2k22). More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-efi-installer)
 
 - [Windows customize](https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-customize-pipeline.yaml) - Pipeline will install SQL server or VS Code in Windows VM. More informations about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-customize)
+
+### Using tasks and example pipelines in different namespace
+You can set in which namespace the example pipelines and tasks will be deployed by setting `spec.tektonPipelinesNamespace` or `spec.tektonTasksNamespace`in the HCO CR:
+
+```console
+apiVersion: hco.kubevirt.io/v1beta1
+kind: HyperConverged
+metadata:
+  name: kubevirt-hyperconverged
+  namespace: kubevirt-hyperconverged
+spec:
+  tektonPipelinesNamespace: userNamespace
+  tektonTasksNamespace: userNamespace
+```
+
+or in SSP CR by setting `spec.tektonPipelines.namespace` or `spec.tektonTasks.namespace`:
+```console
+apiVersion: ssp.kubevirt.io/v1beta2
+kind: SSP
+metadata:
+  name: ssp
+  namespace: kubevirt
+spec:
+  tektonPipelines:
+    namespace: kubevirt
+  tektonTasks:
+    namespace: kubevirt
+```
+
+!!! note
+    - The namespace has to exists before doing this change. <br />
+    - If you define different namespace for pipelines and different namespace for tasks, you will have to create [cluster resolver](https://tekton.dev/docs/pipelines/cluster-resolver/) object. <br />
+    - In case you change the `tektonPipelinesNamespace` attribute, the pipelines will be deployed in that namespace. <br />
+    - By default, example pipelines create the result datavolume in `kubevirt-os-images`. <br />
+    - In case you would like to create result datavolume in different namespace (by specifying `baseDvNamespace` attribute in pipeline), there will be required additional RBAC permissions (list of all required RBAC permissions can be found [here](https://github.com/kubevirt/ssp-operator/blob/master/data/tekton-pipelines/pipelines-rbac.yaml)).
