@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.3">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.4">
     
     
       
@@ -28,10 +28,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.79e020e9.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bd3936ea.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.a5377069.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
       
       
 
@@ -1738,6 +1738,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#using-tasks-and-example-pipelines-in-different-namespace" class="md-nav__link">
+    Using tasks and example pipelines in different namespace
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2128,6 +2135,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#using-tasks-and-example-pipelines-in-different-namespace" class="md-nav__link">
+    Using tasks and example pipelines in different namespace
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2176,10 +2190,10 @@
 <p><a href="https://github.com/kubevirt/ssp-operator">SSP</a> is a Golang based operator, which takes care of deploying 
 <a href="https://github.com/kubevirt/kubevirt-tekton-tasks">kubevirt-tekton-tasks</a> and example pipelines.</p>
 <p>SSP is shipped as a part of <a href="https://github.com/kubevirt/hyperconverged-cluster-operator">hyperconverged-cluster-operator</a> 
-or it can be deployed by the user as a stand-alone from the latest <a href="https://github.com/kubevirt/ssp-operator/releases/latest">release</a>.</p>
+or it can be deployed as a stand-alone operator from the latest <a href="https://github.com/kubevirt/ssp-operator/releases/latest">release</a>.</p>
 <p><strong>Note:</strong> SSP requires <a href="https://tekton.dev/">Tekton</a> to work.</p>
 <p>SSP does not deploy KubeVirt Tekton tasks resources by default.</p>
-<p>The user has to enable <code>deployTektonTaskResources</code> feature gate in HCO CR to deploy all its resources:</p>
+<p>You have to enable <code>deployTektonTaskResources</code> feature gate in HCO CR to deploy all its resources:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">apiVersion: hco.kubevirt.io/v1beta1</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">kind: HyperConverged</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="go">metadata:</span>
@@ -2199,35 +2213,13 @@ or it can be deployed by the user as a stand-alone from the latest <a href="http
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="go">  featureGates:</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="go">    deployTektonTaskResources: true</span>
 </code></pre></div>
-User can use this command to enable <code>deployTektonTaskResources</code> feature gate in HCO CR
+or you can use this command to enable <code>deployTektonTaskResources</code> feature gate in HCO CR
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="go">oc patch hco kubevirt-hyperconverged  --type=merge -p &#39;{&quot;spec&quot;:{&quot;featureGates&quot;: {&quot;deployTektonTaskResources&quot;: true}}}&#39;</span>
 </code></pre></div>
 or by applying a patch on an existing SSP CR:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="go">oc patch ssp ssp  --type=merge -p &#39;{&quot;spec&quot;:{&quot;featureGates&quot;: {&quot;deployTektonTaskResources&quot;: true}}}&#39;</span>
 </code></pre></div></p>
 <p><strong>Note:</strong> Once <code>spec.featureGates.deployTektonTaskResources</code> is set to <code>true</code>, SSP will not delete any tasks or pipeline examples even if it is reverted back to false.</p>
-<p>The user can set in which namespace example pipelines or tasks will be deployed by setting <code>spec.tektonPipelinesNamespace</code> or <code>spec.tektonTasksNamespace</code>in HCO CR:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="go">apiVersion: hco.kubevirt.io/v1beta1</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">kind: HyperConverged</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="go">metadata:</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="go">  name: kubevirt-hyperconverged</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="go">  namespace: kubevirt-hyperconverged</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="go">spec:</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="go">  tektonPipelinesNamespace: userNamespace</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="go">  tektonTasksNamespace: userNamespace</span>
-</code></pre></div>
-<p>or in SSP CR by setting <code>spec.tektonPipelines.namespace</code> or <code>spec.tektonTasks.namespace</code>:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">apiVersion: ssp.kubevirt.io/v1beta2</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">kind: SSP</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">metadata:</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="go">  name: ssp</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="go">  namespace: kubevirt</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="go">spec:</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="go">  tektonPipelines:</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="go">    namespace: kubevirt</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="go">  tektonTasks:</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="go">    namespace: kubevirt</span>
-</code></pre></div></p>
 <h2 id="kubevirt-tekton-tasks">KubeVirt Tekton tasks<a class="headerlink" href="#kubevirt-tekton-tasks" title="Permanent link">&para;</a></h2>
 <h3 id="what-are-kubevirt-tekton-tasks">What are KubeVirt Tekton tasks?<a class="headerlink" href="#what-are-kubevirt-tekton-tasks" title="Permanent link">&para;</a></h3>
 <p>KubeVirt-specific Tekton tasks, which are focused on:</p>
@@ -2291,6 +2283,39 @@ for Windows versions, which uses BIOS. More informations about pipeline can be f
 <p><a href="https://github.com/kubevirt/ssp-operator/blob/main/data/tekton-pipelines/windows-customize-pipeline.yaml">Windows customize</a> - Pipeline will install SQL server or VS Code in Windows VM. More informations about pipeline can be found <a href="https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/examples/pipelines/windows-customize">here</a></p>
 </li>
 </ul>
+<h3 id="using-tasks-and-example-pipelines-in-different-namespace">Using tasks and example pipelines in different namespace<a class="headerlink" href="#using-tasks-and-example-pipelines-in-different-namespace" title="Permanent link">&para;</a></h3>
+<p>You can set in which namespace the example pipelines and tasks will be deployed by setting <code>spec.tektonPipelinesNamespace</code> or <code>spec.tektonTasksNamespace</code>in the HCO CR:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="go">apiVersion: hco.kubevirt.io/v1beta1</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="go">kind: HyperConverged</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="go">metadata:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="go">  name: kubevirt-hyperconverged</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="go">  namespace: kubevirt-hyperconverged</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="go">spec:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="go">  tektonPipelinesNamespace: userNamespace</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="go">  tektonTasksNamespace: userNamespace</span>
+</code></pre></div>
+<p>or in SSP CR by setting <code>spec.tektonPipelines.namespace</code> or <code>spec.tektonTasks.namespace</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">apiVersion: ssp.kubevirt.io/v1beta2</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">kind: SSP</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">metadata:</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="go">  name: ssp</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="go">  namespace: kubevirt</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="go">spec:</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="go">  tektonPipelines:</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="go">    namespace: kubevirt</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="go">  tektonTasks:</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="go">    namespace: kubevirt</span>
+</code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul>
+<li>The namespace has to exists before doing this change. <br /></li>
+<li>If you define different namespace for pipelines and different namespace for tasks, you will have to create <a href="https://tekton.dev/docs/pipelines/cluster-resolver/">cluster resolver</a> object. <br /></li>
+<li>In case you change the <code>tektonPipelinesNamespace</code> attribute, the pipelines will be deployed in that namespace. <br /></li>
+<li>By default, example pipelines create the result datavolume in <code>kubevirt-os-images</code>. <br /></li>
+<li>In case you would like to create result datavolume in different namespace (by specifying <code>baseDvNamespace</code> attribute in pipeline), there will be required additional RBAC permissions (list of all required RBAC permissions can be found <a href="https://github.com/kubevirt/ssp-operator/blob/master/data/tekton-pipelines/pipelines-rbac.yaml">here</a>).</li>
+</ul>
+</div>
 
 
 
@@ -2369,10 +2394,10 @@ for Windows versions, which uses BIOS. More informations about pipeline can be f
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.6eac0284.min.js"></script>
+      <script src="../../assets/javascripts/bundle.94c44541.min.js"></script>
       
     
   </body>
