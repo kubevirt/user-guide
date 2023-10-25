@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.5">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.6a10b989.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35e1ed30.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
@@ -1860,6 +1860,26 @@
     Auto CPU limits
   </a>
   
+    <nav class="md-nav" aria-label="Auto CPU limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoresourcelimitsgate-feature-gate" class="md-nav__link">
+    AutoResourceLimitsGate feature gate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autocpulimitnamespacelabelselector-configuration" class="md-nav__link">
+    autoCPULimitNamespaceLabelSelector configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -1899,6 +1919,13 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-memory-limits" class="md-nav__link">
+    Auto memory limits
+  </a>
   
 </li>
         
@@ -2014,6 +2041,26 @@
     Auto CPU limits
   </a>
   
+    <nav class="md-nav" aria-label="Auto CPU limits">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#autoresourcelimitsgate-feature-gate" class="md-nav__link">
+    AutoResourceLimitsGate feature gate
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autocpulimitnamespacelabelselector-configuration" class="md-nav__link">
+    autoCPULimitNamespaceLabelSelector configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -2053,6 +2100,13 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-memory-limits" class="md-nav__link">
+    Auto memory limits
+  </a>
   
 </li>
         
@@ -2110,10 +2164,26 @@
 <li>Manually setting CPU limits on the VM(I) will override all of the above and be the CPU limits for the container</li>
 </ul>
 <h3 id="auto-cpu-limits">Auto CPU limits<a class="headerlink" href="#auto-cpu-limits" title="Permanent link">&para;</a></h3>
-<p>For namespaces that require automatic CPU limits on VM(I)s, a label selector can be defined in the KubeVirt CR.<br />
-Once that label selector is defined, if a namespace matches the selector, all VM(I)s created in it will have a CPU limit of 1 per vCPU.</p>
-<p>Example:
-- CR:
+<p>KubeVirt provides two ways to automatically set CPU limits on VM(I)s:</p>
+<ul>
+<li>Enable the <code>AutoResourceLimitsGate</code> feature gate.</li>
+<li>Add the namespaceLabelSelector in the KubeVirt CR.</li>
+</ul>
+<p>In both cases, the VM(I) created will have a CPU limit of 1 per vCPU.</p>
+<h4 id="autoresourcelimitsgate-feature-gate">AutoResourceLimitsGate feature gate<a class="headerlink" href="#autoresourcelimitsgate-feature-gate" title="Permanent link">&para;</a></h4>
+<p>By enabling this feature gate, cpu limits will be added to the vmi if all the following conditions are true:</p>
+<ul>
+<li>The namespace where the VMI will be created has a ResourceQuota containing cpu limits.</li>
+<li>The VMI has no manually set cpu limits.</li>
+<li>The VMI is not requesting dedicated CPU.</li>
+</ul>
+<h4 id="autocpulimitnamespacelabelselector-configuration">autoCPULimitNamespaceLabelSelector configuration<a class="headerlink" href="#autocpulimitnamespacelabelselector-configuration" title="Permanent link">&para;</a></h4>
+<p>Cluster admins can define a label selector in the KubeVirt CR.<br />
+Once that label selector is defined, if the creation namespace matches the selector, all VM(I)s created in it will have a CPU limits set.</p>
+<p>Example:</p>
+<ul>
+<li>
+<p>CR:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -2124,8 +2194,10 @@ Once that label selector is defined, if a namespace matches the selector, all VM
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">autoCPULimitNamespaceLabelSelector</span><span class="p">:</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">matchLabels</span><span class="p">:</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nt">autoCpuLimit</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
-</code></pre></div>
-- Namespace:
+</code></pre></div></p>
+</li>
+<li>
+<p>Namespace:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespace</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -2134,6 +2206,8 @@ Once that label selector is defined, if a namespace matches the selector, all VM
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">kubernetes.io/metadata.name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 </code></pre></div></p>
+</li>
+</ul>
 <h2 id="memory">Memory<a class="headerlink" href="#memory" title="Permanent link">&para;</a></h2>
 <h3 id="memory-requests-on-the-container">Memory requests on the container<a class="headerlink" href="#memory-requests-on-the-container" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2142,6 +2216,7 @@ Once that label selector is defined, if a namespace matches the selector, all VM
 <h3 id="memory-limits-on-the-container">Memory limits on the container<a class="headerlink" href="#memory-limits-on-the-container" title="Permanent link">&para;</a></h3>
 <ul>
 <li>By default, no memory limit is set on the container</li>
+<li>If auto memory limits is enabled (see next section), then the container will have a limit of 2x the requested memory.</li>
 <li>Manually setting a memory limit on the VM(I) will set the same value on the container</li>
 </ul>
 <h4 id="warnings">Warnings<a class="headerlink" href="#warnings" title="Permanent link">&para;</a></h4>
@@ -2149,6 +2224,18 @@ Once that label selector is defined, if a namespace matches the selector, all VM
 <li>Memory limits have to be more than memory requests + overhead, otherwise the container will have memory requests &gt; limits and be rejected by Kubernetes.</li>
 <li>Memory usage bursts could lead to VM crashes when memory limits are set</li>
 </ul>
+<h3 id="auto-memory-limits">Auto memory limits<a class="headerlink" href="#auto-memory-limits" title="Permanent link">&para;</a></h3>
+<p>KubeVirt provides a feature gate(<code>AutoResourceLimitsGate</code>) to automatically set memory limits on VM(I)s.
+By enabling this feature gate, memory limits will be added to the vmi if all the following conditions are true:</p>
+<ul>
+<li>The namespace where the VMI will be created has a ResourceQuota containing memory limits.</li>
+<li>The VMI has no manually set memory limits.</li>
+<li>The VMI is not requesting dedicated CPU.</li>
+</ul>
+<p>If all the previous conditions are true, the memory limits will be set to a value (<code>2x</code>) of the memory requests.
+This ratio can be adjusted, per namespace, by adding the annotation <code>alpha.kubevirt.io/auto-memory-limits-ratio</code>,
+with the desired custom value.
+For example, with <code>alpha.kubevirt.io/auto-memory-limits-ratio: 1.2</code>, the memory limits set will be equal to (<code>1.2x</code>) of the memory requests.</p>
 
 
 
