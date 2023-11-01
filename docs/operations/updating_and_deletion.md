@@ -12,23 +12,27 @@ Updates are triggered one of two ways.
 
 1.  By changing the imageTag value in the KubeVirt CR's spec.
 
-For example, updating from `v0.17.0-alpha.1` to `v0.17.0` is as simple
-as patching the KubeVirt CR with the `imageTag: v0.17.0` value. From
-there the KubeVirt operator will begin the process of rolling out the
-new version of KubeVirt. Existing VM/VMIs will remain uninterrupted both
-during and after the update succeeds.
+    For example, updating from `v0.17.0-alpha.1` to `v0.17.0` is as simple
+    as patching the KubeVirt CR with the `imageTag: v0.17.0` value. From
+    there the KubeVirt operator will begin the process of rolling out the
+    new version of KubeVirt. Existing VM/VMIs will remain uninterrupted both
+    during and after the update succeeds.
 
+    ```
     $ kubectl patch kv kubevirt -n kubevirt --type=json -p '[{ "op": "add", "path": "/spec/imageTag", "value": "v0.17.0" }]'
+    ```
 
 2.  Or, by updating the kubevirt operator if no imageTag value is set.
 
-When no imageTag value is set in the kubevirt CR, the system assumes
-that the version of KubeVirt is locked to the version of the operator.
-This means that updating the operator will result in the underlying
-KubeVirt installation being updated as well.
+    When no imageTag value is set in the kubevirt CR, the system assumes
+    that the version of KubeVirt is locked to the version of the operator.
+    This means that updating the operator will result in the underlying
+    KubeVirt installation being updated as well.
 
+    ```
     $ export RELEASE=v0.26.0
     $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
+    ```
 
 The first way provides a fine granular approach where you have full
 control over what version of KubeVirt is installed independently of what
