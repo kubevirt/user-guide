@@ -5,6 +5,105 @@ hide:
 
 # KubeVirt release notes
 
+## v1.1.0
+
+Released on: Tue Nov 07 2023
+
+### API change
+- [#10568][ormergi] Network binding plugin API support CNIs, new integration point on virt-launcher pod creation.
+- [#10309][lyarwood] cluster-wide [`common-instancetypes`](https://github.com/kubevirt/common-instancetypes) resources can now deployed by `virt-operator` using the `CommonInstancetypesDeploymentGate` feature gate.
+- [#10463][0xFelix] VirtualMachines: Introduce InferFromVolumeFailurePolicy in Instancetype- and PreferenceMatchers
+- [#10447][fossedihelm] Add a Feature Gate to KV CR to automatically set memory limits when a resource quota with memory limits is associated to the creation namespace
+- [#10477][jean-edouard] Dynamic KSM enabling and configuration
+- [#10110][tiraboschi] Stream guest serial console logs from a dedicated container
+- [#10015][victortoso] Implements USB host passthrough in permittedHostDevices of KubeVirt CRD
+- [#10184][acardace] Add memory hotplug feature
+- [#10231][kvaps] Propogate public-keys to cloud-init NoCloud meta-data
+- [#9673][germag] DownwardMetrics: Expose DownwardMetrics through virtio-serial channel.
+- [#10086][vladikr] allow live updating VM affinity and node selector
+- [#10272][ormergi] Introduce network binding plugin for Slirp networking, interfacing with Kubevirt new network binding plugin API.
+- [#10284][AlonaKaplan] Introduce an API for network binding plugins. The feature is behind "NetworkBindingPlugins" gate.
+- [#10101][acardace] Deprecate `spec.config.machineType` in KubeVirt CR.
+- [#9878][jean-edouard] The EFI NVRAM can now be configured to persist across reboots
+- [#9932][lyarwood] `ControllerRevisions` containing `instancetype.kubevirt.io` `CRDs` are now decorated with labels detailing specific metadata of the underlying stashed object
+- [#10058][alicefr] Add field errorPolicy for disks
+- [#10004][AlonaKaplan] Hoyplug/unplug interfaces should be done by updating the VM spec template. virtctl and REST API endpoints were removed.
+- [#9896][ormergi] The VM controller now replicates spec interfaces MAC addresses to the corresponding interfaces in the VMI spec.
+- [#7708][VirrageS] `nodeSelector` and `schedulerName` fields have been added to VirtualMachineInstancetype spec.
+- [#7197][vasiliy-ul] Experimantal support of SEV attestation via the new API endpoints
+- [#9737][AlonaKaplan] On hotunplug - remove bridge, tap and dummy interface from virt-launcher and the caches (file and volatile) from the node.
+
+### Bug fixes:
+- [#10515][iholder101] Bug-fix: Stop copying VMI spec to VM during snapshots
+- [#10393][iholder101] [Bugfix] [Clone API] Double-cloning is now working as expected.
+- [#10391][awels] BugFix: VMExport now works in a namespace with quotas defined.
+- [#10380][alromeros] Bugfix: Allow image-upload to recover from PendingPopulation phase
+- [#10099][iholder101] Bugfix: target virt-launcher pod hangs when migration is cancelled.
+- [#10165][awels] BugFix: deleting hotplug attachment pod will no longer detach volumes that were not removed.
+- [#10067][iholder101] Bug fix: `virtctl create clone` marshalling and replacement of `kubectl` with `kubectl virt`
+- [#9935][xpivarc] Bug fix - correct logging in container disk
+- [#9872][alromeros] Bugfix: Allow lun disks to be mapped to DataVolume sources
+- [#10039][simonyangcj] fix guaranteed qos of virt-launcher pod broken when use virtiofs
+- [#9861][rmohr] Fix the possibility of data corruption when requesting a force-restart via "virtctl restart"
+
+### Deprecation
+- [#10486][assafad] Deprecation notice for the metrics listed in the PR. Please update your systems to use the new metrics names.
+- [#9821][sradco] Deprecation notice for the metrics listed in the PR. Please update your systems to use the new metrics names.
+
+### SIG-compute
+- [#10566][fossedihelm] Add 100Mi of memory overhead for vmi with dedicatedCPU or that wants GuaranteedQos
+- [#10496][fossedihelm] Automatically set cpu limits when a resource quota with cpu limits is associated to the creation namespace and the `AutoResourceLimits` FeatureGate is enabled
+- [#10543][0xFelix] Clear VM guest memory when ignoring inference failures
+- [#10320][victortoso] sidecar-shim implements PreCloudInitIso hook
+- [#10253][rmohr] Stop trying to create unused directory /var/run/kubevirt-ephemeral-disk in virt-controller
+- [#10050][victortoso] Updating the virt stack: QEMU 8.0.0, libvirt to 9.5.0, edk2 20230524, passt 20230818, libguestfs and guestfs-tools 1.50.1, virtiofsd 1.7.2
+- [#9231][victortoso] Introduces sidecar-shim container image
+- [#10254][rmohr] Don't mark the KubeVirt "Available" condition as false on up-to-date and ready but misscheduled virt-handler pods.
+- [#10182][iholder101] Stop considering nodes without `kubevirt.io/schedulable` label when finding lowest TSC frequency on the cluster
+- [#10056][jean-edouard] UEFI guests now use Bochs display instead of VGA emulation
+- [#10106][acardace] Add boot-menu wait time when starting the VM as paused.
+
+### SIG-storage
+- [#10532][alromeros] Add --volume-mode flag in image-upload
+- [#10020][akalenyu] Use auth API for DataVolumes, stop importing kubevirt.io/containerized-data-importer
+- [#10400][alromeros] Add new vmexport flags to download raw images, either directly (--raw) or by decompressing (--decompress) them
+- [#10148][alromeros] Add port-forward functionalities to vmexport
+- [#10275][awels] Ensure new hotplug attachment pod is ready before deleting old attachment pod
+- [#10118][akalenyu] Change exportserver default UID to succeed exporting CDI standalone PVCs (not attached to VM)
+- [#9918][ShellyKa13] Fix for hotplug with WFFC SCI storage class which uses CDI populators
+
+### SIG-network
+- [#10366][ormergi] Kubevirt now delegates Slirp networking configuration to Slirp network binding plugin.  In case you haven't registered Slirp network binding plugin image yet (i.e.: specify in Kubevirt config) the following default image would be used: `quay.io/kubevirt/network-slirp-binding:20230830_638c60fc8`. On next release (v1.2.0) no default image will be set and registering an image would be mandatory.
+- [#10185][AlonaKaplan] Add support to migration based SRIOV hotplug.
+- [#10116][ormergi] Existing detached interfaces with 'absent' state will be cleared from VMI spec.
+- [#9958][AlonaKaplan] Disable network interface hotplug/unplug for VMIs. It will be supported for VMs only.
+- [#10489][maiqueb] Remove the network-attachment-definition `list` and `watch` verbs from virt-controller's RBAC
+
+### SIG-infra
+- [#10438][lyarwood] A new `instancetype.kubevirt.io:view` `ClusterRole` has been introduced that can be bound to users via a `ClusterRoleBinding` to provide read only access to the cluster scoped `VirtualMachineCluster{Instancetype,Preference}` resources.
+
+### SIG-scale
+- [#9989][alaypatel07] Add perf scale benchmarks for VMIs
+
+### Uncategorized
+- [#9590][xuzhenglun] fix embed version info of virt-operator
+- [#10044][machadovilaca] Add operator-observability package
+- [#10450][0xFelix] virtctl: Enable inference in create vm subcommand by default
+- [#10386][liuzhen21] KubeSphere added to the adopter's file!
+- [#10167][0xFelix] virtctl: Apply namespace to created manifests
+- [#10173][rmohr] Move coordination/lease RBAC permissions to Roles
+- [#10138][machadovilaca] Change `kubevirt_vmi_*_usage_seconds` from Gauge to Counter
+- [#10107][PiotrProkop] Expose `kubevirt_vmi_vcpu_delay_seconds_total` reporting amount of seconds VM spent in waiting in the queue instead of running.
+- [#10070][machadovilaca] Remove affinities label from `kubevirt_vmi_cpu_affinity` and use sum as value
+- [#9982][fabiand] Introduce a support lifecycle and Kubernetes target version.
+- [#10001][machadovilaca] Fix `kubevirt_vmi_phase_count` not being created
+- [#9840][dhiller] Increase probability for flake checker script to find flakes
+- [#9988][enp0s3] Always deploy the outdated VMI workload alert
+- [#9882][dhiller] Add some context for initial contributors about automated testing and draft pull requests.
+- [#9552][phoracek] gRPC client now works correctly with non-Go gRPC servers
+- [#9818][akrejcir] Added "virtctl credentials" commands to dynamically change SSH keys in a VM, and to set user's password.
+- [#9073][machadovilaca] Fix incorrect KubevirtVmHighMemoryUsage description
+
 ## v1.0.0
 
 Released on: Thu Jul 11 17:39:42 2023 +0000
