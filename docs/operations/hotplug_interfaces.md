@@ -78,16 +78,38 @@ Please refer to the
 [multus documentation](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/how-to-use.md#create-network-attachment-definition)
 for more info.
 
-Once the virtual machine is running, and the attachment configuration
-provisioned, the user can request the interface hotplug operation. Please refer
-to the following snippet:
-```bash
-virtctl addinterface vm-fedora --network-attachment-definition-name new-fancy-net --name dyniface1
-```
-This will add the interface and network to the VM spec template and to the running VMI object.
+> *NOTE*
+> `virtctl` `addinterface` and `removeinterface` commands are no longer available, hotplug/unplug interfaces is done by editing the VM spec template.
 
-**NOTE**: You can use the `--help` parameter for more information on each
-parameter.
+Once the virtual machine is running, and the attachment configuration
+provisioned, the user can request the interface hotplug operation by 
+editing the VM spec template and adding the desired interface and network:
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-fedora
+template:
+  spec:
+    domain:
+      devices:
+        interfaces:
+        - name: defaultnetwork
+          masquerade: {}
+          # new interface
+        - name: dyniface1
+          bridge: {}
+    networks:
+    - name: defaultnetwork
+      pod: {}
+      # new network
+    - name: dyniface1
+      multus:
+        networkName: new-fancy-net
+ ...
+```
+
+The interface and network will be added to the corresponding VMI object as well by Kubevirt.
 
 You can now check the VMI status for the presence of this new interface:
 ```bash
@@ -95,11 +117,32 @@ kubectl get vmi vm-fedora -ojsonpath="{ @.status.interfaces }"
 ```
 
 ## Removing an interface from a running VM
-Following the example above, the user can request an interface unplug operation. Please refer to the following snippet:
-```bash
-virtctl removeinterface vm-fedora --name dyniface1
+Following the example above, the user can request an interface unplug operation
+by editing the VM spec template and set the desired interface state to 'absent':
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-fedora
+template:
+  spec:
+    domain:
+      devices:
+        interfaces:
+          - name: defaultnetwork
+            masquerade: {}
+          # set the interface state to absent 
+          - name: dyniface1
+            state: absent
+            bridge: {}
+    networks:
+      - name: defaultnetwork
+        pod: {}
+      - name: dyniface1
+        multus:
+          networkName: new-fancy-net
 ```
-The subject interface state will be set as absent in the VM spec template and the running VMI object.  
+The interface in the corresponding VMI object will be set with state 'absent' as well by Kubevirt.
 
 >**Note**: Existing VMs from version v0.59.0 and below does not support hot-unplug interfaces.
 
@@ -109,10 +152,33 @@ In case your cluster doesn't run Multus as [thick plugin](https://github.com/k8s
 The actual attachment won't take place immediately, and the new interface will be available in the guest once the migration is completed.
 
 ### Add new interface
-```bash
-virtctl addinterface vm-fedora --network-attachment-definition-name new-fancy-net --name dyniface1
+Add the desired interface and network to the VM spec template
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-fedora
+template:
+  spec:
+    domain:
+      devices:
+        interfaces:
+        - name: defaultnetwork
+          masquerade: {}
+          # new interface
+        - name: dyniface1
+          bridge: {}
+    networks:
+    - name: defaultnetwork
+      pod: {}
+      # new network
+    - name: dyniface1
+      multus:
+        networkName: new-fancy-net
+ ...
 ```
-At this point the new interface is added to the spec but will not be attached to the running VM. 
+
+At this point the interface and network will be added to the corresponding VMI object as well, but won't be attached to the guest.
 
 ### Migrate the VM
 ```bash
@@ -133,9 +199,31 @@ Once the migration is completed the VM will have the new interface attached.
 > It is safer to assure hotplug succeeded or at least reached the VMI specification before issuing a migration.
 
 ### Remove interface
-```bash
-virtctl removeinterface vm-fedora --name dyniface1
+Set the desired interface state to `absent` in the VM spec template:
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-fedora
+template:
+  spec:
+    domain:
+      devices:
+        interfaces:
+          - name: defaultnetwork
+            masquerade: {}
+          # set the interface state to absent 
+          - name: dyniface1
+            state: absent
+            bridge: {}
+    networks:
+      - name: defaultnetwork
+        pod: {}
+      - name: dyniface1
+        multus:
+          networkName: new-fancy-net
 ```
+
 At this point the subject interface should be detached from the guest but exist in the pod.
 
 ### Migrate the VM
