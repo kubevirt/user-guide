@@ -2,10 +2,14 @@
 
 **Warning**: The feature is in alpha stage and its API may be changed in the future.
 
-KubeVirt now supports hotplugging network interfaces into a running Virtual
-Machine (VM). Hotplug is only supported for interfaces using the
-`virtio` model connected through
-[bridge binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge).
+KubeVirt supports hotplugging and unplugging network interfaces into a running Virtual Machine (VM). 
+
+Hotplug is supported for interfaces using the `virtio` model connected through
+[bridge binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge) 
+or [SR-IOV binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacesriov)
+
+Hotunplug is supported only for interfaces connected through
+[bridge binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge)
 
 ## Requirements
 Adding an interface to a KubeVirt Virtual Machine requires first an interface
@@ -115,6 +119,9 @@ You can now check the VMI status for the presence of this new interface:
 ```bash
 kubectl get vmi vm-fedora -ojsonpath="{ @.status.interfaces }"
 ```
+
+For more info about SR-IOV networking please refer to[Interface and Networks](https://kubevirt.io/user-guide/virtual_machines/interfaces_and_networks/#sriov) 
+documentation.
 
 ## Removing an interface from a running VM
 Following the example above, the user can request an interface unplug operation
@@ -244,7 +251,58 @@ Once the VM is migrated, the interface will not exist in the migration target po
 >**Note**: It is recommended to avoid performing migrations in parallel to an unplug operation.
 > It is safer to assure unplug succeeded or at least reached the VMI specification before issuing a migration.
 
-### Virtio Limitations
+### SR-IOV interfaces
+Kubevirt supports hot-plugging of SR-IOV interfaces to running VMs.
+
+Similar to bridge binding interfaces, edit the VM spec template
+and add the desired SR-IOV interface and network:
+binding:
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-fedora
+template:
+  spec:
+    domain:
+      devices:
+        interfaces:
+        - name: defaultnetwork
+          masquerade: {}
+          # new interface
+        - name: sriov-net
+          sriov: {}
+    networks:
+    - name: defaultnetwork
+      pod: {}
+      # new network
+    - name: sriov-net
+      multus:
+        networkName: sriov-net-1
+ ...
+```
+
+At this point the interface and network will be added to the corresponding VMI object as well, but won't be attached to the guest.
+
+### Migrate the VM
+```bash
+cat <<EOF kubectl apply -f -
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstanceMigration
+metadata:
+  name: migration-job
+spec:
+  vmiName: vmi-fedora
+EOF
+```
+See the [Live Migration](./live_migration.md) docs for more details.
+
+Once the VM is migrated, the interface will not exist in the migration target pod.
+Due to limitation of Kubernetes device plugin API to allocate resources dynamically,
+the SR-IOV device plugin cannot allocate additional SR-IOV resources for Kubevirt to hotplug.
+Thus, SR-IOV interface hotplug is limited to migration based hotplug only, regardless of Multus "thick" version.
+
+## Virtio Limitations
 The hotplugged interfaces have `model: virtio`. This imposes several
 limitations: each interface will consume a PCI slot in the VM, and there are a
 total maximum of 32. Furthermore, other devices will also use these PCI slots
