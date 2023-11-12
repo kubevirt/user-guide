@@ -82,9 +82,6 @@ Please refer to the
 [multus documentation](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/how-to-use.md#create-network-attachment-definition)
 for more info.
 
-> *NOTE*
-> `virtctl` `addinterface` and `removeinterface` commands are no longer available, hotplug/unplug interfaces is done by editing the VM spec template.
-
 Once the virtual machine is running, and the attachment configuration
 provisioned, the user can request the interface hotplug operation by 
 editing the VM spec template and adding the desired interface and network:
@@ -112,6 +109,7 @@ template:
         networkName: new-fancy-net
  ...
 ```
+> **Note**: `virtctl` `addinterface` and `removeinterface` commands are no longer available, hotplug/unplug interfaces is done by editing the VM spec template.
 
 The interface and network will be added to the corresponding VMI object as well by Kubevirt.
 
@@ -119,9 +117,6 @@ You can now check the VMI status for the presence of this new interface:
 ```bash
 kubectl get vmi vm-fedora -ojsonpath="{ @.status.interfaces }"
 ```
-
-For more info about SR-IOV networking please refer to[Interface and Networks](https://kubevirt.io/user-guide/virtual_machines/interfaces_and_networks/#sriov) 
-documentation.
 
 ## Removing an interface from a running VM
 Following the example above, the user can request an interface unplug operation
@@ -256,7 +251,6 @@ Kubevirt supports hot-plugging of SR-IOV interfaces to running VMs.
 
 Similar to bridge binding interfaces, edit the VM spec template
 and add the desired SR-IOV interface and network:
-binding:
 ```yaml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
@@ -281,6 +275,8 @@ template:
         networkName: sriov-net-1
  ...
 ```
+Please refer to [Interface and Networks](https://kubevirt.io/user-guide/virtual_machines/interfaces_and_networks/#sriov)
+for more info about SR-IOV networking.
 
 At this point the interface and network will be added to the corresponding VMI object as well, but won't be attached to the guest.
 
