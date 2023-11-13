@@ -218,13 +218,15 @@ The main idea here is that the guest starts to run immediately on the target VM.
 has advantages and disadvantages:
 
 <u>advantages</u>:
-* The same memory chink is never being transferred twice. This is possible due to the fact that
+
+* The same memory chunk is never being transferred twice. This is possible due to the fact that
 with post-copy it doesn't matter that a page had been dirtied since the guest is already running
 on the target VM.
   * This means that a high dirty-rate has much less effect.
 * Consumes less network bandwidth.
 
 <u>disadvantages</u>:
+
 * When using post-copy, the VM state has no one source of truth. When the guest (running on the
 target VM) writes to memory, this memory is one part of the guest's state, but some other parts of
 it may still be updated only at the source VM. This situation is generally dangerous, since, for 
