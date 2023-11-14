@@ -2524,21 +2524,25 @@ alternative strategies below.</p>
 5. Once all of the memory state is updated at the target VM, the source VM is being removed.</p>
 <p>The main idea here is that the guest starts to run immediately on the target VM. This approach
 has advantages and disadvantages:</p>
-<p><u>advantages</u>:
-* The same memory chink is never being transferred twice. This is possible due to the fact that
+<p><u>advantages</u>:</p>
+<ul>
+<li>The same memory chunk is never being transferred twice. This is possible due to the fact that
 with post-copy it doesn't matter that a page had been dirtied since the guest is already running
-on the target VM.
-  * This means that a high dirty-rate has much less effect.
-* Consumes less network bandwidth.</p>
-<p><u>disadvantages</u>:
-* When using post-copy, the VM state has no one source of truth. When the guest (running on the
+on the target VM.</li>
+<li>This means that a high dirty-rate has much less effect.</li>
+<li>Consumes less network bandwidth.</li>
+</ul>
+<p><u>disadvantages</u>:</p>
+<ul>
+<li>When using post-copy, the VM state has no one source of truth. When the guest (running on the
 target VM) writes to memory, this memory is one part of the guest's state, but some other parts of
 it may still be updated only at the source VM. This situation is generally dangerous, since, for 
-example, if either the target or guest VMs crash the state cannot be recovered.
-* Slow warmup: when the guest starts executing, no memory is present at the target VM. Therefore,
-the guest would have to wait for a lot of memory in a short period of time.
-* Slower than pre-copy on most cases.
-* Harder to cancel a migration.</p>
+example, if either the target or guest VMs crash the state cannot be recovered.</li>
+<li>Slow warmup: when the guest starts executing, no memory is present at the target VM. Therefore,
+the guest would have to wait for a lot of memory in a short period of time.</li>
+<li>Slower than pre-copy on most cases.</li>
+<li>Harder to cancel a migration.</li>
+</ul>
 <h3 id="auto-converge">Auto-converge<a class="headerlink" href="#auto-converge" title="Permanent link">&para;</a></h3>
 <p>Auto-converge is a technique to help pre-copy migrations converge faster without changing the core
 algorithm of how the migration works.</p>
