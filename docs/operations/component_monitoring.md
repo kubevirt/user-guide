@@ -118,7 +118,7 @@ For example, reported metrics could look like
 kubevirt_vmi_memory_resident_bytes{domain="default_vm-test-01",name="vm-test-01",namespace="default",node="node01"} 2.5595904e+07
 kubevirt_vmi_network_traffic_bytes_total{domain="default_vm-test-01",interface="vnet0",name="vm-test-01",namespace="default",node="node01",type="rx"} 8431
 kubevirt_vmi_network_traffic_bytes_total{domain="default_vm-test-01",interface="vnet0",name="vm-test-01",namespace="default",node="node01",type="tx"} 1835
-kubevirt_vmi_vcpu_seconds{domain="default_vm-test-01",id="0",name="vm-test-01",namespace="default",node="node01",state="1"} 19
+kubevirt_vmi_vcpu_seconds_total{domain="default_vm-test-01",id="0",name="vm-test-01",namespace="default",node="node01",state="1"} 19
 ```
 
 Please note the `domain` label in the above example. This label is
