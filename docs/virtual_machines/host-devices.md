@@ -176,3 +176,93 @@ spec:
     name: cloudinitdisk
 ```
 
+## USB Host Passthrough
+
+Since KubeVirt v1.1, we can provide USB devices that are plugged in a Node to the VM running in the
+same Node.
+
+### Requirements
+
+Cluster admin privilege to edit the KubeVirt CR in order to:
+
+- Enable the `HostDevices` [feature gate](../operations/activating_feature_gates.md)
+- Edit the `permittedHostDevices` configuration to expose node USB devices to the cluster
+
+### Exposing USB Devices
+
+In order to assign USB devices to your VMI, you'll need to expose those devices to the cluster under
+a resource name. The device allowlist can be edited in KubeVirt CR under
+`configuration.permittedHostDevices.usb`.
+
+For this example, we will use the `kubevirt.io/storage` resource name for the device with `vendor:
+"46f4"` and `product: "0001"` [^1].
+
+
+```yaml
+spec:
+  configuration:
+    permittedHostDevices:
+      usb:
+        - resourceName: kubevirt.io/storage
+          selectors:
+            - vendor: "46f4"
+              product: "0001"
+```
+
+After adding the `usb` configuration under `permittedHostDevices` to the KubeVirt CR, KubeVirt's
+device-plugin will expose this resource name and you can use it in your VMI.
+
+
+### Adding USB to your VM
+
+Now, in the VMI configuration, you can add the `devices.hostDevices.deviceName` and reference the
+`resource name` provided in the previous step, and also give it a local name, for example:
+
+```yaml
+spec:
+  domain:
+    devices:
+      hostDevices:
+      - deviceName: kubevirt.io/storage
+        name: usb-storage
+```
+
+You can find a working example, which uses QEMU's emulated USB storage, under
+[examples/vmi-usb.yaml](https://github.com/kubevirt/kubevirt/blob/main/examples/vm-usb.yaml).
+
+
+### Bundle of USB devices
+
+You might be interested to redirect more than one USB device to a VMI, for example, a keyboard, a
+mouse and a smartcard device. The KubeVirt CR supports assigning multiple USB devices under the same
+resource name, so you could do:
+
+```yaml
+spec:
+  configuration:
+    permittedHostDevices:
+      usb:
+        - resourceName: kubevirt.io/peripherals
+          selectors:
+            - vendor: "045e"
+              product: "07a5"
+            - vendor: "062a"
+              product: "4102"
+            - vendor: "072f"
+              product: "b100"
+```
+
+Adding to the VMI configuration:
+
+```yaml
+spec:
+  domain:
+    devices:
+      hostDevices:
+      - deviceName: kubevirt.io/peripherals
+        name: local-peripherals 
+```
+
+Note that all USB devices need to be present in order for the assignment to work.
+
+[^1]: Note that you can easily find the `vendor:product` value with the `lsusb` command.
