@@ -1707,9 +1707,22 @@ If you are using local devices or RWO PVCs, setting the affinity on the VMs that
 `Virtiofs` is a shared file system that lets VMs access a directory tree on the host.
 Further details can be found at [Official Virtiofs Site](https://virtio-fs.gitlab.io/).
 
-> **Note:** The **ExperimentalVirtiofsSupport** feature gate
-> [must be enabled](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
-> to share directories with VMs. This feature is available starting with KubeVirt v0.36.0.
+### Non-Privileged and Privileged Sharing Modes
+
+KubeVirt supports two PVC sharing modes: non-privileged and privileged.
+
+The **non-privileged mode** is enabled by default. This mode has the advantage of not requiring any
+administrative privileges for creating the VM. However, it has some limitations:
+
+- The virtiofsd daemon (the daemon in charge of sharing the PVC with the VM) will run with the QEMU UID/GID (107),
+  and cannot switch between different UIDs/GIDs.
+  Therefore, it will only have access to directories and files that UID/GID 107 has permission to.
+  Additionally, when creating new files they will always be created with QEMU's UID/GID regardless of the UID/GID of the
+  process within the guest.
+- Extended attributes are not supported. 
+ 
+To switch to the **privileged mode**, the feature gate **ExperimentalVirtiofsSupport** has to be enabled. Take into account
+that this mode requires privileges to run rootful containers. 
 
 ### Sharing Persistent Volume Claims
 #### Cluster Configuration
