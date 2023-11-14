@@ -1515,6 +1515,47 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#usb-host-passthrough" class="md-nav__link">
+    USB Host Passthrough
+  </a>
+  
+    <nav class="md-nav" aria-label="USB Host Passthrough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exposing-usb-devices" class="md-nav__link">
+    Exposing USB Devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-usb-to-your-vm" class="md-nav__link">
+    Adding USB to your VM
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bundle-of-usb-devices" class="md-nav__link">
+    Bundle of USB devices
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2017,6 +2058,47 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#usb-host-passthrough" class="md-nav__link">
+    USB Host Passthrough
+  </a>
+  
+    <nav class="md-nav" aria-label="USB Host Passthrough">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exposing-usb-devices" class="md-nav__link">
+    Exposing USB Devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adding-usb-to-your-vm" class="md-nav__link">
+    Adding USB to your VM
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bundle-of-usb-devices" class="md-nav__link">
+    Bundle of USB devices
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2202,6 +2284,78 @@ and Mediated device resource names.</p>
 <a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a><span class="w">        </span><span class="no">chpasswd: { expire: False }</span>
 <a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
 </code></pre></div></p>
+<h2 id="usb-host-passthrough">USB Host Passthrough<a class="headerlink" href="#usb-host-passthrough" title="Permanent link">&para;</a></h2>
+<p>Since KubeVirt v1.1, we can provide USB devices that are plugged in a Node to the VM running in the
+same Node.</p>
+<h3 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h3>
+<p>Cluster admin privilege to edit the KubeVirt CR in order to:</p>
+<ul>
+<li>Enable the <code>HostDevices</code> <a href="../../operations/activating_feature_gates/">feature gate</a></li>
+<li>Edit the <code>permittedHostDevices</code> configuration to expose node USB devices to the cluster</li>
+</ul>
+<h3 id="exposing-usb-devices">Exposing USB Devices<a class="headerlink" href="#exposing-usb-devices" title="Permanent link">&para;</a></h3>
+<p>In order to assign USB devices to your VMI, you'll need to expose those devices to the cluster under
+a resource name. The device allowlist can be edited in KubeVirt CR under
+<code>configuration.permittedHostDevices.usb</code>.</p>
+<p>For this example, we will use the <code>kubevirt.io/storage</code> resource name for the device with <code>vendor:
+"46f4"</code> and <code>product: "0001"</code> <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">permittedHostDevices</span><span class="p">:</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">      </span><span class="nt">usb</span><span class="p">:</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/storage</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">          </span><span class="nt">selectors</span><span class="p">:</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;46f4&quot;</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0001&quot;</span>
+</code></pre></div>
+<p>After adding the <code>usb</code> configuration under <code>permittedHostDevices</code> to the KubeVirt CR, KubeVirt's
+device-plugin will expose this resource name and you can use it in your VMI.</p>
+<h3 id="adding-usb-to-your-vm">Adding USB to your VM<a class="headerlink" href="#adding-usb-to-your-vm" title="Permanent link">&para;</a></h3>
+<p>Now, in the VMI configuration, you can add the <code>devices.hostDevices.deviceName</code> and reference the
+<code>resource name</code> provided in the previous step, and also give it a local name, for example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">      </span><span class="nt">hostDevices</span><span class="p">:</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">deviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/storage</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usb-storage</span>
+</code></pre></div>
+<p>You can find a working example, which uses QEMU's emulated USB storage, under
+<a href="https://github.com/kubevirt/kubevirt/blob/main/examples/vm-usb.yaml">examples/vmi-usb.yaml</a>.</p>
+<h3 id="bundle-of-usb-devices">Bundle of USB devices<a class="headerlink" href="#bundle-of-usb-devices" title="Permanent link">&para;</a></h3>
+<p>You might be interested to redirect more than one USB device to a VMI, for example, a keyboard, a
+mouse and a smartcard device. The KubeVirt CR supports assigning multiple USB devices under the same
+resource name, so you could do:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nt">permittedHostDevices</span><span class="p">:</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">      </span><span class="nt">usb</span><span class="p">:</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/peripherals</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">          </span><span class="nt">selectors</span><span class="p">:</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;045e&quot;</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;07a5&quot;</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;062a&quot;</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4102&quot;</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;072f&quot;</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b100&quot;</span>
+</code></pre></div>
+<p>Adding to the VMI configuration:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">      </span><span class="nt">hostDevices</span><span class="p">:</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">deviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/peripherals</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local-peripherals</span><span class="w"> </span>
+</code></pre></div>
+<p>Note that all USB devices need to be present in order for the assignment to work.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Note that you can easily find the <code>vendor:product</code> value with the <code>lsusb</code> command.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
