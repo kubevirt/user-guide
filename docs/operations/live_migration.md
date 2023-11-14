@@ -188,11 +188,12 @@ Let's explain the 3 supported migration strategies as of today.
 Pre-copy is the default strategy. It should be used for most cases.
 
 The way it works is as following:
-1. The target VM is created, but the guest keeps running on the source VM.
-2. The source starts sending chunks of VM state (mostly memory) to the target. This continues until
-all of the state has been transferred to the target.
-3. The guest starts executing on the target VM.
-4. The source VM is being removed.
+
+  1. The target VM is created, but the guest keeps running on the source VM.
+  2. The source starts sending chunks of VM state (mostly memory) to the target. This continues until
+  all of the state has been transferred to the target.
+  3. The guest starts executing on the target VM.
+  4. The source VM is being removed.
 
 Pre-copy is the safest and fastest strategy for most cases. Furthermore, it can be easily cancelled,
 can utilize multithreading, and more. If there is no real reason to use another strategy, this is
@@ -206,13 +207,14 @@ alternative strategies below.
 
 ### Post-copy
 The way post-copy migrations work is as following:
-1. The target VM is created.
-2. The guest is being run on the **target VM**.
-3. The source starts sending chunks of VM state (mostly memory) to the target.
-4. When the guest, running on the target VM, would access memory:
-   1. If the memory exists on the target VM, the guest can access it.
-   2. Otherwise, the target VM asks for a chunk of memory from the source VM.
-5. Once all of the memory state is updated at the target VM, the source VM is being removed.
+
+  1. The target VM is created.
+  2. The guest is being run on the **target VM**.
+  3. The source starts sending chunks of VM state (mostly memory) to the target.
+  4. When the guest, running on the target VM, would access memory:
+    1. If the memory exists on the target VM, the guest can access it.
+    2. Otherwise, the target VM asks for a chunk of memory from the source VM.
+  5. Once all of the memory state is updated at the target VM, the source VM is being removed.
 
 The main idea here is that the guest starts to run immediately on the target VM. This approach
 has advantages and disadvantages:
