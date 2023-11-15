@@ -6,20 +6,20 @@ KubeVirt supports hotplugging and unplugging network interfaces into a running V
 
 Hotplug is supported for interfaces using the `virtio` model connected through
 [bridge binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge) 
-or [SR-IOV binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacesriov)
+or [SR-IOV binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacesriov).
 
-Hotunplug is supported only for interfaces connected through
-[bridge binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge)
+Hot-unplug is supported only for interfaces connected through
+[bridge binding](http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge).
 
 ## Requirements
 Adding an interface to a KubeVirt Virtual Machine requires first an interface
 to be added to a running pod. This is not trivial, and has some requirements:
 
-- [multus dynamic networks controller](https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller):
-  this daemon will listen to annotation changes, and trigger multus to configure
+- [Multus Dynamic Networks Controller](https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller):
+  this daemon will listen to annotation changes, and trigger Multus to configure
   a new attachment for this pod.
-- multus running as a [thick plugin](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md):
-  this multus version exposes an endpoint to create attachments for a given pod
+- Multus CNI running as a [thick plugin](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md):
+  this Multus version exposes an endpoint to create attachments for a given pod
   on demand.
 
 ### Enabling network interface hotplug support
@@ -77,13 +77,9 @@ spec:
       "name":"new-fancy-net"
     }'
 ```
-
 Please refer to the
-[multus documentation](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/how-to-use.md#create-network-attachment-definition)
-for more info.
-
-> *NOTE*
-> `virtctl` `addinterface` and `removeinterface` commands are no longer available, hotplug/unplug interfaces is done by editing the VM spec template.
+[Multus documentation](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/how-to-use.md#create-network-attachment-definition)
+for more information.
 
 Once the virtual machine is running, and the attachment configuration
 provisioned, the user can request the interface hotplug operation by 
@@ -112,6 +108,7 @@ template:
         networkName: new-fancy-net
  ...
 ```
+> **Note**: `virtctl` `addinterface` and `removeinterface` commands are no longer available, hotplug/unplug interfaces is done by editing the VM spec template.
 
 The interface and network will be added to the corresponding VMI object as well by Kubevirt.
 
@@ -120,12 +117,9 @@ You can now check the VMI status for the presence of this new interface:
 kubectl get vmi vm-fedora -ojsonpath="{ @.status.interfaces }"
 ```
 
-For more info about SR-IOV networking please refer to[Interface and Networks](https://kubevirt.io/user-guide/virtual_machines/interfaces_and_networks/#sriov) 
-documentation.
-
 ## Removing an interface from a running VM
 Following the example above, the user can request an interface unplug operation
-by editing the VM spec template and set the desired interface state to 'absent':
+by editing the VM spec template and set the desired interface state to `absent`:
 ```yaml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
@@ -151,15 +145,19 @@ template:
 ```
 The interface in the corresponding VMI object will be set with state 'absent' as well by Kubevirt.
 
->**Note**: Existing VMs from version v0.59.0 and below does not support hot-unplug interfaces.
+>**Note**: Existing VMs from version v0.59.0 and below do not support hot-unplug interfaces.
 
 ## Migration based hotplug
-In case your cluster doesn't run Multus as [thick plugin](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md) and [Multus Dynamic Networks controller](https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller), it's possible to hotplug an interface by migrating the VM.
+In case your cluster doesn't run Multus as 
+[thick plugin](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md) 
+and 
+[Multus Dynamic Networks controller](https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller), 
+it's possible to hotplug an interface by migrating the VM.
 
 The actual attachment won't take place immediately, and the new interface will be available in the guest once the migration is completed.
 
 ### Add new interface
-Add the desired interface and network to the VM spec template
+Add the desired interface and network to the VM spec template:
 ```yaml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
@@ -187,7 +185,7 @@ template:
 
 At this point the interface and network will be added to the corresponding VMI object as well, but won't be attached to the guest.
 
-### Migrate the VM
+#### Migrate the VM
 ```bash
 cat <<EOF kubectl apply -f -
 apiVersion: kubevirt.io/v1
@@ -198,7 +196,7 @@ spec:
   vmiName: vmi-fedora
 EOF
 ```
-See the [Live Migration](./live_migration.md) docs for more details.
+Please refer to the [Live Migration](./live_migration.md) documentation for more information.
 
 Once the migration is completed the VM will have the new interface attached.
 
@@ -233,7 +231,9 @@ template:
 
 At this point the subject interface should be detached from the guest but exist in the pod.
 
-### Migrate the VM
+>**Note**: Existing VMs from version v0.59.0 and below do not support hot-unplug interfaces.
+
+#### Migrate the VM
 ```bash
 cat <<EOF kubectl apply -f -
 apiVersion: kubevirt.io/v1
@@ -244,7 +244,7 @@ spec:
   vmiName: vmi-fedora
 EOF
 ```
-See the [Live Migration](./live_migration.md) docs for more details.
+Please refer to the [Live Migration](./live_migration.md) documentation for more information.
 
 Once the VM is migrated, the interface will not exist in the migration target pod.
 
@@ -256,7 +256,6 @@ Kubevirt supports hot-plugging of SR-IOV interfaces to running VMs.
 
 Similar to bridge binding interfaces, edit the VM spec template
 and add the desired SR-IOV interface and network:
-binding:
 ```yaml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
@@ -281,10 +280,12 @@ template:
         networkName: sriov-net-1
  ...
 ```
+Please refer to the [Interface and Networks](https://kubevirt.io/user-guide/virtual_machines/interfaces_and_networks/#sriov)
+documentation for more information about SR-IOV networking.
 
 At this point the interface and network will be added to the corresponding VMI object as well, but won't be attached to the guest.
 
-### Migrate the VM
+#### Migrate the VM
 ```bash
 cat <<EOF kubectl apply -f -
 apiVersion: kubevirt.io/v1
@@ -295,7 +296,7 @@ spec:
   vmiName: vmi-fedora
 EOF
 ```
-See the [Live Migration](./live_migration.md) docs for more details.
+Please refer to the [Live Migration](./live_migration.md) documentation for more information.
 
 Once the VM is migrated, the interface will not exist in the migration target pod.
 Due to limitation of Kubernetes device plugin API to allocate resources dynamically,
@@ -317,7 +318,7 @@ For more information on maximum limits, see
 Yet, upon a VM restart, the hotplugged interface will become part of the standard networks;
 this mitigates the maximum hotplug interfaces (per machine type) limitation.
 
-**NOTE**: the user can execute this command against a stopped VM - i.e. a VM
-without an associated VMI. When this happens, KubeVirt mutates the VM spec
-template on behalf of the user.
+> **Note**: The user can execute this command against a stopped VM - i.e. a VM
+> without an associated VMI. When this happens, KubeVirt mutates the VM spec
+> template on behalf of the user.
 
