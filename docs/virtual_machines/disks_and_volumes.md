@@ -215,6 +215,32 @@ spec:
 
 Refer to section [Sharing Directories with VMs](#sharing-directories-with-vms) for usage examples of `filesystems`.
 
+### error policy
+
+The error policy controls how the hypervisor should behave when an IO error occurs on a disk read or write. The default behaviour is to stop the guest and a Kubernetes event is generated. However, it is possible to change the value to either:
+
+- `report`: the error is reported in the guest
+- `ignore`: the error is ignored, but the read/write failure goes undetected
+- `enospace`: error when there isn't enough space on the disk
+
+The error policy can be specified per disk or lun.
+
+Example:
+```yaml
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+            errorPolicy: "report"
+          - lun:
+              bus: scsi
+            name: scsi-disk
+            errorPolicy: "report"
+```
+
 ## Volumes
 
 Supported volume sources are
