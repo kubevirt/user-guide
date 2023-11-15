@@ -714,7 +714,8 @@
     Add new interface
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Add new interface">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#migrate-the-vm" class="md-nav__link">
@@ -723,12 +724,18 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#remove-interface" class="md-nav__link">
     Remove interface
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Remove interface">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#migrate-the-vm_1" class="md-nav__link">
@@ -737,17 +744,28 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#sr-iov-interfaces" class="md-nav__link">
     SR-IOV interfaces
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="SR-IOV interfaces">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#migrate-the-vm_2" class="md-nav__link">
     Migrate the VM
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -2076,7 +2094,8 @@
     Add new interface
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Add new interface">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#migrate-the-vm" class="md-nav__link">
@@ -2085,12 +2104,18 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#remove-interface" class="md-nav__link">
     Remove interface
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Remove interface">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#migrate-the-vm_1" class="md-nav__link">
@@ -2099,17 +2124,28 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#sr-iov-interfaces" class="md-nav__link">
     SR-IOV interfaces
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="SR-IOV interfaces">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#migrate-the-vm_2" class="md-nav__link">
     Migrate the VM
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -2161,18 +2197,18 @@
 <p>KubeVirt supports hotplugging and unplugging network interfaces into a running Virtual Machine (VM). </p>
 <p>Hotplug is supported for interfaces using the <code>virtio</code> model connected through
 <a href="http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge">bridge binding</a> 
-or <a href="http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacesriov">SR-IOV binding</a></p>
-<p>Hotunplug is supported only for interfaces connected through
-<a href="http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge">bridge binding</a></p>
+or <a href="http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacesriov">SR-IOV binding</a>.</p>
+<p>Hot-unplug is supported only for interfaces connected through
+<a href="http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge">bridge binding</a>.</p>
 <h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
 <p>Adding an interface to a KubeVirt Virtual Machine requires first an interface
 to be added to a running pod. This is not trivial, and has some requirements:</p>
 <ul>
-<li><a href="https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller">multus dynamic networks controller</a>:
-  this daemon will listen to annotation changes, and trigger multus to configure
+<li><a href="https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller">Multus Dynamic Networks Controller</a>:
+  this daemon will listen to annotation changes, and trigger Multus to configure
   a new attachment for this pod.</li>
-<li>multus running as a <a href="https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md">thick plugin</a>:
-  this multus version exposes an endpoint to create attachments for a given pod
+<li>Multus CNI running as a <a href="https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md">thick plugin</a>:
+  this Multus version exposes an endpoint to create attachments for a given pod
   on demand.</li>
 </ul>
 <h3 id="enabling-network-interface-hotplug-support">Enabling network interface hotplug support<a class="headerlink" href="#enabling-network-interface-hotplug-support" title="Permanent link">&para;</a></h3>
@@ -2225,14 +2261,10 @@ configuration is held. The snippet below shows an example of a very simple one:
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="s">&quot;mtu&quot;:</span><span class="nv"> </span><span class="s">1300,</span>
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="s">&quot;name&quot;:&quot;new-fancy-net&quot;</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="s">}&#39;</span>
-</code></pre></div></p>
-<p>Please refer to the
-<a href="https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/how-to-use.md#create-network-attachment-definition">multus documentation</a>
-for more info.</p>
-<blockquote>
-<p><em>NOTE</em>
-<code>virtctl</code> <code>addinterface</code> and <code>removeinterface</code> commands are no longer available, hotplug/unplug interfaces is done by editing the VM spec template.</p>
-</blockquote>
+</code></pre></div>
+Please refer to the
+<a href="https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/how-to-use.md#create-network-attachment-definition">Multus documentation</a>
+for more information.</p>
 <p>Once the virtual machine is running, and the attachment configuration
 provisioned, the user can request the interface hotplug operation by 
 editing the VM spec template and adding the desired interface and network:
@@ -2259,15 +2291,16 @@ editing the VM spec template and adding the desired interface and network:
 <a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">        </span><span class="nt">networkName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">new-fancy-net</span>
 <a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w w-Error"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </code></pre></div></p>
+<blockquote>
+<p><strong>Note</strong>: <code>virtctl</code> <code>addinterface</code> and <code>removeinterface</code> commands are no longer available, hotplug/unplug interfaces is done by editing the VM spec template.</p>
+</blockquote>
 <p>The interface and network will be added to the corresponding VMI object as well by Kubevirt.</p>
 <p>You can now check the VMI status for the presence of this new interface:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>vmi<span class="w"> </span>vm-fedora<span class="w"> </span>-ojsonpath<span class="o">=</span><span class="s2">&quot;{ @.status.interfaces }&quot;</span>
 </code></pre></div></p>
-<p>For more info about SR-IOV networking please refer to<a href="https://kubevirt.io/user-guide/virtual_machines/interfaces_and_networks/#sriov">Interface and Networks</a> 
-documentation.</p>
 <h2 id="removing-an-interface-from-a-running-vm">Removing an interface from a running VM<a class="headerlink" href="#removing-an-interface-from-a-running-vm" title="Permanent link">&para;</a></h2>
 <p>Following the example above, the user can request an interface unplug operation
-by editing the VM spec template and set the desired interface state to 'absent':
+by editing the VM spec template and set the desired interface state to <code>absent</code>:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -2292,13 +2325,17 @@ by editing the VM spec template and set the desired interface state to 'absent':
 </code></pre></div>
 The interface in the corresponding VMI object will be set with state 'absent' as well by Kubevirt.</p>
 <blockquote>
-<p><strong>Note</strong>: Existing VMs from version v0.59.0 and below does not support hot-unplug interfaces.</p>
+<p><strong>Note</strong>: Existing VMs from version v0.59.0 and below do not support hot-unplug interfaces.</p>
 </blockquote>
 <h2 id="migration-based-hotplug">Migration based hotplug<a class="headerlink" href="#migration-based-hotplug" title="Permanent link">&para;</a></h2>
-<p>In case your cluster doesn't run Multus as <a href="https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md">thick plugin</a> and <a href="https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller">Multus Dynamic Networks controller</a>, it's possible to hotplug an interface by migrating the VM.</p>
+<p>In case your cluster doesn't run Multus as 
+<a href="https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md">thick plugin</a> 
+and 
+<a href="https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller">Multus Dynamic Networks controller</a>, 
+it's possible to hotplug an interface by migrating the VM.</p>
 <p>The actual attachment won't take place immediately, and the new interface will be available in the guest once the migration is completed.</p>
 <h3 id="add-new-interface">Add new interface<a class="headerlink" href="#add-new-interface" title="Permanent link">&para;</a></h3>
-<p>Add the desired interface and network to the VM spec template
+<p>Add the desired interface and network to the VM spec template:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -2323,7 +2360,7 @@ The interface in the corresponding VMI object will be set with state 'absent' as
 <a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w w-Error"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </code></pre></div></p>
 <p>At this point the interface and network will be added to the corresponding VMI object as well, but won't be attached to the guest.</p>
-<h3 id="migrate-the-vm">Migrate the VM<a class="headerlink" href="#migrate-the-vm" title="Permanent link">&para;</a></h3>
+<h4 id="migrate-the-vm">Migrate the VM<a class="headerlink" href="#migrate-the-vm" title="Permanent link">&para;</a></h4>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF kubectl apply -f -</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s">apiVersion: kubevirt.io/v1</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="s">kind: VirtualMachineInstanceMigration</span>
@@ -2333,7 +2370,7 @@ The interface in the corresponding VMI object will be set with state 'absent' as
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="s">  vmiName: vmi-fedora</span>
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="s">EOF</span>
 </code></pre></div>
-See the <a href="../live_migration/">Live Migration</a> docs for more details.</p>
+Please refer to the <a href="../live_migration/">Live Migration</a> documentation for more information.</p>
 <p>Once the migration is completed the VM will have the new interface attached.</p>
 <blockquote>
 <p><strong>Note</strong>: It is recommended to avoid performing migrations in parallel to a hotplug operation. 
@@ -2364,7 +2401,10 @@ It is safer to assure hotplug succeeded or at least reached the VMI specificatio
 <a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">          </span><span class="nt">networkName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">new-fancy-net</span>
 </code></pre></div></p>
 <p>At this point the subject interface should be detached from the guest but exist in the pod.</p>
-<h3 id="migrate-the-vm_1">Migrate the VM<a class="headerlink" href="#migrate-the-vm_1" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Note</strong>: Existing VMs from version v0.59.0 and below do not support hot-unplug interfaces.</p>
+</blockquote>
+<h4 id="migrate-the-vm_1">Migrate the VM<a class="headerlink" href="#migrate-the-vm_1" title="Permanent link">&para;</a></h4>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF kubectl apply -f -</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="s">apiVersion: kubevirt.io/v1</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="s">kind: VirtualMachineInstanceMigration</span>
@@ -2374,7 +2414,7 @@ It is safer to assure hotplug succeeded or at least reached the VMI specificatio
 <a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="s">  vmiName: vmi-fedora</span>
 <a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="s">EOF</span>
 </code></pre></div>
-See the <a href="../live_migration/">Live Migration</a> docs for more details.</p>
+Please refer to the <a href="../live_migration/">Live Migration</a> documentation for more information.</p>
 <p>Once the VM is migrated, the interface will not exist in the migration target pod.</p>
 <blockquote>
 <p><strong>Note</strong>: It is recommended to avoid performing migrations in parallel to an unplug operation.
@@ -2384,7 +2424,6 @@ It is safer to assure unplug succeeded or at least reached the VMI specification
 <p>Kubevirt supports hot-plugging of SR-IOV interfaces to running VMs.</p>
 <p>Similar to bridge binding interfaces, edit the VM spec template
 and add the desired SR-IOV interface and network:
-binding:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -2407,9 +2446,11 @@ binding:
 <a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">      </span><span class="nt">multus</span><span class="p">:</span>
 <a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">        </span><span class="nt">networkName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sriov-net-1</span>
 <a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w w-Error"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-</code></pre></div></p>
+</code></pre></div>
+Please refer to the <a href="https://kubevirt.io/user-guide/virtual_machines/interfaces_and_networks/#sriov">Interface and Networks</a>
+documentation for more information about SR-IOV networking.</p>
 <p>At this point the interface and network will be added to the corresponding VMI object as well, but won't be attached to the guest.</p>
-<h3 id="migrate-the-vm_2">Migrate the VM<a class="headerlink" href="#migrate-the-vm_2" title="Permanent link">&para;</a></h3>
+<h4 id="migrate-the-vm_2">Migrate the VM<a class="headerlink" href="#migrate-the-vm_2" title="Permanent link">&para;</a></h4>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF kubectl apply -f -</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="s">apiVersion: kubevirt.io/v1</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="s">kind: VirtualMachineInstanceMigration</span>
@@ -2419,7 +2460,7 @@ binding:
 <a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="s">  vmiName: vmi-fedora</span>
 <a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="s">EOF</span>
 </code></pre></div>
-See the <a href="../live_migration/">Live Migration</a> docs for more details.</p>
+Please refer to the <a href="../live_migration/">Live Migration</a> documentation for more information.</p>
 <p>Once the VM is migrated, the interface will not exist in the migration target pod.
 Due to limitation of Kubernetes device plugin API to allocate resources dynamically,
 the SR-IOV device plugin cannot allocate additional SR-IOV resources for Kubevirt to hotplug.
@@ -2436,9 +2477,11 @@ For more information on maximum limits, see
 <a href="https://libvirt.org/pci-hotplug.html">libvirt documentation</a>.</p>
 <p>Yet, upon a VM restart, the hotplugged interface will become part of the standard networks;
 this mitigates the maximum hotplug interfaces (per machine type) limitation.</p>
-<p><strong>NOTE</strong>: the user can execute this command against a stopped VM - i.e. a VM
+<blockquote>
+<p><strong>Note</strong>: The user can execute this command against a stopped VM - i.e. a VM
 without an associated VMI. When this happens, KubeVirt mutates the VM spec
 template on behalf of the user.</p>
+</blockquote>
 
 
 
