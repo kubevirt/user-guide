@@ -126,9 +126,17 @@ kubectl wait vmclone testclone --for condition=Ready
 
 You can check the clone's phase in the clone's status. It can be one of the following:
 
-* Progressing
+* SnapshotInProgress
+
+* CreatingTargetVM
+
+* RestoreInProgress
 
 * Succeeded
+
+* Failed
+
+* Unknown
 
 After the clone is finished, the target can be inspected:
 ```bash
