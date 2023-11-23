@@ -42,7 +42,7 @@ The above example will update the `virt-controller` deployment to have an annota
 
 By using the customize flag option, whichever component the flags are to be applied to, all default flags will be removed and only the flags specified will be used. The available resources to change the flags on are `api`, `controller` and `handler`. You can find our more details about the API in the [API spec](http://kubevirt.io/api-reference/master/definitions.html#_v1_flags).
 
-```Yaml
+```yaml
 apiVersion: kubevirt.io/v1
 kind: KubeVirt
 metadata:
@@ -62,7 +62,7 @@ spec:
 
 The above example would produce a `virt-api` pod with the following command
 
-```Yaml
+```yaml
 ...
 spec:
   ....
