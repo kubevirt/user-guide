@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.8">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.11">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.4b4a2bd9.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.fad675c6.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.356b1318.min.css">
@@ -1355,35 +1355,45 @@
       
         <li class="md-nav__item">
   <a href="#kubernetes-cpu-manager" class="md-nav__link">
-    Kubernetes CPU manager
+    <span class="md-ellipsis">
+      Kubernetes CPU manager
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#requesting-dedicated-cpu-resources" class="md-nav__link">
-    Requesting dedicated CPU resources
+    <span class="md-ellipsis">
+      Requesting dedicated CPU resources
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#requesting-dedicated-cpu-for-qemu-emulator" class="md-nav__link">
-    Requesting dedicated CPU for QEMU emulator
+    <span class="md-ellipsis">
+      Requesting dedicated CPU for QEMU emulator
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#identifying-nodes-with-a-running-cpu-manager" class="md-nav__link">
-    Identifying nodes with a running CPU manager
+    <span class="md-ellipsis">
+      Identifying nodes with a running CPU manager
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#sidecar-containers-and-cpu-allocation-overhead" class="md-nav__link">
-    Sidecar containers and CPU allocation overhead
+    <span class="md-ellipsis">
+      Sidecar containers and CPU allocation overhead
+    </span>
   </a>
   
 </li>
@@ -1970,35 +1980,45 @@
       
         <li class="md-nav__item">
   <a href="#kubernetes-cpu-manager" class="md-nav__link">
-    Kubernetes CPU manager
+    <span class="md-ellipsis">
+      Kubernetes CPU manager
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#requesting-dedicated-cpu-resources" class="md-nav__link">
-    Requesting dedicated CPU resources
+    <span class="md-ellipsis">
+      Requesting dedicated CPU resources
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#requesting-dedicated-cpu-for-qemu-emulator" class="md-nav__link">
-    Requesting dedicated CPU for QEMU emulator
+    <span class="md-ellipsis">
+      Requesting dedicated CPU for QEMU emulator
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#identifying-nodes-with-a-running-cpu-manager" class="md-nav__link">
-    Identifying nodes with a running CPU manager
+    <span class="md-ellipsis">
+      Identifying nodes with a running CPU manager
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#sidecar-containers-and-cpu-allocation-overhead" class="md-nav__link">
-    Sidecar containers and CPU allocation overhead
+    <span class="md-ellipsis">
+      Sidecar containers and CPU allocation overhead
+    </span>
   </a>
   
 </li>
@@ -2138,6 +2158,20 @@ spec:
         cpu: 2
         memory: 2Gi
 </code></pre></div>
+<p>When the following conditions are met:
+- The compute node has <a href="https://en.wikipedia.org/wiki/Simultaneous_multithreading">SMT</a> enabled
+- Kubelet's CPUManager policy is set to static - <a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy-options">full-pcpus-only</a>
+- The VM is configured to have an even number of CPUs
+- <code>dedicatedCpuPlacement</code> and <code>isolateEmulatorThread</code> are enabled</p>
+<p>The VM is scheduled, but rejected by the kubelet with the following event:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SMT Alignment Error: requested 3 cpus not multiple cpus per core = 2
+</code></pre></div></p>
+<p>In order to address this issue:
+1. Enable the <code>CPUManagerPolicyBetaOptions</code> feature gate in the KubeVirt CR.
+2. Add the following annotation to the VMI:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">kubevirt.io/CPUManagerPolicyBetaOptions</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">full-pcpus-only</span>
+</code></pre></div></p>
+<p>It will cause KubeVirt to allocate two dedicated CPUs for the emulator thread isolation instead of the default single CPU.</p>
 <h2 id="identifying-nodes-with-a-running-cpu-manager">Identifying nodes with a running CPU manager<a class="headerlink" href="#identifying-nodes-with-a-running-cpu-manager" title="Permanent link">&para;</a></h2>
 <p>At this time, <a href="https://github.com/kubernetes/kubernetes/issues/66525">Kubernetes doesn't label the
 nodes</a> that has
@@ -2259,7 +2293,7 @@ CPU manager will not attempt to pin the sidecar container to a host CPU.</p>
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.81fa17fe.min.js"></script>
+      <script src="../../assets/javascripts/bundle.6c14ae12.min.js"></script>
       
     
   </body>
