@@ -20,7 +20,7 @@ example, the `vmi-preset.yaml` file below describes a
 `VirtualMachineInstancePreset` that requests a `VirtualMachineInstance`
 be created with a resource request for 64M of RAM.
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     metadata:
@@ -126,7 +126,7 @@ use them:
 KubeVirt will determine which `VirtualMachineInstancePresets` apply to a
 Particular `VirtualMachineInstance` by matching `Labels`. For example:
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     metadata:
@@ -140,7 +140,7 @@ Particular `VirtualMachineInstance` by matching `Labels`. For example:
 would match any `VirtualMachineInstance` in the same namespace with a
 `Label` of `flavor: foo`. For example:
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     version: v1
@@ -179,7 +179,7 @@ using selectors.
 Using matchLabels, the label used in the `VirtualMachineInstancePreset`
 must match one of the labels of the `VirtualMachineInstance`:
 
-```console
+```yaml
     selector:
       matchLabels:
         kubevirt.io/memory: large
@@ -187,7 +187,7 @@ must match one of the labels of the `VirtualMachineInstance`:
 
 would match
 
-```console
+```yaml
     metadata:
       labels:
         kubevirt.io/memory: large
@@ -196,7 +196,7 @@ would match
 
 or
 
-```console
+```yaml
     metadata:
       labels:
         kubevirt.io/memory: large
@@ -206,14 +206,14 @@ or
 Using matchExpressions allows for matching multiple labels of
 `VirtualMachineInstances` without needing to explicity list a label.
 
-```console
+```yaml
     selector:
       matchExpressions:
         - {key: kubevirt.io/os, operator: In, values: [fedora27, fedora26]}
 ```
 
 would match both:
-```console
+```yaml
     metadata:
       labels:
         kubevirt.io/os: fedora26
@@ -235,7 +235,7 @@ needs to exist a mechanism by which `VirtualMachineInstances` can opt
 out of `VirtualMachineInstancePresets` altogether. This is done using an
 annotation:
 
-```console
+```yaml
     kind: VirtualMachineInstance
     version: v1
     metadata:
@@ -249,7 +249,7 @@ annotation:
 
 ### Simple `VirtualMachineInstancePreset` Example
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     version: v1
@@ -285,7 +285,7 @@ annotation:
 Once the `VirtualMachineInstancePreset` is applied to the
 `VirtualMachineInstance`, the resulting resource would look like this:
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -328,7 +328,7 @@ This is an example of a merge conflict. In this case both the
 `VirtualMachineInstance` and `VirtualMachineInstancePreset` request
 different number of CPU's.
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     version: v1
@@ -358,7 +358,7 @@ different number of CPU's.
 In this case the `VirtualMachineInstance` Spec will remain unmodified.
 Use `kubectl get events` to show events.
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -394,7 +394,7 @@ and one that is shared.
 Note: This example breaks from the convention of using os-shortname as a
 `Label` for demonstration purposes.
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     metadata:
@@ -430,7 +430,7 @@ Note: This example breaks from the convention of using os-shortname as a
 Adding this `VirtualMachineInstancePreset` and these
 `VirtualMachineInstances` will result in:
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -476,7 +476,7 @@ Adding this `VirtualMachineInstancePreset` and these
 This `VirtualMachineInstancePreset` has a matchExpression that will
 match two labels: `kubevirt.io/os: win10` and `kubevirt.io/os: win7`.
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     metadata:
@@ -511,7 +511,7 @@ match two labels: `kubevirt.io/os: win10` and `kubevirt.io/os: win7`.
 
 Applying the preset to both VM's will result in:
 
-```console
+```yaml
     apiVersion: v1
     items:
     - apiVersion: kubevirt.io/v1

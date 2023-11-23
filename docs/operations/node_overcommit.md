@@ -35,7 +35,7 @@ In order to increase the VMI density on the node, it is possible to not
 request the additional overhead by setting
 `spec.domain.resources.overcommitGuestOverhead` to `true`:
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -67,7 +67,7 @@ value higher than `spec.domain.resources.requests.memory`.
 The following definition requests `1024MB` from the cluster but tells
 the VMI that it has `2048MB` of memory available:
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1alpha3
     kind: VirtualMachineInstance
     metadata:
@@ -234,7 +234,7 @@ for the POD.
 
 Administrators can change this ratio by updating the KubeVirt CR
 
-```
+```yaml
 ...
     spec:
       configuration:

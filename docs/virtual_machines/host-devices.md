@@ -105,7 +105,7 @@ Host devices can be assigned to virtual machines via the `gpus` and
 `hostDevices` fields.  The `deviceNames` can reference both PCI
 and Mediated device resource names.
 
-```
+```yaml
 kind: VirtualMachineInstance
 spec:
   domain:

@@ -15,6 +15,7 @@ only schedule VMs on nodes, which contain the specified labels. In the
 following example the vmi contains the labels `cpu: slow` and
 `storage: fast`:
 
+```yaml
     metadata:
       name: testvmi-ephemeral
     apiVersion: kubevirt.io/v1
@@ -35,6 +36,7 @@ following example the vmi contains the labels `cpu: slow` and
         - name: mypvcdisk
           persistentVolumeClaim:
             claimName: mypvc
+```
 
 Thus the scheduler will only schedule the vmi to nodes which contain
 these labels in their metadata. It works exactly like the Pods
@@ -52,6 +54,7 @@ Pod-affinity affects VMs as well.
 
 An example for `podAffinity` and `podAntiAffinity` may look like this:
 
+```yaml
     metadata:
       name: testvmi-ephemeral
     apiVersion: kubevirt.io/v1
@@ -93,6 +96,7 @@ An example for `podAffinity` and `podAntiAffinity` may look like this:
         - name: mypvcdisk
           persistentVolumeClaim:
             claimName: mypvc
+```
 
 Affinity and anti-affinity works exactly like the Pods `affinity`. This
 includes `podAffinity`, `podAntiAffinity`, `nodeAffinity` and
@@ -119,6 +123,7 @@ You add a taint to a node using kubectl taint. For example,
 
 An example for `tolerations` may look like this:
 
+```yaml
     metadata:
       name: testvmi-ephemeral
     apiVersion: kubevirt.io/v1
@@ -140,7 +145,7 @@ An example for `tolerations` may look like this:
         operator: "Equal"
         value: "value"
         effect: "NoSchedule"
-
+```
 ## Node balancing with Descheduler
 
 In some cases we might need to rebalance the cluster on current scheduling policy

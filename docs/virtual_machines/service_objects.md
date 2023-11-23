@@ -16,6 +16,7 @@ VirtualMachineInstance. Currently, three types of service are supported:
 
 Give a VirtualMachineInstance with the label `special: key`:
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -36,9 +37,11 @@ Give a VirtualMachineInstance with the label `special: key`:
       - name: containerdisk
         containerDisk:
           image: kubevirt/cirros-registry-disk-demo:latest
+```
 
 we can expose its SSH port (22) by creating a `ClusterIP` service:
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -51,6 +54,7 @@ we can expose its SSH port (22) by creating a `ClusterIP` service:
       selector:
         special: key
       type: ClusterIP
+```
 
 You just need to create this `ClusterIP` service by using `kubectl`:
 
@@ -83,6 +87,7 @@ port inside the cluster network:
 Expose the SSH port (22) of a VirtualMachineInstance running on KubeVirt
 by creating a `NodePort` service:
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -98,6 +103,7 @@ by creating a `NodePort` service:
       selector:
         special: key
       type: NodePort
+```
 
 You just need to create this `NodePort` service by using `kubectl`:
 
@@ -129,6 +135,7 @@ outside the cluster network:
 Expose the RDP port (3389) of a VirtualMachineInstance running on
 KubeVirt by creating `LoadBalancer` service. Here is an example:
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -142,6 +149,7 @@ KubeVirt by creating `LoadBalancer` service. Here is an example:
       selector:
         special: key
       type: LoadBalancer
+```
 
 You could create this `LoadBalancer` service by using `kubectl`:
 

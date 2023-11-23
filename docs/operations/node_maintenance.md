@@ -75,6 +75,7 @@ a VM ensures that the VMI is migrated during node eviction:
 
 Here a full VMI:
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -104,7 +105,7 @@ Here a full VMI:
             #cloud-config
             password: fedora
             chpasswd: { expire: False }
-
+```
 Behind the scenes a **PodDisruptionBudget** is created for each VMI
 which has an **evictionStrategy** defined. This ensures that evictions
 are be blocked on these VMIs and that we can guarantee that a VMI will

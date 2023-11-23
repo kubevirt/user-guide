@@ -17,7 +17,7 @@ The maximum amount of instances of the selected mdev type will be configured per
 > Note: Some vendors, such as NVIDIA, require a driver to be installed on the nodes to provide mediated devices, including vGPUs.
 
 Here's an example of a configuration that can be provided to KubeVirt CR:
-```
+```yaml
 spec:  
   configuration:  
      mediatedDevicesConfiguration:  

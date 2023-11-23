@@ -15,6 +15,7 @@ e.g.`pc-i440fx-2.10` and `pc-q35-2.10`.
 KubeVirt defaults to QEMU's newest q35 machine type. If a custom machine
 type is desired, it is configurable through the following structure:
 
+```yaml
     metadata:
       name: myvmi
     spec:
@@ -33,7 +34,7 @@ type is desired, it is configurable through the following structure:
         - name: myimage
           persistentVolumeClaim:
             claimName: myclaim
-
+```
 Comparison of the machine types' internals can be found [at QEMU
 wiki](https://wiki.qemu.org/Features/Q35).
 
@@ -44,6 +45,7 @@ All virtual machines use BIOS by default for booting.
 It is possible to utilize UEFI/OVMF by setting a value via
 `spec.firmware.bootloader`:
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -64,6 +66,7 @@ It is possible to utilize UEFI/OVMF by setting a value via
           # this sets the bootloader type
           bootloader:
             efi: {}
+```
 
 Enabling EFI automatically enables [Secure Boot](https://docs.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-secure-boot),
 unless the `secureBoot` field under `efi` is set to `false`.  
@@ -77,6 +80,7 @@ In order to provide a consistent view on the virtualized hardware for
 the guest OS, the SMBIOS UUID can be set to a constant value via
 `spec.firmware.uuid`:
 
+```yaml
     metadata:
       name: myvmi
     spec:
@@ -96,6 +100,7 @@ the guest OS, the SMBIOS UUID can be set to a constant value via
         - name: myimage
           persistentVolumeClaim:
             claimName: myclaim
+```
 
 In addition, the SMBIOS serial number can be set to a constant value via
 `spec.firmware.serial`, as demonstrated above.
@@ -110,6 +115,7 @@ assignment.
 Setting the number of CPU cores is possible via `spec.domain.cpu.cores`.
 The following VM will have a CPU with `3` cores:
 
+```yaml
     metadata:
       name: myvmi
     spec:
@@ -128,6 +134,7 @@ The following VM will have a CPU with `3` cores:
         - name: myimage
           persistentVolumeClaim:
             claimName: myclaim
+```
 
 #### Enabling cpu compatibility enforcement
 
@@ -153,7 +160,7 @@ features.
 Node-labeller supports obsolete list of cpu models and minimal baseline
 cpu model for features. Both features can be set via KubeVirt CR:
 
-```console
+```yaml
     apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
@@ -192,6 +199,7 @@ closest to one that used on the node where the VM is running.
 Setting the CPU model is possible via `spec.domain.cpu.model`. The
 following VM will have a CPU with the `Conroe` model:
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -202,6 +210,7 @@ following VM will have a CPU with the `Conroe` model:
           # this sets the CPU model
           model: Conroe
     ...
+```
 
 You can check list of available models
 [here](https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml).
@@ -217,7 +226,7 @@ model, then no node selector is created.
 To enable the default cpu model, user may add the `cpuModel`
 field in the KubeVirt CR.
 
-```
+```yaml
     apiVersion: kubevirt.io/v1
     kind: KubeVirt
     metadata:
@@ -489,6 +498,7 @@ boot. Most noteworthy are
 
 A common feature configuration is shown by the following example:
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -515,6 +525,7 @@ A common feature configuration is shown by the following example:
         - name: myimage
           persistentVolumeClaim:
             claimname: myclaim
+```
 
 See the [Features API
 Reference](https://kubevirt.github.io/api-reference/master/definitions.html#_v1_features)
@@ -526,6 +537,7 @@ An optional resource request can be specified by the users to allow the
 scheduler to make a better decision in finding the most suitable Node to
 place the VM.
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -546,6 +558,7 @@ place the VM.
         - name: myimage
           persistentVolumeClaim:
             claimname: myclaim
+```
 
 ### CPU
 
@@ -577,6 +590,7 @@ your VM. You will need to provide desired amount of memory
 `memory.hugepages.pageSize`, for example for x86\_64 architecture it can
 be `2Mi`.
 
+```yaml
     apiVersion: kubevirt.io/v1alpha1
     kind: VirtualMachine
     metadata:
@@ -596,6 +610,7 @@ be `2Mi`.
         - name: myimage
           persistentVolumeClaim:
             claimname: myclaim
+```
 
 In the above example the VM will have `64Mi` of memory, but instead of
 regular memory it will use node hugepages of the size of `2Mi`.
@@ -618,6 +633,7 @@ Kubevirt supports input devices. The only type which is supported is
 `tablet`. Tablet input device supports only `virtio` and `usb` bus. Bus
 can be empty. In that case, `usb` will be selected.
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachine
     metadata:
@@ -636,3 +652,4 @@ can be empty. In that case, `usb` will be selected.
         - name: myimage
           persistentVolumeClaim:
             claimname: myclaim
+```

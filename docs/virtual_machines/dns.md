@@ -13,6 +13,7 @@ The following example consists of a VirtualMachine and a headless
 Service which matches the labels and the subdomain of the
 VirtualMachineInstance:
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -55,6 +56,7 @@ VirtualMachineInstance:
       - name: foo # Actually, no port is needed.
         port: 1234
         targetPort: 1234
+```
 
 As a consequence, when we enter the VirtualMachineInstance via e.g.
 `virtctl console vmi-fedora` and ping `myvmi.mysubdomain` we see that we

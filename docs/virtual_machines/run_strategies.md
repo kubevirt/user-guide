@@ -97,6 +97,7 @@ on RunStrategy.
 
 An example usage of the Always RunStrategy.
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachine
     metadata:
@@ -121,3 +122,4 @@ An example usage of the Always RunStrategy.
           - containerDisk:
               image: kubevirt/cirros-container-disk-demo:latest
             name: containerdisk
+```

@@ -55,6 +55,7 @@ takes value from `spec.domain.resources.requests.cpu` or
 
 All inconsistent requirements will be rejected.
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
@@ -68,9 +69,11 @@ All inconsistent requirements will be rejected.
           limits:
             memory: 2Gi
     [...]
+```
 
 OR
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
@@ -82,6 +85,7 @@ OR
             cpu: 2
             memory: 2Gi
     [...]
+```
 
 ## Requesting dedicated CPU for QEMU emulator
 
@@ -102,6 +106,7 @@ with a `dedicatedCpuPlacement: true`.
 
 Example:
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     spec:
@@ -113,6 +118,7 @@ Example:
           limits:
             cpu: 2
             memory: 2Gi
+```
 
 ## Identifying nodes with a running CPU manager
 

@@ -32,6 +32,7 @@ allows the VM to execute arbitrary iSCSI command passthrough.
 A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `lun` device to the VM:
 
+```yaml
     metadata:
       name: testvmi-lun
     apiVersion: kubevirt.io/v1
@@ -50,24 +51,28 @@ as a `lun` device to the VM:
         - name: mypvcdisk
           persistentVolumeClaim:
             claimName: mypvc
-
+```
 #### persistent reservation
 It is possible to reserve a LUN through the the SCSI Persistent Reserve commands.
 In order to issue privileged SCSI ioctls, the VM requires activation of the
 persistent resevation flag:
 
+```yaml
         devices:
           disks:
           - name: mypvcdisk
             lun:
               reservation: true
+```
 
 This feature is enabled by the feature gate `PersistentReservation`:
 
+```yaml
     configuration:
       developerConfiguration:
         featureGates:
         -  PersistentReservation
+```
 
 ### disk
 
@@ -76,6 +81,7 @@ A `disk` disk will expose the volume as an ordinary disk to the VM.
 A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `disk` device to the VM:
 
+```yaml
     metadata:
       name: testvmi-disk
     apiVersion: kubevirt.io/v1
@@ -94,10 +100,12 @@ as a `disk` device to the VM:
         - name: mypvcdisk
           persistentVolumeClaim:
             claimName: mypvc
+```
 
 You can set the disk `bus` type, overriding the defaults, which in turn
 depends on the chipset the VM is configured to use:
 
+```yaml
     metadata:
       name: testvmi-disk
     apiVersion: kubevirt.io/v1
@@ -119,7 +127,7 @@ depends on the chipset the VM is configured to use:
         - name: mypvcdisk
           persistentVolumeClaim:
             claimName: mypvc
-
+```
 ### cdrom
 
 A `cdrom` disk will expose the volume as a cdrom drive to the VM. It is
@@ -128,6 +136,7 @@ read-only by default.
 A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `cdrom` device to the VM:
 
+```yaml
     metadata:
       name: testvmi-cdrom
     apiVersion: kubevirt.io/v1
@@ -150,6 +159,7 @@ as a `cdrom` device to the VM:
         - name: mypvcdisk
           persistentVolumeClaim:
             claimName: mypvc
+```
 
 ### filesystems
 A `filesystem` device will expose the volume as a filesystem to the VM.
@@ -281,6 +291,7 @@ user-data source.
 A simple example which attaches a `Secret` as a cloud-init `disk`
 datasource may look like this:
 
+```yaml
     metadata:
       name: testvmi-cloudinitnocloud
     apiVersion: kubevirt.io/v1
@@ -304,7 +315,7 @@ datasource may look like this:
           cloudInitNoCloud:
             secretRef:
               name: testsecret
-
+```
 ### cloudInitConfigDrive
 
 Allows attaching `cloudInitConfigDrive` data-sources to the VM. If the
@@ -314,6 +325,7 @@ user-data source.
 A simple example which attaches a `Secret` as a cloud-init `disk`
 datasource may look like this:
 
+```yaml
     metadata:
       name: testvmi-cloudinitconfigdrive
     apiVersion: kubevirt.io/v1
@@ -337,6 +349,7 @@ datasource may look like this:
           cloudInitConfigDrive:
             secretRef:
               name: testsecret
+```
 
 The `cloudInitConfigDrive` can also be used to configure VMs with Ignition.
 You just need to replace the cloud-init data by the Ignition data.
@@ -374,6 +387,7 @@ A `PersistentVolume` can be in "filesystem" or "block" mode:
 A simple example which attaches a `PersistentVolumeClaim` as a `disk`
 may look like this:
 
+```yaml
     metadata:
       name: testvmi-pvc
     apiVersion: kubevirt.io/v1
@@ -391,6 +405,7 @@ may look like this:
         - name: mypvcdisk
           persistentVolumeClaim:
             claimName: mypvc
+```
 
 #### dataVolume
 
@@ -405,6 +420,7 @@ creation and import is automated on behalf of the user.
 DataVolumes can be defined in the VM spec directly by adding the
 DataVolumes to the `dataVolumeTemplates` list. Below is an example.
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachine
     metadata:
@@ -444,6 +460,7 @@ DataVolumes to the `dataVolumeTemplates` list. Below is an example.
           source:
             http:
               url: http://cdi-http-import-server.kubevirt/images/alpine.iso
+```
 
 You can see the DataVolume defined in the dataVolumeTemplates section
 has two parts. The **source** and **pvc**
@@ -473,6 +490,7 @@ manifest to the cluster while the DataVolume is still having data
 imported. KubeVirt knows not to start the VMI until all referenced
 DataVolumes have finished their clone and import phases.
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -496,6 +514,7 @@ DataVolumes have finished their clone and import phases.
       - name: disk1
         dataVolume:
           name: alpine-datavolume
+```
 
 #### Enabling DataVolume support.
 
@@ -535,6 +554,7 @@ Up-to-date information on supported backing stores can be found in the
 [KubeVirt
 API](http://kubevirt.io/api-reference/master/definitions.html#_v1_ephemeralvolumesource).
 
+```yaml
     metadata:
       name: testvmi-ephemeral-pvc
     apiVersion: kubevirt.io/v1
@@ -553,6 +573,7 @@ API](http://kubevirt.io/api-reference/master/definitions.html#_v1_ephemeralvolum
           ephemeral:
             persistentVolumeClaim:
               claimName: mypvc
+```
 
 ### containerDisk
 
@@ -617,6 +638,7 @@ Example: Upload the ContainerDisk container image to a registry.
 
 Example: Attach the ContainerDisk as an ephemeral disk to a VM.
 
+```yaml
     metadata:
       name: testvmi-containerdisk
     apiVersion: kubevirt.io/v1
@@ -634,6 +656,7 @@ Example: Attach the ContainerDisk as an ephemeral disk to a VM.
         - name: containerdisk
           containerDisk:
             image: vmidisks/fedora25:latest
+```
 
 Note that a `containerDisk` is file-based and therefore cannot be
 attached as a `lun` device to the VM.
@@ -659,6 +682,7 @@ Example: Build container disk image:
 
 Create VMI with container disk pointing to the custom location:
 
+```yaml
     metadata:
       name: testvmi-containerdisk
     apiVersion: kubevirt.io/v1
@@ -677,6 +701,7 @@ Create VMI with container disk pointing to the custom location:
           containerDisk:
             image: vmidisks/fedora25:latest
             path: /custom-disk-path/fedora25.qcow2
+```
 
 ### emptyDisk
 
@@ -687,6 +712,7 @@ re-creation. The disk `capacity` needs to be specified.
 
 Example: Boot cirros with an extra `emptyDisk` with a size of `2GiB`:
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -712,7 +738,7 @@ Example: Boot cirros with an extra `emptyDisk` with a size of `2GiB`:
         - name: emptydisk
           emptyDisk:
             capacity: 2Gi
-
+```
 #### When to use an emptyDisk
 
 Ephemeral VMs very often come with read-only root images and limited
@@ -739,6 +765,7 @@ Note: you need to enable the HostDisk feature gate.
 Example: Create a 1Gi disk image located at /data/disk.img and attach it
 to a VM.
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -765,6 +792,7 @@ to a VM.
           type: DiskOrCreate
         name: host-disk
     status: {}
+```
 
 ### configMap
 A `configMap` is a reference to a
@@ -1319,6 +1347,7 @@ emulator thread.
 
 #### Shared IOThreads
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -1382,6 +1411,7 @@ emulator thread.
       - emptyDisk:
           capacity: 1Gi
         name: emptydisk6
+```
 
 In this example, emptydisk and emptydisk2 both request a dedicated IOThread. vmi-shared_disk, and emptydisk 3 through 6 will all shared one IOThread.
 
@@ -1395,6 +1425,7 @@ In this example, emptydisk and emptydisk2 both request a dedicated IOThread. vmi
 
 #### Auto IOThreads
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -1458,6 +1489,7 @@ In this example, emptydisk and emptydisk2 both request a dedicated IOThread. vmi
       - emptyDisk:
           capacity: 1Gi
         name: emptydisk6
+```
 
 This VM is identical to the first, except it requests auto IOThreads.
 `emptydisk` and `emptydisk2` will still be allocated individual
@@ -1485,6 +1517,7 @@ for optimal performance.
 This feature is enabled by the `BlockMultiQueue` setting under
 `Devices`:
 
+```yaml
     spec:
       domain:
         devices:
@@ -1493,6 +1526,7 @@ This feature is enabled by the `BlockMultiQueue` setting under
           - disk:
               bus: virtio
             name: mydisk
+```
 
 **Note:** Due to the way KubeVirt implements CPU allocation,
 blockMultiQueue can only be used if a specific CPU allocation is
@@ -1507,6 +1541,7 @@ of this feature.
 
 #### Example
 
+```yaml
     metadata:
       name: testvmi-disk
     apiVersion: kubevirt.io/v1
@@ -1527,6 +1562,7 @@ of this feature.
         - name: mypvcdisk
           persistentVolumeClaim:
             claimName: mypvc
+```
 
 This example will enable Block Multi-Queue for the disk `mypvcdisk` and
 allocate 4 queues (to match the number of CPUs requested).
@@ -1554,6 +1590,7 @@ KubeVirt supports `none`, `writeback`, and `writethrough` KVM/QEMU cache modes.
 
 Example: force `writethrough` cache mode
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -1579,6 +1616,7 @@ Example: force `writethrough` cache mode
         persistentVolumeClaim:
           claimName: disk-alpine
     status: {}
+```
 
 ### Disk sharing
 

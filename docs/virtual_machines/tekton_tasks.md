@@ -19,7 +19,7 @@ SSP does not deploy KubeVirt Tekton tasks resources by default.
 
 You have to enable `deployTektonTaskResources` feature gate in HCO CR to deploy all its resources:
 
-```console
+```yaml
 apiVersion: hco.kubevirt.io/v1beta1
 kind: HyperConverged
 metadata:
@@ -31,7 +31,7 @@ spec:
 ```
 
 or in SSP CR:
-```console
+```yaml
 apiVersion: ssp.kubevirt.io/v1beta2
 kind: SSP
 metadata:
@@ -107,7 +107,7 @@ for Windows versions, which uses BIOS. More informations about pipeline can be f
 ### Using tasks and example pipelines in different namespace
 You can set in which namespace the example pipelines and tasks will be deployed by setting `spec.tektonPipelinesNamespace` or `spec.tektonTasksNamespace`in the HCO CR:
 
-```console
+```yaml
 apiVersion: hco.kubevirt.io/v1beta1
 kind: HyperConverged
 metadata:
@@ -119,7 +119,7 @@ spec:
 ```
 
 or in SSP CR by setting `spec.tektonPipelines.namespace` or `spec.tektonTasks.namespace`:
-```console
+```yaml
 apiVersion: ssp.kubevirt.io/v1beta2
 kind: SSP
 metadata:

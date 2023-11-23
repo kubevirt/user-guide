@@ -24,6 +24,7 @@ with any other API resource.
 
 Here is an example of a VirtualMachineInstance object:
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
     metadata:
@@ -58,6 +59,7 @@ Here is an example of a VirtualMachineInstance object:
             #cloud-config
             password: fedora
             chpasswd: { expire: False }
+```
 
 This example uses a fedora cloud image in combination with cloud-init
 and an ephemeral empty disk with a capacity of `2Gi`. For the sake of

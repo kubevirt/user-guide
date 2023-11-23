@@ -96,6 +96,7 @@ Below is an example of what KubeVirt's default admin ClusterRole looks
 like. A custom RBAC role can be created by reducing the permissions in
 this example role.
 
+```yaml
     apiVersion: rbac.authorization.k8s.io/v1beta1
     kind: ClusterRole
     metadata:
@@ -126,3 +127,4 @@ this example role.
           - list
           - watch
           - deletecollection
+```

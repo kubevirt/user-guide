@@ -127,7 +127,7 @@ Example:
 
 And the output:
 
-```console
+```yaml
     apiVersion: v1
     items:
     - apiVersion: kubevirt.io/v1
@@ -239,7 +239,7 @@ Here's a description of the kubevirt annotations. Unless otherwise
 specified, the following keys are meant to be top-level entries of the
 template metadata, like
 
-```console
+```yaml
     apiVersion: v1
     kind: Template
     metadata:
@@ -252,7 +252,7 @@ All the following annotations are prefixed with
 `defaults.template.kubevirt.io`, which is omitted below for brevity. So
 the actual annotations you should use will look like
 
-```console
+```yaml
     apiVersion: v1
     kind: Template
     metadata:
@@ -274,7 +274,7 @@ See the section `references` below.
 
 Example:
 
-```console
+```yaml
     apiVersion: v1
     kind: Template
     metadata:
@@ -289,7 +289,7 @@ See the section `references` below.
 
 Example:
 
-```console
+```yaml
     apiVersion: v1
     kind: Template
     metadata:
@@ -304,7 +304,7 @@ See the section `references` below.
 
 Example:
 
-```console
+```yaml
     apiVersion: v1
     kind: Template
     metadata:
@@ -319,7 +319,7 @@ See the section `references` below.
 
 Example:
 
-```console
+```yaml
     apiVersion: v1
     kind: Template
     metadata:
@@ -344,7 +344,7 @@ document.
 
 `demo-template.yaml`
 
-```console
+```yaml
 apiversion: v1
 items:
 - apiversion: kubevirt.io/v1
@@ -386,7 +386,7 @@ metadata: {}
 once processed becomes:
 `demo-vm.yaml`
 
-```console
+```yaml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
@@ -467,7 +467,7 @@ provide a template defining the corresponding object and its metadata.
 Here is an example template that defines an instance of the
 `VirtualMachine` object:
 
-```console
+```yaml
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
@@ -716,7 +716,7 @@ VM template or VM/VMI yaml config. The main idea is to create Kubernetes
 PersistentVolume and PersistentVolumeClaim corresponding to existing
 image in the file system. Example:
 
-```console
+```yaml
 ---
 kind: PersistentVolume
 apiVersion: v1
@@ -753,7 +753,7 @@ Kubevirt VM templates are using dataVolumeTemplates.
 Before using dataVolumes, CDI has to be installed in
 cluster. After that, source Datavolume can be created.
 
-```console
+```yaml
 ---
 apiVersion: cdi.kubevirt.io/v1beta1
 kind: DataVolume

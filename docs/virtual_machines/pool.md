@@ -44,6 +44,7 @@ The example below shows how to create a simple `VirtualMachinePool`:
 
 #### Example
 
+```yaml
     apiVersion: pool.kubevirt.io/v1alpha1
     kind: VirtualMachinePool
     metadata:
@@ -80,6 +81,7 @@ The example below shows how to create a simple `VirtualMachinePool`:
               - containerDisk:
                   image: kubevirt/cirros-container-disk-demo:latest
                 name: containerdisk 
+```
 
 Saving this manifest into `vm-pool-cirros.yaml` and submitting it to
 Kubernetes will create three virtual machines based on the template.
@@ -192,6 +194,7 @@ The
 (HPA) can be used with a `VirtualMachinePool`. Simply
 reference it in the spec of the autoscaler:
 
+```yaml
     apiVersion: autoscaling/v1
     kind: HorizontalPodAutoscaler
     metadata:
@@ -205,6 +208,7 @@ reference it in the spec of the autoscaler:
         kind: VirtualMachinePool
         name: vm-pool-cirros
       targetCPUUtilizationPercentage: 50
+```
 
 
 or use `kubectl autoscale` to define the HPA via the commandline:
@@ -219,6 +223,7 @@ for the actual delivery of the service.
 
 For example, exposing SSH port (22) as a ClusterIP service:
 
+```yaml
     apiVersion: v1
     kind: Service
     metadata:
@@ -231,7 +236,7 @@ For example, exposing SSH port (22) as a ClusterIP service:
         - protocol: TCP
           port: 2222
           targetPort: 22
-
+```
 Saving this manifest into `vm-pool-cirros-ssh.yaml` and submitting it to
 Kubernetes will create the `ClusterIP` service listening on port 2222 and
 forwarding to port 22.

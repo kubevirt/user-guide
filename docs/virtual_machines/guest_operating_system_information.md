@@ -51,6 +51,7 @@ release.
 
 ### Windows Server 2012R2 `VirtualMachineInstancePreset` Example
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstancePreset
     metadata:
@@ -154,6 +155,7 @@ Once the `VirtualMachineInstancePreset` is applied to the
         - name: server2012r2
           persistentVolumeClaim:
             claimName: my-windows-image
+```
 
 For more information see [VirtualMachineInstancePresets](./presets.md)
 
@@ -175,7 +177,7 @@ and on extra configuration.
 To enable strict host checking, the user may expand the `featureGates`
 field in the KubeVirt CR by adding the `HypervStrictCheck` to it.
 
-```
+```yaml
     apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
@@ -193,7 +195,7 @@ Alternatively, users can edit an existing kubevirt CR:
 
 `kubectl edit kubevirt kubevirt -n kubevirt`
 
-```
+```yaml
     ...
     spec:
       configuration:

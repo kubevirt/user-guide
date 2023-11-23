@@ -85,6 +85,7 @@ then these values can be omitted.
 
 An example of the KubeVirt resource depicting these default values:
 
+```yaml
     apiVersion: kubevirt.io/v1
     kind: KubeVirt
     metadata:
@@ -92,7 +93,7 @@ An example of the KubeVirt resource depicting these default values:
     spec:
       monitorNamespace: openshift-monitoring
       monitorAccount: prometheus-k8s
-
+```
 ## Integrating with the OKD cluster-monitoring-operator
 
 After the

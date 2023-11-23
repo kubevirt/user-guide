@@ -243,6 +243,7 @@ See the section Addressing Certificate Issues when Uploading for why cdi-uploadp
 To create a `VirtualMachineInstance` from a DataVolume, you can execute the
 following:
 
+```yaml
     cat <<EOF | kubectl apply -f -
     apiVersion: kubevirt.io/v1
     kind: VirtualMachineInstance
@@ -267,6 +268,7 @@ following:
           name: cirros-vm-disk
     status: {}
     EOF
+```
 
 ## Connect to VirtualMachineInstance console
 

@@ -146,7 +146,7 @@ of `64MiB/s`.
 
 These values can be changed in the `kubevirt` CR:
 
-```
+```yaml
     apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
@@ -272,7 +272,7 @@ be needed as well.
 
 Finally, a NetworkAttachmentDefinition needs to be created in the
 namespace where KubeVirt is installed. Here is an example:
-```
+```yaml
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
@@ -296,7 +296,7 @@ spec:
 
 This is just a matter of adding the name of the
 NetworkAttachmentDefinition to the KubeVirt CR, like so:
-```
+```yaml
     apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
@@ -369,7 +369,7 @@ parameter, which defaults to 150s
 Sometimes it may be desirable to disable TLS encryption of migrations to
 improve performance. Use `disableTLS` to do that:
 
-```
+```yaml
     apiVersion: kubevirt.io/v1
     kind: Kubevirt
     metadata:
