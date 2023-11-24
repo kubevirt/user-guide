@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.11">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.12">
     
     
       
@@ -3168,8 +3168,13 @@ Wiki</a>.</p>
 <h3 id="masquerade">masquerade<a class="headerlink" href="#masquerade" title="Permanent link">&para;</a></h3>
 <p>In <code>masquerade</code> mode, KubeVirt allocates internal IP addresses to
 virtual machines and hides them behind NAT. All the traffic exiting
-virtual machines is "NAT'ed" using pod IP addresses. A guest operating system
-should be configured to use DHCP to acquire IPv4 addresses.</p>
+virtual machines is "source NAT'ed" using pod IP addresses; thus, cluster
+workloads should use the pod's IP address to contact the VM over this interface.
+This IP address is reported in the VMI's <code>spec.status.interface</code>. A guest
+operating system should be configured to use DHCP to acquire IPv4 addresses.</p>
+<p>To allow the VM to live-migrate or hard restart (both cause the VM to run on a
+different pod, with a different IP address) and still be reachable, it should be
+exposed by a Kubernetes <a href="../service_objects/#service-objects">service</a>.</p>
 <p>To allow traffic of specific ports into virtual machines, the template <code>ports</code> section of
 the interface should be configured as follows. If the <code>ports</code> section is missing,
 all ports forwarded into the VM.</p>
