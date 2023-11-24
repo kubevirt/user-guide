@@ -571,8 +571,14 @@ spec:
 
 In `masquerade` mode, KubeVirt allocates internal IP addresses to
 virtual machines and hides them behind NAT. All the traffic exiting
-virtual machines is "NAT'ed" using pod IP addresses. A guest operating system
-should be configured to use DHCP to acquire IPv4 addresses.
+virtual machines is "source NAT'ed" using pod IP addresses; thus, cluster
+workloads should use the pod's IP address to contact the VM over this interface.
+This IP address is reported in the VMI's `spec.status.interface`. A guest
+operating system should be configured to use DHCP to acquire IPv4 addresses.
+
+To allow the VM to live-migrate or hard restart (both cause the VM to run on a
+different pod, with a different IP address) and still be reachable, it should be
+exposed by a Kubernetes [service](service_objects.md#service-objects).
 
 To allow traffic of specific ports into virtual machines, the template `ports` section of
 the interface should be configured as follows. If the `ports` section is missing,
