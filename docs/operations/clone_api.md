@@ -108,7 +108,7 @@ Setting label / annotation filters is **optional**. If unset, all labels / annot
 
 #### Template Label & Template Annotation filters
 
-Some network cni such as kube-ovn or ovn-kubernetes will inject network information into the annotations of the VM. It would raise an issue When we want to clone a vm from the target vm. The clone vm would use the same network. So you can use template labels and annotation filters to avoid this problems.
+Some network CNIs such as Kube-OVN or OVN-Kubernetes inject network information into the annotations of a VM. When cloning a VM from a target VM the cloned VM will use the same network. To avoid this you can use template labels and annotation filters.
 
 #### newMacAddresses
 
