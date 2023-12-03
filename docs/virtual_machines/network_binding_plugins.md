@@ -227,3 +227,7 @@ spec:
                 dhcp4: true
         name: cloudinitdisk
 ```
+
+## Available network binding plugins
+
+- [Passt](net_binding_plugins/passt.md)

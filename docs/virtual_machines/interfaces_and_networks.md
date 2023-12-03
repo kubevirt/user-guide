@@ -630,6 +630,11 @@ Tracking issue - https://github.com/kubevirt/kubevirt/issues/7184
 
 ### passt
 
+> **Warning**: The core binding is being deprecated and targeted for removal
+> in v1.3 .
+> As an alternative, the same functionality is introduced and available as a
+> [binding plugin](net_binding_plugins/passt.md).
+
 `passt` is a new approach for user-mode networking which can be used as a simple replacement for Slirp (which is practically dead).
 
 `passt` is a universal tool which implements a translation layer between a Layer-2 network interface and native
