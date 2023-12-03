@@ -527,46 +527,6 @@ In case no image is registered, Kubevirt will use the following default image: `
 
 > **Note:** On disconnected clusters it will be necessary to mirror Slirp binding plugin image to the cluster registry.
 
-### Network binding plugins
-Since v1.1.0, Kubevirt enables delegating network binding configurations to a hook sidecar.
-
-The sidecar container is added to the VM virt-launcher pod using the registered network binding plugin image in Kubevirt config.
-
-To register a network binding plugin image, specify the image in Kubevirt config as follows:
-```yaml
-apiVersion: kubevirt.io/v1
-kind: KubeVirt
-metadata:
-  name: kubevirt
-  namespace: kubevirt
-spec:
-  configuration:
-    network:
-      binding:
-        slirp:
-          sidecarImage: "kubevirt/network-slirp-plugin"
-```
-
-Use the binding by specifying it in the VM spec:
-```yaml
-apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  name: example-vm-slirp
-spec:
-  template:
-    spec:
-      domain:
-        devices:
-          interfaces:
-          - name: podnetwork
-            binding:
-              name: slirp
-    networks:
-    - name: podnetwork
-      pod: {}
-```
-
 ### masquerade
 
 In `masquerade` mode, KubeVirt allocates internal IP addresses to
