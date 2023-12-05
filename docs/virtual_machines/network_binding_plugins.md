@@ -231,3 +231,4 @@ spec:
 ## Available network binding plugins
 
 - [Passt](net_binding_plugins/passt.md)
+- [Slirp](net_binding_plugins/slirp.md)

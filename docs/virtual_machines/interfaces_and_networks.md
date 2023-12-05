@@ -518,14 +518,17 @@ fields.
 More information about SLIRP mode can be found in [QEMU
 Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29).
 
-#### Slirp network binding plugin
-Since v1.1.0, Kubevirt delegates Slirp network configuration to a hook sidecar using Slirp network binding plugin by default.
+> **Note**: Since v1.1.0, Kubevirt delegates Slirp network configuration to
+> the [Slirp network binding plugin](net_binding_plugins/slirp.md#slirp-network-binding-plugin) by default.
+> In case the binding plugin is not registered,
+> Kubevirt will use the following default image:
+> `quay.io/kubevirt/network-slirp-binding:20230830_638c60fc8`.
 
-In case no image is registered, Kubevirt will use the following default image: `quay.io/kubevirt/network-slirp-binding:20230830_638c60fc8`.
+> **Note:** In the next release (v1.2.0) no default image will be set by Kubevirt,
+> registering an image will be mandatory.
 
-> **Note:** In the next release (v1.2.0) no default image will be set by Kubevirt, registering an image will be mandatory.
-
-> **Note:** On disconnected clusters it will be necessary to mirror Slirp binding plugin image to the cluster registry.
+> **Note:** On disconnected clusters it will be necessary
+> to mirror Slirp binding plugin image to the cluster registry.
 
 ### masquerade
 
