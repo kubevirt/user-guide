@@ -97,34 +97,34 @@ like. A custom RBAC role can be created by reducing the permissions in
 this example role.
 
 ```yaml
-    apiVersion: rbac.authorization.k8s.io/v1beta1
-    kind: ClusterRole
-    metadata:
-      name: my-custom-rbac-role
-      labels:
-        kubevirt.io: ""
-    rules:
-      - apiGroups:
-          - subresources.kubevirt.io
-        resources:
-          - virtualmachineinstances/console
-          - virtualmachineinstances/vnc
-        verbs:
-          - get
-      - apiGroups:
-          - kubevirt.io
-        resources:
-          - virtualmachineinstances
-          - virtualmachines
-          - virtualmachineinstancepresets
-          - virtualmachineinstancereplicasets
-        verbs:
-          - get
-          - delete
-          - create
-          - update
-          - patch
-          - list
-          - watch
-          - deletecollection
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: my-custom-rbac-role
+  labels:
+    kubevirt.io: ""
+rules:
+  - apiGroups:
+      - subresources.kubevirt.io
+    resources:
+      - virtualmachineinstances/console
+      - virtualmachineinstances/vnc
+    verbs:
+      - get
+  - apiGroups:
+      - kubevirt.io
+    resources:
+      - virtualmachineinstances
+      - virtualmachines
+      - virtualmachineinstancepresets
+      - virtualmachineinstancereplicasets
+    verbs:
+      - get
+      - delete
+      - create
+      - update
+      - patch
+      - list
+      - watch
+      - deletecollection
 ```

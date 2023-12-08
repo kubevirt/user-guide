@@ -76,35 +76,35 @@ a VM ensures that the VMI is migrated during node eviction:
 Here a full VMI:
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      name: testvmi-nocloud
-    spec:
-      terminationGracePeriodSeconds: 30
-      evictionStrategy: LiveMigrate
-      domain:
-        resources:
-          requests:
-            memory: 1024M
-        devices:
-          disks:
-          - name: containerdisk
-            disk:
-              bus: virtio
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-      volumes:
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 30
+  evictionStrategy: LiveMigrate
+  domain:
+    resources:
+      requests:
+        memory: 1024M
+    devices:
+      disks:
       - name: containerdisk
-        containerDisk:
-          image: kubevirt/fedora-cloud-container-disk-demo:latest
-      - name: cloudinitdisk
-        cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
+        disk:
+          bus: virtio
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - name: cloudinitdisk
+    cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
 ```
 Behind the scenes a **PodDisruptionBudget** is created for each VMI
 which has an **evictionStrategy** defined. This ensures that evictions

@@ -36,18 +36,18 @@ request the additional overhead by setting
 `spec.domain.resources.overcommitGuestOverhead` to `true`:
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      name: testvmi-nocloud
-    spec:
-      terminationGracePeriodSeconds: 30
-      domain:
-        resources:
-          overcommitGuestOverhead: true
-          requests:
-            memory: 1024M
-    [...]
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 30
+  domain:
+    resources:
+      overcommitGuestOverhead: true
+      requests:
+        memory: 1024M
+[...]
 ```
 
 This will work fine for as long as most of the VirtualMachineInstances
@@ -68,20 +68,20 @@ The following definition requests `1024MB` from the cluster but tells
 the VMI that it has `2048MB` of memory available:
 
 ```yaml
-    apiVersion: kubevirt.io/v1alpha3
-    kind: VirtualMachineInstance
-    metadata:
-      name: testvmi-nocloud
-    spec:
-      terminationGracePeriodSeconds: 30
-      domain:
-        resources:
-          overcommitGuestOverhead: true
-          requests:
-            memory: 1024M
-        memory:
-          guest: 2048M
-    [...]
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 30
+  domain:
+    resources:
+      overcommitGuestOverhead: true
+      requests:
+        memory: 1024M
+    memory:
+      guest: 2048M
+[...]
 ```
 
 For as long as there is enough free memory available on the node, the
@@ -236,9 +236,9 @@ Administrators can change this ratio by updating the KubeVirt CR
 
 ```yaml
 ...
-    spec:
-      configuration:
-        developerConfiguration:
-          cpuAllocationRatio: 10
+spec:
+  configuration:
+    developerConfiguration:
+      cpuAllocationRatio: 10
 ```
 

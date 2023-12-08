@@ -32,13 +32,13 @@ kubectl edit kubevirt kubevirt -n kubevirt
 ```
 
 ```yaml
-    ...
-    spec:
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - DataVolumes
-            - LiveMigration
+...
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - DataVolumes
+        - LiveMigration
 ```
 
 **Note:** the name of the feature gates is case sensitive.

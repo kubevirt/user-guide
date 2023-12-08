@@ -75,12 +75,12 @@ For downloading a memory dump from a PVC already disassociated from the VM you c
 ### Monitoring the memory dump
 Information regarding the memory dump process will be available on the VM's status section
 ```yaml
-    memoryDumpRequest:
-      claimName: memory-dump
-      phase: Completed
-      startTimestamp: "2022-03-29T11:00:04Z"
-      endTimestamp: "2022-03-29T11:00:09Z"
-      fileName: my-vm-my-pvc-20220329-110004
+memoryDumpRequest:
+  claimName: memory-dump
+  phase: Completed
+  startTimestamp: "2022-03-29T11:00:04Z"
+  endTimestamp: "2022-03-29T11:00:09Z"
+  fileName: my-vm-my-pvc-20220329-110004
 ```
 
 During the process the volumeStatus on the VMI will be updated with the process information such as the attachment pod information and messages, if all goes well once the process is completed, the PVC is unmounted from the virt-launcher pod and the volumeStatus is deleted.

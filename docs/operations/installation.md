@@ -134,11 +134,11 @@ can be enabled using by setting in the KubeVirt CR `spec.configuration.developer
 Add the following to the `kubevirt.yaml` file
 
 ```yaml
-    spec:
-      ...
-      configuration:
-        developerConfiguration:
-          useEmulation: true
+spec:
+    ...
+    configuration:
+    developerConfiguration:
+        useEmulation: true
 ```
 
 > Note: Prior to release v0.20.0 the condition for the `kubectl wait`

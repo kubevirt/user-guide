@@ -14,48 +14,48 @@ Service which matches the labels and the subdomain of the
 VirtualMachineInstance:
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      name: vmi-fedora
-      labels:
-        expose: me
-    spec:
-      hostname: "myvmi"
-      subdomain: "mysubdomain"
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-        resources:
-          requests:
-            memory: 1024M
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: containerdisk
-        containerDisk:
-          image: kubevirt/fedora-cloud-registry-disk-demo:latest
-      - cloudInitNoCloud:
-          userDataBase64: IyEvYmluL2Jhc2gKZWNobyAiZmVkb3JhOmZlZG9yYSIgfCBjaHBhc3N3ZAo=
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-fedora
+  labels:
+    expose: me
+spec:
+  hostname: "myvmi"
+  subdomain: "mysubdomain"
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
         name: cloudinitdisk
-    ---
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: mysubdomain
-    spec:
-      selector:
-        expose: me
-      clusterIP: None
-      ports:
-      - name: foo # Actually, no port is needed.
-        port: 1234
-        targetPort: 1234
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-registry-disk-demo:latest
+  - cloudInitNoCloud:
+      userDataBase64: IyEvYmluL2Jhc2gKZWNobyAiZmVkb3JhOmZlZG9yYSIgfCBjaHBhc3N3ZAo=
+    name: cloudinitdisk
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysubdomain
+spec:
+  selector:
+    expose: me
+  clusterIP: None
+  ports:
+  - name: foo # Actually, no port is needed.
+    port: 1234
+    targetPort: 1234
 ```
 
 As a consequence, when we enter the VirtualMachineInstance via e.g.

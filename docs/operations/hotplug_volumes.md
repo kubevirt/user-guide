@@ -91,21 +91,21 @@ $ virtctl addvolume vm-fedora --volume-name=example-volume-hotplug --persist
 
 In the VM spec this will now show as a new disk
 ```yaml
-    spec:
-    domain:
-        devices:
-            disks:
-            - disk:
-                bus: virtio
-                name: containerdisk
-            - disk:
-                bus: virtio
-                name: cloudinitdisk
-            - disk:
-                bus: scsi
-                name: example-volume-hotplug
-        machine:
-          type: ""
+spec:
+domain:
+    devices:
+        disks:
+        - disk:
+            bus: virtio
+            name: containerdisk
+        - disk:
+            bus: virtio
+            name: cloudinitdisk
+        - disk:
+            bus: scsi
+            name: example-volume-hotplug
+    machine:
+      type: ""
 ```
 
 ### Removevolume
@@ -119,19 +119,19 @@ $ virtctl removevolume vmi-fedora --volume-name=example-volume-hotplug
 ### VolumeStatus
 VMI objects have a new `status.VolumeStatus` field. This is an array containing each disk, hotplugged or not. For example, after hotplugging the volume in the addvolume example, the VMI status will contain this:
 ```yaml
-    volumeStatus:
-    - name: cloudinitdisk
-      target: vdb
-    - name: containerdisk
-      target: vda
-    - hotplugVolume:
-        attachPodName: hp-volume-7fmz4
-        attachPodUID: 62a7f6bf-474c-4e25-8db5-1db9725f0ed2
-      message: Successfully attach hotplugged volume volume-hotplug to VM
-      name: example-volume-hotplug
-      phase: Ready
-      reason: VolumeReady
-      target: sda
+volumeStatus:
+- name: cloudinitdisk
+  target: vdb
+- name: containerdisk
+  target: vda
+- hotplugVolume:
+    attachPodName: hp-volume-7fmz4
+    attachPodUID: 62a7f6bf-474c-4e25-8db5-1db9725f0ed2
+  message: Successfully attach hotplugged volume volume-hotplug to VM
+  name: example-volume-hotplug
+  phase: Ready
+  reason: VolumeReady
+  target: sda
 ```
 Vda is the container disk that contains the Fedora OS, vdb is the cloudinit disk. As you can see those just contain the name and target used when assigning them to the VM. The target is the value passed to QEMU when specifying the disks. The value is unique for the VM and does *NOT* represent the naming inside the guest. For instance for a Windows Guest OS the target has no meaning. The same will be true for hotplugged volumes. The target is just a unique identifier meant for QEMU, inside the guest the disk can be assigned a different name.
 

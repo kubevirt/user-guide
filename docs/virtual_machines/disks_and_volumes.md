@@ -33,24 +33,24 @@ A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `lun` device to the VM:
 
 ```yaml
-    metadata:
-      name: testvmi-lun
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mypvcdisk
-            # This makes it a lun device
-            lun: {}
-      volumes:
-        - name: mypvcdisk
-          persistentVolumeClaim:
-            claimName: mypvc
+metadata:
+  name: testvmi-lun
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        # This makes it a lun device
+        lun: {}
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
 ```
 #### persistent reservation
 It is possible to reserve a LUN through the the SCSI Persistent Reserve commands.
@@ -58,20 +58,20 @@ In order to issue privileged SCSI ioctls, the VM requires activation of the
 persistent resevation flag:
 
 ```yaml
-        devices:
-          disks:
-          - name: mypvcdisk
-            lun:
-              reservation: true
+devices:
+  disks:
+  - name: mypvcdisk
+    lun:
+      reservation: true
 ```
 
 This feature is enabled by the feature gate `PersistentReservation`:
 
 ```yaml
-    configuration:
-      developerConfiguration:
-        featureGates:
-        -  PersistentReservation
+configuration:
+  developerConfiguration:
+    featureGates:
+    -  PersistentReservation
 ```
 
 ### disk
@@ -82,51 +82,51 @@ A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `disk` device to the VM:
 
 ```yaml
-    metadata:
-      name: testvmi-disk
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mypvcdisk
-            # This makes it a disk
-            disk: {}
-      volumes:
-        - name: mypvcdisk
-          persistentVolumeClaim:
-            claimName: mypvc
+metadata:
+  name: testvmi-disk
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        # This makes it a disk
+        disk: {}
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
 ```
 
 You can set the disk `bus` type, overriding the defaults, which in turn
 depends on the chipset the VM is configured to use:
 
 ```yaml
-    metadata:
-      name: testvmi-disk
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mypvcdisk
-            # This makes it a disk
-            disk:
-              # This makes it exposed as /dev/vda, being the only and thus first
-              # disk attached to the VM
-              bus: virtio
-      volumes:
-        - name: mypvcdisk
-          persistentVolumeClaim:
-            claimName: mypvc
+metadata:
+  name: testvmi-disk
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        # This makes it a disk
+        disk:
+          # This makes it exposed as /dev/vda, being the only and thus first
+          # disk attached to the VM
+          bus: virtio
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
 ```
 ### cdrom
 
@@ -137,28 +137,28 @@ A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `cdrom` device to the VM:
 
 ```yaml
-    metadata:
-      name: testvmi-cdrom
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mypvcdisk
-            # This makes it a cdrom
-            cdrom:
-              # This makes the cdrom writeable
-              readOnly: false
-              # This makes the cdrom be exposed as SATA device
-              bus: sata
-      volumes:
-        - name: mypvcdisk
-          persistentVolumeClaim:
-            claimName: mypvc
+metadata:
+  name: testvmi-cdrom
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        # This makes it a cdrom
+        cdrom:
+          # This makes the cdrom writeable
+          readOnly: false
+          # This makes the cdrom be exposed as SATA device
+          bus: sata
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
 ```
 
 ### filesystems
@@ -237,18 +237,18 @@ The error policy can be specified per disk or lun.
 
 Example:
 ```yaml
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-            errorPolicy: "report"
-          - lun:
-              bus: scsi
-            name: scsi-disk
-            errorPolicy: "report"
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+        errorPolicy: "report"
+      - lun:
+          bus: scsi
+        name: scsi-disk
+        errorPolicy: "report"
 ```
 
 ## Volumes
@@ -292,29 +292,29 @@ A simple example which attaches a `Secret` as a cloud-init `disk`
 datasource may look like this:
 
 ```yaml
-    metadata:
-      name: testvmi-cloudinitnocloud
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mybootdisk
-            lun: {}
-          - name: mynoclouddisk
-            disk: {}
-      volumes:
-        - name: mybootdisk
-          persistentVolumeClaim:
-            claimName: mypvc
-        - name: mynoclouddisk
-          cloudInitNoCloud:
-            secretRef:
-              name: testsecret
+metadata:
+  name: testvmi-cloudinitnocloud
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mybootdisk
+        lun: {}
+      - name: mynoclouddisk
+        disk: {}
+  volumes:
+    - name: mybootdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+    - name: mynoclouddisk
+      cloudInitNoCloud:
+        secretRef:
+          name: testsecret
 ```
 ### cloudInitConfigDrive
 
@@ -326,29 +326,29 @@ A simple example which attaches a `Secret` as a cloud-init `disk`
 datasource may look like this:
 
 ```yaml
-    metadata:
-      name: testvmi-cloudinitconfigdrive
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mybootdisk
-            lun: {}
-          - name: myconfigdrivedisk
-            disk: {}
-      volumes:
-        - name: mybootdisk
-          persistentVolumeClaim:
-            claimName: mypvc
-        - name: myconfigdrivedisk
-          cloudInitConfigDrive:
-            secretRef:
-              name: testsecret
+metadata:
+  name: testvmi-cloudinitconfigdrive
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mybootdisk
+        lun: {}
+      - name: myconfigdrivedisk
+        disk: {}
+  volumes:
+    - name: mybootdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+    - name: myconfigdrivedisk
+      cloudInitConfigDrive:
+        secretRef:
+          name: testsecret
 ```
 
 The `cloudInitConfigDrive` can also be used to configure VMs with Ignition.
@@ -388,23 +388,23 @@ A simple example which attaches a `PersistentVolumeClaim` as a `disk`
 may look like this:
 
 ```yaml
-    metadata:
-      name: testvmi-pvc
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mypvcdisk
-            lun: {}
-      volumes:
-        - name: mypvcdisk
-          persistentVolumeClaim:
-            claimName: mypvc
+metadata:
+  name: testvmi-pvc
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        lun: {}
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
 ```
 
 #### dataVolume
@@ -421,45 +421,45 @@ DataVolumes can be defined in the VM spec directly by adding the
 DataVolumes to the `dataVolumeTemplates` list. Below is an example.
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachine
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-alpine-datavolume
+  name: vm-alpine-datavolume
+spec:
+  running: false
+  template:
     metadata:
       labels:
         kubevirt.io/vm: vm-alpine-datavolume
-      name: vm-alpine-datavolume
     spec:
-      running: false
-      template:
-        metadata:
-          labels:
-            kubevirt.io/vm: vm-alpine-datavolume
-        spec:
-          domain:
-            devices:
-              disks:
-              - disk:
-                  bus: virtio
-                name: datavolumedisk1
-            resources:
-              requests:
-                memory: 64M
-          volumes:
-          - dataVolume:
-              name: alpine-dv
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
             name: datavolumedisk1
-      dataVolumeTemplates:
-      - metadata:
+        resources:
+          requests:
+            memory: 64M
+      volumes:
+      - dataVolume:
           name: alpine-dv
-        spec:
-          pvc:
-            accessModes:
-            - ReadWriteOnce
-            resources:
-              requests:
-                storage: 2Gi
-          source:
-            http:
-              url: http://cdi-http-import-server.kubevirt/images/alpine.iso
+        name: datavolumedisk1
+  dataVolumeTemplates:
+  - metadata:
+      name: alpine-dv
+    spec:
+      pvc:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
+      source:
+        http:
+          url: http://cdi-http-import-server.kubevirt/images/alpine.iso
 ```
 
 You can see the DataVolume defined in the dataVolumeTemplates section
@@ -491,29 +491,29 @@ imported. KubeVirt knows not to start the VMI until all referenced
 DataVolumes have finished their clone and import phases.
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        special: vmi-alpine-datavolume
-      name: vmi-alpine-datavolume
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: disk1
-        machine:
-          type: ""
-        resources:
-          requests:
-            memory: 64M
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: disk1
-        dataVolume:
-          name: alpine-datavolume
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-alpine-datavolume
+  name: vmi-alpine-datavolume
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: disk1
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: disk1
+    dataVolume:
+      name: alpine-datavolume
 ```
 
 #### Enabling DataVolume support.
@@ -555,24 +555,24 @@ Up-to-date information on supported backing stores can be found in the
 API](http://kubevirt.io/api-reference/master/definitions.html#_v1_ephemeralvolumesource).
 
 ```yaml
-    metadata:
-      name: testvmi-ephemeral-pvc
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mypvcdisk
-            lun: {}
-      volumes:
-        - name: mypvcdisk
-          ephemeral:
-            persistentVolumeClaim:
-              claimName: mypvc
+metadata:
+  name: testvmi-ephemeral-pvc
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        lun: {}
+  volumes:
+    - name: mypvcdisk
+      ephemeral:
+        persistentVolumeClaim:
+          claimName: mypvc
 ```
 
 ### containerDisk
@@ -639,23 +639,23 @@ Example: Upload the ContainerDisk container image to a registry.
 Example: Attach the ContainerDisk as an ephemeral disk to a VM.
 
 ```yaml
-    metadata:
-      name: testvmi-containerdisk
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: containerdisk
-            disk: {}
-      volumes:
-        - name: containerdisk
-          containerDisk:
-            image: vmidisks/fedora25:latest
+metadata:
+  name: testvmi-containerdisk
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        disk: {}
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: vmidisks/fedora25:latest
 ```
 
 Note that a `containerDisk` is file-based and therefore cannot be
@@ -683,24 +683,24 @@ Example: Build container disk image:
 Create VMI with container disk pointing to the custom location:
 
 ```yaml
-    metadata:
-      name: testvmi-containerdisk
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: containerdisk
-            disk: {}
-      volumes:
-        - name: containerdisk
-          containerDisk:
-            image: vmidisks/fedora25:latest
-            path: /custom-disk-path/fedora25.qcow2
+metadata:
+  name: testvmi-containerdisk
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        disk: {}
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: vmidisks/fedora25:latest
+        path: /custom-disk-path/fedora25.qcow2
 ```
 
 ### emptyDisk
@@ -713,31 +713,31 @@ re-creation. The disk `capacity` needs to be specified.
 Example: Boot cirros with an extra `emptyDisk` with a size of `2GiB`:
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      name: testvmi-nocloud
-    spec:
-      terminationGracePeriodSeconds: 5
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: containerdisk
-            disk:
-              bus: virtio
-          - name: emptydisk
-            disk:
-              bus: virtio
-      volumes:
-        - name: containerdisk
-          containerDisk:
-            image: kubevirt/cirros-registry-disk-demo:latest
-        - name: emptydisk
-          emptyDisk:
-            capacity: 2Gi
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 5
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: containerdisk
+        disk:
+          bus: virtio
+      - name: emptydisk
+        disk:
+          bus: virtio
+  volumes:
+    - name: containerdisk
+      containerDisk:
+        image: kubevirt/cirros-registry-disk-demo:latest
+    - name: emptydisk
+      emptyDisk:
+        capacity: 2Gi
 ```
 #### When to use an emptyDisk
 
@@ -766,32 +766,32 @@ Example: Create a 1Gi disk image located at /data/disk.img and attach it
 to a VM.
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        special: vmi-host-disk
-      name: vmi-host-disk
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: host-disk
-        machine:
-          type: ""
-        resources:
-          requests:
-            memory: 64M
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - hostDisk:
-          capacity: 1Gi
-          path: /data/disk.img
-          type: DiskOrCreate
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-host-disk
+  name: vmi-host-disk
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
         name: host-disk
-    status: {}
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - hostDisk:
+      capacity: 1Gi
+      path: /data/disk.img
+      type: DiskOrCreate
+    name: host-disk
+status: {}
 ```
 
 ### configMap
@@ -1348,69 +1348,69 @@ emulator thread.
 #### Shared IOThreads
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        special: vmi-shared
-      name: vmi-shared
-    spec:
-      domain:
-        ioThreadsPolicy: shared
-        cpu:
-          cores: 2
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: vmi-shared_disk
-          - disk:
-              bus: virtio
-            name: emptydisk
-            dedicatedIOThread: true
-          - disk:
-              bus: virtio
-            name: emptydisk2
-            dedicatedIOThread: true
-          - disk:
-              bus: virtio
-            name: emptydisk3
-          - disk:
-              bus: virtio
-            name: emptydisk4
-          - disk:
-              bus: virtio
-            name: emptydisk5
-          - disk:
-              bus: virtio
-            name: emptydisk6
-        machine:
-          type: ""
-        resources:
-          requests:
-            memory: 64M
-      volumes:
-      - name: vmi-shared_disk
-        persistentVolumeClaim:
-          claimName: vmi-shared_pvc
-      - emptyDisk:
-          capacity: 1Gi
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-shared
+  name: vmi-shared
+spec:
+  domain:
+    ioThreadsPolicy: shared
+    cpu:
+      cores: 2
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: vmi-shared_disk
+      - disk:
+          bus: virtio
         name: emptydisk
-      - emptyDisk:
-          capacity: 1Gi
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
         name: emptydisk2
-      - emptyDisk:
-          capacity: 1Gi
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
         name: emptydisk3
-      - emptyDisk:
-          capacity: 1Gi
+      - disk:
+          bus: virtio
         name: emptydisk4
-      - emptyDisk:
-          capacity: 1Gi
+      - disk:
+          bus: virtio
         name: emptydisk5
-      - emptyDisk:
-          capacity: 1Gi
+      - disk:
+          bus: virtio
         name: emptydisk6
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  volumes:
+  - name: vmi-shared_disk
+    persistentVolumeClaim:
+      claimName: vmi-shared_pvc
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk2
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk3
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk4
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk5
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk6
 ```
 
 In this example, emptydisk and emptydisk2 both request a dedicated IOThread. vmi-shared_disk, and emptydisk 3 through 6 will all shared one IOThread.
@@ -1426,69 +1426,69 @@ In this example, emptydisk and emptydisk2 both request a dedicated IOThread. vmi
 #### Auto IOThreads
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        special: vmi-shared
-      name: vmi-shared
-    spec:
-      domain:
-        ioThreadsPolicy: auto
-        cpu:
-          cores: 2
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: mydisk
-          - disk:
-              bus: virtio
-            name: emptydisk
-            dedicatedIOThread: true
-          - disk:
-              bus: virtio
-            name: emptydisk2
-            dedicatedIOThread: true
-          - disk:
-              bus: virtio
-            name: emptydisk3
-          - disk:
-              bus: virtio
-            name: emptydisk4
-          - disk:
-              bus: virtio
-            name: emptydisk5
-          - disk:
-              bus: virtio
-            name: emptydisk6
-        machine:
-          type: ""
-        resources:
-          requests:
-            memory: 64M
-      volumes:
-      - name: mydisk
-        persistentVolumeClaim:
-          claimName: mypvc
-      - emptyDisk:
-          capacity: 1Gi
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-shared
+  name: vmi-shared
+spec:
+  domain:
+    ioThreadsPolicy: auto
+    cpu:
+      cores: 2
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: mydisk
+      - disk:
+          bus: virtio
         name: emptydisk
-      - emptyDisk:
-          capacity: 1Gi
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
         name: emptydisk2
-      - emptyDisk:
-          capacity: 1Gi
+        dedicatedIOThread: true
+      - disk:
+          bus: virtio
         name: emptydisk3
-      - emptyDisk:
-          capacity: 1Gi
+      - disk:
+          bus: virtio
         name: emptydisk4
-      - emptyDisk:
-          capacity: 1Gi
+      - disk:
+          bus: virtio
         name: emptydisk5
-      - emptyDisk:
-          capacity: 1Gi
+      - disk:
+          bus: virtio
         name: emptydisk6
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  volumes:
+  - name: mydisk
+    persistentVolumeClaim:
+      claimName: mypvc
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk2
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk3
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk4
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk5
+  - emptyDisk:
+      capacity: 1Gi
+    name: emptydisk6
 ```
 
 This VM is identical to the first, except it requests auto IOThreads.
@@ -1518,14 +1518,14 @@ This feature is enabled by the `BlockMultiQueue` setting under
 `Devices`:
 
 ```yaml
-    spec:
-      domain:
-        devices:
-          blockMultiQueue: true
-          disks:
-          - disk:
-              bus: virtio
-            name: mydisk
+spec:
+  domain:
+    devices:
+      blockMultiQueue: true
+      disks:
+      - disk:
+          bus: virtio
+        name: mydisk
 ```
 
 **Note:** Due to the way KubeVirt implements CPU allocation,
@@ -1542,26 +1542,26 @@ of this feature.
 #### Example
 
 ```yaml
-    metadata:
-      name: testvmi-disk
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        resources:
-          requests:
-            memory: 64M
-            cpu: 4
-        devices:
-          blockMultiQueue: true
-          disks:
-          - name: mypvcdisk
-            disk:
-              bus: virtio
-      volumes:
-        - name: mypvcdisk
-          persistentVolumeClaim:
-            claimName: mypvc
+metadata:
+  name: testvmi-disk
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    resources:
+      requests:
+        memory: 64M
+        cpu: 4
+    devices:
+      blockMultiQueue: true
+      disks:
+      - name: mypvcdisk
+        disk:
+          bus: virtio
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
 ```
 
 This example will enable Block Multi-Queue for the disk `mypvcdisk` and
@@ -1591,31 +1591,31 @@ KubeVirt supports `none`, `writeback`, and `writethrough` KVM/QEMU cache modes.
 Example: force `writethrough` cache mode
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        special: vmi-pvc
-      name: vmi-pvc
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: pvcdisk
-            cache: writethrough
-        machine:
-          type: ""
-        resources:
-          requests:
-            memory: 64M
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - name: pvcdisk
-        persistentVolumeClaim:
-          claimName: disk-alpine
-    status: {}
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-pvc
+  name: vmi-pvc
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: pvcdisk
+        cache: writethrough
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: pvcdisk
+    persistentVolumeClaim:
+      claimName: disk-alpine
+status: {}
 ```
 
 ### Disk sharing

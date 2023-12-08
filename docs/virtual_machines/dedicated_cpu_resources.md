@@ -56,35 +56,35 @@ takes value from `spec.domain.resources.requests.cpu` or
 All inconsistent requirements will be rejected.
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        cpu:
-          sockets: 2
-          cores: 1
-          threads: 1
-          dedicatedCpuPlacement: true
-        resources:
-          limits:
-            memory: 2Gi
-    [...]
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    cpu:
+      sockets: 2
+      cores: 1
+      threads: 1
+      dedicatedCpuPlacement: true
+    resources:
+      limits:
+        memory: 2Gi
+[...]
 ```
 
 OR
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        cpu:
-          dedicatedCpuPlacement: true
-        resources:
-          limits:
-            cpu: 2
-            memory: 2Gi
-    [...]
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    cpu:
+      dedicatedCpuPlacement: true
+    resources:
+      limits:
+        cpu: 2
+        memory: 2Gi
+[...]
 ```
 
 ## Requesting dedicated CPU for QEMU emulator
@@ -107,17 +107,17 @@ with a `dedicatedCpuPlacement: true`.
 Example:
 
 ```yaml
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      domain:
-        cpu:
-          dedicatedCpuPlacement: true
-          isolateEmulatorThread: true
-        resources:
-          limits:
-            cpu: 2
-            memory: 2Gi
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  domain:
+    cpu:
+      dedicatedCpuPlacement: true
+      isolateEmulatorThread: true
+    resources:
+      limits:
+        cpu: 2
+        memory: 2Gi
 ```
 
 When the following conditions are met:

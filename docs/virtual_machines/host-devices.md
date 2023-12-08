@@ -131,11 +131,11 @@ Example:
 Modify the `permittedHostDevice`
 
 ```yaml
-    configuration:
-      permittedHostDevices:
-        pciHostDevices:
-        - pciVendorSelector: 8086:5845
-          resourceName: devices.kubevirt.io/nvme
+configuration:
+  permittedHostDevices:
+    pciHostDevices:
+    - pciVendorSelector: 8086:5845
+      resourceName: devices.kubevirt.io/nvme
 ```
 
 VMI declaration:
