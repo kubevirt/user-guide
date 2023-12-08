@@ -52,6 +52,14 @@ spec:
   annotationFilters:
     - "anotherKey/*"
 
+  # template labels & annotations definitions
+  template:
+    labelFilters:
+      - "*"
+      - "!someKey/*"
+    annotationFilters:
+      - "anotherKey/*"
+
   # other identity stripping specs:
   newMacAddresses:
     interfaceName: "00-11-22"
@@ -97,6 +105,10 @@ used:
     * "some/!key"
 
 Setting label / annotation filters is **optional**. If unset, all labels / annotations will be copied as a default.
+
+#### Template Label & Template Annotation filters
+
+Some network CNIs such as Kube-OVN or OVN-Kubernetes inject network information into the annotations of a VM. When cloning a VM from a target VM the cloned VM will use the same network. To avoid this you can use template labels and annotation filters.
 
 #### newMacAddresses
 
