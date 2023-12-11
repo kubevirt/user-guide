@@ -216,7 +216,7 @@ device-plugin will expose this resource name and you can use it in your VMI.
 ### Adding USB to your VM
 
 Now, in the VMI configuration, you can add the `devices.hostDevices.deviceName` and reference the
-`resource name` provided in the previous step, and also give it a local name, for example:
+resource name provided in the previous step, and also give it a local `name`, for example:
 
 ```yaml
 spec:
