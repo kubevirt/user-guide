@@ -518,54 +518,17 @@ fields.
 More information about SLIRP mode can be found in [QEMU
 Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29).
 
-#### Slirp network binding plugin
-Since v1.1.0, Kubevirt delegates Slirp network configuration to a hook sidecar using Slirp network binding plugin by default.
+> **Note**: Since v1.1.0, Kubevirt delegates Slirp network configuration to
+> the [Slirp network binding plugin](net_binding_plugins/slirp.md#slirp-network-binding-plugin) by default.
+> In case the binding plugin is not registered,
+> Kubevirt will use the following default image:
+> `quay.io/kubevirt/network-slirp-binding:20230830_638c60fc8`.
 
-In case no image is registered, Kubevirt will use the following default image: `quay.io/kubevirt/network-slirp-binding:20230830_638c60fc8`.
+> **Note:** In the next release (v1.2.0) no default image will be set by Kubevirt,
+> registering an image will be mandatory.
 
-> **Note:** In the next release (v1.2.0) no default image will be set by Kubevirt, registering an image will be mandatory.
-
-> **Note:** On disconnected clusters it will be necessary to mirror Slirp binding plugin image to the cluster registry.
-
-### Network binding plugins
-Since v1.1.0, Kubevirt enables delegating network binding configurations to a hook sidecar.
-
-The sidecar container is added to the VM virt-launcher pod using the registered network binding plugin image in Kubevirt config.
-
-To register a network binding plugin image, specify the image in Kubevirt config as follows:
-```yaml
-apiVersion: kubevirt.io/v1
-kind: KubeVirt
-metadata:
-  name: kubevirt
-  namespace: kubevirt
-spec:
-  configuration:
-    network:
-      binding:
-        slirp:
-          sidecarImage: "kubevirt/network-slirp-plugin"
-```
-
-Use the binding by specifying it in the VM spec:
-```yaml
-apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  name: example-vm-slirp
-spec:
-  template:
-    spec:
-      domain:
-        devices:
-          interfaces:
-          - name: podnetwork
-            binding:
-              name: slirp
-    networks:
-    - name: podnetwork
-      pod: {}
-```
+> **Note:** On disconnected clusters it will be necessary
+> to mirror Slirp binding plugin image to the cluster registry.
 
 ### masquerade
 
@@ -669,6 +632,11 @@ reaching a destination using its FQDN is not possible.
 Tracking issue - https://github.com/kubevirt/kubevirt/issues/7184
 
 ### passt
+
+> **Warning**: The core binding is being deprecated and targeted for removal
+> in v1.3 .
+> As an alternative, the same functionality is introduced and available as a
+> [binding plugin](net_binding_plugins/passt.md).
 
 `passt` is a new approach for user-mode networking which can be used as a simple replacement for Slirp (which is practically dead).
 
