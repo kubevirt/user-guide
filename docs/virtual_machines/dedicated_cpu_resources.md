@@ -114,6 +114,28 @@ Example:
             cpu: 2
             memory: 2Gi
 
+### Compute Nodes with SMT Enabled
+
+When the following conditions are met:
+- The compute node has [SMT](https://en.wikipedia.org/wiki/Simultaneous_multithreading) enabled
+- Kubelet's CPUManager policy is set to static - [full-pcpus-only](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy-options)
+- The VM is configured to have an even number of CPUs
+- `dedicatedCpuPlacement` and `isolateEmulatorThread` are enabled
+
+The VM is scheduled, but rejected by the kubelet with the following event:
+```
+SMT Alignment Error: requested 3 cpus not multiple cpus per core = 2
+```
+
+In order to address this issue:
+1. Enable the `AlignCPUs` feature gate in the KubeVirt CR.
+2. Add the following annotation to the Kubevirt CR:
+```yaml
+alpha.kubevirt.io/EmulatorThreadCompleteToEvenParity:
+```
+
+KubeVirt will then add one or two dedicated CPUs for the emulator threads, in a way that completes the total CPU count to be even.
+
 ## Identifying nodes with a running CPU manager
 
 At this time, [Kubernetes doesn't label the
