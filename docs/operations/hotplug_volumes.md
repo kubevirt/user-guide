@@ -76,6 +76,16 @@ The format and length of serials are specified according to the libvirt document
 
 ```
 
+#### Supported Disk types
+Kubevirt supports hotplugging disk devices of type [disk](https://kubevirt.io/user-guide/virtual_machines/disks_and_volumes/#disk) and [lun](https://kubevirt.io/user-guide/virtual_machines/disks_and_volumes/#lun). As with other volumes, using type `disk` will expose the hotplugged volume as a regular disk, while using `lun` allows additional functionalities like the execution of iSCSI commands.
+
+You can specify the desired type by using the --disk-type parameter, for example:
+
+```bash
+# Allowed values are lun and disk. If no option is specified, we use disk by default.
+$ virtctl addvolume vmi-fedora --volume-name=example-lun-hotplug --disk-type=lun
+```
+
 ### Retain hotplugged volumes after restart
 In many cases it is desirable to keep hotplugged volumes after a VM restart. It may also be desirable to be able to unplug these volumes after the restart. The `persist` option makes it impossible to unplug the disks after a restart. If you don't specify `persist` the default behaviour is to retain hotplugged volumes as hotplugged volumes after a VM restart. This makes the `persist` flag mostly obsolete unless you want to make a volume permanent on restart.
 
