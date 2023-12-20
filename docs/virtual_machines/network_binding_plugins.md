@@ -42,9 +42,9 @@ and integrate it into Kubevirt in a modular manner.
 Kubevirt is providing several network binding plugins as references.
 The following plugins are available:
 
-- slirp [v1.1.0]
-- passt [v1.1.0]
-- macvtap [v1.1.1]
+- [passt](net_binding_plugins/passt.md) [v1.1.0]
+- [macvtap](net_binding_plugins/macvtap.md) [v1.1.1]
+- [slirp](net_binding_plugins/slirp.md) [v1.1.0]
 
 ## Definition & Flow
 A network binding plugin configuration consist of the following steps:
@@ -250,8 +250,3 @@ spec:
                 dhcp4: true
         name: cloudinitdisk
 ```
-
-## Available network binding plugins
-
-- [Passt](net_binding_plugins/passt.md)
-- [Slirp](net_binding_plugins/slirp.md)
