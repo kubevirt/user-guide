@@ -911,6 +911,10 @@ spec:
 
 ### Macvtap
 
+> **Note**: The core binding will be deprecated soon.
+> As an alternative, the same functionality is introduced and available as a
+> [binding plugin](net_binding_plugins/macvtap.md).
+
 In `macvtap` mode, virtual machines are directly exposed to the Kubernetes
 nodes L2 network. This is achieved by 'extending' an existing network interface
 with a virtual device that has its own MAC address.
