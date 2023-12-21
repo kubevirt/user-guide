@@ -42,9 +42,9 @@ and integrate it into Kubevirt in a modular manner.
 Kubevirt is providing several network binding plugins as references.
 The following plugins are available:
 
-- slirp [v1.1.0]
-- passt [v1.1.0]
-- macvtap [v1.1.1]
+- [passt](net_binding_plugins/passt.md) [v1.1.0]
+- [macvtap](net_binding_plugins/macvtap.md) [v1.1.1]
+- [slirp](net_binding_plugins/slirp.md) [v1.1.0]
 
 ## Definition & Flow
 A network binding plugin configuration consist of the following steps:
@@ -139,22 +139,45 @@ the binding.
 Registration includes the addition of the binding name with all its parameters
 to the Kubevirt CR.
 
-The following (optional) parameters are currently supported (as of v1.1.1):
+The following (optional) parameters are currently supported:
 
-- networkAttachmentDefinition: Use the <namespace/object-name> format to specify
-  the [NetworkAttachementDefinition](https://github.com/k8snetworkplumbingwg/multi-net-spec/blob/master/v1.0/%5Bv1%5D%20Kubernetes%20Network%20Custom%20Resource%20Definition%20De-facto%20Standard.md)
-  that defines the CNI plugin and the configuration the binding plugin uses.
-  Used when the binding plugin needs to change the pod network namespace.
-- sidecarImage: Specify a container image in a registry.
-  Used when the binding plugin needs to modify the domain vNIC configuration
-  or when a service needs to be executed (e.g. DHCP server).
-- domainAttachmentType: Specify the name of a core domain attachment type.
-  A possible alternative to a sidecar, to configure the domain vNIC.
-  At the moment (v1.1.1) only a single type is supported: `tap`.
+- [networkAttachmentDefinition](#networkattachmentdefinition)
+- [sidecarImage](#sidecarimage)
+- [domainAttachmentType](#domainattachmenttype)
 
-  When both the `domainAttachmentType` and `sidecarImage` are specified,
-  the domain will first be configured according to the `domainAttachmentType`
-  and then the `sidecarImage` may modify it.
+#### networkAttachmentDefinition
+From: v1.1.0
+
+Use the <namespace/object-name> format to specify
+the [NetworkAttachementDefinition](https://github.com/k8snetworkplumbingwg/multi-net-spec/blob/master/v1.0/%5Bv1%5D%20Kubernetes%20Network%20Custom%20Resource%20Definition%20De-facto%20Standard.md)
+that defines the CNI plugin and the configuration the binding plugin uses.
+Used when the binding plugin needs to change the pod network namespace.
+
+#### sidecarImage
+From: v1.1.0
+
+Specify a container image in a registry.
+Used when the binding plugin needs to modify the domain vNIC configuration
+or when a service needs to be executed (e.g. DHCP server). 
+
+#### domainAttachmentType
+From: v1.1.1
+
+The Domain Attachment type is a pre-defined core kubevirt method to attach
+an interface to the domain.
+
+Specify the name of a core domain attachment type.
+A possible alternative to a sidecar, to configure the domain vNIC.
+
+Supported types:
+
+- `tap` (from v1.1.1): The domain configuration is set to use an existing
+  tap device. It also supports existing `macvtap` devices.
+
+When both the `domainAttachmentType` and `sidecarImage` are specified,
+the domain will first be configured according to the `domainAttachmentType`
+and then the `sidecarImage` may modify it.
+
 
 > **Note**: In some deployments the Kubevirt CR is controlled by an external
 > controller (e.g. [HCO](https://github.com/kubevirt/hyperconverged-cluster-operator)).
@@ -227,8 +250,3 @@ spec:
                 dhcp4: true
         name: cloudinitdisk
 ```
-
-## Available network binding plugins
-
-- [Passt](net_binding_plugins/passt.md)
-- [Slirp](net_binding_plugins/slirp.md)
