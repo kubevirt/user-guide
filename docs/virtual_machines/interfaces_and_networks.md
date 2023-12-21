@@ -948,7 +948,7 @@ and more information on how to configure it can be found in the
 [macvtap-cni](https://github.com/kubevirt/macvtap-cni#deployment) repo.
 
 You can find a minimal example, in which the `eth0` interface of the Kubernetes
-nodes is exposed, via the `master` attribute.
+nodes is exposed, via the `lowerDevice` attribute.
 ```yaml
 kind: ConfigMap
 apiVersion: v1
@@ -958,11 +958,11 @@ data:
   DP_MACVTAP_CONF: |
     [
         {
-            "name"     : "dataplane",
-            "master"   : "eth0",
-            "mode"     : "bridge",
-            "capacity" : 50
-        },
+            "name"       : "dataplane",
+            "lowerDevice": "eth0",
+            "mode"       : "bridge",
+            "capacity"   : 50
+        }
     ]
 ```
 
@@ -1001,7 +1001,7 @@ spec:
     }'
 ```
 The requested `k8s.v1.cni.cncf.io/resourceName` annotation must point to an
-exposed host interface (via the `master` attribute, on the
+exposed host interface (via the `lowerDevice` attribute, on the
 `macvtap-deviceplugin-config` `ConfigMap`).
 
 Finally, to create a VM that will attach to the aforementioned Network, refer
