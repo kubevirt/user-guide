@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/net_binding_plugins/passt/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/virtual_machines/net_binding_plugins/macvtap/">
       
       
-        <link rel="prev" href="../macvtap/">
+        <link rel="prev" href="../../windows_virtio_drivers/">
       
       
-        <link rel="next" href="../slirp/">
+        <link rel="next" href="../passt/">
       
       
       <link rel="icon" href="../../../assets/favicon32x32.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Passt binding - KubeVirt user guide</title>
+        <title>Macvtap binding - KubeVirt user guide</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#passt-binding" class="md-skip">
+        <a href="#macvtap-binding" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Passt binding
+              Macvtap binding
             
           </span>
         </div>
@@ -2177,9 +2177,46 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#node-optimization-requirementsrecommendations" class="md-nav__link">
+  <a href="#known-issues" class="md-nav__link">
     <span class="md-ellipsis">
-      Node optimization requirements/recommendations:
+      Known Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#macvtap-cni-and-dp-deployment-on-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Macvtap CNI and DP deployment on nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expose-node-interface-to-the-macvtap-device-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expose node interface to the macvtap device plugin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#macvtap-networkattachmentdefinition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Macvtap NetworkAttachmentDefinition
     </span>
   </a>
   
@@ -2189,43 +2226,21 @@
     </nav>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#passt-network-binding-plugin" class="md-nav__link">
+  <a href="#macvtap-network-binding-plugin" class="md-nav__link">
     <span class="md-ellipsis">
-      Passt network binding plugin
+      Macvtap network binding plugin
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Passt network binding plugin">
+    <nav class="md-nav" aria-label="Macvtap network binding plugin">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#passt-cni-deployment-on-nodes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Passt CNI deployment on nodes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#passt-networkattachmentdefinition" class="md-nav__link">
-    <span class="md-ellipsis">
-      Passt NetworkAttachmentDefinition
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#passt-sidecar-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      Passt sidecar image
-    </span>
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#feature-gate" class="md-nav__link">
@@ -2237,18 +2252,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#passt-registration" class="md-nav__link">
+  <a href="#macvtap-registration" class="md-nav__link">
     <span class="md-ellipsis">
-      Passt Registration
+      Macvtap Registration
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#vm-passt-network-interface" class="md-nav__link">
+  <a href="#vm-macvtap-network-interface" class="md-nav__link">
     <span class="md-ellipsis">
-      VM Passt Network Interface
+      VM Macvtap Network Interface
     </span>
   </a>
   
@@ -2274,7 +2289,7 @@
                   
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/net_binding_plugins/passt.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/virtual_machines/net_binding_plugins/macvtap.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -2283,27 +2298,21 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/net_binding_plugins/passt.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/virtual_machines/net_binding_plugins/macvtap.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-<h1 id="passt-binding">Passt binding<a class="headerlink" href="#passt-binding" title="Permanent link">&para;</a></h1>
+<h1 id="macvtap-binding">Macvtap binding<a class="headerlink" href="#macvtap-binding" title="Permanent link">&para;</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p><a href="https://passt.top/passt/about/">Plug A Simple Socket Transport</a> is an enhanced
-alternative to <a href="https://en.wikipedia.org/wiki/Slirp">SLIRP</a>, providing user-space
-network connectivity.</p>
-<p><code>passt</code> is a universal tool which implements a translation layer between
-a Layer-2 network interface and native Layer -4 sockets (TCP, UDP, ICMP/ICMPv6 echo)
-on a host.</p>
+<p>With the <code>macvtap</code> binding plugin, virtual machines are directly exposed to the Kubernetes
+nodes L2 network. This is achieved by 'extending' an existing network interface
+with a virtual device that has its own MAC address.</p>
 <p>Its main benefits are:</p>
 <ul>
-<li>Doesn't require extra network capabilities as CAP_NET_RAW and CAP_NET_ADMIN.</li>
-<li>Allows integration with service meshes (which expect applications to run locally) out of the box.</li>
-<li>Supports IPv6 out of the box (in contrast to the existing bindings which require configuring IPv6
-  manually).</li>
+<li>Direct connection to the node nic with no intermediate bridges.</li>
 </ul>
 <h3 id="functionality-support">Functionality support<a class="headerlink" href="#functionality-support" title="Permanent link">&para;</a></h3>
 <table>
@@ -2315,144 +2324,156 @@ on a host.</p>
 </thead>
 <tbody>
 <tr>
+<td>Run without extra capabilities (on pod)</td>
+<td>Yes</td>
+</tr>
+<tr>
 <td>Migration support</td>
 <td>No</td>
 </tr>
 <tr>
-<td>Service Mesh support</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>Pod IP in guest</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td>Custom CIDR in guest</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Require extra capabilities (on pod) to operate</td>
+<td>IPAM support (on pod)</td>
 <td>No</td>
 </tr>
 <tr>
 <td>Primary network (pod network)</td>
-<td>Yes</td>
+<td>No</td>
 </tr>
 <tr>
 <td>Secondary network</td>
-<td>No</td>
+<td>Yes</td>
 </tr>
 </tbody>
 </table>
-<h3 id="node-optimization-requirementsrecommendations">Node optimization requirements/recommendations:<a class="headerlink" href="#node-optimization-requirementsrecommendations" title="Permanent link">&para;</a></h3>
-<ol>
-<li>To get better performance the node should be configured with:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sysctl -w net.core.rmem_max = 33554432
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>sysctl -w net.core.wmem_max = 33554432
-</code></pre></div></li>
-<li>To run multiple passt VMs with no explicit ports, the node's <code>fs.file-max</code> should be increased
-   (for a VM forwards all IPv4 and IPv6 ports, for TCP and UDP, passt needs to create ~2^18 sockets):
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sysctl -w fs.file-max = 9223372036854775807
-</code></pre></div></li>
-</ol>
+<h3 id="known-issues">Known Issues<a class="headerlink" href="#known-issues" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Live migration is not fully supported, see <a href="https://github.com/kubevirt/kubevirt/issues/5912#issuecomment-888938920">issue #5912</a></li>
+</ul>
 <blockquote>
-<p><strong>NOTE</strong>: To achieve optimal memory consumption with Passt binding,
-specify ports required for your workload.
-When no ports are explicitly specified, all ports are forwarded,
-leading to memory overhead of up to 800 Mi.</p>
+<p><strong>Warning</strong>: On <a href="https://github.com/kubernetes-sigs/kind">KinD</a> clusters,
+the user needs to <a href="https://github.com/kubevirt/macvtap-cni/issues/39#issuecomment-1242765996">adjust the cluster configuration</a>,
+mounting <code>dev</code> of the running host onto the KinD nodes, because of a
+<a href="https://github.com/kubevirt/macvtap-cni/issues/39">known issue</a>.</p>
 </blockquote>
-<h2 id="passt-network-binding-plugin">Passt network binding plugin<a class="headerlink" href="#passt-network-binding-plugin" title="Permanent link">&para;</a></h2>
-<p>[v1.1.0]</p>
-<p>The binding plugin replaces the experimental core passt binding implementation
+<h3 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">&para;</a></h3>
+<p>The <code>macvtap</code> solution consists of a CNI and a DP.</p>
+<p>In order to use <code>macvtap</code>, the following points need to be covered:</p>
+<ul>
+<li>Deploy the CNI plugin binary on the nodes.</li>
+<li>Deploy the Device Plugin daemon on the nodes.</li>
+<li>Configure which node interfaces are exposed.</li>
+<li>Define a NetworkAttachmentDefinition that points to the CNI plugin.</li>
+</ul>
+<h4 id="macvtap-cni-and-dp-deployment-on-nodes">Macvtap CNI and DP deployment on nodes<a class="headerlink" href="#macvtap-cni-and-dp-deployment-on-nodes" title="Permanent link">&para;</a></h4>
+<p>To simplify the procedure, use the
+<a href="https://github.com/kubevirt/cluster-network-addons-operator#macvtap">Cluster Network Addons Operator</a>
+to deploy and configure the macvtap components in your cluster.</p>
+<p>The aforementioned operator effectively deploys the
+<a href="https://github.com/kubevirt/macvtap-cni">macvtap</a> cni and device plugin.</p>
+<h4 id="expose-node-interface-to-the-macvtap-device-plugin">Expose node interface to the macvtap device plugin<a class="headerlink" href="#expose-node-interface-to-the-macvtap-device-plugin" title="Permanent link">&para;</a></h4>
+<p>There are two different alternatives to configure which host interfaces get
+exposed to the user, enabling them to create macvtap interfaces on top of:</p>
+<ul>
+<li>select the host interfaces: indicates which host interfaces are exposed.</li>
+<li>expose all interfaces: all interfaces of all hosts are exposed.</li>
+</ul>
+<p>Both options are configured via the <code>macvtap-deviceplugin-config</code> ConfigMap,
+and more information on how to configure it can be found in the
+<a href="https://github.com/kubevirt/macvtap-cni#deployment">macvtap-cni</a> repo.</p>
+<p>This is a minimal example, in which the <code>eth0</code> interface of the Kubernetes
+nodes is exposed, via the <code>lowerDevice</code> attribute.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">macvtap-deviceplugin-config</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">data</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">DP_MACVTAP_CONF</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="no">[</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="no">{</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">            </span><span class="no">&quot;name&quot;        : &quot;dataplane&quot;,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">            </span><span class="no">&quot;lowerDevice&quot; : &quot;eth0&quot;,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">            </span><span class="no">&quot;mode&quot;        : &quot;bridge&quot;,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">            </span><span class="no">&quot;capacity&quot;    : 50</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="no">},</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="no">]</span>
+</code></pre></div>
+<p>This step can be omitted, since the default configuration of the aforementioned
+<code>ConfigMap</code> is to expose all host interfaces (which is represented by the
+following configuration):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">macvtap-deviceplugin-config</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">data</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">DP_MACVTAP_CONF</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;[]&#39;</span>
+</code></pre></div>
+<h4 id="macvtap-networkattachmentdefinition">Macvtap NetworkAttachmentDefinition<a class="headerlink" href="#macvtap-networkattachmentdefinition" title="Permanent link">&para;</a></h4>
+<p>The configuration needed for a macvtap network attachment can be minimalistic:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkAttachmentDefinition</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s.cni.cncf.io/v1</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">macvtapnetwork</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">k8s.v1.cni.cncf.io/resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">macvtap.network.kubevirt.io/eth0</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="s">&quot;cniVersion&quot;:</span><span class="nv"> </span><span class="s">&quot;0.3.1&quot;,</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">      </span><span class="s">&quot;name&quot;:</span><span class="nv"> </span><span class="s">&quot;macvtapnetwork&quot;,</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;macvtap&quot;,</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">      </span><span class="s">&quot;mtu&quot;:</span><span class="nv"> </span><span class="s">1500</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="s">}&#39;</span>
+</code></pre></div>
+<p>The object should be created in a "default" namespace where all other namespaces
+can access, or, in the same namespace the VMs reside in.</p>
+<p>The requested <code>k8s.v1.cni.cncf.io/resourceName</code> annotation must point to an
+exposed host interface (via the <code>lowerDevice</code> attribute, on the
+<code>macvtap-deviceplugin-config</code> <code>ConfigMap</code>).</p>
+<h2 id="macvtap-network-binding-plugin">Macvtap network binding plugin<a class="headerlink" href="#macvtap-network-binding-plugin" title="Permanent link">&para;</a></h2>
+<p>[v1.1.1]</p>
+<p>The binding plugin replaces the experimental core macvtap binding implementation
 (including its API).</p>
 <blockquote>
-<p><strong>Note</strong>: The network binding plugin infrastructure and the passt plugin
+<p><strong>Note</strong>: The network binding plugin infrastructure and the macvtap plugin
 specifically are in Alpha stage. Please use them with care, preferably
 on a non-production deployment.</p>
 </blockquote>
-<p>The passt binding plugin consists of the following components:</p>
+<p>The macvtap binding plugin consists of the following components:</p>
 <ul>
-<li>Passt CNI plugin.</li>
-<li>Sidecar image.</li>
+<li><a href="https://github.com/kubevirt/macvtap-cni">Macvtap CNI plugin</a>.</li>
 </ul>
-<p>As described in the <a href="#definition--flow">definition &amp; flow</a> section,
-the passt plugin needs to:</p>
+<p>The plugin needs to:</p>
 <ul>
-<li>Deploy the CNI plugin binary on the nodes.</li>
-<li>Define a NetworkAttachmentDefinition that points to the CNI plugin.</li>
-<li>Assure access to the sidecar image.</li>
 <li>Enable the network binding plugin framework FG.</li>
 <li>Register the binding plugin on the Kubevirt CR.</li>
 <li>Reference the network binding by name from the VM spec interface.</li>
 </ul>
 <p>And in detail:</p>
-<h3 id="passt-cni-deployment-on-nodes">Passt CNI deployment on nodes<a class="headerlink" href="#passt-cni-deployment-on-nodes" title="Permanent link">&para;</a></h3>
-<p>The CNI plugin binary can be retrieved directly from the kubevirt release
-assets (on GitHub) or to be built from its
-<a href="https://github.com/kubevirt/kubevirt/tree/release-1.1/cmd/cniplugins/passt-binding">sources</a>.</p>
-<blockquote>
-<p><strong>Note</strong>: The kubevirt project uses Bazel to build the binaries and container images.
-For more information in how to build the whole project, visit the developer
-<a href="https://github.com/kubevirt/kubevirt/blob/release-1.1/docs/getting-started.md">getting started guide</a>.</p>
-</blockquote>
-<p>Once the binary is ready, you may rename it to a meaningful name
-(e.g. <code>kubevirt-passt-binding</code>).
-This name is used in the NetworkAttachmentDefinition configuration.</p>
-<p>Copy the binary to each node in your cluster.
-The location of the CNI plugins may vary between platforms and versions.
-One common path is <code>/opt/cni/bin/</code>.</p>
-<h3 id="passt-networkattachmentdefinition">Passt NetworkAttachmentDefinition<a class="headerlink" href="#passt-networkattachmentdefinition" title="Permanent link">&para;</a></h3>
-<p>The configuration needed for passt is minimalistic:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;k8s.cni.cncf.io/v1&quot;</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkAttachmentDefinition</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">netbindingpasst</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">            </span><span class="s">&quot;cniVersion&quot;:</span><span class="nv"> </span><span class="s">&quot;1.0.0&quot;,</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">            </span><span class="s">&quot;name&quot;:</span><span class="nv"> </span><span class="s">&quot;netbindingpasst&quot;,</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">            </span><span class="s">&quot;plugins&quot;:</span><span class="nv"> </span><span class="s">[</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">              </span><span class="s">{</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">                </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;kubevirt-passt-binding&quot;</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">              </span><span class="s">}</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">            </span><span class="s">]</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">  </span><span class="s">}&#39;</span>
-</code></pre></div>
-<p>The object should be created in a "default" namespace where all other namespaces
-can access, or, in the same namespace the VMs reside in.</p>
-<h3 id="passt-sidecar-image">Passt sidecar image<a class="headerlink" href="#passt-sidecar-image" title="Permanent link">&para;</a></h3>
-<p>Passt sidecar image is built and pushed to
-<a href="https://quay.io/repository/kubevirt/network-passt-binding">kubevirt quay repository</a>.</p>
-<p>The sidecar sources can be found
-<a href="https://github.com/kubevirt/kubevirt/tree/release-1.1/cmd/sidecars/network-passt-binding">here</a>.</p>
-<p>The relevant sidecar image needs to be accessible by the cluster and
-specified in the Kubevirt CR when registering the network binding plugin.</p>
 <h3 id="feature-gate">Feature Gate<a class="headerlink" href="#feature-gate" title="Permanent link">&para;</a></h3>
 <p>If not already set, add the <code>NetworkBindingPlugins</code> FG.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl patch kubevirts -n kubevirt kubevirt --type=json -p=&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/configuration/developerConfiguration/featureGates/-&quot;,   &quot;value&quot;: &quot;NetworkBindingPlugins&quot;}]&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl patch kubevirts -n kubevirt kubevirt --type=json -p=&#39;[{
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  &quot;op&quot;: &quot;add&quot;,
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  &quot;path&quot;: &quot;/spec/configuration/developerConfiguration/featureGates/-&quot;,
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  &quot;value&quot;: &quot;NetworkBindingPlugins&quot;
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>}]&#39;
 </code></pre></div></p>
 <blockquote>
-<p><strong>Note</strong>: The specific passt plugin has no FG by its own. It is up to the cluster
+<p><strong>Note</strong>: The specific macvtap plugin has no FG by its own. It is up to the cluster
 admin to decide if the plugin is to be available in the cluster.
-The passt binding is still in evaluation, use it with care.</p>
+The macvtap binding is still in evaluation, use it with care.</p>
 </blockquote>
-<h3 id="passt-registration">Passt Registration<a class="headerlink" href="#passt-registration" title="Permanent link">&para;</a></h3>
-<p>As described in the <a href="#register">registration section</a>, passt binding plugin
-configuration needs to be added to the kubevirt CR.</p>
-<p>To register the passt binding, patch the kubevirt CR as follows:
+<h3 id="macvtap-registration">Macvtap Registration<a class="headerlink" href="#macvtap-registration" title="Permanent link">&para;</a></h3>
+<p>The macvtap binding plugin configuration needs to be added to the kubevirt CR
+in order to be used by VMs.</p>
+<p>To register the macvtap binding, patch the kubevirt CR as follows:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="l l-Scalar l-Scalar-Plain">kubectl patch kubevirts -n kubevirt kubevirt --type=json -p=&#39;[{&quot;op&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;add&quot;</span><span class="err">,</span><span class="w"> </span><span class="s">&quot;path&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;/spec/configuration/network&quot;</span><span class="err">,</span><span class="w">   </span><span class="s">&quot;value&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">            </span><span class="s">&quot;binding&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">                </span><span class="s">&quot;passt&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">                    </span><span class="s">&quot;networkAttachmentDefinition&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;default/netbindingpasst&quot;</span><span class="p p-Indicator">,</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">                    </span><span class="s">&quot;sidecarImage&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;quay.io/kubevirt/network-passt-binding:20231205_29a16d5c9&quot;</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">                </span><span class="p p-Indicator">}</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">            </span><span class="p p-Indicator">}</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="p p-Indicator">}</span><span class="err">}]</span><span class="s">&#39;</span>
-</code></pre></div></p>
-<p>The NetworkAttachmentDefinition and sidecarImage values should correspond with the
-names used in the previous sections, <a href="#passt-networkattachmentdefinition">here</a>
-and <a href="#passt-sidecar-image">here</a>.</p>
-<h3 id="vm-passt-network-interface">VM Passt Network Interface<a class="headerlink" href="#vm-passt-network-interface" title="Permanent link">&para;</a></h3>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">                </span><span class="s">&quot;macvtap&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">                    </span><span class="s">&quot;domainAttachmentType&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;tap&quot;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">                </span><span class="p p-Indicator">}</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">            </span><span class="p p-Indicator">}</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="p p-Indicator">}</span><span class="err">}]</span><span class="s">&#39;</span>
+</code></pre></div>
+<h3 id="vm-macvtap-network-interface">VM Macvtap Network Interface<a class="headerlink" href="#vm-macvtap-network-interface" title="Permanent link">&para;</a></h3>
 <p>Set the VM network interface binding name to reference the one defined in the
 kubevirt CR.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nn">---</span>
@@ -2460,14 +2481,14 @@ kubevirt CR.</p>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-net-binding-passt</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-net-binding-passt</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-net-binding-macvtap</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-net-binding-macvtap</span>
 <a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="nt">running</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
 <a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-net-binding-passt</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-net-binding-macvtap</span>
 <a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
 <a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
@@ -2479,33 +2500,38 @@ kubevirt CR.</p>
 <a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
 <a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
 <a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">          </span><span class="nt">interfaces</span><span class="p">:</span>
-<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passtnet</span>
-<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="w">            </span><span class="nt">binding</span><span class="p">:</span>
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passt</span>
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="w">            </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
-<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="w">              </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span>
-<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="w">              </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
-<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="w">          </span><span class="nt">rng</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
-<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
-<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024M</span>
-<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">      </span><span class="nt">networks</span><span class="p">:</span>
-<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">passtnet</span>
-<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="w">        </span><span class="nt">pod</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a><span class="w">      </span><span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
-<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerDisk</span><span class="p">:</span>
-<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/kubevirt/fedora-with-test-tooling-container-disk:v1.1.0</span>
-<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
-<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cloudInitNoCloud</span><span class="p">:</span>
-<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="w">          </span><span class="nt">networkData</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a><span class="w">            </span><span class="no">version: 2</span>
-<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a><span class="w">            </span><span class="no">ethernets:</span>
-<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a><span class="w">              </span><span class="no">eth0:</span>
-<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="w">                </span><span class="no">dhcp4: true</span>
-<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">podnet</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="w">            </span><span class="nt">masquerade</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostnetwork</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="w">            </span><span class="nt">binding</span><span class="p">:</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">macvtap</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="w">          </span><span class="nt">rng</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024M</span>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="w">      </span><span class="nt">networks</span><span class="p">:</span>
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">podnet</span>
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">        </span><span class="nt">pod</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hostnetwork</span>
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="w">        </span><span class="nt">multus</span><span class="p">:</span>
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a><span class="w">          </span><span class="nt">networkName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">macvtapnetwork</span>
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="w">      </span><span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/kubevirt/fedora-with-test-tooling-container-disk:v1.1.0</span>
+<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cloudInitNoCloud</span><span class="p">:</span>
+<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a><span class="w">          </span><span class="nt">networkData</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a><span class="w">            </span><span class="no">version: 2</span>
+<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a><span class="w">            </span><span class="no">ethernets:</span>
+<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="w">              </span><span class="no">eth0:</span>
+<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a><span class="w">                </span><span class="no">dhcp4: true</span>
+<a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
 </code></pre></div>
+<p>The multus <code>networkName</code> value should correspond with the name used in
+the <a href="#macvtap-networkattachmentdefinition">network attachment definition</a> section.</p>
+<p>The <code>binding</code> value should correspond with the name used in the
+<a href="#macvtap-registration">registration</a>.</p>
 
 
 
@@ -2535,7 +2561,7 @@ kubevirt CR.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../macvtap/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Macvtap binding">
+          <a href="../../windows_virtio_drivers/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Windows virtio drivers">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2545,20 +2571,20 @@ kubevirt CR.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Macvtap binding
+                Windows virtio drivers
               </div>
             </div>
           </a>
         
         
           
-          <a href="../slirp/" class="md-footer__link md-footer__link--next" aria-label="Next: Slirp">
+          <a href="../passt/" class="md-footer__link md-footer__link--next" aria-label="Next: Passt binding">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Slirp
+                Passt binding
               </div>
             </div>
             <div class="md-footer__button md-icon">

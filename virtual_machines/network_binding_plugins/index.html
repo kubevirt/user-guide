@@ -1569,6 +1569,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Register">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#networkattachmentdefinition" class="md-nav__link">
+    <span class="md-ellipsis">
+      networkAttachmentDefinition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sidecarimage" class="md-nav__link">
+    <span class="md-ellipsis">
+      sidecarImage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domainattachmenttype" class="md-nav__link">
+    <span class="md-ellipsis">
+      domainAttachmentType
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1582,15 +1615,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#available-network-binding-plugins" class="md-nav__link">
-    <span class="md-ellipsis">
-      Available network binding plugins
-    </span>
-  </a>
   
 </li>
       
@@ -2358,6 +2382,39 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Register">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#networkattachmentdefinition" class="md-nav__link">
+    <span class="md-ellipsis">
+      networkAttachmentDefinition
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sidecarimage" class="md-nav__link">
+    <span class="md-ellipsis">
+      sidecarImage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domainattachmenttype" class="md-nav__link">
+    <span class="md-ellipsis">
+      domainAttachmentType
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2371,15 +2428,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#available-network-binding-plugins" class="md-nav__link">
-    <span class="md-ellipsis">
-      Available network binding plugins
-    </span>
-  </a>
   
 </li>
       
@@ -2450,9 +2498,9 @@ and integrate it into Kubevirt in a modular manner.</p>
 <p>Kubevirt is providing several network binding plugins as references.
 The following plugins are available:</p>
 <ul>
-<li>slirp [v1.1.0]</li>
-<li>passt [v1.1.0]</li>
-<li>macvtap [v1.1.1]</li>
+<li><a href="../net_binding_plugins/passt/">passt</a> [v1.1.0]</li>
+<li><a href="../net_binding_plugins/macvtap/">macvtap</a> [v1.1.1]</li>
+<li><a href="../net_binding_plugins/slirp/">slirp</a> [v1.1.0]</li>
 </ul>
 <h2 id="definition-flow">Definition &amp; Flow<a class="headerlink" href="#definition-flow" title="Permanent link">&para;</a></h2>
 <p>A network binding plugin configuration consist of the following steps:</p>
@@ -2551,22 +2599,37 @@ NetworkAttachmentDefinition in the same namespace the VM resides.</p>
 the binding.
 Registration includes the addition of the binding name with all its parameters
 to the Kubevirt CR.</p>
-<p>The following (optional) parameters are currently supported (as of v1.1.1):</p>
+<p>The following (optional) parameters are currently supported:</p>
 <ul>
-<li>networkAttachmentDefinition: Use the <namespace/object-name> format to specify
-  the <a href="https://github.com/k8snetworkplumbingwg/multi-net-spec/blob/master/v1.0/%5Bv1%5D%20Kubernetes%20Network%20Custom%20Resource%20Definition%20De-facto%20Standard.md">NetworkAttachementDefinition</a>
-  that defines the CNI plugin and the configuration the binding plugin uses.
-  Used when the binding plugin needs to change the pod network namespace.</li>
-<li>sidecarImage: Specify a container image in a registry.
-  Used when the binding plugin needs to modify the domain vNIC configuration
-  or when a service needs to be executed (e.g. DHCP server).</li>
-<li>domainAttachmentType: Specify the name of a core domain attachment type.
-  A possible alternative to a sidecar, to configure the domain vNIC.
-  At the moment (v1.1.1) only a single type is supported: <code>tap</code>.</li>
+<li><a href="#networkattachmentdefinition">networkAttachmentDefinition</a></li>
+<li><a href="#sidecarimage">sidecarImage</a></li>
+<li><a href="#domainattachmenttype">domainAttachmentType</a></li>
+</ul>
+<h4 id="networkattachmentdefinition">networkAttachmentDefinition<a class="headerlink" href="#networkattachmentdefinition" title="Permanent link">&para;</a></h4>
+<p>From: v1.1.0</p>
+<p>Use the <namespace/object-name> format to specify
+the <a href="https://github.com/k8snetworkplumbingwg/multi-net-spec/blob/master/v1.0/%5Bv1%5D%20Kubernetes%20Network%20Custom%20Resource%20Definition%20De-facto%20Standard.md">NetworkAttachementDefinition</a>
+that defines the CNI plugin and the configuration the binding plugin uses.
+Used when the binding plugin needs to change the pod network namespace.</p>
+<h4 id="sidecarimage">sidecarImage<a class="headerlink" href="#sidecarimage" title="Permanent link">&para;</a></h4>
+<p>From: v1.1.0</p>
+<p>Specify a container image in a registry.
+Used when the binding plugin needs to modify the domain vNIC configuration
+or when a service needs to be executed (e.g. DHCP server). </p>
+<h4 id="domainattachmenttype">domainAttachmentType<a class="headerlink" href="#domainattachmenttype" title="Permanent link">&para;</a></h4>
+<p>From: v1.1.1</p>
+<p>The Domain Attachment type is a pre-defined core kubevirt method to attach
+an interface to the domain.</p>
+<p>Specify the name of a core domain attachment type.
+A possible alternative to a sidecar, to configure the domain vNIC.</p>
+<p>Supported types:</p>
+<ul>
+<li><code>tap</code> (from v1.1.1): The domain configuration is set to use an existing
+  tap device. It also supports existing <code>macvtap</code> devices.</li>
 </ul>
 <p>When both the <code>domainAttachmentType</code> and <code>sidecarImage</code> are specified,
-  the domain will first be configured according to the <code>domainAttachmentType</code>
-  and then the <code>sidecarImage</code> may modify it.</p>
+the domain will first be configured according to the <code>domainAttachmentType</code>
+and then the <code>sidecarImage</code> may modify it.</p>
 <blockquote>
 <p><strong>Note</strong>: In some deployments the Kubevirt CR is controlled by an external
 controller (e.g. <a href="https://github.com/kubevirt/hyperconverged-cluster-operator">HCO</a>).
@@ -2635,11 +2698,6 @@ to setup the network interface.</p>
 <a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a><span class="w">                </span><span class="no">dhcp4: true</span>
 <a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
 </code></pre></div></p>
-<h2 id="available-network-binding-plugins">Available network binding plugins<a class="headerlink" href="#available-network-binding-plugins" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="../net_binding_plugins/passt/">Passt</a></li>
-<li><a href="../net_binding_plugins/slirp/">Slirp</a></li>
-</ul>
 
 
 
