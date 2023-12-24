@@ -923,6 +923,11 @@ Macvtap interfaces are feature gated; to enable the feature, follow
 [these](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
 instructions, in order to activate the `Macvtap` feature gate (case sensitive).
 
+> **Note:** On [KinD](https://github.com/kubernetes-sigs/kind) clusters, the user needs to
+> [adjust the cluster configuration](https://github.com/kubevirt/macvtap-cni/issues/39#issuecomment-1242765996),
+> mounting `dev` of the running host onto the KinD nodes, because of a
+> [known issue](https://github.com/kubevirt/macvtap-cni/issues/39).
+
 #### Limitations
 
 - Live migration is not seamless, see [issue #5912](https://github.com/kubevirt/kubevirt/issues/5912#issuecomment-888938920)
@@ -947,7 +952,7 @@ and more information on how to configure it can be found in the
 [macvtap-cni](https://github.com/kubevirt/macvtap-cni#deployment) repo.
 
 You can find a minimal example, in which the `eth0` interface of the Kubernetes
-nodes is exposed, via the `master` attribute.
+nodes is exposed, via the `lowerDevice` attribute.
 ```yaml
 kind: ConfigMap
 apiVersion: v1
@@ -957,11 +962,11 @@ data:
   DP_MACVTAP_CONF: |
     [
         {
-            "name"     : "dataplane",
-            "master"   : "eth0",
-            "mode"     : "bridge",
-            "capacity" : 50
-        },
+            "name"       : "dataplane",
+            "lowerDevice": "eth0",
+            "mode"       : "bridge",
+            "capacity"   : 50
+        }
     ]
 ```
 
@@ -1000,7 +1005,7 @@ spec:
     }'
 ```
 The requested `k8s.v1.cni.cncf.io/resourceName` annotation must point to an
-exposed host interface (via the `master` attribute, on the
+exposed host interface (via the `lowerDevice` attribute, on the
 `macvtap-deviceplugin-config` `ConfigMap`).
 
 Finally, to create a VM that will attach to the aforementioned Network, refer
