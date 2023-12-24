@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.2">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
     
     
       
@@ -3739,6 +3739,12 @@ with a virtual device that has its own MAC address.</p>
 <p>Macvtap interfaces are feature gated; to enable the feature, follow
 <a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">these</a>
 instructions, in order to activate the <code>Macvtap</code> feature gate (case sensitive).</p>
+<blockquote>
+<p><strong>Note:</strong> On <a href="https://github.com/kubernetes-sigs/kind">KinD</a> clusters, the user needs to
+<a href="https://github.com/kubevirt/macvtap-cni/issues/39#issuecomment-1242765996">adjust the cluster configuration</a>,
+mounting <code>dev</code> of the running host onto the KinD nodes, because of a
+<a href="https://github.com/kubevirt/macvtap-cni/issues/39">known issue</a>.</p>
+</blockquote>
 <h4 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h4>
 <ul>
 <li>Live migration is not seamless, see <a href="https://github.com/kubevirt/kubevirt/issues/5912#issuecomment-888938920">issue #5912</a></li>
@@ -3760,7 +3766,7 @@ exposed to the user, enabling them to create macvtap interfaces on top of:</p>
 and more information on how to configure it can be found in the
 <a href="https://github.com/kubevirt/macvtap-cni#deployment">macvtap-cni</a> repo.</p>
 <p>You can find a minimal example, in which the <code>eth0</code> interface of the Kubernetes
-nodes is exposed, via the <code>master</code> attribute.
+nodes is exposed, via the <code>lowerDevice</code> attribute.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
 <a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -3769,11 +3775,11 @@ nodes is exposed, via the <code>master</code> attribute.
 <a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">  </span><span class="nt">DP_MACVTAP_CONF</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
 <a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">    </span><span class="no">[</span>
 <a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">        </span><span class="no">{</span>
-<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">            </span><span class="no">&quot;name&quot;     : &quot;dataplane&quot;,</span>
-<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">            </span><span class="no">&quot;master&quot;   : &quot;eth0&quot;,</span>
-<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">            </span><span class="no">&quot;mode&quot;     : &quot;bridge&quot;,</span>
-<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">            </span><span class="no">&quot;capacity&quot; : 50</span>
-<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">        </span><span class="no">},</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">            </span><span class="no">&quot;name&quot;       : &quot;dataplane&quot;,</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">            </span><span class="no">&quot;lowerDevice&quot;: &quot;eth0&quot;,</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="w">            </span><span class="no">&quot;mode&quot;       : &quot;bridge&quot;,</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">            </span><span class="no">&quot;capacity&quot;   : 50</span>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">        </span><span class="no">}</span>
 <a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">    </span><span class="no">]</span>
 </code></pre></div></p>
 <p>This step can be omitted, since the default configuration of the aforementioned
@@ -3806,7 +3812,7 @@ configure the macvtap network. Refer to the following
 <a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="w">    </span><span class="s">}&#39;</span>
 </code></pre></div>
 The requested <code>k8s.v1.cni.cncf.io/resourceName</code> annotation must point to an
-exposed host interface (via the <code>master</code> attribute, on the
+exposed host interface (via the <code>lowerDevice</code> attribute, on the
 <code>macvtap-deviceplugin-config</code> <code>ConfigMap</code>).</p>
 <p>Finally, to create a VM that will attach to the aforementioned Network, refer
 to the following VMI spec:</p>
