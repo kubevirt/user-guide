@@ -252,7 +252,7 @@ status:
 #### Format types
 There are 4 format types that are possible:
 
-* Raw. The unaltered raw KubeVirt disk image.
+* Raw. The unaltered raw KubeVirt disk image. Raw images may be larger than expected if they were previously resized to match the PVC requested size.
 * Gzip. The raw KubeVirt disk image but gzipped to help with transferring efficiency.
 * Dir. A directory listing, allowing you to find the files contained in the PVC.
 * Tar.gz The contents of the PVC tarred and gzipped in a single file.
@@ -322,7 +322,7 @@ $ virtctl vmexport delete name
 # --output, mandatory flag to specify the output file.
 # --volume, optional flag to specify the name of the downloadable volume.
 # --vm|--snapshot|--pvc, if specified, are used to create the VMExport object assuming it doesn't exist. The name of the object to export has to be specified.
-# --format, optional flag to specify wether to download the file in compressed (default) or raw format.
+# --format, optional flag to specify wether to download the file in compressed (default) or raw format. CDI resizes raw images to match PVCs, so download size might be larger than expected.
 # --port-forward, optional flag to easily download the volume without the need of an ingress or route. Also, the local port can be optionally specified with the --local-port flag.
 
 $ virtctl vmexport download name [flags]
