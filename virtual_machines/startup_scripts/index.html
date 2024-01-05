@@ -3334,48 +3334,48 @@ a specific application (database, webcache, etc.)</p>
 <p>This functionality already exists in platforms such as OpenStack. KubeVirt will
 provide the data in a similar format, known to users and services like cloud-init.</p>
 <p>For example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kind: VirtualMachineInstance
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>spec:
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  domain:
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    devices:
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>      interfaces:
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>      - masquerade: {}
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        name: default
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>      - bridge: {}
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        name: ptp
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        tag: ptp
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>      - name: sriov-net
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        sriov: {}
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        tag: nfvfunc
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  networks:
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  - name: default
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    pod: {}
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>  - multus:
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>      networkName: ptp-conf
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    name: ptp
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>      networkName: sriov/sriov-network
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    name: sriov-net
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">interfaces</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">masquerade</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">bridge</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ptp</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="nt">tag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ptp</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sriov-net</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="nt">sriov</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="nt">tag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nfvfunc</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="nt">networks</span><span class="p">:</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="nt">pod</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">multus</span><span class="p">:</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span><span class="nt">networkName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ptp-conf</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ptp</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">networkName</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sriov/sriov-network</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sriov-net</span>
 <a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>The metadata will be available in the guests config drive `openstack/latest/meta_data.json`
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="l l-Scalar l-Scalar-Plain">The metadata will be available in the guests config drive `openstack/latest/meta_data.json`</span>
 <a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>{
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>  &quot;devices&quot;: [
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>    {
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        &quot;type&quot;: &quot;nic&quot;,
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>        &quot;bus&quot;: &quot;pci&quot;,
-<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>        &quot;address&quot;: &quot;0000:00:02.0&quot;,
-<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        &quot;mac&quot;: &quot;01:22:22:42:22:21&quot;,
-<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>        &quot;tags&quot;: [&quot;ptp&quot;]
-<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>    },
-<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>    {
-<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>        &quot;type&quot;: &quot;nic&quot;,
-<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        &quot;bus&quot;: &quot;pci&quot;,
-<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>        &quot;address&quot;: &quot;0000:81:10.1&quot;,
-<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        &quot;mac&quot;: &quot;01:22:22:42:22:22&quot;,
-<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>        &quot;tags&quot;: [&quot;nfvfunc&quot;]
-<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>    },
-<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>  ]
-<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>}
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="p p-Indicator">{</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">  </span><span class="s">&quot;devices&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">    </span><span class="p p-Indicator">{</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">        </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;nic&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">        </span><span class="s">&quot;bus&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;pci&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">        </span><span class="s">&quot;address&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;0000:00:02.0&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">        </span><span class="s">&quot;mac&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;01:22:22:42:22:21&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="s">&quot;tags&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ptp&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">    </span><span class="p p-Indicator">},</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">    </span><span class="p p-Indicator">{</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">        </span><span class="s">&quot;type&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;nic&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">        </span><span class="s">&quot;bus&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;pci&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">        </span><span class="s">&quot;address&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;0000:81:10.1&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">        </span><span class="s">&quot;mac&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;01:22:22:42:22:22&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">        </span><span class="s">&quot;tags&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;nfvfunc&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="w">    </span><span class="p p-Indicator">},</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">  </span><span class="p p-Indicator">]</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="p p-Indicator">}</span>
 </code></pre></div></p>
 <h2 id="ignition-examples">Ignition Examples<a class="headerlink" href="#ignition-examples" title="Permanent link">&para;</a></h2>
 <p>Ignition data can be passed into a <code>cloudInitConfigDrive</code> source using 
@@ -3469,560 +3469,560 @@ annotation : </p>
 <h2 id="sysprep-examples">Sysprep Examples<a class="headerlink" href="#sysprep-examples" title="Permanent link">&para;</a></h2>
 <h3 id="sysprep-in-a-configmap">Sysprep in a ConfigMap<a class="headerlink" href="#sysprep-in-a-configmap" title="Permanent link">&para;</a></h3>
 <p>The answer file can be provided in a ConfigMap:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">apiVersion: v1</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="go">kind: ConfigMap</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="go">metadata:</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="go">  name: sysprep-config</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="go">data:</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="go">  autounattend.xml: |</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="go">    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="go">    &lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="go">    ...</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="go">    &lt;/unattend&gt;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep-config</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nt">data</span><span class="p">:</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="nt">autounattend.xml</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="no">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="no">&lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="no">...</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="no">&lt;/unattend&gt;</span>
 </code></pre></div>
 <p>And attached to the VM like so:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="go">kind: VirtualMachine</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="go">metadata:</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="go">  name: windows-with-sysprep</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="go">spec:</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="go">  running: false</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="go">  template:</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="go">    metadata:</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="go">      labels:</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="go">        kubevirt.io/domain: windows-with-sysprep</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="go">    spec:</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="go">      domain:</span>
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="go">        cpu:</span>
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="go">          cores: 3</span>
-<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="go">        devices:</span>
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="go">          disks:</span>
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="go">          - bootOrder: 1</span>
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="go">            disk:</span>
-<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="go">              bus: virtio</span>
-<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="go">            name: harddrive</span>
-<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="go">          - name: sysprep</span>
-<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="go">            cdrom:</span>
-<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="go">              bus: sata</span>
-<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="go">        machine:</span>
-<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="go">          type: q35</span>
-<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="go">        resources:</span>
-<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="go">          requests:</span>
-<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="go">            memory: 6G</span>
-<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="go">      volumes:</span>
-<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="go">      - name: harddrive</span>
-<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="go">        persistentVolumeClaim:</span>
-<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="go">          claimName: windows_pvc</span>
-<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="go">      - name: sysprep</span>
-<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a><span class="go">        sysprep:</span>
-<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="go">          configMap:</span>
-<a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="go">            name: sysprep-config</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows-with-sysprep</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">running</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="nt">kubevirt.io/domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows-with-sysprep</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">        </span><span class="nt">cpu</span><span class="p">:</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">          </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">bootOrder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">            </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">harddrive</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">            </span><span class="nt">cdrom</span><span class="p">:</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sata</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">        </span><span class="nt">machine</span><span class="p">:</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">q35</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6G</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">harddrive</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="w">          </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows_pvc</span>
+<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep</span>
+<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a><span class="w">        </span><span class="nt">sysprep</span><span class="p">:</span>
+<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="w">          </span><span class="nt">configMap</span><span class="p">:</span>
+<a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep-config</span>
 </code></pre></div>
 <h3 id="sysprep-in-a-secret">Sysprep in a Secret<a class="headerlink" href="#sysprep-in-a-secret" title="Permanent link">&para;</a></h3>
 <p>The answer file can be provided in a Secret:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="go">apiVersion: v1</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="go">kind: Secret</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="go">metadata:</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="go">  name: sysprep-config</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="go">stringData:</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="go">data:</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="go">  autounattend.xml: |</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="go">    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="go">    &lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="go">    ...</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="go">    &lt;/unattend&gt;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep-config</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nt">stringData</span><span class="p">:</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nt">data</span><span class="p">:</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nt">autounattend.xml</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="no">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="no">&lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="no">...</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="no">&lt;/unattend&gt;</span>
 </code></pre></div>
 <p>And attached to the VM like so:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="go">kind: VirtualMachine</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="go">metadata:</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="go">  name: windows-with-sysprep</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="go">spec:</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="go">  running: false</span>
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="go">  template:</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="go">    metadata:</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="go">      labels:</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="go">        kubevirt.io/domain: windows-with-sysprep</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="go">    spec:</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="go">      domain:</span>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="go">        cpu:</span>
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="go">          cores: 3</span>
-<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="go">        devices:</span>
-<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="go">          disks:</span>
-<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="go">          - bootOrder: 1</span>
-<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="go">            disk:</span>
-<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="go">              bus: virtio</span>
-<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="go">            name: harddrive</span>
-<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="go">          - name: sysprep</span>
-<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="go">            cdrom:</span>
-<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="go">              bus: sata</span>
-<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="go">        machine:</span>
-<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="go">          type: q35</span>
-<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="go">        resources:</span>
-<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="go">          requests:</span>
-<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="go">            memory: 6G</span>
-<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="go">      volumes:</span>
-<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="go">      - name: harddrive</span>
-<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="go">        persistentVolumeClaim:</span>
-<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="go">          claimName: windows_pvc</span>
-<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="go">      - name: sysprep</span>
-<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="go">        sysprep:</span>
-<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="go">          secret:</span>
-<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="go">            name: sysprep-secret</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows-with-sysprep</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="nt">running</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">        </span><span class="nt">kubevirt.io/domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows-with-sysprep</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">        </span><span class="nt">cpu</span><span class="p">:</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">          </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">bootOrder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">            </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">harddrive</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">            </span><span class="nt">cdrom</span><span class="p">:</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sata</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">        </span><span class="nt">machine</span><span class="p">:</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">q35</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6G</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">harddrive</span>
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="w">          </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows_pvc</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep</span>
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="w">        </span><span class="nt">sysprep</span><span class="p">:</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="w">          </span><span class="nt">secret</span><span class="p">:</span>
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep-secret</span>
 </code></pre></div>
 <h3 id="base-sysprep-vm">Base Sysprep VM<a class="headerlink" href="#base-sysprep-vm" title="Permanent link">&para;</a></h3>
 <p>In the example below, a configMap with <code>autounattend.xml</code> file is used to modify the Windows iso image which is downloaded from Microsoft
 and creates a base installed Windows machine with virtio drivers installed and all the commands executed in <code>post-install.ps1</code>
 For the below manifests to work it needs to have <code>win10-iso</code> DataVolume.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>apiVersion: v1
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>kind: ConfigMap
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>metadata:
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  name: win10-template-configmap
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>data:
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>  autounattend.xml: |-
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    &lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>      &lt;settings pass=&quot;windowsPE&quot;&gt;
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-International-Core-WinPE&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>          &lt;SetupUILanguage&gt;
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>            &lt;UILanguage&gt;en-US&lt;/UILanguage&gt;
-<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>          &lt;/SetupUILanguage&gt;
-<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>          &lt;InputLocale&gt;0409:00000409&lt;/InputLocale&gt;
-<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>          &lt;SystemLocale&gt;en-US&lt;/SystemLocale&gt;
-<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>          &lt;UILanguage&gt;en-US&lt;/UILanguage&gt;
-<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>          &lt;UILanguageFallback&gt;en-US&lt;/UILanguageFallback&gt;
-<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>          &lt;UserLocale&gt;en-US&lt;/UserLocale&gt;
-<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>        &lt;/component&gt;
-<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-PnpCustomizationsWinPE&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
-<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>          &lt;DriverPaths&gt;
-<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>            &lt;PathAndCredentials wcm:keyValue=&quot;4b29ba63&quot; wcm:action=&quot;add&quot;&gt;
-<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>              &lt;Path&gt;E:\amd64\2k19&lt;/Path&gt;
-<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>            &lt;/PathAndCredentials&gt;
-<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>            &lt;PathAndCredentials wcm:keyValue=&quot;25fe51ea&quot; wcm:action=&quot;add&quot;&gt;
-<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>              &lt;Path&gt;E:\NetKVM\2k19\amd64&lt;/Path&gt;
-<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>            &lt;/PathAndCredentials&gt;
-<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>          &lt;/DriverPaths&gt;
-<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>        &lt;/component&gt;
-<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Setup&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
-<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>          &lt;DiskConfiguration&gt;
-<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>            &lt;Disk wcm:action=&quot;add&quot;&gt;
-<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a>              &lt;CreatePartitions&gt;
-<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a>                &lt;CreatePartition wcm:action=&quot;add&quot;&gt;
-<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a>                  &lt;Order&gt;1&lt;/Order&gt;
-<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a>                  &lt;Type&gt;Primary&lt;/Type&gt;
-<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a>                  &lt;Size&gt;100&lt;/Size&gt;
-<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a>                &lt;/CreatePartition&gt;
-<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a>                &lt;CreatePartition wcm:action=&quot;add&quot;&gt;
-<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a>                  &lt;Extend&gt;true&lt;/Extend&gt;
-<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a>                  &lt;Order&gt;2&lt;/Order&gt;
-<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a>                  &lt;Type&gt;Primary&lt;/Type&gt;
-<a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a>                &lt;/CreatePartition&gt;
-<a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a>              &lt;/CreatePartitions&gt;
-<a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a>              &lt;ModifyPartitions&gt;
-<a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a>                &lt;ModifyPartition wcm:action=&quot;add&quot;&gt;
-<a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a>                  &lt;Format&gt;NTFS&lt;/Format&gt;
-<a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a>                  &lt;Label&gt;System Reserved&lt;/Label&gt;
-<a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a>                  &lt;Order&gt;1&lt;/Order&gt;
-<a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a>                  &lt;PartitionID&gt;1&lt;/PartitionID&gt;
-<a id="__codelineno-10-51" name="__codelineno-10-51" href="#__codelineno-10-51"></a>                  &lt;TypeID&gt;0x27&lt;/TypeID&gt;
-<a id="__codelineno-10-52" name="__codelineno-10-52" href="#__codelineno-10-52"></a>                &lt;/ModifyPartition&gt;
-<a id="__codelineno-10-53" name="__codelineno-10-53" href="#__codelineno-10-53"></a>                &lt;ModifyPartition wcm:action=&quot;add&quot;&gt;
-<a id="__codelineno-10-54" name="__codelineno-10-54" href="#__codelineno-10-54"></a>                  &lt;Format&gt;NTFS&lt;/Format&gt;
-<a id="__codelineno-10-55" name="__codelineno-10-55" href="#__codelineno-10-55"></a>                  &lt;Label&gt;OS&lt;/Label&gt;
-<a id="__codelineno-10-56" name="__codelineno-10-56" href="#__codelineno-10-56"></a>                  &lt;Letter&gt;C&lt;/Letter&gt;
-<a id="__codelineno-10-57" name="__codelineno-10-57" href="#__codelineno-10-57"></a>                  &lt;Order&gt;2&lt;/Order&gt;
-<a id="__codelineno-10-58" name="__codelineno-10-58" href="#__codelineno-10-58"></a>                  &lt;PartitionID&gt;2&lt;/PartitionID&gt;
-<a id="__codelineno-10-59" name="__codelineno-10-59" href="#__codelineno-10-59"></a>                &lt;/ModifyPartition&gt;
-<a id="__codelineno-10-60" name="__codelineno-10-60" href="#__codelineno-10-60"></a>              &lt;/ModifyPartitions&gt;
-<a id="__codelineno-10-61" name="__codelineno-10-61" href="#__codelineno-10-61"></a>              &lt;DiskID&gt;0&lt;/DiskID&gt;
-<a id="__codelineno-10-62" name="__codelineno-10-62" href="#__codelineno-10-62"></a>              &lt;WillWipeDisk&gt;true&lt;/WillWipeDisk&gt;
-<a id="__codelineno-10-63" name="__codelineno-10-63" href="#__codelineno-10-63"></a>            &lt;/Disk&gt;
-<a id="__codelineno-10-64" name="__codelineno-10-64" href="#__codelineno-10-64"></a>          &lt;/DiskConfiguration&gt;
-<a id="__codelineno-10-65" name="__codelineno-10-65" href="#__codelineno-10-65"></a>          &lt;ImageInstall&gt;
-<a id="__codelineno-10-66" name="__codelineno-10-66" href="#__codelineno-10-66"></a>            &lt;OSImage&gt;
-<a id="__codelineno-10-67" name="__codelineno-10-67" href="#__codelineno-10-67"></a>              &lt;InstallFrom&gt;
-<a id="__codelineno-10-68" name="__codelineno-10-68" href="#__codelineno-10-68"></a>                &lt;MetaData wcm:action=&quot;add&quot;&gt;
-<a id="__codelineno-10-69" name="__codelineno-10-69" href="#__codelineno-10-69"></a>                  &lt;Key&gt;/Image/Description&lt;/Key&gt;
-<a id="__codelineno-10-70" name="__codelineno-10-70" href="#__codelineno-10-70"></a>                  &lt;Value&gt;Windows 10 Pro&lt;/Value&gt;
-<a id="__codelineno-10-71" name="__codelineno-10-71" href="#__codelineno-10-71"></a>                &lt;/MetaData&gt;
-<a id="__codelineno-10-72" name="__codelineno-10-72" href="#__codelineno-10-72"></a>              &lt;/InstallFrom&gt;
-<a id="__codelineno-10-73" name="__codelineno-10-73" href="#__codelineno-10-73"></a>              &lt;InstallTo&gt;
-<a id="__codelineno-10-74" name="__codelineno-10-74" href="#__codelineno-10-74"></a>                &lt;DiskID&gt;0&lt;/DiskID&gt;
-<a id="__codelineno-10-75" name="__codelineno-10-75" href="#__codelineno-10-75"></a>                &lt;PartitionID&gt;2&lt;/PartitionID&gt;
-<a id="__codelineno-10-76" name="__codelineno-10-76" href="#__codelineno-10-76"></a>              &lt;/InstallTo&gt;
-<a id="__codelineno-10-77" name="__codelineno-10-77" href="#__codelineno-10-77"></a>            &lt;/OSImage&gt;
-<a id="__codelineno-10-78" name="__codelineno-10-78" href="#__codelineno-10-78"></a>          &lt;/ImageInstall&gt;
-<a id="__codelineno-10-79" name="__codelineno-10-79" href="#__codelineno-10-79"></a>          &lt;UserData&gt;
-<a id="__codelineno-10-80" name="__codelineno-10-80" href="#__codelineno-10-80"></a>            &lt;AcceptEula&gt;true&lt;/AcceptEula&gt;
-<a id="__codelineno-10-81" name="__codelineno-10-81" href="#__codelineno-10-81"></a>            &lt;FullName/&gt;
-<a id="__codelineno-10-82" name="__codelineno-10-82" href="#__codelineno-10-82"></a>            &lt;Organization/&gt;
-<a id="__codelineno-10-83" name="__codelineno-10-83" href="#__codelineno-10-83"></a>            &lt;ProductKey&gt;
-<a id="__codelineno-10-84" name="__codelineno-10-84" href="#__codelineno-10-84"></a>              &lt;Key/&gt;
-<a id="__codelineno-10-85" name="__codelineno-10-85" href="#__codelineno-10-85"></a>            &lt;/ProductKey&gt;
-<a id="__codelineno-10-86" name="__codelineno-10-86" href="#__codelineno-10-86"></a>          &lt;/UserData&gt;
-<a id="__codelineno-10-87" name="__codelineno-10-87" href="#__codelineno-10-87"></a>        &lt;/component&gt;
-<a id="__codelineno-10-88" name="__codelineno-10-88" href="#__codelineno-10-88"></a>      &lt;/settings&gt;
-<a id="__codelineno-10-89" name="__codelineno-10-89" href="#__codelineno-10-89"></a>      &lt;settings pass=&quot;offlineServicing&quot;&gt;
-<a id="__codelineno-10-90" name="__codelineno-10-90" href="#__codelineno-10-90"></a>        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-LUA-Settings&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
-<a id="__codelineno-10-91" name="__codelineno-10-91" href="#__codelineno-10-91"></a>          &lt;EnableLUA&gt;false&lt;/EnableLUA&gt;
-<a id="__codelineno-10-92" name="__codelineno-10-92" href="#__codelineno-10-92"></a>        &lt;/component&gt;
-<a id="__codelineno-10-93" name="__codelineno-10-93" href="#__codelineno-10-93"></a>      &lt;/settings&gt;
-<a id="__codelineno-10-94" name="__codelineno-10-94" href="#__codelineno-10-94"></a>      &lt;settings pass=&quot;specialize&quot;&gt;
-<a id="__codelineno-10-95" name="__codelineno-10-95" href="#__codelineno-10-95"></a>        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-International-Core&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
-<a id="__codelineno-10-96" name="__codelineno-10-96" href="#__codelineno-10-96"></a>          &lt;InputLocale&gt;0409:00000409&lt;/InputLocale&gt;
-<a id="__codelineno-10-97" name="__codelineno-10-97" href="#__codelineno-10-97"></a>          &lt;SystemLocale&gt;en-US&lt;/SystemLocale&gt;
-<a id="__codelineno-10-98" name="__codelineno-10-98" href="#__codelineno-10-98"></a>          &lt;UILanguage&gt;en-US&lt;/UILanguage&gt;
-<a id="__codelineno-10-99" name="__codelineno-10-99" href="#__codelineno-10-99"></a>          &lt;UILanguageFallback&gt;en-US&lt;/UILanguageFallback&gt;
-<a id="__codelineno-10-100" name="__codelineno-10-100" href="#__codelineno-10-100"></a>          &lt;UserLocale&gt;en-US&lt;/UserLocale&gt;
-<a id="__codelineno-10-101" name="__codelineno-10-101" href="#__codelineno-10-101"></a>        &lt;/component&gt;
-<a id="__codelineno-10-102" name="__codelineno-10-102" href="#__codelineno-10-102"></a>        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Security-SPP-UX&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
-<a id="__codelineno-10-103" name="__codelineno-10-103" href="#__codelineno-10-103"></a>          &lt;SkipAutoActivation&gt;true&lt;/SkipAutoActivation&gt;
-<a id="__codelineno-10-104" name="__codelineno-10-104" href="#__codelineno-10-104"></a>        &lt;/component&gt;
-<a id="__codelineno-10-105" name="__codelineno-10-105" href="#__codelineno-10-105"></a>        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-SQMApi&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
-<a id="__codelineno-10-106" name="__codelineno-10-106" href="#__codelineno-10-106"></a>          &lt;CEIPEnabled&gt;0&lt;/CEIPEnabled&gt;
-<a id="__codelineno-10-107" name="__codelineno-10-107" href="#__codelineno-10-107"></a>        &lt;/component&gt;
-<a id="__codelineno-10-108" name="__codelineno-10-108" href="#__codelineno-10-108"></a>      &lt;/settings&gt;
-<a id="__codelineno-10-109" name="__codelineno-10-109" href="#__codelineno-10-109"></a>      &lt;settings pass=&quot;oobeSystem&quot;&gt;
-<a id="__codelineno-10-110" name="__codelineno-10-110" href="#__codelineno-10-110"></a>        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Shell-Setup&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
-<a id="__codelineno-10-111" name="__codelineno-10-111" href="#__codelineno-10-111"></a>          &lt;OOBE&gt;
-<a id="__codelineno-10-112" name="__codelineno-10-112" href="#__codelineno-10-112"></a>            &lt;HideEULAPage&gt;true&lt;/HideEULAPage&gt;
-<a id="__codelineno-10-113" name="__codelineno-10-113" href="#__codelineno-10-113"></a>            &lt;HideOEMRegistrationScreen&gt;true&lt;/HideOEMRegistrationScreen&gt;
-<a id="__codelineno-10-114" name="__codelineno-10-114" href="#__codelineno-10-114"></a>            &lt;HideOnlineAccountScreens&gt;true&lt;/HideOnlineAccountScreens&gt;
-<a id="__codelineno-10-115" name="__codelineno-10-115" href="#__codelineno-10-115"></a>            &lt;HideWirelessSetupInOOBE&gt;true&lt;/HideWirelessSetupInOOBE&gt;
-<a id="__codelineno-10-116" name="__codelineno-10-116" href="#__codelineno-10-116"></a>            &lt;NetworkLocation&gt;Work&lt;/NetworkLocation&gt;
-<a id="__codelineno-10-117" name="__codelineno-10-117" href="#__codelineno-10-117"></a>            &lt;SkipUserOOBE&gt;true&lt;/SkipUserOOBE&gt;
-<a id="__codelineno-10-118" name="__codelineno-10-118" href="#__codelineno-10-118"></a>            &lt;SkipMachineOOBE&gt;true&lt;/SkipMachineOOBE&gt;
-<a id="__codelineno-10-119" name="__codelineno-10-119" href="#__codelineno-10-119"></a>            &lt;ProtectYourPC&gt;3&lt;/ProtectYourPC&gt;
-<a id="__codelineno-10-120" name="__codelineno-10-120" href="#__codelineno-10-120"></a>          &lt;/OOBE&gt;
-<a id="__codelineno-10-121" name="__codelineno-10-121" href="#__codelineno-10-121"></a>          &lt;AutoLogon&gt;
-<a id="__codelineno-10-122" name="__codelineno-10-122" href="#__codelineno-10-122"></a>            &lt;Password&gt;
-<a id="__codelineno-10-123" name="__codelineno-10-123" href="#__codelineno-10-123"></a>              &lt;Value&gt;123456&lt;/Value&gt;
-<a id="__codelineno-10-124" name="__codelineno-10-124" href="#__codelineno-10-124"></a>              &lt;PlainText&gt;true&lt;/PlainText&gt;
-<a id="__codelineno-10-125" name="__codelineno-10-125" href="#__codelineno-10-125"></a>            &lt;/Password&gt;
-<a id="__codelineno-10-126" name="__codelineno-10-126" href="#__codelineno-10-126"></a>            &lt;Enabled&gt;true&lt;/Enabled&gt;
-<a id="__codelineno-10-127" name="__codelineno-10-127" href="#__codelineno-10-127"></a>            &lt;Username&gt;Administrator&lt;/Username&gt;
-<a id="__codelineno-10-128" name="__codelineno-10-128" href="#__codelineno-10-128"></a>          &lt;/AutoLogon&gt;
-<a id="__codelineno-10-129" name="__codelineno-10-129" href="#__codelineno-10-129"></a>          &lt;UserAccounts&gt;
-<a id="__codelineno-10-130" name="__codelineno-10-130" href="#__codelineno-10-130"></a>            &lt;AdministratorPassword&gt;
-<a id="__codelineno-10-131" name="__codelineno-10-131" href="#__codelineno-10-131"></a>              &lt;Value&gt;123456&lt;/Value&gt;
-<a id="__codelineno-10-132" name="__codelineno-10-132" href="#__codelineno-10-132"></a>              &lt;PlainText&gt;true&lt;/PlainText&gt;
-<a id="__codelineno-10-133" name="__codelineno-10-133" href="#__codelineno-10-133"></a>            &lt;/AdministratorPassword&gt;
-<a id="__codelineno-10-134" name="__codelineno-10-134" href="#__codelineno-10-134"></a>          &lt;/UserAccounts&gt;
-<a id="__codelineno-10-135" name="__codelineno-10-135" href="#__codelineno-10-135"></a>          &lt;RegisteredOrganization/&gt;
-<a id="__codelineno-10-136" name="__codelineno-10-136" href="#__codelineno-10-136"></a>          &lt;RegisteredOwner/&gt;
-<a id="__codelineno-10-137" name="__codelineno-10-137" href="#__codelineno-10-137"></a>          &lt;TimeZone&gt;Eastern Standard Time&lt;/TimeZone&gt;
-<a id="__codelineno-10-138" name="__codelineno-10-138" href="#__codelineno-10-138"></a>          &lt;FirstLogonCommands&gt;
-<a id="__codelineno-10-139" name="__codelineno-10-139" href="#__codelineno-10-139"></a>            &lt;SynchronousCommand wcm:action=&quot;add&quot;&gt;
-<a id="__codelineno-10-140" name="__codelineno-10-140" href="#__codelineno-10-140"></a>              &lt;CommandLine&gt;powershell -ExecutionPolicy Bypass -NoExit -NoProfile f:\post-install.ps1&lt;/CommandLine&gt;
-<a id="__codelineno-10-141" name="__codelineno-10-141" href="#__codelineno-10-141"></a>              &lt;RequiresUserInput&gt;false&lt;/RequiresUserInput&gt;
-<a id="__codelineno-10-142" name="__codelineno-10-142" href="#__codelineno-10-142"></a>              &lt;Order&gt;1&lt;/Order&gt;
-<a id="__codelineno-10-143" name="__codelineno-10-143" href="#__codelineno-10-143"></a>              &lt;Description&gt;Post Installation Script&lt;/Description&gt;
-<a id="__codelineno-10-144" name="__codelineno-10-144" href="#__codelineno-10-144"></a>            &lt;/SynchronousCommand&gt;
-<a id="__codelineno-10-145" name="__codelineno-10-145" href="#__codelineno-10-145"></a>          &lt;/FirstLogonCommands&gt;
-<a id="__codelineno-10-146" name="__codelineno-10-146" href="#__codelineno-10-146"></a>        &lt;/component&gt;
-<a id="__codelineno-10-147" name="__codelineno-10-147" href="#__codelineno-10-147"></a>      &lt;/settings&gt;
-<a id="__codelineno-10-148" name="__codelineno-10-148" href="#__codelineno-10-148"></a>    &lt;/unattend&gt;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template-configmap</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="nt">data</span><span class="p">:</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span><span class="nt">autounattend.xml</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="no">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="no">&lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="no">&lt;settings pass=&quot;windowsPE&quot;&gt;</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="no">&lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-International-Core-WinPE&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">          </span><span class="no">&lt;SetupUILanguage&gt;</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">            </span><span class="no">&lt;UILanguage&gt;en-US&lt;/UILanguage&gt;</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">          </span><span class="no">&lt;/SetupUILanguage&gt;</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">          </span><span class="no">&lt;InputLocale&gt;0409:00000409&lt;/InputLocale&gt;</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="w">          </span><span class="no">&lt;SystemLocale&gt;en-US&lt;/SystemLocale&gt;</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">          </span><span class="no">&lt;UILanguage&gt;en-US&lt;/UILanguage&gt;</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">          </span><span class="no">&lt;UILanguageFallback&gt;en-US&lt;/UILanguageFallback&gt;</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">          </span><span class="no">&lt;UserLocale&gt;en-US&lt;/UserLocale&gt;</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">        </span><span class="no">&lt;/component&gt;</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="w">        </span><span class="no">&lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-PnpCustomizationsWinPE&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="w">          </span><span class="no">&lt;DriverPaths&gt;</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="w">            </span><span class="no">&lt;PathAndCredentials wcm:keyValue=&quot;4b29ba63&quot; wcm:action=&quot;add&quot;&gt;</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="w">              </span><span class="no">&lt;Path&gt;E:\amd64\2k19&lt;/Path&gt;</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="w">            </span><span class="no">&lt;/PathAndCredentials&gt;</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="w">            </span><span class="no">&lt;PathAndCredentials wcm:keyValue=&quot;25fe51ea&quot; wcm:action=&quot;add&quot;&gt;</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="w">              </span><span class="no">&lt;Path&gt;E:\NetKVM\2k19\amd64&lt;/Path&gt;</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a><span class="w">            </span><span class="no">&lt;/PathAndCredentials&gt;</span>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="w">          </span><span class="no">&lt;/DriverPaths&gt;</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a><span class="w">        </span><span class="no">&lt;/component&gt;</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a><span class="w">        </span><span class="no">&lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Setup&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;</span>
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a><span class="w">          </span><span class="no">&lt;DiskConfiguration&gt;</span>
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a><span class="w">            </span><span class="no">&lt;Disk wcm:action=&quot;add&quot;&gt;</span>
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a><span class="w">              </span><span class="no">&lt;CreatePartitions&gt;</span>
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a><span class="w">                </span><span class="no">&lt;CreatePartition wcm:action=&quot;add&quot;&gt;</span>
+<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a><span class="w">                  </span><span class="no">&lt;Order&gt;1&lt;/Order&gt;</span>
+<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a><span class="w">                  </span><span class="no">&lt;Type&gt;Primary&lt;/Type&gt;</span>
+<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a><span class="w">                  </span><span class="no">&lt;Size&gt;100&lt;/Size&gt;</span>
+<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a><span class="w">                </span><span class="no">&lt;/CreatePartition&gt;</span>
+<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a><span class="w">                </span><span class="no">&lt;CreatePartition wcm:action=&quot;add&quot;&gt;</span>
+<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a><span class="w">                  </span><span class="no">&lt;Extend&gt;true&lt;/Extend&gt;</span>
+<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a><span class="w">                  </span><span class="no">&lt;Order&gt;2&lt;/Order&gt;</span>
+<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a><span class="w">                  </span><span class="no">&lt;Type&gt;Primary&lt;/Type&gt;</span>
+<a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a><span class="w">                </span><span class="no">&lt;/CreatePartition&gt;</span>
+<a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a><span class="w">              </span><span class="no">&lt;/CreatePartitions&gt;</span>
+<a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a><span class="w">              </span><span class="no">&lt;ModifyPartitions&gt;</span>
+<a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a><span class="w">                </span><span class="no">&lt;ModifyPartition wcm:action=&quot;add&quot;&gt;</span>
+<a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a><span class="w">                  </span><span class="no">&lt;Format&gt;NTFS&lt;/Format&gt;</span>
+<a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a><span class="w">                  </span><span class="no">&lt;Label&gt;System Reserved&lt;/Label&gt;</span>
+<a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a><span class="w">                  </span><span class="no">&lt;Order&gt;1&lt;/Order&gt;</span>
+<a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a><span class="w">                  </span><span class="no">&lt;PartitionID&gt;1&lt;/PartitionID&gt;</span>
+<a id="__codelineno-10-51" name="__codelineno-10-51" href="#__codelineno-10-51"></a><span class="w">                  </span><span class="no">&lt;TypeID&gt;0x27&lt;/TypeID&gt;</span>
+<a id="__codelineno-10-52" name="__codelineno-10-52" href="#__codelineno-10-52"></a><span class="w">                </span><span class="no">&lt;/ModifyPartition&gt;</span>
+<a id="__codelineno-10-53" name="__codelineno-10-53" href="#__codelineno-10-53"></a><span class="w">                </span><span class="no">&lt;ModifyPartition wcm:action=&quot;add&quot;&gt;</span>
+<a id="__codelineno-10-54" name="__codelineno-10-54" href="#__codelineno-10-54"></a><span class="w">                  </span><span class="no">&lt;Format&gt;NTFS&lt;/Format&gt;</span>
+<a id="__codelineno-10-55" name="__codelineno-10-55" href="#__codelineno-10-55"></a><span class="w">                  </span><span class="no">&lt;Label&gt;OS&lt;/Label&gt;</span>
+<a id="__codelineno-10-56" name="__codelineno-10-56" href="#__codelineno-10-56"></a><span class="w">                  </span><span class="no">&lt;Letter&gt;C&lt;/Letter&gt;</span>
+<a id="__codelineno-10-57" name="__codelineno-10-57" href="#__codelineno-10-57"></a><span class="w">                  </span><span class="no">&lt;Order&gt;2&lt;/Order&gt;</span>
+<a id="__codelineno-10-58" name="__codelineno-10-58" href="#__codelineno-10-58"></a><span class="w">                  </span><span class="no">&lt;PartitionID&gt;2&lt;/PartitionID&gt;</span>
+<a id="__codelineno-10-59" name="__codelineno-10-59" href="#__codelineno-10-59"></a><span class="w">                </span><span class="no">&lt;/ModifyPartition&gt;</span>
+<a id="__codelineno-10-60" name="__codelineno-10-60" href="#__codelineno-10-60"></a><span class="w">              </span><span class="no">&lt;/ModifyPartitions&gt;</span>
+<a id="__codelineno-10-61" name="__codelineno-10-61" href="#__codelineno-10-61"></a><span class="w">              </span><span class="no">&lt;DiskID&gt;0&lt;/DiskID&gt;</span>
+<a id="__codelineno-10-62" name="__codelineno-10-62" href="#__codelineno-10-62"></a><span class="w">              </span><span class="no">&lt;WillWipeDisk&gt;true&lt;/WillWipeDisk&gt;</span>
+<a id="__codelineno-10-63" name="__codelineno-10-63" href="#__codelineno-10-63"></a><span class="w">            </span><span class="no">&lt;/Disk&gt;</span>
+<a id="__codelineno-10-64" name="__codelineno-10-64" href="#__codelineno-10-64"></a><span class="w">          </span><span class="no">&lt;/DiskConfiguration&gt;</span>
+<a id="__codelineno-10-65" name="__codelineno-10-65" href="#__codelineno-10-65"></a><span class="w">          </span><span class="no">&lt;ImageInstall&gt;</span>
+<a id="__codelineno-10-66" name="__codelineno-10-66" href="#__codelineno-10-66"></a><span class="w">            </span><span class="no">&lt;OSImage&gt;</span>
+<a id="__codelineno-10-67" name="__codelineno-10-67" href="#__codelineno-10-67"></a><span class="w">              </span><span class="no">&lt;InstallFrom&gt;</span>
+<a id="__codelineno-10-68" name="__codelineno-10-68" href="#__codelineno-10-68"></a><span class="w">                </span><span class="no">&lt;MetaData wcm:action=&quot;add&quot;&gt;</span>
+<a id="__codelineno-10-69" name="__codelineno-10-69" href="#__codelineno-10-69"></a><span class="w">                  </span><span class="no">&lt;Key&gt;/Image/Description&lt;/Key&gt;</span>
+<a id="__codelineno-10-70" name="__codelineno-10-70" href="#__codelineno-10-70"></a><span class="w">                  </span><span class="no">&lt;Value&gt;Windows 10 Pro&lt;/Value&gt;</span>
+<a id="__codelineno-10-71" name="__codelineno-10-71" href="#__codelineno-10-71"></a><span class="w">                </span><span class="no">&lt;/MetaData&gt;</span>
+<a id="__codelineno-10-72" name="__codelineno-10-72" href="#__codelineno-10-72"></a><span class="w">              </span><span class="no">&lt;/InstallFrom&gt;</span>
+<a id="__codelineno-10-73" name="__codelineno-10-73" href="#__codelineno-10-73"></a><span class="w">              </span><span class="no">&lt;InstallTo&gt;</span>
+<a id="__codelineno-10-74" name="__codelineno-10-74" href="#__codelineno-10-74"></a><span class="w">                </span><span class="no">&lt;DiskID&gt;0&lt;/DiskID&gt;</span>
+<a id="__codelineno-10-75" name="__codelineno-10-75" href="#__codelineno-10-75"></a><span class="w">                </span><span class="no">&lt;PartitionID&gt;2&lt;/PartitionID&gt;</span>
+<a id="__codelineno-10-76" name="__codelineno-10-76" href="#__codelineno-10-76"></a><span class="w">              </span><span class="no">&lt;/InstallTo&gt;</span>
+<a id="__codelineno-10-77" name="__codelineno-10-77" href="#__codelineno-10-77"></a><span class="w">            </span><span class="no">&lt;/OSImage&gt;</span>
+<a id="__codelineno-10-78" name="__codelineno-10-78" href="#__codelineno-10-78"></a><span class="w">          </span><span class="no">&lt;/ImageInstall&gt;</span>
+<a id="__codelineno-10-79" name="__codelineno-10-79" href="#__codelineno-10-79"></a><span class="w">          </span><span class="no">&lt;UserData&gt;</span>
+<a id="__codelineno-10-80" name="__codelineno-10-80" href="#__codelineno-10-80"></a><span class="w">            </span><span class="no">&lt;AcceptEula&gt;true&lt;/AcceptEula&gt;</span>
+<a id="__codelineno-10-81" name="__codelineno-10-81" href="#__codelineno-10-81"></a><span class="w">            </span><span class="no">&lt;FullName/&gt;</span>
+<a id="__codelineno-10-82" name="__codelineno-10-82" href="#__codelineno-10-82"></a><span class="w">            </span><span class="no">&lt;Organization/&gt;</span>
+<a id="__codelineno-10-83" name="__codelineno-10-83" href="#__codelineno-10-83"></a><span class="w">            </span><span class="no">&lt;ProductKey&gt;</span>
+<a id="__codelineno-10-84" name="__codelineno-10-84" href="#__codelineno-10-84"></a><span class="w">              </span><span class="no">&lt;Key/&gt;</span>
+<a id="__codelineno-10-85" name="__codelineno-10-85" href="#__codelineno-10-85"></a><span class="w">            </span><span class="no">&lt;/ProductKey&gt;</span>
+<a id="__codelineno-10-86" name="__codelineno-10-86" href="#__codelineno-10-86"></a><span class="w">          </span><span class="no">&lt;/UserData&gt;</span>
+<a id="__codelineno-10-87" name="__codelineno-10-87" href="#__codelineno-10-87"></a><span class="w">        </span><span class="no">&lt;/component&gt;</span>
+<a id="__codelineno-10-88" name="__codelineno-10-88" href="#__codelineno-10-88"></a><span class="w">      </span><span class="no">&lt;/settings&gt;</span>
+<a id="__codelineno-10-89" name="__codelineno-10-89" href="#__codelineno-10-89"></a><span class="w">      </span><span class="no">&lt;settings pass=&quot;offlineServicing&quot;&gt;</span>
+<a id="__codelineno-10-90" name="__codelineno-10-90" href="#__codelineno-10-90"></a><span class="w">        </span><span class="no">&lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-LUA-Settings&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;</span>
+<a id="__codelineno-10-91" name="__codelineno-10-91" href="#__codelineno-10-91"></a><span class="w">          </span><span class="no">&lt;EnableLUA&gt;false&lt;/EnableLUA&gt;</span>
+<a id="__codelineno-10-92" name="__codelineno-10-92" href="#__codelineno-10-92"></a><span class="w">        </span><span class="no">&lt;/component&gt;</span>
+<a id="__codelineno-10-93" name="__codelineno-10-93" href="#__codelineno-10-93"></a><span class="w">      </span><span class="no">&lt;/settings&gt;</span>
+<a id="__codelineno-10-94" name="__codelineno-10-94" href="#__codelineno-10-94"></a><span class="w">      </span><span class="no">&lt;settings pass=&quot;specialize&quot;&gt;</span>
+<a id="__codelineno-10-95" name="__codelineno-10-95" href="#__codelineno-10-95"></a><span class="w">        </span><span class="no">&lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-International-Core&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;</span>
+<a id="__codelineno-10-96" name="__codelineno-10-96" href="#__codelineno-10-96"></a><span class="w">          </span><span class="no">&lt;InputLocale&gt;0409:00000409&lt;/InputLocale&gt;</span>
+<a id="__codelineno-10-97" name="__codelineno-10-97" href="#__codelineno-10-97"></a><span class="w">          </span><span class="no">&lt;SystemLocale&gt;en-US&lt;/SystemLocale&gt;</span>
+<a id="__codelineno-10-98" name="__codelineno-10-98" href="#__codelineno-10-98"></a><span class="w">          </span><span class="no">&lt;UILanguage&gt;en-US&lt;/UILanguage&gt;</span>
+<a id="__codelineno-10-99" name="__codelineno-10-99" href="#__codelineno-10-99"></a><span class="w">          </span><span class="no">&lt;UILanguageFallback&gt;en-US&lt;/UILanguageFallback&gt;</span>
+<a id="__codelineno-10-100" name="__codelineno-10-100" href="#__codelineno-10-100"></a><span class="w">          </span><span class="no">&lt;UserLocale&gt;en-US&lt;/UserLocale&gt;</span>
+<a id="__codelineno-10-101" name="__codelineno-10-101" href="#__codelineno-10-101"></a><span class="w">        </span><span class="no">&lt;/component&gt;</span>
+<a id="__codelineno-10-102" name="__codelineno-10-102" href="#__codelineno-10-102"></a><span class="w">        </span><span class="no">&lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Security-SPP-UX&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;</span>
+<a id="__codelineno-10-103" name="__codelineno-10-103" href="#__codelineno-10-103"></a><span class="w">          </span><span class="no">&lt;SkipAutoActivation&gt;true&lt;/SkipAutoActivation&gt;</span>
+<a id="__codelineno-10-104" name="__codelineno-10-104" href="#__codelineno-10-104"></a><span class="w">        </span><span class="no">&lt;/component&gt;</span>
+<a id="__codelineno-10-105" name="__codelineno-10-105" href="#__codelineno-10-105"></a><span class="w">        </span><span class="no">&lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-SQMApi&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;</span>
+<a id="__codelineno-10-106" name="__codelineno-10-106" href="#__codelineno-10-106"></a><span class="w">          </span><span class="no">&lt;CEIPEnabled&gt;0&lt;/CEIPEnabled&gt;</span>
+<a id="__codelineno-10-107" name="__codelineno-10-107" href="#__codelineno-10-107"></a><span class="w">        </span><span class="no">&lt;/component&gt;</span>
+<a id="__codelineno-10-108" name="__codelineno-10-108" href="#__codelineno-10-108"></a><span class="w">      </span><span class="no">&lt;/settings&gt;</span>
+<a id="__codelineno-10-109" name="__codelineno-10-109" href="#__codelineno-10-109"></a><span class="w">      </span><span class="no">&lt;settings pass=&quot;oobeSystem&quot;&gt;</span>
+<a id="__codelineno-10-110" name="__codelineno-10-110" href="#__codelineno-10-110"></a><span class="w">        </span><span class="no">&lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Shell-Setup&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;</span>
+<a id="__codelineno-10-111" name="__codelineno-10-111" href="#__codelineno-10-111"></a><span class="w">          </span><span class="no">&lt;OOBE&gt;</span>
+<a id="__codelineno-10-112" name="__codelineno-10-112" href="#__codelineno-10-112"></a><span class="w">            </span><span class="no">&lt;HideEULAPage&gt;true&lt;/HideEULAPage&gt;</span>
+<a id="__codelineno-10-113" name="__codelineno-10-113" href="#__codelineno-10-113"></a><span class="w">            </span><span class="no">&lt;HideOEMRegistrationScreen&gt;true&lt;/HideOEMRegistrationScreen&gt;</span>
+<a id="__codelineno-10-114" name="__codelineno-10-114" href="#__codelineno-10-114"></a><span class="w">            </span><span class="no">&lt;HideOnlineAccountScreens&gt;true&lt;/HideOnlineAccountScreens&gt;</span>
+<a id="__codelineno-10-115" name="__codelineno-10-115" href="#__codelineno-10-115"></a><span class="w">            </span><span class="no">&lt;HideWirelessSetupInOOBE&gt;true&lt;/HideWirelessSetupInOOBE&gt;</span>
+<a id="__codelineno-10-116" name="__codelineno-10-116" href="#__codelineno-10-116"></a><span class="w">            </span><span class="no">&lt;NetworkLocation&gt;Work&lt;/NetworkLocation&gt;</span>
+<a id="__codelineno-10-117" name="__codelineno-10-117" href="#__codelineno-10-117"></a><span class="w">            </span><span class="no">&lt;SkipUserOOBE&gt;true&lt;/SkipUserOOBE&gt;</span>
+<a id="__codelineno-10-118" name="__codelineno-10-118" href="#__codelineno-10-118"></a><span class="w">            </span><span class="no">&lt;SkipMachineOOBE&gt;true&lt;/SkipMachineOOBE&gt;</span>
+<a id="__codelineno-10-119" name="__codelineno-10-119" href="#__codelineno-10-119"></a><span class="w">            </span><span class="no">&lt;ProtectYourPC&gt;3&lt;/ProtectYourPC&gt;</span>
+<a id="__codelineno-10-120" name="__codelineno-10-120" href="#__codelineno-10-120"></a><span class="w">          </span><span class="no">&lt;/OOBE&gt;</span>
+<a id="__codelineno-10-121" name="__codelineno-10-121" href="#__codelineno-10-121"></a><span class="w">          </span><span class="no">&lt;AutoLogon&gt;</span>
+<a id="__codelineno-10-122" name="__codelineno-10-122" href="#__codelineno-10-122"></a><span class="w">            </span><span class="no">&lt;Password&gt;</span>
+<a id="__codelineno-10-123" name="__codelineno-10-123" href="#__codelineno-10-123"></a><span class="w">              </span><span class="no">&lt;Value&gt;123456&lt;/Value&gt;</span>
+<a id="__codelineno-10-124" name="__codelineno-10-124" href="#__codelineno-10-124"></a><span class="w">              </span><span class="no">&lt;PlainText&gt;true&lt;/PlainText&gt;</span>
+<a id="__codelineno-10-125" name="__codelineno-10-125" href="#__codelineno-10-125"></a><span class="w">            </span><span class="no">&lt;/Password&gt;</span>
+<a id="__codelineno-10-126" name="__codelineno-10-126" href="#__codelineno-10-126"></a><span class="w">            </span><span class="no">&lt;Enabled&gt;true&lt;/Enabled&gt;</span>
+<a id="__codelineno-10-127" name="__codelineno-10-127" href="#__codelineno-10-127"></a><span class="w">            </span><span class="no">&lt;Username&gt;Administrator&lt;/Username&gt;</span>
+<a id="__codelineno-10-128" name="__codelineno-10-128" href="#__codelineno-10-128"></a><span class="w">          </span><span class="no">&lt;/AutoLogon&gt;</span>
+<a id="__codelineno-10-129" name="__codelineno-10-129" href="#__codelineno-10-129"></a><span class="w">          </span><span class="no">&lt;UserAccounts&gt;</span>
+<a id="__codelineno-10-130" name="__codelineno-10-130" href="#__codelineno-10-130"></a><span class="w">            </span><span class="no">&lt;AdministratorPassword&gt;</span>
+<a id="__codelineno-10-131" name="__codelineno-10-131" href="#__codelineno-10-131"></a><span class="w">              </span><span class="no">&lt;Value&gt;123456&lt;/Value&gt;</span>
+<a id="__codelineno-10-132" name="__codelineno-10-132" href="#__codelineno-10-132"></a><span class="w">              </span><span class="no">&lt;PlainText&gt;true&lt;/PlainText&gt;</span>
+<a id="__codelineno-10-133" name="__codelineno-10-133" href="#__codelineno-10-133"></a><span class="w">            </span><span class="no">&lt;/AdministratorPassword&gt;</span>
+<a id="__codelineno-10-134" name="__codelineno-10-134" href="#__codelineno-10-134"></a><span class="w">          </span><span class="no">&lt;/UserAccounts&gt;</span>
+<a id="__codelineno-10-135" name="__codelineno-10-135" href="#__codelineno-10-135"></a><span class="w">          </span><span class="no">&lt;RegisteredOrganization/&gt;</span>
+<a id="__codelineno-10-136" name="__codelineno-10-136" href="#__codelineno-10-136"></a><span class="w">          </span><span class="no">&lt;RegisteredOwner/&gt;</span>
+<a id="__codelineno-10-137" name="__codelineno-10-137" href="#__codelineno-10-137"></a><span class="w">          </span><span class="no">&lt;TimeZone&gt;Eastern Standard Time&lt;/TimeZone&gt;</span>
+<a id="__codelineno-10-138" name="__codelineno-10-138" href="#__codelineno-10-138"></a><span class="w">          </span><span class="no">&lt;FirstLogonCommands&gt;</span>
+<a id="__codelineno-10-139" name="__codelineno-10-139" href="#__codelineno-10-139"></a><span class="w">            </span><span class="no">&lt;SynchronousCommand wcm:action=&quot;add&quot;&gt;</span>
+<a id="__codelineno-10-140" name="__codelineno-10-140" href="#__codelineno-10-140"></a><span class="w">              </span><span class="no">&lt;CommandLine&gt;powershell -ExecutionPolicy Bypass -NoExit -NoProfile f:\post-install.ps1&lt;/CommandLine&gt;</span>
+<a id="__codelineno-10-141" name="__codelineno-10-141" href="#__codelineno-10-141"></a><span class="w">              </span><span class="no">&lt;RequiresUserInput&gt;false&lt;/RequiresUserInput&gt;</span>
+<a id="__codelineno-10-142" name="__codelineno-10-142" href="#__codelineno-10-142"></a><span class="w">              </span><span class="no">&lt;Order&gt;1&lt;/Order&gt;</span>
+<a id="__codelineno-10-143" name="__codelineno-10-143" href="#__codelineno-10-143"></a><span class="w">              </span><span class="no">&lt;Description&gt;Post Installation Script&lt;/Description&gt;</span>
+<a id="__codelineno-10-144" name="__codelineno-10-144" href="#__codelineno-10-144"></a><span class="w">            </span><span class="no">&lt;/SynchronousCommand&gt;</span>
+<a id="__codelineno-10-145" name="__codelineno-10-145" href="#__codelineno-10-145"></a><span class="w">          </span><span class="no">&lt;/FirstLogonCommands&gt;</span>
+<a id="__codelineno-10-146" name="__codelineno-10-146" href="#__codelineno-10-146"></a><span class="w">        </span><span class="no">&lt;/component&gt;</span>
+<a id="__codelineno-10-147" name="__codelineno-10-147" href="#__codelineno-10-147"></a><span class="w">      </span><span class="no">&lt;/settings&gt;</span>
+<a id="__codelineno-10-148" name="__codelineno-10-148" href="#__codelineno-10-148"></a><span class="w">    </span><span class="no">&lt;/unattend&gt;</span>
 <a id="__codelineno-10-149" name="__codelineno-10-149" href="#__codelineno-10-149"></a>
 <a id="__codelineno-10-150" name="__codelineno-10-150" href="#__codelineno-10-150"></a>
-<a id="__codelineno-10-151" name="__codelineno-10-151" href="#__codelineno-10-151"></a>  post-install.ps1: |-
-<a id="__codelineno-10-152" name="__codelineno-10-152" href="#__codelineno-10-152"></a>    # Remove AutoLogin
-<a id="__codelineno-10-153" name="__codelineno-10-153" href="#__codelineno-10-153"></a>    # https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-autologon-logoncount#logoncount-known-issue
-<a id="__codelineno-10-154" name="__codelineno-10-154" href="#__codelineno-10-154"></a>    reg add &quot;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&quot; /v AutoAdminLogon /t REG_SZ /d 0 /f
+<a id="__codelineno-10-151" name="__codelineno-10-151" href="#__codelineno-10-151"></a><span class="w">  </span><span class="nt">post-install.ps1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-10-152" name="__codelineno-10-152" href="#__codelineno-10-152"></a><span class="w">    </span><span class="no"># Remove AutoLogin</span>
+<a id="__codelineno-10-153" name="__codelineno-10-153" href="#__codelineno-10-153"></a><span class="w">    </span><span class="no"># https://docs.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-shell-setup-autologon-logoncount#logoncount-known-issue</span>
+<a id="__codelineno-10-154" name="__codelineno-10-154" href="#__codelineno-10-154"></a><span class="w">    </span><span class="no">reg add &quot;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon&quot; /v AutoAdminLogon /t REG_SZ /d 0 /f</span>
 <a id="__codelineno-10-155" name="__codelineno-10-155" href="#__codelineno-10-155"></a>
-<a id="__codelineno-10-156" name="__codelineno-10-156" href="#__codelineno-10-156"></a>    # install Qemu Tools (Drivers)
-<a id="__codelineno-10-157" name="__codelineno-10-157" href="#__codelineno-10-157"></a>    Start-Process msiexec -Wait -ArgumentList &#39;/i e:\virtio-win-gt-x64.msi /qn /passive /norestart&#39;
+<a id="__codelineno-10-156" name="__codelineno-10-156" href="#__codelineno-10-156"></a><span class="w">    </span><span class="no"># install Qemu Tools (Drivers)</span>
+<a id="__codelineno-10-157" name="__codelineno-10-157" href="#__codelineno-10-157"></a><span class="w">    </span><span class="no">Start-Process msiexec -Wait -ArgumentList &#39;/i e:\virtio-win-gt-x64.msi /qn /passive /norestart&#39;</span>
 <a id="__codelineno-10-158" name="__codelineno-10-158" href="#__codelineno-10-158"></a>
-<a id="__codelineno-10-159" name="__codelineno-10-159" href="#__codelineno-10-159"></a>    # install Guest Agent
-<a id="__codelineno-10-160" name="__codelineno-10-160" href="#__codelineno-10-160"></a>    Start-Process msiexec -Wait -ArgumentList &#39;/i e:\guest-agent\qemu-ga-x86_64.msi /qn /passive /norestart&#39;
+<a id="__codelineno-10-159" name="__codelineno-10-159" href="#__codelineno-10-159"></a><span class="w">    </span><span class="no"># install Guest Agent</span>
+<a id="__codelineno-10-160" name="__codelineno-10-160" href="#__codelineno-10-160"></a><span class="w">    </span><span class="no">Start-Process msiexec -Wait -ArgumentList &#39;/i e:\guest-agent\qemu-ga-x86_64.msi /qn /passive /norestart&#39;</span>
 <a id="__codelineno-10-161" name="__codelineno-10-161" href="#__codelineno-10-161"></a>
-<a id="__codelineno-10-162" name="__codelineno-10-162" href="#__codelineno-10-162"></a>    # Rename cached unattend.xml to avoid it is picked up by sysprep
-<a id="__codelineno-10-163" name="__codelineno-10-163" href="#__codelineno-10-163"></a>    mv C:\Windows\Panther\unattend.xml C:\Windows\Panther\unattend.install.xml
+<a id="__codelineno-10-162" name="__codelineno-10-162" href="#__codelineno-10-162"></a><span class="w">    </span><span class="no"># Rename cached unattend.xml to avoid it is picked up by sysprep</span>
+<a id="__codelineno-10-163" name="__codelineno-10-163" href="#__codelineno-10-163"></a><span class="w">    </span><span class="no">mv C:\Windows\Panther\unattend.xml C:\Windows\Panther\unattend.install.xml</span>
 <a id="__codelineno-10-164" name="__codelineno-10-164" href="#__codelineno-10-164"></a>
-<a id="__codelineno-10-165" name="__codelineno-10-165" href="#__codelineno-10-165"></a>    # Eject CD, to avoid that the autounattend.xml on the CD is picked up by sysprep
-<a id="__codelineno-10-166" name="__codelineno-10-166" href="#__codelineno-10-166"></a>    (new-object -COM Shell.Application).NameSpace(17).ParseName(&#39;F:&#39;).InvokeVerb(&#39;Eject&#39;)
+<a id="__codelineno-10-165" name="__codelineno-10-165" href="#__codelineno-10-165"></a><span class="w">    </span><span class="no"># Eject CD, to avoid that the autounattend.xml on the CD is picked up by sysprep</span>
+<a id="__codelineno-10-166" name="__codelineno-10-166" href="#__codelineno-10-166"></a><span class="w">    </span><span class="no">(new-object -COM Shell.Application).NameSpace(17).ParseName(&#39;F:&#39;).InvokeVerb(&#39;Eject&#39;)</span>
 <a id="__codelineno-10-167" name="__codelineno-10-167" href="#__codelineno-10-167"></a>
-<a id="__codelineno-10-168" name="__codelineno-10-168" href="#__codelineno-10-168"></a>    # Run Sysprep and Shutdown
-<a id="__codelineno-10-169" name="__codelineno-10-169" href="#__codelineno-10-169"></a>    C:\Windows\System32\Sysprep\sysprep.exe /generalize /oobe /shutdown /mode:vm
+<a id="__codelineno-10-168" name="__codelineno-10-168" href="#__codelineno-10-168"></a><span class="w">    </span><span class="no"># Run Sysprep and Shutdown</span>
+<a id="__codelineno-10-169" name="__codelineno-10-169" href="#__codelineno-10-169"></a><span class="w">    </span><span class="no">C:\Windows\System32\Sysprep\sysprep.exe /generalize /oobe /shutdown /mode:vm</span>
 <a id="__codelineno-10-170" name="__codelineno-10-170" href="#__codelineno-10-170"></a>
-<a id="__codelineno-10-171" name="__codelineno-10-171" href="#__codelineno-10-171"></a>---
+<a id="__codelineno-10-171" name="__codelineno-10-171" href="#__codelineno-10-171"></a><span class="nn">---</span>
 <a id="__codelineno-10-172" name="__codelineno-10-172" href="#__codelineno-10-172"></a>
-<a id="__codelineno-10-173" name="__codelineno-10-173" href="#__codelineno-10-173"></a>apiVersion: kubevirt.io/v1
-<a id="__codelineno-10-174" name="__codelineno-10-174" href="#__codelineno-10-174"></a>kind: VirtualMachine
-<a id="__codelineno-10-175" name="__codelineno-10-175" href="#__codelineno-10-175"></a>metadata:
-<a id="__codelineno-10-176" name="__codelineno-10-176" href="#__codelineno-10-176"></a>  annotations:
-<a id="__codelineno-10-177" name="__codelineno-10-177" href="#__codelineno-10-177"></a>    name.os.template.kubevirt.io/win10: Microsoft Windows 10
-<a id="__codelineno-10-178" name="__codelineno-10-178" href="#__codelineno-10-178"></a>    vm.kubevirt.io/validations: |
-<a id="__codelineno-10-179" name="__codelineno-10-179" href="#__codelineno-10-179"></a>      [
-<a id="__codelineno-10-180" name="__codelineno-10-180" href="#__codelineno-10-180"></a>        {
-<a id="__codelineno-10-181" name="__codelineno-10-181" href="#__codelineno-10-181"></a>          &quot;name&quot;: &quot;minimal-required-memory&quot;,
-<a id="__codelineno-10-182" name="__codelineno-10-182" href="#__codelineno-10-182"></a>          &quot;path&quot;: &quot;jsonpath::.spec.domain.resources.requests.memory&quot;,
-<a id="__codelineno-10-183" name="__codelineno-10-183" href="#__codelineno-10-183"></a>          &quot;rule&quot;: &quot;integer&quot;,
-<a id="__codelineno-10-184" name="__codelineno-10-184" href="#__codelineno-10-184"></a>          &quot;message&quot;: &quot;This VM requires more memory.&quot;,
-<a id="__codelineno-10-185" name="__codelineno-10-185" href="#__codelineno-10-185"></a>          &quot;min&quot;: 2147483648
-<a id="__codelineno-10-186" name="__codelineno-10-186" href="#__codelineno-10-186"></a>        }, {
-<a id="__codelineno-10-187" name="__codelineno-10-187" href="#__codelineno-10-187"></a>          &quot;name&quot;: &quot;windows-virtio-bus&quot;,
-<a id="__codelineno-10-188" name="__codelineno-10-188" href="#__codelineno-10-188"></a>          &quot;path&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,
-<a id="__codelineno-10-189" name="__codelineno-10-189" href="#__codelineno-10-189"></a>          &quot;valid&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,
-<a id="__codelineno-10-190" name="__codelineno-10-190" href="#__codelineno-10-190"></a>          &quot;rule&quot;: &quot;enum&quot;,
-<a id="__codelineno-10-191" name="__codelineno-10-191" href="#__codelineno-10-191"></a>          &quot;message&quot;: &quot;virto disk bus type has better performance, install virtio drivers in VM and change bus type&quot;,
-<a id="__codelineno-10-192" name="__codelineno-10-192" href="#__codelineno-10-192"></a>          &quot;values&quot;: [&quot;virtio&quot;],
-<a id="__codelineno-10-193" name="__codelineno-10-193" href="#__codelineno-10-193"></a>          &quot;justWarning&quot;: true
-<a id="__codelineno-10-194" name="__codelineno-10-194" href="#__codelineno-10-194"></a>        }, {
-<a id="__codelineno-10-195" name="__codelineno-10-195" href="#__codelineno-10-195"></a>          &quot;name&quot;: &quot;windows-disk-bus&quot;,
-<a id="__codelineno-10-196" name="__codelineno-10-196" href="#__codelineno-10-196"></a>          &quot;path&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,
-<a id="__codelineno-10-197" name="__codelineno-10-197" href="#__codelineno-10-197"></a>          &quot;valid&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,
-<a id="__codelineno-10-198" name="__codelineno-10-198" href="#__codelineno-10-198"></a>          &quot;rule&quot;: &quot;enum&quot;,
-<a id="__codelineno-10-199" name="__codelineno-10-199" href="#__codelineno-10-199"></a>          &quot;message&quot;: &quot;disk bus has to be either virtio or sata or scsi&quot;,
-<a id="__codelineno-10-200" name="__codelineno-10-200" href="#__codelineno-10-200"></a>          &quot;values&quot;: [&quot;virtio&quot;, &quot;sata&quot;, &quot;scsi&quot;]
-<a id="__codelineno-10-201" name="__codelineno-10-201" href="#__codelineno-10-201"></a>        }, {
-<a id="__codelineno-10-202" name="__codelineno-10-202" href="#__codelineno-10-202"></a>          &quot;name&quot;: &quot;windows-cd-bus&quot;,
-<a id="__codelineno-10-203" name="__codelineno-10-203" href="#__codelineno-10-203"></a>          &quot;path&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].cdrom.bus&quot;,
-<a id="__codelineno-10-204" name="__codelineno-10-204" href="#__codelineno-10-204"></a>          &quot;valid&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].cdrom.bus&quot;,
-<a id="__codelineno-10-205" name="__codelineno-10-205" href="#__codelineno-10-205"></a>          &quot;rule&quot;: &quot;enum&quot;,
-<a id="__codelineno-10-206" name="__codelineno-10-206" href="#__codelineno-10-206"></a>          &quot;message&quot;: &quot;cd bus has to be sata&quot;,
-<a id="__codelineno-10-207" name="__codelineno-10-207" href="#__codelineno-10-207"></a>          &quot;values&quot;: [&quot;sata&quot;]
-<a id="__codelineno-10-208" name="__codelineno-10-208" href="#__codelineno-10-208"></a>        }
-<a id="__codelineno-10-209" name="__codelineno-10-209" href="#__codelineno-10-209"></a>      ]
-<a id="__codelineno-10-210" name="__codelineno-10-210" href="#__codelineno-10-210"></a>  name: win10-template
-<a id="__codelineno-10-211" name="__codelineno-10-211" href="#__codelineno-10-211"></a>  namespace: default
-<a id="__codelineno-10-212" name="__codelineno-10-212" href="#__codelineno-10-212"></a>  labels:
-<a id="__codelineno-10-213" name="__codelineno-10-213" href="#__codelineno-10-213"></a>    app: win10-template
-<a id="__codelineno-10-214" name="__codelineno-10-214" href="#__codelineno-10-214"></a>    flavor.template.kubevirt.io/medium: &#39;true&#39;
-<a id="__codelineno-10-215" name="__codelineno-10-215" href="#__codelineno-10-215"></a>    os.template.kubevirt.io/win10: &#39;true&#39;
-<a id="__codelineno-10-216" name="__codelineno-10-216" href="#__codelineno-10-216"></a>    vm.kubevirt.io/template: windows10-desktop-medium
-<a id="__codelineno-10-217" name="__codelineno-10-217" href="#__codelineno-10-217"></a>    vm.kubevirt.io/template.namespace: openshift
-<a id="__codelineno-10-218" name="__codelineno-10-218" href="#__codelineno-10-218"></a>    vm.kubevirt.io/template.revision: &#39;1&#39;
-<a id="__codelineno-10-219" name="__codelineno-10-219" href="#__codelineno-10-219"></a>    vm.kubevirt.io/template.version: v0.14.0
-<a id="__codelineno-10-220" name="__codelineno-10-220" href="#__codelineno-10-220"></a>    workload.template.kubevirt.io/desktop: &#39;true&#39;
-<a id="__codelineno-10-221" name="__codelineno-10-221" href="#__codelineno-10-221"></a>spec:
-<a id="__codelineno-10-222" name="__codelineno-10-222" href="#__codelineno-10-222"></a>  runStrategy: RerunOnFailure
-<a id="__codelineno-10-223" name="__codelineno-10-223" href="#__codelineno-10-223"></a>  dataVolumeTemplates:
-<a id="__codelineno-10-224" name="__codelineno-10-224" href="#__codelineno-10-224"></a>    - metadata:
-<a id="__codelineno-10-225" name="__codelineno-10-225" href="#__codelineno-10-225"></a>        name: win10-template-windows-iso
-<a id="__codelineno-10-226" name="__codelineno-10-226" href="#__codelineno-10-226"></a>      spec:
-<a id="__codelineno-10-227" name="__codelineno-10-227" href="#__codelineno-10-227"></a>        pvc:
-<a id="__codelineno-10-228" name="__codelineno-10-228" href="#__codelineno-10-228"></a>          accessModes:
-<a id="__codelineno-10-229" name="__codelineno-10-229" href="#__codelineno-10-229"></a>            - ReadWriteOnce
-<a id="__codelineno-10-230" name="__codelineno-10-230" href="#__codelineno-10-230"></a>          resources:
-<a id="__codelineno-10-231" name="__codelineno-10-231" href="#__codelineno-10-231"></a>            requests:
-<a id="__codelineno-10-232" name="__codelineno-10-232" href="#__codelineno-10-232"></a>              storage: 20Gi
-<a id="__codelineno-10-233" name="__codelineno-10-233" href="#__codelineno-10-233"></a>        source:
-<a id="__codelineno-10-234" name="__codelineno-10-234" href="#__codelineno-10-234"></a>          pvc:
-<a id="__codelineno-10-235" name="__codelineno-10-235" href="#__codelineno-10-235"></a>            name: windows10-iso
-<a id="__codelineno-10-236" name="__codelineno-10-236" href="#__codelineno-10-236"></a>            namespace: default
-<a id="__codelineno-10-237" name="__codelineno-10-237" href="#__codelineno-10-237"></a>    - metadata:
-<a id="__codelineno-10-238" name="__codelineno-10-238" href="#__codelineno-10-238"></a>        name: win10-template
-<a id="__codelineno-10-239" name="__codelineno-10-239" href="#__codelineno-10-239"></a>      spec:
-<a id="__codelineno-10-240" name="__codelineno-10-240" href="#__codelineno-10-240"></a>        pvc:
-<a id="__codelineno-10-241" name="__codelineno-10-241" href="#__codelineno-10-241"></a>          accessModes:
-<a id="__codelineno-10-242" name="__codelineno-10-242" href="#__codelineno-10-242"></a>            - ReadWriteOnce
-<a id="__codelineno-10-243" name="__codelineno-10-243" href="#__codelineno-10-243"></a>          resources:
-<a id="__codelineno-10-244" name="__codelineno-10-244" href="#__codelineno-10-244"></a>            requests:
-<a id="__codelineno-10-245" name="__codelineno-10-245" href="#__codelineno-10-245"></a>              storage: 25Gi
-<a id="__codelineno-10-246" name="__codelineno-10-246" href="#__codelineno-10-246"></a>          volumeMode: Filesystem
-<a id="__codelineno-10-247" name="__codelineno-10-247" href="#__codelineno-10-247"></a>        source:
-<a id="__codelineno-10-248" name="__codelineno-10-248" href="#__codelineno-10-248"></a>          blank: {}
-<a id="__codelineno-10-249" name="__codelineno-10-249" href="#__codelineno-10-249"></a>  template:
-<a id="__codelineno-10-250" name="__codelineno-10-250" href="#__codelineno-10-250"></a>    metadata:
-<a id="__codelineno-10-251" name="__codelineno-10-251" href="#__codelineno-10-251"></a>      annotations:
-<a id="__codelineno-10-252" name="__codelineno-10-252" href="#__codelineno-10-252"></a>        vm.kubevirt.io/flavor: medium
-<a id="__codelineno-10-253" name="__codelineno-10-253" href="#__codelineno-10-253"></a>        vm.kubevirt.io/os: windows10
-<a id="__codelineno-10-254" name="__codelineno-10-254" href="#__codelineno-10-254"></a>        vm.kubevirt.io/workload: desktop
-<a id="__codelineno-10-255" name="__codelineno-10-255" href="#__codelineno-10-255"></a>      labels:
-<a id="__codelineno-10-256" name="__codelineno-10-256" href="#__codelineno-10-256"></a>        flavor.template.kubevirt.io/medium: &#39;true&#39;
-<a id="__codelineno-10-257" name="__codelineno-10-257" href="#__codelineno-10-257"></a>        kubevirt.io/domain: win10-template
-<a id="__codelineno-10-258" name="__codelineno-10-258" href="#__codelineno-10-258"></a>        kubevirt.io/size: medium
-<a id="__codelineno-10-259" name="__codelineno-10-259" href="#__codelineno-10-259"></a>        os.template.kubevirt.io/win10: &#39;true&#39;
-<a id="__codelineno-10-260" name="__codelineno-10-260" href="#__codelineno-10-260"></a>        vm.kubevirt.io/name: win10-template
-<a id="__codelineno-10-261" name="__codelineno-10-261" href="#__codelineno-10-261"></a>        workload.template.kubevirt.io/desktop: &#39;true&#39;
-<a id="__codelineno-10-262" name="__codelineno-10-262" href="#__codelineno-10-262"></a>    spec:
-<a id="__codelineno-10-263" name="__codelineno-10-263" href="#__codelineno-10-263"></a>      domain:
-<a id="__codelineno-10-264" name="__codelineno-10-264" href="#__codelineno-10-264"></a>        clock:
-<a id="__codelineno-10-265" name="__codelineno-10-265" href="#__codelineno-10-265"></a>          timer:
-<a id="__codelineno-10-266" name="__codelineno-10-266" href="#__codelineno-10-266"></a>            hpet:
-<a id="__codelineno-10-267" name="__codelineno-10-267" href="#__codelineno-10-267"></a>              present: false
-<a id="__codelineno-10-268" name="__codelineno-10-268" href="#__codelineno-10-268"></a>            hyperv: {}
-<a id="__codelineno-10-269" name="__codelineno-10-269" href="#__codelineno-10-269"></a>            pit:
-<a id="__codelineno-10-270" name="__codelineno-10-270" href="#__codelineno-10-270"></a>              tickPolicy: delay
-<a id="__codelineno-10-271" name="__codelineno-10-271" href="#__codelineno-10-271"></a>            rtc:
-<a id="__codelineno-10-272" name="__codelineno-10-272" href="#__codelineno-10-272"></a>              tickPolicy: catchup
-<a id="__codelineno-10-273" name="__codelineno-10-273" href="#__codelineno-10-273"></a>          utc: {}
-<a id="__codelineno-10-274" name="__codelineno-10-274" href="#__codelineno-10-274"></a>        cpu:
-<a id="__codelineno-10-275" name="__codelineno-10-275" href="#__codelineno-10-275"></a>          cores: 1
-<a id="__codelineno-10-276" name="__codelineno-10-276" href="#__codelineno-10-276"></a>          sockets: 1
-<a id="__codelineno-10-277" name="__codelineno-10-277" href="#__codelineno-10-277"></a>          threads: 1
-<a id="__codelineno-10-278" name="__codelineno-10-278" href="#__codelineno-10-278"></a>        devices:
-<a id="__codelineno-10-279" name="__codelineno-10-279" href="#__codelineno-10-279"></a>          disks:
-<a id="__codelineno-10-280" name="__codelineno-10-280" href="#__codelineno-10-280"></a>            - bootOrder: 1
-<a id="__codelineno-10-281" name="__codelineno-10-281" href="#__codelineno-10-281"></a>              disk:
-<a id="__codelineno-10-282" name="__codelineno-10-282" href="#__codelineno-10-282"></a>                bus: virtio
-<a id="__codelineno-10-283" name="__codelineno-10-283" href="#__codelineno-10-283"></a>              name: win10-template
-<a id="__codelineno-10-284" name="__codelineno-10-284" href="#__codelineno-10-284"></a>            - bootOrder: 2
-<a id="__codelineno-10-285" name="__codelineno-10-285" href="#__codelineno-10-285"></a>              cdrom:
-<a id="__codelineno-10-286" name="__codelineno-10-286" href="#__codelineno-10-286"></a>                bus: sata
-<a id="__codelineno-10-287" name="__codelineno-10-287" href="#__codelineno-10-287"></a>              name: windows-iso
-<a id="__codelineno-10-288" name="__codelineno-10-288" href="#__codelineno-10-288"></a>            - cdrom:
-<a id="__codelineno-10-289" name="__codelineno-10-289" href="#__codelineno-10-289"></a>                bus: sata
-<a id="__codelineno-10-290" name="__codelineno-10-290" href="#__codelineno-10-290"></a>              name: windows-guest-tools
-<a id="__codelineno-10-291" name="__codelineno-10-291" href="#__codelineno-10-291"></a>            - name: sysprep
-<a id="__codelineno-10-292" name="__codelineno-10-292" href="#__codelineno-10-292"></a>              cdrom:
-<a id="__codelineno-10-293" name="__codelineno-10-293" href="#__codelineno-10-293"></a>                bus: sata
-<a id="__codelineno-10-294" name="__codelineno-10-294" href="#__codelineno-10-294"></a>          inputs:
-<a id="__codelineno-10-295" name="__codelineno-10-295" href="#__codelineno-10-295"></a>            - bus: usb
-<a id="__codelineno-10-296" name="__codelineno-10-296" href="#__codelineno-10-296"></a>              name: tablet
-<a id="__codelineno-10-297" name="__codelineno-10-297" href="#__codelineno-10-297"></a>              type: tablet
-<a id="__codelineno-10-298" name="__codelineno-10-298" href="#__codelineno-10-298"></a>          interfaces:
-<a id="__codelineno-10-299" name="__codelineno-10-299" href="#__codelineno-10-299"></a>            - masquerade: {}
-<a id="__codelineno-10-300" name="__codelineno-10-300" href="#__codelineno-10-300"></a>              model: virtio
-<a id="__codelineno-10-301" name="__codelineno-10-301" href="#__codelineno-10-301"></a>              name: default
-<a id="__codelineno-10-302" name="__codelineno-10-302" href="#__codelineno-10-302"></a>        features:
-<a id="__codelineno-10-303" name="__codelineno-10-303" href="#__codelineno-10-303"></a>          acpi: {}
-<a id="__codelineno-10-304" name="__codelineno-10-304" href="#__codelineno-10-304"></a>          apic: {}
-<a id="__codelineno-10-305" name="__codelineno-10-305" href="#__codelineno-10-305"></a>          hyperv:
-<a id="__codelineno-10-306" name="__codelineno-10-306" href="#__codelineno-10-306"></a>            reenlightenment: {}
-<a id="__codelineno-10-307" name="__codelineno-10-307" href="#__codelineno-10-307"></a>            ipi: {}
-<a id="__codelineno-10-308" name="__codelineno-10-308" href="#__codelineno-10-308"></a>            synic: {}
-<a id="__codelineno-10-309" name="__codelineno-10-309" href="#__codelineno-10-309"></a>            synictimer:
-<a id="__codelineno-10-310" name="__codelineno-10-310" href="#__codelineno-10-310"></a>              direct: {}
-<a id="__codelineno-10-311" name="__codelineno-10-311" href="#__codelineno-10-311"></a>            spinlocks:
-<a id="__codelineno-10-312" name="__codelineno-10-312" href="#__codelineno-10-312"></a>              spinlocks: 8191
-<a id="__codelineno-10-313" name="__codelineno-10-313" href="#__codelineno-10-313"></a>            reset: {}
-<a id="__codelineno-10-314" name="__codelineno-10-314" href="#__codelineno-10-314"></a>            relaxed: {}
-<a id="__codelineno-10-315" name="__codelineno-10-315" href="#__codelineno-10-315"></a>            vpindex: {}
-<a id="__codelineno-10-316" name="__codelineno-10-316" href="#__codelineno-10-316"></a>            runtime: {}
-<a id="__codelineno-10-317" name="__codelineno-10-317" href="#__codelineno-10-317"></a>            tlbflush: {}
-<a id="__codelineno-10-318" name="__codelineno-10-318" href="#__codelineno-10-318"></a>            frequencies: {}
-<a id="__codelineno-10-319" name="__codelineno-10-319" href="#__codelineno-10-319"></a>            vapic: {}
-<a id="__codelineno-10-320" name="__codelineno-10-320" href="#__codelineno-10-320"></a>        machine:
-<a id="__codelineno-10-321" name="__codelineno-10-321" href="#__codelineno-10-321"></a>          type: pc-q35-rhel8.4.0
-<a id="__codelineno-10-322" name="__codelineno-10-322" href="#__codelineno-10-322"></a>        resources:
-<a id="__codelineno-10-323" name="__codelineno-10-323" href="#__codelineno-10-323"></a>          requests:
-<a id="__codelineno-10-324" name="__codelineno-10-324" href="#__codelineno-10-324"></a>            memory: 4Gi
-<a id="__codelineno-10-325" name="__codelineno-10-325" href="#__codelineno-10-325"></a>      hostname: win10-template
-<a id="__codelineno-10-326" name="__codelineno-10-326" href="#__codelineno-10-326"></a>      networks:
-<a id="__codelineno-10-327" name="__codelineno-10-327" href="#__codelineno-10-327"></a>        - name: default
-<a id="__codelineno-10-328" name="__codelineno-10-328" href="#__codelineno-10-328"></a>          pod: {}
-<a id="__codelineno-10-329" name="__codelineno-10-329" href="#__codelineno-10-329"></a>      volumes:
-<a id="__codelineno-10-330" name="__codelineno-10-330" href="#__codelineno-10-330"></a>        - dataVolume:
-<a id="__codelineno-10-331" name="__codelineno-10-331" href="#__codelineno-10-331"></a>            name: win10-iso
-<a id="__codelineno-10-332" name="__codelineno-10-332" href="#__codelineno-10-332"></a>          name: windows-iso
-<a id="__codelineno-10-333" name="__codelineno-10-333" href="#__codelineno-10-333"></a>        - dataVolume:
-<a id="__codelineno-10-334" name="__codelineno-10-334" href="#__codelineno-10-334"></a>            name: win10-template-windows-iso
-<a id="__codelineno-10-335" name="__codelineno-10-335" href="#__codelineno-10-335"></a>          name: win10-template
-<a id="__codelineno-10-336" name="__codelineno-10-336" href="#__codelineno-10-336"></a>        - containerDisk:
-<a id="__codelineno-10-337" name="__codelineno-10-337" href="#__codelineno-10-337"></a>            image: quay.io/kubevirt/virtio-container-disk
-<a id="__codelineno-10-338" name="__codelineno-10-338" href="#__codelineno-10-338"></a>          name: windows-guest-tools
-<a id="__codelineno-10-339" name="__codelineno-10-339" href="#__codelineno-10-339"></a>        - name: sysprep
-<a id="__codelineno-10-340" name="__codelineno-10-340" href="#__codelineno-10-340"></a>          sysprep:
-<a id="__codelineno-10-341" name="__codelineno-10-341" href="#__codelineno-10-341"></a>            configMap:
-<a id="__codelineno-10-342" name="__codelineno-10-342" href="#__codelineno-10-342"></a>              name: win10-template-configmap
+<a id="__codelineno-10-173" name="__codelineno-10-173" href="#__codelineno-10-173"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-10-174" name="__codelineno-10-174" href="#__codelineno-10-174"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-10-175" name="__codelineno-10-175" href="#__codelineno-10-175"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-10-176" name="__codelineno-10-176" href="#__codelineno-10-176"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-10-177" name="__codelineno-10-177" href="#__codelineno-10-177"></a><span class="w">    </span><span class="nt">name.os.template.kubevirt.io/win10</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Microsoft Windows 10</span>
+<a id="__codelineno-10-178" name="__codelineno-10-178" href="#__codelineno-10-178"></a><span class="w">    </span><span class="nt">vm.kubevirt.io/validations</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-10-179" name="__codelineno-10-179" href="#__codelineno-10-179"></a><span class="w">      </span><span class="no">[</span>
+<a id="__codelineno-10-180" name="__codelineno-10-180" href="#__codelineno-10-180"></a><span class="w">        </span><span class="no">{</span>
+<a id="__codelineno-10-181" name="__codelineno-10-181" href="#__codelineno-10-181"></a><span class="w">          </span><span class="no">&quot;name&quot;: &quot;minimal-required-memory&quot;,</span>
+<a id="__codelineno-10-182" name="__codelineno-10-182" href="#__codelineno-10-182"></a><span class="w">          </span><span class="no">&quot;path&quot;: &quot;jsonpath::.spec.domain.resources.requests.memory&quot;,</span>
+<a id="__codelineno-10-183" name="__codelineno-10-183" href="#__codelineno-10-183"></a><span class="w">          </span><span class="no">&quot;rule&quot;: &quot;integer&quot;,</span>
+<a id="__codelineno-10-184" name="__codelineno-10-184" href="#__codelineno-10-184"></a><span class="w">          </span><span class="no">&quot;message&quot;: &quot;This VM requires more memory.&quot;,</span>
+<a id="__codelineno-10-185" name="__codelineno-10-185" href="#__codelineno-10-185"></a><span class="w">          </span><span class="no">&quot;min&quot;: 2147483648</span>
+<a id="__codelineno-10-186" name="__codelineno-10-186" href="#__codelineno-10-186"></a><span class="w">        </span><span class="no">}, {</span>
+<a id="__codelineno-10-187" name="__codelineno-10-187" href="#__codelineno-10-187"></a><span class="w">          </span><span class="no">&quot;name&quot;: &quot;windows-virtio-bus&quot;,</span>
+<a id="__codelineno-10-188" name="__codelineno-10-188" href="#__codelineno-10-188"></a><span class="w">          </span><span class="no">&quot;path&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,</span>
+<a id="__codelineno-10-189" name="__codelineno-10-189" href="#__codelineno-10-189"></a><span class="w">          </span><span class="no">&quot;valid&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,</span>
+<a id="__codelineno-10-190" name="__codelineno-10-190" href="#__codelineno-10-190"></a><span class="w">          </span><span class="no">&quot;rule&quot;: &quot;enum&quot;,</span>
+<a id="__codelineno-10-191" name="__codelineno-10-191" href="#__codelineno-10-191"></a><span class="w">          </span><span class="no">&quot;message&quot;: &quot;virto disk bus type has better performance, install virtio drivers in VM and change bus type&quot;,</span>
+<a id="__codelineno-10-192" name="__codelineno-10-192" href="#__codelineno-10-192"></a><span class="w">          </span><span class="no">&quot;values&quot;: [&quot;virtio&quot;],</span>
+<a id="__codelineno-10-193" name="__codelineno-10-193" href="#__codelineno-10-193"></a><span class="w">          </span><span class="no">&quot;justWarning&quot;: true</span>
+<a id="__codelineno-10-194" name="__codelineno-10-194" href="#__codelineno-10-194"></a><span class="w">        </span><span class="no">}, {</span>
+<a id="__codelineno-10-195" name="__codelineno-10-195" href="#__codelineno-10-195"></a><span class="w">          </span><span class="no">&quot;name&quot;: &quot;windows-disk-bus&quot;,</span>
+<a id="__codelineno-10-196" name="__codelineno-10-196" href="#__codelineno-10-196"></a><span class="w">          </span><span class="no">&quot;path&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,</span>
+<a id="__codelineno-10-197" name="__codelineno-10-197" href="#__codelineno-10-197"></a><span class="w">          </span><span class="no">&quot;valid&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].disk.bus&quot;,</span>
+<a id="__codelineno-10-198" name="__codelineno-10-198" href="#__codelineno-10-198"></a><span class="w">          </span><span class="no">&quot;rule&quot;: &quot;enum&quot;,</span>
+<a id="__codelineno-10-199" name="__codelineno-10-199" href="#__codelineno-10-199"></a><span class="w">          </span><span class="no">&quot;message&quot;: &quot;disk bus has to be either virtio or sata or scsi&quot;,</span>
+<a id="__codelineno-10-200" name="__codelineno-10-200" href="#__codelineno-10-200"></a><span class="w">          </span><span class="no">&quot;values&quot;: [&quot;virtio&quot;, &quot;sata&quot;, &quot;scsi&quot;]</span>
+<a id="__codelineno-10-201" name="__codelineno-10-201" href="#__codelineno-10-201"></a><span class="w">        </span><span class="no">}, {</span>
+<a id="__codelineno-10-202" name="__codelineno-10-202" href="#__codelineno-10-202"></a><span class="w">          </span><span class="no">&quot;name&quot;: &quot;windows-cd-bus&quot;,</span>
+<a id="__codelineno-10-203" name="__codelineno-10-203" href="#__codelineno-10-203"></a><span class="w">          </span><span class="no">&quot;path&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].cdrom.bus&quot;,</span>
+<a id="__codelineno-10-204" name="__codelineno-10-204" href="#__codelineno-10-204"></a><span class="w">          </span><span class="no">&quot;valid&quot;: &quot;jsonpath::.spec.domain.devices.disks[*].cdrom.bus&quot;,</span>
+<a id="__codelineno-10-205" name="__codelineno-10-205" href="#__codelineno-10-205"></a><span class="w">          </span><span class="no">&quot;rule&quot;: &quot;enum&quot;,</span>
+<a id="__codelineno-10-206" name="__codelineno-10-206" href="#__codelineno-10-206"></a><span class="w">          </span><span class="no">&quot;message&quot;: &quot;cd bus has to be sata&quot;,</span>
+<a id="__codelineno-10-207" name="__codelineno-10-207" href="#__codelineno-10-207"></a><span class="w">          </span><span class="no">&quot;values&quot;: [&quot;sata&quot;]</span>
+<a id="__codelineno-10-208" name="__codelineno-10-208" href="#__codelineno-10-208"></a><span class="w">        </span><span class="no">}</span>
+<a id="__codelineno-10-209" name="__codelineno-10-209" href="#__codelineno-10-209"></a><span class="w">      </span><span class="no">]</span>
+<a id="__codelineno-10-210" name="__codelineno-10-210" href="#__codelineno-10-210"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template</span>
+<a id="__codelineno-10-211" name="__codelineno-10-211" href="#__codelineno-10-211"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-10-212" name="__codelineno-10-212" href="#__codelineno-10-212"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-10-213" name="__codelineno-10-213" href="#__codelineno-10-213"></a><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template</span>
+<a id="__codelineno-10-214" name="__codelineno-10-214" href="#__codelineno-10-214"></a><span class="w">    </span><span class="nt">flavor.template.kubevirt.io/medium</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
+<a id="__codelineno-10-215" name="__codelineno-10-215" href="#__codelineno-10-215"></a><span class="w">    </span><span class="nt">os.template.kubevirt.io/win10</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
+<a id="__codelineno-10-216" name="__codelineno-10-216" href="#__codelineno-10-216"></a><span class="w">    </span><span class="nt">vm.kubevirt.io/template</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows10-desktop-medium</span>
+<a id="__codelineno-10-217" name="__codelineno-10-217" href="#__codelineno-10-217"></a><span class="w">    </span><span class="nt">vm.kubevirt.io/template.namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openshift</span>
+<a id="__codelineno-10-218" name="__codelineno-10-218" href="#__codelineno-10-218"></a><span class="w">    </span><span class="nt">vm.kubevirt.io/template.revision</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;1&#39;</span>
+<a id="__codelineno-10-219" name="__codelineno-10-219" href="#__codelineno-10-219"></a><span class="w">    </span><span class="nt">vm.kubevirt.io/template.version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.14.0</span>
+<a id="__codelineno-10-220" name="__codelineno-10-220" href="#__codelineno-10-220"></a><span class="w">    </span><span class="nt">workload.template.kubevirt.io/desktop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
+<a id="__codelineno-10-221" name="__codelineno-10-221" href="#__codelineno-10-221"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-10-222" name="__codelineno-10-222" href="#__codelineno-10-222"></a><span class="w">  </span><span class="nt">runStrategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RerunOnFailure</span>
+<a id="__codelineno-10-223" name="__codelineno-10-223" href="#__codelineno-10-223"></a><span class="w">  </span><span class="nt">dataVolumeTemplates</span><span class="p">:</span>
+<a id="__codelineno-10-224" name="__codelineno-10-224" href="#__codelineno-10-224"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-10-225" name="__codelineno-10-225" href="#__codelineno-10-225"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template-windows-iso</span>
+<a id="__codelineno-10-226" name="__codelineno-10-226" href="#__codelineno-10-226"></a><span class="w">      </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-10-227" name="__codelineno-10-227" href="#__codelineno-10-227"></a><span class="w">        </span><span class="nt">pvc</span><span class="p">:</span>
+<a id="__codelineno-10-228" name="__codelineno-10-228" href="#__codelineno-10-228"></a><span class="w">          </span><span class="nt">accessModes</span><span class="p">:</span>
+<a id="__codelineno-10-229" name="__codelineno-10-229" href="#__codelineno-10-229"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReadWriteOnce</span>
+<a id="__codelineno-10-230" name="__codelineno-10-230" href="#__codelineno-10-230"></a><span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-10-231" name="__codelineno-10-231" href="#__codelineno-10-231"></a><span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-10-232" name="__codelineno-10-232" href="#__codelineno-10-232"></a><span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20Gi</span>
+<a id="__codelineno-10-233" name="__codelineno-10-233" href="#__codelineno-10-233"></a><span class="w">        </span><span class="nt">source</span><span class="p">:</span>
+<a id="__codelineno-10-234" name="__codelineno-10-234" href="#__codelineno-10-234"></a><span class="w">          </span><span class="nt">pvc</span><span class="p">:</span>
+<a id="__codelineno-10-235" name="__codelineno-10-235" href="#__codelineno-10-235"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows10-iso</span>
+<a id="__codelineno-10-236" name="__codelineno-10-236" href="#__codelineno-10-236"></a><span class="w">            </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-10-237" name="__codelineno-10-237" href="#__codelineno-10-237"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-10-238" name="__codelineno-10-238" href="#__codelineno-10-238"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template</span>
+<a id="__codelineno-10-239" name="__codelineno-10-239" href="#__codelineno-10-239"></a><span class="w">      </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-10-240" name="__codelineno-10-240" href="#__codelineno-10-240"></a><span class="w">        </span><span class="nt">pvc</span><span class="p">:</span>
+<a id="__codelineno-10-241" name="__codelineno-10-241" href="#__codelineno-10-241"></a><span class="w">          </span><span class="nt">accessModes</span><span class="p">:</span>
+<a id="__codelineno-10-242" name="__codelineno-10-242" href="#__codelineno-10-242"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReadWriteOnce</span>
+<a id="__codelineno-10-243" name="__codelineno-10-243" href="#__codelineno-10-243"></a><span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-10-244" name="__codelineno-10-244" href="#__codelineno-10-244"></a><span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-10-245" name="__codelineno-10-245" href="#__codelineno-10-245"></a><span class="w">              </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25Gi</span>
+<a id="__codelineno-10-246" name="__codelineno-10-246" href="#__codelineno-10-246"></a><span class="w">          </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Filesystem</span>
+<a id="__codelineno-10-247" name="__codelineno-10-247" href="#__codelineno-10-247"></a><span class="w">        </span><span class="nt">source</span><span class="p">:</span>
+<a id="__codelineno-10-248" name="__codelineno-10-248" href="#__codelineno-10-248"></a><span class="w">          </span><span class="nt">blank</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-249" name="__codelineno-10-249" href="#__codelineno-10-249"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-10-250" name="__codelineno-10-250" href="#__codelineno-10-250"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-10-251" name="__codelineno-10-251" href="#__codelineno-10-251"></a><span class="w">      </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-10-252" name="__codelineno-10-252" href="#__codelineno-10-252"></a><span class="w">        </span><span class="nt">vm.kubevirt.io/flavor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">medium</span>
+<a id="__codelineno-10-253" name="__codelineno-10-253" href="#__codelineno-10-253"></a><span class="w">        </span><span class="nt">vm.kubevirt.io/os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows10</span>
+<a id="__codelineno-10-254" name="__codelineno-10-254" href="#__codelineno-10-254"></a><span class="w">        </span><span class="nt">vm.kubevirt.io/workload</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">desktop</span>
+<a id="__codelineno-10-255" name="__codelineno-10-255" href="#__codelineno-10-255"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-10-256" name="__codelineno-10-256" href="#__codelineno-10-256"></a><span class="w">        </span><span class="nt">flavor.template.kubevirt.io/medium</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
+<a id="__codelineno-10-257" name="__codelineno-10-257" href="#__codelineno-10-257"></a><span class="w">        </span><span class="nt">kubevirt.io/domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template</span>
+<a id="__codelineno-10-258" name="__codelineno-10-258" href="#__codelineno-10-258"></a><span class="w">        </span><span class="nt">kubevirt.io/size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">medium</span>
+<a id="__codelineno-10-259" name="__codelineno-10-259" href="#__codelineno-10-259"></a><span class="w">        </span><span class="nt">os.template.kubevirt.io/win10</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
+<a id="__codelineno-10-260" name="__codelineno-10-260" href="#__codelineno-10-260"></a><span class="w">        </span><span class="nt">vm.kubevirt.io/name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template</span>
+<a id="__codelineno-10-261" name="__codelineno-10-261" href="#__codelineno-10-261"></a><span class="w">        </span><span class="nt">workload.template.kubevirt.io/desktop</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span>
+<a id="__codelineno-10-262" name="__codelineno-10-262" href="#__codelineno-10-262"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-10-263" name="__codelineno-10-263" href="#__codelineno-10-263"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-10-264" name="__codelineno-10-264" href="#__codelineno-10-264"></a><span class="w">        </span><span class="nt">clock</span><span class="p">:</span>
+<a id="__codelineno-10-265" name="__codelineno-10-265" href="#__codelineno-10-265"></a><span class="w">          </span><span class="nt">timer</span><span class="p">:</span>
+<a id="__codelineno-10-266" name="__codelineno-10-266" href="#__codelineno-10-266"></a><span class="w">            </span><span class="nt">hpet</span><span class="p">:</span>
+<a id="__codelineno-10-267" name="__codelineno-10-267" href="#__codelineno-10-267"></a><span class="w">              </span><span class="nt">present</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-10-268" name="__codelineno-10-268" href="#__codelineno-10-268"></a><span class="w">            </span><span class="nt">hyperv</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-269" name="__codelineno-10-269" href="#__codelineno-10-269"></a><span class="w">            </span><span class="nt">pit</span><span class="p">:</span>
+<a id="__codelineno-10-270" name="__codelineno-10-270" href="#__codelineno-10-270"></a><span class="w">              </span><span class="nt">tickPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">delay</span>
+<a id="__codelineno-10-271" name="__codelineno-10-271" href="#__codelineno-10-271"></a><span class="w">            </span><span class="nt">rtc</span><span class="p">:</span>
+<a id="__codelineno-10-272" name="__codelineno-10-272" href="#__codelineno-10-272"></a><span class="w">              </span><span class="nt">tickPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">catchup</span>
+<a id="__codelineno-10-273" name="__codelineno-10-273" href="#__codelineno-10-273"></a><span class="w">          </span><span class="nt">utc</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-274" name="__codelineno-10-274" href="#__codelineno-10-274"></a><span class="w">        </span><span class="nt">cpu</span><span class="p">:</span>
+<a id="__codelineno-10-275" name="__codelineno-10-275" href="#__codelineno-10-275"></a><span class="w">          </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-10-276" name="__codelineno-10-276" href="#__codelineno-10-276"></a><span class="w">          </span><span class="nt">sockets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-10-277" name="__codelineno-10-277" href="#__codelineno-10-277"></a><span class="w">          </span><span class="nt">threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-10-278" name="__codelineno-10-278" href="#__codelineno-10-278"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-10-279" name="__codelineno-10-279" href="#__codelineno-10-279"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-10-280" name="__codelineno-10-280" href="#__codelineno-10-280"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">bootOrder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-10-281" name="__codelineno-10-281" href="#__codelineno-10-281"></a><span class="w">              </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-10-282" name="__codelineno-10-282" href="#__codelineno-10-282"></a><span class="w">                </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-10-283" name="__codelineno-10-283" href="#__codelineno-10-283"></a><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template</span>
+<a id="__codelineno-10-284" name="__codelineno-10-284" href="#__codelineno-10-284"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">bootOrder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<a id="__codelineno-10-285" name="__codelineno-10-285" href="#__codelineno-10-285"></a><span class="w">              </span><span class="nt">cdrom</span><span class="p">:</span>
+<a id="__codelineno-10-286" name="__codelineno-10-286" href="#__codelineno-10-286"></a><span class="w">                </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sata</span>
+<a id="__codelineno-10-287" name="__codelineno-10-287" href="#__codelineno-10-287"></a><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows-iso</span>
+<a id="__codelineno-10-288" name="__codelineno-10-288" href="#__codelineno-10-288"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cdrom</span><span class="p">:</span>
+<a id="__codelineno-10-289" name="__codelineno-10-289" href="#__codelineno-10-289"></a><span class="w">                </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sata</span>
+<a id="__codelineno-10-290" name="__codelineno-10-290" href="#__codelineno-10-290"></a><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows-guest-tools</span>
+<a id="__codelineno-10-291" name="__codelineno-10-291" href="#__codelineno-10-291"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep</span>
+<a id="__codelineno-10-292" name="__codelineno-10-292" href="#__codelineno-10-292"></a><span class="w">              </span><span class="nt">cdrom</span><span class="p">:</span>
+<a id="__codelineno-10-293" name="__codelineno-10-293" href="#__codelineno-10-293"></a><span class="w">                </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sata</span>
+<a id="__codelineno-10-294" name="__codelineno-10-294" href="#__codelineno-10-294"></a><span class="w">          </span><span class="nt">inputs</span><span class="p">:</span>
+<a id="__codelineno-10-295" name="__codelineno-10-295" href="#__codelineno-10-295"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usb</span>
+<a id="__codelineno-10-296" name="__codelineno-10-296" href="#__codelineno-10-296"></a><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tablet</span>
+<a id="__codelineno-10-297" name="__codelineno-10-297" href="#__codelineno-10-297"></a><span class="w">              </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tablet</span>
+<a id="__codelineno-10-298" name="__codelineno-10-298" href="#__codelineno-10-298"></a><span class="w">          </span><span class="nt">interfaces</span><span class="p">:</span>
+<a id="__codelineno-10-299" name="__codelineno-10-299" href="#__codelineno-10-299"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">masquerade</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-300" name="__codelineno-10-300" href="#__codelineno-10-300"></a><span class="w">              </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-10-301" name="__codelineno-10-301" href="#__codelineno-10-301"></a><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-10-302" name="__codelineno-10-302" href="#__codelineno-10-302"></a><span class="w">        </span><span class="nt">features</span><span class="p">:</span>
+<a id="__codelineno-10-303" name="__codelineno-10-303" href="#__codelineno-10-303"></a><span class="w">          </span><span class="nt">acpi</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-304" name="__codelineno-10-304" href="#__codelineno-10-304"></a><span class="w">          </span><span class="nt">apic</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-305" name="__codelineno-10-305" href="#__codelineno-10-305"></a><span class="w">          </span><span class="nt">hyperv</span><span class="p">:</span>
+<a id="__codelineno-10-306" name="__codelineno-10-306" href="#__codelineno-10-306"></a><span class="w">            </span><span class="nt">reenlightenment</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-307" name="__codelineno-10-307" href="#__codelineno-10-307"></a><span class="w">            </span><span class="nt">ipi</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-308" name="__codelineno-10-308" href="#__codelineno-10-308"></a><span class="w">            </span><span class="nt">synic</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-309" name="__codelineno-10-309" href="#__codelineno-10-309"></a><span class="w">            </span><span class="nt">synictimer</span><span class="p">:</span>
+<a id="__codelineno-10-310" name="__codelineno-10-310" href="#__codelineno-10-310"></a><span class="w">              </span><span class="nt">direct</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-311" name="__codelineno-10-311" href="#__codelineno-10-311"></a><span class="w">            </span><span class="nt">spinlocks</span><span class="p">:</span>
+<a id="__codelineno-10-312" name="__codelineno-10-312" href="#__codelineno-10-312"></a><span class="w">              </span><span class="nt">spinlocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8191</span>
+<a id="__codelineno-10-313" name="__codelineno-10-313" href="#__codelineno-10-313"></a><span class="w">            </span><span class="nt">reset</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-314" name="__codelineno-10-314" href="#__codelineno-10-314"></a><span class="w">            </span><span class="nt">relaxed</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-315" name="__codelineno-10-315" href="#__codelineno-10-315"></a><span class="w">            </span><span class="nt">vpindex</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-316" name="__codelineno-10-316" href="#__codelineno-10-316"></a><span class="w">            </span><span class="nt">runtime</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-317" name="__codelineno-10-317" href="#__codelineno-10-317"></a><span class="w">            </span><span class="nt">tlbflush</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-318" name="__codelineno-10-318" href="#__codelineno-10-318"></a><span class="w">            </span><span class="nt">frequencies</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-319" name="__codelineno-10-319" href="#__codelineno-10-319"></a><span class="w">            </span><span class="nt">vapic</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-320" name="__codelineno-10-320" href="#__codelineno-10-320"></a><span class="w">        </span><span class="nt">machine</span><span class="p">:</span>
+<a id="__codelineno-10-321" name="__codelineno-10-321" href="#__codelineno-10-321"></a><span class="w">          </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pc-q35-rhel8.4.0</span>
+<a id="__codelineno-10-322" name="__codelineno-10-322" href="#__codelineno-10-322"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-10-323" name="__codelineno-10-323" href="#__codelineno-10-323"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-10-324" name="__codelineno-10-324" href="#__codelineno-10-324"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4Gi</span>
+<a id="__codelineno-10-325" name="__codelineno-10-325" href="#__codelineno-10-325"></a><span class="w">      </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template</span>
+<a id="__codelineno-10-326" name="__codelineno-10-326" href="#__codelineno-10-326"></a><span class="w">      </span><span class="nt">networks</span><span class="p">:</span>
+<a id="__codelineno-10-327" name="__codelineno-10-327" href="#__codelineno-10-327"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-10-328" name="__codelineno-10-328" href="#__codelineno-10-328"></a><span class="w">          </span><span class="nt">pod</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-10-329" name="__codelineno-10-329" href="#__codelineno-10-329"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-10-330" name="__codelineno-10-330" href="#__codelineno-10-330"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">dataVolume</span><span class="p">:</span>
+<a id="__codelineno-10-331" name="__codelineno-10-331" href="#__codelineno-10-331"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-iso</span>
+<a id="__codelineno-10-332" name="__codelineno-10-332" href="#__codelineno-10-332"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows-iso</span>
+<a id="__codelineno-10-333" name="__codelineno-10-333" href="#__codelineno-10-333"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">dataVolume</span><span class="p">:</span>
+<a id="__codelineno-10-334" name="__codelineno-10-334" href="#__codelineno-10-334"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template-windows-iso</span>
+<a id="__codelineno-10-335" name="__codelineno-10-335" href="#__codelineno-10-335"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template</span>
+<a id="__codelineno-10-336" name="__codelineno-10-336" href="#__codelineno-10-336"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-10-337" name="__codelineno-10-337" href="#__codelineno-10-337"></a><span class="w">            </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/kubevirt/virtio-container-disk</span>
+<a id="__codelineno-10-338" name="__codelineno-10-338" href="#__codelineno-10-338"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows-guest-tools</span>
+<a id="__codelineno-10-339" name="__codelineno-10-339" href="#__codelineno-10-339"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep</span>
+<a id="__codelineno-10-340" name="__codelineno-10-340" href="#__codelineno-10-340"></a><span class="w">          </span><span class="nt">sysprep</span><span class="p">:</span>
+<a id="__codelineno-10-341" name="__codelineno-10-341" href="#__codelineno-10-341"></a><span class="w">            </span><span class="nt">configMap</span><span class="p">:</span>
+<a id="__codelineno-10-342" name="__codelineno-10-342" href="#__codelineno-10-342"></a><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win10-template-configmap</span>
 </code></pre></div>
 <h3 id="launching-a-vm-from-template">Launching a VM from template<a class="headerlink" href="#launching-a-vm-from-template" title="Permanent link">&para;</a></h3>
 <p>From the above example after the sysprep command is executed in the <code>post-install.ps1</code> and the vm is in shutdown state,
 A new VM can be launched from the base <code>win10-template</code> with additional changes mentioned from the below <code>unattend.xml</code> in <code>sysprep-config</code>.
 The new VM can take upto 5 minutes to be in running state since Windows goes through oobe setup in the background with the customizations specified in the below <code>unattend.xml</code> file.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>apiVersion: v1
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>kind: ConfigMap
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>metadata:
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  name: sysprep-config
-<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>data:
-<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>  autounattend.xml: |-
-<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    &lt;!-- responsible for installing windows, ignored on sysprepped images --&gt;
-<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>  unattend.xml: |-
-<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    &lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;
-<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>      &lt;settings pass=&quot;oobeSystem&quot;&gt;
-<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>        &lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Shell-Setup&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;
-<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>          &lt;OOBE&gt;
-<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>            &lt;HideEULAPage&gt;true&lt;/HideEULAPage&gt;
-<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>            &lt;HideOEMRegistrationScreen&gt;true&lt;/HideOEMRegistrationScreen&gt;
-<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>            &lt;HideOnlineAccountScreens&gt;true&lt;/HideOnlineAccountScreens&gt;
-<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>            &lt;HideWirelessSetupInOOBE&gt;true&lt;/HideWirelessSetupInOOBE&gt;
-<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>            &lt;NetworkLocation&gt;Work&lt;/NetworkLocation&gt;
-<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>            &lt;SkipUserOOBE&gt;true&lt;/SkipUserOOBE&gt;
-<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>            &lt;SkipMachineOOBE&gt;true&lt;/SkipMachineOOBE&gt;
-<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>            &lt;ProtectYourPC&gt;3&lt;/ProtectYourPC&gt;
-<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>          &lt;/OOBE&gt;
-<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>          &lt;AutoLogon&gt;
-<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>            &lt;Password&gt;
-<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>            &lt;Value&gt;123456&lt;/Value&gt;
-<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>              &lt;PlainText&gt;true&lt;/PlainText&gt;
-<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>            &lt;/Password&gt;
-<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a>            &lt;Enabled&gt;true&lt;/Enabled&gt;
-<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>        &lt;Username&gt;Administrator&lt;/Username&gt;
-<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>    &lt;/AutoLogon&gt;
-<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a>    &lt;UserAccounts&gt;
-<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a>         &lt;AdministratorPassword&gt;
-<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>                &lt;Value&gt;123456&lt;/Value&gt;
-<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>                &lt;PlainText&gt;true&lt;/PlainText&gt;
-<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a>        &lt;/AdministratorPassword&gt;
-<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a>          &lt;/UserAccounts&gt;
-<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>          &lt;RegisteredOrganization&gt;Kuebvirt&lt;/RegisteredOrganization&gt;
-<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>          &lt;RegisteredOwner&gt;Kubevirt&lt;/RegisteredOwner&gt;
-<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>          &lt;TimeZone&gt;Eastern Standard Time&lt;/TimeZone&gt;
-<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>                &lt;FirstLogonCommands&gt;
-<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a>                    &lt;SynchronousCommand wcm:action=&quot;add&quot;&gt;
-<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a>                    &lt;CommandLine&gt;powershell -ExecutionPolicy Bypass -NoExit -WindowStyle Hidden -NoProfile d:\customize.ps1&lt;/CommandLine&gt;
-<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a>                        &lt;RequiresUserInput&gt;false&lt;/RequiresUserInput&gt;
-<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a>                        &lt;Order&gt;1&lt;/Order&gt;
-<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a>                &lt;Description&gt;Customize Script&lt;/Description&gt;
-<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>            &lt;/SynchronousCommand&gt;
-<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a>                &lt;/FirstLogonCommands&gt;
-<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a>        &lt;/component&gt;
-<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a>      &lt;/settings&gt;
-<a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a>    &lt;/unattend&gt;
-<a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a>  customize.ps1: |-
-<a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>    # Enable RDP
-<a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a>    Set-ItemProperty -Path &#39;HKLM:\System\CurrentControlSet\Control\Terminal Server&#39; -name &quot;fDenyTSConnections&quot; -value 0
-<a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a>    Enable-NetFirewallRule -DisplayGroup &quot;Remote Desktop&quot;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysprep-config</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="nt">data</span><span class="p">:</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="nt">autounattend.xml</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="no">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span><span class="no">&lt;!-- responsible for installing windows, ignored on sysprepped images --&gt;</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">  </span><span class="nt">unattend.xml</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">    </span><span class="no">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">    </span><span class="no">&lt;unattend xmlns=&quot;urn:schemas-microsoft-com:unattend&quot;&gt;</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">      </span><span class="no">&lt;settings pass=&quot;oobeSystem&quot;&gt;</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">        </span><span class="no">&lt;component xmlns:wcm=&quot;http://schemas.microsoft.com/WMIConfig/2002/State&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; name=&quot;Microsoft-Windows-Shell-Setup&quot; processorArchitecture=&quot;amd64&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; language=&quot;neutral&quot; versionScope=&quot;nonSxS&quot;&gt;</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">          </span><span class="no">&lt;OOBE&gt;</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">            </span><span class="no">&lt;HideEULAPage&gt;true&lt;/HideEULAPage&gt;</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">            </span><span class="no">&lt;HideOEMRegistrationScreen&gt;true&lt;/HideOEMRegistrationScreen&gt;</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w">            </span><span class="no">&lt;HideOnlineAccountScreens&gt;true&lt;/HideOnlineAccountScreens&gt;</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="w">            </span><span class="no">&lt;HideWirelessSetupInOOBE&gt;true&lt;/HideWirelessSetupInOOBE&gt;</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="w">            </span><span class="no">&lt;NetworkLocation&gt;Work&lt;/NetworkLocation&gt;</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="w">            </span><span class="no">&lt;SkipUserOOBE&gt;true&lt;/SkipUserOOBE&gt;</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="w">            </span><span class="no">&lt;SkipMachineOOBE&gt;true&lt;/SkipMachineOOBE&gt;</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="w">            </span><span class="no">&lt;ProtectYourPC&gt;3&lt;/ProtectYourPC&gt;</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="w">          </span><span class="no">&lt;/OOBE&gt;</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="w">          </span><span class="no">&lt;AutoLogon&gt;</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="w">            </span><span class="no">&lt;Password&gt;</span>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a><span class="w">            </span><span class="no">&lt;Value&gt;123456&lt;/Value&gt;</span>
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a><span class="w">              </span><span class="no">&lt;PlainText&gt;true&lt;/PlainText&gt;</span>
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a><span class="w">            </span><span class="no">&lt;/Password&gt;</span>
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a><span class="w">            </span><span class="no">&lt;Enabled&gt;true&lt;/Enabled&gt;</span>
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a><span class="w">        </span><span class="no">&lt;Username&gt;Administrator&lt;/Username&gt;</span>
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a><span class="w">    </span><span class="no">&lt;/AutoLogon&gt;</span>
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a><span class="w">    </span><span class="no">&lt;UserAccounts&gt;</span>
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a><span class="w">         </span><span class="no">&lt;AdministratorPassword&gt;</span>
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a><span class="w">                </span><span class="no">&lt;Value&gt;123456&lt;/Value&gt;</span>
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a><span class="w">                </span><span class="no">&lt;PlainText&gt;true&lt;/PlainText&gt;</span>
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a><span class="w">        </span><span class="no">&lt;/AdministratorPassword&gt;</span>
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a><span class="w">          </span><span class="no">&lt;/UserAccounts&gt;</span>
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a><span class="w">          </span><span class="no">&lt;RegisteredOrganization&gt;Kuebvirt&lt;/RegisteredOrganization&gt;</span>
+<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a><span class="w">          </span><span class="no">&lt;RegisteredOwner&gt;Kubevirt&lt;/RegisteredOwner&gt;</span>
+<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a><span class="w">          </span><span class="no">&lt;TimeZone&gt;Eastern Standard Time&lt;/TimeZone&gt;</span>
+<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a><span class="w">                </span><span class="no">&lt;FirstLogonCommands&gt;</span>
+<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a><span class="w">                    </span><span class="no">&lt;SynchronousCommand wcm:action=&quot;add&quot;&gt;</span>
+<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a><span class="w">                    </span><span class="no">&lt;CommandLine&gt;powershell -ExecutionPolicy Bypass -NoExit -WindowStyle Hidden -NoProfile d:\customize.ps1&lt;/CommandLine&gt;</span>
+<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a><span class="w">                        </span><span class="no">&lt;RequiresUserInput&gt;false&lt;/RequiresUserInput&gt;</span>
+<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a><span class="w">                        </span><span class="no">&lt;Order&gt;1&lt;/Order&gt;</span>
+<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a><span class="w">                </span><span class="no">&lt;Description&gt;Customize Script&lt;/Description&gt;</span>
+<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a><span class="w">            </span><span class="no">&lt;/SynchronousCommand&gt;</span>
+<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a><span class="w">                </span><span class="no">&lt;/FirstLogonCommands&gt;</span>
+<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a><span class="w">        </span><span class="no">&lt;/component&gt;</span>
+<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a><span class="w">      </span><span class="no">&lt;/settings&gt;</span>
+<a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a><span class="w">    </span><span class="no">&lt;/unattend&gt;</span>
+<a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a><span class="w">  </span><span class="nt">customize.ps1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a><span class="w">    </span><span class="no"># Enable RDP</span>
+<a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a><span class="w">    </span><span class="no">Set-ItemProperty -Path &#39;HKLM:\System\CurrentControlSet\Control\Terminal Server&#39; -name &quot;fDenyTSConnections&quot; -value 0</span>
+<a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a><span class="w">    </span><span class="no">Enable-NetFirewallRule -DisplayGroup &quot;Remote Desktop&quot;</span>
 <a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a>
 <a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a>
-<a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a>    # https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse
-<a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a>    # Install the OpenSSH Server
-<a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a>    Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-<a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a>    # Start the sshd service
-<a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a>    Start-Service sshd
+<a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a><span class="w">    </span><span class="no"># https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse</span>
+<a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a><span class="w">    </span><span class="no"># Install the OpenSSH Server</span>
+<a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a><span class="w">    </span><span class="no">Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0</span>
+<a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a><span class="w">    </span><span class="no"># Start the sshd service</span>
+<a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a><span class="w">    </span><span class="no">Start-Service sshd</span>
 <a id="__codelineno-11-63" name="__codelineno-11-63" href="#__codelineno-11-63"></a>
-<a id="__codelineno-11-64" name="__codelineno-11-64" href="#__codelineno-11-64"></a>    Set-Service -Name sshd -StartupType &#39;Automatic&#39;
+<a id="__codelineno-11-64" name="__codelineno-11-64" href="#__codelineno-11-64"></a><span class="w">    </span><span class="no">Set-Service -Name sshd -StartupType &#39;Automatic&#39;</span>
 <a id="__codelineno-11-65" name="__codelineno-11-65" href="#__codelineno-11-65"></a>
-<a id="__codelineno-11-66" name="__codelineno-11-66" href="#__codelineno-11-66"></a>    # https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_server_configuration
-<a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a>    # use powershell as default shell for ssh
-<a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a>    New-ItemProperty -Path &quot;HKLM:\SOFTWARE\OpenSSH&quot; -Name DefaultShell -Value &quot;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&quot; -PropertyType String -Force
+<a id="__codelineno-11-66" name="__codelineno-11-66" href="#__codelineno-11-66"></a><span class="w">    </span><span class="no"># https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_server_configuration</span>
+<a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a><span class="w">    </span><span class="no"># use powershell as default shell for ssh</span>
+<a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a><span class="w">    </span><span class="no">New-ItemProperty -Path &quot;HKLM:\SOFTWARE\OpenSSH&quot; -Name DefaultShell -Value &quot;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe&quot; -PropertyType String -Force</span>
 <a id="__codelineno-11-69" name="__codelineno-11-69" href="#__codelineno-11-69"></a>
 <a id="__codelineno-11-70" name="__codelineno-11-70" href="#__codelineno-11-70"></a>
-<a id="__codelineno-11-71" name="__codelineno-11-71" href="#__codelineno-11-71"></a>    # Add ssh authorized_key for administrator
-<a id="__codelineno-11-72" name="__codelineno-11-72" href="#__codelineno-11-72"></a>    # https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement
-<a id="__codelineno-11-73" name="__codelineno-11-73" href="#__codelineno-11-73"></a>    $MyDir = $MyInvocation.MyCommand.Path | Split-Path -Parent
-<a id="__codelineno-11-74" name="__codelineno-11-74" href="#__codelineno-11-74"></a>    $PublicKey = Get-Content -Path $MyDir\id_rsa.pub
-<a id="__codelineno-11-75" name="__codelineno-11-75" href="#__codelineno-11-75"></a>    $authrized_keys_path = $env:ProgramData + &quot;\ssh\administrators_authorized_keys&quot; 
-<a id="__codelineno-11-76" name="__codelineno-11-76" href="#__codelineno-11-76"></a>    Add-Content -Path $authrized_keys_path -Value $PublicKey
-<a id="__codelineno-11-77" name="__codelineno-11-77" href="#__codelineno-11-77"></a>    icacls.exe $authrized_keys_path /inheritance:r /grant &quot;Administrators:F&quot; /grant &quot;SYSTEM:F&quot;
+<a id="__codelineno-11-71" name="__codelineno-11-71" href="#__codelineno-11-71"></a><span class="w">    </span><span class="no"># Add ssh authorized_key for administrator</span>
+<a id="__codelineno-11-72" name="__codelineno-11-72" href="#__codelineno-11-72"></a><span class="w">    </span><span class="no"># https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_keymanagement</span>
+<a id="__codelineno-11-73" name="__codelineno-11-73" href="#__codelineno-11-73"></a><span class="w">    </span><span class="no">$MyDir = $MyInvocation.MyCommand.Path | Split-Path -Parent</span>
+<a id="__codelineno-11-74" name="__codelineno-11-74" href="#__codelineno-11-74"></a><span class="w">    </span><span class="no">$PublicKey = Get-Content -Path $MyDir\id_rsa.pub</span>
+<a id="__codelineno-11-75" name="__codelineno-11-75" href="#__codelineno-11-75"></a><span class="w">    </span><span class="no">$authrized_keys_path = $env:ProgramData + &quot;\ssh\administrators_authorized_keys&quot; </span>
+<a id="__codelineno-11-76" name="__codelineno-11-76" href="#__codelineno-11-76"></a><span class="w">    </span><span class="no">Add-Content -Path $authrized_keys_path -Value $PublicKey</span>
+<a id="__codelineno-11-77" name="__codelineno-11-77" href="#__codelineno-11-77"></a><span class="w">    </span><span class="no">icacls.exe $authrized_keys_path /inheritance:r /grant &quot;Administrators:F&quot; /grant &quot;SYSTEM:F&quot;</span>
 <a id="__codelineno-11-78" name="__codelineno-11-78" href="#__codelineno-11-78"></a>
 <a id="__codelineno-11-79" name="__codelineno-11-79" href="#__codelineno-11-79"></a>
-<a id="__codelineno-11-80" name="__codelineno-11-80" href="#__codelineno-11-80"></a>    # install application via exe file installer from url
-<a id="__codelineno-11-81" name="__codelineno-11-81" href="#__codelineno-11-81"></a>    function Install-Exe {
-<a id="__codelineno-11-82" name="__codelineno-11-82" href="#__codelineno-11-82"></a>      $dlurl = $args[0]
-<a id="__codelineno-11-83" name="__codelineno-11-83" href="#__codelineno-11-83"></a>      $installerPath = Join-Path $env:TEMP (Split-Path $dlurl -Leaf)
-<a id="__codelineno-11-84" name="__codelineno-11-84" href="#__codelineno-11-84"></a>      Invoke-WebRequest -UseBasicParsing $dlurl -OutFile $installerPath
-<a id="__codelineno-11-85" name="__codelineno-11-85" href="#__codelineno-11-85"></a>      Start-Process -FilePath $installerPath -Args &quot;/S&quot; -Verb RunAs -Wait
-<a id="__codelineno-11-86" name="__codelineno-11-86" href="#__codelineno-11-86"></a>      Remove-Item $installerPath
+<a id="__codelineno-11-80" name="__codelineno-11-80" href="#__codelineno-11-80"></a><span class="w">    </span><span class="no"># install application via exe file installer from url</span>
+<a id="__codelineno-11-81" name="__codelineno-11-81" href="#__codelineno-11-81"></a><span class="w">    </span><span class="no">function Install-Exe {</span>
+<a id="__codelineno-11-82" name="__codelineno-11-82" href="#__codelineno-11-82"></a><span class="w">      </span><span class="no">$dlurl = $args[0]</span>
+<a id="__codelineno-11-83" name="__codelineno-11-83" href="#__codelineno-11-83"></a><span class="w">      </span><span class="no">$installerPath = Join-Path $env:TEMP (Split-Path $dlurl -Leaf)</span>
+<a id="__codelineno-11-84" name="__codelineno-11-84" href="#__codelineno-11-84"></a><span class="w">      </span><span class="no">Invoke-WebRequest -UseBasicParsing $dlurl -OutFile $installerPath</span>
+<a id="__codelineno-11-85" name="__codelineno-11-85" href="#__codelineno-11-85"></a><span class="w">      </span><span class="no">Start-Process -FilePath $installerPath -Args &quot;/S&quot; -Verb RunAs -Wait</span>
+<a id="__codelineno-11-86" name="__codelineno-11-86" href="#__codelineno-11-86"></a><span class="w">      </span><span class="no">Remove-Item $installerPath</span>
 <a id="__codelineno-11-87" name="__codelineno-11-87" href="#__codelineno-11-87"></a>
-<a id="__codelineno-11-88" name="__codelineno-11-88" href="#__codelineno-11-88"></a>    }
+<a id="__codelineno-11-88" name="__codelineno-11-88" href="#__codelineno-11-88"></a><span class="w">    </span><span class="no">}</span>
 <a id="__codelineno-11-89" name="__codelineno-11-89" href="#__codelineno-11-89"></a>
-<a id="__codelineno-11-90" name="__codelineno-11-90" href="#__codelineno-11-90"></a>    # Wait for networking before running a task at startup
-<a id="__codelineno-11-91" name="__codelineno-11-91" href="#__codelineno-11-91"></a>    do {
-<a id="__codelineno-11-92" name="__codelineno-11-92" href="#__codelineno-11-92"></a>      $ping = test-connection -comp kubevirt.io -count 1 -Quiet
-<a id="__codelineno-11-93" name="__codelineno-11-93" href="#__codelineno-11-93"></a>    } until ($ping)
+<a id="__codelineno-11-90" name="__codelineno-11-90" href="#__codelineno-11-90"></a><span class="w">    </span><span class="no"># Wait for networking before running a task at startup</span>
+<a id="__codelineno-11-91" name="__codelineno-11-91" href="#__codelineno-11-91"></a><span class="w">    </span><span class="no">do {</span>
+<a id="__codelineno-11-92" name="__codelineno-11-92" href="#__codelineno-11-92"></a><span class="w">      </span><span class="no">$ping = test-connection -comp kubevirt.io -count 1 -Quiet</span>
+<a id="__codelineno-11-93" name="__codelineno-11-93" href="#__codelineno-11-93"></a><span class="w">    </span><span class="no">} until ($ping)</span>
 <a id="__codelineno-11-94" name="__codelineno-11-94" href="#__codelineno-11-94"></a>
-<a id="__codelineno-11-95" name="__codelineno-11-95" href="#__codelineno-11-95"></a>    # Installing the Latest Notepad++ with PowerShell
-<a id="__codelineno-11-96" name="__codelineno-11-96" href="#__codelineno-11-96"></a>    $BaseUri = &quot;https://notepad-plus-plus.org&quot;
-<a id="__codelineno-11-97" name="__codelineno-11-97" href="#__codelineno-11-97"></a>    $BasePage = Invoke-WebRequest -Uri $BaseUri -UseBasicParsing
-<a id="__codelineno-11-98" name="__codelineno-11-98" href="#__codelineno-11-98"></a>    $ChildPath = $BasePage.Links | Where-Object { $_.outerHTML -like &#39;*Current Version*&#39; } | Select-Object -ExpandProperty href
-<a id="__codelineno-11-99" name="__codelineno-11-99" href="#__codelineno-11-99"></a>    $DownloadPageUri = $BaseUri + $ChildPath
-<a id="__codelineno-11-100" name="__codelineno-11-100" href="#__codelineno-11-100"></a>    $DownloadPage = Invoke-WebRequest -Uri $DownloadPageUri -UseBasicParsing
-<a id="__codelineno-11-101" name="__codelineno-11-101" href="#__codelineno-11-101"></a>    $DownloadUrl = $DownloadPage.Links | Where-Object { $_.outerHTML -like &#39;*npp.*.Installer.x64.exe&quot;*&#39; } | Select-Object -ExpandProperty href
-<a id="__codelineno-11-102" name="__codelineno-11-102" href="#__codelineno-11-102"></a>    Install-Exe $DownloadUrl
-<a id="__codelineno-11-103" name="__codelineno-11-103" href="#__codelineno-11-103"></a>  id_rsa.pub: |-
-<a id="__codelineno-11-104" name="__codelineno-11-104" href="#__codelineno-11-104"></a>    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6zdgFiLr1uAK7PdcchDd+LseA5fEOcxCCt7TLlr7Mx6h8jUg+G+8L9JBNZuDzTZSF0dR7qwzdBBQjorAnZTmY3BhsKcFr8Gt4KMGrS6r3DNmGruP8GORvegdWZuXgASKVpXeI7nCIjRJwAaK1x+eGHwAWO9Z8ohcboHbLyffOoSZDSIuk2kRIc47+ENRjg0T6x2VRsqX27g6j4DfPKQZGk0zvXkZaYtr1e2tZgqTBWqZUloMJK8miQq6MktCKAS4VtPk0k7teQX57OGwD6D7uo4b+Cl8aYAAwhn0hc0C2USfbuVHgq88ESo2/+NwV4SQcl3sxCW21yGIjAGt4Hy7J fedora@localhost.localdomain
+<a id="__codelineno-11-95" name="__codelineno-11-95" href="#__codelineno-11-95"></a><span class="w">    </span><span class="no"># Installing the Latest Notepad++ with PowerShell</span>
+<a id="__codelineno-11-96" name="__codelineno-11-96" href="#__codelineno-11-96"></a><span class="w">    </span><span class="no">$BaseUri = &quot;https://notepad-plus-plus.org&quot;</span>
+<a id="__codelineno-11-97" name="__codelineno-11-97" href="#__codelineno-11-97"></a><span class="w">    </span><span class="no">$BasePage = Invoke-WebRequest -Uri $BaseUri -UseBasicParsing</span>
+<a id="__codelineno-11-98" name="__codelineno-11-98" href="#__codelineno-11-98"></a><span class="w">    </span><span class="no">$ChildPath = $BasePage.Links | Where-Object { $_.outerHTML -like &#39;*Current Version*&#39; } | Select-Object -ExpandProperty href</span>
+<a id="__codelineno-11-99" name="__codelineno-11-99" href="#__codelineno-11-99"></a><span class="w">    </span><span class="no">$DownloadPageUri = $BaseUri + $ChildPath</span>
+<a id="__codelineno-11-100" name="__codelineno-11-100" href="#__codelineno-11-100"></a><span class="w">    </span><span class="no">$DownloadPage = Invoke-WebRequest -Uri $DownloadPageUri -UseBasicParsing</span>
+<a id="__codelineno-11-101" name="__codelineno-11-101" href="#__codelineno-11-101"></a><span class="w">    </span><span class="no">$DownloadUrl = $DownloadPage.Links | Where-Object { $_.outerHTML -like &#39;*npp.*.Installer.x64.exe&quot;*&#39; } | Select-Object -ExpandProperty href</span>
+<a id="__codelineno-11-102" name="__codelineno-11-102" href="#__codelineno-11-102"></a><span class="w">    </span><span class="no">Install-Exe $DownloadUrl</span>
+<a id="__codelineno-11-103" name="__codelineno-11-103" href="#__codelineno-11-103"></a><span class="w">  </span><span class="nt">id_rsa.pub</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-11-104" name="__codelineno-11-104" href="#__codelineno-11-104"></a><span class="w">    </span><span class="no">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6zdgFiLr1uAK7PdcchDd+LseA5fEOcxCCt7TLlr7Mx6h8jUg+G+8L9JBNZuDzTZSF0dR7qwzdBBQjorAnZTmY3BhsKcFr8Gt4KMGrS6r3DNmGruP8GORvegdWZuXgASKVpXeI7nCIjRJwAaK1x+eGHwAWO9Z8ohcboHbLyffOoSZDSIuk2kRIc47+ENRjg0T6x2VRsqX27g6j4DfPKQZGk0zvXkZaYtr1e2tZgqTBWqZUloMJK8miQq6MktCKAS4VtPk0k7teQX57OGwD6D7uo4b+Cl8aYAAwhn0hc0C2USfbuVHgq88ESo2/+NwV4SQcl3sxCW21yGIjAGt4Hy7J fedora@localhost.localdomain</span>
 </code></pre></div>
 
 

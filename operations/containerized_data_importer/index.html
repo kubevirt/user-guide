@@ -2634,30 +2634,30 @@ An IP address could also be used instead of the dns name.</p>
 <h2 id="create-a-virtualmachineinstance">Create a VirtualMachineInstance<a class="headerlink" href="#create-a-virtualmachineinstance" title="Permanent link">&para;</a></h2>
 <p>To create a <code>VirtualMachineInstance</code> from a DataVolume, you can execute the
 following:</p>
-<div class="highlight"><pre><span></span><code>cat &lt;&lt;EOF | kubectl apply -f -
-apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
-metadata:
-  name: cirros-vm
-spec:
-  domain:
-    devices:
-      disks:
-      - disk:
-          bus: virtio
-        name: dvdisk
-    machine:
-      type: &quot;&quot;
-    resources:
-      requests:
-        memory: 64M
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - name: dvdisk
-    dataVolume:
-      name: cirros-vm-disk
-status: {}
-EOF
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="s">apiVersion: kubevirt.io/v1</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="s">kind: VirtualMachineInstance</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="s">metadata:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="s">  name: cirros-vm</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="s">spec:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="s">  domain:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="s">    devices:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="s">      disks:</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="s">      - disk:</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="s">          bus: virtio</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="s">        name: dvdisk</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="s">    machine:</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="s">      type: &quot;&quot;</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="s">    resources:</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="s">      requests:</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="s">        memory: 64M</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="s">  terminationGracePeriodSeconds: 0</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="s">  volumes:</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="s">  - name: dvdisk</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="s">    dataVolume:</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="s">      name: cirros-vm-disk</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="s">status: {}</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="s">EOF</span>
 </code></pre></div>
 <h2 id="connect-to-virtualmachineinstance-console">Connect to VirtualMachineInstance console<a class="headerlink" href="#connect-to-virtualmachineinstance-console" title="Permanent link">&para;</a></h2>
 <p>Use <code>virtctl</code> to connect to the newly create <code>VirtualMachineInstance</code>.</p>

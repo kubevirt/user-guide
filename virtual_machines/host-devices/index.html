@@ -2532,29 +2532,29 @@ For example, if you have an NVIDIA T4 GPU on your system, and you substitute in 
 <p>Host devices can be assigned to virtual machines via the <code>gpus</code> and
 <code>hostDevices</code> fields.  The <code>deviceNames</code> can reference both PCI
 and Mediated device resource names.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kind: VirtualMachineInstance
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>spec:
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  domain:
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    devices:
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>      gpus:
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>      - deviceName: nvidia.com/TU104GL_Tesla_T4
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        name: gpu1
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>      - deviceName: nvidia.com/GRID_T4-1Q
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        name: gpu2
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>      hostDevices:
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>      - deviceName: intel.com/qat
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>        name: quickaccess1
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">gpus</span><span class="p">:</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">deviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/TU104GL_Tesla_T4</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">deviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/GRID_T4-1Q</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu2</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="nt">hostDevices</span><span class="p">:</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">deviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">intel.com/qat</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quickaccess1</span>
 </code></pre></div>
 <h2 id="nvme-pci-passthrough">NVMe PCI passthrough<a class="headerlink" href="#nvme-pci-passthrough" title="Permanent link">&para;</a></h2>
 <p>In order to passthrough an NVMe device the procedure is very similar to the gpu case. The device needs to be listed under the <code>permittedHostDevice</code> and under <code>hostDevices</code> in the VM declaration. </p>
 <p>Currently, the KubeVirt device plugin doesn't allow the user to select a specific device by specifying the address. Therefore, if multiple NVMe devices with the same vendor and product id exist in the cluster, they could be randomly assigned to a VM. If the devices are not on the same node, then the nodeSelector mitigates the issue.</p>
 <p>Example:</p>
 <p>Modify the <code>permittedHostDevice</code></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="w">    </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">      </span><span class="nt">permittedHostDevices</span><span class="p">:</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">        </span><span class="nt">pciHostDevices</span><span class="p">:</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pciVendorSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8086:5845</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">          </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">devices.kubevirt.io/nvme</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">permittedHostDevices</span><span class="p">:</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">pciHostDevices</span><span class="p">:</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">pciVendorSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8086:5845</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">      </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">devices.kubevirt.io/nvme</span>
 </code></pre></div>
 <p>VMI declaration:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
