@@ -629,7 +629,7 @@ This functionality already exists in platforms such as OpenStack. KubeVirt will
 provide the data in a similar format, known to users and services like cloud-init.
 
 For example:
-```
+```yaml
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -790,7 +790,7 @@ cloudInitConfigDrive:
 
 The answer file can be provided in a ConfigMap:
 
-```console
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -805,7 +805,7 @@ data:
 
 And attached to the VM like so:
 
-```console
+```yaml
 kind: VirtualMachine
 metadata:
   name: windows-with-sysprep
@@ -847,7 +847,7 @@ spec:
 
 The answer file can be provided in a Secret:
 
-```console
+```yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -863,7 +863,7 @@ data:
 
 And attached to the VM like so:
 
-```console
+```yaml
 kind: VirtualMachine
 metadata:
   name: windows-with-sysprep
@@ -907,7 +907,7 @@ In the example below, a configMap with `autounattend.xml` file is used to modify
 and creates a base installed Windows machine with virtio drivers installed and all the commands executed in `post-install.ps1`
 For the below manifests to work it needs to have `win10-iso` DataVolume.
 
-```
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -1259,7 +1259,7 @@ From the above example after the sysprep command is executed in the `post-instal
 A new VM can be launched from the base `win10-template` with additional changes mentioned from the below `unattend.xml` in `sysprep-config`.
 The new VM can take upto 5 minutes to be in running state since Windows goes through oobe setup in the background with the customizations specified in the below `unattend.xml` file.
 
-```
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:

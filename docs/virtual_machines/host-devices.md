@@ -105,7 +105,7 @@ Host devices can be assigned to virtual machines via the `gpus` and
 `hostDevices` fields.  The `deviceNames` can reference both PCI
 and Mediated device resource names.
 
-```
+```yaml
 kind: VirtualMachineInstance
 spec:
   domain:
@@ -131,11 +131,11 @@ Example:
 Modify the `permittedHostDevice`
 
 ```yaml
-    configuration:
-      permittedHostDevices:
-        pciHostDevices:
-        - pciVendorSelector: 8086:5845
-          resourceName: devices.kubevirt.io/nvme
+configuration:
+  permittedHostDevices:
+    pciHostDevices:
+    - pciVendorSelector: 8086:5845
+      resourceName: devices.kubevirt.io/nvme
 ```
 
 VMI declaration:

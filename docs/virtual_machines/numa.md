@@ -188,12 +188,12 @@ Breaking down the tuned sections, we have the following configuration:
 - Avoid attaching a graphics device, to reduce the number of interrupts to the kernel.
 
 ```yaml
-    spec:
-      domain:
-        devices:
-          autoattachSerialConsole: true
-          autoattachMemBalloon: false
-          autoattachGraphicsDevice: false
+spec:
+  domain:
+    devices:
+      autoattachSerialConsole: true
+      autoattachMemBalloon: false
+      autoattachGraphicsDevice: false
 ```
 
 
@@ -206,25 +206,25 @@ Breaking down the tuned sections, we have the following configuration:
 - realtime: instructs the virt-handler to configure this VM for real-time workloads, such as configuring the VCPUS to use FIFO scheduler policy and set priority to 1.
 cpu:
 ```yaml
-        cpu:
-          model: host-passthrough
-          dedicatedCpuPlacement: true
-          isolateEmulatorThread: true
-          ioThreadsPolicy: auto
-          features:
-            - name: tsc-deadline
-              policy: require
-          numa:
-            guestMappingPassthrough: {}
-          realtime: {}
+cpu:
+  model: host-passthrough
+  dedicatedCpuPlacement: true
+  isolateEmulatorThread: true
+  ioThreadsPolicy: auto
+  features:
+    - name: tsc-deadline
+      policy: require
+  numa:
+    guestMappingPassthrough: {}
+  realtime: {}
 ```
 
 [Memory](https://libvirt.org/kbase/kvm-realtime.html#memory-configuration)
 - pageSize: allocate the pod's memory in hugepages of the given size, in this case of 1Gi.
 ```yaml
-        memory:
-          hugepages:
-            pageSize: 1Gi
+memory:
+  hugepages:
+    pageSize: 1Gi
 ```
 
 ### How to dedicate VCPUS for real-time only
@@ -232,11 +232,11 @@ cpu:
 It is possible to pass a regular expression of the VCPUs to isolate to use real-time scheduling policy, by using the `realtime.mask` setting.
 
 ```yaml
-        cpu:
-          numa:
-            guestMappingPassthrough: {}
-          realtime:
-            mask: "0"
+cpu:
+  numa:
+    guestMappingPassthrough: {}
+  realtime:
+    mask: "0"
 ```
 
 When applied this configuration, KubeVirt will only set the first VCPU for real-time scheduler policy, leaving the remaining VCPUS to use the default scheduler policy. Other examples of valid masks are:

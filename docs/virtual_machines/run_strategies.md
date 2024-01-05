@@ -97,27 +97,29 @@ on RunStrategy.
 
 An example usage of the Always RunStrategy.
 
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachine
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/vm: vm-cirros
+  name: vm-cirros
+spec:
+  runStrategy: Always
+  template:
     metadata:
       labels:
         kubevirt.io/vm: vm-cirros
-      name: vm-cirros
     spec:
-      runStrategy: Always
-      template:
-        metadata:
-          labels:
-            kubevirt.io/vm: vm-cirros
-        spec:
-          domain:
-            devices:
-              disks:
-              - disk:
-                  bus: virtio
-                name: containerdisk
-          terminationGracePeriodSeconds: 0
-          volumes:
-          - containerDisk:
-              image: kubevirt/cirros-container-disk-demo:latest
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
             name: containerdisk
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - containerDisk:
+          image: kubevirt/cirros-container-disk-demo:latest
+        name: containerdisk
+```

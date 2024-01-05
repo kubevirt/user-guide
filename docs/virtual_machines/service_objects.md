@@ -16,41 +16,45 @@ VirtualMachineInstance. Currently, three types of service are supported:
 
 Give a VirtualMachineInstance with the label `special: key`:
 
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      name: vmi-ephemeral
-      labels:
-        special: key
-    spec:
-      domain:
-        devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-        resources:
-          requests:
-            memory: 64M
-      volumes:
-      - name: containerdisk
-        containerDisk:
-          image: kubevirt/cirros-registry-disk-demo:latest
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-ephemeral
+  labels:
+    special: key
+spec:
+  domain:
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+    resources:
+      requests:
+        memory: 64M
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/cirros-registry-disk-demo:latest
+```
 
 we can expose its SSH port (22) by creating a `ClusterIP` service:
 
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: vmiservice
-    spec:
-      ports:
-      - port: 27017
-        protocol: TCP
-        targetPort: 22
-      selector:
-        special: key
-      type: ClusterIP
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmiservice
+spec:
+  ports:
+  - port: 27017
+    protocol: TCP
+    targetPort: 22
+  selector:
+    special: key
+  type: ClusterIP
+```
 
 You just need to create this `ClusterIP` service by using `kubectl`:
 
@@ -83,21 +87,23 @@ port inside the cluster network:
 Expose the SSH port (22) of a VirtualMachineInstance running on KubeVirt
 by creating a `NodePort` service:
 
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: nodeport
-    spec:
-      externalTrafficPolicy: Cluster
-      ports:
-      - name: nodeport
-        nodePort: 30000
-        port: 27017
-        protocol: TCP
-        targetPort: 22
-      selector:
-        special: key
-      type: NodePort
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeport
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: nodeport
+    nodePort: 30000
+    port: 27017
+    protocol: TCP
+    targetPort: 22
+  selector:
+    special: key
+  type: NodePort
+```
 
 You just need to create this `NodePort` service by using `kubectl`:
 
@@ -129,19 +135,21 @@ outside the cluster network:
 Expose the RDP port (3389) of a VirtualMachineInstance running on
 KubeVirt by creating `LoadBalancer` service. Here is an example:
 
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: lbsvc
-    spec:
-      externalTrafficPolicy: Cluster
-      ports:
-      - port: 27017
-        protocol: TCP
-        targetPort: 3389
-      selector:
-        special: key
-      type: LoadBalancer
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: lbsvc
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 27017
+    protocol: TCP
+    targetPort: 3389
+  selector:
+    special: key
+  type: LoadBalancer
+```
 
 You could create this `LoadBalancer` service by using `kubectl`:
 

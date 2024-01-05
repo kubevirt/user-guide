@@ -35,19 +35,19 @@ In order to increase the VMI density on the node, it is possible to not
 request the additional overhead by setting
 `spec.domain.resources.overcommitGuestOverhead` to `true`:
 
-```console
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      name: testvmi-nocloud
-    spec:
-      terminationGracePeriodSeconds: 30
-      domain:
-        resources:
-          overcommitGuestOverhead: true
-          requests:
-            memory: 1024M
-    [...]
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 30
+  domain:
+    resources:
+      overcommitGuestOverhead: true
+      requests:
+        memory: 1024M
+[...]
 ```
 
 This will work fine for as long as most of the VirtualMachineInstances
@@ -67,21 +67,21 @@ value higher than `spec.domain.resources.requests.memory`.
 The following definition requests `1024MB` from the cluster but tells
 the VMI that it has `2048MB` of memory available:
 
-```console
-    apiVersion: kubevirt.io/v1alpha3
-    kind: VirtualMachineInstance
-    metadata:
-      name: testvmi-nocloud
-    spec:
-      terminationGracePeriodSeconds: 30
-      domain:
-        resources:
-          overcommitGuestOverhead: true
-          requests:
-            memory: 1024M
-        memory:
-          guest: 2048M
-    [...]
+```yaml
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 30
+  domain:
+    resources:
+      overcommitGuestOverhead: true
+      requests:
+        memory: 1024M
+    memory:
+      guest: 2048M
+[...]
 ```
 
 For as long as there is enough free memory available on the node, the
@@ -234,11 +234,11 @@ for the POD.
 
 Administrators can change this ratio by updating the KubeVirt CR
 
-```
+```yaml
 ...
-    spec:
-      configuration:
-        developerConfiguration:
-          cpuAllocationRatio: 10
+spec:
+  configuration:
+    developerConfiguration:
+      cpuAllocationRatio: 10
 ```
 

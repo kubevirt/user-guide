@@ -24,40 +24,42 @@ with any other API resource.
 
 Here is an example of a VirtualMachineInstance object:
 
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      name: testvmi-nocloud
-    spec:
-      terminationGracePeriodSeconds: 30
-      domain:
-        resources:
-          requests:
-            memory: 1024M
-        devices:
-          disks:
-          - name: containerdisk
-            disk:
-              bus: virtio
-          - name: emptydisk
-            disk:
-              bus: virtio
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
-      volumes:
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: testvmi-nocloud
+spec:
+  terminationGracePeriodSeconds: 30
+  domain:
+    resources:
+      requests:
+        memory: 1024M
+    devices:
+      disks:
       - name: containerdisk
-        containerDisk:
-          image: kubevirt/fedora-cloud-container-disk-demo:latest
+        disk:
+          bus: virtio
       - name: emptydisk
-        emptyDisk:
-          capacity: "2Gi"
-      - name: cloudinitdisk
-        cloudInitNoCloud:
-          userData: |-
-            #cloud-config
-            password: fedora
-            chpasswd: { expire: False }
+        disk:
+          bus: virtio
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+  volumes:
+  - name: containerdisk
+    containerDisk:
+      image: kubevirt/fedora-cloud-container-disk-demo:latest
+  - name: emptydisk
+    emptyDisk:
+      capacity: "2Gi"
+  - name: cloudinitdisk
+    cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+```
 
 This example uses a fedora cloud image in combination with cloud-init
 and an ephemeral empty disk with a capacity of `2Gi`. For the sake of

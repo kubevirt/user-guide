@@ -40,12 +40,12 @@ Alternatively, users can edit an existing kubevirt CR:
 `kubectl edit kubevirt kubevirt -n kubevirt`
 
 ```yaml
-    ...
-    spec:
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - "VSOCK"
+...
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - "VSOCK"
 ```      
 
 ### Virtual Machine Instance
@@ -69,8 +69,8 @@ spec:
 This will expose VSOCK device to the VM. The `CID` will be assigned randomly by `virt-controller`, and exposed to the Virtual Machine Instance status:
 
 ```yaml
-    status:
-      VSOCKCID: 123
+status:
+  VSOCKCID: 123
 ```
 
 ## Security

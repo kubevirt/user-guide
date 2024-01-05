@@ -146,25 +146,25 @@ of `64MiB/s`.
 
 These values can be changed in the `kubevirt` CR:
 
-```
-    apiVersion: kubevirt.io/v1
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      configuration:
-        migrations:
-          parallelMigrationsPerCluster: 5
-          parallelOutboundMigrationsPerNode: 2
-          bandwidthPerMigration: 64Mi
-          completionTimeoutPerGiB: 800
-          progressTimeout: 150
-          disableTLS: false
-          nodeDrainTaintKey: "kubevirt.io/drain"
-          allowAutoConverge: false
-          allowPostCopy: false
-          unsafeMigrationOverride: false
+```yaml
+apiVersion: kubevirt.io/v1
+kind: Kubevirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    migrations:
+      parallelMigrationsPerCluster: 5
+      parallelOutboundMigrationsPerNode: 2
+      bandwidthPerMigration: 64Mi
+      completionTimeoutPerGiB: 800
+      progressTimeout: 150
+      disableTLS: false
+      nodeDrainTaintKey: "kubevirt.io/drain"
+      allowAutoConverge: false
+      allowPostCopy: false
+      unsafeMigrationOverride: false
 ```
 
 Bear in mind that most of these configuration can be overridden and fine-tuned to
@@ -272,7 +272,7 @@ be needed as well.
 
 Finally, a NetworkAttachmentDefinition needs to be created in the
 namespace where KubeVirt is installed. Here is an example:
-```
+```yaml
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
@@ -296,19 +296,19 @@ spec:
 
 This is just a matter of adding the name of the
 NetworkAttachmentDefinition to the KubeVirt CR, like so:
-```
-    apiVersion: kubevirt.io/v1
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      configuration:
-        developerConfiguration:
-          featureGates:
-          - LiveMigration
-        migrations:
-          network: migration-network
+```yaml
+apiVersion: kubevirt.io/v1
+kind: Kubevirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+      - LiveMigration
+    migrations:
+      network: migration-network
 ```
 
 That change will trigger a restart of the virt-handler pods, as they
@@ -369,19 +369,19 @@ parameter, which defaults to 150s
 Sometimes it may be desirable to disable TLS encryption of migrations to
 improve performance. Use `disableTLS` to do that:
 
-```
-    apiVersion: kubevirt.io/v1
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - "LiveMigration"
-        migrationConfiguration:
-          disableTLS: true
+```yaml
+apiVersion: kubevirt.io/v1
+kind: Kubevirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - "LiveMigration"
+    migrationConfiguration:
+      disableTLS: true
 ```
 
 **Note:** While this increases performance it may allow MITM attacks. Be careful.

@@ -319,7 +319,7 @@ will try to make sure it stays running.
 
 ### Example
 
-```
+```yaml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:

@@ -127,94 +127,94 @@ Example:
 
 And the output:
 
-```console
-    apiVersion: v1
-    items:
-    - apiVersion: kubevirt.io/v1
-      kind: VirtualMachine
+```yaml
+apiVersion: v1
+items:
+- apiVersion: kubevirt.io/v1
+  kind: VirtualMachine
+  metadata:
+    annotations:
+      vm.kubevirt.io/flavor: tiny
+      vm.kubevirt.io/os: rhel8
+      vm.kubevirt.io/validations: |
+        [
+          {
+            "name": "minimal-required-memory",
+            "path": "jsonpath::.spec.domain.resources.requests.memory",
+            "rule": "integer",
+            "message": "This VM requires more memory.",
+            "min": 1610612736
+          }
+        ]
+      vm.kubevirt.io/workload: server
+    labels:
+      app: rheltinyvm
+      vm.kubevirt.io/template: rhel8-server-tiny
+      vm.kubevirt.io/template.revision: "45"
+      vm.kubevirt.io/template.version: 0.11.3
+    name: rheltinyvm
+  spec:
+    dataVolumeTemplates:
+    - apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
       metadata:
-        annotations:
-          vm.kubevirt.io/flavor: tiny
-          vm.kubevirt.io/os: rhel8
-          vm.kubevirt.io/validations: |
-            [
-              {
-                "name": "minimal-required-memory",
-                "path": "jsonpath::.spec.domain.resources.requests.memory",
-                "rule": "integer",
-                "message": "This VM requires more memory.",
-                "min": 1610612736
-              }
-            ]
-          vm.kubevirt.io/workload: server
-        labels:
-          app: rheltinyvm
-          vm.kubevirt.io/template: rhel8-server-tiny
-          vm.kubevirt.io/template.revision: "45"
-          vm.kubevirt.io/template.version: 0.11.3
         name: rheltinyvm
       spec:
-        dataVolumeTemplates:
-        - apiVersion: cdi.kubevirt.io/v1beta1
-          kind: DataVolume
-          metadata:
-            name: rheltinyvm
-          spec:
-            pvc:
-              accessModes:
-              - ReadWriteMany
-              resources:
-                requests:
-                  storage: 30Gi
-            source:
-              pvc:
-                name: rhel
-                namespace: kubevirt
-        running: false
-        template:
-          metadata:
-            labels:
-              kubevirt.io/domain: rheltinyvm
-              kubevirt.io/size: tiny
-          spec:
-            domain:
-              cpu:
-                cores: 1
-                sockets: 1
-                threads: 1
-              devices:
-                disks:
-                - disk:
-                    bus: virtio
-                  name: rheltinyvm
-                - disk:
-                    bus: virtio
-                  name: cloudinitdisk
-                interfaces:
-                - masquerade: {}
-                  name: default
-                networkInterfaceMultiqueue: true
-                rng: {}
-              resources:
-                requests:
-                  memory: 1.5Gi
-            networks:
-            - name: default
-              pod: {}
-            terminationGracePeriodSeconds: 180
-            volumes:
-            - dataVolume:
-                name: rheltinyvm
+        pvc:
+          accessModes:
+          - ReadWriteMany
+          resources:
+            requests:
+              storage: 30Gi
+        source:
+          pvc:
+            name: rhel
+            namespace: kubevirt
+    running: false
+    template:
+      metadata:
+        labels:
+          kubevirt.io/domain: rheltinyvm
+          kubevirt.io/size: tiny
+      spec:
+        domain:
+          cpu:
+            cores: 1
+            sockets: 1
+            threads: 1
+          devices:
+            disks:
+            - disk:
+                bus: virtio
               name: rheltinyvm
-            - cloudInitNoCloud:
-                userData: |-
-                  #cloud-config
-                  user: cloud-user
-                  password: lymp-fda4-m1cv
-                  chpasswd: { expire: False }
+            - disk:
+                bus: virtio
               name: cloudinitdisk
-    kind: List
-    metadata: {}
+            interfaces:
+            - masquerade: {}
+              name: default
+            networkInterfaceMultiqueue: true
+            rng: {}
+          resources:
+            requests:
+              memory: 1.5Gi
+        networks:
+        - name: default
+          pod: {}
+        terminationGracePeriodSeconds: 180
+        volumes:
+        - dataVolume:
+            name: rheltinyvm
+          name: rheltinyvm
+        - cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              user: cloud-user
+              password: lymp-fda4-m1cv
+              chpasswd: { expire: False }
+          name: cloudinitdisk
+kind: List
+metadata: {}
 ```
 
 You can add the VM from the template to the cluster in one go
@@ -239,29 +239,29 @@ Here's a description of the kubevirt annotations. Unless otherwise
 specified, the following keys are meant to be top-level entries of the
 template metadata, like
 
-```console
-    apiVersion: v1
-    kind: Template
-    metadata:
-      name: windows-10
-      annotations:
-        openshift.io/display-name: "Generic demo template"
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: windows-10
+  annotations:
+    openshift.io/display-name: "Generic demo template"
 ```
 
 All the following annotations are prefixed with
 `defaults.template.kubevirt.io`, which is omitted below for brevity. So
 the actual annotations you should use will look like
 
-```console
-    apiVersion: v1
-    kind: Template
-    metadata:
-      name: windows-10
-      annotations:
-        defaults.template.kubevirt.io/disk: default-disk
-        defaults.template.kubevirt.io/volume: default-volume
-        defaults.template.kubevirt.io/nic: default-nic
-        defaults.template.kubevirt.io/network: default-network
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: windows-10
+  annotations:
+    defaults.template.kubevirt.io/disk: default-disk
+    defaults.template.kubevirt.io/volume: default-volume
+    defaults.template.kubevirt.io/nic: default-nic
+    defaults.template.kubevirt.io/network: default-network
 ```
 
 Unless otherwise specified, all annotations are meant to be safe
@@ -274,13 +274,13 @@ See the section `references` below.
 
 Example:
 
-```console
-    apiVersion: v1
-    kind: Template
-    metadata:
-      name: Linux
-      annotations:
-        defaults.template.kubevirt.io/disk: rhel-disk
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.kubevirt.io/disk: rhel-disk
 ```
 
 #### nic
@@ -289,13 +289,13 @@ See the section `references` below.
 
 Example:
 
-```console
-    apiVersion: v1
-    kind: Template
-    metadata:
-      name: Windows
-      annotations:
-        defaults.template.kubevirt.io/nic: my-nic
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: Windows
+  annotations:
+    defaults.template.kubevirt.io/nic: my-nic
 ```
 
 #### volume
@@ -304,13 +304,13 @@ See the section `references` below.
 
 Example:
 
-```console
-    apiVersion: v1
-    kind: Template
-    metadata:
-      name: Linux
-      annotations:
-        defaults.template.kubevirt.io/volume: custom-volume
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.kubevirt.io/volume: custom-volume
 ```
 
 #### network
@@ -319,13 +319,13 @@ See the section `references` below.
 
 Example:
 
-```console
-    apiVersion: v1
-    kind: Template
-    metadata:
-      name: Linux
-      annotations:
-        defaults.template.kubevirt.io/network: fast-net
+```yaml
+apiVersion: v1
+kind: Template
+metadata:
+  name: Linux
+  annotations:
+    defaults.template.kubevirt.io/network: fast-net
 ```
 
 #### references
@@ -344,7 +344,7 @@ document.
 
 `demo-template.yaml`
 
-```console
+```yaml
 apiversion: v1
 items:
 - apiversion: kubevirt.io/v1
@@ -386,7 +386,7 @@ metadata: {}
 once processed becomes:
 `demo-vm.yaml`
 
-```console
+```yaml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
@@ -467,7 +467,7 @@ provide a template defining the corresponding object and its metadata.
 Here is an example template that defines an instance of the
 `VirtualMachine` object:
 
-```console
+```yaml
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
@@ -716,7 +716,7 @@ VM template or VM/VMI yaml config. The main idea is to create Kubernetes
 PersistentVolume and PersistentVolumeClaim corresponding to existing
 image in the file system. Example:
 
-```console
+```yaml
 ---
 kind: PersistentVolume
 apiVersion: v1
@@ -753,7 +753,7 @@ Kubevirt VM templates are using dataVolumeTemplates.
 Before using dataVolumes, CDI has to be installed in
 cluster. After that, source Datavolume can be created.
 
-```console
+```yaml
 ---
 apiVersion: cdi.kubevirt.io/v1beta1
 kind: DataVolume

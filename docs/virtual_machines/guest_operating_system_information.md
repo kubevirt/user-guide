@@ -51,109 +51,111 @@ release.
 
 ### Windows Server 2012R2 `VirtualMachineInstancePreset` Example
 
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstancePreset
-    metadata:
-      name: windows-server-2012r2
-      selector:
-        matchLabels:
-          kubevirt.io/os: win2k12r2
-    spec:
-      domain:
-        cpu:
-          cores: 2
-        resources:
-          requests:
-            memory: 2G
-        features:
-          acpi: {}
-          apic: {}
-          hyperv:
-            relaxed: {}
-            vapic: {}
-            spinlocks:
-              spinlocks: 8191
-        clock:
-          utc: {}
-          timer:
-            hpet:
-              present: false
-            pit:
-              tickPolicy: delay
-            rtc:
-              tickPolicy: catchup
-            hyperv: {}
-    ---
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      labels:
-        kubevirt.io/os: win2k12r2
-      name: windows2012r2
-    spec:
-      terminationGracePeriodSeconds: 0
-      domain:
-        firmware:
-          uuid: 5d307ca9-b3ef-428c-8861-06e72d69f223
-        devices:
-          disks:
-          - name: server2012r2
-            disk:
-              dev: vda
-      volumes:
-        - name: server2012r2
-          persistentVolumeClaim:
-            claimName: my-windows-image
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstancePreset
+metadata:
+  name: windows-server-2012r2
+  selector:
+    matchLabels:
+      kubevirt.io/os: win2k12r2
+spec:
+  domain:
+    cpu:
+      cores: 2
+    resources:
+      requests:
+        memory: 2G
+    features:
+      acpi: {}
+      apic: {}
+      hyperv:
+        relaxed: {}
+        vapic: {}
+        spinlocks:
+          spinlocks: 8191
+    clock:
+      utc: {}
+      timer:
+        hpet:
+          present: false
+        pit:
+          tickPolicy: delay
+        rtc:
+          tickPolicy: catchup
+        hyperv: {}
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    kubevirt.io/os: win2k12r2
+  name: windows2012r2
+spec:
+  terminationGracePeriodSeconds: 0
+  domain:
+    firmware:
+      uuid: 5d307ca9-b3ef-428c-8861-06e72d69f223
+    devices:
+      disks:
+      - name: server2012r2
+        disk:
+          dev: vda
+  volumes:
+    - name: server2012r2
+      persistentVolumeClaim:
+        claimName: my-windows-image
 
 Once the `VirtualMachineInstancePreset` is applied to the
 `VirtualMachineInstance`, the resulting resource would look like this:
 
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    metadata:
-      annotations:
-        presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1
-        virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1
-      labels:
-        kubevirt.io/os: win2k12r2
-      name: windows2012r2
-    spec:
-      terminationGracePeriodSeconds: 0
-      domain:
-        cpu:
-          cores: 2
-        resources:
-          requests:
-            memory: 2G
-        features:
-          acpi: {}
-          apic: {}
-          hyperv:
-            relaxed: {}
-            vapic: {}
-            spinlocks:
-              spinlocks: 8191
-        clock:
-          utc: {}
-          timer:
-            hpet:
-              present: false
-            pit:
-              tickPolicy: delay
-            rtc:
-              tickPolicy: catchup
-            hyperv: {}
-        firmware:
-          uuid: 5d307ca9-b3ef-428c-8861-06e72d69f223
-        devices:
-          disks:
-          - name: server2012r2
-            disk:
-              dev: vda
-      volumes:
-        - name: server2012r2
-          persistentVolumeClaim:
-            claimName: my-windows-image
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  annotations:
+    presets.virtualmachineinstances.kubevirt.io/presets-applied: kubevirt.io/v1
+    virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2: kubevirt.io/v1
+  labels:
+    kubevirt.io/os: win2k12r2
+  name: windows2012r2
+spec:
+  terminationGracePeriodSeconds: 0
+  domain:
+    cpu:
+      cores: 2
+    resources:
+      requests:
+        memory: 2G
+    features:
+      acpi: {}
+      apic: {}
+      hyperv:
+        relaxed: {}
+        vapic: {}
+        spinlocks:
+          spinlocks: 8191
+    clock:
+      utc: {}
+      timer:
+        hpet:
+          present: false
+        pit:
+          tickPolicy: delay
+        rtc:
+          tickPolicy: catchup
+        hyperv: {}
+    firmware:
+      uuid: 5d307ca9-b3ef-428c-8861-06e72d69f223
+    devices:
+      disks:
+      - name: server2012r2
+        disk:
+          dev: vda
+  volumes:
+    - name: server2012r2
+      persistentVolumeClaim:
+        claimName: my-windows-image
+```
 
 For more information see [VirtualMachineInstancePresets](./presets.md)
 
@@ -175,30 +177,30 @@ and on extra configuration.
 To enable strict host checking, the user may expand the `featureGates`
 field in the KubeVirt CR by adding the `HypervStrictCheck` to it.
 
-```
-    apiVersion: kubevirt.io/v1
-    kind: Kubevirt
-    metadata:
-      name: kubevirt
-      namespace: kubevirt
-    spec:
-      ...
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - "HypervStrictCheck"
+```yaml
+apiVersion: kubevirt.io/v1
+kind: Kubevirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  ...
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - "HypervStrictCheck"
 ```
 
 Alternatively, users can edit an existing kubevirt CR:
 
 `kubectl edit kubevirt kubevirt -n kubevirt`
 
-```
-    ...
-    spec:
-      configuration:
-        developerConfiguration:
-          featureGates:
-            - "HypervStrictCheck"
-            - "CPUManager"
+```yaml
+...
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - "HypervStrictCheck"
+        - "CPUManager"
 ```      

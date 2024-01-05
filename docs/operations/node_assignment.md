@@ -15,26 +15,28 @@ only schedule VMs on nodes, which contain the specified labels. In the
 following example the vmi contains the labels `cpu: slow` and
 `storage: fast`:
 
-    metadata:
-      name: testvmi-ephemeral
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      nodeSelector:
-        cpu: slow
-        storage: fast
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mypvcdisk
-            lun: {}
-      volumes:
-        - name: mypvcdisk
-          persistentVolumeClaim:
-            claimName: mypvc
+```yaml
+metadata:
+  name: testvmi-ephemeral
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  nodeSelector:
+    cpu: slow
+    storage: fast
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        lun: {}
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+```
 
 Thus the scheduler will only schedule the vmi to nodes which contain
 these labels in their metadata. It works exactly like the Pods
@@ -52,47 +54,49 @@ Pod-affinity affects VMs as well.
 
 An example for `podAffinity` and `podAntiAffinity` may look like this:
 
-    metadata:
-      name: testvmi-ephemeral
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      nodeSelector:
-        cpu: slow
-        storage: fast
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mypvcdisk
-            lun: {}
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: security
-                operator: In
-                values:
-                - S1
-            topologyKey: failure-domain.beta.kubernetes.io/zone
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: security
-                  operator: In
-                  values:
-                  - S2
-              topologyKey: kubernetes.io/hostname
-      volumes:
-        - name: mypvcdisk
-          persistentVolumeClaim:
-            claimName: mypvc
+```yaml
+metadata:
+  name: testvmi-ephemeral
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  nodeSelector:
+    cpu: slow
+    storage: fast
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        lun: {}
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: security
+            operator: In
+            values:
+            - S1
+        topologyKey: failure-domain.beta.kubernetes.io/zone
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: security
+              operator: In
+              values:
+              - S2
+          topologyKey: kubernetes.io/hostname
+  volumes:
+    - name: mypvcdisk
+      persistentVolumeClaim:
+        claimName: mypvc
+```
 
 Affinity and anti-affinity works exactly like the Pods `affinity`. This
 includes `podAffinity`, `podAntiAffinity`, `nodeAffinity` and
@@ -119,28 +123,29 @@ You add a taint to a node using kubectl taint. For example,
 
 An example for `tolerations` may look like this:
 
-    metadata:
-      name: testvmi-ephemeral
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstance
-    spec:
-      nodeSelector:
-        cpu: slow
-        storage: fast
-      domain:
-        resources:
-          requests:
-            memory: 64M
-        devices:
-          disks:
-          - name: mypvcdisk
-            lun: {}
-      tolerations:
-      - key: "key"
-        operator: "Equal"
-        value: "value"
-        effect: "NoSchedule"
-
+```yaml
+metadata:
+  name: testvmi-ephemeral
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+spec:
+  nodeSelector:
+    cpu: slow
+    storage: fast
+  domain:
+    resources:
+      requests:
+        memory: 64M
+    devices:
+      disks:
+      - name: mypvcdisk
+        lun: {}
+  tolerations:
+  - key: "key"
+    operator: "Equal"
+    value: "value"
+    effect: "NoSchedule"
+```
 ## Node balancing with Descheduler
 
 In some cases we might need to rebalance the cluster on current scheduling policy

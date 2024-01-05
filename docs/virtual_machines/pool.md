@@ -44,42 +44,44 @@ The example below shows how to create a simple `VirtualMachinePool`:
 
 #### Example
 
-    apiVersion: pool.kubevirt.io/v1alpha1
-    kind: VirtualMachinePool
+```yaml
+apiVersion: pool.kubevirt.io/v1alpha1
+kind: VirtualMachinePool
+metadata:
+  name: vm-pool-cirros
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      kubevirt.io/vmpool: vm-pool-cirros
+  virtualMachineTemplate:
     metadata:
-      name: vm-pool-cirros
+      creationTimestamp: null
+      labels:
+        kubevirt.io/vmpool: vm-pool-cirros
     spec:
-      replicas: 3
-      selector:
-        matchLabels:
-          kubevirt.io/vmpool: vm-pool-cirros
-      virtualMachineTemplate:
+      running: true
+      template:
         metadata:
           creationTimestamp: null
           labels:
             kubevirt.io/vmpool: vm-pool-cirros
         spec:
-          running: true
-          template:
-            metadata:
-              creationTimestamp: null
-              labels:
-                kubevirt.io/vmpool: vm-pool-cirros
-            spec:
-              domain:
-                devices:
-                  disks:
-                  - disk:
-                      bus: virtio
-                    name: containerdisk
-                resources:
-                  requests:
-                    memory: 128Mi
-              terminationGracePeriodSeconds: 0
-              volumes:
-              - containerDisk:
-                  image: kubevirt/cirros-container-disk-demo:latest
-                name: containerdisk 
+          domain:
+            devices:
+              disks:
+              - disk:
+                  bus: virtio
+                name: containerdisk
+            resources:
+              requests:
+                memory: 128Mi
+          terminationGracePeriodSeconds: 0
+          volumes:
+          - containerDisk:
+              image: kubevirt/cirros-container-disk-demo:latest
+            name: containerdisk 
+```
 
 Saving this manifest into `vm-pool-cirros.yaml` and submitting it to
 Kubernetes will create three virtual machines based on the template.
@@ -192,19 +194,21 @@ The
 (HPA) can be used with a `VirtualMachinePool`. Simply
 reference it in the spec of the autoscaler:
 
-    apiVersion: autoscaling/v1
-    kind: HorizontalPodAutoscaler
-    metadata:
-      creationTimestamp: null
-      name: vm-pool-cirros
-    spec:
-      maxReplicas: 10
-      minReplicas: 3
-      scaleTargetRef:
-        apiVersion: pool.kubevirt.io/v1alpha1
-        kind: VirtualMachinePool
-        name: vm-pool-cirros
-      targetCPUUtilizationPercentage: 50
+```yaml
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  name: vm-pool-cirros
+spec:
+  maxReplicas: 10
+  minReplicas: 3
+  scaleTargetRef:
+    apiVersion: pool.kubevirt.io/v1alpha1
+    kind: VirtualMachinePool
+    name: vm-pool-cirros
+  targetCPUUtilizationPercentage: 50
+```
 
 
 or use `kubectl autoscale` to define the HPA via the commandline:
@@ -219,19 +223,20 @@ for the actual delivery of the service.
 
 For example, exposing SSH port (22) as a ClusterIP service:
 
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: vm-pool-cirros-ssh
-    spec:
-      type: ClusterIP
-      selector:
-        kubevirt.io/vmpool: vm-pool-cirros
-      ports:
-        - protocol: TCP
-          port: 2222
-          targetPort: 22
-
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: vm-pool-cirros-ssh
+spec:
+  type: ClusterIP
+  selector:
+    kubevirt.io/vmpool: vm-pool-cirros
+  ports:
+    - protocol: TCP
+      port: 2222
+      targetPort: 22
+```
 Saving this manifest into `vm-pool-cirros-ssh.yaml` and submitting it to
 Kubernetes will create the `ClusterIP` service listening on port 2222 and
 forwarding to port 22.

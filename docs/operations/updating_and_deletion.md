@@ -82,7 +82,7 @@ virt-operator managed VMI updates is the Evict method.
 
 **Example: Enabling VMI workload updates via LiveMigration**
 
-```console
+```yaml
 apiVersion: kubevirt.io/v1
 kind: KubeVirt
 metadata:
@@ -101,7 +101,7 @@ The batch tunings allow configuring how quickly VMI's are evicted. In large
 clusters, it's desirable to ensure that VMI's are evicted in batches in order
 to distribute load.
 
-```console
+```yaml
 apiVersion: kubevirt.io/v1
 kind: KubeVirt
 metadata:
@@ -124,7 +124,7 @@ live migratable will be guaranteed to be live migrated. Only workloads which
 are not live migratable will be evicted.
 
 
-```console
+```yaml
 apiVersion: kubevirt.io/v1
 kind: KubeVirt
 metadata:

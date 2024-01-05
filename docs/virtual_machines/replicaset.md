@@ -111,34 +111,35 @@ needs to be aware of KubeVirt and create migrations, instead of
 
 #### Example
 
-    apiVersion: kubevirt.io/v1
-    kind: VirtualMachineInstanceReplicaSet
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstanceReplicaSet
+metadata:
+  name: testreplicaset
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      myvmi: myvmi
+  template:
     metadata:
-      name: testreplicaset
+      name: test
+      labels:
+        myvmi: myvmi
     spec:
-      replicas: 3
-      selector:
-        matchLabels:
-          myvmi: myvmi
-      template:
-        metadata:
-          name: test
-          labels:
-            myvmi: myvmi
-        spec:
-          domain:
-            devices:
-              disks:
-              - disk:
-                name: containerdisk
-            resources:
-              requests:
-                memory: 64M
-          volumes:
-          - name: containerdisk
-            containerDisk:
-              image: kubevirt/cirros-container-disk-demo:latest
-
+      domain:
+        devices:
+          disks:
+          - disk:
+            name: containerdisk
+        resources:
+          requests:
+            memory: 64M
+      volumes:
+      - name: containerdisk
+        containerDisk:
+          image: kubevirt/cirros-container-disk-demo:latest
+```
 Saving this manifest into `testreplicaset.yaml` and submitting it to
 Kubernetes will create three virtual machines based on the template.
 
@@ -219,19 +220,20 @@ The
 (HPA) can be used with a `VirtualMachineInstanceReplicaSet`. Simply
 reference it in the spec of the autoscaler:
 
-    apiVersion: autoscaling/v1
-    kind: HorizontalPodAutoscaler
-    metadata:
-      name: myhpa
-    spec:
-      scaleTargetRef:
-        kind: VirtualMachineInstanceReplicaSet
-        name: vmi-replicaset-cirros
-        apiVersion: kubevirt.io/v1
-      minReplicas: 3
-      maxReplicas: 10
-      targetCPUUtilizationPercentage: 50
-
+```yaml
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: myhpa
+spec:
+  scaleTargetRef:
+    kind: VirtualMachineInstanceReplicaSet
+    name: vmi-replicaset-cirros
+    apiVersion: kubevirt.io/v1
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+```
 
 or use `kubectl autoscale` to define the HPA via the commandline:
 

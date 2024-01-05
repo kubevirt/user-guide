@@ -1108,12 +1108,12 @@ spec:
 On the VMI, the network section should point to this
 NetworkAttachmentDefinition by name:
 ```yaml
-  networks:
-  - name: default
-    pod: {}
-  - multus:
-      networkName: br-spoof-check
-    name: br10
+networks:
+- name: default
+  pod: {}
+- multus:
+    networkName: br-spoof-check
+  name: br10
 ```
 
 #### Limitations
