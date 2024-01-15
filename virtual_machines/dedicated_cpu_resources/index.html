@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.4">
     
     
       
@@ -2453,19 +2453,23 @@ with a <code>dedicatedCpuPlacement: true</code>.</p>
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
 </code></pre></div>
 <h3 id="compute-nodes-with-smt-enabled">Compute Nodes with SMT Enabled<a class="headerlink" href="#compute-nodes-with-smt-enabled" title="Permanent link">&para;</a></h3>
-<p>When the following conditions are met:
-- The compute node has <a href="https://en.wikipedia.org/wiki/Simultaneous_multithreading">SMT</a> enabled
-- Kubelet's CPUManager policy is set to static - <a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy-options">full-pcpus-only</a>
-- The VM is configured to have an even number of CPUs
-- <code>dedicatedCpuPlacement</code> and <code>isolateEmulatorThread</code> are enabled</p>
+<p>When the following conditions are met:</p>
+<ul>
+<li>The compute node has <a href="https://en.wikipedia.org/wiki/Simultaneous_multithreading">SMT</a> enabled</li>
+<li>Kubelet's CPUManager policy is set to static - <a href="https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy-options">full-pcpus-only</a></li>
+<li>The VM is configured to have an even number of CPUs</li>
+<li><code>dedicatedCpuPlacement</code> and <code>isolateEmulatorThread</code> are enabled</li>
+</ul>
 <p>The VM is scheduled, but rejected by the kubelet with the following event:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>SMT Alignment Error: requested 3 cpus not multiple cpus per core = 2
 </code></pre></div></p>
-<p>In order to address this issue:
-1. Enable the <code>AlignCPUs</code> feature gate in the KubeVirt CR.
-2. Add the following annotation to the Kubevirt CR:
+<p>In order to address this issue:</p>
+<ol>
+<li>Enable the <code>AlignCPUs</code> feature gate in the KubeVirt CR.</li>
+<li>Add the following annotation to the Kubevirt CR:</li>
+</ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">alpha.kubevirt.io/EmulatorThreadCompleteToEvenParity</span><span class="p">:</span>
-</code></pre></div></p>
+</code></pre></div>
 <p>KubeVirt will then add one or two dedicated CPUs for the emulator threads, in a way that completes the total CPU count to be even.</p>
 <h2 id="identifying-nodes-with-a-running-cpu-manager">Identifying nodes with a running CPU manager<a class="headerlink" href="#identifying-nodes-with-a-running-cpu-manager" title="Permanent link">&para;</a></h2>
 <p>At this time, <a href="https://github.com/kubernetes/kubernetes/issues/66525">Kubernetes doesn't label the
@@ -2593,10 +2597,10 @@ CPU manager will not attempt to pin the sidecar container to a host CPU.</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.c011b7c0.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.7389ff0e.min.js"></script>
       
     
   </body>
