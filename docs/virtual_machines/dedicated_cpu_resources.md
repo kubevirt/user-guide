@@ -123,6 +123,7 @@ spec:
 ### Compute Nodes with SMT Enabled
 
 When the following conditions are met:
+
 - The compute node has [SMT](https://en.wikipedia.org/wiki/Simultaneous_multithreading) enabled
 - Kubelet's CPUManager policy is set to static - [full-pcpus-only](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#static-policy-options)
 - The VM is configured to have an even number of CPUs
@@ -134,8 +135,10 @@ SMT Alignment Error: requested 3 cpus not multiple cpus per core = 2
 ```
 
 In order to address this issue:
+
 1. Enable the `AlignCPUs` feature gate in the KubeVirt CR.
 2. Add the following annotation to the Kubevirt CR:
+
 ```yaml
 alpha.kubevirt.io/EmulatorThreadCompleteToEvenParity:
 ```
