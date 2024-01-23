@@ -2004,6 +2004,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#non-privileged-and-privileged-sharing-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Privileged and Privileged Sharing Modes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sharing-persistent-volume-claims" class="md-nav__link">
     <span class="md-ellipsis">
       Sharing Persistent Volume Claims
@@ -3364,6 +3373,15 @@
   
     <nav class="md-nav" aria-label="Sharing Directories with VMs">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#non-privileged-and-privileged-sharing-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Privileged and Privileged Sharing Modes
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#sharing-persistent-volume-claims" class="md-nav__link">
@@ -5069,11 +5087,20 @@ We can now attempt to write a string from the first guest and then read the stri
 <p><code>Virtiofs</code> allows to make visible external filesystems to <code>KubeVirt</code> VMs.
 <code>Virtiofs</code> is a shared file system that lets VMs access a directory tree on the host.
 Further details can be found at <a href="https://virtio-fs.gitlab.io/">Official Virtiofs Site</a>.</p>
-<blockquote>
-<p><strong>Note:</strong> The <strong>ExperimentalVirtiofsSupport</strong> feature gate
-<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">must be enabled</a>
-to share directories with VMs. This feature is available starting with KubeVirt v0.36.0.</p>
-</blockquote>
+<h3 id="non-privileged-and-privileged-sharing-modes">Non-Privileged and Privileged Sharing Modes<a class="headerlink" href="#non-privileged-and-privileged-sharing-modes" title="Permanent link">&para;</a></h3>
+<p>KubeVirt supports two PVC sharing modes: non-privileged and privileged.</p>
+<p>The <strong>non-privileged mode</strong> is enabled by default. This mode has the advantage of not requiring any
+administrative privileges for creating the VM. However, it has some limitations:</p>
+<ul>
+<li>The virtiofsd daemon (the daemon in charge of sharing the PVC with the VM) will run with the QEMU UID/GID (107),
+  and cannot switch between different UIDs/GIDs.
+  Therefore, it will only have access to directories and files that UID/GID 107 has permission to.
+  Additionally, when creating new files they will always be created with QEMU's UID/GID regardless of the UID/GID of the
+  process within the guest.</li>
+<li>Extended attributes are not supported. </li>
+</ul>
+<p>To switch to the <strong>privileged mode</strong>, the feature gate <strong>ExperimentalVirtiofsSupport</strong> has to be enabled. Take into account
+that this mode requires privileges to run rootful containers. </p>
 <h3 id="sharing-persistent-volume-claims">Sharing Persistent Volume Claims<a class="headerlink" href="#sharing-persistent-volume-claims" title="Permanent link">&para;</a></h3>
 <h4 id="cluster-configuration">Cluster Configuration<a class="headerlink" href="#cluster-configuration" title="Permanent link">&para;</a></h4>
 <p>We need to create a new VM definition including the <code>spec.devices.disk.filesystems.virtiofs</code> and a PVC.
