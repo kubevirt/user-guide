@@ -35,22 +35,26 @@ spec:
     - LiveMigrate
 ```
 
-### Enable in VM Specification
+### Configure the VM rollout strategy
 
-Finally, enable memory hotplug in the VM specification:
+Finally, set the VM rollout strategy to `LiveUpdate`, so that the changes made to the VM object propagate to the VMI without a restart.  
+This is also done in the KubeVirt CR configuration:
+
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: VirtualMachine
+kind: KubeVirt
 spec:
-  liveUpdateFeatures:
-    memory:
-      maxGuest: 2Gi
+  configuration:
+    vmRolloutStrategy: "LiveUpdate"
 ```
-Specifying the memory.maxGuest value is optional. If left unset, it defaults to the value defined in maxHotplugRatio inside the KubeVirt CR (refer to [KubeVirt API Reference](https://kubevirt.io/api-reference/v1.1.0/definitions.html#_v1_liveupdateconfiguration)). For example, if a VM is configured with 512Mi of guest memory and maxGuest is not defined, and maxHotplugRatio is 2, then maxGuest will equal 1Gi.
 
-**NOTE:** If memory hotplug is enabled/disabled on an already running VM a reboot is necessary for the changes to take effect.
+**NOTE:** If memory hotplug is enabled/disabled on an already running VM, a reboot is necessary for the changes to take effect.
 
-Optionally, you can set the maximum amount of memory for the guest using a cluster level setting in the KubeVirt CR.
+More information can be found on the [VM Rollout Strategies](./vm_rollout_strategies.md) page.
+
+### [OPTIONAL] Set a cluster-wide maximum amount of memory
+
+You can set the maximum amount of memory for the guest using a cluster level setting in the KubeVirt CR.
 
 ```yaml
 apiVersion: kubevirt.io/v1
@@ -65,12 +69,11 @@ The VM-level configuration will take precedence over the cluster-wide one.
 
 ## Memory Hotplug in Action
 
-First we enable the `VMLiveUpdateFeatures` feature gate and set `LiveMigrate` as `workloadUpdateStrategy` in the KubeVirt CR.
+First we enable the `VMLiveUpdateFeatures` feature gate, set the rollout strategy to `LiveUpdate` and set `LiveMigrate` as `workloadUpdateStrategy` in the KubeVirt CR.
 
 ```sh
 $ kubectl --namespace kubevirt patch kv kubevirt -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates", "value": ["VMLiveUpdateFeatures"]}]' --type='json'
-```
-```sh
+$ kubectl --namespace kubevirt patch kv kubevirt -p='[{"op": "add", "path": "/spec/configuration/vmRolloutStrategy", "value": "LiveUpdate"}]' --type='json'
 $ kubectl --namespace kubevirt patch kv kubevirt -p='[{"op": "add", "path": "/spec/workloadUpdateStrategy/workloadUpdateMethods", "value": ["LiveMigrate"]}]' --type='json'
 ```
 
@@ -83,13 +86,11 @@ metadata:
   name: vm-cirros
 spec:
   running: true
-  liveUpdateFeatures:
-    memory:
-      maxGuest: 2Gi
   template:
     spec:
       domain:
         memory:
+          maxGuest: 2Gi
           guest: 128Mi
         devices:
           disks:
