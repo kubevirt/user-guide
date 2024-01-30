@@ -99,7 +99,7 @@ kubectl create secret generic my-pub-key --from-file=key1=id_rsa.pub
 ```
 
 The `Secret` containing the public key is then assigned to a virtual machine
-using the access credentials API with the `configDrive` propagation method.
+using the access credentials API with the `noCloud` propagation method.
 
 KubeVirt injects the SSH public key into the virtual machine by using the
 generated cloud-init metadata instead of the user data. This separates
@@ -108,7 +108,7 @@ the application user data and user credentials.
 > Note: The cloud-init `userData` is not touched.
 
 ```shell
-# Create a VM referencing the Secret using propagation method configDrive
+# Create a VM referencing the Secret using propagation method noCloud
 kubectl create -f - <<EOF
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
@@ -138,12 +138,12 @@ spec:
             secret:
               secretName: my-pub-key
           propagationMethod:
-            configDrive: {}
+            noCloud: {}
       volumes:
       - containerDisk:
           image: quay.io/containerdisks/fedora:latest
         name: containerdisk
-      - cloudInitConfigDrive:
+      - cloudInitNoCloud:
           userData: |-
             #cloud-config
             password: fedora
@@ -226,7 +226,7 @@ spec:
       - containerDisk:
           image: quay.io/containerdisks/fedora:latest
         name: containerdisk
-      - cloudInitConfigDrive:
+      - cloudInitNoCloud:
           userData: |-
             #cloud-config
             password: fedora
