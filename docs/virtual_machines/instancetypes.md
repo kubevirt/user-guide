@@ -393,17 +393,10 @@ kubectl get vms/cirros -o json | jq '.spec.instancetype, .spec.preference'
 
 ## common-instancetypes
 
-A set of common instance types and preferences are provided through the [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) project. To install all resources provided by the project, simply build with `kustomize` and apply:
+The [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) provide a set of [instancetypes and preferences](../virtual_machines/instancetypes.md) to help create KubeVirt [`VirtualMachines`](http://kubevirt.io/api-reference/main/definitions.html#_v1alpha1_virtualmachine).
 
-```yaml
-$ kubectl kustomize https://github.com/kubevirt/common-instancetypes.git | kubectl apply -f -
-```
+See [Deploy common-instancetypes](../operations/deploy_common_instancetypes.md) on how to deploy them.
 
-Alternatively targets for each of the available custom resource types are available for example for `VirtualMachineClusterInstancetype`:
-
-```yaml
-$ kubectl kustomize https://github.com/kubevirt/common-instancetypes.git/VirtualMachineClusterInstancetypes | kubectl apply -f -
-```
 ## Examples
 
 Various examples are available within the [`kubevirt`](https://github.com/kubevirt/kubevirt) repo under [`/examples`](https://github.com/kubevirt/kubevirt/tree/main/examples). The following uses an example `VirtualMachine` provided by the [`containerdisk/fedora` repo](https://quay.io/repository/containerdisks/fedora) and replaces much of the `DomainSpec` with the equivalent instance type and preferences:
