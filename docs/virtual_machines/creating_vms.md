@@ -1,8 +1,10 @@
 # Creating VirtualMachines
 
 The virtctl sub command `create vm` allows easy creation of VirtualMachine
-manifests from the command line. It
-leverages [instance types and preferences](./instancetypes.md)
+manifests from the command line. It leverages
+[instance types and preferences](./instancetypes.md) and inference by
+default (see
+[Specifying or inferring instance types and preferences](#specifying-or-inferring-instance-types-and-preferences))
 and provides several flags to control details of the created virtual machine.
 
 For example there are flags to specify the name or run strategy of a
@@ -123,13 +125,21 @@ virtctl create vm \
 If a prefix was not supplied the cluster scoped resources will be used by
 default.
 
-To
+To explicitly
 infer [instance types and/or preferences](./instancetypes.md#inferFromVolume)
 from the volume used to boot the virtual machine add the following flags:
 
 ```shell
 virtctl create vm --infer-instancetype --infer-preference
 ```
+
+The implicit default is to always try inferring an instancetype and
+preference from the boot volume. This feature makes use of the
+`IgnoreInferFromVolumeFailure` policy, which suppresses failures on inference
+of instancetypes and preferences. If one of the above switches was provided
+explicitly, then the `RejectInferFromVolumeFailure` policy is used instead.
+This way users are made aware of potential issues during the virtual machine
+creation.
 
 ## Boot order of added volumes
 
