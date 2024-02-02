@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/operations/memory_dump/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/operations/memory_hotplug/">
       
       
-        <link rel="prev" href="../clone_api/">
+        <link rel="prev" href="../cpu_hotplug/">
       
       
-        <link rel="next" href="../mediated_devices_configuration/">
+        <link rel="next" href="../../virtual_machines/virtual_machine_instances/">
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Virtual machine memory dump - KubeVirt user guide</title>
+        <title>Memory Hotplug - KubeVirt user guide</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#virtual-machine-memory-dump" class="md-skip">
+        <a href="#memory-hotplug" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Virtual machine memory dump
+              Memory Hotplug
             
           </span>
         </div>
@@ -1007,30 +1007,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Virtual machine memory dump
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../memory_dump/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1039,143 +1019,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#hot-plug-feature-gate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Hot plug Feature Gate
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#virtctl-support" class="md-nav__link">
-    <span class="md-ellipsis">
-      Virtctl support
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Virtctl support">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#get-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Get memory dump
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Get memory dump">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#existing-pvc" class="md-nav__link">
-    <span class="md-ellipsis">
-      Existing PVC
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#on-demand-pvc" class="md-nav__link">
-    <span class="md-ellipsis">
-      On demand PVC
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#download-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Download memory dump
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#monitoring-the-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Monitoring the memory dump
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#retriggering-the-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Retriggering the memory dump
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#remove-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remove memory dump
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#handle-the-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Handle the memory dump
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1332,10 +1175,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../memory_hotplug/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Memory Hotplug
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1344,6 +1207,35 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2336,117 +2228,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#limitations" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#hot-plug-feature-gate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Hot plug Feature Gate
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#virtctl-support" class="md-nav__link">
-    <span class="md-ellipsis">
-      Virtctl support
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Virtctl support">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#get-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Get memory dump
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Get memory dump">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#existing-pvc" class="md-nav__link">
-    <span class="md-ellipsis">
-      Existing PVC
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#on-demand-pvc" class="md-nav__link">
-    <span class="md-ellipsis">
-      On demand PVC
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#download-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Download memory dump
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#monitoring-the-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Monitoring the memory dump
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#retriggering-the-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Retriggering the memory dump
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#remove-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Remove memory dump
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#handle-the-memory-dump" class="md-nav__link">
-    <span class="md-ellipsis">
-      Handle the memory dump
+      Limitations
     </span>
   </a>
   
@@ -2467,7 +2251,7 @@
                   
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/memory_dump.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/memory_hotplug.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -2476,92 +2260,113 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/operations/memory_dump.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/operations/memory_hotplug.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-<h1 id="virtual-machine-memory-dump">Virtual machine memory dump<a class="headerlink" href="#virtual-machine-memory-dump" title="Permanent link">&para;</a></h1>
-<p>Kubevirt now supports getting a VM memory dump for analysis purposes.
-The Memory dump can be used to diagnose, identify and resolve issues in the VM. Typically providing information about the last state of the programs, applications and system before they were terminated or crashed.</p>
-<blockquote>
-<p><em>Note</em> This memory dump is not used for saving VM state and resuming it later.</p>
-</blockquote>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<h3 id="hot-plug-feature-gate">Hot plug Feature Gate<a class="headerlink" href="#hot-plug-feature-gate" title="Permanent link">&para;</a></h3>
-<p>The memory dump process mounts a PVC to the virt-launcher in order to get the output in that PVC, hence the hot plug volumes feature gate must be enabled. The
-<a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gates</a>
-field in the KubeVirt CR must be expanded by adding the <code>HotplugVolumes</code> to it.</p>
-<h2 id="virtctl-support">Virtctl support<a class="headerlink" href="#virtctl-support" title="Permanent link">&para;</a></h2>
-<h3 id="get-memory-dump">Get memory dump<a class="headerlink" href="#get-memory-dump" title="Permanent link">&para;</a></h3>
-<p>Now lets assume we have a running VM and the name of the VM is 'my-vm'.
-We can either dump to an existing pvc, or request one to be created.</p>
-<h4 id="existing-pvc">Existing PVC<a class="headerlink" href="#existing-pvc" title="Permanent link">&para;</a></h4>
-<p>The size of the PVC must be big enough to hold the memory dump. The calculation is (VMMemorySize + 100Mi) * FileSystemOverhead, Where <code>VMMemorySize</code> is the memory size,
-100Mi is reserved space for the memory dump overhead and <code>FileSystemOverhead</code> is the value used to adjust requested PVC size with the filesystem overhead.
-also the PVC must have a <code>FileSystem</code> volume mode.</p>
-<p>Example for such PVC:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersistentVolumeClaim</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pvc</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReadWriteOnce</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">resources</span><span class="p">:</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">requests</span><span class="p">:</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rook-ceph-block</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">volumeMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Filesystem</span>
+<h1 id="memory-hotplug">Memory Hotplug<a class="headerlink" href="#memory-hotplug" title="Permanent link">&para;</a></h1>
+<p>Memory hotplug was introduced in KubeVirt version 1.1, enabling the dynamic resizing of the amount of memory available to a running VM.</p>
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Memory hotplug is currently only supported on the x86_64 architecture.</li>
+<li>Current hotplug implementation involves live-migration of the VM workload.</li>
+</ul>
+<h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h1>
+<h3 id="enable-feature-gate">Enable feature-gate<a class="headerlink" href="#enable-feature-gate" title="Permanent link">&para;</a></h3>
+<p>To use memory hotplug we need to add the <code>VMLiveUpdateFeatures</code> feature gate in the KubeVirt CR:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMLiveUpdateFeatures</span>
 </code></pre></div>
-<p>We can get a memory dump of the VM to the PVC by using the 'memory-dump get' command available with virtctl</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>memory-dump<span class="w"> </span>get<span class="w"> </span>my-vm<span class="w"> </span>--claim-name<span class="o">=</span>my-pvc
+<h3 id="configure-the-workload-update-strategy">Configure the Workload Update Strategy<a class="headerlink" href="#configure-the-workload-update-strategy" title="Permanent link">&para;</a></h3>
+<p>Configure <code>LiveMigrate</code> as <code>workloadUpdateStrategy</code> in the KubeVirt CR, since the current implementation of the hotplug process requires the VM to live-migrate.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">workloadUpdateStrategy</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">workloadUpdateMethods</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigrate</span>
 </code></pre></div>
-<h4 id="on-demand-pvc">On demand PVC<a class="headerlink" href="#on-demand-pvc" title="Permanent link">&para;</a></h4>
-<p>For on demand PVC, we need to add <code>--create-claim</code> flag to the virtctl request:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>memory-dump<span class="w"> </span>get<span class="w"> </span>my-vm<span class="w"> </span>--claim-name<span class="o">=</span>new-pvc<span class="w"> </span>--create-claim
+<h3 id="enable-in-vm-specification">Enable in VM Specification<a class="headerlink" href="#enable-in-vm-specification" title="Permanent link">&para;</a></h3>
+<p>Finally, enable memory hotplug in the VM specification:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">liveUpdateFeatures</span><span class="p">:</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">memory</span><span class="p">:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">maxGuest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
 </code></pre></div>
-<p>A PVC with size big enough for the dump will be created. We can also request specific storage class and access mode with appropriate flags.</p>
-<h4 id="download-memory-dump">Download memory dump<a class="headerlink" href="#download-memory-dump" title="Permanent link">&para;</a></h4>
-<p>By adding the <code>--output</code> flag, the memory will be dumped to the PVC and then downloaded to the given output path.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>memory-dump<span class="w"> </span>get<span class="w"> </span>myvm<span class="w"> </span>--claim-name<span class="o">=</span>memoryvolume<span class="w"> </span>--create-claim<span class="w"> </span>--output<span class="o">=</span>memoryDump.dump.gz
+Specifying the memory.maxGuest value is optional. If left unset, it defaults to the value defined in maxHotplugRatio inside the KubeVirt CR (refer to <a href="https://kubevirt.io/api-reference/v1.1.0/definitions.html#_v1_liveupdateconfiguration">KubeVirt API Reference</a>). For example, if a VM is configured with 512Mi of guest memory and maxGuest is not defined, and maxHotplugRatio is 2, then maxGuest will equal 1Gi.</p>
+<p><strong>NOTE:</strong> If memory hotplug is enabled/disabled on an already running VM a reboot is necessary for the changes to take effect.</p>
+<p>Optionally, you can set the maximum amount of memory for the guest using a cluster level setting in the KubeVirt CR.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">liveUpdateConfiguration</span><span class="p">:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">maxGuest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8Gi</span>
 </code></pre></div>
-<p>For downloading the last memory dump from the PVC associated with the VM, without triggering another memory dump, use the memory dump download command.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>memory-dump<span class="w"> </span>download<span class="w"> </span>myvm<span class="w"> </span>--output<span class="o">=</span>memoryDump.dump.gz
+<p>The VM-level configuration will take precedence over the cluster-wide one.</p>
+<h2 id="memory-hotplug-in-action">Memory Hotplug in Action<a class="headerlink" href="#memory-hotplug-in-action" title="Permanent link">&para;</a></h2>
+<p>First we enable the <code>VMLiveUpdateFeatures</code> feature gate and set <code>LiveMigrate</code> as <code>workloadUpdateStrategy</code> in the KubeVirt CR.</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>--namespace<span class="w"> </span>kubevirt<span class="w"> </span>patch<span class="w"> </span>kv<span class="w"> </span>kubevirt<span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/configuration/developerConfiguration/featureGates&quot;, &quot;value&quot;: [&quot;VMLiveUpdateFeatures&quot;]}]&#39;</span><span class="w"> </span>--type<span class="o">=</span><span class="s1">&#39;json&#39;</span>
 </code></pre></div>
-<p>For downloading a memory dump from a PVC already disassociated from the VM you can use the <a href="https://github.com/kubevirt/user-guide/blob/main/docs/operations/export_api.md">virtctl vmexport command</a></p>
-<h3 id="monitoring-the-memory-dump">Monitoring the memory dump<a class="headerlink" href="#monitoring-the-memory-dump" title="Permanent link">&para;</a></h3>
-<p>Information regarding the memory dump process will be available on the VM's status section
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">memoryDumpRequest</span><span class="p">:</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">memory-dump</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">phase</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Completed</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">startTimestamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2022-03-29T11:00:04Z&quot;</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">endTimestamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2022-03-29T11:00:09Z&quot;</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nt">fileName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-vm-my-pvc-20220329-110004</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>--namespace<span class="w"> </span>kubevirt<span class="w"> </span>patch<span class="w"> </span>kv<span class="w"> </span>kubevirt<span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/workloadUpdateStrategy/workloadUpdateMethods&quot;, &quot;value&quot;: [&quot;LiveMigrate&quot;]}]&#39;</span><span class="w"> </span>--type<span class="o">=</span><span class="s1">&#39;json&#39;</span>
 </code></pre></div></p>
-<p>During the process the volumeStatus on the VMI will be updated with the process information such as the attachment pod information and messages, if all goes well once the process is completed, the PVC is unmounted from the virt-launcher pod and the volumeStatus is deleted.
-A memory dump annotation will be added to the PVC with the memory dump file name.</p>
-<h3 id="retriggering-the-memory-dump">Retriggering the memory dump<a class="headerlink" href="#retriggering-the-memory-dump" title="Permanent link">&para;</a></h3>
-<p>Getting a new memory dump to the same PVC is possible without the need to use any flag:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>memory-dump<span class="w"> </span>get<span class="w"> </span>my-vm
-</code></pre></div></p>
-<blockquote>
-<p><em>Note</em> Each memory-dump command will delete the previous dump in that PVC.</p>
-</blockquote>
-<p>In order to get a memory dump to a different PVC you need to 'remove' the current memory-dump PVC and then do a new get with the new PVC name.</p>
-<h3 id="remove-memory-dump">Remove memory dump<a class="headerlink" href="#remove-memory-dump" title="Permanent link">&para;</a></h3>
-<p>As mentioned in order to remove the associated memory dump PVC you need to run a 'memory-dump remove' command. This will allow you to replace the current PVC and get the memory dump to a new one.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>memory-dump<span class="w"> </span>remove<span class="w"> </span>my-vm
+<p>Now we create a VM with memory hotplug enabled.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-cirros</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="nt">running</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">liveUpdateFeatures</span><span class="p">:</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">memory</span><span class="p">:</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">      </span><span class="nt">maxGuest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">        </span><span class="nt">memory</span><span class="p">:</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">          </span><span class="nt">guest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128Mi</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry:5000/kubevirt/alpine-container-disk-demo:devel</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
 </code></pre></div>
-<h2 id="handle-the-memory-dump">Handle the memory dump<a class="headerlink" href="#handle-the-memory-dump" title="Permanent link">&para;</a></h2>
-<p>Once the memory dump process is completed the PVC will hold the output.
-You can manage the dump in one of the following ways:
-- Download the memory dump
-- Create a pod with troubleshooting tools that will mount the PVC and inspect it within the pod.
-- Include the memory dump in the VM Snapshot (will include both the memory dump and the disks) to save a snapshot of the VM in that point of time and inspect it when needed. (The VM Snapshot can be exported and downloaded).</p>
-<p>The output of the memory dump can be inspected with memory analysis tools for example <a href="https://github.com/volatilityfoundation/volatility3">Volatility3</a></p>
+<p>The Virtual Machine will automatically start and once booted it will report the currently available memory to the guest in the <code>status.memory</code> field inside the VMI.</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>vmi<span class="w"> </span>vm-cirros<span class="w"> </span>-o<span class="w"> </span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.status.memory
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">&quot;guestAtBoot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;128Mi&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">&quot;guestCurrent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;128Mi&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">&quot;guestRequested&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;128Mi&quot;</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">}</span>
+</code></pre></div></p>
+<p>Since the Virtual Machine is now running we can patch the VM object to double the available guest memory so that we'll go from 128Mi to 256Mi.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>patch<span class="w"> </span>vm<span class="w"> </span>vm-cirros<span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/template/spec/domain/memory/guest&quot;, &quot;value&quot;: &quot;256Mi&quot;}]&#39;</span><span class="w"> </span>--type<span class="o">=</span><span class="s1">&#39;json&#39;</span>
+</code></pre></div>
+<p>After the hotplug request is processed and the Virtual Machine is live migrated, the new amount of memory should be available to the guest
+and visible in the VMI object.</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>vmi<span class="w"> </span>vm-cirros<span class="w"> </span>-o<span class="w"> </span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.status.memory
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">&quot;guestAtBoot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;128Mi&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">&quot;guestCurrent&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;256Mi&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="nt">&quot;guestRequested&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;256Mi&quot;</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="p">}</span>
+</code></pre></div></p>
 
 
 
@@ -2591,7 +2396,7 @@ You can manage the dump in one of the following ways:
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../clone_api/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Clone API">
+          <a href="../cpu_hotplug/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CPU Hotplug">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2601,20 +2406,20 @@ You can manage the dump in one of the following ways:
                 Previous
               </span>
               <div class="md-ellipsis">
-                Clone API
+                CPU Hotplug
               </div>
             </div>
           </a>
         
         
           
-          <a href="../mediated_devices_configuration/" class="md-footer__link md-footer__link--next" aria-label="Next: Mediated devices and virtual GPUs">
+          <a href="../../virtual_machines/virtual_machine_instances/" class="md-footer__link md-footer__link--next" aria-label="Next: Virtual Machines Instances">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Mediated devices and virtual GPUs
+                Virtual Machines Instances
               </div>
             </div>
             <div class="md-footer__button md-icon">
