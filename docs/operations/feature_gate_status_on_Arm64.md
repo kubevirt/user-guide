@@ -36,4 +36,5 @@ ClusterProfiler | Supported |
 WorkloadEncryptionSEV | Not supported | SEV is only available on x86_64
 VSOCKGate | Supported |  
 HotplugNetworkIfacesGate | Not supported yet | Need to setup *multus-cni* and *multus-dynamic-networks-controller*: https://github.com/k8snetworkplumbingwg/multus-cni <br>`cat ./deployments/multus-daemonset-thick.yml \| kubectl apply -f -`https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller <br>`kubectl apply -f manifests/dynamic-networks-controller.yaml` <br><br>Currently, the image ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot-thick does not support Arm64 server. For more information please refer to https://github.com/k8snetworkplumbingwg/multus-cni/pull/1027.
+CommonInstancetypesDeploymentGate | Not supported yet | Support of common-instancetypes instancetypes needs to be tested, common-instancetypes preferences for ARM workloads are still missing
 
