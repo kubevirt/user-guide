@@ -320,10 +320,16 @@ The `inferFromVolume` attribute of both the `InstancetypeMatcher` and `Preferenc
 
 These values are then written into the appropriate matcher by the mutation webhook and used during validation before the `VirtualMachine` is formally accepted.
 
-Failure to find the referenced `Volume` or labels on an underlying resource will cause the request to be rejected.
+The validation can be controlled by the value provided to `inferFromVolumeFailurePolicy` in either the `InstancetypeMatcher` or `PreferenceMatcher` of a `VirtualMachine`.
+
+The default value of `Reject` will cause the request to be rejected on failure to find the referenced `Volume` or labels on an underlying resource.
+
+If `Ignore` was provided, the respective `InstancetypeMatcher` or `PreferenceMatcher` will be cleared on a failure instead.
+
+Example with implicit default value of `Reject`:
 
 ```yaml
-$ kubectl kustomize https://github.com/kubevirt/common-instancetypes.git | kubectl apply -f -
+$ kubectl apply -k https://github.com/kubevirt/common-instancetypes.git
 [..]
 $ virtctl image-upload pvc cirros-pvc --size=1Gi --image-path=./cirros-0.5.2-x86_64-disk.img
 [..]
@@ -389,6 +395,64 @@ kubectl get vms/cirros -o json | jq '.spec.instancetype, .spec.preference'
   "name": "cirros",
   "revisionName": "cirros-cirros-85823ddc-9e8c-4d23-a94c-143571b5489c-1"
 }
+```
+
+Example with explicit value of `Ignore`:
+
+```yaml
+$ virtctl image-upload pvc cirros-pvc --size=1Gi --image-path=./cirros-0.5.2-x86_64-disk.img
+$ kubectl apply -f - << EOF
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataSource
+metadata:
+  name: cirros-datasource
+spec:
+  source:
+    pvc:
+      name: cirros-pvc
+      namespace: default
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: cirros
+spec:
+  instancetype:
+    inferFromVolume: cirros-volume
+    inferFromVolumeFailurePolicy: Ignore
+  preference:
+    inferFromVolume: cirros-volume
+    inferFromVolumeFailurePolicy: Ignore
+  running: false
+  dataVolumeTemplates:
+    - metadata:
+        name: cirros-datavolume
+      spec:
+        pvc:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
+          storageClassName: local
+        sourceRef:
+          kind: DataSource
+          name: cirros-datasource
+          namespace: default
+  template:
+    spec:
+      domain:
+        devices: {}
+      volumes:
+        - dataVolume:
+            name: cirros-datavolume
+          name: cirros-volume
+EOF
+[..]
+kubectl get vms/cirros -o json | jq '.spec.instancetype, .spec.preference'
+null
+null
 ```
 
 ## common-instancetypes
