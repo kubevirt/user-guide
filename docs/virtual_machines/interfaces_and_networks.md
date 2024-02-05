@@ -490,6 +490,14 @@ spec:
 > default interface type to `masquerade`, and disabling the `bridge`
 > type for pod network, as shown in the example above.
 
+> **Note:** Migrating a VM with secondary interfaces that uses bridge 
+> binding may cause long periods of traffic disruption. 
+> One of the reasons is that the migration destination pod interface advertises 
+> about its existence before the migration is completed.
+> If Bridge CNI is used, it's possible to avoid the issue by setting the
+> `disableContainerInterface` option as follows: 
+> https://www.cni.dev/plugins/current/main/bridge/#example-l2-only-disabled-interface-configuration
+
 ### slirp
 
 In `slirp` mode, virtual machines are connected to the network backend
