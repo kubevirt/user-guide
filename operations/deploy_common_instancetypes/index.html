@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/operations/mediated_devices_configuration/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/operations/deploy_common_instancetypes/">
       
       
-        <link rel="prev" href="../memory_dump/">
+        <link rel="prev" href="../customize_components/">
       
       
-        <link rel="next" href="../migration_policies/">
+        <link rel="next" href="../api_validation/">
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Mediated devices and virtual GPUs - KubeVirt user guide</title>
+        <title>Deploy common-instancetypes - KubeVirt user guide</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mediated-devices-and-virtual-gpus" class="md-skip">
+        <a href="#deploy-common-instancetypes" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Mediated devices and virtual GPUs
+              Deploy common-instancetypes
             
           </span>
         </div>
@@ -566,10 +566,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../deploy_common_instancetypes/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Deploy common-instancetypes
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -578,6 +598,44 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#enable-automatic-deployment-of-common-instancetypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable automatic deployment of common-instancetypes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-common-instancetypes-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy common-instancetypes manually
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1049,30 +1107,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Mediated devices and virtual GPUs
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../mediated_devices_configuration/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1081,131 +1119,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#configuration-scenarios" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuration scenarios
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration scenarios">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#large-cluster-with-multiple-cards-on-each-node" class="md-nav__link">
-    <span class="md-ellipsis">
-      Large cluster with multiple cards on each node
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Large cluster with multiple cards on each node">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-example-considering-the-following-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      For example, considering the following configuration:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#single-card-on-a-node-multiple-desired-vgpu-types-are-supported" class="md-nav__link">
-    <span class="md-ellipsis">
-      Single card on a node, multiple desired vGPU types are supported
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Single card on a node, multiple desired vGPU types are supported">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-example-consider-the-following-list-of-desired-types-where-nvidia-223-and-nvidia-224-are-supported" class="md-nav__link">
-    <span class="md-ellipsis">
-      For example, consider the following list of desired types, where nvidia-223 and nvidia-224 are supported:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#overriding-configuration-on-a-specifc-node" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overriding configuration on a specifc node
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Overriding configuration on a specifc node">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-example-considering-the-following-configuration_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      For example, considering the following configuration:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#updating-and-removing-vgpu-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      Updating and Removing vGPU types
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#assigning-vgpumdev-to-a-virtual-machine" class="md-nav__link">
-    <span class="md-ellipsis">
-      Assigning vGPU/MDEV to a Virtual Machine
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2345,105 +2258,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configuration-scenarios" class="md-nav__link">
+  <a href="#enable-automatic-deployment-of-common-instancetypes" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuration scenarios
+      Enable automatic deployment of common-instancetypes
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Configuration scenarios">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#large-cluster-with-multiple-cards-on-each-node" class="md-nav__link">
-    <span class="md-ellipsis">
-      Large cluster with multiple cards on each node
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Large cluster with multiple cards on each node">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-example-considering-the-following-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      For example, considering the following configuration:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#single-card-on-a-node-multiple-desired-vgpu-types-are-supported" class="md-nav__link">
-    <span class="md-ellipsis">
-      Single card on a node, multiple desired vGPU types are supported
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Single card on a node, multiple desired vGPU types are supported">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-example-consider-the-following-list-of-desired-types-where-nvidia-223-and-nvidia-224-are-supported" class="md-nav__link">
-    <span class="md-ellipsis">
-      For example, consider the following list of desired types, where nvidia-223 and nvidia-224 are supported:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#overriding-configuration-on-a-specifc-node" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overriding configuration on a specifc node
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Overriding configuration on a specifc node">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#for-example-considering-the-following-configuration_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      For example, considering the following configuration:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#updating-and-removing-vgpu-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      Updating and Removing vGPU types
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#assigning-vgpumdev-to-a-virtual-machine" class="md-nav__link">
+  <a href="#deploy-common-instancetypes-manually" class="md-nav__link">
     <span class="md-ellipsis">
-      Assigning vGPU/MDEV to a Virtual Machine
+      Deploy common-instancetypes manually
     </span>
   </a>
   
@@ -2464,7 +2290,7 @@
                   
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/mediated_devices_configuration.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/deploy_common_instancetypes.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -2473,117 +2299,29 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/operations/mediated_devices_configuration.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/operations/deploy_common_instancetypes.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-<h1 id="mediated-devices-and-virtual-gpus">Mediated devices and virtual GPUs<a class="headerlink" href="#mediated-devices-and-virtual-gpus" title="Permanent link">&para;</a></h1>
-<p>KubeVirt aims to facilitate the configuration of mediated devices on large clusters.
-The new <code>mediatedDevicesConfiguration</code> API in KubeVirt CR allows administrators to
-create or remove mediated devices in a declarative way, by providing a list of the desired mediated devices types  that they expect to be configured in the cluster.</p>
-<p>It would also be possible to provide a more specific configuration that targets a specific node or a group of nodes directly.
-This can be achieved by using the <code>nodeMediatedDeviceTypes</code>, however, it must be used in a combination with <code>mediatedDevicesTypes</code>, to override the global
-configuration set in <code>mediatedDevicesTypes</code> section. Therefore, using <code>nodeMediatedDeviceTypes</code> without the <code>mediatedDevicesTypes</code> section is not supported.</p>
-<p>KubeVirt will use the provided configuration to automatically create the relevant mdev/vGPU devices on nodes that can support it.</p>
-<p>Currently, a single mdev type per card will be configured.
-The maximum amount of instances of the selected mdev type will be configured per card.</p>
-<blockquote>
-<p>Note: Some vendors, such as NVIDIA, require a driver to be installed on the nodes to provide mediated devices, including vGPUs.</p>
-</blockquote>
-<p>Here's an example of a configuration that can be provided to KubeVirt CR:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">spec</span><span class="p">:</span><span class="w">  </span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span><span class="w">  </span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">     </span><span class="nt">mediatedDevicesConfiguration</span><span class="p">:</span><span class="w">  </span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">       </span><span class="nt">mediatedDevicesTypes</span><span class="p">:</span><span class="w">  </span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">       </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-222</span><span class="w">  </span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">       </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-228</span><span class="w">  </span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">       </span><span class="nt">nodeMediatedDeviceTypes</span><span class="p">:</span><span class="w">  </span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">       </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w">  </span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">           </span><span class="nt">kubernetes.io/hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nodeName</span><span class="w">  </span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">         </span><span class="nt">mediatedDevicesTypes</span><span class="p">:</span><span class="w">  </span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">         </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-234</span>
-</code></pre></div></p>
-<h2 id="configuration-scenarios">Configuration scenarios<a class="headerlink" href="#configuration-scenarios" title="Permanent link">&para;</a></h2>
-<h3 id="large-cluster-with-multiple-cards-on-each-node">Large cluster with multiple cards on each node<a class="headerlink" href="#large-cluster-with-multiple-cards-on-each-node" title="Permanent link">&para;</a></h3>
-<p>On nodes with multiple cards that can support similar vGPU types, the relevant desired types will be created in a round-robin manner.  </p>
-<h4 id="for-example-considering-the-following-configuration">For example, considering the following configuration:<a class="headerlink" href="#for-example-considering-the-following-configuration" title="Permanent link">&para;</a></h4>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>mediatedDevicesConfiguration:
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  mediatedDevicesTypes:
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  - nvidia-222
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  - nvidia-228
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  - nvidia-105
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  - nvidia-108
+<h1 id="deploy-common-instancetypes">Deploy common-instancetypes<a class="headerlink" href="#deploy-common-instancetypes" title="Permanent link">&para;</a></h1>
+<p>The <a href="https://github.com/kubevirt/common-instancetypes"><code>kubevirt/common-instancetypes</code></a> provide a set of <a href="../../virtual_machines/instancetypes/">instancetypes and preferences</a> to help create KubeVirt <a href="http://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachines</code></a>.</p>
+<p>Beginning with the 1.1 release of KubeVirt, cluster wide resources can be deployed directly through KubeVirt, without another operator.
+This allows deployment of a set of default instancetypes and preferences along side KubeVirt.</p>
+<h2 id="enable-automatic-deployment-of-common-instancetypes">Enable automatic deployment of common-instancetypes<a class="headerlink" href="#enable-automatic-deployment-of-common-instancetypes" title="Permanent link">&para;</a></h2>
+<p>To enable the deployment of cluster-wide common-instancetypes through the KubeVirt <code>virt-operator</code>, the <code>CommonInstancetypesDeploymentGate</code> feature gate needs to be enabled.</p>
+<p>See <a href="../activating_feature_gates/">Activating feature gates</a> on how to enable it.</p>
+<h2 id="deploy-common-instancetypes-manually">Deploy common-instancetypes manually<a class="headerlink" href="#deploy-common-instancetypes-manually" title="Permanent link">&para;</a></h2>
+<p>For customization purposes or to install namespaced resources, common-instancetypes can also be deployed by hand.</p>
+<p>To install all resources provided by the <a href="https://github.com/kubevirt/common-instancetypes"><code>kubevirt/common-instancetypes</code></a> project without further customizations, simply apply with <a href="https://kustomize.io/"><code>kustomize</code></a> enabled (-k flag):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl apply -k https://github.com/kubevirt/common-instancetypes.git</span>
 </code></pre></div>
-* Nodes with 2 Tesla T4 cards
-  * Each card can support multiple types:
-    * nvidia-222
-    * nvidia-223
-    * nvidia-228
-    * ...
-* Nodes with 2 Tesla V100 cards
-  * Each card can support multiple types:
-    * nvidia-105
-    * ...
-    * nvidia-108
-    * nvidia-217
-    * nvidia-299
-    * ...</p>
-<p>KubeVirt will create the following devices:</p>
-<ul>
-<li>Nodes with 3 Tesla T4 cards will be configured with</li>
-<li>16 vGPUs of type nvidia-222 on card 1</li>
-<li>2 vGPUs of type nvidia-228 on card 2</li>
-<li>16 vGPUs of type nvidia-222 on card 3</li>
-<li>Nodes with 2 Tesla V100 cards will be configured with</li>
-<li>16 vGPUs of type nvidia-105 on card 1</li>
-<li>2 vGPUs of type nvidia-108 on card 2</li>
-</ul>
-<h3 id="single-card-on-a-node-multiple-desired-vgpu-types-are-supported">Single card on a node, multiple desired vGPU types are supported<a class="headerlink" href="#single-card-on-a-node-multiple-desired-vgpu-types-are-supported" title="Permanent link">&para;</a></h3>
-<p>The first supported type from the list will be configured  </p>
-<h5 id="for-example-consider-the-following-list-of-desired-types-where-nvidia-223-and-nvidia-224-are-supported">For example, consider the following list of desired types, where nvidia-223 and nvidia-224 are supported:<a class="headerlink" href="#for-example-consider-the-following-list-of-desired-types-where-nvidia-223-and-nvidia-224-are-supported" title="Permanent link">&para;</a></h5>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mediatedDevicesConfiguration:
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  mediatedDevicesTypes:  
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  - nvidia-22  
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  - nvidia-223  
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  - nvidia-224
+<p>Alternatively, targets for each of the available custom resource types (e.g. namespaced instancetypes) are available.</p>
+<p>For example, to deploy <code>VirtualMachineInstancetypes</code> run the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl apply -k https://github.com/kubevirt/common-instancetypes.git/VirtualMachineInstancetypes</span>
 </code></pre></div>
-In this case, nvidia-223 will be configured on the node.</p>
-<h3 id="overriding-configuration-on-a-specifc-node">Overriding configuration on a specifc node<a class="headerlink" href="#overriding-configuration-on-a-specifc-node" title="Permanent link">&para;</a></h3>
-<p><code>nodeMediatedDeviceTypes</code> needs to be used along with <code>mediatedDevicesTypes</code>, to override the global config brought in by, <code>mediatedDevicesTypes</code>.</p>
-<h4 id="for-example-considering-the-following-configuration_1">For example, considering the following configuration:<a class="headerlink" href="#for-example-considering-the-following-configuration_1" title="Permanent link">&para;</a></h4>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>mediatedDevicesConfiguration:
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  mediatedDevicesTypes:  
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  - nvidia-230
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  - nvidia-223  
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  - nvidia-224
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  nodeMediatedDeviceTypes:  
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  - nodeSelector:  
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>      kubernetes.io/hostname: node2  
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    mediatedDevicesTypes:  
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    - nvidia-234
-</code></pre></div>
-* Two nodes has 2 Tesla T4 cards
-  * Each card can support a long list of types:
-    * nvidia-222
-    * nvidia-223
-    * nvidia-224
-    * nvidia-230
-    * ...</p>
-<p>KubeVirt will create the following devices:
-* Node 1
-  * type nvidia-230 on card 1
-  * type nvidia-223 on card 2
-* Node 2
-  * type nvidia-234 on card 1 and card 2</p>
-<h3 id="updating-and-removing-vgpu-types">Updating and Removing vGPU types<a class="headerlink" href="#updating-and-removing-vgpu-types" title="Permanent link">&para;</a></h3>
-<p>Changes made to the mediatedDevicesTypes section of the KubeVirt CR will trigger a re-evaluation of the configured mdevs/vGPU types on the cluster nodes.</p>
-<p>Any change to the node labels that match the nodeMediatedDeviceTypes nodeSelector in the KubeVirt CR will trigger a similar re-evaluation.</p>
-<p>Consequently, mediated devices will be reconfigured or entirely removed based on the updated configuration.</p>
-<h2 id="assigning-vgpumdev-to-a-virtual-machine">Assigning vGPU/MDEV to a Virtual Machine<a class="headerlink" href="#assigning-vgpumdev-to-a-virtual-machine" title="Permanent link">&para;</a></h2>
-<p>See the <a href="../../virtual_machines/host-devices/">Host Devices Assignment</a> to learn how to consume the newly created mediated devices/vGPUs</p>
 
 
 
@@ -2613,7 +2351,7 @@ In this case, nvidia-223 will be configured on the node.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../memory_dump/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Virtual machine memory dump">
+          <a href="../customize_components/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Customize components">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2623,20 +2361,20 @@ In this case, nvidia-223 will be configured on the node.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Virtual machine memory dump
+                Customize components
               </div>
             </div>
           </a>
         
         
           
-          <a href="../migration_policies/" class="md-footer__link md-footer__link--next" aria-label="Next: Migration Policies">
+          <a href="../api_validation/" class="md-footer__link md-footer__link--next" aria-label="Next: API Validation">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Migration Policies
+                API Validation
               </div>
             </div>
             <div class="md-footer__button md-icon">

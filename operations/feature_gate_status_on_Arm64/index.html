@@ -569,6 +569,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../deploy_common_instancetypes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deploy common-instancetypes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../api_validation/" class="md-nav__link">
         
   
@@ -2353,6 +2374,11 @@ It records the feature gate status on Arm64 platform. Here is the explanation of
 <td>HotplugNetworkIfacesGate</td>
 <td>Not supported yet</td>
 <td>Need to setup <em>multus-cni</em> and <em>multus-dynamic-networks-controller</em>: https://github.com/k8snetworkplumbingwg/multus-cni <br><code>cat ./deployments/multus-daemonset-thick.yml \| kubectl apply -f -</code>https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller <br><code>kubectl apply -f manifests/dynamic-networks-controller.yaml</code> <br><br>Currently, the image ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot-thick does not support Arm64 server. For more information please refer to https://github.com/k8snetworkplumbingwg/multus-cni/pull/1027.</td>
+</tr>
+<tr>
+<td>CommonInstancetypesDeploymentGate</td>
+<td>Not supported yet</td>
+<td>Support of common-instancetypes instancetypes needs to be tested, common-instancetypes preferences for ARM workloads are still missing</td>
 </tr>
 </tbody>
 </table>
