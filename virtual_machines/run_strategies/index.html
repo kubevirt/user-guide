@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.7">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.8">
     
     
       
@@ -2401,30 +2401,40 @@ have somewhat overlapping conditions. There are currently four
 RunStrategies defined:</p>
 <ul>
 <li>
-<p>Always: A VirtualMachineInstance will always be present. If the
-    VirtualMachineInstance crashed, a new one will be spawned. This is
-    the same behavior as <code>spec.running: true</code>.</p>
+<p>Always: The system is tasked with keeping the VM in a running
+    state.
+    This is achieved by respawning a VirtualMachineInstance whenever
+    the current one terminated in a controlled (e.g. shutdown from
+    inside the guest) or uncontrolled (e.g. crash) way.
+    This behavior is equal to <code>spec.running: true</code>.</p>
 </li>
 <li>
-<p>RerunOnFailure: A VirtualMachineInstance will be respawned if the
-    previous instance failed in an error state. It will not be
-    re-created if the guest stopped successfully (e.g. shut down from
-    inside guest).</p>
+<p>RerunOnFailure: Similar to <code>Always</code>, except that the VM is only
+    restarted if it terminated in an uncontrolled way (e.g. crash)
+    and due to an infrastructure reason (i.e. the node crashed,
+    the KVM related process OOMed).
+    This allows a user to determine when the VM should be shut down
+    by initiating the shut down inside the guest.
+    Note: Guest sided crashes (i.e. BSOD) are not covered by this.
+    In such cases liveness checks or the use of a watchdog can help.</p>
 </li>
 <li>
-<p>Manual: The presence of a VirtualMachineInstance or lack thereof is
-    controlled exclusively by the start/stop/restart VirtualMachine
+<p>Manual: The system will not automatically turn the VM on or off,
+    instead the user manually controlls the VM status by issuing
+    start, stop, and restart commands on the VirtualMachine
     subresource endpoints.</p>
 </li>
 <li>
-<p>Halted: No VirtualMachineInstance will be present. If a guest is
-    already running, it will be stopped. This is the same behavior as
-    <code>spec.running: false</code>.</p>
+<p>Halted: The system is asked to ensure that no VM is running.
+    This is achieved by stopping any VirtualMachineInstance that is
+    associated ith the VM. If a guest is already running, it will be
+    stopped.
+    This behavior is equal to <code>spec.running: false</code>.</p>
 </li>
 </ul>
-<p><em>Note</em>: RunStrategy and Running are mutually exclusive, because they can
-be contradictory. The API server will reject VirtualMachine resources
-that define both.</p>
+<p><em>Note</em>: <code>RunStrategy</code> and <code>running</code> are mutually exclusive, because
+they can be contradictory. The API server will reject VirtualMachine
+resources that define both.</p>
 <h3 id="virtctl">Virtctl<a class="headerlink" href="#virtctl" title="Permanent link">&para;</a></h3>
 <p>The <code>start</code>, <code>stop</code> and <code>restart</code> methods of virtctl will invoke their
 respective subresources of VirtualMachines. This can have an effect on
@@ -2591,7 +2601,7 @@ on RunStrategy.</p>
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.caa56a14.min.js"></script>
+      <script src="../../assets/javascripts/bundle.8fd75fb4.min.js"></script>
       
     
   </body>
