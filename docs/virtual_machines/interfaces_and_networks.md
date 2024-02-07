@@ -77,10 +77,10 @@ It is also possible to connect VMIs to secondary networks using
 is installed across your cluster and a corresponding
 `NetworkAttachmentDefinition` CRD was created.
 
-The following example defines a network which uses the [ovs-cni
-plugin](https://github.com/kubevirt/ovs-cni), which will connect the VMI
-to Open vSwitch's bridge `br1` and VLAN 100. Other CNI plugins such as
-ptp, bridge, or Flannel might be used as well. For their
+The following example defines a network which uses the [bridge CNI
+plugin](https://www.cni.dev/plugins/current/main/bridge/), which will connect the VMI
+to Linux bridge `br1`. Other CNI plugins such as
+ptp, ovs-cni, or Flannel might be used as well. For their
 installation and usage refer to the respective project documentation.
 
 First the `NetworkAttachmentDefinition` needs to be created. That is
@@ -91,13 +91,14 @@ definition.
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: ovs-vlan-100
+  name: bridge-test
 spec:
   config: '{
       "cniVersion": "0.3.1",
-      "type": "ovs",
+      "name": "bridge-test",
+      "type": "bridge",
       "bridge": "br1",
-      "vlan": 100
+      "disableContainerInterface": true
     }'
 ```
 
