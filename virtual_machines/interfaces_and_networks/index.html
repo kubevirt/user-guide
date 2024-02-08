@@ -2940,10 +2940,10 @@ by cluster network solution that is present in each pod.</p>
 <a href="https://github.com/intel/multus-cni">Multus</a>. This assumes that multus
 is installed across your cluster and a corresponding
 <code>NetworkAttachmentDefinition</code> CRD was created.</p>
-<p>The following example defines a network which uses the <a href="https://github.com/kubevirt/ovs-cni">ovs-cni
+<p>The following example defines a network which uses the <a href="https://www.cni.dev/plugins/current/main/bridge/">bridge CNI
 plugin</a>, which will connect the VMI
-to Open vSwitch's bridge <code>br1</code> and VLAN 100. Other CNI plugins such as
-ptp, bridge, or Flannel might be used as well. For their
+to Linux bridge <code>br1</code>. Other CNI plugins such as
+ptp, ovs-cni, or Flannel might be used as well. For their
 installation and usage refer to the respective project documentation.</p>
 <p>First the <code>NetworkAttachmentDefinition</code> needs to be created. That is
 usually done by an administrator. Users can then reference the
@@ -2951,14 +2951,15 @@ definition.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;k8s.cni.cncf.io/v1&quot;</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkAttachmentDefinition</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ovs-vlan-100</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bridge-test</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="s">&quot;cniVersion&quot;:</span><span class="nv"> </span><span class="s">&quot;0.3.1&quot;,</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;ovs&quot;,</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="s">&quot;bridge&quot;:</span><span class="nv"> </span><span class="s">&quot;br1&quot;,</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="s">&quot;vlan&quot;:</span><span class="nv"> </span><span class="s">100</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="s">}&#39;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="s">&quot;name&quot;:</span><span class="nv"> </span><span class="s">&quot;bridge-test&quot;,</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;bridge&quot;,</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="s">&quot;bridge&quot;:</span><span class="nv"> </span><span class="s">&quot;br1&quot;,</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="s">&quot;disableContainerInterface&quot;:</span><span class="nv"> </span><span class="s">true</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="s">}&#39;</span>
 </code></pre></div>
 <p>With following definition, the VMI will be connected to the default pod
 network and to the secondary Open vSwitch network.</p>
@@ -3920,17 +3921,12 @@ The following text refers to the secondary networks, served using multus.</p>
 <ul>
 <li><a href="https://github.com/openshift/sriov-cni">sriov-cni</a>:
   Through the <code>spoofchk</code> parameter .</li>
-<li>cnv-bridge: Through the <code>macspoofchk</code>.</li>
+<li><a href="https://www.cni.dev/plugins/current/main/bridge/">bridge-cni</a>:
+  Through the <code>macspoofchk</code> parameter.</li>
 </ul>
-<blockquote>
-<p><strong>Note:</strong> <code>cnv-bridge</code> is provided by
-  <a href="https://github.com/kubevirt/cluster-network-addons-operator">CNAO</a>.
-  The <a href="https://github.com/containernetworking/plugins">bridge-cni</a> is planned
-  to support the <code>macspoofchk</code> options as well.</p>
-</blockquote>
 <p>The configuration is to be done on the  NetworkAttachmentDefinition by the
 operator and any interface that refers to it, will have this feature enabled.</p>
-<p>Below is an example of using the <code>cnv-bridge</code> CNI with <code>macspoofchk</code> enabled:
+<p>Below is an example of using the <code>bridge</code> CNI with <code>macspoofchk</code> enabled:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;k8s.cni.cncf.io/v1&quot;</span>
 <a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkAttachmentDefinition</span>
 <a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -3939,10 +3935,11 @@ operator and any interface that refers to it, will have this feature enabled.</p
 <a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{</span>
 <a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">            </span><span class="s">&quot;cniVersion&quot;:</span><span class="nv"> </span><span class="s">&quot;0.3.1&quot;,</span>
 <a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">            </span><span class="s">&quot;name&quot;:</span><span class="nv"> </span><span class="s">&quot;br-spoof-check&quot;,</span>
-<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="w">            </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;cnv-bridge&quot;,</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="w">            </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;bridge&quot;,</span>
 <a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="w">            </span><span class="s">&quot;bridge&quot;:</span><span class="nv"> </span><span class="s">&quot;br10&quot;,</span>
-<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="w">            </span><span class="s">&quot;macspoofchk&quot;:</span><span class="nv"> </span><span class="s">true</span>
-<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="w">        </span><span class="s">}&#39;</span>
+<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="w">            </span><span class="s">&quot;disableContainerInterface&quot;:</span><span class="nv"> </span><span class="s">true,</span>
+<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="w">            </span><span class="s">&quot;macspoofchk&quot;:</span><span class="nv"> </span><span class="s">true</span>
+<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a><span class="w">        </span><span class="s">}&#39;</span>
 </code></pre></div></p>
 <p>On the VMI, the network section should point to this
 NetworkAttachmentDefinition by name:
@@ -3955,7 +3952,7 @@ NetworkAttachmentDefinition by name:
 </code></pre></div></p>
 <h4 id="limitations_1">Limitations<a class="headerlink" href="#limitations_1" title="Permanent link">&para;</a></h4>
 <ul>
-<li>The <code>cnv-bridge</code> CNI supports mac-spoof-check through nftables, therefore
+<li>The <code>bridge</code> CNI supports mac-spoof-check through nftables, therefore
 the node must support nftables and have the <code>nft</code> binary deployed.</li>
 </ul>
 
