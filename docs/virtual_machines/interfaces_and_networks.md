@@ -1080,17 +1080,13 @@ There are two known CNI plugins that support mac-spoof-check:
 
 - [sriov-cni](https://github.com/openshift/sriov-cni):
   Through the `spoofchk` parameter .
-- cnv-bridge: Through the `macspoofchk`.
-
-> **Note:** `cnv-bridge` is provided by
-  [CNAO](https://github.com/kubevirt/cluster-network-addons-operator).
-  The [bridge-cni](https://github.com/containernetworking/plugins) is planned
-  to support the `macspoofchk` options as well.
+- [bridge-cni](https://www.cni.dev/plugins/current/main/bridge/):
+  Through the `macspoofchk` parameter.
 
 The configuration is to be done on the  NetworkAttachmentDefinition by the
 operator and any interface that refers to it, will have this feature enabled.
 
-Below is an example of using the `cnv-bridge` CNI with `macspoofchk` enabled:
+Below is an example of using the `bridge` CNI with `macspoofchk` enabled:
 ```yaml
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
@@ -1120,5 +1116,5 @@ networks:
 
 #### Limitations
 
-- The `cnv-bridge` CNI supports mac-spoof-check through nftables, therefore
+- The `bridge` CNI supports mac-spoof-check through nftables, therefore
 the node must support nftables and have the `nft` binary deployed.
