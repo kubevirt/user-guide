@@ -1100,8 +1100,9 @@ spec:
   config: '{
             "cniVersion": "0.3.1",
             "name": "br-spoof-check",
-            "type": "cnv-bridge",
+            "type": "bridge",
             "bridge": "br10",
+            "disableContainerInterface": true,
             "macspoofchk": true
         }'
 ```
