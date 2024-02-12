@@ -20,7 +20,7 @@ Its main benefits are:
 ### Functionality support
 | Functionality                                  | Support |
 |------------------------------------------------|---------|
-| Migration support                              | No      |
+| Migration support                              | Yes     |
 | Service Mesh support                           | Yes     |
 | Pod IP in guest                                | Yes     |
 | Custom CIDR in guest                           | No      |
@@ -143,7 +143,10 @@ kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "pat
             "binding": {
                 "passt": {
                     "networkAttachmentDefinition": "default/netbindingpasst",
-                    "sidecarImage": "quay.io/kubevirt/network-passt-binding:20231205_29a16d5c9"
+                    "sidecarImage": "quay.io/kubevirt/network-passt-binding:20231205_29a16d5c9",
+                    "migration": {
+                        "method": "link-refresh"
+                    }
                 }
             }
         }}]'
