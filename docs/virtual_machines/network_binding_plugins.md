@@ -144,6 +144,7 @@ The following (optional) parameters are currently supported:
 - [networkAttachmentDefinition](#networkattachmentdefinition)
 - [sidecarImage](#sidecarimage)
 - [domainAttachmentType](#domainattachmenttype)
+- [migration](#migration)
 
 #### networkAttachmentDefinition
 From: v1.1.0
@@ -178,6 +179,14 @@ When both the `domainAttachmentType` and `sidecarImage` are specified,
 the domain will first be configured according to the `domainAttachmentType`
 and then the `sidecarImage` may modify it.
 
+#### migration
+From: v1.2.0
+
+Specify whether the network binding plugin supports migration.
+It is possible to specify a migration method.
+Supported migration method types:
+- `link-refresh` (from v1.2.0): after migration, the guest nic will be deactivated and then activated again.
+   It can be useful to renew the DHCP lease.
 
 > **Note**: In some deployments the Kubevirt CR is controlled by an external
 > controller (e.g. [HCO](https://github.com/kubevirt/hyperconverged-cluster-operator)).
@@ -191,6 +200,9 @@ kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "pat
                 "passt": {
                     "networkAttachmentDefinition": "default/netbindingpasst",
                     "sidecarImage": "quay.io/kubevirt/network-passt-binding:20231205_29a16d5c9"
+                    "migration": {
+                        "method": "link-refresh"
+                    }
                 }
             }
         }}]'
