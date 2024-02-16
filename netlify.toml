@@ -1,3 +1,12 @@
 [build]
   publish = "./site"
-  command = "source /opt/buildhome/python3.8/bin/activate; pip3 install mkdocs mkdocs-awesome-pages-plugin mkdocs-material; sed -i 's/site_url: https:\/\/kubevirt.io\/docs/site_url: https:\/\/kubevirt.io\//' /opt/build/repo/mkdocs.yml; sed -i 's/docs_dir: docs/docs_dir:/' /opt/build/repo/mkdocs.yml; echo '*** BEGIN /opt/build/repo/mkdocs.yml ***'; cat /opt/build/repo/mkdocs.yml; echo '*** END /opt/build/repo/mkdocs.yml ***'; mkdocs build -f /opt/build/repo/mkdocs.yml -d /opt/build/repo/site"
+  command = """
+source /opt/buildhome/python3.8/bin/activate;
+pip3 install mkdocs mkdocs-awesome-pages-plugin mkdocs-material;
+sed -i 's|site_url: https://kubevirt.io/docs|site_url: https://kubevirt.io/|' /opt/build/repo/mkdocs.yml;
+sed -i 's/docs_dir: docs/docs_dir:/' /opt/build/repo/mkdocs.yml;
+echo '*** BEGIN /opt/build/repo/mkdocs.yml ***';
+cat /opt/build/repo/mkdocs.yml;
+echo '*** END /opt/build/repo/mkdocs.yml ***';
+mkdocs build -f /opt/build/repo/mkdocs.yml -d /opt/build/repo/site
+"""
