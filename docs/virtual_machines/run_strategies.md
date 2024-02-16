@@ -55,7 +55,7 @@ The `start`, `stop` and `restart` methods of virtctl will invoke their
 respective subresources of VirtualMachines. This can have an effect on
 the runStrategy of the VirtualMachine as below:
 
-<table>
+<table style="width: 100% ; display: inline-table">
 <colgroup>
 <col style="width: 25%" />
 <col style="width: 25%" />
@@ -79,8 +79,8 @@ the runStrategy of the VirtualMachine as below:
 </tr>
 <tr class="even">
 <td><p><strong>RerunOnFailure</strong></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>Halted</code></p></td>
+<td><p><code>RerunOnFailure</code></p></td>
+<td><p><code>RerunOnFailure</code></p></td>
 <td><p><code>RerunOnFailure</code></p></td>
 </tr>
 <tr class="odd">
