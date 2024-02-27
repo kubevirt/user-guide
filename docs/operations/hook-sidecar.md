@@ -4,8 +4,8 @@
 
 In KubeVirt, a Hook Sidecar container is a sidecar container (a secondary container that runs along with the main
 application container within the same Pod) used to apply customizations before the Virtual Machine is initialized. This
-ability is provided since 100% of the [libvirt domain XML](https://libvirt.org/formatdomain.html) elements and
-attributes are not configurable/customizable using the VMI specification.
+ability is provided since configurable elements in the VMI specification do not cover all of the [libvirt domain
+XML](https://libvirt.org/formatdomain.html) elements.
 
 The sidecar containers communicate with the main container over a socket with a gRPC protocol. There are two main
 sidecar hooks:
@@ -14,40 +14,34 @@ sidecar hooks:
 2. `preCloudInitIso`: This hook helps to customize the cloud-init configuration. It operates on and returns JSON
    formatted cloud-init data.
 
-## Enabling Sidecar feature gate
+## Enabling `Sidecar` feature gate
 
-To be able to use the sidecar hooks, the Sidecar feature gate must be enabled on the cluster. If you're using a
-development cluster backed by KubeVirt CI, you could enable it using the following steps:
-```shell
-# export FEATURE_GATES=<feature-gate-1>,<feature-gate-2>
-# e.g. to enable Sidecar and HotplugNICs feature gates run below
-$ export FEATURE_GATES=Sidecar,HotplugNICs
-$ make cluster-sync
-```
+`Sidecar` feature gate can be enabled by following the steps mentioned in
+[Activating feature gates](../activating_feature_gates).
 
-For non-development clusters, it can be enabled by following the steps mentioned in [Activating feature
-gates](../activating_feature_gates).
+In case of a development cluster created using kubevirtci, follow the steps mentioned in the 
+[developer doc](https://github.com/kubevirt/kubevirt/blob/main/docs/getting-started.md#compile-and-run-it) to enable 
+the feature gate.
 
 ## Sidecar-shim container image
 
-To reduce the amount of boilerplate that developers need to do in order to run VM with custom modifications, we provide
-the [sidecar-shim-image](https://quay.io/repository/kubevirt/sidecar-shim) that takes care of implementing the
-communication with the main container.
+To run a VM with custom modifications, the [sidecar-shim-image](https://quay.io/repository/kubevirt/sidecar-shim) 
+takes care of implementing the communication with the main container.
 
 The image contains the `sidecar-shim` binary built using
 [`sidecar_shim.go`](https://github.com/kubevirt/kubevirt/blob/main/cmd/sidecars/sidecar_shim.go) which should be kept
 as the entrypoint of the container. This binary will search in `$PATH` for binaries named after the hook names (e.g
-`onDefineDomain` and `preCloudInitIso`) and run them. User must provide the necessary arguments as command line options
+`onDefineDomain` and `preCloudInitIso`) and run them. Users must provide the necessary arguments as command line options
 (flags).
 
 In the case of `onDefineDomain`, the arguments will be the VMI information as JSON string, (e.g `--vmi vmiJSON`) and
-the current domain XML (e.g `--domain domainXML`). As standard output it expects the modified domain XML.
+the current domain XML (e.g `--domain domainXML`). It outputs the modified domain XML on the standard output.
 
 In the case of `preCloudInitIso`, the arguments will be the VMI information as JSON string, (e.g `--vmi vmiJSON`) and
-the CloudInitData (e.g `--cloud-init cloudInitJSON`). As standard output it expects the modified CloudInitData (as
-JSON).
+the CloudInitData (e.g `--cloud-init cloudInitJSON`). It outputs the modified CloudInitData (as JSON) on the standard ouput.
 
-Besides a binary, one could also execute shell or python scripts by making them available at the expected location.
+Shell or python scripts can be used as alternatives to the binary, by making them available at the expected location 
+(`/usr/bin/onDefineDomain` or `/usr/bin/preCloudInitIso` depending upon the hook).
 
 ## Go, Python, Shell - pick any one
 
@@ -96,7 +90,7 @@ metadata:
   name: my-config-map
 data:
   my_script.sh: |
-    #!/usr/bin/env python
+    #!/usr/bin/env python3
 
     import xml.etree.ElementTree as ET
     import sys
@@ -155,9 +149,9 @@ the path where you want the script to be mounted. It could be either of `/usr/bi
 
 ### Verify everything works
 
-Whether you used the Go binary or a Shell/Python script from above examples, you would be able to see the newly created
-VMI have the modified baseboard manufacturer information. After creating the VMI, verify that it is in the `Running`
-state, and connect to its console and see if the desired changes to baseboard manufacturer get reflected:
+Whether you used the Go binary or a Shell/Python script from the above examples, you would be able to see the newly 
+created VMI have the modified baseboard manufacturer information. After creating the VMI, verify that it is in the 
+`Running` state, and connect to its console and see if the desired changes to baseboard manufacturer get reflected:
 
 ```shell
 # Once the VM is ready, connect to its display and login using name and password "fedora"
