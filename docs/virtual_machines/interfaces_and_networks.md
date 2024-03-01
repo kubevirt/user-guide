@@ -785,19 +785,19 @@ device, using the
 interface, to maintain high networking performance.
 
 #### How to expose SR-IOV VFs to KubeVirt
-To simplify procedure, please use [OpenShift SR-IOV
-operator](https://github.com/openshift/sriov-network-operator) to deploy
+To simplify procedure, please use [SR-IOV network
+operator](https://github.com/k8snetworkplumbingwg/sriov-network-operator) to deploy
 and configure SR-IOV components in your cluster. On how to use the
 operator, please refer to [their respective
-documentation](https://github.com/openshift/sriov-network-operator/blob/master/doc/quickstart.md).
+documentation](https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/master/doc/quickstart.md).
 
 > **Note:** KubeVirt relies on VFIO userspace driver to pass PCI devices
 > into VMI guest. Because of that, when configuring SR-IOV operator
 > policies, make sure you define a pool of VF resources that uses
-> `driver: vfio`.
+> `deviceType: vfio-pci`.
 
 Once the operator is deployed, an [SriovNetworkNodePolicy
-](https://github.com/openshift/sriov-network-operator#sriovnetworknodeconfigpolicy)
+](https://github.com/k8snetworkplumbingwg/sriov-network-operator#sriovnetworknodepolicy)
 must be provisioned, in which the list of SR-IOV devices to expose (with
 respective configurations) is defined.
 
