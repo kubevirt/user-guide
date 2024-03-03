@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.9">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.12">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.f2e4d321.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e359304.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -3660,18 +3660,18 @@ device, using the
 <a href="https://www.kernel.org/doc/Documentation/vfio.txt">vfio</a> userspace
 interface, to maintain high networking performance.</p>
 <h4 id="how-to-expose-sr-iov-vfs-to-kubevirt">How to expose SR-IOV VFs to KubeVirt<a class="headerlink" href="#how-to-expose-sr-iov-vfs-to-kubevirt" title="Permanent link">&para;</a></h4>
-<p>To simplify procedure, please use <a href="https://github.com/openshift/sriov-network-operator">OpenShift SR-IOV
+<p>To simplify procedure, please use <a href="https://github.com/k8snetworkplumbingwg/sriov-network-operator">SR-IOV network
 operator</a> to deploy
 and configure SR-IOV components in your cluster. On how to use the
-operator, please refer to <a href="https://github.com/openshift/sriov-network-operator/blob/master/doc/quickstart.md">their respective
+operator, please refer to <a href="https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/master/doc/quickstart.md">their respective
 documentation</a>.</p>
 <blockquote>
 <p><strong>Note:</strong> KubeVirt relies on VFIO userspace driver to pass PCI devices
 into VMI guest. Because of that, when configuring SR-IOV operator
 policies, make sure you define a pool of VF resources that uses
-<code>driver: vfio</code>.</p>
+<code>deviceType: vfio-pci</code>.</p>
 </blockquote>
-<p>Once the operator is deployed, an <a href="https://github.com/openshift/sriov-network-operator#sriovnetworknodeconfigpolicy">SriovNetworkNodePolicy
+<p>Once the operator is deployed, an <a href="https://github.com/k8snetworkplumbingwg/sriov-network-operator#sriovnetworknodepolicy">SriovNetworkNodePolicy
 </a>
 must be provisioned, in which the list of SR-IOV devices to expose (with
 respective configurations) is defined.</p>
@@ -4047,7 +4047,7 @@ the node must support nftables and have the <code>nft</code> binary deployed.</l
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.8fd75fb4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c8d2eff1.min.js"></script>
       
     
   </body>
