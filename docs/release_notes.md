@@ -5,6 +5,100 @@ hide:
 
 # KubeVirt release notes
 
+## v1.2.0
+
+Released on: Tue Mar 05 2024
+
+KubeVirt v1.2 is built for Kubernetes v1.29 and additionally supported for the previous two versions. See the [KubeVirt support matrix](https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md) for more information.
+
+### API change
+- [[PR #11064]](https://github.com/kubevirt/kubevirt/pull/11064) [AlonaKaplan] Introduce a new API to mark a binding plugin as migratable.
+- [[PR #10970]](https://github.com/kubevirt/kubevirt/pull/10970) [alromeros] Expose fs disk information via GuestOsInfo
+- [[PR #10905]](https://github.com/kubevirt/kubevirt/pull/10905) [tiraboschi] Aggregate DVs conditions on VMI (and so VM)
+- [[PR #10872]](https://github.com/kubevirt/kubevirt/pull/10872) [RamLavi] IsolateEmulatorThread: Add cluster-wide parity completion setting
+- [[PR #10846]](https://github.com/kubevirt/kubevirt/pull/10846) [RamLavi] Change vm.status.PrintableStatus default value to "Stopped"
+- [[PR #10774]](https://github.com/kubevirt/kubevirt/pull/10774) [victortoso] Windows offline activation with ACPI SLIC table
+- [[PR #10732]](https://github.com/kubevirt/kubevirt/pull/10732) [AlonaKaplan] Extend kubvirt CR by adding domain attachment option to the network binding plugin API.
+- [[PR #10658]](https://github.com/kubevirt/kubevirt/pull/10658) [matthewei] Support "Clone API" to filter VirtualMachine.spec.template.annotation and VirtualMachine.spec.template.label
+
+### Bug fix
+- [[PR #11271]](https://github.com/kubevirt/kubevirt/pull/11271) [kubevirt-bot] Bug fix: VM controller doesn't corrupt its cache anymore
+- [[PR #11242]](https://github.com/kubevirt/kubevirt/pull/11242) [kubevirt-bot] Fix migration breaking in case the VM has an rng device after hotplugging a block volume on cgroupsv2
+- [[PR #11069]](https://github.com/kubevirt/kubevirt/pull/11069) [ormergi] Bug fix: Packet drops during the initial phase of VM live migration https://issues.redhat.com/browse/CNV-28040
+- [[PR #11065]](https://github.com/kubevirt/kubevirt/pull/11065) [fossedihelm] fix(vmclone): Generate VM patches from vmsnapshotcontent, instead of current VM
+- [[PR #11050]](https://github.com/kubevirt/kubevirt/pull/11050) [fossedihelm] restrict default cluster role to authenticated only users
+- [[PR #11047]](https://github.com/kubevirt/kubevirt/pull/11047) [jschintag] Fix potential crash when trying to list USB devices on host without any
+- [[PR #10963]](https://github.com/kubevirt/kubevirt/pull/10963) [alromeros] Bugfix: Reject volume exports when no output is specified
+- [[PR #10916]](https://github.com/kubevirt/kubevirt/pull/10916) [orelmisan] Fix the value of VMI `Status.GuestOSInfo.Version`
+- [[PR #10888]](https://github.com/kubevirt/kubevirt/pull/10888) [fossedihelm] [Bugfix] Clone VM with WaitForFirstConsumer binding mode PVC now works.
+- [[PR #10860]](https://github.com/kubevirt/kubevirt/pull/10860) [akalenyu] BugFix: Double cloning with filter fails
+ isolateEmulatorThread feature (BZ#2228103).
+- [[PR #10845]](https://github.com/kubevirt/kubevirt/pull/10845) [orelmisan] Reject VirtualMachineClone creation when target name is equal to source name
+- [[PR #10753]](https://github.com/kubevirt/kubevirt/pull/10753) [victortoso] Fixes  permission when using USB host passthrough
+- [[PR #10747]](https://github.com/kubevirt/kubevirt/pull/10747) [acardace] Fix KubeVirt for CRIO 1.28 by using checksums to verify containerdisks when migrating VMIs
+- [[PR #10699]](https://github.com/kubevirt/kubevirt/pull/10699) [qinqon] virt-launcher: fix qemu non root log path
+- [[PR #10689]](https://github.com/kubevirt/kubevirt/pull/10689) [akalenyu] BugFix: cgroupsv2 device allowlist is bound to virt-handler internal state/block disk device overwritten on hotplug
+- [[PR #10593]](https://github.com/kubevirt/kubevirt/pull/10593) [RamLavi] Fixes SMT Alignment Error in virt-launcher pod by optimizing
+
+### Deprecation
+- [[PR #10924]](https://github.com/kubevirt/kubevirt/pull/10924) [AlonaKaplan] Deprecate macvtap
+
+### SIG-compute
+- [[PR #11054]](https://github.com/kubevirt/kubevirt/pull/11054) [jean-edouard] New cluster-wide `vmRolloutStrategy` setting to define whether changes to VMs should either be always staged or live-updated when possible.
+- [[PR #11001]](https://github.com/kubevirt/kubevirt/pull/11001) [fossedihelm] Allow `kubevirt.io:default` clusterRole to get,list kubevirts
+- [[PR #10961]](https://github.com/kubevirt/kubevirt/pull/10961) [jcanocan] Reduced VM rescheduling time on node failure
+- [[PR #10918]](https://github.com/kubevirt/kubevirt/pull/10918) [orelmisan] VMClone: Emit an event in case restore creation fails
+- [[PR #10898]](https://github.com/kubevirt/kubevirt/pull/10898) [matthewei] vmi status's guestOsInfo adds `Machine`
+- [[PR #10840]](https://github.com/kubevirt/kubevirt/pull/10840) [acardace] Requests/Limits can now be configured when using CPU/Memory hotplug
+- [[PR #10839]](https://github.com/kubevirt/kubevirt/pull/10839) [RamLavi] Change second emulator thread assign strategy to best-effort.
+- [[PR #10809]](https://github.com/kubevirt/kubevirt/pull/10809) [orelmisan] Source virt-launcher: Log migration info by default
+- [[PR #10783]](https://github.com/kubevirt/kubevirt/pull/10783) [RamLavi] Support multiple CPUs in Housekeeping cgroup
+- [[PR #10571]](https://github.com/kubevirt/kubevirt/pull/10571) [tiraboschi] vmi memory footprint increase by 35M when guest serial console logging is turned on (default on).
+
+### SIG-storage
+- [[PR #10657]](https://github.com/kubevirt/kubevirt/pull/10657) [germag] Exposing Filesystem Persistent Volumes (PVs)  to the VM using unprivilege virtiofsd.
+- [[PR #10529]](https://github.com/kubevirt/kubevirt/pull/10529) [alromeros] Allow LUN disks to be hotplugged
+
+### SIG-network
+- [[PR #10981]](https://github.com/kubevirt/kubevirt/pull/10981) [AlonaKaplan] Report IP of interfaces using network binding plugin.
+- [[PR #10866]](https://github.com/kubevirt/kubevirt/pull/10866) [AlonaKaplan] Raise an error in case passt feature gate or API are used.
+- [[PR #10800]](https://github.com/kubevirt/kubevirt/pull/10800) [AlonaKaplan] Support macvtap as a binding plugin
+- [[PR #10425]](https://github.com/kubevirt/kubevirt/pull/10425) [ormergi] Introduce network binding plugin for Passt networking, interfacing with Kubevirt new network binding plugin API.
+
+### SIG-infra
+- [[PR #11025]](https://github.com/kubevirt/kubevirt/pull/11025) [0xFelix] Allow unprivileged users read-only access to VirtualMachineCluster{Instancetypes,Preferences} by default.
+- [[PR #10922]](https://github.com/kubevirt/kubevirt/pull/10922) [kubevirt-bot] Updated common-instancetypes bundles to v0.4.0
+
+### Monitoring
+- [[PR #10982]](https://github.com/kubevirt/kubevirt/pull/10982) [machadovilaca] Refactor monitoring metrics
+- [[PR #10962]](https://github.com/kubevirt/kubevirt/pull/10962) [machadovilaca] Update monitoring file structure
+- [[PR #10853]](https://github.com/kubevirt/kubevirt/pull/10853) [machadovilaca] Refactor monitoring collectors
+- [[PR #10700]](https://github.com/kubevirt/kubevirt/pull/10700) [machadovilaca] Refactor monitoring alerts
+- [[PR #10693]](https://github.com/kubevirt/kubevirt/pull/10693) [machadovilaca] Remove MigrateVmiDiskTransferRateMetric
+- [[PR #10651]](https://github.com/kubevirt/kubevirt/pull/10651) [machadovilaca] Refactor monitoring  recording-rules
+- [[PR #10570]](https://github.com/kubevirt/kubevirt/pull/10570) [machadovilaca] Fix LowKVMNodesCount not firing
+- [[PR #10418]](https://github.com/kubevirt/kubevirt/pull/10418) [machadovilaca] Add total VMs created metric
+
+### Uncategorized
+- [[PR #11144]](https://github.com/kubevirt/kubevirt/pull/11144) [0xFelix] virtctl: Specifying size when creating a VM and using --volume-import to clone a PVC or a VolumeSnapshot is optional now
+- [[PR #11122]](https://github.com/kubevirt/kubevirt/pull/11122) [brianmcarey] Update runc dependency to v1.1.12
+- [[PR #11068]](https://github.com/kubevirt/kubevirt/pull/11068) [brianmcarey] Update container base image to use current stable debian 12 base
+- [[PR #10914]](https://github.com/kubevirt/kubevirt/pull/10914) [brianmcarey] KubeVirt is now built with go 1.21.5
+- [[PR #10879]](https://github.com/kubevirt/kubevirt/pull/10879) [brianmcarey] Built with golang 1.20.12
+- [[PR #10863]](https://github.com/kubevirt/kubevirt/pull/10863) [dhiller] Remove year from generated code copyright
+- [[PR #10787]](https://github.com/kubevirt/kubevirt/pull/10787) [matthewei] virtctl support to add template label and annotation filters
+- [[PR #10720]](https://github.com/kubevirt/kubevirt/pull/10720) [awels] Restored hotplug attachment pod request/limit to original value
+- [[PR #10637]](https://github.com/kubevirt/kubevirt/pull/10637) [dharmit] Functional tests for sidecar hook with ConfigMap
+- [[PR #10615]](https://github.com/kubevirt/kubevirt/pull/10615) [orelmisan] Remove leftover NonRoot feature gate
+- [[PR #10598]](https://github.com/kubevirt/kubevirt/pull/10598) [alicefr] Add PVC option to the hook sidecars for supplying additional debugging tools
+- [[PR #10596]](https://github.com/kubevirt/kubevirt/pull/10596) [mhenriks] Disable HTTP/2 to mitigate CVE-2023-44487
+- [[PR #10582]](https://github.com/kubevirt/kubevirt/pull/10582) [orelmisan] Remove leftover NonRootExperimental feature gate
+- [[PR #10567]](https://github.com/kubevirt/kubevirt/pull/10567) [awels] Attachment pod creation is now rate limited
+- [[PR #10526]](https://github.com/kubevirt/kubevirt/pull/10526) [cfilleke]  Documents steps to build the KubeVirt builder container
+- [[PR #10479]](https://github.com/kubevirt/kubevirt/pull/10479) [dharmit] Ability to run scripts through hook sidecardevice
+- [[PR #10244]](https://github.com/kubevirt/kubevirt/pull/10244) [hshitomi] Added “adm” subcommand under “virtctl”, and “log-verbosity" subcommand under “adm”. The log-verbosity command is: to show the log verbosity of one or more components, to set the log verbosity of one or more components, and to reset the log verbosity of all components (reset to the default verbosity (2)).
+- [[PR #10046]](https://github.com/kubevirt/kubevirt/pull/10046) [victortoso] Add v1alpha3 for hooks and fix migration when using sidecars
+
 ## v1.1.0
 
 Released on: Tue Nov 07 2023
