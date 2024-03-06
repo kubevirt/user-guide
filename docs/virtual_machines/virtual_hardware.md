@@ -310,6 +310,39 @@ selectors from cpu features with format:
 `cpu-feature.node.kubevirt.io/apic`. When VM doesn’t have cpu
 feature, then no node selector is created.
 
+#### Default disablement of deprecated/problematic CPU Features
+
+In the event of CPU vulnerabilities (e.g., Spectre/Meltdown) or temporary inconsistencies between libvirt/QEMU
+(see [here](https://gitlab.com/libvirt/libvirt/-/issues/608)), features can be swiftly mitigated at the cluster level.
+
+To disable features across the entire cluster, you need to set a field called "cpuFeaturesToDisable" in the configuration 
+of KubevirtCR.
+
+For example:
+```
+spec:
+  configuration:
+    cpuFeaturesToDisable:
+      Skylake-Client-noTSX-IBRS:
+        - aes
+        - mpx
+      Opteron_G2"
+        - svm
+```
+
+This configuration will result disablement of aes and mpx whenever the CPU Model is
+Skylake-Client-noTSX-IBRS and also result disablement of svm whever the CPU Model is
+Opteron_G2.
+
+Changes made to the cpuFeaturesToDisable field won't affect the VMI Spec or the VMI scheduling process.
+These changes only affect the libvirt domain XML input provided by KubeVirt, resulting in feature 
+disablement at the QEMU level. The cpuFeaturesToDisable configuration only applies to new VMs and 
+restarting VMs.
+
+Additionally, the configurations specified in the cpuFeaturesToDisable field will only apply if 
+a VMI doesn't explicitly require certain features. If a VMI explicitly requires a feature, 
+it will be enabled regardless of whether it is listed in the configuration map.
+
 ### Clock
 
 #### Guest time
