@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/operations/component_monitoring/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/operations/hook-sidecar/">
       
       
-        <link rel="prev" href="../hugepages/">
+        <link rel="prev" href="../memory_hotplug/">
       
       
-        <link rel="next" href="../authorization/">
+        <link rel="next" href="../../virtual_machines/virtual_machine_instances/">
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Component monitoring - KubeVirt user guide</title>
+        <title>Hook Sidecar Container - KubeVirt user guide</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#component-monitoring" class="md-skip">
+        <a href="#hook-sidecar-container" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Component monitoring
+              Hook Sidecar Container
             
           </span>
         </div>
@@ -800,30 +800,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Component monitoring
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../component_monitoring/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -832,86 +812,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#custom-service-discovery" class="md-nav__link">
-    <span class="md-ellipsis">
-      Custom Service Discovery
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#integrating-with-the-prometheus-operator" class="md-nav__link">
-    <span class="md-ellipsis">
-      Integrating with the prometheus-operator
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#integrating-with-the-okd-cluster-monitoring-operator" class="md-nav__link">
-    <span class="md-ellipsis">
-      Integrating with the OKD cluster-monitoring-operator
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#metrics-about-virtual-machines" class="md-nav__link">
-    <span class="md-ellipsis">
-      Metrics about Virtual Machines
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#important-queries" class="md-nav__link">
-    <span class="md-ellipsis">
-      Important Queries
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Important Queries">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#detecting-connection-issues-for-the-rest-client" class="md-nav__link">
-    <span class="md-ellipsis">
-      Detecting connection issues for the REST client
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1320,10 +1220,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../hook-sidecar/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Hook Sidecar Container
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1332,6 +1252,119 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enabling-sidecar-feature-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enabling Sidecar feature gate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sidecar-shim-container-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sidecar-shim container image
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#go-python-shell-pick-any-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      Go, Python, Shell - pick any one
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Go, Python, Shell - pick any one">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#go-binary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Go binary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shell-or-python-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shell or Python script
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shell or Python script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configmap-with-shell-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      ConfigMap with shell script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configmap-with-python-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      ConfigMap with python script
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-everything-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify everything works
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2324,55 +2357,88 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#custom-service-discovery" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Custom Service Discovery
+      Introduction
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#integrating-with-the-prometheus-operator" class="md-nav__link">
+  <a href="#enabling-sidecar-feature-gate" class="md-nav__link">
     <span class="md-ellipsis">
-      Integrating with the prometheus-operator
+      Enabling Sidecar feature gate
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#integrating-with-the-okd-cluster-monitoring-operator" class="md-nav__link">
+  <a href="#sidecar-shim-container-image" class="md-nav__link">
     <span class="md-ellipsis">
-      Integrating with the OKD cluster-monitoring-operator
+      Sidecar-shim container image
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#metrics-about-virtual-machines" class="md-nav__link">
+  <a href="#go-python-shell-pick-any-one" class="md-nav__link">
     <span class="md-ellipsis">
-      Metrics about Virtual Machines
+      Go, Python, Shell - pick any one
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#important-queries" class="md-nav__link">
-    <span class="md-ellipsis">
-      Important Queries
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Important Queries">
+    <nav class="md-nav" aria-label="Go, Python, Shell - pick any one">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#detecting-connection-issues-for-the-rest-client" class="md-nav__link">
+  <a href="#go-binary" class="md-nav__link">
     <span class="md-ellipsis">
-      Detecting connection issues for the REST client
+      Go binary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shell-or-python-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shell or Python script
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shell or Python script">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configmap-with-shell-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      ConfigMap with shell script
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configmap-with-python-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      ConfigMap with python script
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify-everything-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verify everything works
     </span>
   </a>
   
@@ -2398,7 +2464,7 @@
                   
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/component_monitoring.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/hook-sidecar.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -2407,130 +2473,144 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/operations/component_monitoring.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/operations/hook-sidecar.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-<h1 id="component-monitoring">Component monitoring<a class="headerlink" href="#component-monitoring" title="Permanent link">&para;</a></h1>
-<p>All KubeVirt system-components expose Prometheus metrics at their
-<code>/metrics</code> REST endpoint.</p>
-<p>You can consult the complete and up-to-date metric list at <a href="https://github.com/kubevirt/monitoring/blob/main/docs/metrics.md">kubevirt/monitoring</a>.</p>
-<h2 id="custom-service-discovery">Custom Service Discovery<a class="headerlink" href="#custom-service-discovery" title="Permanent link">&para;</a></h2>
-<p>Prometheus supports service discovery based on
-<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod">Pods</a>
-and
-<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#endpoints">Endpoints</a>
-out of the box. Both can be used to discover KubeVirt services.</p>
-<p>All Pods which expose metrics are labeled with <code>prometheus.kubevirt.io</code>
-and contain a port-definition which is called <code>metrics</code>. In the KubeVirt
-release-manifests, the default <code>metrics</code> port is <code>8443</code>.</p>
-<p>The above labels and port informations are collected by a <code>Service</code>
-called <code>kubevirt-prometheus-metrics</code>. Kubernetes automatically creates a
-corresponding <code>Endpoint</code> with an equal name:</p>
-<div class="highlight"><pre><span></span><code>$ kubectl get endpoints -n kubevirt kubevirt-prometheus-metrics -o yaml
-apiVersion: v1
-kind: Endpoints
-metadata:
-  labels:
-    kubevirt.io: &quot;&quot;
-    prometheus.kubevirt.io: &quot;&quot;
-  name: kubevirt-prometheus-metrics
-  namespace: kubevirt
-subsets:
-- addresses:
-  - ip: 10.244.0.5
-    nodeName: node01
-    targetRef:
-      kind: Pod
-      name: virt-handler-cjzg6
-      namespace: kubevirt
-      resourceVersion: &quot;4891&quot;
-      uid: c67331f9-bfcf-11e8-bc54-525500d15501
-  - ip: 10.244.0.6
-  [...]
-  ports:
-  - name: metrics
-    port: 8443
-    protocol: TCP
-</code></pre></div>
-<p>By watching this endpoint for added and removed IPs to
-<code>subsets.addresses</code> and appending the <code>metrics</code> port from
-<code>subsets.ports</code>, it is possible to always get a complete list of
-ready-to-be-scraped Prometheus targets.</p>
-<h2 id="integrating-with-the-prometheus-operator">Integrating with the prometheus-operator<a class="headerlink" href="#integrating-with-the-prometheus-operator" title="Permanent link">&para;</a></h2>
-<p>The <a href="https://github.com/coreos/prometheus-operator">prometheus-operator</a>
-can make use of the <code>kubevirt-prometheus-metrics</code> service to
-automatically create the appropriate Prometheus config.</p>
-<p>KubeVirt's <code>virt-operator</code> checks if the <code>ServiceMonitor</code> custom
-resource exists when creating an install strategy for deployment.
-KubeVirt will automatically create a <code>ServiceMonitor</code> resource in the
-<code>monitorNamespace</code>, as well as an appropriate role and rolebinding in
-KubeVirt's namespace.</p>
-<p>Three settings are exposed in the <code>KubeVirt</code> custom resource to direct
-KubeVirt to create these resources correctly:</p>
-<ul>
-<li>
-<p><code>monitorNamespace</code>: The namespace that prometheus-operator runs in.
-    Defaults to <code>openshift-monitoring</code>.</p>
-</li>
-<li>
-<p><code>monitorAccount</code>: The serviceAccount that prometheus-operator runs
-    with. Defaults to <code>prometheus-k8s</code>.</p>
-</li>
-<li>
-<p><code>serviceMonitorNamespace</code>: The namespace that the serviceMonitor runs in.
-    Defaults to be <code>monitorNamespace</code> </p>
-</li>
-</ul>
-<p>Please note that if you decide to set <code>serviceMonitorNamespace</code> than this 
-namespace must be included in <code>serviceMonitorNamespaceSelector</code> field of 
-Prometheus spec.</p>
-<p>If the prometheus-operator for a given deployment uses these defaults,
-then these values can be omitted.</p>
-<p>An example of the KubeVirt resource depicting these default values:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<h1 id="hook-sidecar-container">Hook Sidecar Container<a class="headerlink" href="#hook-sidecar-container" title="Permanent link">&para;</a></h1>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>In KubeVirt, a Hook Sidecar container is a sidecar container (a secondary container that runs along with the main
+application container within the same Pod) used to apply customizations before the Virtual Machine is initialized. This
+ability is provided since configurable elements in the VMI specification do not cover all of the <a href="https://libvirt.org/formatdomain.html">libvirt domain
+XML</a> elements.</p>
+<p>The sidecar containers communicate with the main container over a socket with a gRPC protocol. There are two main
+sidecar hooks:</p>
+<ol>
+<li><code>onDefineDomain</code>: This hook helps to customize libvirt's XML and return the new XML over gRPC for the VM creation.</li>
+<li><code>preCloudInitIso</code>: This hook helps to customize the cloud-init configuration. It operates on and returns JSON
+   formatted cloud-init data.</li>
+</ol>
+<h2 id="enabling-sidecar-feature-gate">Enabling <code>Sidecar</code> feature gate<a class="headerlink" href="#enabling-sidecar-feature-gate" title="Permanent link">&para;</a></h2>
+<p><code>Sidecar</code> feature gate can be enabled by following the steps mentioned in
+<a href="../activating_feature_gates">Activating feature gates</a>.</p>
+<p>In case of a development cluster created using kubevirtci, follow the steps mentioned in the 
+<a href="https://github.com/kubevirt/kubevirt/blob/main/docs/getting-started.md#compile-and-run-it">developer doc</a> to enable 
+the feature gate.</p>
+<h2 id="sidecar-shim-container-image">Sidecar-shim container image<a class="headerlink" href="#sidecar-shim-container-image" title="Permanent link">&para;</a></h2>
+<p>To run a VM with custom modifications, the <a href="https://quay.io/repository/kubevirt/sidecar-shim">sidecar-shim-image</a> 
+takes care of implementing the communication with the main container.</p>
+<p>The image contains the <code>sidecar-shim</code> binary built using
+<a href="https://github.com/kubevirt/kubevirt/blob/main/cmd/sidecars/sidecar_shim.go"><code>sidecar_shim.go</code></a> which should be kept
+as the entrypoint of the container. This binary will search in <code>$PATH</code> for binaries named after the hook names (e.g
+<code>onDefineDomain</code> and <code>preCloudInitIso</code>) and run them. Users must provide the necessary arguments as command line options
+(flags).</p>
+<p>In the case of <code>onDefineDomain</code>, the arguments will be the VMI information as JSON string, (e.g <code>--vmi vmiJSON</code>) and
+the current domain XML (e.g <code>--domain domainXML</code>). It outputs the modified domain XML on the standard output.</p>
+<p>In the case of <code>preCloudInitIso</code>, the arguments will be the VMI information as JSON string, (e.g <code>--vmi vmiJSON</code>) and
+the CloudInitData (e.g <code>--cloud-init cloudInitJSON</code>). It outputs the modified CloudInitData (as JSON) on the standard ouput.</p>
+<p>Shell or python scripts can be used as alternatives to the binary, by making them available at the expected location 
+(<code>/usr/bin/onDefineDomain</code> or <code>/usr/bin/preCloudInitIso</code> depending upon the hook).</p>
+<h2 id="go-python-shell-pick-any-one">Go, Python, Shell - pick any one<a class="headerlink" href="#go-python-shell-pick-any-one" title="Permanent link">&para;</a></h2>
+<p>Although a binary doesn't strictly need to be generated from Go code, and a script doesn't strictly need to be one
+among Shell or Python, for the purpose of this guide, we will use those as examples.</p>
+<h3 id="go-binary">Go binary<a class="headerlink" href="#go-binary" title="Permanent link">&para;</a></h3>
+<p>Example Go code modifiying the <a href="https://libvirt.org/formatdomain.html#smbios-system-information">SMBIOS system
+information</a> can be found in the <a href="https://github.com/kubevirt/kubevirt/tree/main/cmd/sidecars/smbios">KubeVirt
+repo</a>. Binary generated from this code, when
+available under <code>/usr/bin/ondefinedomain</code> in the sidecar-shim-image, is run right before VMI creation and the baseboard
+manufacturer value is modified to reflect what's provided in the <code>smbios.vm.kubevirt.io/baseBoardManufacturer</code>
+annotation in <a href="https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-with-sidecar-hook.yaml">VMI spec</a>.</p>
+<h3 id="shell-or-python-script">Shell or Python script<a class="headerlink" href="#shell-or-python-script" title="Permanent link">&para;</a></h3>
+<p>If you pefer writing a shell or python script instead of a Go program, create a Kubernetes ConfigMap and use
+annotations to make sure the script is run before the VMI creation. The flow would be as below:</p>
+<ol>
+<li>Create a ConfigMap containing the shell or python script you want to run</li>
+<li>Create a VMI containing the annotation <code>hooks.kubevirt.io/hookSidecars</code> and mention the ConfigMap information in it.</li>
+</ol>
+<h4 id="configmap-with-shell-script">ConfigMap with shell script<a class="headerlink" href="#configmap-with-shell-script" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">monitorNamespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openshift-monitoring</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">monitorAccount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus-k8s</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-config-map</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">data</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">my_script.sh</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="no">#!/bin/sh</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="no">tempFile=`mktemp --dry-run`</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="no">echo $4 &gt; $tempFile</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="no">sed -i &quot;s|&lt;baseBoard&gt;&lt;/baseBoard&gt;|&lt;baseBoard&gt;&lt;entry name=&#39;manufacturer&#39;&gt;Radical Edward&lt;/entry&gt;&lt;/baseBoard&gt;|&quot; $tempFile</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="no">cat $tempFile</span>
 </code></pre></div>
-<h2 id="integrating-with-the-okd-cluster-monitoring-operator">Integrating with the OKD cluster-monitoring-operator<a class="headerlink" href="#integrating-with-the-okd-cluster-monitoring-operator" title="Permanent link">&para;</a></h2>
-<p>After the
-<a href="https://github.com/openshift/cluster-monitoring-operator">cluster-monitoring-operator</a>
-is up and running, KubeVirt will detect the existence of the
-<code>ServiceMonitor</code> resource. Because the definition contains the
-<code>openshift.io/cluster-monitoring</code> label, it will automatically be picked
-up by the cluster monitor.</p>
-<h2 id="metrics-about-virtual-machines">Metrics about Virtual Machines<a class="headerlink" href="#metrics-about-virtual-machines" title="Permanent link">&para;</a></h2>
-<p>The endpoints report metrics related to the runtime behaviour of the
-Virtual Machines. All the relevant metrics are prefixed with
-<code>kubevirt_vmi</code>.</p>
-<p>The metrics have labels that allow to connect to the VMI objects they
-refer to. At minimum, the labels will expose <code>node</code>, <code>name</code> and
-<code>namespace</code> of the related VMI object.</p>
-<p>For example, reported metrics could look like</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubevirt_vmi_memory_resident_bytes{domain=&quot;default_vm-test-01&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;} 2.5595904e+07
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;rx&quot;} 8431
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;tx&quot;} 1835
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>kubevirt_vmi_vcpu_seconds_total{domain=&quot;default_vm-test-01&quot;,id=&quot;0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,state=&quot;1&quot;} 19
+<h4 id="configmap-with-python-script">ConfigMap with python script<a class="headerlink" href="#configmap-with-python-script" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-config-map</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">data</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">my_script.sh</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="no">#!/usr/bin/env python3</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="no">import xml.etree.ElementTree as ET</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="no">import sys</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="no">def main(s):</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="no"># write to a temporary file</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="no">f = open(&quot;/tmp/orig.xml&quot;, &quot;w&quot;)</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">        </span><span class="no">f.write(s)</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">        </span><span class="no">f.close()</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">        </span><span class="no"># parse xml from file</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">        </span><span class="no">xml = ET.parse(&quot;/tmp/orig.xml&quot;)</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">        </span><span class="no"># get the root element</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">        </span><span class="no">root = xml.getroot()</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">        </span><span class="no"># find the baseBoard element</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="no">baseBoard = root.find(&quot;sysinfo&quot;).find(&quot;baseBoard&quot;)</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">        </span><span class="no"># prepare new element to be inserted into the xml definition</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">        </span><span class="no">element = ET.Element(&quot;entry&quot;, {&quot;name&quot;: &quot;manufacturer&quot;})</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">        </span><span class="no">element.text = &quot;Radical Edward&quot;</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">        </span><span class="no"># insert the element</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">        </span><span class="no">baseBoard.insert(0, element)</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">        </span><span class="no"># write to a new file</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="no">xml.write(&quot;/tmp/new.xml&quot;)</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">        </span><span class="no"># print file contents to stdout</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">        </span><span class="no">f = open(&quot;/tmp/new.xml&quot;)</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">        </span><span class="no">print(f.read())</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">        </span><span class="no">f.close()</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">    </span><span class="no">if __name__ == &quot;__main__&quot;:</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">        </span><span class="no">main(sys.argv[4])</span>
 </code></pre></div>
-<p>Please note the <code>domain</code> label in the above example. This label is
-deprecated and it will be removed in a future release. You should
-identify the VMI using the <code>node</code>, <code>namespace</code>, <code>name</code> labels instead.</p>
-<h2 id="important-queries">Important Queries<a class="headerlink" href="#important-queries" title="Permanent link">&para;</a></h2>
-<h3 id="detecting-connection-issues-for-the-rest-client">Detecting connection issues for the REST client<a class="headerlink" href="#detecting-connection-issues-for-the-rest-client" title="Permanent link">&para;</a></h3>
-<p>Use the following query to get a counter for all REST call which
-indicate connection issues:</p>
-<div class="highlight"><pre><span></span><code>rest_client_requests_total{code=&quot;&lt;error&gt;&quot;}
+<p>After creating one of the above ConfigMap, create the VMI using the manifest in <a href="https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-with-sidecar-hook-configmap.yaml">this
+example</a>. Of importance
+here is the ConfigMap information stored in the annotations:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">hooks.kubevirt.io/hookSidecars</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="no">[</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="no">{</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">            </span><span class="no">&quot;args&quot;: [&quot;--version&quot;, &quot;v1alpha2&quot;],</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">            </span><span class="no">&quot;image&quot;: &quot;registry:5000/kubevirt/sidecar-shim:devel&quot;,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">            </span><span class="no">&quot;configMap&quot;: {&quot;name&quot;: &quot;my-config-map&quot;, &quot;key&quot;: &quot;my_script.sh&quot;, &quot;hookPath&quot;: &quot;/usr/bin/onDefineDomain&quot;}</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="no">}</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="no">]</span>
 </code></pre></div>
-<p>If this counter is continuously increasing, it is an indicator that the
-corresponding KubeVirt component has general issues to connect to the
-apiserver</p>
+<p>The <code>name</code> field indicates the name of the ConfigMap on the cluster which contains the script you want to execute. The
+<code>key</code> field indicates the key in the ConfigMap which contains the script to be executed. Finally, <code>hookPath</code> indicates
+the path where you want the script to be mounted. It could be either of <code>/usr/bin/onDefineDomain</code> or
+<code>/usr/bin/preCloudInitIso</code> depending upon the hook you want to execute.</p>
+<h3 id="verify-everything-works">Verify everything works<a class="headerlink" href="#verify-everything-works" title="Permanent link">&para;</a></h3>
+<p>Whether you used the Go binary or a Shell/Python script from the above examples, you would be able to see the newly 
+created VMI have the modified baseboard manufacturer information. After creating the VMI, verify that it is in the 
+<code>Running</code> state, and connect to its console and see if the desired changes to baseboard manufacturer get reflected:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Once the VM is ready, connect to its display and login using name and password &quot;fedora&quot;</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cluster/virtctl.sh<span class="w"> </span>vnc<span class="w"> </span>vmi-with-sidecar-hook-configmap
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Check whether the base board manufacturer value was successfully overwritten</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>sudo<span class="w"> </span>dmidecode<span class="w"> </span>-s<span class="w"> </span>baseboard-manufacturer
+</code></pre></div>
 
 
 
@@ -2560,7 +2640,7 @@ apiserver</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../hugepages/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Hugepages support">
+          <a href="../memory_hotplug/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Memory Hotplug">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2570,20 +2650,20 @@ apiserver</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Hugepages support
+                Memory Hotplug
               </div>
             </div>
           </a>
         
         
           
-          <a href="../authorization/" class="md-footer__link md-footer__link--next" aria-label="Next: Authorization">
+          <a href="../../virtual_machines/virtual_machine_instances/" class="md-footer__link md-footer__link--next" aria-label="Next: Virtual Machines Instances">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Authorization
+                Virtual Machines Instances
               </div>
             </div>
             <div class="md-footer__button md-icon">
