@@ -74,6 +74,11 @@ configuration:
     -  PersistentReservation
 ```
 
+> **Note:** The persistent reservation feature enables an additional privileged
+> component to be deployed together with virt-handler. Because this feature allows
+> for sensitive security procedures, it is disabled by default and requires cluster
+> administrator configuration.
+
 ### disk
 
 A `disk` disk will expose the volume as an ordinary disk to the VM.
