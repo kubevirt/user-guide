@@ -216,7 +216,7 @@ device-plugin will expose this resource name and you can use it in your VMI.
 ### Adding USB to your VM
 
 Now, in the VMI configuration, you can add the `devices.hostDevices.deviceName` and reference the
-`resource name` provided in the previous step, and also give it a local name, for example:
+resource name provided in the previous step, and also give it a local `name`, for example:
 
 ```yaml
 spec:
@@ -228,7 +228,7 @@ spec:
 ```
 
 You can find a working example, which uses QEMU's emulated USB storage, under
-[examples/vmi-usb.yaml](https://github.com/kubevirt/kubevirt/blob/main/examples/vm-usb.yaml).
+[examples/vmi-usb.yaml](https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-usb.yaml).
 
 
 ### Bundle of USB devices
