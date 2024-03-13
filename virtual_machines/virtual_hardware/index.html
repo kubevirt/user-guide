@@ -1510,15 +1510,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#enabling-cpu-compatibility-enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enabling cpu compatibility enforcement
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#labeling-nodes-with-cpu-models-and-cpu-features" class="md-nav__link">
     <span class="md-ellipsis">
       Labeling nodes with cpu models and cpu features
@@ -2575,15 +2566,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#enabling-cpu-compatibility-enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enabling cpu compatibility enforcement
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#labeling-nodes-with-cpu-models-and-cpu-features" class="md-nav__link">
     <span class="md-ellipsis">
       Labeling nodes with cpu models and cpu features
@@ -2936,21 +2918,15 @@ The following VM will have a CPU with <code>3</code> cores:</p>
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myclaim</span>
 </code></pre></div>
-<h4 id="enabling-cpu-compatibility-enforcement">Enabling cpu compatibility enforcement<a class="headerlink" href="#enabling-cpu-compatibility-enforcement" title="Permanent link">&para;</a></h4>
-<p>To enable the CPU compatibility enforcement, the <code>CPUNodeDiscovery</code>
-<a href="../../operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gates</a>
-must be enabled in the KubeVirt CR.</p>
-<p>This feature-gate allows kubevirt to take VM cpu model and cpu features
-and create node selectors from them. With these node selectors, VM can
-be scheduled on the node which can support VM cpu model and features.</p>
 <h4 id="labeling-nodes-with-cpu-models-and-cpu-features">Labeling nodes with cpu models and cpu features<a class="headerlink" href="#labeling-nodes-with-cpu-models-and-cpu-features" title="Permanent link">&para;</a></h4>
+<p>KubeVirt can create node selectors based on VM cpu models and features. With
+these node selectors, VMs will be scheduled on the nodes that support the matching
+VM cpu model and features.</p>
 <p>To properly label the node, user can use Kubevirt Node-labeller, which creates all 
 necessary labels or create node labels by himself.</p>
 <p>Kubevirt node-labeller creates 3 types of labels: cpu models, cpu features and kvm info.
 It uses libvirt to get all supported cpu models and cpu
-features on host and then Node-labeller creates labels from cpu models. 
-Kubevirt can then schedule VM on node which has support for VM cpu model and
-features.</p>
+features on host and then Node-labeller creates labels from cpu models. </p>
 <p>Node-labeller supports obsolete list of cpu models and minimal baseline
 cpu model for features. Both features can be set via KubeVirt CR:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
