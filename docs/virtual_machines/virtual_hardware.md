@@ -136,17 +136,11 @@ spec:
         claimName: myclaim
 ```
 
-#### Enabling cpu compatibility enforcement
-
-To enable the CPU compatibility enforcement, the `CPUNodeDiscovery`
-[feature gates](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
-must be enabled in the KubeVirt CR.
-
-This feature-gate allows kubevirt to take VM cpu model and cpu features
-and create node selectors from them. With these node selectors, VM can
-be scheduled on the node which can support VM cpu model and features.
-
 #### Labeling nodes with cpu models and cpu features
+
+KubeVirt can create node selectors based on VM cpu models and features. With
+these node selectors, VMs will be scheduled on the nodes that support the matching
+VM cpu model and features.
 
 To properly label the node, user can use Kubevirt Node-labeller, which creates all 
 necessary labels or create node labels by himself.
@@ -154,8 +148,6 @@ necessary labels or create node labels by himself.
 Kubevirt node-labeller creates 3 types of labels: cpu models, cpu features and kvm info.
 It uses libvirt to get all supported cpu models and cpu
 features on host and then Node-labeller creates labels from cpu models. 
-Kubevirt can then schedule VM on node which has support for VM cpu model and
-features.
 
 Node-labeller supports obsolete list of cpu models and minimal baseline
 cpu model for features. Both features can be set via KubeVirt CR:
