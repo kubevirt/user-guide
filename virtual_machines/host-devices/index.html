@@ -2686,7 +2686,7 @@ a resource name. The device allowlist can be edited in KubeVirt CR under
 device-plugin will expose this resource name and you can use it in your VMI.</p>
 <h3 id="adding-usb-to-your-vm">Adding USB to your VM<a class="headerlink" href="#adding-usb-to-your-vm" title="Permanent link">&para;</a></h3>
 <p>Now, in the VMI configuration, you can add the <code>devices.hostDevices.deviceName</code> and reference the
-<code>resource name</code> provided in the previous step, and also give it a local name, for example:</p>
+resource name provided in the previous step, and also give it a local <code>name</code>, for example:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
@@ -2695,7 +2695,7 @@ device-plugin will expose this resource name and you can use it in your VMI.</p>
 <a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usb-storage</span>
 </code></pre></div>
 <p>You can find a working example, which uses QEMU's emulated USB storage, under
-<a href="https://github.com/kubevirt/kubevirt/blob/main/examples/vm-usb.yaml">examples/vmi-usb.yaml</a>.</p>
+<a href="https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-usb.yaml">examples/vmi-usb.yaml</a>.</p>
 <h3 id="bundle-of-usb-devices">Bundle of USB devices<a class="headerlink" href="#bundle-of-usb-devices" title="Permanent link">&para;</a></h3>
 <p>You might be interested to redirect more than one USB device to a VMI, for example, a keyboard, a
 mouse and a smartcard device. The KubeVirt CR supports assigning multiple USB devices under the same
