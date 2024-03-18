@@ -38,23 +38,31 @@ spec:
     - LiveMigrate
 ```
 
-### Enable in VM spec
-The VM object should look like this:
+### Configure the VM rollout strategy
+Hotplug requires a VM rollout strategy of `LiveUpdate`, so that the changes made to the VM object propagate to the VMI without a restart.
+This is also done in the KubeVirt CR configuration:
+
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: VirtualMachine
+kind: KubeVirt
 spec:
-  liveUpdateFeatures:
-    cpu: {}
+  configuration:
+    vmRolloutStrategy: "LiveUpdate"
 ```
-Specifying the `cpu.maxSockets` value is optional. If you leave it unset, it will default to 4 times the `sockets` value.
 
-**NOTE:** In order for these changes to take effect the VM needs to be rebooted.
+More information can be found on the [VM Rollout Strategies](./vm_rollout_strategies.md) page
 
-### [OPTIONAL] Set maximum sockets
-You can explicitly set the maximum amount of sockets in two ways - VM level or Cluster level
+### [OPTIONAL] Set maximum sockets or hotplug ratio
+You can explicitly set the maximum amount of sockets in three ways:
 
-<table>
+1. with a value VM level
+2. with a value at the cluster level
+3, with a ratio at the cluster level (`maxSockets = ratio * sockets`).
+
+Note: the third way (cluster-level ratio) will also affect other quantitative hotplug resources like memory.
+
+
+<table style="width: 100% ; display: inline-table">
 <tr>
 <th>
 <p>
@@ -63,7 +71,12 @@ VM level
 </th> 
 <th>
 <p>
-Cluster level (Kubevirt CR)
+Cluster level value
+</p>
+</th>
+<th>
+<p>
+Cluster level ratio
 </p>
 </th>
 </tr>
@@ -74,9 +87,11 @@ Cluster level (Kubevirt CR)
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 spec:
-  liveUpdateFeatures:
-    cpu:
-      maxSockets: 8
+  template:
+    spec:
+      domain:
+        cpu:
+          maxSockets: 8
 ```
 </td>
 <td>
@@ -91,10 +106,23 @@ spec:
 ```
 
 </td>
+
+<td>
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+spec:
+  configuration:
+    liveUpdateConfiguration:
+      maxHotplugRatio: 4
+```
+
+</td>
 </tr>
 </table>
 
-The VM-level configuration will take precendence over the cluster-wide configuration.
+The VM-level configuration will take precedence over the cluster-wide configuration.
 
 
 
