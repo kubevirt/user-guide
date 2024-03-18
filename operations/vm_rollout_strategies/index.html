@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/operations/cpu_hotplug/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/operations/vm_rollout_strategies/">
       
       
-        <link rel="prev" href="../feature_gate_status_on_Arm64/">
+        <link rel="prev" href="../memory_hotplug/">
       
       
-        <link rel="next" href="../memory_hotplug/">
+        <link rel="next" href="../hook-sidecar/">
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>CPU Hotplug - KubeVirt user guide</title>
+        <title>VM Rollout Strategies - KubeVirt user guide</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cpu-hotplug" class="md-skip">
+        <a href="#vm-rollout-strategies" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CPU Hotplug
+              VM Rollout Strategies
             
           </span>
         </div>
@@ -1178,30 +1178,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    CPU Hotplug
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cpu_hotplug/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1210,104 +1190,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#abstract" class="md-nav__link">
-    <span class="md-ellipsis">
-      Abstract
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enable-feature-gate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enable feature-gate
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configure-the-workload-update-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configure the workload update strategy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configure-the-vm-rollout-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configure the VM rollout strategy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optional-set-maximum-sockets-or-hotplug-ratio" class="md-nav__link">
-    <span class="md-ellipsis">
-      [OPTIONAL] Set maximum sockets or hotplug ratio
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hotplug-process" class="md-nav__link">
-    <span class="md-ellipsis">
-      Hotplug process
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#limitations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Limitations
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1338,10 +1220,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../vm_rollout_strategies/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    VM Rollout Strategies
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1350,6 +1252,71 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#feature-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature Gate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#liveupdate" class="md-nav__link">
+    <span class="md-ellipsis">
+      LiveUpdate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restartrequired-condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      RestartRequired condition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2363,69 +2330,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#abstract" class="md-nav__link">
+  <a href="#feature-gate" class="md-nav__link">
     <span class="md-ellipsis">
-      Abstract
+      Feature Gate
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
+  <a href="#liveupdate" class="md-nav__link">
     <span class="md-ellipsis">
-      Configuration
+      LiveUpdate
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enable-feature-gate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enable feature-gate
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configure-the-workload-update-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configure the workload update strategy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configure-the-vm-rollout-strategy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configure the VM rollout strategy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optional-set-maximum-sockets-or-hotplug-ratio" class="md-nav__link">
-    <span class="md-ellipsis">
-      [OPTIONAL] Set maximum sockets or hotplug ratio
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#hotplug-process" class="md-nav__link">
+  <a href="#stage" class="md-nav__link">
     <span class="md-ellipsis">
-      Hotplug process
+      Stage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restartrequired-condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      RestartRequired condition
     </span>
   </a>
   
@@ -2455,7 +2389,7 @@
                   
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/cpu_hotplug.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/vm_rollout_strategies.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
     </a>
@@ -2464,23 +2398,21 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/operations/cpu_hotplug.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/operations/vm_rollout_strategies.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
     </a>
   
 
 
-<h1 id="cpu-hotplug">CPU Hotplug<a class="headerlink" href="#cpu-hotplug" title="Permanent link">&para;</a></h1>
-<p>The CPU hotplug feature was introduced in KubeVirt v1.0, making it possible to configure the VM workload
-to allow for adding or removing virtual CPUs while the VM is running.</p>
-<h3 id="abstract">Abstract<a class="headerlink" href="#abstract" title="Permanent link">&para;</a></h3>
-<p>A <strong>virtual CPU</strong> (vCPU) is the CPU that is seen to the Guest VM OS. A VM owner can manage the amount of vCPUs from the VM spec template using the CPU topology fields (<code>spec.template.spec.domain.cpu</code>). The <code>cpu</code> object has the integers <code>cores,sockets,threads</code> so that the virtual CPU is calculated by the following formula: <code>cores * sockets * threads</code>. </p>
-<p>Before CPU hotplug was introduced, the VM owner could change these integers in the VM template while the VM is running, and they were staged until the next boot cycle. With CPU hotplug, it is possible to patch the <code>sockets</code> integer in the VM template and the change will take effect right away. </p>
-<p>Per each new socket that is hot-plugged, the amount of new vCPUs that would be seen by the guest is <code>cores * threads</code>, since the overall calculation of vCPUs is <code>cores * sockets * threads</code>. </p>
-<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<h3 id="enable-feature-gate">Enable feature-gate<a class="headerlink" href="#enable-feature-gate" title="Permanent link">&para;</a></h3>
-<p>In order to enable CPU hotplug we need to add the <code>VMLiveUpdateFeatures</code> feature gate in Kubevirt CR:</p>
+<h1 id="vm-rollout-strategies">VM Rollout Strategies<a class="headerlink" href="#vm-rollout-strategies" title="Permanent link">&para;</a></h1>
+<p>In KubeVirt, the VM rollout strategy defines how changes to a VM object affect a running guest.<br />
+In other words, it defines when and how changes to a VM object get propagated to its corresponding VMI object.</p>
+<p>There are currently 2 rollout strategies: <code>LiveUpdate</code> and <code>Stage</code>.
+Only 1 can be specified and the default is <code>Stage</code>.</p>
+<h2 id="feature-gate">Feature Gate<a class="headerlink" href="#feature-gate" title="Permanent link">&para;</a></h2>
+<p>As long as the <code>VMLiveUpdateFeatures</code> is not enabled, the VM Rollout Strategy is ignored and defaults to "Stage".
+The feature gate is set in the KubeVirt custom resource (CR) like that:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">spec</span><span class="p">:</span>
@@ -2489,160 +2421,35 @@ to allow for adding or removing virtual CPUs while the VM is running.</p>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMLiveUpdateFeatures</span>
 </code></pre></div>
-<h3 id="configure-the-workload-update-strategy">Configure the workload update strategy<a class="headerlink" href="#configure-the-workload-update-strategy" title="Permanent link">&para;</a></h3>
-<p>Current implementation of the hotplug process requires the VM to live-migrate.
-The migration will be triggered automatically by the workload updater. The workload update strategy in the KubeVirt CR must be configured with <code>LiveMigrate</code>, as follows:</p>
+<h2 id="liveupdate">LiveUpdate<a class="headerlink" href="#liveupdate" title="Permanent link">&para;</a></h2>
+<p>The <code>LiveUpdate</code> VM rollout strategy tries to propagate VM object changes to running VMIs as soon as possible.<br />
+For example, changing the number of CPU sockets will trigger a <a href="../cpu_hotplug/">CPU hotplug</a>.</p>
+<p>Enable the <code>LiveUpdate</code> VM rollout strategy in the KubeVirt CR:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">workloadUpdateStrategy</span><span class="p">:</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">workloadUpdateMethods</span><span class="p">:</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigrate</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">vmRolloutStrategy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;LiveUpdate&quot;</span>
 </code></pre></div>
-<h3 id="configure-the-vm-rollout-strategy">Configure the VM rollout strategy<a class="headerlink" href="#configure-the-vm-rollout-strategy" title="Permanent link">&para;</a></h3>
-<p>Hotplug requires a VM rollout strategy of <code>LiveUpdate</code>, so that the changes made to the VM object propagate to the VMI without a restart.
-This is also done in the KubeVirt CR configuration:</p>
+<h2 id="stage">Stage<a class="headerlink" href="#stage" title="Permanent link">&para;</a></h2>
+<p>The <code>Stage</code> VM rollout strategy stages every change made to the VM object until its next reboot.  </p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">vmRolloutStrategy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;LiveUpdate&quot;</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">vmRolloutStrategy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Stage&quot;</span>
 </code></pre></div>
-<p>More information can be found on the <a href="../vm_rollout_strategies/">VM Rollout Strategies</a> page</p>
-<h3 id="optional-set-maximum-sockets-or-hotplug-ratio">[OPTIONAL] Set maximum sockets or hotplug ratio<a class="headerlink" href="#optional-set-maximum-sockets-or-hotplug-ratio" title="Permanent link">&para;</a></h3>
-<p>You can explicitly set the maximum amount of sockets in three ways:</p>
-<ol>
-<li>with a value VM level</li>
-<li>with a value at the cluster level
-3, with a ratio at the cluster level (<code>maxSockets = ratio * sockets</code>).</li>
-</ol>
-<p>Note: the third way (cluster-level ratio) will also affect other quantitative hotplug resources like memory.</p>
-<table style="width: 100% ; display: inline-table">
-<tr>
-<th>
-<p>
-VM level
-</p>
-</th> 
-<th>
-<p>
-Cluster level value
-</p>
-</th>
-<th>
-<p>
-Cluster level ratio
-</p>
-</th>
-</tr>
-<tr>
-<td>
-
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span><span class="nt">cpu</span><span class="p">:</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">          </span><span class="nt">maxSockets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
-</code></pre></div>
-</td>
-<td>
-
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">liveUpdateConfiguration</span><span class="p">:</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">      </span><span class="nt">maxCpuSockets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
-</code></pre></div>
-
-</td>
-
-<td>
-
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nt">liveUpdateConfiguration</span><span class="p">:</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="nt">maxHotplugRatio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
-</code></pre></div>
-
-</td>
-</tr>
-</table>
-
-<p>The VM-level configuration will take precedence over the cluster-wide configuration.</p>
-<h2 id="hotplug-process">Hotplug process<a class="headerlink" href="#hotplug-process" title="Permanent link">&para;</a></h2>
-<p>Let's assume we have a running VM with the 4 vCPUs, which were configured with <code>sockets:4 cores:1 threads:1</code>
-In the VMI status we can observe the current CPU topology the VM is running with:</p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nn">...</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nt">status</span><span class="p">:</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">currentCPUTopology</span><span class="p">:</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">sockets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-</code></pre></div>
-Now we want to hotplug another socket, by patching the VM object:</p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl patch vm vm-cirros --type=&#39;json&#39; \
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>-p=&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/template/spec/domain/cpu/sockets&quot;, &quot;value&quot;: 5}]&#39;
-</code></pre></div>
-We can observe the CPU hotplug process in the VMI status:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">status</span><span class="p">:</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">conditions</span><span class="p">:</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">lastProbeTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nt">lastTransitionTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;True&quot;</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigratable</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">lastProbeTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">lastTransitionTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;True&quot;</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HotVCPUChange</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">  </span><span class="nt">currentCPUTopology</span><span class="p">:</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="nt">sockets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">    </span><span class="nt">threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-</code></pre></div>
-<p>Please note the condition <code>HotVCPUChange</code> that indicates the hotplug process is taking place.
-Also you can notice the VirtualMachineInstanceMigration object that was created for the VM in subject:</p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>NAME                             PHASE     VMI
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>kubevirt-workload-update-kflnl   Running   vm-cirros
-</code></pre></div>
-When the hotplug process has completed, the <code>currentCPUTopology</code> will be updated with the new number of sockets and the migration
-is marked as successful.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1">#kubectl get vmi vm-cirros -oyaml</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-cirros</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">      </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">      </span><span class="nt">sockets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">      </span><span class="nt">threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="nn">...</span>
-<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="nn">...</span>
-<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="nt">status</span><span class="p">:</span>
-<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">  </span><span class="nt">currentCPUTopology</span><span class="p">:</span>
-<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">    </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="w">    </span><span class="nt">sockets</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">    </span><span class="nt">threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>
-<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>
-<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="c1">#kubectl get vmim -l kubevirt.io/vmi-name=vm-cirros</span>
-<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="l l-Scalar l-Scalar-Plain">NAME                             PHASE       VMI</span>
-<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="l l-Scalar l-Scalar-Plain">kubevirt-workload-update-cgdgd   Succeeded   vm-cirros</span>
-</code></pre></div>
+<h2 id="restartrequired-condition">RestartRequired condition<a class="headerlink" href="#restartrequired-condition" title="Permanent link">&para;</a></h2>
+<p>Any change made to a VM object when the rollout strategy is <code>Stage</code> will trigger the <code>RestartRequired</code> VM condition.<br />
+When the rollout strategy is <code>LiveUpdate</code>, only non-propagatable changes will trigger the condition.</p>
+<p>Once the <code>RestartRequired</code> condition is set on a VM object, no further changes can be propagated, even if the strategy is set to <code>LiveUpdate</code>.<br />
+Changes will become effective on next reboot, and the condition will be removed.</p>
 <h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
+<p>The current implementation has the following limitations:</p>
 <ul>
-<li>VPCU hotplug is currently not supported by ARM64 architecture.</li>
-<li>Current hotplug implementation involves live-migration of the VM workload.</li>
+<li>Once the <code>RestartRequired</code> condition is set, the only way to get rid of it is to restart the VM. In the future, we plan on implementing a way to get rid of it by reverting the VM template spec to its last non-RestartRequired state.</li>
+<li>Cluster defaults are excluded from this logic. It means that changing a cluster-wide setting that impacts VM specs will not be live-updated, regardless of the rollout strategy.</li>
+<li>The <code>RestartRequired</code> condition comes with a message stating what kind of change triggered the condition (CPU/memory/other). That message pertains only to the first change that triggered the condition. Additional changes that would usually trigger the condition will just get staged and no additional <code>RestartRequired</code> condition will be added.</li>
 </ul>
 
 
@@ -2673,7 +2480,7 @@ is marked as successful.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../feature_gate_status_on_Arm64/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Feature Gate Status on Arm64">
+          <a href="../memory_hotplug/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Memory Hotplug">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
@@ -2683,20 +2490,20 @@ is marked as successful.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Feature Gate Status on Arm64
+                Memory Hotplug
               </div>
             </div>
           </a>
         
         
           
-          <a href="../memory_hotplug/" class="md-footer__link md-footer__link--next" aria-label="Next: Memory Hotplug">
+          <a href="../hook-sidecar/" class="md-footer__link md-footer__link--next" aria-label="Next: Hook Sidecar Container">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Memory Hotplug
+                Hook Sidecar Container
               </div>
             </div>
             <div class="md-footer__button md-icon">
