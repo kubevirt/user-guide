@@ -57,7 +57,7 @@ You can explicitly set the maximum amount of sockets in three ways:
 
 1. with a value VM level
 2. with a value at the cluster level
-3, with a ratio at the cluster level (`maxSockets = ratio * sockets`).
+3. with a ratio at the cluster level (`maxSockets = ratio * sockets`).
 
 Note: the third way (cluster-level ratio) will also affect other quantitative hotplug resources like memory.
 
