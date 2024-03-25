@@ -359,6 +359,208 @@ $ kubectl get vmi/vm-cirros-csmall -o json | jq .spec.domain.cpu
 }
 ```
 
+## expand-spec
+
+The VM `expand-spec` subresource API and `virtctl expand` subcommand allow users to view an existing or yet-to-be defined VM with any referenced instance types or preferences expanded within the core spec of the VM.
+
+For example, given the following simple VM using an instance type we can use the API or `virtctl expand` command to obtain an expanded copy of the VM, using `diff` to highlight the differences between the original and expanded VM:
+
+```yaml
+$ kubectl apply -f - <<EOF
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: cirros
+spec:
+  instancetype:
+    name: u1.micro
+  runStrategy: Always
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      domain:
+        devices:
+          interfaces:
+          - masquerade: {}
+            name: default
+        machine:
+        resources: {}
+      networks:
+      - name: default
+        pod: {}
+      volumes:
+      - containerDisk:
+          image: registry:5000/kubevirt/cirros-container-disk-demo:devel
+        name: cirros
+EOF
+```
+
+### virtctl expand
+
+```yaml
+$ virtctl expand --vm cirros
+[..]
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+[..]
+  name: cirros
+[..]
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      architecture: amd64
+      domain:
+        cpu:
+          cores: 1
+          sockets: 1
+          threads: 1
+        devices:
+          interfaces:
+          - masquerade: {}
+            name: default
+        machine:
+          type: q35
+        memory:
+          guest: 1Gi
+        resources: {}
+      networks:
+      - name: default
+        pod: {}
+      volumes:
+      - containerDisk:
+          image: registry:5000/kubevirt/cirros-container-disk-demo:devel
+        name: cirros
+[..]
+$ diff -u <(kubectl get vm/cirros -o yaml | yq .spec) <(virtctl expand --vm cirros -o yaml | yq .spec)
+--- /dev/fd/63  2024-03-25 13:37:27.948090870 +0000
++++ /dev/fd/62  2024-03-25 13:37:27.948090870 +0000
+@@ -1,7 +1,3 @@
+-instancetype:
+-  kind: virtualmachineclusterinstancetype
+-  name: u1.micro
+-  revisionName: cirros-u1.micro-1b23a27b-a7f2-4d69-8b3d-ee609a99d4a3-1
+ runStrategy: Always
+ template:
+   metadata:
+@@ -9,12 +5,18 @@
+   spec:
+     architecture: amd64
+     domain:
++      cpu:
++        cores: 1
++        sockets: 1
++        threads: 1
+       devices:
+         interfaces:
+           - masquerade: {}
+             name: default
+       machine:
+         type: q35
++      memory:
++        guest: 1Gi
+       resources: {}
+     networks:
+       - name: default
+```
+
+### subresources.kubevirt.io expand-spec
+
+```json
+$ kubectl proxy --port=8080 &
+[..]
+$ curl http://localhost:8080/apis/subresources.kubevirt.io/v1/namespaces/default/virtualmachines/cirros/expand-spec | jq -S .spec
+{
+  "runStrategy": "Always",
+  "template": {
+    "metadata": {
+      "creationTimestamp": null
+    },
+    "spec": {
+      "architecture": "amd64",
+      "domain": {
+        "cpu": {
+          "cores": 1,
+          "sockets": 1,
+          "threads": 1
+        },
+        "devices": {
+          "interfaces": [
+            {
+              "masquerade": {},
+              "name": "default"
+            }
+          ]
+        },
+        "machine": {
+          "type": "q35"
+        },
+        "memory": {
+          "guest": "1Gi"
+        },
+        "resources": {}
+      },
+      "networks": [
+        {
+          "name": "default",
+          "pod": {}
+        }
+      ],
+      "volumes": [
+        {
+          "containerDisk": {
+            "image": "registry:5000/kubevirt/cirros-container-disk-demo:devel"
+          },
+          "name": "cirros"
+        }
+      ]
+    }
+  }
+}
+$ diff -u <(kubectl get vms/cirros -o json | jq .spec)   <(curl http://localhost:8080/apis/subresources.kubevirt.io/v1/namespaces/default/virtualmachines/cirros/expand-spec | jq -S .spec)
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  4505    0  4505    0     0   919k      0 --:--:-- --:--:-- --:--:-- 1099k
+--- /dev/fd/63  2024-03-25 14:10:28.355834087 +0000
++++ /dev/fd/62  2024-03-25 14:10:28.355834087 +0000
+@@ -1,9 +1,4 @@
+ {
+-  "instancetype": {
+-    "kind": "virtualmachineclusterinstancetype",
+-    "name": "u1.micro",
+-    "revisionName": "cirros-u1.micro-1b23a27b-a7f2-4d69-8b3d-ee609a99d4a3-1"
+-  },
+   "runStrategy": "Always",
+   "template": {
+     "metadata": {
+@@ -12,6 +7,11 @@
+     "spec": {
+       "architecture": "amd64",
+       "domain": {
++        "cpu": {
++          "cores": 1,
++          "sockets": 1,
++          "threads": 1
++        },
+         "devices": {
+           "interfaces": [
+             {
+@@ -23,6 +23,9 @@
+         "machine": {
+           "type": "q35"
+         },
++        "memory": {
++          "guest": "1Gi"
++        },
+         "resources": {}
+       },
+       "networks": [
+```
+
 ## inferFromVolume
 
 The `inferFromVolume` attribute of both the `InstancetypeMatcher` and `PreferenceMatcher` allows a user to request that defaults are inferred from a volume. When requested, KubeVirt will look for the following labels on the underlying `PVC`, `DataSource` or `DataVolume` to determine the default name and kind:
