@@ -44,9 +44,9 @@ Signed-off-by: <your configured git identity>
 ### Test your changes locally:
 
 ```console
+$ make build_img
 $ make check_spelling
 $ make check_links
-$ make build_img
 $ make run
 ```
 

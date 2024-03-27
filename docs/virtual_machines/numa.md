@@ -97,7 +97,7 @@ To make use of the optimized settings, two new settings have been added to the V
 
 ### Preconditions
 
-A prerequisite to running real-time workloads include locking resources in the cluster to allow the real-time VM exclusive usage. This translates into nodes, or node, that have been configured with a [dedicated set of CPUs](https://github.com/kubevirt/user-guide/blob/main/docs/virtual_machines/dedicated_cpu_resources.md) and also provides support for [NUMA](https://github.com/kubevirt/user-guide/blob/main/docs/virtual_machines/numa.md) with a free number of hugepages of 2Mi or 1Gi size (depending on the configuration in the VMI). Additionally, the node must be configured to allow the scheduler to run processes with real-time policy.
+A prerequisite to running real-time workloads include locking resources in the cluster to allow the real-time VM exclusive usage. This translates into nodes, or node, that have been configured with a [dedicated set of CPUs](dedicated_cpu_resources.md) and also provides support for [NUMA](numa.md) with a free number of hugepages of 2Mi or 1Gi size (depending on the configuration in the VMI). Additionally, the node must be configured to allow the scheduler to run processes with real-time policy.
 
 ### Nodes capable of running real-time workloads
 
@@ -242,3 +242,21 @@ cpu:
 When applied this configuration, KubeVirt will only set the first VCPU for real-time scheduler policy, leaving the remaining VCPUS to use the default scheduler policy. Other examples of valid masks are:
 - `0-3`: Use cores 0 to 3 for real-time scheduling, assuming that the VM has requested at least 3 cores.
 - `0-3,^1`: Use cores 0, 2 and 3 for real-time scheduling only, assuming that the VM has requested at least 3 cores.
+
+## Additional Reading
+
+Kubernetes provides additional NUMA components that may be relevant to your use-case but typically are not enabled by default. Please consult the Kubernetes documentation for details on configuration of these components.
+
+### Topology Manager
+
+Topology Manager provides optimizations related to CPU isolation, memory and device locality. It is useful, for example, where an SR-IOV network adaptor VF allocation needs to be aligned with a NUMA node.
+
+[https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/)
+
+### Memory Manager
+
+Memory Manager is analogous to [CPU Manager](dedicated_cpu_resources.md). It is useful, for example, where you want to align hugepage allocations with a NUMA node. It works in conjunction with [Topology Manager](numa.md#topology-manager).
+
+> The Memory Manager employs hint generation protocol to yield the most suitable NUMA affinity for a pod. The Memory Manager feeds the central manager (Topology Manager) with these affinity hints. Based on both the hints and Topology Manager policy, the pod is rejected or admitted to the node.
+
+[https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/](https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/)
