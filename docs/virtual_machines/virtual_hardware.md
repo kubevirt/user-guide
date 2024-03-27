@@ -207,11 +207,10 @@ spec:
 You can check list of available models
 [here](https://github.com/libvirt/libvirt/blob/master/src/cpu_map/index.xml).
 
-When CPUNodeDiscovery feature-gate is enabled and VM has cpu model,
-Kubevirt creates node selector with format:
+When a VM has cpu model, Kubevirt add a node selector with format:
 `cpu-model.node.kubevirt.io/<cpuModel>`, e.g.
 `cpu-model.node.kubevirt.io/Conroe`. When VM doesn’t have cpu
-model, then no node selector is created.
+model, then no node selector is included.
 
 #### Enabling default cluster cpu model
 
@@ -234,9 +233,8 @@ spec:
 Default CPU model is set when vmi doesn't have any cpu model. When vmi
 has cpu model set, then vmi's cpu model is preferred. When default cpu
 model is not set and vmi's cpu model is not set too, `host-model` will
-be set. Default cpu model can be changed when kubevirt is running. When
-CPUNodeDiscovery feature gate is enabled Kubevirt creates node selector
-with default cpu model.
+be set. Default cpu model can be changed when kubevirt is running. In 
+that case Kubevirt add node selector with the default cpu model.
 
 #### CPU model special cases
 
@@ -297,21 +295,53 @@ Behaviour according to Policies:
 
 -   All policies will be passed to libvirt during virtual machine
     creation.
--   In case the feature gate "CPUNodeDiscovery" is enabled and the
-    policy is omitted or has "require" value, then the virtual machine
+-   In case a policy is omitted or has "require" value, then the virtual machine
     could be scheduled only on nodes that support this feature.
--   In case the feature gate "CPUNodeDiscovery" is enabled and the
-    policy has "forbid" value, then the virtual machine would **not** be
+-  In case a policy has "forbid" value, then the virtual machine would **not** be
     scheduled on nodes that support this feature.
+
 
 Full description about features and policies can be found
 [here](https://libvirt.org/formatdomain.html#elementsCPU).
 
-When CPUNodeDiscovery feature-gate is enabled Kubevirt creates node
-selector from cpu features with format:
+In that case Kubevirt include node
+selectors from cpu features with format:
 `cpu-feature.node.kubevirt.io/<cpuFeature>`, e.g.
 `cpu-feature.node.kubevirt.io/apic`. When VM doesn’t have cpu
 feature, then no node selector is created.
+
+#### Default disablement of deprecated/problematic CPU Features
+
+In the event of CPU vulnerabilities (e.g., Spectre/Meltdown) or temporary inconsistencies between libvirt/QEMU
+(see [here](https://gitlab.com/libvirt/libvirt/-/issues/608)), features can be swiftly mitigated at the cluster level.
+
+To disable features across the entire cluster, you need to set a field called "cpuFeaturesToDisable" in the configuration 
+of KubevirtCR.
+
+For example:
+```
+spec:
+  configuration:
+    cpuFeaturesToDisable:
+      Skylake-Client-noTSX-IBRS:
+        - aes
+        - mpx
+      Opteron_G2"
+        - svm
+```
+
+This configuration will result disablement of aes and mpx whenever the CPU Model is
+Skylake-Client-noTSX-IBRS and also result disablement of svm whever the CPU Model is
+Opteron_G2.
+
+Changes made to the cpuFeaturesToDisable field won't affect the VMI Spec or the VMI scheduling process.
+These changes only affect the libvirt domain XML input provided by KubeVirt, resulting in feature 
+disablement at the QEMU level. The cpuFeaturesToDisable configuration only applies to new VMs and 
+restarting VMs.
+
+Additionally, the configurations specified in the cpuFeaturesToDisable field will only apply if 
+a VMI doesn't explicitly require certain features. If a VMI explicitly requires a feature, 
+it will be enabled regardless of whether it is listed in the configuration map.
 
 ### Clock
 
