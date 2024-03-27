@@ -41,7 +41,7 @@ To install the templates:
 
 ```console
     $ export VERSION=$(curl -s https://api.github.com/repos/kubevirt/common-templates/releases | grep tag_name | grep -v -- '-rc' | head -1 | awk -F': ' '{print $2}' | sed 's/,//' | xargs)
-    $ oc create -f https://github.com/kubevirt/common-templates/releases/download/$VERSION/common-templates-$VERSION.yaml
+    $ kubectl create -f https://github.com/kubevirt/common-templates/releases/download/$VERSION/common-templates.yaml
 ```
 
 #### Editable fields
@@ -225,7 +225,7 @@ You can add the VM from the template to the cluster in one go
 
 Please note that after the generation step VM and template objects have no relationship with each other besides the aforementioned label.  Changes in templates do not automatically affect VMs or vice versa.
 
-### common template customization
+### Common template customization
 
 The templates provided by the kubevirt project provide a set of
 conventions and annotations that augment the basic feature of the
@@ -237,7 +237,7 @@ the kubevirt services.
 
 Here's a description of the kubevirt annotations. Unless otherwise
 specified, the following keys are meant to be top-level entries of the
-template metadata, like
+template metadata, like (for Openshift console to display)
 
 ```yaml
 apiVersion: v1
