@@ -157,7 +157,7 @@ spec:
         # This makes it a cdrom
         cdrom:
           # This makes the cdrom writeable
-          readOnly: false
+          readonly: false
           # This makes the cdrom be exposed as SATA device
           bus: sata
   volumes:
