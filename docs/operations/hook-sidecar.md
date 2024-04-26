@@ -43,6 +43,8 @@ the CloudInitData (e.g `--cloud-init cloudInitJSON`). It outputs the modified Cl
 Shell or python scripts can be used as alternatives to the binary, by making them available at the expected location 
 (`/usr/bin/onDefineDomain` or `/usr/bin/preCloudInitIso` depending upon the hook).
 
+A prebuilt image named `sidecar-shim` capable of running Shell or Python scripts is shipped as part of KubeVirt releases.
+
 ## Go, Python, Shell - pick any one
 
 Although a binary doesn't strictly need to be generated from Go code, and a script doesn't strictly need to be one
@@ -64,6 +66,7 @@ annotations to make sure the script is run before the VMI creation. The flow wou
 
 1. Create a ConfigMap containing the shell or python script you want to run
 1. Create a VMI containing the annotation `hooks.kubevirt.io/hookSidecars` and mention the ConfigMap information in it.
+1. In this case a predefined image can be used to handle the communication with the main container.
 
 #### ConfigMap with shell script
 
@@ -135,7 +138,6 @@ annotations:
     [
         {
             "args": ["--version", "v1alpha2"],
-            "image": "registry:5000/kubevirt/sidecar-shim:devel",
             "configMap": {"name": "my-config-map", "key": "my_script.sh", "hookPath": "/usr/bin/onDefineDomain"}
         }
     ]
@@ -146,6 +148,8 @@ The `name` field indicates the name of the ConfigMap on the cluster which contai
 `key` field indicates the key in the ConfigMap which contains the script to be executed. Finally, `hookPath` indicates
 the path where you want the script to be mounted. It could be either of `/usr/bin/onDefineDomain` or
 `/usr/bin/preCloudInitIso` depending upon the hook you want to execute.
+An optional value can be specified with the `"image"` key if a custom image is needed, if omitted the default Sidecar-shim image built together with the other KubeVirt images will be used.
+The default Sidecar-shim image, if not override with a custom value, will also be updated as other images as for [Updating KubeVirt Workloads](./updating_and_deletion/#updating-kubevirt-workloads).
 
 ### Verify everything works
 
