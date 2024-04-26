@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.19">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.bcfcd587.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.66ac8b77.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -2555,6 +2555,7 @@ the current domain XML (e.g <code>--domain domainXML</code>). It outputs the mod
 the CloudInitData (e.g <code>--cloud-init cloudInitJSON</code>). It outputs the modified CloudInitData (as JSON) on the standard ouput.</p>
 <p>Shell or python scripts can be used as alternatives to the binary, by making them available at the expected location 
 (<code>/usr/bin/onDefineDomain</code> or <code>/usr/bin/preCloudInitIso</code> depending upon the hook).</p>
+<p>A prebuilt image named <code>sidecar-shim</code> capable of running Shell or Python scripts is shipped as part of KubeVirt releases.</p>
 <h2 id="go-python-shell-pick-any-one">Go, Python, Shell - pick any one<a class="headerlink" href="#go-python-shell-pick-any-one" title="Permanent link">&para;</a></h2>
 <p>Although a binary doesn't strictly need to be generated from Go code, and a script doesn't strictly need to be one
 among Shell or Python, for the purpose of this guide, we will use those as examples.</p>
@@ -2571,6 +2572,7 @@ annotations to make sure the script is run before the VMI creation. The flow wou
 <ol>
 <li>Create a ConfigMap containing the shell or python script you want to run</li>
 <li>Create a VMI containing the annotation <code>hooks.kubevirt.io/hookSidecars</code> and mention the ConfigMap information in it.</li>
+<li>In this case a predefined image can be used to handle the communication with the main container.</li>
 </ol>
 <h4 id="configmap-with-shell-script">ConfigMap with shell script<a class="headerlink" href="#configmap-with-shell-script" title="Permanent link">&para;</a></h4>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
@@ -2634,15 +2636,16 @@ here is the ConfigMap information stored in the annotations:</p>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="no">[</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="no">{</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">            </span><span class="no">&quot;args&quot;: [&quot;--version&quot;, &quot;v1alpha2&quot;],</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">            </span><span class="no">&quot;image&quot;: &quot;registry:5000/kubevirt/sidecar-shim:devel&quot;,</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">            </span><span class="no">&quot;configMap&quot;: {&quot;name&quot;: &quot;my-config-map&quot;, &quot;key&quot;: &quot;my_script.sh&quot;, &quot;hookPath&quot;: &quot;/usr/bin/onDefineDomain&quot;}</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="no">}</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="no">]</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">            </span><span class="no">&quot;configMap&quot;: {&quot;name&quot;: &quot;my-config-map&quot;, &quot;key&quot;: &quot;my_script.sh&quot;, &quot;hookPath&quot;: &quot;/usr/bin/onDefineDomain&quot;}</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="no">}</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="no">]</span>
 </code></pre></div>
 <p>The <code>name</code> field indicates the name of the ConfigMap on the cluster which contains the script you want to execute. The
 <code>key</code> field indicates the key in the ConfigMap which contains the script to be executed. Finally, <code>hookPath</code> indicates
 the path where you want the script to be mounted. It could be either of <code>/usr/bin/onDefineDomain</code> or
-<code>/usr/bin/preCloudInitIso</code> depending upon the hook you want to execute.</p>
+<code>/usr/bin/preCloudInitIso</code> depending upon the hook you want to execute.
+An optional value can be specified with the <code>"image"</code> key if a custom image is needed, if omitted the default Sidecar-shim image built together with the other KubeVirt images will be used.
+The default Sidecar-shim image, if not override with a custom value, will also be updated as other images as for <a href="./updating_and_deletion/#updating-kubevirt-workloads">Updating KubeVirt Workloads</a>.</p>
 <h3 id="verify-everything-works">Verify everything works<a class="headerlink" href="#verify-everything-works" title="Permanent link">&para;</a></h3>
 <p>Whether you used the Go binary or a Shell/Python script from the above examples, you would be able to see the newly 
 created VMI have the modified baseboard manufacturer information. After creating the VMI, verify that it is in the 
@@ -2742,7 +2745,7 @@ created VMI have the modified baseboard manufacturer information. After creating
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      <script src="../../assets/javascripts/bundle.dd8806f2.min.js"></script>
       
     
   </body>
