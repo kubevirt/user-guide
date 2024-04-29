@@ -77,7 +77,7 @@ The format and length of serials are specified according to the libvirt document
 ```
 
 #### Supported Disk types
-Kubevirt supports hotplugging disk devices of type [disk](https://kubevirt.io/user-guide/virtual_machines/disks_and_volumes/#disk) and [lun](https://kubevirt.io/user-guide/virtual_machines/disks_and_volumes/#lun). As with other volumes, using type `disk` will expose the hotplugged volume as a regular disk, while using `lun` allows additional functionalities like the execution of iSCSI commands.
+Kubevirt supports hotplugging disk devices of type [disk](./disks_and_volumes.md#disk) and [lun](./disks_and_volumes.md#lun). As with other volumes, using type `disk` will expose the hotplugged volume as a regular disk, while using `lun` allows additional functionalities like the execution of iSCSI commands.
 
 You can specify the desired type by using the --disk-type parameter, for example:
 

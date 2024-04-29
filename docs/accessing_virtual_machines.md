@@ -9,7 +9,7 @@ exposes. Usually there are two types of consoles:
 - Graphical Console (VNC)
 
 > Note: You need to have `virtctl`
-> [installed](../operations/virtctl_client_tool.md) to gain
+> [installed](virtctl_client_tool.md) to gain
 > access to the VirtualMachineInstance.
 
 ### Accessing the Serial Console

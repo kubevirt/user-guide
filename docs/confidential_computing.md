@@ -12,7 +12,7 @@ KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV feature
 
 In order to run an SEV guest the following condition must be met:
 
-- `WorkloadEncryptionSEV` [feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
+- `WorkloadEncryptionSEV` [feature gate](activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
 - The guest must support [UEFI boot](virtual_hardware.md#biosuefi)
 - SecureBoot must be disabled for the guest VM
 

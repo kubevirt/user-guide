@@ -65,7 +65,7 @@ metadata:
 
 ## Memory
 ### Memory requests on the container
-- VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the [dedicated page](../operations/hugepages.md)). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container.
+- VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the [dedicated page](hugepages.md)). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container.
 
 ### Memory limits on the container
 - By default, no memory limit is set on the container

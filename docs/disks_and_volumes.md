@@ -387,7 +387,7 @@ A `PersistentVolume` can be in "filesystem" or "block" mode:
 
 -   Block: Use a block volume for consuming raw block devices. Note: you
     need to enable the `BlockVolume`
-    [feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate).
+    [feature gate](activating_feature_gates.md#how-to-activate-a-feature-gate).
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk`
 may look like this:
@@ -1170,7 +1170,7 @@ example is SAP HANA.
 In order to expose `downwardMetrics` to VMs, the methods `disk` and `virtio-serial port` are supported.
 
 > **Note:** The **DownwardMetrics** feature gate
-> [must be enabled](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+> [must be enabled](activating_feature_gates.md#how-to-activate-a-feature-gate)
 > to use the metrics. Available starting with KubeVirt v0.42.0.
  
 #### Disk

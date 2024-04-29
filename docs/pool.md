@@ -242,13 +242,13 @@ Kubernetes will create the `ClusterIP` service listening on port 2222 and
 forwarding to port 22.
 
 See [Service
-Objects](http://kubevirt.io/user-guide/virtual_machines/service_objects/)
+Objects](./service_objects.md)
 for more details.
 
 
 ## Using Persistent Storage
 
-> **Note:** DataVolumes are part of [CDI](https://kubevirt.io/user-guide/operations/containerized_data_importer/)
+> **Note:** DataVolumes are part of [CDI](./containerized_data_importer.md)
 
 Usage of a `DataVolumeTemplates` within a `spec.virtualMachineTemplate.spec` will result in the creation
 of unique persistent storage for each VM within a VMPool. The `DataVolumeTemplate`

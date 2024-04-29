@@ -142,4 +142,4 @@ Any change to the node labels that match the `nodeMediatedDeviceTypes` nodeSelec
 Consequently, mediated devices will be reconfigured or entirely removed based on the updated configuration.
 
 ## Assigning vGPU/MDEV to a Virtual Machine
-See the [Host Devices Assignment](<../virtual_machines/host-devices.md>) to learn how to consume the newly created mediated devices/vGPUs.
+See the [Host Devices Assignment](host-devices.md) to learn how to consume the newly created mediated devices/vGPUs.

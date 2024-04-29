@@ -8,7 +8,7 @@ continues to run and remain accessible.
 
 Live migration is enabled by default in recent versions of KubeVirt. Versions
 prior to v0.56, it must be enabled in the feature gates. The
-[feature gates](./activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gates](activating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `LiveMigration` to it.
 
 ## Limitations
@@ -21,7 +21,7 @@ field in the KubeVirt CR must be expanded by adding the `LiveMigration` to it.
   (</#/creation/interfaces-and-networks>)
 
 - Live migration requires ports `49152, 49153` to be available in the virt-launcher pod.
-  If these ports are explicitly specified in [masquarade interface](../virtual_machines/interfaces_and_networks.md#masquerade), live migration will not function.
+  If these ports are explicitly specified in [masquarade interface](interfaces_and_networks.md#masquerade), live migration will not function.
 
 ## Initiate live migration
 
@@ -168,7 +168,7 @@ spec:
 ```
 
 Bear in mind that most of these configuration can be overridden and fine-tuned to
-a specified group of VMs. For more information, please see [Migration Policies](./migration_policies.md).
+a specified group of VMs. For more information, please see [Migration Policies](migration_policies.md).
 
 ## Understanding different migration strategies
 Live migration is a complex process. During a migration, the source VM needs to transfer its

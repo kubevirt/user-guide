@@ -21,7 +21,7 @@ In order to use current NUMA support, the following preconditions must be met:
 * [Hugepages](virtual_hardware.md#hugepages) need to be allocatable on target
   nodes.
 * The `NUMA`
-  [feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+  [feature gate](activating_feature_gates.md#how-to-activate-a-feature-gate)
   must be enabled.
 
 ## GuestMappingPassthrough

@@ -24,7 +24,7 @@ to be added to a running pod. This is not trivial, and has some requirements:
 
 ### Enabling network interface hotplug support
 Network interface hotplug support must be enabled via a
-[feature gate](https://kubevirt.io/user-guide/operations/activating_feature_gates/#how-to-activate-a-feature-gate).
+[feature gate](./activating_feature_gates.md#how-to-activate-a-feature-gate).
 The feature gates array in the KubeVirt CR must feature `HotplugNICs`.
 
 ## Adding an interface to a running VM
@@ -280,7 +280,7 @@ template:
         networkName: sriov-net-1
  ...
 ```
-Please refer to the [Interface and Networks](https://kubevirt.io/user-guide/virtual_machines/interfaces_and_networks/#sriov)
+Please refer to the [Interface and Networks](.interfaces_and_networks.md#sriov)
 documentation for more information about SR-IOV networking.
 
 At this point the interface and network will be added to the corresponding VMI object as well, but won't be attached to the guest.

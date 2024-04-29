@@ -457,9 +457,9 @@ null
 
 ## common-instancetypes
 
-The [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) provide a set of [instancetypes and preferences](../virtual_machines/instancetypes.md) to help create KubeVirt [`VirtualMachines`](http://kubevirt.io/api-reference/main/definitions.html#_v1alpha1_virtualmachine).
+The [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) provide a set of [instancetypes and preferences](instancetypes.md) to help create KubeVirt [`VirtualMachines`](http://kubevirt.io/api-reference/main/definitions.html#_v1alpha1_virtualmachine).
 
-See [Deploy common-instancetypes](../operations/deploy_common_instancetypes.md) on how to deploy them.
+See [Deploy common-instancetypes](deploy_common_instancetypes.md) on how to deploy them.
 
 ## Examples
 

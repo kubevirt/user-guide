@@ -694,7 +694,7 @@ When no ports are explicitly specified, all ports are forwarded, leading to memo
 1. `passt` currently only supported as primary network and doesn't allow extra multus networks to be configured on the VM.
 
 passt interfaces are feature gated; to enable the feature, follow
-[these](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[these](activating_feature_gates.md#how-to-activate-a-feature-gate)
 instructions, in order to activate the `Passt` feature gate (case sensitive).
 
 More information about passt mode can be found in [passt
@@ -922,7 +922,7 @@ nodes L2 network. This is achieved by 'extending' an existing network interface
 with a virtual device that has its own MAC address.
 
 Macvtap interfaces are feature gated; to enable the feature, follow
-[these](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[these](activating_feature_gates.md#how-to-activate-a-feature-gate)
 instructions, in order to activate the `Macvtap` feature gate (case sensitive).
 
 > **Note:** On [KinD](https://github.com/kubernetes-sigs/kind) clusters, the user needs to

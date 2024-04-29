@@ -1,6 +1,6 @@
 # Control libvirt logging for each component
 
-Generally, cluster admins can control the log verbosity of each KubeVirt component in KubeVirt CR. For more details, please, check the [KubeVirt documentation](https://kubevirt.io/user-guide/operations/debug/#log-verbosity).
+Generally, cluster admins can control the log verbosity of each KubeVirt component in KubeVirt CR. For more details, please, check the [KubeVirt documentation](./debug.md#log-verbosity).
 
 Nonetheless, regular users can also adjust the qemu component logging to have a finer control over it. The annotation `kubevirt.io/libvirt-log-filters` enables you to modify each component's log level.
 

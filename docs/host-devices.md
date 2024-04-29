@@ -58,7 +58,7 @@ echo 0000:65:00.0 > /sys/bus/pci/drivers/vfio-pci/bind
 
 In general, configuration of a Mediated devices (mdevs), such as vGPUs, should be done according to the vendor directions. 
 KubeVirt can now facilitate the creation of the mediated devices / vGPUs on the cluster nodes. This assumes that the required vendor driver is already installed on the nodes.
-See the [Mediated devices and virtual GPUs](<../operations/mediated_devices_configuration.md>) to learn more about this functionality.
+See the [Mediated devices and virtual GPUs](<mediated_devices_configuration.md>) to learn more about this functionality.
 
 Once the mdev is configured, KubeVirt will be able to discover and use it for device assignment.
 
@@ -185,7 +185,7 @@ same Node.
 
 Cluster admin privilege to edit the KubeVirt CR in order to:
 
-- Enable the `HostDevices` [feature gate](../operations/activating_feature_gates.md)
+- Enable the `HostDevices` [feature gate](activating_feature_gates.md)
 - Edit the `permittedHostDevices` configuration to expose node USB devices to the cluster
 
 ### Exposing USB Devices
