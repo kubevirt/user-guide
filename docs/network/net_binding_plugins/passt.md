@@ -61,7 +61,7 @@ The passt binding plugin consists of the following components:
 - Passt CNI plugin.
 - Sidecar image.
 
-As described in the [definition & flow](#definition--flow) section,
+As described in the [definition & flow](../../network/network_binding_plugins.md#definition--flow) section,
 the passt plugin needs to:
 
 - Deploy the CNI plugin binary on the nodes.
@@ -134,7 +134,7 @@ kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "pat
 > The passt binding is still in evaluation, use it with care.
 
 ### Passt Registration
-As described in the [registration section](#register), passt binding plugin
+As described in the [registration section](../../network/network_binding_plugins.md#register), passt binding plugin
 configuration needs to be added to the kubevirt CR.
 
 To register the passt binding, patch the kubevirt CR as follows:

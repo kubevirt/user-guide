@@ -9,7 +9,7 @@ exposes. Usually there are two types of consoles:
 - Graphical Console (VNC)
 
 > Note: You need to have `virtctl`
-> [installed](../operations/virtctl_client_tool.md) to gain
+> [installed](../user_workloads/virtctl_client_tool.md) to gain
 > access to the VirtualMachineInstance.
 
 ### Accessing the Serial Console
@@ -68,9 +68,9 @@ KubeVirt provides multiple ways to inject SSH public keys into a virtual
 machine.
 
 In general, these methods fall into two categories:
- - [Static key injection](./accessing_virtual_machines.md#static-ssh-key-injection-via-cloud-init),
+ - [Static key injection](../user_workloads/accessing_virtual_machines.md#static-ssh-key-injection-via-cloud-init),
 which places keys on the virtual machine the first time it is booted.
- - [Dynamic key injection](./accessing_virtual_machines.md#dynamic-ssh-key-injection-via-qemu-user-agent),
+ - [Dynamic key injection](../user_workloads/accessing_virtual_machines.md#dynamic-ssh-key-injection-via-qemu-user-agent),
 which allows keys to be dynamically updated both at boot and during runtime.
 
 Once a SSH public key is injected into the virtual machine, it can be
@@ -82,7 +82,7 @@ Users creating virtual machines can provide startup scripts to their virtual
 machines, allowing multiple customization operations.
 
 One option for injecting public SSH keys into a VM is via
-[cloud-init startup script](./startup_scripts.md#cloud-init).
+[cloud-init startup script](../user_workloads/startup_scripts.md#cloud-init).
 However, there are more flexible options available.
 
 The virtual machine's access credential API allows statically injecting SSH

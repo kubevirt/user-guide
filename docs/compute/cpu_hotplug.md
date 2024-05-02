@@ -50,7 +50,7 @@ spec:
     vmRolloutStrategy: "LiveUpdate"
 ```
 
-More information can be found on the [VM Rollout Strategies](./vm_rollout_strategies.md) page
+More information can be found on the [VM Rollout Strategies](../user_workloads/vm_rollout_strategies.md) page
 
 ### [OPTIONAL] Set maximum sockets or hotplug ratio
 You can explicitly set the maximum amount of sockets in three ways:

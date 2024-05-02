@@ -5,7 +5,7 @@ KubeVirt now supports hotplugging volumes into a running Virtual Machine Instanc
 ## Enabling hotplug volume support
 
 Hotplug volume support must be enabled in the feature gates to be supported. The
-[feature gates](./activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `HotplugVolumes` to it.
 
 ## Virtctl support
@@ -77,7 +77,7 @@ The format and length of serials are specified according to the libvirt document
 ```
 
 #### Supported Disk types
-Kubevirt supports hotplugging disk devices of type [disk](https://kubevirt.io/user-guide/virtual_machines/disks_and_volumes/#disk) and [lun](https://kubevirt.io/user-guide/virtual_machines/disks_and_volumes/#lun). As with other volumes, using type `disk` will expose the hotplugged volume as a regular disk, while using `lun` allows additional functionalities like the execution of iSCSI commands.
+Kubevirt supports hotplugging disk devices of type [disk](../storage/disks_and_volumes.md/#disk) and [lun](../storage/disks_and_volumes.md/#lun). As with other volumes, using type `disk` will expose the hotplugged volume as a regular disk, while using `lun` allows additional functionalities like the execution of iSCSI commands.
 
 You can specify the desired type by using the --disk-type parameter, for example:
 

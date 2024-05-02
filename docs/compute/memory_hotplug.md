@@ -50,7 +50,7 @@ spec:
 
 **NOTE:** If memory hotplug is enabled/disabled on an already running VM, a reboot is necessary for the changes to take effect.
 
-More information can be found on the [VM Rollout Strategies](./vm_rollout_strategies.md) page.
+More information can be found on the [VM Rollout Strategies](../user_workloads/vm_rollout_strategies.md) page.
 
 ### [OPTIONAL] Set a cluster-wide maximum amount of memory
 

@@ -387,7 +387,7 @@ A `PersistentVolume` can be in "filesystem" or "block" mode:
 
 -   Block: Use a block volume for consuming raw block devices. Note: you
     need to enable the `BlockVolume`
-    [feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate).
+    [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate).
 
 A simple example which attaches a `PersistentVolumeClaim` as a `disk`
 may look like this:
@@ -1298,7 +1298,7 @@ example is SAP HANA.
 In order to expose `downwardMetrics` to VMs, the methods `disk` and `virtio-serial port` are supported.
 
 > **Note:** The **DownwardMetrics** feature gate
-> [must be enabled](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+> [must be enabled](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
 > to use the metrics. Available starting with KubeVirt v0.42.0.
  
 #### Disk
@@ -1470,7 +1470,7 @@ fewer IOThreads than CPU, each IOThread will be pinned to a set of CPUs.
 #### IOThreads with QEMU Emulator thread and Dedicated (pinned) CPUs
 
 To further improve the vCPUs latency, KubeVirt can allocate an
-additional dedicated physical CPU<sup>[1](./virtual_hardware.md#cpu)</sup>, exclusively for the emulator thread, to which it will
+additional dedicated physical CPU<sup>[1](../compute/virtual_hardware.md#cpu)</sup>, exclusively for the emulator thread, to which it will
 be pinned. This will effectively "isolate" the emulator thread from the vCPUs
 of the VMI. When `ioThreadsPolicy` is set to `auto` IOThreads will also be
 "isolated" from the vCPUs and placed on the same physical CPU as the QEMU

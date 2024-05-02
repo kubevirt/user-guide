@@ -4,7 +4,7 @@ This guide is for cases where QEMU counters very early failures and it is hard t
 
 ## Image creation and PVC population
 
-This scenario is a slight variation of the [guide about starting strace](launch-qemu-strace.md), hence some of the details on the image build and the PVC population are simply skipped and explained in the other section.
+This scenario is a slight variation of the [guide about starting strace](../debug_virt_stack/launch-qemu-strace.md), hence some of the details on the image build and the PVC population are simply skipped and explained in the other section.
 
 In this example, QEMU will be launched with [`gdbserver`](https://man7.org/linux/man-pages/man1/gdbserver.1.html) and later we will connect to it using a local `gdb` client.
 
@@ -35,7 +35,7 @@ RUN chown 107:107 ${DIR}/wrap_qemu_gdb.sh
 RUN chown 107:107 ${DIR}/logs
 ```
 
-Then, we can create and populate the `debug-tools` PVC as with did in the [strace example](launch-qemu-strace.md):
+Then, we can create and populate the `debug-tools` PVC as with did in the [strace example](../debug_virt_stack/launch-qemu-strace.md):
 ```console
 $ k apply -f debug-tools-pvc.yaml
 persistentvolumeclaim/debug-tools created

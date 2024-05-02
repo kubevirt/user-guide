@@ -69,13 +69,13 @@ require a provisioner in your cluster.
 ## Additional Information
 
 -   Using instancetypes and preferences with a VirtualMachine:
-    [Instancetypes and preferences](./instancetypes.md)
+    [Instancetypes and preferences](../user_workloads/instancetypes.md)
 
 -   More information about persistent and ephemeral volumes:
-    [Disks and Volumes](./disks_and_volumes.md)
+    [Disks and Volumes](../storage/disks_and_volumes.md)
 
 -   How to access a VirtualMachineInstance via `console` or `vnc`:
-    [Console Access](./accessing_virtual_machines.md)
+    [Console Access](../user_workloads/accessing_virtual_machines.md)
 
 -   How to customize VirtualMachineInstances with `cloud-init`:
-    [Cloud Init](./startup_scripts.md#cloud-init)
+    [Cloud Init](../user_workloads/startup_scripts.md#cloud-init)

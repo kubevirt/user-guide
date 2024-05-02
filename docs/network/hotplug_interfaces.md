@@ -196,7 +196,7 @@ spec:
   vmiName: vmi-fedora
 EOF
 ```
-Please refer to the [Live Migration](./live_migration.md) documentation for more information.
+Please refer to the [Live Migration](../cluster_admin/live_migration.md) documentation for more information.
 
 Once the migration is completed the VM will have the new interface attached.
 
@@ -244,7 +244,7 @@ spec:
   vmiName: vmi-fedora
 EOF
 ```
-Please refer to the [Live Migration](./live_migration.md) documentation for more information.
+Please refer to the [Live Migration](../cluster_admin/live_migration.md) documentation for more information.
 
 Once the VM is migrated, the interface will not exist in the migration target pod.
 
@@ -280,7 +280,7 @@ template:
         networkName: sriov-net-1
  ...
 ```
-Please refer to the [Interface and Networks](https://kubevirt.io/user-guide/virtual_machines/interfaces_and_networks/#sriov)
+Please refer to the [Interface and Networks](../network/interfaces_and_networks.md/#sriov)
 documentation for more information about SR-IOV networking.
 
 At this point the interface and network will be added to the corresponding VMI object as well, but won't be attached to the guest.
@@ -296,7 +296,7 @@ spec:
   vmiName: vmi-fedora
 EOF
 ```
-Please refer to the [Live Migration](./live_migration.md) documentation for more information.
+Please refer to the [Live Migration](../cluster_admin/live_migration.md) documentation for more information.
 
 Once the VM is migrated, the interface will not exist in the migration target pod.
 Due to limitation of Kubernetes device plugin API to allocate resources dynamically,

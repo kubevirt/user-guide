@@ -17,11 +17,11 @@ The following NUMA mapping strategies can be used:
 
 In order to use current NUMA support, the following preconditions must be met:
 
-* [Dedicated CPU Resources](dedicated_cpu_resources.md) must be configured.
-* [Hugepages](virtual_hardware.md#hugepages) need to be allocatable on target
+* [Dedicated CPU Resources](../compute/dedicated_cpu_resources.md) must be configured.
+* [Hugepages](../compute/virtual_hardware.md#hugepages) need to be allocatable on target
   nodes.
 * The `NUMA`
-  [feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+  [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
   must be enabled.
 
 ## GuestMappingPassthrough
