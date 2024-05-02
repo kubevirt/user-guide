@@ -17,7 +17,7 @@ sidecar hooks:
 ## Enabling `Sidecar` feature gate
 
 `Sidecar` feature gate can be enabled by following the steps mentioned in
-[Activating feature gates](../activating_feature_gates).
+[Activating feature gates](../cluster_admin/activating_feature_gates.md).
 
 In case of a development cluster created using kubevirtci, follow the steps mentioned in the 
 [developer doc](https://github.com/kubevirt/kubevirt/blob/main/docs/getting-started.md#compile-and-run-it) to enable 
@@ -149,7 +149,7 @@ The `name` field indicates the name of the ConfigMap on the cluster which contai
 the path where you want the script to be mounted. It could be either of `/usr/bin/onDefineDomain` or
 `/usr/bin/preCloudInitIso` depending upon the hook you want to execute.
 An optional value can be specified with the `"image"` key if a custom image is needed, if omitted the default Sidecar-shim image built together with the other KubeVirt images will be used.
-The default Sidecar-shim image, if not override with a custom value, will also be updated as other images as for [Updating KubeVirt Workloads](./updating_and_deletion/#updating-kubevirt-workloads).
+The default Sidecar-shim image, if not override with a custom value, will also be updated as other images as for [Updating KubeVirt Workloads](../cluster_admin/updating_and_deletion/#updating-kubevirt-workloads).
 
 ### Verify everything works
 

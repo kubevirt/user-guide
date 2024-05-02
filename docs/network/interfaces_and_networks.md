@@ -520,7 +520,7 @@ More information about SLIRP mode can be found in [QEMU
 Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29).
 
 > **Note**: Since v1.1.0, Kubevirt delegates Slirp network configuration to
-> the [Slirp network binding plugin](net_binding_plugins/slirp.md#slirp-network-binding-plugin) by default.
+> the [Slirp network binding plugin](../network/net_binding_plugins/slirp.md#slirp-network-binding-plugin) by default.
 > In case the binding plugin is not registered,
 > Kubevirt will use the following default image:
 > `quay.io/kubevirt/network-slirp-binding:20230830_638c60fc8`.
@@ -542,7 +542,7 @@ operating system should be configured to use DHCP to acquire IPv4 addresses.
 
 To allow the VM to live-migrate or hard restart (both cause the VM to run on a
 different pod, with a different IP address) and still be reachable, it should be
-exposed by a Kubernetes [service](service_objects.md#service-objects).
+exposed by a Kubernetes [service](../network/service_objects.md#service-objects).
 
 To allow traffic of specific ports into virtual machines, the template `ports` section of
 the interface should be configured as follows. If the `ports` section is missing,
@@ -637,7 +637,7 @@ Tracking issue - https://github.com/kubevirt/kubevirt/issues/7184
 > **Warning**: The core binding is being deprecated and targeted for removal
 > in v1.3 .
 > As an alternative, the same functionality is introduced and available as a
-> [binding plugin](net_binding_plugins/passt.md).
+> [binding plugin](../network/net_binding_plugins/passt.md).
 
 `passt` is a new approach for user-mode networking which can be used as a simple replacement for Slirp (which is practically dead).
 
@@ -693,7 +693,7 @@ When no ports are explicitly specified, all ports are forwarded, leading to memo
 1. `passt` currently only supported as primary network and doesn't allow extra multus networks to be configured on the VM.
 
 passt interfaces are feature gated; to enable the feature, follow
-[these](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[these](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
 instructions, in order to activate the `Passt` feature gate (case sensitive).
 
 More information about passt mode can be found in [passt
@@ -908,20 +908,20 @@ spec:
 > installed in the guest VM.
 
 > **Note:** Placement on dedicated CPUs can only be achieved if the Kubernetes CPU manager is running on the SR-IOV capable workers.
-> For further details please refer to the [dedicated cpu resources documentation](https://kubevirt.io/user-guide/#/creation/dedicated-cpu).
+> For further details please refer to the [dedicated cpu resources documentation](../compute/dedicated-cpu_resources.md/).
 
 ### Macvtap
 
 > **Note**: The core binding will be deprecated soon.
 > As an alternative, the same functionality is introduced and available as a
-> [binding plugin](net_binding_plugins/macvtap.md).
+> [binding plugin](../network/net_binding_plugins/macvtap.md).
 
 In `macvtap` mode, virtual machines are directly exposed to the Kubernetes
 nodes L2 network. This is achieved by 'extending' an existing network interface
 with a virtual device that has its own MAC address.
 
 Macvtap interfaces are feature gated; to enable the feature, follow
-[these](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[these](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
 instructions, in order to activate the `Macvtap` feature gate (case sensitive).
 
 > **Note:** On [KinD](https://github.com/kubernetes-sigs/kind) clusters, the user needs to

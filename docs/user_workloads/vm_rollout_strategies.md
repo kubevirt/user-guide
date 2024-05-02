@@ -24,7 +24,7 @@ spec:
 ## LiveUpdate
 
 The `LiveUpdate` VM rollout strategy tries to propagate VM object changes to running VMIs as soon as possible.  
-For example, changing the number of CPU sockets will trigger a [CPU hotplug](./cpu_hotplug.md).
+For example, changing the number of CPU sockets will trigger a [CPU hotplug](../compute/cpu_hotplug.md).
 
 Enable the `LiveUpdate` VM rollout strategy in the KubeVirt CR:
 

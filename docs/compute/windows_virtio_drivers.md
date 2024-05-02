@@ -104,7 +104,7 @@ Enterprise Linux 7](https://access.redhat.com/articles/2470791).
 ## How to obtain virtio drivers?
 
 The virtio Windows drivers are distributed in a form of
-[containerDisk](./disks_and_volumes.md#containerdisk),
+[containerDisk](../storage/disks_and_volumes.md#containerdisk),
 which can be simply mounted to the VirtualMachine. The container image,
 containing the disk is located at:
 <https://quay.io/repository/kubevirt/virtio-container-disk?tab=tags> and the image

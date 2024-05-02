@@ -173,7 +173,7 @@ The previous instance type and preference CRDs are matched to a given `VirtualMa
 
 ## Creating InstanceTypes, Preferences and VirtualMachines
 
-It is possible to streamline the creation of instance types, preferences, and virtual machines with the usage of the virtctl command-line tool. To read more about it, please see the [Creating VirtualMachines](creating_vms.md#creating-virtualmachines).
+It is possible to streamline the creation of instance types, preferences, and virtual machines with the usage of the virtctl command-line tool. To read more about it, please see the [Creating VirtualMachines](../user_workloads/creating_vms.md#creating-virtualmachines).
 
 ## Versioning
 
@@ -457,9 +457,9 @@ null
 
 ## common-instancetypes
 
-The [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) provide a set of [instancetypes and preferences](../virtual_machines/instancetypes.md) to help create KubeVirt [`VirtualMachines`](http://kubevirt.io/api-reference/main/definitions.html#_v1alpha1_virtualmachine).
+The [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) provide a set of [instancetypes and preferences](../user_workloads/instancetypes.md) to help create KubeVirt [`VirtualMachines`](http://kubevirt.io/api-reference/main/definitions.html#_v1alpha1_virtualmachine).
 
-See [Deploy common-instancetypes](../operations/deploy_common_instancetypes.md) on how to deploy them.
+See [Deploy common-instancetypes](../user_workloads/deploy_common_instancetypes.md) on how to deploy them.
 
 ## Examples
 

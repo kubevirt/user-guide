@@ -4,7 +4,7 @@ In this document, we are talking about the resources values set on the virt-laun
 
 ## CPU
 
-Note: dedicated CPUs (and isolated emulator thread) are ignored here as they have a [dedicated page](./dedicated_cpu_resources.md).
+Note: dedicated CPUs (and isolated emulator thread) are ignored here as they have a [dedicated page](../compute/dedicated_cpu_resources.md).
 
 ### CPU requests on the container
 - By default, the container requests (1/cpuAllocationRatio) CPU per vCPU. The number of vCPUs is sockets*cores*threads, defaults to 1.
@@ -65,7 +65,7 @@ metadata:
 
 ## Memory
 ### Memory requests on the container
-- VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the [dedicated page](../operations/hugepages.md)). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container.
+- VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the [dedicated page](../compute/hugepages.md)). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container.
 
 ### Memory limits on the container
 - By default, no memory limit is set on the container

@@ -5,7 +5,18 @@ hide:
 
 # Welcome
 
-This page is provided as the entrypoint to the different topics of this user-guide.
+The KubeVirt User Guide is divided into the following sections:
+
+* Architecture: Technical and conceptual overview of KubeVirt components
+* Quickstarts: A list of resources to help you learn KubeVirt basics
+* Cluster Administration: Cluster-level administration concepts and tasks
+* User Workloads: Creating, customizing, using, and monitoring virtual machines 
+* Compute: Resource allocation and optimization for the virtualization layer
+* Network: Concepts and tasks for the networking and service layers 
+* Storage: Concepts and tasks for the storage layer, including importing and exporting.
+* Release Notes: The release notes for all KubeVirt releases
+* Contributing: How you can contribute to this guide or the KubeVirt project 
+* Virtualization Debugging: How to debug your KubeVirt cluster and virtual resources
 
 ## Try it out
 

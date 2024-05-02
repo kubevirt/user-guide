@@ -49,7 +49,7 @@ on a VirtualMachineInstanceReplicaSet:
 
 All service exposure options that apply to a VirtualMachineInstance
 apply to a VirtualMachineInstanceReplicaSet. See [Exposing
-VirtualMachineInstance](http://kubevirt.io/user-guide/#/workloads/virtual-machines/expose-service)
+VirtualMachineInstance](../network/service_objects.md)
 for more details.
 
 
@@ -65,7 +65,7 @@ Using VirtualMachineInstanceReplicaSet is the right choice when one
 wants many identical VMs and does not care about maintaining any disk
 state after the VMs are terminated.
 
-[Volume types](./disks_and_volumes.md) which
+[Volume types](../storage/disks_and_volumes.md) which
 work well in combination with a VirtualMachineInstanceReplicaSet are:
 
 -   **cloudInitNoCloud**
@@ -202,7 +202,7 @@ created, but only two are running and ready.
 ### Scaling via the Scale Subresource
 
 > **Note:** This requires the `CustomResourceSubresources`
-> [feature gate](../operations/activating_feature_gates.md#how-to-activate-a-feature-gate)
+> [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
 > to be enabled for clusters prior to 1.11.
 
 The `VirtualMachineInstanceReplicaSet` supports the `scale` subresource.

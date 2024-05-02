@@ -81,7 +81,7 @@ additional user interaction.
 
 -   The default AppArmor profile used by the container runtimes usually
     denies `mount` call for the workloads. That may prevent from
-    running VMs with [VirtIO-FS](../virtual_machines/disks_and_volumes.md#virtio-fs).
+    running VMs with [VirtIO-FS](../storage/disks_and_volumes.md#virtio-fs).
     This is a [known issue](https://github.com/kubevirt/kubevirt/issues/4290).
     The current workaround is to run such a VM as `unconfined` by adding the
     following annotation to the VM or VMI object:

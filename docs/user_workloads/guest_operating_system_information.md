@@ -157,7 +157,7 @@ spec:
         claimName: my-windows-image
 ```
 
-For more information see [VirtualMachineInstancePresets](./presets.md)
+For more information see [VirtualMachineInstancePresets](../user_workloads/presets.md)
 
 ### HyperV optimizations
 

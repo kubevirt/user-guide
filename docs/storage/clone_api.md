@@ -11,18 +11,18 @@ yet and that APIs may change in the future.
 ### Snapshot / Restore
 
 Under the hood, the clone API relies upon Snapshot & Restore APIs. Therefore, in order to be able to use the clone API,
-please see [Snapshot & Restore prerequesites](./snapshot_restore_api.md#prerequesites).
+please see [Snapshot & Restore prerequesites](../storage//snapshot_restore_api.md#prerequesites).
 
 ### Snapshot Feature Gate
 
 Currently, clone API is guarded by Snapshot feature gate. The
-[feature gates](./activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `Snapshot` to it.
 
 ## The clone object
 
 Firstly, as written above, the clone API relies upon Snapshot & Restore APIs under the hood. Therefore, it might be helpful
-to look at [Snapshot & Restore](./snapshot_restore_api.md) user-guide page for more info.
+to look at [Snapshot & Restore](../storage/snapshot_restore_api.md) user-guide page for more info.
 
 ### VirtualMachineClone object overview
 

@@ -11,7 +11,7 @@ network connectivity.
 ## Slirp network binding plugin
 [v1.1.0]
 
-The binding plugin replaces the [core `slirp` binding](interfaces_and_networks.md#slirp)
+The binding plugin replaces the [core `slirp` binding](../../network/interfaces_and_networks.md#slirp)
 API.
 
 > **Note**: The network binding plugin infrastructure is in Alpha stage.
@@ -21,7 +21,7 @@ The slirp binding plugin consists of the following components:
 
 - Sidecar image.
 
-As described in the [definition & flow](#definition--flow) section,
+As described in the [definition & flow](../../network/network_binding_plugins.md#definition--flow) section,
 the slirp plugin needs to:
 
 - Assure access to the sidecar image.
@@ -42,7 +42,7 @@ kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "pat
 > admin to decide if the plugin is to be available in the cluster.
 
 ### Slirp Registration
-As described in the [registration section](#register), slirp binding plugin
+As described in the [registration section](../../network/network_binding_plugins.md#register), slirp binding plugin
 configuration needs to be added to the kubevirt CR.
 
 To register the slirp binding, patch the kubevirt CR as follows:
