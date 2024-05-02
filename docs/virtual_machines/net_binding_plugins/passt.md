@@ -61,7 +61,7 @@ The passt binding plugin consists of the following components:
 - Passt CNI plugin.
 - Sidecar image.
 
-As described in the [definition & flow](#definition--flow) section,
+As described in the [definition & flow](../network_binding_plugins.md#definition--flow) section,
 the passt plugin needs to:
 
 - Deploy the CNI plugin binary on the nodes.

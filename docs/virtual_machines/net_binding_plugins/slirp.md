@@ -21,7 +21,7 @@ The slirp binding plugin consists of the following components:
 
 - Sidecar image.
 
-As described in the [definition & flow](#definition--flow) section,
+As described in the [definition & flow](../network_binding_plugins.md#definition--flow) section,
 the slirp plugin needs to:
 
 - Assure access to the sidecar image.
