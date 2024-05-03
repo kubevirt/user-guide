@@ -10,7 +10,7 @@ yet and that APIs may change in the future.
 
 ## Overview
 
-KubeVirt supports [Live Migrations](./live_migration.md) of Virtual Machine workloads.
+KubeVirt supports [Live Migrations](../compute/live_migration.md) of Virtual Machine workloads.
 Before migration policies were introduced, migration settings could be configurable only on the cluster-wide
 scope by editing [KubevirtCR's spec](https://kubevirt.io/api-reference/master/definitions.html#_v1_kubevirtspec)
 or more specifically [MigrationConfiguration](https://kubevirt.io/api-reference/master/definitions.html#_v1_migrationconfiguration)
