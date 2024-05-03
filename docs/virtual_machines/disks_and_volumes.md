@@ -483,6 +483,61 @@ Enabling this feature does two things:
 - If the disk is a Filesystem PVC, the matching file is expanded
   to the remaining size (while reserving some space for file system overhead).
 
+#### Statically provisioned block PVCs
+
+To use an externally managed local block device from a host ( e.g. /dev/sdb , zvol, LVM, etc... ) in a VM directly,
+you would need a provisioner that supports block devices, such as OpenEBS LocalPV.
+
+Alternatively, local volumes can be provisioned by hand.
+I.e. the following PVC:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myblock
+spec:
+  storageClassName: local-device
+  volumeMode: Block
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+```
+
+can claim a PersistentVolume pre-created by a cluster admin like so:
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-device
+provisioner: kubernetes.io/no-provisioner
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: myblock
+spec:
+  volumeMode: Block
+  storageClassName: local-device
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - my-node
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 100Gi
+  local:
+    path: /dev/sdb
+```
+
 #### dataVolume
 
 DataVolumes are a way to automate importing virtual machine disks onto
@@ -869,6 +924,8 @@ spec:
     name: host-disk
 status: {}
 ```
+
+> Note: This does not always work as expected. Instead you may want to consider creating a [PersistentVolume](#persistentvolumeclaim)
 
 ### configMap
 A `configMap` is a reference to a
