@@ -7,7 +7,7 @@ With privileged pods, you may access devices in `/dev`, utilize host namespaces 
 A quick way to verify if you are allowed to create privileged pods is to create a sample pod with the `--dry-run=server` option, like:
 
 ```console
-$ kubectl apply -f debug-pod.ymal --dry-run=server
+$ kubectl apply -f debug-pod.yaml --dry-run=server
 ```
 
 # Build the container image
