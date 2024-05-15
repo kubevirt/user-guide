@@ -363,9 +363,7 @@ spec:
     - metadata:
         name: cirros-datavolume
       spec:
-        pvc:
-          accessModes:
-            - ReadWriteOnce
+        storage:
           resources:
             requests:
               storage: 1Gi
@@ -429,7 +427,7 @@ spec:
     - metadata:
         name: cirros-datavolume
       spec:
-        pvc:
+        storage:
           accessModes:
             - ReadWriteOnce
           resources:

@@ -160,12 +160,9 @@ items:
       metadata:
         name: rheltinyvm
       spec:
-        pvc:
+        storage:
           accessModes:
           - ReadWriteMany
-          resources:
-            requests:
-              storage: 30Gi
         source:
           pvc:
             name: rhel
@@ -539,12 +536,9 @@ objects:
       metadata:
         name: ${NAME}
       spec:
-        pvc:
+        storage:
           accessModes:
             - ReadWriteMany
-          resources:
-            requests:
-              storage: 30Gi
         source:
           pvc:
             name: ${SRC_PVC_NAME}
@@ -764,9 +758,7 @@ spec:
   source:
     registry:
       url: "image_url"
-  pvc:
-    accessModes:
-      - ReadWriteOnce
+  storage:
     resources:
       requests:
         storage: 30Gi

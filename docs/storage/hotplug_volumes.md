@@ -20,9 +20,7 @@ metadata:
 spec:
   source:
     blank: {}
-  pvc:
-    accessModes:
-      - ReadWriteOnce
+  storage:
     resources:
       requests:
         storage: 5Gi
