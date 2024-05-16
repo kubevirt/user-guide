@@ -171,7 +171,7 @@ avoid confusing and contradictory states, these fields are mutually
 exclusive.
 
 An extended explanation of `spec.runStrategy` vs `spec.running` can be
-found in [Run Strategies](./compute/run_strategies.md)
+found in [Run Strategies](./virtual_machines/run_strategies.md)
 
 ### Starting and stopping
 
@@ -193,7 +193,7 @@ After creating a VirtualMachine it can be switched on or off like this:
     kubectl patch virtualmachine vm --type merge -p \
         '{"spec":{"running":false}}'
 
-Find more details about [a VM's life-cycle in the relevant section](./user_workloads/lifecycle.md)
+Find more details about [a VM's life-cycle in the relevant section](./virtual_machines/lifecycle.md)
 
 ### Controller status
 
@@ -282,7 +282,7 @@ after the VirtualMachine was created, but before it started:
 
 All service exposure options that apply to a VirtualMachineInstance apply to a VirtualMachine.
 
-See [Service Objects](./network/service_objects.md) for more details.
+See [Service Objects](./virtual_machines/service_objects.md) for more details.
 
 ## When to use a VirtualMachine
 
