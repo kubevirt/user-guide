@@ -1,0 +1,2837 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for KubeVirt">
+      
+      
+      
+        <link rel="canonical" href="https://kubevirt.io/user-guide/operations/debug/">
+      
+      
+        <link rel="prev" href="../api_validation/">
+      
+      
+        <link rel="next" href="../virtctl_client_tool/">
+      
+      
+      <link rel="icon" href="../../assets/favicon32x32.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.23">
+    
+    
+      
+        <title>Debug - KubeVirt user guide</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#debug" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="KubeVirt user guide" class="md-header__button md-logo" aria-label="KubeVirt user guide" data-md-component="logo">
+      
+  <img src="../../assets/KubeVirt_icon.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            KubeVirt user guide
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Debug
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Welcome
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../architecture/" class="md-tabs__link">
+        
+  
+    
+  
+  Architecture
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../quickstarts/" class="md-tabs__link">
+        
+  
+    
+  
+  Quickstarts
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../installation/" class="md-tabs__link">
+          
+  
+  Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../virtual_machines/virtual_machine_instances/" class="md-tabs__link">
+          
+  
+  Virtual Machines
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../release_notes/" class="md-tabs__link">
+        
+  
+    
+  
+  Release Notes
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contributing/" class="md-tabs__link">
+        
+  
+    
+  
+  Contributing
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../debug_virt_stack/logging/" class="md-tabs__link">
+          
+  
+  Virtualization Debugging
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="KubeVirt user guide" class="md-nav__button md-logo" aria-label="KubeVirt user guide" data-md-component="logo">
+      
+  <img src="../../assets/KubeVirt_icon.png" alt="logo">
+
+    </a>
+    KubeVirt user guide
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstarts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quickstarts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Operations
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Operations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../updating_and_deletion/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Updating and deletion
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basic_use/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Basic use
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../customize_components/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Customize components
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deploy_common_instancetypes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Deploy common-instancetypes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api_validation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Validation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Debug
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Debug
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#log-verbosity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Verbosity
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Log Verbosity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-verbosity-per-kubevirt-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting verbosity per KubeVirt component
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting verbosity per KubeVirt component">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#libvirt-virtqemudconf-set-log_filters-according-to-virt-launcher-log-verbosity" class="md-nav__link">
+    <span class="md-ellipsis">
+      libvirt virtqemud.conf set log_filters according to virt-launcher log Verbosity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-verbosity-per-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting verbosity per nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-retrieve-kubevirt-components-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to retrieve KubeVirt components' logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubevirt-pprof-profiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      KubeVirt PProf Profiler
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="KubeVirt PProf Profiler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compile-cluster-profiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compile cluster-profiler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-the-feature-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable the feature gate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-the-profiling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Do the profiling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../virtctl_client_tool/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Download and Install the virtctl Command Line Interface
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../live_migration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Live Migration
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hotplug_interfaces/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hotplug Network Interfaces
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hotplug_volumes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hotplug Volumes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../client_passthrough/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Client Passthrough
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../snapshot_restore_api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Snapshot Restore API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scheduler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    KubeVirt Scheduler
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hugepages/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hugepages support
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../component_monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Component monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annotations_and_labels/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Annotations and labels
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../node_assignment/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node assignment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../node_maintenance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node maintenance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../node_overcommit/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node overcommit
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../unresponsive_nodes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Unresponsive nodes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../containerized_data_importer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Containerized Data Importer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../activating_feature_gates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Activating feature gates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../export_api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Export API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../clone_api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Clone API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory_dump/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtual machine memory dump
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mediated_devices_configuration/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Mediated devices and virtual GPUs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../migration_policies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Migration Policies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ksm/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    KSM Management
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gitops/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Managing KubeVirt with GitOps
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operations_on_Arm64/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Arm64 Operations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature_gate_status_on_Arm64/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Feature Gate Status on Arm64
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cpu_hotplug/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CPU Hotplug
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../memory_hotplug/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Memory Hotplug
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vm_rollout_strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VM Rollout Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hook-sidecar/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hook Sidecar Container
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Virtual Machines
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Virtual Machines
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/virtual_machine_instances/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtual Machines Instances
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/creating_vms/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating VirtualMachines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/lifecycle/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Lifecycle
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/run_strategies/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Run Strategies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/instancetypes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Instance types and preferences
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/presets/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Presets
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/virtual_hardware/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtual hardware
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/dedicated_cpu_resources/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dedicated CPU resources
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/numa/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NUMA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/disks_and_volumes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Filesystems, Disks and Volumes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/interfaces_and_networks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interfaces and Networks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/network_binding_plugins/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Network Binding Plugins
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/istio_service_mesh/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Istio service mesh
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/networkpolicy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NetworkPolicy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/host-devices/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Host Devices Assignment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/windows_virtio_drivers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Windows virtio drivers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/guest_operating_system_information/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guest Operating System Information
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/guest_agent_information/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Guest Agent information
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/liveness_and_readiness_probes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Liveness and Readiness Probes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/accessing_virtual_machines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accessing Virtual Machines
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/startup_scripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Startup Scripts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/service_objects/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Service objects
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/templates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Templates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/tekton_tasks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    KubeVirt Tekton
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/replicaset/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VirtualMachineInstanceReplicaSet
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/pool/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VirtualMachinePool
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/dns/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DNS records
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/boot_from_external_source/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Booting From External Source
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/confidential_computing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Confidential computing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/vsock/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    VSOCK
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/virtual_machines_on_Arm64/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Virtual Machines on Arm64
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/device_status_on_Arm64/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Device Status on Arm64
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/persistent_tpm_and_uefi_state/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Persistent TPM and UEFI state
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/resources_requests_and_limits/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Resources requests and limits
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../virtual_machines/guestfs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Usage of libguestfs-tools and virtctl guestfs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release_notes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release Notes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Virtualization Debugging
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Virtualization Debugging
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug_virt_stack/logging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Control libvirt logging for each component
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug_virt_stack/privileged-node-debugging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privileged debugging on the node
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug_virt_stack/virsh-commands/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Execute virsh commands in virt-launcher pod
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug_virt_stack/launch-qemu-strace/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Launch QEMU with strace
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug_virt_stack/launch-qemu-gdb/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Launch QEMU with gdb and connect locally with gdb client
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#log-verbosity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Log Verbosity
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Log Verbosity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setting-verbosity-per-kubevirt-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting verbosity per KubeVirt component
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting verbosity per KubeVirt component">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#libvirt-virtqemudconf-set-log_filters-according-to-virt-launcher-log-verbosity" class="md-nav__link">
+    <span class="md-ellipsis">
+      libvirt virtqemud.conf set log_filters according to virt-launcher log Verbosity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-verbosity-per-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting verbosity per nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-retrieve-kubevirt-components-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to retrieve KubeVirt components' logs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubevirt-pprof-profiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      KubeVirt PProf Profiler
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="KubeVirt PProf Profiler">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compile-cluster-profiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compile cluster-profiler
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-the-feature-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable the feature gate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-the-profiling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Do the profiling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/operations/debug.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/operations/debug.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.15 8.15 0 0 1-1.23-2Z"/></svg>
+    </a>
+  
+
+
+<h1 id="debug">Debug<a class="headerlink" href="#debug" title="Permanent link">&para;</a></h1>
+<p>This page contains instructions on how to debug KubeVirt.</p>
+<p>This is useful to both KubeVirt developers and advanced users that would like to gain deep understanding on what's
+happening behind the scenes.</p>
+<h2 id="log-verbosity">Log Verbosity<a class="headerlink" href="#log-verbosity" title="Permanent link">&para;</a></h2>
+<p>KubeVirt produces a lot of logging throughout its codebase. Some log entries have a verbosity level defined to them.
+The verbosity level that's defined for a log entry determines the minimum verbosity level in order to expose the
+log entry.</p>
+<p>In code, the log entry looks similar to: <code>log.Log.V(verbosity).Infof("...")</code> while <code>verbosity</code> is the minimum verbosity
+level for this entry.</p>
+<p>For example, if the log verbosity for some log entry is <code>3</code>, then the log would be exposed only if the log verbosity
+is defined to be equal or greater than <code>3</code>, or else it would be filtered out.</p>
+<p>Currently, log verbosity can be defined per-component or per-node. The most updated API is detailed <a href="https://kubevirt.io/api-reference/master/definitions.html#_v1_logverbosity">here</a>.</p>
+<h3 id="setting-verbosity-per-kubevirt-component">Setting verbosity per KubeVirt component<a class="headerlink" href="#setting-verbosity-per-kubevirt-component" title="Permanent link">&para;</a></h3>
+<p>One way of raising log verbosity is to manually determine it for the different components in <code>KubeVirt</code> CR:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">logVerbosity</span><span class="p">:</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nt">virtLauncher</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="nt">virtHandler</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="nt">virtController</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="nt">virtAPI</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="nt">virtOperator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+</code></pre></div></p>
+<p>This option is best for debugging specific components.</p>
+<h4 id="libvirt-virtqemudconf-set-log_filters-according-to-virt-launcher-log-verbosity">libvirt virtqemud.conf set log_filters according to virt-launcher log Verbosity<a class="headerlink" href="#libvirt-virtqemudconf-set-log_filters-according-to-virt-launcher-log-verbosity" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Verbosity level</th>
+<th>log_filters in virtqemud.conf</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>log_filters="3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 3:qemu.qemu_monitor 3:qemu.qemu_monitor_json 3:conf.domain_addr 1:*"</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 3:qemu.qemu_monitor 1:*</td>
+</tr>
+<tr>
+<td>7</td>
+<td>3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 3:util.threadjob 3:cpu.cpu 1:*</td>
+</tr>
+<tr>
+<td>8 and above</td>
+<td>3:remote 4:event 3:util.json 3:util.object 3:util.dbus 3:util.netlink 3:node_device 3:rpc 3:access 1:*</td>
+</tr>
+</tbody>
+</table>
+<p>User can set self-defined log-filters via the annotations tag <code>kubevirt.io/libvirt-log-filters</code> in VMI configuration. e.g.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-vmi</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">kubevirt.io/libvirt-log-filters</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3:remote</span><span class="nv"> </span><span class="s">4:event</span><span class="nv"> </span><span class="s">1:*&quot;</span>
+</code></pre></div></p>
+<h3 id="setting-verbosity-per-nodes">Setting verbosity per nodes<a class="headerlink" href="#setting-verbosity-per-nodes" title="Permanent link">&para;</a></h3>
+<p>Another way is to set verbosity level per node:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="nt">nodeVerbosity</span><span class="p">:</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="s">&quot;node01&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">        </span><span class="s">&quot;otherNodeName&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+</code></pre></div></p>
+<p><code>nodeVerbosity</code> is essentially a map from string to int where the key is the node name and the value is the verbosity
+level. The verbosity level would be defined for all the different components in that node (e.g. <code>virt-handler</code>,
+<code>virt-launcher</code>, etc).</p>
+<h3 id="how-to-retrieve-kubevirt-components-logs">How to retrieve KubeVirt components' logs<a class="headerlink" href="#how-to-retrieve-kubevirt-components-logs" title="Permanent link">&para;</a></h3>
+<p>In Kubernetes, logs are defined at the Pod level. Therefore, first it's needed to list the Pods of KubeVirt's core
+components. In order to do that we can first list the Pods under KubeVirt's install namespace.</p>
+<p>For example:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$&gt;<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;KubeVirt<span class="w"> </span>Install<span class="w"> </span>Namespace&gt;
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>NAME<span class="w">                               </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>disks-images-provider-7gqbc<span class="w">        </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>disks-images-provider-vg4kx<span class="w">        </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>virt-api-57fcc4497b-7qfmc<span class="w">          </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>31m
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>virt-api-57fcc4497b-tx9nc<span class="w">          </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>31m
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>virt-controller-76c784655f-7fp6m<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>virt-controller-76c784655f-f4pbd<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>virt-handler-2m86x<span class="w">                 </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>virt-handler-9qs6z<span class="w">                 </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>30m
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>virt-operator-7ccfdbf65f-q5snk<span class="w">     </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>virt-operator-7ccfdbf65f-vllz8<span class="w">     </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>32m
+</code></pre></div></p>
+<p>Then, we can pick one of the pods and fetch its logs. For example:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$&gt;<span class="w"> </span>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>&lt;KubeVirt<span class="w"> </span>Install<span class="w"> </span>Namespace&gt;<span class="w"> </span>virt-handler-2m86x<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n8
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;set verbosity to 2&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;virt-handler.go:453&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.373695Z&quot;</span><span class="o">}</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;set verbosity to 2&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;virt-handler.go:453&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.373726Z&quot;</span><span class="o">}</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;setting rate limiter to 5 QPS and 10 Burst&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;virt-handler.go:462&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.373782Z&quot;</span><span class="o">}</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;CPU features of a minimum baseline CPU model: map[apic:true clflush:true cmov:true cx16:true cx8:true de:true fpu:true fxsr:true lahf_lm:true lm:true mca:true mce:true mmx:true msr:true mtrr:true nx:true pae:true pat:true pge:true pni:true pse:true pse36:true sep:true sse:true sse2:true sse4.1:true ssse3:true syscall:true tsc:true]&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;cpu_plugin.go:96&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.390221Z&quot;</span><span class="o">}</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;warning&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;host model mode is expected to contain only one model&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;cpu_plugin.go:103&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.390263Z&quot;</span><span class="o">}</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="o">{</span><span class="s2">&quot;component&quot;</span>:<span class="s2">&quot;virt-handler&quot;</span>,<span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;node-labeller is running&quot;</span>,<span class="s2">&quot;pos&quot;</span>:<span class="s2">&quot;node_labeller.go:94&quot;</span>,<span class="s2">&quot;timestamp&quot;</span>:<span class="s2">&quot;2022-04-17T08:58:37.391011Z&quot;</span><span class="o">}</span>
+</code></pre></div></p>
+<p>Obviously, for both examples above, <code>&lt;KubeVirt Install Namespace&gt;</code> needs to be replaced with the actual namespace
+KubeVirt is installed in.</p>
+<h2 id="kubevirt-pprof-profiler">KubeVirt PProf Profiler<a class="headerlink" href="#kubevirt-pprof-profiler" title="Permanent link">&para;</a></h2>
+<p>Using the <code>cluster-profiler</code> client tool, a developer can get the PProf profiling data for every component in the Kubevirt Control plane. Here is a user guide:</p>
+<h3 id="compile-cluster-profiler">Compile <code>cluster-profiler</code><a class="headerlink" href="#compile-cluster-profiler" title="Permanent link">&para;</a></h3>
+<p>Build from source code
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ git clone https://github.com/kubevirt/kubevirt.git
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>$ cd kubevirt/tools/cluster-profiler
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>$ go build
+</code></pre></div></p>
+<h3 id="enable-the-feature-gate">Enable the feature gate<a class="headerlink" href="#enable-the-feature-gate" title="Permanent link">&para;</a></h3>
+<p>Add <code>ClusterProfiler</code> in KubeVirt config
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ cat &lt;&lt; END &gt; enable-feature-gate.yaml
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>---
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>apiVersion: kubevirt.io/v1
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>kind: KubeVirt
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>metadata:
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  name: kubevirt
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>  namespace: kubevirt
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>spec:
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  configuration:
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    developerConfiguration:
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>      featureGates:
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>        - ClusterProfiler
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>END
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>$ kubectl apply -f enable-feature-gate.yaml
+</code></pre></div></p>
+<h3 id="do-the-profiling">Do the profiling<a class="headerlink" href="#do-the-profiling" title="Permanent link">&para;</a></h3>
+<p>Start CPU profiling
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$ cluster-profiler --cmd start
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>2023/05/17 09:31:09 SUCCESS: started cpu profiling KubeVirt control plane
+</code></pre></div>
+Stop CPU profiling
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$ cluster-profiler --cmd stop
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>2023/05/17 09:31:14 SUCCESS: stopped cpu profiling KubeVirt control plane
+</code></pre></div>
+Dump the pprof result
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>$ cluster-profiler --cmd dump
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>2023/05/17 09:31:18 Moving already existing &quot;cluster-profiler-results&quot; =&gt; &quot;cluster-profiler-results-old-67fq&quot;
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>SUCCESS: Dumped PProf 6 results for KubeVirt control plane to [cluster-profiler-results]
+</code></pre></div>
+The PProf result can be found in the folder <code>cluster-profiler-results</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$ tree cluster-profiler-results
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>cluster-profiler-results
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>├── virt-api-5f96f84dcb-lkpb7
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>│   ├── allocs.pprof
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>│   ├── block.pprof
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>│   ├── cpu.pprof
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>│   ├── goroutine.pprof
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>│   ├── heap.pprof
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>│   ├── mutex.pprof
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>│   └── threadcreate.pprof
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>├── virt-controller-5bbd9554d9-2f8j2
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>│   ├── allocs.pprof
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>│   ├── block.pprof
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>│   ├── cpu.pprof
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>│   ├── goroutine.pprof
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>│   ├── heap.pprof
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>│   ├── mutex.pprof
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>│   └── threadcreate.pprof
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>├── virt-controller-5bbd9554d9-qct2w
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>│   ├── allocs.pprof
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>│   ├── block.pprof
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>│   ├── cpu.pprof
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>│   ├── goroutine.pprof
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>│   ├── heap.pprof
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>│   ├── mutex.pprof
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>│   └── threadcreate.pprof
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>├── virt-handler-ccq6c
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>│   ├── allocs.pprof
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>│   ├── block.pprof
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>│   ├── cpu.pprof
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>│   ├── goroutine.pprof
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a>│   ├── heap.pprof
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a>│   ├── mutex.pprof
+<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a>│   └── threadcreate.pprof
+<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a>├── virt-operator-cdc677b7-pg9j2
+<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a>│   ├── allocs.pprof
+<a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a>│   ├── block.pprof
+<a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a>│   ├── cpu.pprof
+<a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a>│   ├── goroutine.pprof
+<a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a>│   ├── heap.pprof
+<a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a>│   ├── mutex.pprof
+<a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a>│   └── threadcreate.pprof
+<a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a>└── virt-operator-cdc677b7-pjqdx
+<a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a>    ├── allocs.pprof
+<a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a>    ├── block.pprof
+<a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a>    ├── cpu.pprof
+<a id="__codelineno-10-48" name="__codelineno-10-48" href="#__codelineno-10-48"></a>    ├── goroutine.pprof
+<a id="__codelineno-10-49" name="__codelineno-10-49" href="#__codelineno-10-49"></a>    ├── heap.pprof
+<a id="__codelineno-10-50" name="__codelineno-10-50" href="#__codelineno-10-50"></a>    ├── mutex.pprof
+<a id="__codelineno-10-51" name="__codelineno-10-51" href="#__codelineno-10-51"></a>    └── threadcreate.pprof
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../api_validation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: API Validation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                API Validation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../virtctl_client_tool/" class="md-footer__link md-footer__link--next" aria-label="Next: Download and Install the virtctl Command Line Interface">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Download and Install the virtctl Command Line Interface
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.ebd0bdb7.min.js"></script>
+      
+    
+  </body>
+</html>
