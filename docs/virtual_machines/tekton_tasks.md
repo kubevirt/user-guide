@@ -4,63 +4,18 @@
 - [Tekton](https://tekton.dev/)
 - [KubeVirt](https://kubevirt.io/)
 - [CDI](https://github.com/kubevirt/containerized-data-importer)
-- [SSP](https://github.com/kubevirt/ssp-operator)
 
-### Deploying SSP
-[SSP](https://github.com/kubevirt/ssp-operator) is a Golang based operator, which takes care of deploying 
-[kubevirt-tekton-tasks](https://github.com/kubevirt/kubevirt-tekton-tasks) and example pipelines.
-
-SSP is shipped as a part of [hyperconverged-cluster-operator](https://github.com/kubevirt/hyperconverged-cluster-operator) 
-or it can be deployed as a stand-alone operator from the latest [release](https://github.com/kubevirt/ssp-operator/releases/latest).
-
-**Note:** SSP requires [Tekton](https://tekton.dev/) to work.
-
-SSP does not deploy KubeVirt Tekton tasks resources by default.
-
-You have to enable `deployTektonTaskResources` feature gate in HCO CR to deploy all its resources:
-
-```yaml
-apiVersion: hco.kubevirt.io/v1beta1
-kind: HyperConverged
-metadata:
-  name: kubevirt-hyperconverged
-  namespace: kubevirt-hyperconverged
-spec:
-  featureGates:
-    deployTektonTaskResources: true
-```
-
-or in SSP CR:
-```yaml
-apiVersion: ssp.kubevirt.io/v1beta2
-kind: SSP
-metadata:
-  name: ssp
-  namespace: kubevirt
-spec:
-  featureGates:
-    deployTektonTaskResources: true
-```
-or you can use this command to enable `deployTektonTaskResources` feature gate in HCO CR
-```console
-oc patch hco kubevirt-hyperconverged  --type=merge -p '{"spec":{"featureGates": {"deployTektonTaskResources": true}}}'
-```
-or by applying a patch on an existing SSP CR:
-```console
-oc patch ssp ssp  --type=merge -p '{"spec":{"featureGates": {"deployTektonTaskResources": true}}}'
-```
-
-**Note:** Once `spec.featureGates.deployTektonTaskResources` is set to `true`, SSP will not delete any tasks or pipeline examples even if it is reverted back to false.
-
-## KubeVirt Tekton tasks 
-### What are KubeVirt Tekton tasks?
-KubeVirt-specific Tekton tasks, which are focused on:
+## KubeVirt Tekton Tasks 
+### What are KubeVirt Tekton Tasks?
+KubeVirt-specific Tekton Tasks, which are focused on:
 
 - Creating and managing resources (VMs, DataVolumes)
 - Executing commands in VMs
 - Manipulating disk images with libguestfs tools
 
-### Existing tasks
+KubeVirt Tekton Tasks and example Pipelines are available in [artifacthub.io](https://artifacthub.io/packages/search?org=kubevirt&sort=relevance&page=1) from where you can easily deploy them to your cluster.
+
+### Existing Tasks
 
 #### Create Virtual Machines
 - create-vm-from-manifest - create a VM from provided manifest or with virtctl.
@@ -93,47 +48,16 @@ KubeVirt-specific Tekton tasks, which are focused on:
   uses a prompt bootloader, which will not continue with the boot process until a key is pressed. By replacing it with the non-prompt 
   bootloader no key press is required to boot into the Windows installer.
 
-### Example pipeline
-All these tasks can be used for creating [pipelines](https://github.com/tektoncd/pipeline/blob/main/docs/pipelines.md).
-SSP is creating multiple example pipelines, e.g.:
+### Example Pipeline
+All these Tasks can be used for creating [Pipelines](https://github.com/tektoncd/pipeline/blob/main/docs/pipelines.md).
+We prepared example Pipelines which show what can you do with the KubeVirt Tasks.
 
-- [Windows BIOS installer](https://github.com/kubevirt/kubevirt-tekton-tasks/blob/main/release/pipelines/windows-bios-installer/windows-bios-installer.yaml) - Pipeline will prepare a template and Windows datavolume vith virtio drivers installed. User has to provide a link to working Windows 10 iso file. Pipeline is suitable for Windows versions, which uses BIOS. More information about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/blob/main/release/pipelines/windows-bios-installer/README.md)
+- [Windows efi installer](https://github.com/kubevirt/kubevirt-tekton-tasks/blob/main/release/pipelines/windows-efi-installer/windows-efi-installer.yaml) - This Pipeline will prepare a Windows 10/11/2k22 datavolume with virtio drivers installed. User has to provide a working link to a Windows 10/11/2k22 iso file. The Pipeline is suitable for Windows versions, which requires EFI (e.g. Windows 10/11/2k22). More information about Pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/blob/main/release/pipelines/windows-efi-installer/README.md)
 
-- [Windows efi installer](https://github.com/kubevirt/kubevirt-tekton-tasks/blob/main/release/pipelines/windows-efi-installer/windows-efi-installer.yaml) - Pipeline will prepare a template and Windows 11/2k22 datavolume vith virtio drivers installed. User has to provide a link to working Windows 11/2k22 iso file. Pipeline is suitable for Windows versions, which requires EFI (e.g. Windows 11/2k22). More information about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/blob/main/release/pipelines/windows-efi-installer/README.md)
-
-- [Windows customize](https://github.com/kubevirt/kubevirt-tekton-tasks/blob/main/release/pipelines/windows-customize/windows-customize.yaml) - Pipeline will install SQL server or VS Code in Windows VM. More information about pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/blob/main/release/pipelines/windows-customize/README.md)
-
-### Using tasks and example pipelines in different namespace
-You can set in which namespace the example pipelines and tasks will be deployed by setting `spec.tektonPipelinesNamespace` or `spec.tektonTasksNamespace`in the HCO CR:
-
-```yaml
-apiVersion: hco.kubevirt.io/v1beta1
-kind: HyperConverged
-metadata:
-  name: kubevirt-hyperconverged
-  namespace: kubevirt-hyperconverged
-spec:
-  tektonPipelinesNamespace: userNamespace
-  tektonTasksNamespace: userNamespace
-```
-
-or in SSP CR by setting `spec.tektonPipelines.namespace` or `spec.tektonTasks.namespace`:
-```yaml
-apiVersion: ssp.kubevirt.io/v1beta2
-kind: SSP
-metadata:
-  name: ssp
-  namespace: kubevirt
-spec:
-  tektonPipelines:
-    namespace: kubevirt
-  tektonTasks:
-    namespace: kubevirt
-```
+- [Windows customize](https://github.com/kubevirt/kubevirt-tekton-tasks/blob/main/release/pipelines/windows-customize/windows-customize.yaml) - This Pipeline will install a SQL server or a VS Code in a Windows VM. More information about Pipeline can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/blob/main/release/pipelines/windows-customize/README.md)
 
 !!! note
-    - The namespace has to exists before doing this change. <br />
-    - If you define different namespace for pipelines and different namespace for tasks, you will have to create [cluster resolver](https://tekton.dev/docs/pipelines/cluster-resolver/) object. <br />
-    - In case you change the `tektonPipelinesNamespace` attribute, the pipelines will be deployed in that namespace. <br />
-    - By default, example pipelines create the result datavolume in `kubevirt-os-images`. <br />
-    - In case you would like to create result datavolume in different namespace (by specifying `baseDvNamespace` attribute in pipeline), there will be required additional RBAC permissions (list of all required RBAC permissions can be found [here](https://github.com/kubevirt/ssp-operator/blob/master/data/tekton-pipelines/pipelines-rbac.yaml)).
+    - If you define a different namespace for Pipelines and a different namespace for Tasks, you will have to create a [cluster resolver](https://tekton.dev/docs/pipelines/cluster-resolver/) object. <br />
+    - By default, example Pipelines create the resulting datavolume in the `kubevirt-os-images` namespace. <br />
+    - In case you would like to create resulting datavolume in different namespace (by specifying `baseDvNamespace` attribute in Pipeline), additional RBAC permissions will be required (list of all required RBAC permissions can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/release/tasks/modify-data-object#usage-in-different-namespaces)). <br />
+    - In case you would like to live migrate the VM while a given Pipeline is running, the following [prerequisities](../operations/live_migration.md#limitations) must be met 
