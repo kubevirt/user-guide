@@ -1134,12 +1134,7 @@ spec:
     - metadata:
         name: win10-template-windows-iso
       spec:
-        pvc:
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 20Gi
+        storage: {}
         source:
           pvc:
             name: windows10-iso
@@ -1147,9 +1142,7 @@ spec:
     - metadata:
         name: win10-template
       spec:
-        pvc:
-          accessModes:
-            - ReadWriteOnce
+        storage:
           resources:
             requests:
               storage: 25Gi

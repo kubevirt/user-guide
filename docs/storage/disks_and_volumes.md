@@ -582,9 +582,7 @@ spec:
   - metadata:
       name: alpine-dv
     spec:
-      pvc:
-        accessModes:
-        - ReadWriteOnce
+      storage:
         resources:
           requests:
             storage: 2Gi
