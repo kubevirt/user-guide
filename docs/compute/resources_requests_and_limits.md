@@ -7,7 +7,7 @@ In this document, we are talking about the resources values set on the virt-laun
 Note: dedicated CPUs (and isolated emulator thread) are ignored here as they have a [dedicated page](../compute/dedicated_cpu_resources.md).
 
 ### CPU requests on the container
-- By default, the container requests (1/cpuAllocationRatio) CPU per vCPU. The number of vCPUs is sockets*cores*threads, defaults to 1.
+- By default, the container requests (1/cpuAllocationRatio) CPU per vCPU. The number of vCPUs is sockets * cores * threads, defaults to 1.
 - cpuAllocationRatio defaults to 10 but can be changed in the CR.
 - If a CPU limit is manually set on the VM(I) and no CPU request is, the CPU requests on the container will match the CPU limits
 - Manually setting CPU requests on the VM(I) will override all of the above and be the CPU requests for the container
