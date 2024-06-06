@@ -2123,3 +2123,30 @@ We need to log in to the VM and mount the shared directory:
 ```shell
 $ sudo mount -t virtiofs vm-hostpath /mnt
 ```
+
+#### Update volumes strategy
+
+The `updateVolumesStrategy` field is used to specify the strategy for updating the volumes of a running VM.
+The following strategies are supported:
+  * `Replacement`: the update volumes will be replaced upon the VM restart.
+  * `Migration`: the update of the volumes will trigger a storage migration of
+    the old volumes to the new ones. More details about volume migration can be
+    found in the [volume migration documentation](docs/storage/volume_migration.md).
+
+The update volume migration depends on the feature gate `VolumesUpdateStrategy`
+which depends on the VMLiveUpdateFeatures feature gate and configuration.
+
+KubeVirt CR:
+```yaml
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - VMLiveUpdateFeatures
+        - VolumesUpdateStrategy
+  workloadUpdateStrategy:
+    workloadUpdateMethods:
+    - LiveMigrate
+```
