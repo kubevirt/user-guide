@@ -1,6 +1,8 @@
 # Hotplug Network Interfaces
 
-**Warning**: The feature is in alpha stage and its API may be changed in the future.
+Release:
+- v1.1.0: Alpha
+- v1.3.0: Beta
 
 KubeVirt supports hotplugging and unplugging network interfaces into a running Virtual Machine (VM). 
 
