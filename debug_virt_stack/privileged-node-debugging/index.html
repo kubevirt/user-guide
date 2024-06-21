@@ -2641,7 +2641,7 @@
 <p>This article describes the scenarios in which you can create privileged pods and have root access to the cluster nodes.</p>
 <p>With privileged pods, you may access devices in <code>/dev</code>, utilize host namespaces and ptrace processes that are running on the node, and use the <code>hostPath</code> volume to mount node directories in the container.</p>
 <p>A quick way to verify if you are allowed to create privileged pods is to create a sample pod with the <code>--dry-run=server</code> option, like:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">$ </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>debug-pod.ymal<span class="w"> </span>--dry-run<span class="o">=</span>server
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gp">$ </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>debug-pod.yaml<span class="w"> </span>--dry-run<span class="o">=</span>server
 </code></pre></div>
 <h1 id="build-the-container-image">Build the container image<a class="headerlink" href="#build-the-container-image" title="Permanent link">&para;</a></h1>
 <p>KubeVirt uses <a href="https://github.com/GoogleContainerTools/distroless">distroless containers</a> and those images don't have a package manager, for this reason it isn't possible to use the image as parent for installing additional packages.</p>
