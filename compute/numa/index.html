@@ -1953,6 +1953,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#additional-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Reading
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Additional Reading">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#topology-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topology Manager
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Manager
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2800,6 +2833,39 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#additional-reading" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Reading
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Additional Reading">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#topology-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      Topology Manager
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      Memory Manager
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2917,7 +2983,7 @@ applications.</p>
 </li>
 </ul>
 <h3 id="preconditions_1">Preconditions<a class="headerlink" href="#preconditions_1" title="Permanent link">&para;</a></h3>
-<p>A prerequisite to running real-time workloads include locking resources in the cluster to allow the real-time VM exclusive usage. This translates into nodes, or node, that have been configured with a <a href="https://github.com/kubevirt/user-guide/blob/main/docs/virtual_machines/dedicated_cpu_resources.md">dedicated set of CPUs</a> and also provides support for <a href="https://github.com/kubevirt/user-guide/blob/main/docs/virtual_machines/numa.md">NUMA</a> with a free number of hugepages of 2Mi or 1Gi size (depending on the configuration in the VMI). Additionally, the node must be configured to allow the scheduler to run processes with real-time policy.</p>
+<p>A prerequisite to running real-time workloads include locking resources in the cluster to allow the real-time VM exclusive usage. This translates into nodes, or node, that have been configured with a <a href="../dedicated_cpu_resources/">dedicated set of CPUs</a> and also provides support for <a href="./">NUMA</a> with a free number of hugepages of 2Mi or 1Gi size (depending on the configuration in the VMI). Additionally, the node must be configured to allow the scheduler to run processes with real-time policy.</p>
 <h3 id="nodes-capable-of-running-real-time-workloads">Nodes capable of running real-time workloads<a class="headerlink" href="#nodes-capable-of-running-real-time-workloads" title="Permanent link">&para;</a></h3>
 <p>When the KubeVirt pods are deployed in a node, it will check if it is capable of running processes in real-time scheduling policy and label the node as real-time capable (kubevirt.io/realtime). If, on the other hand, the node is not able to deliver such capability, the label is not applied. To check which nodes are able to host real-time VM workloads run this command:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$&gt;kubectl<span class="w"> </span>get<span class="w"> </span>nodes<span class="w"> </span>-l<span class="w"> </span>kubevirt.io/realtime
@@ -3038,6 +3104,17 @@ cpu:
 <p>When applied this configuration, KubeVirt will only set the first VCPU for real-time scheduler policy, leaving the remaining VCPUS to use the default scheduler policy. Other examples of valid masks are:
 - <code>0-3</code>: Use cores 0 to 3 for real-time scheduling, assuming that the VM has requested at least 3 cores.
 - <code>0-3,^1</code>: Use cores 0, 2 and 3 for real-time scheduling only, assuming that the VM has requested at least 3 cores.</p>
+<h2 id="additional-reading">Additional Reading<a class="headerlink" href="#additional-reading" title="Permanent link">&para;</a></h2>
+<p>Kubernetes provides additional NUMA components that may be relevant to your use-case but typically are not enabled by default. Please consult the Kubernetes documentation for details on configuration of these components.</p>
+<h3 id="topology-manager">Topology Manager<a class="headerlink" href="#topology-manager" title="Permanent link">&para;</a></h3>
+<p>Topology Manager provides optimizations related to CPU isolation, memory and device locality. It is useful, for example, where an SR-IOV network adaptor VF allocation needs to be aligned with a NUMA node.</p>
+<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/">https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/</a></p>
+<h3 id="memory-manager">Memory Manager<a class="headerlink" href="#memory-manager" title="Permanent link">&para;</a></h3>
+<p>Memory Manager is analogous to <a href="../dedicated_cpu_resources/">CPU Manager</a>. It is useful, for example, where you want to align hugepage allocations with a NUMA node. It works in conjunction with <a href="./#topology-manager">Topology Manager</a>.</p>
+<blockquote>
+<p>The Memory Manager employs hint generation protocol to yield the most suitable NUMA affinity for a pod. The Memory Manager feeds the central manager (Topology Manager) with these affinity hints. Based on both the hints and Topology Manager policy, the pod is rejected or admitted to the node.</p>
+</blockquote>
+<p><a href="https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/">https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/</a></p>
 
 
 
