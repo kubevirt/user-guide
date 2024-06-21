@@ -649,6 +649,7 @@ spec:
   - multus:
       networkName: ptp-conf
     name: ptp
+  - multus:
       networkName: sriov/sriov-network
     name: sriov-net
 
