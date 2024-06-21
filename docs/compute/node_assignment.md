@@ -166,3 +166,13 @@ spec:
 This annotation will cause, that the descheduler will be able to evict the VM's pod which can then be
 scheduled by scheduler on different nodes. A VirtualMachine will never restart or re-create a
 VirtualMachineInstance until the current instance of the VirtualMachineInstance is deleted from the cluster.
+
+## Live update
+
+When the [VM rollout strategy](../user_workloads/vm_rollout_strategies.md) is set to `LiveUpdate`, changes to a VM's
+node selector or affinities will dynamically propagate to the VMI (unless the `RestartRequired` condition is set).
+Changes to tolerations will not dynamically propagate, and will trigger a `RestartRequired` condition if changed on a
+running VM.
+
+Modifications of the node selector / affinities will only take effect on next [migration](live_migration.md), the change
+alone will not trigger one.
