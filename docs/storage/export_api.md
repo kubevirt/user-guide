@@ -25,7 +25,7 @@ stringData:
 After you have created the token you can now create a VMExport CR that identifies the Virtual Machine you want to export. You can create a VMExport that looks like this:
 
 ```yaml
-apiVersion: export.kubevirt.io/v1alpha1
+apiVersion: export.kubevirt.io/v1beta1
 kind: VirtualMachineExport
 metadata:
   name: example-export
@@ -52,7 +52,7 @@ If the VM contains multiple volumes that can be exported, each volume will get i
 You can create a VMExport CR that identifies the Virtual Machine Snapshot you want to export. You can create a VMExport that looks like this:
 
 ```yaml
-apiVersion: export.kubevirt.io/v1alpha1
+apiVersion: export.kubevirt.io/v1beta1
 kind: VirtualMachineExport
 metadata:
   name: example-export
@@ -71,7 +71,7 @@ When you create a VMExport based on a Virtual Machine Snapshot, the controller w
 You can create a VMExport CR that identifies the Persistent Volume Claim (PVC) you want to export. You can create a VMExport that looks like this:
 
 ```yaml
-apiVersion: export.kubevirt.io/v1alpha1
+apiVersion: export.kubevirt.io/v1beta1
 kind: VirtualMachineExport
 metadata:
   name: example-export
@@ -94,7 +94,7 @@ The VirtualMachineExport CR will contain a status with internal and external lin
 The following is an example of exporting a PVC that contains a KubeVirt disk image. The controller determines if the PVC contains a kubevirt disk by checking if there is a special annotation on the PVC, or if there is a DataVolume ownerReference on the PVC, or if the PVC has a volumeMode of block.
 
 ```yaml
-apiVersion: export.kubevirt.io/v1alpha1
+apiVersion: export.kubevirt.io/v1beta1
 kind: VirtualMachineExport
 metadata:
   name: example-export
@@ -126,9 +126,9 @@ status:
       volumes:
       - formats:
         - format: raw
-          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-disk/disk.img
+          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1beta1/namespaces/example/virtualmachineexports/example-export/volumes/example-disk/disk.img
         - format: gzip
-          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-disk/disk.img.gz
+          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1beta1/namespaces/example/virtualmachineexports/example-export/volumes/example-disk/disk.img.gz
         name: example-disk
     internal:
       cert: |-
@@ -149,7 +149,7 @@ status:
 Archive content-type is automatically selected if we are unable to determine the PVC contains a KubeVirt disk. The archive will contain all the files that are in the PVC.
 
 ```yaml
-apiVersion: export.kubevirt.io/v1alpha1
+apiVersion: export.kubevirt.io/v1beta1
 kind: VirtualMachineExport
 metadata:
   name: example-export
@@ -181,9 +181,9 @@ status:
       volumes:
       - formats:
         - format: dir
-          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example/dir
+          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1beta1/namespaces/example/virtualmachineexports/example-export/volumes/example/dir
         - format: tar.gz
-          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example/disk.tar.gz
+          url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1beta1/namespaces/example/virtualmachineexports/example-export/volumes/example/disk.tar.gz
         name: example-disk
     internal:
       cert: |-
@@ -207,7 +207,7 @@ The VirtualMachine manifests can be retrieved by accessing the `manifests` in th
 Both internal and external links will contain a `manifests` field. If there are no external links, then there will not be any external manifests either. The virtualMachine `manifests` field is only available if the source is a `VirtualMachine` or `VirtualMachineSnapshot`. Exporting a `PersistentVolumeClaim` will not generate a Virtual Machine manifest.
 
 ```yaml
-apiVersion: export.kubevirt.io/v1alpha1
+apiVersion: export.kubevirt.io/v1beta1
 kind: VirtualMachineExport
 metadata:
   name: example-export
@@ -235,9 +235,9 @@ status:
       ...
       manifests:
       - type: all
-        url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/external/manifests/all
+        url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1beta1/namespaces/example/virtualmachineexports/example-export/external/manifests/all
       - type: auth-header-secret
-        url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/external/manifests/secret
+        url: https://vmexport-proxy.test.net/api/export.kubevirt.io/v1beta1/namespaces/example/virtualmachineexports/example-export/external/manifests/secret
     internal:
       ...
       manifests:
@@ -264,14 +264,14 @@ Raw and Gzip will be selected if the PVC is determined to be a KubeVirt disk. Ku
 The export server certificate is valid for 7 days after which it is rotated by deleting the export server pod and associated secret and generating a new one. If for whatever reason the export server pod dies, the associated secret is also automatically deleted and a new pod and secret are generated. The VirtualMachineExport object status will be automatically updated to reflect the new certificate.
 
 #### External link certificates
-The external link certificates are associated with the Ingress/Route that points to the service created by the KubeVirt operator. The CA that signed the Ingress/Route will part of the certificates. 
+The external link certificates are associated with the Ingress/Route that points to the service created by the KubeVirt operator. The CA that signed the Ingress/Route will part of the certificates.
 
 ### TTL (Time to live) for an Export
-For various reasons (security being one), users should be able to specify a TTL for the VMExport objects that limits the lifetime of an export.  
-This is done via the `ttlDuration` field which accepts a k8s [duration](https://godoc.org/k8s.io/apimachinery/pkg/apis/meta/v1#Duration),  
+For various reasons (security being one), users should be able to specify a TTL for the VMExport objects that limits the lifetime of an export.
+This is done via the `ttlDuration` field which accepts a k8s [duration](https://godoc.org/k8s.io/apimachinery/pkg/apis/meta/v1#Duration),
 which defaults to 2 hours when not specified.
 ```yaml
-apiVersion: export.kubevirt.io/v1alpha1
+apiVersion: export.kubevirt.io/v1beta1
 kind: VirtualMachineExport
 metadata:
     name: example-export
@@ -448,7 +448,7 @@ stringData:
 The value of the token is `1234567890ab` hardly a secure token, but it is an example. We can now create a VMExport that looks like this:
 
 ```yaml
-apiVersion: export.kubevirt.io/v1alpha1
+apiVersion: export.kubevirt.io/v1beta1
 kind: VirtualMachineExport
 metadata:
   name: example-export
@@ -462,7 +462,7 @@ spec:
 If the VM is not running the status of the VMExport object will get updated once the export-server pod is running to look something like this:
 
 ```yaml
-apiVersion: export.kubevirt.io/v1alpha1
+apiVersion: export.kubevirt.io/v1beta1
 kind: VirtualMachineExport
 metadata:
   name: example-export
@@ -492,9 +492,9 @@ status:
       volumes:
       - formats:
         - format: raw
-          url: https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img
+          url: https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1beta1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img
         - format: gzip
-          url: https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1alpha1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img.gz
+          url: https://virt-exportproxy-example.example.com/api/export.kubevirt.io/v1beta1/namespaces/example/virtualmachineexports/example-export/volumes/example-dv/disk.img.gz
         name: example-disk
     internal:
       cert: |-

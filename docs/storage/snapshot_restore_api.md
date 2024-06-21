@@ -43,7 +43,7 @@ There will be an indication in the vmSnapshot status if the snapshot was taken o
 To snapshot a `VirtualMachine` named `larry`, apply the following yaml.
 
 ```yaml
-apiVersion: snapshot.kubevirt.io/v1alpha1
+apiVersion: snapshot.kubevirt.io/v1beta1
 kind: VirtualMachineSnapshot
 metadata:
   name: snap-larry
@@ -69,7 +69,7 @@ You can check the vmSnapshot phase in the vmSnapshot status. It can be one of th
 The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not succeessfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a [duration](https://pkg.go.dev/time#ParseDuration) string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m"
 
 ```yaml
-apiVersion: snapshot.kubevirt.io/v1alpha1
+apiVersion: snapshot.kubevirt.io/v1beta1
 kind: VirtualMachineSnapshot
 metadata:
   name: snap-larry
@@ -88,7 +88,7 @@ In order to set an infinite deadline you can set it to 0 (not recommended).
 To restore the `VirtualMachine` `larry` from `VirtualMachineSnapshot` `snap-larry`, Stop the VM, wait for it to be stopped and then apply the following yaml.
 
 ```yaml
-apiVersion: snapshot.kubevirt.io/v1alpha1
+apiVersion: snapshot.kubevirt.io/v1beta1
 kind: VirtualMachineRestore
 metadata:
   name: restore-larry
