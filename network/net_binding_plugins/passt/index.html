@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.27">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.28">
     
     
       
@@ -2894,14 +2894,20 @@ configuration needs to be added to the kubevirt CR.</p>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">                    </span><span class="s">&quot;sidecarImage&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;quay.io/kubevirt/network-passt-binding:20231205_29a16d5c9&quot;</span><span class="p p-Indicator">,</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">                    </span><span class="s">&quot;migration&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">                        </span><span class="s">&quot;method&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;link-refresh&quot;</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">                    </span><span class="p p-Indicator">}</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">                </span><span class="p p-Indicator">}</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">            </span><span class="p p-Indicator">}</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="p p-Indicator">}</span><span class="err">}]</span><span class="s">&#39;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">                    </span><span class="p p-Indicator">},</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">                    </span><span class="s">&quot;computeResourceOverhead&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">                      </span><span class="s">&quot;requests&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="p p-Indicator">{</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">                        </span><span class="s">&quot;memory&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;500Mi&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">                      </span><span class="p p-Indicator">}</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">                    </span><span class="p p-Indicator">}</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">                </span><span class="p p-Indicator">}</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">            </span><span class="p p-Indicator">}</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">        </span><span class="p p-Indicator">}</span><span class="err">}]</span><span class="s">&#39;</span>
 </code></pre></div></p>
 <p>The NetworkAttachmentDefinition and sidecarImage values should correspond with the
 names used in the previous sections, <a href="#passt-networkattachmentdefinition">here</a>
 and <a href="#passt-sidecar-image">here</a>.</p>
+<p>When using the plugin, additional memory overhead of <code>500Mi</code> will be requested for the compute container in the virt-launcher pod.</p>
 <h3 id="vm-passt-network-interface">VM Passt Network Interface<a class="headerlink" href="#vm-passt-network-interface" title="Permanent link">&para;</a></h3>
 <p>Set the VM network interface binding name to reference the one defined in the
 kubevirt CR.</p>
@@ -3045,7 +3051,7 @@ kubevirt CR.</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.ad660dcc.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
     
   </body>
