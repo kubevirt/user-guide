@@ -146,6 +146,11 @@ kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "pat
                     "sidecarImage": "quay.io/kubevirt/network-passt-binding:20231205_29a16d5c9",
                     "migration": {
                         "method": "link-refresh"
+                    },
+                    "computeResourceOverhead": {
+                      "requests": {
+                        "memory": "500Mi",
+                      }
                     }
                 }
             }
@@ -155,6 +160,8 @@ kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "pat
 The NetworkAttachmentDefinition and sidecarImage values should correspond with the
 names used in the previous sections, [here](#passt-networkattachmentdefinition)
 and [here](#passt-sidecar-image).
+
+When using the plugin, additional memory overhead of `500Mi` will be requested for the compute container in the virt-launcher pod.
 
 ### VM Passt Network Interface
 Set the VM network interface binding name to reference the one defined in the
