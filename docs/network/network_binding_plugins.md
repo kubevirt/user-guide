@@ -208,6 +208,43 @@ kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "pat
         }}]'
 ```
 
+#### Compute Resource Overhead
+From: v1.3.0
+
+Some plugins may need additional resources to be added to the compute container of the virt-launcher pod.
+
+It is possible to specify compute resource overhead that will be added to the `compute` container of virt-launcher pods
+derived from virtual machines using the plugin.
+
+> **Note**: At the moment, only memory overhead requests are supported.
+
+> **Note**: In some deployments the Kubevirt CR is controlled by an external
+> controller (e.g. [HCO](https://github.com/kubevirt/hyperconverged-cluster-operator)).
+> In such cases, make sure to configure the wrapper operator/controller so the
+> changes will get preserved.
+
+Example (the `passt` binding):
+```shell
+kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "path": "/spec/configuration/network",   "value": {
+            "binding": {
+                "passt": {
+                    "networkAttachmentDefinition": "default/netbindingpasst",
+                    "sidecarImage": "quay.io/kubevirt/network-passt-binding:20231205_29a16d5c9",
+                    "migration": {
+                        "method": "link-refresh"
+                    },
+                    "computeResourceOverhead": {
+                      "requests": {
+                        "memory": "500Mi",
+                      }
+                    }
+                }
+            }
+        }}]'
+```
+
+Every compute container in a virt-launcher pod derived from a VM using the passt network binding plugin, will have an additional `500Mi` memory overhead.
+
 ### VM Network Interface
 When configuring the VM/VMI network interface, the binding plugin name
 can be specified. If it exists in the Kubevirt CR, it will be used
