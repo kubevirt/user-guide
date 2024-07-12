@@ -143,9 +143,59 @@ $ kubectl get vmis/example-preference-user-override -o json | jq .spec.domain.de
     "name": "cloudinitdisk"
   }
 ]
-
-
 ```
+
+### PreferredCPUTopology
+
+A preference can optionally include a `PreferredCPUTopology` that defines how the guest visible CPU topology of the `VirtualMachineInstance` is constructed from vCPUs supplied by an instance type.
+
+```yaml
+apiVersion: instancetype.kubevirt.io/v1beta1
+kind: VirtualMachinePreference
+metadata:
+  name: example-preference-cpu-topology
+spec:
+  cpu:
+    preferredCPUTopology: cores
+```
+
+The allowed values for `PreferredCPUTopology` include:
+
+* `sockets` (default) - Provides vCPUs as sockets to the guest
+* `cores` - Provides vCPUs as cores to the guest
+* `threads` - Provides vCPUs as threads to the guest
+* `spread` - Spreads vCPUs across sockets and cores by default. See the following [SpreadOptions](#### SpreadOptions) section for more details.
+* `any` - Provides vCPUs as sockets to the guest, this is also used to express that any allocation of vCPUs is required by the preference. Useful when defining a preference that isn't used alongside an instance type.
+
+Note that support for the original `preferSockets`, `preferCores`, `preferThreads` and `preferSpread` values for `PreferredCPUTopology` is deprecated as of `v1.4.0` ahead of removal in a future release.
+
+#### SpreadOptions
+
+When `spread` is provided as the value of `PreferredCPUTopology` we can further customize how vCPUs are spread across the guest visible CPU topology using `SpreadOptions`:
+
+```yaml
+apiVersion: instancetype.kubevirt.io/v1beta1
+kind: VirtualMachinePreference
+metadata:
+  name: example-preference-cpu-topology
+spec:
+  cpu:
+    preferredCPUTopology: spread
+    spreadOptions:
+      across: SocketsCoresThreads
+      ratio: 4
+```
+
+[`spreadOptions`](https://kubevirt.io/api-reference/main/definitions.html#_v1beta1_spreadoptions) provides the following configurables:
+
+* `across` - Defines how vCPUs should be spread across the guest visible CPU topology
+* `ratio`  - Defines the ratio at which vCPUs should be spread (defaults to 2)
+
+The allowed values for `across` include:
+
+* `SocketsCores` (default) - Spreads vCPUs across sockets and cores with a ratio of 1:N where N is the provided ratio.
+* `SocketsCoresThreads` - Spreads vCPUs across sockets, cores and threads with a ratio of 1:N:2 where N is the provided ratio.
+* `CoresThreads` - Spreads vCPUs across cores and threads with an enforced ratio of 1:2. (requires at least 2 vCPUs to be provided by an instance type)
 
 ## VirtualMachine
 
