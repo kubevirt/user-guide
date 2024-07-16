@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.28">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.29">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.6543a935.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.76a95c52.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -2955,6 +2955,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#update-volumes-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update volumes strategy
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3949,6 +3958,15 @@
   <a href="#configuration-inside-the-vm_1" class="md-nav__link">
     <span class="md-ellipsis">
       Configuration Inside the VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-volumes-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update volumes strategy
     </span>
   </a>
   
@@ -5895,6 +5913,28 @@ it with the <code>chcon</code>  command.</p>
 <p>We need to log in to the VM and mount the shared directory:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>$<span class="w"> </span>sudo<span class="w"> </span>mount<span class="w"> </span>-t<span class="w"> </span>virtiofs<span class="w"> </span>vm-hostpath<span class="w"> </span>/mnt
 </code></pre></div>
+<h4 id="update-volumes-strategy">Update volumes strategy<a class="headerlink" href="#update-volumes-strategy" title="Permanent link">&para;</a></h4>
+<p>The <code>updateVolumesStrategy</code> field is used to specify the strategy for updating the volumes of a running VM.
+The following strategies are supported:
+  * <code>Replacement</code>: the update volumes will be replaced upon the VM restart.
+  * <code>Migration</code>: the update of the volumes will trigger a storage migration of
+    the old volumes to the new ones. More details about volume migration can be
+    found in the <a href="docs/storage/volume_migration.md">volume migration documentation</a>.</p>
+<p>The update volume migration depends on the feature gate <code>VolumesUpdateStrategy</code>
+which depends on the VMLiveUpdateFeatures feature gate and configuration.</p>
+<p>KubeVirt CR:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMLiveUpdateFeatures</span>
+<a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VolumesUpdateStrategy</span>
+<a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="w">  </span><span class="nt">workloadUpdateStrategy</span><span class="p">:</span>
+<a id="__codelineno-48-10" name="__codelineno-48-10" href="#__codelineno-48-10"></a><span class="w">    </span><span class="nt">workloadUpdateMethods</span><span class="p">:</span>
+<a id="__codelineno-48-11" name="__codelineno-48-11" href="#__codelineno-48-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigrate</span>
+</code></pre></div></p>
 
 
 
