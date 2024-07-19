@@ -2131,7 +2131,7 @@ The following strategies are supported:
   * `Replacement`: the update volumes will be replaced upon the VM restart.
   * `Migration`: the update of the volumes will trigger a storage migration of
     the old volumes to the new ones. More details about volume migration can be
-    found in the [volume migration documentation](docs/storage/volume_migration.md).
+    found in the [volume migration documentation](../storage/volume_migration.md).
 
 The update volume migration depends on the feature gate `VolumesUpdateStrategy`
 which depends on the VMLiveUpdateFeatures feature gate and configuration.
