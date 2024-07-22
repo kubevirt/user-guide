@@ -29,7 +29,7 @@ In order to use current NUMA support, the following preconditions must be met:
 GuestMappingPassthrough will pass through the node numa topology to the guest.
 The topology is based on the dedicated CPUs which the VMI got assigned from the
 kubelet via the CPU Manager. It can be requested by
-setting `spec.domain.cpu.guestMappingPassthrough` on the VMI.
+setting `spec.domain.cpu.numa.guestMappingPassthrough` on the VMI.
 
 Since KubeVirt does not know upfront which exclusive CPUs the VMI will get from
 the kubelet, there are some limitations:
