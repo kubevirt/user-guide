@@ -2927,7 +2927,7 @@
 <p>Note: dedicated CPUs (and isolated emulator thread) are ignored here as they have a <a href="../dedicated_cpu_resources/">dedicated page</a>.</p>
 <h3 id="cpu-requests-on-the-container">CPU requests on the container<a class="headerlink" href="#cpu-requests-on-the-container" title="Permanent link">&para;</a></h3>
 <ul>
-<li>By default, the container requests (1/cpuAllocationRatio) CPU per vCPU. The number of vCPUs is sockets<em>cores</em>threads, defaults to 1.</li>
+<li>By default, the container requests (1/cpuAllocationRatio) CPU per vCPU. The number of vCPUs is sockets * cores * threads, defaults to 1.</li>
 <li>cpuAllocationRatio defaults to 10 but can be changed in the CR.</li>
 <li>If a CPU limit is manually set on the VM(I) and no CPU request is, the CPU requests on the container will match the CPU limits</li>
 <li>Manually setting CPU requests on the VM(I) will override all of the above and be the CPU requests for the container</li>
