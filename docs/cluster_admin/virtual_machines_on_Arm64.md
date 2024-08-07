@@ -58,3 +58,7 @@ This class of devices is not verified on the Arm64 platform.
 ## Liveness and Readiness Probes
 
 `Watchdog` device is not supported on Arm64 platform.
+
+## Operating systems
+
+Currently, `macOS` runs on ARM architecture and this OS is not supported. However, you may try to run it using devContainers https://github.com/kubevirt/kubevirt/pull/11830
