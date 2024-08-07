@@ -17,6 +17,8 @@ A few requirements need to be met before you can begin:
 -   Kubernetes apiserver must have `--allow-privileged=true` in order to run KubeVirt's privileged DaemonSet.
 -   `kubectl` client utility
 
+Currently, macOS is not supported
+
 ### Container Runtime Support
 
 KubeVirt is currently supported on the following container runtimes:
