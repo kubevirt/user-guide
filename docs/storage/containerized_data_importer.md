@@ -69,30 +69,43 @@ virtctl has an image-upload command with the following options:
 
     Examples:
       # Upload a local disk image to a newly created DataVolume:
-      virtctl image-upload dv dv-name --size=10Gi --image-path=/images/fedora30.qcow2
+      virtctl image-upload dv fedora-dv --size=10Gi --image-path=/images/fedora30.qcow2
 
       # Upload a local disk image to an existing DataVolume
-      virtctl image-upload dv dv-name --no-create --image-path=/images/fedora30.qcow2
+      virtctl image-upload dv fedora-dv --no-create --image-path=/images/fedora30.qcow2
+
+      # Upload a local disk image to a newly created PersistentVolumeClaim
+      virtctl image-upload pvc fedora-pvc --size=10Gi --image-path=/images/fedora30.qcow2
+
+      # Upload a local disk image to a newly created PersistentVolumeClaim and label it with a default instance type and preference
+      virtctl image-upload pvc fedora-pvc --size=10Gi --image-path=/images/fedora30.qcow2 --default-instancetype=n1.medium --default-preference=fedora
 
       # Upload a local disk image to an existing PersistentVolumeClaim
-      virtctl image-upload pvc pvc-name --image-path=/images/fedora30.qcow2
+      virtctl image-upload pvc fedora-pvc --no-create --image-path=/images/fedora30.qcow2
 
       # Upload to a DataVolume with explicit URL to CDI Upload Proxy
-      virtctl image-upload dv dv-name --uploadproxy-url=https://cdi-uploadproxy.mycluster.com --image-path=/images/fedora30.qcow2
+      virtctl image-upload dv fedora-dv --uploadproxy-url=https://cdi-uploadproxy.mycluster.com --image-path=/images/fedora30.qcow2
+
+      # Upload a local disk archive to a newly created DataVolume:
+      virtctl image-upload dv fedora-dv --size=10Gi --archive-path=/images/fedora30.tar
 
     Flags:
-          --access-mode string       The access mode for the PVC. (default "ReadWriteOnce")
-          --block-volume             Create a PVC with VolumeMode=Block (default Filesystem).
-      -h, --help                     help for image-upload
-          --image-path string        Path to the local VM image.
-          --insecure                 Allow insecure server connections when using HTTPS.
-          --no-create                Don't attempt to create a new DataVolume/PVC.
-          --pvc-name string          DEPRECATED - The destination DataVolume/PVC name.
-          --pvc-size string          DEPRECATED - The size of the PVC to create (ex. 10Gi, 500Mi).
-          --size string              The size of the DataVolume to create (ex. 10Gi, 500Mi).
-          --storage-class string     The storage class for the PVC.
-          --uploadproxy-url string   The URL of the cdi-upload proxy service.
-          --wait-secs uint           Seconds to wait for upload pod to start. (default 60)
+        --access-mode string                 The access mode for the PVC.
+        --archive-path string                Path to the local archive.
+        --default-instancetype string        The default instance type to associate with the image.
+        --default-instancetype-kind string   The default instance type kind to associate with the image.
+        --default-preference string          The default preference to associate with the image.
+        --default-preference-kind string     The default preference kind to associate with the image.
+        --force-bind                         Force bind the PVC, ignoring the WaitForFirstConsumer logic.
+        -h, --help                           help for image-upload
+        --image-path string                  Path to the local VM image.
+        --insecure                           Allow insecure server connections when using HTTPS.
+        --no-create                          Don't attempt to create a new DataVolume/PVC.
+        --size string                        The size of the DataVolume to create (ex. 10Gi, 500Mi).
+        --storage-class string               The storage class for the PVC.
+        --uploadproxy-url string             The URL of the cdi-upload proxy service.
+        --volume-mode string                 Specify the VolumeMode (block/filesystem) used to create the PVC. Default is the storageProfile default. For archive upload default is filesystem.
+        --wait-secs uint                     Seconds to wait for upload pod to start. (default 300)
 
     Use "virtctl options" for a list of global command-line options (applies to all commands).
 
