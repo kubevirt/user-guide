@@ -6,12 +6,12 @@ type is `VirtualMachine`, but more types are planned to be supported in the futu
 Please bear in mind that the clone API is in version `v1alpha1`. This means that this API is not fully stable
 yet and that APIs may change in the future.
 
-## Prerequesites
+## Prerequisites
 
 ### Snapshot / Restore
 
 Under the hood, the clone API relies upon Snapshot & Restore APIs. Therefore, in order to be able to use the clone API,
-please see [Snapshot & Restore prerequesites](../storage//snapshot_restore_api.md#prerequesites).
+please see [Snapshot & Restore prerequisites](../storage//snapshot_restore_api.md#prerequisites).
 
 ### Snapshot Feature Gate
 
