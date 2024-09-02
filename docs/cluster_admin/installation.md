@@ -225,6 +225,14 @@ ARM64 developer builds can be installed like this:
     $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator-arm64.yaml
     $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-cr-arm64.yaml
 
+### s390x developer builds
+
+s390x developer builds can be installed like this:
+
+    $ LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest-s390x)
+    $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator-s390x.yaml
+    $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-cr-s390x.yaml
+
 ## Deploying from Source
 
 See the [Developer Getting Started
@@ -246,15 +254,15 @@ guide](https://github.com/kubevirt/ovs-cni/blob/main/docs/deployment-on-arbitrar
 
 ## Restricting KubeVirt components node placement
 
-You can restrict the placement of the KubeVirt components across your 
+You can restrict the placement of the KubeVirt components across your
 cluster nodes by editing the KubeVirt CR:
 
 - The placement of the KubeVirt control plane components (virt-controller, virt-api)
   is governed by the `.spec.infra.nodePlacement` field in the KubeVirt CR.
-- The placement of the virt-handler DaemonSet pods (and consequently, the placement of the 
+- The placement of the virt-handler DaemonSet pods (and consequently, the placement of the
   VM workloads scheduled to the cluster) is governed by the `.spec.workloads.nodePlacement`
   field in the KubeVirt CR.
-  
+
 For each of these `.nodePlacement` objects, the `.affinity`, `.nodeSelector` and `.tolerations` sub-fields can be configured.
 See the description in the [API reference](http://kubevirt.io/api-reference/master/definitions.html#_v1_componentconfig)
 for further information about using these fields.
