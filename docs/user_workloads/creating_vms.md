@@ -141,6 +141,20 @@ explicitly, then the `RejectInferFromVolumeFailure` policy is used instead.
 This way users are made aware of potential issues during the virtual machine
 creation.
 
+To infer an instancetype or preference from another volume than the volume used
+to boot the virtual machine, use the `--infer-instancetype-from` and
+`--infer-preference-from` flags to specify any of the virtual machine's volumes.
+
+```shell
+# This virtual machine will boot from volume-a, but the instancetype and
+# preference are inferred from volume-b.
+virtctl create vm \
+  --volume-import=type:pvc,src:my-ns/my-pvc-a,name:volume-a \
+  --volume-import=type:pvc,src:my-ns/my-pvc-b,name:volume-b \
+  --infer-instancetype-from volume-b \
+  --infer-preference-from volume-b
+```
+
 ## Boot order of added volumes
 
 Please note that volumes of different kinds currently have the following fixed
