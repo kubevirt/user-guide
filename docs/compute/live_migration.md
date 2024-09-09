@@ -344,16 +344,22 @@ assumed that the instance will write to the free pages and blocks
 
 ### Completion time
 
-In some cases the virtual machine can write to different memory pages /
-disk blocks at a higher rate than these can be copied, which will
-prevent the migration process from completing in a reasonable amount of
-time. In this case, live migration will be aborted if it is running for
-a long period of time. The timeout is calculated base on the size of
-the VMI, it's memory and the ephemeral disks that are needed to be
+In some cases the virtual machine can have a high dirty-rate, which
+means it will write to different memory pages / disk blocks at a
+higher rate than these can be copied over.
+This situation will prevent the migration process from completing
+in a reasonable amount of time.
+
+In this case, a timeout can be defined so that live migration will
+either be aborted or switched to post-copy mode (if it's enabled)
+if it is running for a long period of time.
+
+The timeout is calculated based on the size of
+the VMI, its memory and the ephemeral disks that are needed to be
 copied. The configurable parameter `completionTimeoutPerGiB`, which
-defaults to 800s is the time for GiB of data to wait for the migration
-to be completed before aborting it. A VMI with 8Gib of memory will time
-out after 6400 seconds.
+defaults to 800s, is the maximum amount of time per GiB of data allowed before the migration
+gets aborted / switched to post-copy mode.
+For example, with the default value, a VMI with 8GiB of memory will time-out after 6400 seconds.
 
 ### Progress timeout
 
