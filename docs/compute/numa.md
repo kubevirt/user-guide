@@ -13,6 +13,10 @@ The following NUMA mapping strategies can be used:
 
 - [**GuestMappingPassthrough**](#guestmappingpassthrough)
 
+**FEATURE STATE:** KubeVirt v1.4 GA
+
+The `NUMA` feature gate is now deprecated and as such enabled by default. The following [preconditions](#preconditions) still apply however.
+
 ## Preconditions
 
 In order to use current NUMA support, the following preconditions must be met:
@@ -20,9 +24,6 @@ In order to use current NUMA support, the following preconditions must be met:
 * [Dedicated CPU Resources](../compute/dedicated_cpu_resources.md) must be configured.
 * [Hugepages](../compute/virtual_hardware.md#hugepages) need to be allocatable on target
   nodes.
-* The `NUMA`
-  [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
-  must be enabled.
 
 ## GuestMappingPassthrough
 
