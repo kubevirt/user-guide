@@ -3,8 +3,12 @@
 Memory hotplug was introduced in KubeVirt version 1.1, enabling the dynamic resizing of the amount of memory available to a running VM.
 
 ## Limitations
-* Memory hotplug is currently only supported on the x86_64 architecture.
+* Memory hotplug is currently only supported on the x86_64,arm64 architectures.
+* Linux guests running at least Linux v5.8 are fully supported.
+* Windows guests support has been added to virtio-win, but it should be considered unstable.
 * Current hotplug implementation involves live-migration of the VM workload.
+* VirtualMachines must have at least 1GiB of memory to support memory-hotplug.
+
 
 # Configuration
 
@@ -83,20 +87,26 @@ Now we create a VM with memory hotplug enabled.
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: vm-cirros
+  name: vm-alpine
 spec:
-  running: true
+  runStrategy: Always
   template:
     spec:
       domain:
         memory:
-          maxGuest: 2Gi
-          guest: 128Mi
+          guest: 1Gi
         devices:
+          interfaces:
+            - masquerade: {}
+              model: virtio
+              name: default
           disks:
           - disk:
               bus: virtio
             name: containerdisk
+      networks:
+        - name: default
+          pod: {}
       volumes:
       - containerDisk:
           image: registry:5000/kubevirt/alpine-container-disk-demo:devel
@@ -110,16 +120,16 @@ $ kubectl get vmi vm-cirros -o json | jq .status.memory
 ```
 ```json
 {
-  "guestAtBoot": "128Mi",
-  "guestCurrent": "128Mi",
-  "guestRequested": "128Mi"
+  "guestAtBoot": "1Gi",
+  "guestCurrent": "1Gi",
+  "guestRequested": "1Gi"
 }
 ```
 
-Since the Virtual Machine is now running we can patch the VM object to double the available guest memory so that we'll go from 128Mi to 256Mi.
+Since the Virtual Machine is now running we can patch the VM object to double the available guest memory so that we'll go from 1Gi to 2Gi.
 
 ```sh
-$ kubectl patch vm vm-cirros -p='[{"op": "replace", "path": "/spec/template/spec/domain/memory/guest", "value": "256Mi"}]' --type='json'
+$ kubectl patch vm vm-cirros -p='[{"op": "replace", "path": "/spec/template/spec/domain/memory/guest", "value": "2Gi"}]' --type='json'
 ```
 
 After the hotplug request is processed and the Virtual Machine is live migrated, the new amount of memory should be available to the guest
@@ -130,8 +140,8 @@ $ kubectl get vmi vm-cirros -o json | jq .status.memory
 ```
 ```json
 {
-  "guestAtBoot": "128Mi",
-  "guestCurrent": "256Mi",
-  "guestRequested": "256Mi"
+  "guestAtBoot": "1Gi",
+  "guestCurrent": "2Gi",
+  "guestRequested": "2Gi"
 }
 ```
