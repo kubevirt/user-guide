@@ -2,7 +2,7 @@
 
 The `snapshot.kubevirt.io` API Group defines resources for snapshotting and restoring KubeVirt `VirtualMachines`
 
-## Prerequesites
+## Prerequisites
 
 ### VolumeSnapshotClass
 
