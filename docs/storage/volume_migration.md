@@ -1,4 +1,4 @@
-# Migration update volume strategy and volume migration
+# Update volume strategy and volume migration
 
 Storage migration is possible while the VM is running by using the update volume strategy. Storage migration can be useful in the cases where the users need to change the underlying storage, for example, if the storage class has been deprecated, or there is a new more performant driver available.
 
@@ -206,7 +206,7 @@ spec:
 The users could, for various reasons, wish to stop and cancel the ongoing volume migration.
 Migration cancellations are also handled declaratively, thus users must restore the previous set of volumes, which will be read as a cancellation for the volume update and migration.
 
-A possible way to cancel the migration consists apply the old version of the VM declaration.
+A possible way to cancel the migration is to apply the old version of the VM declaration.
 
 ## Volume migration failure and recovery
 
