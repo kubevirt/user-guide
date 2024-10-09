@@ -84,6 +84,10 @@ port inside the cluster network:
 
 ## Expose VirtualMachineInstance as a NodePort Service
 
+To expose a VirtualMachineInstance (VMI) via a Kubernetes service (e.g., NodePort, ClusterIP, LoadBalancer), ensure the associated VirtualMachine (VM) template includes the appropriate labels. These labels are inherited by the underlying pod created by the VMI, allowing the service to target the correct pod via its selector.
+
+For further details, refer to Kubernetes documentation on [Services and Selectors](https://kubernetes.io/docs/concepts/services-networking/service/#services-with-selectors).
+
 Expose the SSH port (22) of a VirtualMachineInstance running on KubeVirt
 by creating a `NodePort` service:
 
