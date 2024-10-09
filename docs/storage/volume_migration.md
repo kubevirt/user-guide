@@ -1,4 +1,4 @@
-# Migration update volume strategy and volume migration
+# Update volume strategy and volume migration
 
 Storage migration is possible while the VM is running by using the update volume strategy. Storage migration can be useful in the cases where the users need to change the underlying storage, for example, if the storage class has been deprecated, or there is a new more performant driver available.
 
@@ -206,7 +206,7 @@ spec:
 The users could, for various reasons, wish to stop and cancel the ongoing volume migration.
 Migration cancellations are also handled declaratively, thus users must restore the previous set of volumes, which will be read as a cancellation for the volume update and migration.
 
-A possible way to cancel the migration consists apply the old version of the VM declaration.
+A possible way to cancel the migration is to apply the old version of the VM declaration.
 
 ## Volume migration failure and recovery
 
@@ -218,7 +218,7 @@ To recover from a persistent failure, users must revert the volume set to its or
 
 If for any reasons the VMI disappears, then the volume migration isn't retried anymore. This might happen if the users inadvertently shutdown the VM or the VMI is accidentally deleted.
 
-However, in these situations, the VM spec is in an inconsistent state because the volume set contains the destination volumes but the copy wasn't successful, and users could fail to boot correctly the VM. For this reason the VM is marked with the condition `ManualRecoveryRequired` and KubeVirt will refuses to start a VM which has this condition.
+However, in these situations, the VM spec is in an inconsistent state because the volume set contains the destination volumes but the copy wasn't successful, and users could fail to boot correctly the VM. For this reason the VM is marked with the condition `ManualRecoveryRequired` and KubeVirt will refuse to start a VM which has this condition.
 
 In order to recover the VM spec, the users need to revert the volume set in the VM spec as it is the case for the volume migration cancellation.
 
