@@ -4,6 +4,21 @@
 A modular plugin which integrates with Kubevirt to implement a
 network binding.
 
+> **Limited Support**: Kubevirt provides regular support for the network
+> binding plugin infrastructure for plugin authors.
+> However, individual network plugin bindings are subject to limited,
+> best-effort support from the Kubevirt community.
+>
+> Clusters with Kubevirt deployments that utilize a network binding
+> plugin should contact the plugin vendor for support on any issue that
+> may be encountered, be it network or other issue.
+>
+> In order to request support from the Kubevirt core project and its
+> community, please use a setup without any network binding plugin.
+> The [plugin examples](#plugins) listed below are an exception to this
+> rule, as they **are** maintained by the Kubevirt network core
+> maintainers.
+
 ## Overview
 
 ### Network Connectivity
