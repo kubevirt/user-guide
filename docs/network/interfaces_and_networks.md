@@ -621,51 +621,7 @@ instructions, in order to activate the `Passt` feature gate (case sensitive).
 More information about passt mode can be found in [passt
 Wiki](https://passt.top/passt/about/).
 
-### virtio-net multiqueue
 
-Setting the `networkInterfaceMultiqueue` to `true` will enable the
-multi-queue functionality, increasing the number of vhost queue, for
-interfaces configured with a `virtio` model.
-
-```yaml
-kind: VM
-spec:
-  domain:
-    devices:
-      networkInterfaceMultiqueue: true
-```
-
-Users of a Virtual Machine with multiple vCPUs may benefit of increased
-network throughput and performance.
-
-Currently, the number of queues is being determined by the number of
-vCPUs of a VM. This is because multi-queue support optimizes RX
-interrupt affinity and TX queue selection in order to make a specific
-queue private to a specific vCPU.
-
-Without enabling the feature, network performance does not scale as the
-number of vCPUs increases. Guests cannot transmit or retrieve packets in
-parallel, as virtio-net has only one TX and RX queue.
-
-Virtio interfaces advertise on their status.interfaces.interface entry a field named queueCount.  
-The queueCount field indicates how many queues were assigned to the interface.  
-Queue count value is derived from the domain XML.  
-In case the number of queues can't be determined (i.e interface that is reported by quest-agent only),
-it will be omitted.
-
-
-*NOTE*: Although the virtio-net multiqueue feature provides a
-performance benefit, it has some limitations and therefore should not be
-unconditionally enabled
-
-
-
-*NOTE*: Virtio-net multiqueue should be enabled in the guest OS
-manually, using ethtool. For example:
-`ethtool -L <NIC> combined #num_of_queues`
-
-More information please refer to [KVM/QEMU
-MultiQueue](http://www.linux-kvm.org/page/Multiqueue).
 
 ### sriov
 
@@ -1032,7 +988,67 @@ these plugins as valid options on our ecosystem.
 - The `bridge` CNI supports mac-spoof-check through nftables, therefore
 the node must support nftables and have the `nft` binary deployed.
 
-### Passt known limitations
+
+
+## Additional Notes
+### MTU
+There are two methods for the MTU to be propagated to the guest interface.
+
+* Libvirt - for this the guest machine needs new enough virtio network driver that understands
+  the data passed into the guest via a PCI config register in the emulated device.
+* DHCP - for this the guest DHCP client should be able to read the MTU from the DHCP server response.
+
+On **Windows** guest non virtio interfaces, MTU has to be set manually using `netsh` or other tool
+since the Windows DHCP client doesn't request/read the MTU.
+
+The table below is summarizing the MTU propagation to the guest.
+
+|     | masquerade     | bridge with CNI IP | bridge with no CNI IP | Windows |
+|-----|----------------|--------------------|-----------------------|---------|
+| virtio    | DHCP & libvirt | DHCP & libvirt     | libvirt               | libvirt |
+| non-virtio    | DHCP           | DHCP               | X                     | X       |
+
+* bridge with CNI IP - means the CNI gives IP to the pod interface and bridge binding is used
+  to bind the pod interface to the guest.
+
+### virtio-net multiqueue
+
+Setting the `networkInterfaceMultiqueue` to `true` will enable the
+multi-queue functionality, increasing the number of vhost queue, for
+interfaces configured with a `virtio` model.
+
+```yaml
+kind: VM
+spec:
+  domain:
+    devices:
+      networkInterfaceMultiqueue: true
+```
+
+Users of a Virtual Machine with multiple vCPUs may benefit of increased
+network throughput and performance.
+
+Currently, the number of queues is being determined by the number of
+vCPUs of a VM. This is because multi-queue support optimizes RX
+interrupt affinity and TX queue selection in order to make a specific
+queue private to a specific vCPU.
+
+Without enabling the feature, network performance does not scale as the
+number of vCPUs increases. Guests cannot transmit or retrieve packets in
+parallel, as virtio-net has only one TX and RX queue.
+
+Virtio interfaces advertise on their status.interfaces.interface entry a field named queueCount.  
+The queueCount field indicates how many queues were assigned to the interface.  
+Queue count value is derived from the domain XML.  
+In case the number of queues can't be determined (i.e interface that is reported by quest-agent only),
+it will be omitted.
+
+
+>*NOTE*: Although the virtio-net multiqueue feature provides a
+performance benefit, it has some limitations and therefore should not be
+unconditionally enabled
+
+#### Some known limitations
 
 -   Guest OS is limited to ~200 MSI vectors. Each NIC queue requires a
     MSI vector, as well as any virtio device or assigned PCI device.
@@ -1063,23 +1079,9 @@ the node must support nftables and have the `nft` binary deployed.
 -   Each virtio-net queue consumes 64 KiB of kernel memory for the vhost
     driver.
 
-## Additional Notes
-### MTU
-There are two methods for the MTU to be propagated to the guest interface.
+>*NOTE*: Virtio-net multiqueue should be enabled in the guest OS
+manually, using ethtool. For example:
+`ethtool -L <NIC> combined #num_of_queues`
 
-* Libvirt - for this the guest machine needs new enough virtio network driver that understands
-  the data passed into the guest via a PCI config register in the emulated device.
-* DHCP - for this the guest DHCP client should be able to read the MTU from the DHCP server response.
-
-On **Windows** guest non virtio interfaces, MTU has to be set manually using `netsh` or other tool
-since the Windows DHCP client doesn't request/read the MTU.
-
-The table below is summarizing the MTU propagation to the guest.
-
-|     | masquerade     | bridge with CNI IP | bridge with no CNI IP | Windows |
-|-----|----------------|--------------------|-----------------------|---------|
-| virtio    | DHCP & libvirt | DHCP & libvirt     | libvirt               | libvirt |
-| non-virtio    | DHCP           | DHCP               | X                     | X       |
-
-* bridge with CNI IP - means the CNI gives IP to the pod interface and bridge binding is used
-  to bind the pod interface to the guest.
+More information please refer to [KVM/QEMU
+MultiQueue](http://www.linux-kvm.org/page/Multiqueue).
