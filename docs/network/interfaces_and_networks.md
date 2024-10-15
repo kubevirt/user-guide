@@ -22,7 +22,7 @@ Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_network
 
 ## Networks
 
-Network backends are configured in `spec.networks`. A network must have
+Networks are configured in VMs `spec.template.spec.networks`. A network must have
 a unique name. Additional fields declare which logical or physical
 device the network relates to.
 
@@ -47,40 +47,48 @@ fields:
 </tr>
 <tr class="even">
 <td><p><code>multus</code></p></td>
-<td><p>Secondary network provided using Multus</p></td>
+<td><p>Secondary network provided using Multus<br>
+or Primary network when Multus is defined as default</p></td>
 </tr>
 </tbody>
 </table>
 
 ### pod
 
-A `pod` network represents the default pod `eth0` interface configured
+Represents the default pod interface (typically `eth0`) configured
 by cluster network solution that is present in each pod.
+The main advantage of this network type is that it is native to Kubernetes, 
+allowing VMs to benefit from all network services provided by Kubernetes.
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: default
-          masquerade: {}
-  networks:
-  - name: default
-    pod: {} # Stock pod network
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: default
+              masquerade: {}
+      networks:
+      - name: default
+        pod: {} # Stock pod network
 ```
 
 ### multus
-
-It is also possible to connect VMIs to secondary networks using
-[Multus](https://github.com/intel/multus-cni). This assumes that multus
-is installed across your cluster and a corresponding
+Secondary networks in Kubernetes allow pods to connect to additional networks beyond the default network, 
+enabling more complex network topologies. These secondary networks are supported by meta-plugins like 
+[Multus](https://github.com/k8snetworkplumbingwg/multus-cni), which let each pod attach to multiple network interfaces.
+Kubevirt support the connection of VMIs to secondary networks using Multus.
+This assumes that multus is installed across your cluster and a corresponding
 `NetworkAttachmentDefinition` CRD was created.
 
-The following example defines a network which uses the [bridge CNI
+The following example defines a secondary network which uses the [bridge CNI
 plugin](https://www.cni.dev/plugins/current/main/bridge/), which will connect the VMI
-to Linux bridge `br1`. Other CNI plugins such as
-ptp, ovs-cni, or Flannel might be used as well. For their
+to Linux bridge `br10`. Other CNI plugins such as
+ptp, bridge-cni or sriov-cni might be used as well. For their
 installation and usage refer to the respective project documentation.
 
 First the `NetworkAttachmentDefinition` needs to be created. That is
@@ -91,61 +99,61 @@ definition.
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: bridge-test
+  name: linux-bridge-net-ipam
 spec:
   config: '{
       "cniVersion": "0.3.1",
-      "name": "bridge-test",
-      "type": "bridge",
-      "bridge": "br1",
-      "disableContainerInterface": true
+      "name": "mynet",
+      "plugins": [
+        {
+          "type": "bridge",
+          "bridge": "br10",
+          "disableContainerInterface": true,
+          "ipam": {
+            "type": "whereabouts",
+            "range": "10.1.1.0/24"
+          },
+          "macspoofchk": true
+        }
+      ]
     }'
 ```
 
 With following definition, the VMI will be connected to the default pod
-network and to the secondary Open vSwitch network.
+network and to the secondary bridge network, referencing the `NetworkAttachmentDefinition` 
+shown above(in the same namespace)
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: default
-          masquerade: {}
-          bootOrder: 1   # attempt to boot from an external tftp server
-          dhcpOptions:
-            bootFileName: default_image.bin
-            tftpServerName: tftp.example.com
-        - name: ovs-net
-          bridge: {}
-          bootOrder: 2   # if first attempt failed, try to PXE-boot from this L2 networks
-  networks:
-  - name: default
-    pod: {} # Stock pod network
-  - name: ovs-net
-    multus: # Secondary multus network
-      networkName: ovs-vlan-100
+  template:
+    spec:
+       domain:
+         devices:
+           interfaces:
+           - name: default
+             masquerade: {}
+           - name: bridge-net
+             bridge: {}
+       networks:
+       - name: default
+         pod: {} # Stock pod network
+       - name: bridge-net
+         multus: # Secondary multus network
+           networkName: linux-bridge-net-ipam #ref to NAD name
 ```
-
+#### Multus as primary network provider
 It is also possible to define a multus network as the default pod
-network with [Multus](https://github.com/intel/multus-cni). A version of
-multus after this [Pull
-Request](https://github.com/intel/multus-cni/pull/174) is required
-(currently master).
+network by indicating the VM's `spec.template.spec.networks.multus.default=true`.
+See [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) documentation for further information
+>**Note:** that a multus `default` network and a `pod` network type are mutually exclusive
 
-**Note the following:**
+>The multus delegate chosen as default **must** return at least one IP address.
 
--   A multus default network and a pod network type are mutually
-    exclusive.
 
--   The virt-launcher pod that starts the VMI will **not** have the pod
-    network configured.
-
--   The multus delegate chosen as default **must** return at least one
-    IP address.
-
-Create a `NetworkAttachmentDefinition` with IPAM.
+Example: a `NetworkAttachmentDefinition` with IPAM.
 
 ```yaml
 apiVersion: "k8s.cni.cncf.io/v1"
@@ -165,22 +173,25 @@ spec:
     }'
 ```
 
-Define a VMI with a [Multus](https://github.com/intel/multus-cni)
-network as the default.
+Define a VMI with a `multus` network as the default.
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: test1
-          bridge: {}
-  networks:
-  - name: test1
-    multus: # Multus network as default
-      default: true
-      networkName: bridge-test
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: test1
+              bridge: {}
+      networks:
+      - name: test1
+        multus: # Multus network as default
+          default: true
+          networkName: bridge-test
 ```
 
 
