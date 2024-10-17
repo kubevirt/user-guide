@@ -23,6 +23,8 @@ field in the KubeVirt CR must be expanded by adding the `LiveMigration` to it.
 - Live migration requires ports `49152, 49153` to be available in the virt-launcher pod.
   If these ports are explicitly specified in [masquarade interface](../network/interfaces_and_networks.md#masquerade), live migration will not function.
 
+- Live migration requires the virt-launcher pod's primary network interface to have the same name on both source and target pods.
+
 ## Initiate live migration
 
 Live migration is initiated by posting a VirtualMachineInstanceMigration
