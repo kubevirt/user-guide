@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.41">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
     
     
       
@@ -2390,13 +2390,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequesites" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequesites
+      Prerequisites
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Prerequesites">
+    <nav class="md-nav" aria-label="Prerequisites">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2705,13 +2705,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequesites" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequesites
+      Prerequisites
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Prerequesites">
+    <nav class="md-nav" aria-label="Prerequisites">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2797,7 +2797,7 @@
 
 <h1 id="snapshot-restore-api">Snapshot Restore API<a class="headerlink" href="#snapshot-restore-api" title="Permanent link">&para;</a></h1>
 <p>The <code>snapshot.kubevirt.io</code> API Group defines resources for snapshotting and restoring KubeVirt <code>VirtualMachines</code></p>
-<h2 id="prerequesites">Prerequesites<a class="headerlink" href="#prerequesites" title="Permanent link">&para;</a></h2>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <h3 id="volumesnapshotclass">VolumeSnapshotClass<a class="headerlink" href="#volumesnapshotclass" title="Permanent link">&para;</a></h3>
 <p>KubeVirt leverages the <code>VolumeSnapshot</code> functionality of Kubernetes <a href="https://kubernetes-csi.github.io/docs/drivers.html">CSI drivers</a> for capturing persistent <code>VirtualMachine</code> state.  So, you should make sure that your <code>VirtualMachine</code> uses <code>DataVolumes</code> or <code>PersistentVolumeClaims</code> backed by a <code>StorageClass</code> that supports <code>VolumeSnapshots</code> and a <code>VolumeSnapshotClass</code> is properly configured for that <code>StorageClass</code>.</p>
 <p>KubeVirt looks for Kubernetes Volume Snapshot related APIs/resources in the <code>v1</code> version. To make sure that KubeVirt's snapshot controller is able to snapshot the VirtualMachine and referenced volumes as expected, Kubernetes Volume Snapshot APIs must be served from <code>v1</code> version.</p>
