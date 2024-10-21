@@ -1,8 +1,10 @@
 # Hotplug Network Interfaces
 
 Release:
+
 - v1.1.0: Alpha
 - v1.3.0: Beta
+- v1.4.0: GA
 
 KubeVirt supports hotplugging and unplugging network interfaces into a running Virtual Machine (VM). 
 
@@ -23,11 +25,6 @@ to be added to a running pod. This is not trivial, and has some requirements:
 - Multus CNI running as a [thick plugin](https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/docs/thick-plugin.md):
   this Multus version exposes an endpoint to create attachments for a given pod
   on demand.
-
-### Enabling network interface hotplug support
-Network interface hotplug support must be enabled via a
-[feature gate](https://kubevirt.io/user-guide/operations/activating_feature_gates/#how-to-activate-a-feature-gate).
-The feature gates array in the KubeVirt CR must feature `HotplugNICs`.
 
 ## Adding an interface to a running VM
 First start a VM. You can refer to the following example:
