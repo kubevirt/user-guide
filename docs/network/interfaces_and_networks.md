@@ -20,9 +20,9 @@ Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_interfa
 and [Network API
 Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_network).
 
-## Backend
+## Networks
 
-Network backends are configured in `spec.networks`. A network must have
+Networks are configured in `spec.networks`. A network must have
 a unique name. Additional fields declare which logical or physical
 device the network relates to.
 
@@ -47,14 +47,15 @@ fields:
 </tr>
 <tr class="even">
 <td><p><code>multus</code></p></td>
-<td><p>Secondary network provided using Multus</p></td>
+<td><p>Secondary network provided using Multus<br>
+or Primary network when multus is defined as default</p></td>
 </tr>
 </tbody>
 </table>
 
 ### pod
 
-A `pod` network represents the default pod `eth0` interface configured
+A `pod` network represents the default pod (typically `eth0`) interface configured
 by cluster network solution that is present in each pod.
 
 ```yaml
@@ -77,10 +78,10 @@ It is also possible to connect VMIs to secondary networks using
 is installed across your cluster and a corresponding
 `NetworkAttachmentDefinition` CRD was created.
 
-The following example defines a network which uses the [bridge CNI
+The following example defines a secondary network which uses the [bridge CNI
 plugin](https://www.cni.dev/plugins/current/main/bridge/), which will connect the VMI
-to Linux bridge `br1`. Other CNI plugins such as
-ptp, ovs-cni, or Flannel might be used as well. For their
+to Linux bridge `br10`. Other CNI plugins such as
+ptp, ovn-cni, or sriov-cni might be used as well. For their
 installation and usage refer to the respective project documentation.
 
 First the `NetworkAttachmentDefinition` needs to be created. That is
@@ -91,19 +92,30 @@ definition.
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: bridge-test
+  name: linux-bridge-net-ipam
 spec:
   config: '{
       "cniVersion": "0.3.1",
-      "name": "bridge-test",
-      "type": "bridge",
-      "bridge": "br1",
-      "disableContainerInterface": true
+      "name": "mynet",
+      "plugins": [
+        {
+          "type": "bridge",
+          "bridge": "br10",
+          "vlan": 0,
+          "ipam": {
+            "type": "host-local",
+            "subnet": "10.1.1.0/24"
+          },
+          "macspoofchk": false,
+          "mtu": 1400
+        }
+      ]
     }'
 ```
 
 With following definition, the VMI will be connected to the default pod
-network and to the secondary Open vSwitch network.
+network and to the secondary bridge network, referencing the `NetworkAttachmentDefinition` 
+shown above(in the same namespace)
 
 ```yaml
 kind: VM
@@ -111,41 +123,26 @@ spec:
   domain:
     devices:
       interfaces:
-        - name: default
-          masquerade: {}
-          bootOrder: 1   # attempt to boot from an external tftp server
-          dhcpOptions:
-            bootFileName: default_image.bin
-            tftpServerName: tftp.example.com
-        - name: ovs-net
-          bridge: {}
-          bootOrder: 2   # if first attempt failed, try to PXE-boot from this L2 networks
+      - masquerade: {}
+        name: default
+      - bridge: {}
+        name: linux-bridge-with-ipam
   networks:
   - name: default
     pod: {} # Stock pod network
-  - name: ovs-net
+  - name: linux-bridge-with-ipam
     multus: # Secondary multus network
-      networkName: ovs-vlan-100
+      networkName: linux-bridge-net-ipam #ref to NAD name
 ```
-
+#### Multus as primary network provider
 It is also possible to define a multus network as the default pod
-network with [Multus](https://github.com/intel/multus-cni). A version of
-multus after this [Pull
-Request](https://github.com/intel/multus-cni/pull/174) is required
-(currently master).
+network by indicating `spec.networks.multus.default=true`. The multus delegate chosen as default **must** return at least one
+IP address.
+See [Multus](https://github.com/intel/multus-cni) documentation for further information<br> 
+⚠️ Note that a multus `default` network and a `pod` network type are mutually
+exclusive.
 
-**Note the following:**
-
--   A multus default network and a pod network type are mutually
-    exclusive.
-
--   The virt-launcher pod that starts the VMI will **not** have the pod
-    network configured.
-
--   The multus delegate chosen as default **must** return at least one
-    IP address.
-
-Create a `NetworkAttachmentDefinition` with IPAM.
+Example: a `NetworkAttachmentDefinition` with IPAM.
 
 ```yaml
 apiVersion: "k8s.cni.cncf.io/v1"
@@ -183,37 +180,18 @@ spec:
       networkName: bridge-test
 ```
 
-#### Invalid CNIs for secondary networks
-The following list of CNIs is known **not** to work for bridge interfaces -
-which are most common for secondary interfaces.
 
-- [macvlan](https://www.cni.dev/plugins/current/main/macvlan/)
 
-- [ipvlan](https://www.cni.dev/plugins/current/main/ipvlan/)
-
-The reason is similar: the bridge interface type moves the pod interface MAC
-address to the VM, leaving the pod interface with a different address. The
-aforementioned CNIs require the pod interface to have the original MAC address.
-
-These issues are tracked individually:
-
-- [macvlan](https://github.com/kubevirt/kubevirt/issues/5483)
-
-- [ipvlan](https://github.com/kubevirt/kubevirt/issues/7001)
-
-Feel free to discuss and / or propose fixes for them; we'd like to have
-these plugins as valid options on our ecosystem.
-
-## Frontend
+## Interfaces
 
 Network interfaces are configured in `spec.domain.devices.interfaces`.
 They describe properties of virtual interfaces as "seen" inside guest
-instances. The same network backend may be connected to a virtual
+instances. The same `network` may be connected to a virtual
 machine in multiple different ways, each with their own connectivity
 guarantees and characteristics.
 
-Each interface should declare its type by defining on of the following
-fields:
+The mandatory interface configuration includes a `name`, 
+which references a network name and either a type from the table below, or a [network binding plugin](https://kubevirt.io/user-guide/network/network_binding_plugins/) reference.
 
 <table>
 <colgroup>
@@ -232,16 +210,12 @@ fields:
 <td><p>Connect using a linux bridge</p></td>
 </tr>
 <tr class="even">
-<td><p><code>slirp</code></p></td>
-<td><p>Connect using QEMU user networking mode</p></td>
-</tr>
-<tr class="odd">
 <td><p><code>sriov</code></p></td>
 <td><p>Pass through a SR-IOV PCI device via <code>vfio</code></p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p><code>masquerade</code></p></td>
-<td><p>Connect using Iptables rules to nat the traffic</p></td>
+<td><p>Connect using nftables rules to nat the traffic<br>both egress and ingress</p></td>
 </tr>
 </tbody>
 </table>
@@ -281,7 +255,7 @@ properties "seen" inside guest instances, as listed below:
 <td><p>ports</p></td>
 <td></td>
 <td><p>empty</p></td>
-<td><p>List of ports to be forwarded to the virtual machine.</p></td>
+<td><p>Allow-list of ports to be forwarded to the virtual machine.</p></td>
 </tr>
 <tr class="even">
 <td><p>pciAddress</p></td>
@@ -303,7 +277,7 @@ spec:
           masquerade: {} # connect through a masquerade
           ports:
            - name: http
-             port: 80
+             port: 80 # allow only http traffic ingress
   networks:
   - name: default
     pod: {}
@@ -311,7 +285,7 @@ spec:
 
 > **Note:** For secondary interfaces, when a MAC address is specified for a
 > virtual machine interface, it is passed to the underlying CNI plugin which is,
-> in turn, expected to configure the backend to allow for this particular MAC.
+> in turn, expected to configure the network provider to allow for this particular MAC.
 > Not every plugin has native support for custom MAC addresses.
 
 > **Note:** For some CNI plugins without native support for custom MAC
@@ -355,10 +329,7 @@ spec:
 >
 ### Ports
 
-Declare ports listen by the virtual machine
-
-> **Note:** When using the slirp interface only the configured ports
-> will be forwarded to the virtual machine.
+Allow-list of ports that are forwarded to the VM, if empty all ports are allowed
 
 <table>
 <colgroup>
@@ -413,25 +384,6 @@ spec:
       autoattachPodInterface: false
 ```
 
-### MTU
-There are two methods for the MTU to be propagated to the guest interface.
-
-* Libvirt - for this the guest machine needs new enough virtio network driver that understands
-the data passed into the guest via a PCI config register in the emulated device.
-* DHCP - for this the guest DHCP client should be able to read the MTU from the DHCP server response.
-
-On **Windows** guest non virtio interfaces, MTU has to be set manually using `netsh` or other tool
-since the Windows DHCP client doesn't request/read the MTU.
-
-The table below is summarizing the MTU propagation to the guest.
-
-|     | masquerade     | bridge with CNI IP | bridge with no CNI IP | Windows |
-|-----|----------------|--------------------|-----------------------|---------|
-| virtio    | DHCP & libvirt | DHCP & libvirt     | libvirt               | libvirt |
-| non-virtio    | DHCP           | DHCP               | X                     | X       |
-
-* bridge with CNI IP - means the CNI gives IP to the pod interface and bridge binding is used
-to bind the pod interface to the guest.
 
 ### bridge
 
@@ -491,45 +443,6 @@ spec:
 > default interface type to `masquerade`, and disabling the `bridge`
 > type for pod network, as shown in the example above.
 
-### slirp
-
-In `slirp` mode, virtual machines are connected to the network backend
-using QEMU user networking mode. In this mode, QEMU allocates internal
-IP addresses to virtual machines and hides them behind NAT.
-
-```yaml
-kind: VM
-spec:
-  domain:
-    devices:
-      interfaces:
-        - name: red
-          slirp: {} # connect using SLIRP mode
-  networks:
-  - name: red
-    pod: {}
-```
-
-At this time, `slirp` mode doesn't support additional configuration
-fields.
-
-> **Note:** in `slirp` mode, the only supported protocols are TCP and
-> UDP. ICMP is *not* supported.
-
-More information about SLIRP mode can be found in [QEMU
-Wiki](https://wiki.qemu.org/Documentation/Networking#User_Networking_.28SLIRP.29).
-
-> **Note**: Since v1.1.0, Kubevirt delegates Slirp network configuration to
-> the [Slirp network binding plugin](../network/net_binding_plugins/slirp.md#slirp-network-binding-plugin) by default.
-> In case the binding plugin is not registered,
-> Kubevirt will use the following default image:
-> `quay.io/kubevirt/network-slirp-binding:20230830_638c60fc8`.
-
-> **Note:** In the next release (v1.2.0) no default image will be set by Kubevirt,
-> registering an image will be mandatory.
-
-> **Note:** On disconnected clusters it will be necessary
-> to mirror Slirp binding plugin image to the cluster registry.
 
 ### masquerade
 
@@ -736,36 +649,7 @@ it will be omitted.
 performance benefit, it has some limitations and therefore should not be
 unconditionally enabled
 
-#### Some known limitations
 
--   Guest OS is limited to ~200 MSI vectors. Each NIC queue requires a
-    MSI vector, as well as any virtio device or assigned PCI device.
-    Defining an instance with multiple virtio NICs and vCPUs might lead
-    to a possibility of hitting the guest MSI limit.
-
--   virtio-net multiqueue works well for incoming traffic, but can
-    occasionally cause a performance degradation, for outgoing traffic.
-    Specifically, this may occur when sending packets under 1,500 bytes
-    over the Transmission Control Protocol (TCP) stream.
-
--   Enabling virtio-net multiqueue increases the total network
-    throughput, but in parallel it also increases the CPU consumption.
-
--   Enabling virtio-net multiqueue in the host QEMU config, does not
-    enable the functionality in the guest OS. The guest OS administrator
-    needs to manually turn it on for each guest NIC that requires this
-    feature, using ethtool.
-
--   MSI vectors would still be consumed (wasted), if multiqueue was
-    enabled in the host, but has not been enabled in the guest OS by the
-    administrator.
-
--   In case the number of vNICs in a guest instance is proportional to
-    the number of vCPUs, enabling the multiqueue feature is less
-    important.
-
--   Each virtio-net queue consumes 64 KiB of kernel memory for the vhost
-    driver.
 
 *NOTE*: Virtio-net multiqueue should be enabled in the guest OS
 manually, using ethtool. For example:
@@ -1114,7 +998,79 @@ networks:
   name: br10
 ```
 
-#### Limitations
+## Limitations and known issues
+### Invalid CNIs for secondary networks
+The following list of CNIs is known **not** to work for bridge interfaces -
+which are most common for secondary interfaces.
+
+- [macvlan](https://www.cni.dev/plugins/current/main/macvlan/)
+
+- [ipvlan](https://www.cni.dev/plugins/current/main/ipvlan/)
+
+The reason is similar: the bridge interface type moves the pod interface MAC
+address to the VM, leaving the pod interface with a different address. The
+aforementioned CNIs require the pod interface to have the original MAC address.
+
+These issues are tracked individually:
+
+- [macvlan](https://github.com/kubevirt/kubevirt/issues/5483)
+
+- [ipvlan](https://github.com/kubevirt/kubevirt/issues/7001)
+
+Feel free to discuss and / or propose fixes for them; we'd like to have
+these plugins as valid options on our ecosystem.
 
 - The `bridge` CNI supports mac-spoof-check through nftables, therefore
 the node must support nftables and have the `nft` binary deployed.
+
+### Passt known limitations
+
+-   Guest OS is limited to ~200 MSI vectors. Each NIC queue requires a
+    MSI vector, as well as any virtio device or assigned PCI device.
+    Defining an instance with multiple virtio NICs and vCPUs might lead
+    to a possibility of hitting the guest MSI limit.
+
+-   virtio-net multiqueue works well for incoming traffic, but can
+    occasionally cause a performance degradation, for outgoing traffic.
+    Specifically, this may occur when sending packets under 1,500 bytes
+    over the Transmission Control Protocol (TCP) stream.
+
+-   Enabling virtio-net multiqueue increases the total network
+    throughput, but in parallel it also increases the CPU consumption.
+
+-   Enabling virtio-net multiqueue in the host QEMU config, does not
+    enable the functionality in the guest OS. The guest OS administrator
+    needs to manually turn it on for each guest NIC that requires this
+    feature, using ethtool.
+
+-   MSI vectors would still be consumed (wasted), if multiqueue was
+    enabled in the host, but has not been enabled in the guest OS by the
+    administrator.
+
+-   In case the number of vNICs in a guest instance is proportional to
+    the number of vCPUs, enabling the multiqueue feature is less
+    important.
+
+-   Each virtio-net queue consumes 64 KiB of kernel memory for the vhost
+    driver.
+
+## Additional Notes
+### MTU
+There are two methods for the MTU to be propagated to the guest interface.
+
+* Libvirt - for this the guest machine needs new enough virtio network driver that understands
+  the data passed into the guest via a PCI config register in the emulated device.
+* DHCP - for this the guest DHCP client should be able to read the MTU from the DHCP server response.
+
+On **Windows** guest non virtio interfaces, MTU has to be set manually using `netsh` or other tool
+since the Windows DHCP client doesn't request/read the MTU.
+
+The table below is summarizing the MTU propagation to the guest.
+
+|     | masquerade     | bridge with CNI IP | bridge with no CNI IP | Windows |
+|-----|----------------|--------------------|-----------------------|---------|
+| virtio    | DHCP & libvirt | DHCP & libvirt     | libvirt               | libvirt |
+| non-virtio    | DHCP           | DHCP               | X                     | X       |
+
+* bridge with CNI IP - means the CNI gives IP to the pod interface and bridge binding is used
+  to bind the pod interface to the guest.
