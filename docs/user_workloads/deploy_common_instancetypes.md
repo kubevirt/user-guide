@@ -5,11 +5,21 @@ The [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instanc
 Beginning with the 1.1 release of KubeVirt, cluster wide resources can be deployed directly through KubeVirt, without another operator.
 This allows deployment of a set of default instancetypes and preferences along side KubeVirt.
 
-## Enable automatic deployment of common-instancetypes
+With the [`v1.4.0`](https://github.com/kubevirt/kubevirt/releases/tag/v1.4.0) release of KubeVirt, common-instancetypes are now deployed by default.
 
-To enable the deployment of cluster-wide common-instancetypes through the KubeVirt `virt-operator`, the `CommonInstancetypesDeploymentGate` feature gate needs to be enabled.
+## **FEATURE STATE:** 
 
-See [Activating feature gates](../cluster_admin/activating_feature_gates.md) on how to enable it.
+* Alpha - [`v1.1.0`](https://github.com/kubevirt/kubevirt/releases/tag/v1.1.0)
+* Beta - [`v1.2.0`](https://github.com/kubevirt/kubevirt/releases/tag/v1.2.0)
+* GA - [`v1.4.0`](https://github.com/kubevirt/kubevirt/releases/tag/v1.4.0) (Enabled by default)
+
+## Control deployment of common-instancetypes
+
+To explictly enable or disable the deployment of cluster-wide common-instancetypes through the KubeVirt `virt-operator` use the `spec.configuration.commonInstancetypesDeployment.enable` configurable.
+
+```shell
+$ kubectl patch -n kubevirt kv/kubevirt --type merge -p '{"spec":{"configuration":{"commonInstancetypesDeployment":{"enable": false}}}}'
+```
 
 ## Deploy common-instancetypes manually
 
