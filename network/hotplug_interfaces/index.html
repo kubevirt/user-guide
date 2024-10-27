@@ -2097,21 +2097,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Requirements">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enabling-network-interface-hotplug-support" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enabling network interface hotplug support
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -2789,21 +2774,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Requirements">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#enabling-network-interface-hotplug-support" class="md-nav__link">
-    <span class="md-ellipsis">
-      Enabling network interface hotplug support
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -2952,9 +2922,12 @@
 
 
 <h1 id="hotplug-network-interfaces">Hotplug Network Interfaces<a class="headerlink" href="#hotplug-network-interfaces" title="Permanent link">&para;</a></h1>
-<p>Release:
-- v1.1.0: Alpha
-- v1.3.0: Beta</p>
+<p>Release:</p>
+<ul>
+<li>v1.1.0: Alpha</li>
+<li>v1.3.0: Beta</li>
+<li>v1.4.0: GA</li>
+</ul>
 <p>KubeVirt supports hotplugging and unplugging network interfaces into a running Virtual Machine (VM). </p>
 <p>Hotplug is supported for interfaces using the <code>virtio</code> model connected through
 <a href="http://kubevirt.io/api-reference/main/definitions.html#_v1_interfacebridge">bridge binding</a> 
@@ -2972,10 +2945,12 @@ to be added to a running pod. This is not trivial, and has some requirements:</p
   this Multus version exposes an endpoint to create attachments for a given pod
   on demand.</li>
 </ul>
-<h3 id="enabling-network-interface-hotplug-support">Enabling network interface hotplug support<a class="headerlink" href="#enabling-network-interface-hotplug-support" title="Permanent link">&para;</a></h3>
-<p>Network interface hotplug support must be enabled via a
-<a href="https://kubevirt.io/user-guide/operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>.
-The feature gates array in the KubeVirt CR must feature <code>HotplugNICs</code>.</p>
+<blockquote>
+<p><strong>Note</strong>: For older Kubevirt versions (from v1.1 until v1.3), the
+<code>HotplugNICs</code> <a href="https://kubevirt.io/user-guide/operations/activating_feature_gates/#how-to-activate-a-feature-gate">feature-gate</a>)
+must be enabled.
+From Kubevirt v1.4, the FG is not needed and should be removed if set.</p>
+</blockquote>
 <h2 id="adding-an-interface-to-a-running-vm">Adding an interface to a running VM<a class="headerlink" href="#adding-an-interface-to-a-running-vm" title="Permanent link">&para;</a></h2>
 <p>First start a VM. You can refer to the following example:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nn">---</span>
