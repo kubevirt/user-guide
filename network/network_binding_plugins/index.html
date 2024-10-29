@@ -2946,9 +2946,23 @@
 
 
 <h1 id="network-binding-plugins">Network Binding Plugins<a class="headerlink" href="#network-binding-plugins" title="Permanent link">&para;</a></h1>
-<p>[v1.1.0, Alpha feature]</p>
+<p>[v1.4.0, Beta feature]</p>
 <p>A modular plugin which integrates with Kubevirt to implement a
 network binding.</p>
+<blockquote>
+<p><strong>Limited Support</strong>: Kubevirt provides regular support for the network
+binding plugin infrastructure for plugin authors.
+However, individual network plugin bindings are subject to limited,
+best-effort support from the Kubevirt community.</p>
+<p>Clusters with Kubevirt deployments that utilize a network binding
+plugin should contact the plugin vendor for support on any issue that
+may be encountered, be it network or other issue.</p>
+<p>In order to request support from the Kubevirt core project and its
+community, please use a setup without any network binding plugin.
+The <a href="#plugins">plugin examples</a> listed below are an exception to this
+rule, as they <strong>are</strong> maintained by the Kubevirt network core
+maintainers.</p>
+</blockquote>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
 <h3 id="network-connectivity">Network Connectivity<a class="headerlink" href="#network-connectivity" title="Permanent link">&para;</a></h3>
 <p>In order for a VM to have access to external network(s), several layers
