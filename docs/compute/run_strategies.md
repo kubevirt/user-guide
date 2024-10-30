@@ -34,6 +34,9 @@ RunStrategies defined:
     Note: Guest sided crashes (i.e. BSOD) are not covered by this.
     In such cases liveness checks or the use of a watchdog can help.
 
+-   Once: The VM will run once and not be restarted upon completion
+    regardless if the completion is of phase Failure or Success.
+
 -   Manual: The system will not automatically turn the VM on or off,
     instead the user manually controlls the VM status by issuing
     start, stop, and restart commands on the VirtualMachine

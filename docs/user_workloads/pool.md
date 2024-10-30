@@ -60,7 +60,7 @@ spec:
       labels:
         kubevirt.io/vmpool: vm-pool-cirros
     spec:
-      running: true
+      runStrategy: Always
       template:
         metadata:
           creationTimestamp: null

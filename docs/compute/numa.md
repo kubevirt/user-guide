@@ -125,7 +125,7 @@ metadata:
     kubevirt.io/vm: fedora-realtime
   name: fedora-realtime
 spec:
-  running: true
+  runStrategy: Always
   template:
     metadata:
       labels:

@@ -275,7 +275,7 @@ metadata:
     kubevirt.io/vm: vm-net-binding-passt
   name: vm-net-binding-passt
 spec:
-  running: true
+  runStrategy: Always
   template:
     metadata:
       labels:

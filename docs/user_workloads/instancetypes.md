@@ -79,7 +79,7 @@ spec:
   preference:
     kind: VirtualMachinePreference
     name: example-preference-disk-virtio
-  running: false
+  runStrategy: Halted
   template:
     spec:
       domain:
@@ -408,7 +408,7 @@ spec:
     inferFromVolume: cirros-volume
   preference:
     inferFromVolume: cirros-volume
-  running: false
+  runStrategy: Halted
   dataVolumeTemplates:
     - metadata:
         name: cirros-datavolume
@@ -472,7 +472,7 @@ spec:
   preference:
     inferFromVolume: cirros-volume
     inferFromVolumeFailurePolicy: Ignore
-  running: false
+  runStrategy: Halted
   dataVolumeTemplates:
     - metadata:
         name: cirros-datavolume

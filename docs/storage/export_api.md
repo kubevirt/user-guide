@@ -413,7 +413,7 @@ spec:
       source:
         registry:
           url: docker://quay.io/containerdisks/centos-stream:9
-  running: false
+  runStrategy: Halted
   template:
     metadata:
       labels:
@@ -561,7 +561,7 @@ spec:
       source:
         registry:
           url: docker://quay.io/containerdisks/centos-stream:9
-  running: false
+  runStrategy: Halted
   template:
     metadata:
       labels:
