@@ -160,27 +160,15 @@ with `spec.replica` set to `1`.
 ## How to use a VirtualMachine
 
 A VirtualMachine will make sure that a VirtualMachineInstance object
-with an identical name will be present in the cluster, if `spec.runStrategy`
-is set to `Always`. Further it will make sure that a
-VirtualMachineInstance will be removed from the cluster if
-`spec.runStrategy` is set to `Halted`.
-
-`spec.runStrategy` has several additional options for
-controlling the state of the associated VirtualMachineInstance object.
-An extended explanation of `spec.runStrategy` can be
-found in [Run Strategies](./compute/run_strategies.md)
+with an identical name will be present in the cluster when the VirtualMachine
+is in a Running state, which is controlled via the `spec.runStrategy` field.
+For more information regarding Run Strategies, please refer to [Run Strategies](./compute/run_strategies.md)
 
 ### Starting and stopping
 
-After creating a VirtualMachine it can be switched on or off like this:
-
-    # Start the virtual machine:
-    virtctl start vm
-
-    # Stop the virtual machine:
-    virtctl stop vm
-
-`kubectl` can be used too:
+Virtual Machines can be turned on/off in an imperative or a declarative manner.
+Setting a `spec.runStrategy` like `Always` or `Halted` means that the system will continuously
+try to ensure the Virtual Machine is turned on/off:
 
     # Start the virtual machine:
     kubectl patch virtualmachine vm --type merge -p \
@@ -189,6 +177,15 @@ After creating a VirtualMachine it can be switched on or off like this:
     # Stop the virtual machine:
     kubectl patch virtualmachine vm --type merge -p \
         '{"spec":{"runStrategy": "Halted"}}'
+
+However, with the `Manual` `runStrategy`, the user would imperatively choose when to turn
+the VM on or off, without the system performing any automatic actions:
+
+    # Start the virtual machine:
+    virtctl start vm
+
+    # Stop the virtual machine:
+    virtctl stop vm
 
 Find more details about [a VM's life-cycle in the relevant section](./user_workloads/lifecycle.md)
 
