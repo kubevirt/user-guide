@@ -81,7 +81,7 @@ kind: VirtualMachine
 metadata:
   name: testvm
 spec:
-  running: true
+  runStrategy: Always
   template:
     metadata:
       labels:

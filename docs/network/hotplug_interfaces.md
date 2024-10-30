@@ -40,7 +40,7 @@ kind: VirtualMachine
 metadata:
   name: vm-fedora
 spec:
-  running: true
+  runStrategy: Always
   template:
     spec:
       domain:

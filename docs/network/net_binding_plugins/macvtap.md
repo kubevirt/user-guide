@@ -185,7 +185,7 @@ metadata:
     kubevirt.io/vm: vm-net-binding-macvtap
   name: vm-net-binding-macvtap
 spec:
-  running: true
+  runStrategy: Always
   template:
     metadata:
       labels:

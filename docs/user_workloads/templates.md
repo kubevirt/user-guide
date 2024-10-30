@@ -167,7 +167,7 @@ items:
           pvc:
             name: rhel
             namespace: kubevirt
-    running: false
+    runStrategy: Halted
     template:
       metadata:
         labels:
@@ -354,7 +354,7 @@ items:
     defaults.template.kubevirt.io/disk: rhel-default-disk
     defaults.template.kubevirt.io/nic: rhel-default-net
   spec:
-    running: false
+    runStrategy: Halted
     template:
       spec:
         domain:
@@ -392,7 +392,7 @@ metadata:
   name: rheltinyvm
   osinfoname: rhel7.0
 spec:
-  running: false
+  runStrategy: Halted
   template:
     spec:
       domain:
@@ -543,7 +543,7 @@ objects:
           pvc:
             name: ${SRC_PVC_NAME}
             namespace: ${SRC_PVC_NAMESPACE}
-    running: false
+    runStrategy: Halted
     template:
       metadata:
         labels:
@@ -669,7 +669,7 @@ preferred way how to do this from within the OpenShift environment is to
 use `oc patch` command.
 
 ```console
-$ oc patch virtualmachine testvm --type merge -p '{"spec":{"running":true}}'
+$ oc patch virtualmachine testvm --type merge -p '{"spec":{"runStrategy":"Always"}}'
 virtualmachine.kubevirt.io/testvm patched
 ```
 

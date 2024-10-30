@@ -160,17 +160,14 @@ with `spec.replica` set to `1`.
 ## How to use a VirtualMachine
 
 A VirtualMachine will make sure that a VirtualMachineInstance object
-with an identical name will be present in the cluster, if `spec.running`
-is set to `true`. Further it will make sure that a
+with an identical name will be present in the cluster, if `spec.runStrategy`
+is set to `Always`. Further it will make sure that a
 VirtualMachineInstance will be removed from the cluster if
-`spec.running` is set to `false`.
+`spec.runStrategy` is set to `Halted`.
 
-There exists a field `spec.runStrategy` which can also be used to
-control the state of the associated VirtualMachineInstance object. To
-avoid confusing and contradictory states, these fields are mutually
-exclusive.
-
-An extended explanation of `spec.runStrategy` vs `spec.running` can be
+`spec.runStrategy` has several additional options for
+controlling the state of the associated VirtualMachineInstance object.
+An extended explanation of `spec.runStrategy` can be
 found in [Run Strategies](./compute/run_strategies.md)
 
 ### Starting and stopping
@@ -187,11 +184,11 @@ After creating a VirtualMachine it can be switched on or off like this:
 
     # Start the virtual machine:
     kubectl patch virtualmachine vm --type merge -p \
-        '{"spec":{"running":true}}'
+        '{"spec":{"runStrategy": "Always"}}'
 
     # Stop the virtual machine:
     kubectl patch virtualmachine vm --type merge -p \
-        '{"spec":{"running":false}}'
+        '{"spec":{"runStrategy": "Halted"}}'
 
 Find more details about [a VM's life-cycle in the relevant section](./user_workloads/lifecycle.md)
 
@@ -327,7 +324,7 @@ metadata:
     kubevirt.io/vm: vm-cirros
   name: vm-cirros
 spec:
-  running: false
+  runStrategy: Halted
   template:
     metadata:
       labels:
@@ -448,7 +445,7 @@ demonstrating how to do it.
 
     # Start the virtual machine:
     kubectl patch virtualmachine vm --type merge -p \
-        '{"spec":{"running":true}}'
+        '{"spec":{"runStrategy":"Always"}}'
 
     # Look at virtual machine status and associated events:
     kubectl describe virtualmachine vm
@@ -458,7 +455,7 @@ demonstrating how to do it.
 
     # Stop the virtual machine instance:
     kubectl patch virtualmachine vm --type merge -p \
-        '{"spec":{"running":false}}'
+        '{"spec":{"runStrategy":"Halted"}}'
 
     # Restart the virtual machine (you delete the instance!):
     kubectl delete virtualmachineinstance vm

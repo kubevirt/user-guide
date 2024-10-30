@@ -695,7 +695,7 @@ kind: VirtualMachine
 metadata:
   name: ign-demo
 spec:
-  running: false
+  runStrategy: Halted
   template:
     metadata:
       labels:
@@ -811,7 +811,7 @@ kind: VirtualMachine
 metadata:
   name: windows-with-sysprep
 spec:
-  running: false
+  runStrategy: Halted
   template:
     metadata:
       labels:
@@ -869,7 +869,7 @@ kind: VirtualMachine
 metadata:
   name: windows-with-sysprep
 spec:
-  running: false
+  runStrategy: Halted
   template:
     metadata:
       labels:

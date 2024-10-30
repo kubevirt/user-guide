@@ -559,7 +559,7 @@ metadata:
     kubevirt.io/vm: vm-alpine-datavolume
   name: vm-alpine-datavolume
 spec:
-  running: false
+  runStrategy: Halted
   template:
     metadata:
       labels:
@@ -1784,7 +1784,7 @@ metadata:
     kubevirt.io/vm: vm-block-1
   name: vm-block-1
 spec:
-  running: true
+  runStrategy: Always
   template:
     metadata:
       labels:
@@ -1830,7 +1830,7 @@ metadata:
     kubevirt.io/vm: vm-block-2
   name: vm-block-2
 spec:
-  running: true
+  runStrategy: Always
   template:
     metadata:
       labels:
@@ -2065,7 +2065,7 @@ metadata:
     kubevirt.io/vm: hostpath-vm
   name: hostpath
 spec:
-  running: true
+  runStrategy: Always
   template:
     metadata:
       labels:

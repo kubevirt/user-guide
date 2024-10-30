@@ -69,7 +69,7 @@ metadata:
     kubevirt.io/vm: vm-net-binding-slirp
   name: vm-net-binding-passt
 spec:
-  running: true
+  runStrategy: Always
   template:
     metadata:
       labels:
