@@ -3165,32 +3165,28 @@ virtual machine instance. In many ways it is very similar to a
 with <code>spec.replica</code> set to <code>1</code>.</p>
 <h2 id="how-to-use-a-virtualmachine">How to use a VirtualMachine<a class="headerlink" href="#how-to-use-a-virtualmachine" title="Permanent link">&para;</a></h2>
 <p>A VirtualMachine will make sure that a VirtualMachineInstance object
-with an identical name will be present in the cluster, if <code>spec.running</code>
-is set to <code>true</code>. Further it will make sure that a
-VirtualMachineInstance will be removed from the cluster if
-<code>spec.running</code> is set to <code>false</code>.</p>
-<p>There exists a field <code>spec.runStrategy</code> which can also be used to
-control the state of the associated VirtualMachineInstance object. To
-avoid confusing and contradictory states, these fields are mutually
-exclusive.</p>
-<p>An extended explanation of <code>spec.runStrategy</code> vs <code>spec.running</code> can be
-found in <a href="../compute/run_strategies/">Run Strategies</a></p>
+with an identical name will be present in the cluster when the VirtualMachine
+is in a Running state, which is controlled via the <code>spec.runStrategy</code> field.
+For more information regarding Run Strategies, please refer to <a href="../compute/run_strategies/">Run Strategies</a></p>
 <h3 id="starting-and-stopping">Starting and stopping<a class="headerlink" href="#starting-and-stopping" title="Permanent link">&para;</a></h3>
-<p>After creating a VirtualMachine it can be switched on or off like this:</p>
+<p>Virtual Machines can be turned on/off in an imperative or a declarative manner.
+Setting a <code>spec.runStrategy</code> like <code>Always</code> or <code>Halted</code> means that the system will continuously
+try to ensure the Virtual Machine is turned on/off:</p>
+<div class="highlight"><pre><span></span><code># Start the virtual machine:
+kubectl patch virtualmachine vm --type merge -p \
+    &#39;{&quot;spec&quot;:{&quot;runStrategy&quot;: &quot;Always&quot;}}&#39;
+
+# Stop the virtual machine:
+kubectl patch virtualmachine vm --type merge -p \
+    &#39;{&quot;spec&quot;:{&quot;runStrategy&quot;: &quot;Halted&quot;}}&#39;
+</code></pre></div>
+<p>However, with the <code>Manual</code> <code>runStrategy</code>, the user would imperatively choose when to turn
+the VM on or off, without the system performing any automatic actions:</p>
 <div class="highlight"><pre><span></span><code># Start the virtual machine:
 virtctl start vm
 
 # Stop the virtual machine:
 virtctl stop vm
-</code></pre></div>
-<p><code>kubectl</code> can be used too:</p>
-<div class="highlight"><pre><span></span><code># Start the virtual machine:
-kubectl patch virtualmachine vm --type merge -p \
-    &#39;{&quot;spec&quot;:{&quot;running&quot;:true}}&#39;
-
-# Stop the virtual machine:
-kubectl patch virtualmachine vm --type merge -p \
-    &#39;{&quot;spec&quot;:{&quot;running&quot;:false}}&#39;
 </code></pre></div>
 <p>Find more details about <a href="../user_workloads/lifecycle/">a VM's life-cycle in the relevant section</a></p>
 <h3 id="controller-status">Controller status<a class="headerlink" href="#controller-status" title="Permanent link">&para;</a></h3>
@@ -3296,7 +3292,7 @@ Please provide your use-case if you need this!</p>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">kubevirt.io/vm</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-cirros</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-cirros</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">running</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">runStrategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Halted</span>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
@@ -3401,7 +3397,7 @@ demonstrating how to do it.</p>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    # Start the virtual machine:
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    kubectl patch virtualmachine vm --type merge -p \
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        &#39;{&quot;spec&quot;:{&quot;running&quot;:true}}&#39;
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        &#39;{&quot;spec&quot;:{&quot;runStrategy&quot;:&quot;Always&quot;}}&#39;
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    # Look at virtual machine status and associated events:
 <a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    kubectl describe virtualmachine vm
@@ -3411,7 +3407,7 @@ demonstrating how to do it.</p>
 <a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
 <a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>    # Stop the virtual machine instance:
 <a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>    kubectl patch virtualmachine vm --type merge -p \
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>        &#39;{&quot;spec&quot;:{&quot;running&quot;:false}}&#39;
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>        &#39;{&quot;spec&quot;:{&quot;runStrategy&quot;:&quot;Halted&quot;}}&#39;
 <a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
 <a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>    # Restart the virtual machine (you delete the instance!):
 <a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>    kubectl delete virtualmachineinstance vm
