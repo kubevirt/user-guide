@@ -280,20 +280,24 @@ properties "seen" inside guest instances, as listed below:
 </table>
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: default
-          model: e1000 # expose e1000 NIC to the guest
-          masquerade: {} # connect through a masquerade
-          ports:
-           - name: http
-             port: 80 # allow only http traffic ingress
-  networks:
-  - name: default
-    pod: {}
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: default
+              model: e1000 # expose e1000 NIC to the guest
+              masquerade: {} # connect through a masquerade
+              ports:
+               - name: http
+                 port: 80 # allow only http traffic ingress
+      networks:
+      - name: default
+        pod: {}
 ```
 
 > **Note:** For secondary interfaces, when a MAC address is specified for a
@@ -393,11 +397,15 @@ you'd like to have a virtual machine instance without any network
 connectivity, you can use the `autoattachPodInterface` field as follows:
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      autoattachPodInterface: false
+  template:
+    spec:
+      domain:
+        devices:
+          autoattachPodInterface: false
 ```
 
 
@@ -413,17 +421,21 @@ to use DHCP to acquire IPv4 addresses.
 > is delegated to the virtual machine.
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: red
-          bridge: {} # connect through a bridge
-  networks:
-  - name: red
-    multus:
-      networkName: red
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: red
+              bridge: {} # connect through a bridge
+      networks:
+      - name: red
+        multus:
+          networkName: red
 ```
 
 At this time, `bridge` mode doesn't support additional configuration
@@ -478,18 +490,22 @@ the interface should be configured as follows. If the `ports` section is missing
 all ports forwarded into the VM.
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: red
-          masquerade: {} # connect using masquerade mode
-          ports:
-            - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
-  networks:
-  - name: red
-    pod: {}
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: red
+              masquerade: {} # connect using masquerade mode
+              ports:
+                - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+      networks:
+      - name: red
+        pod: {}
 ```
 
 > **Note:** Masquerade is only allowed to connect to the pod network.
@@ -511,34 +527,38 @@ Unlike in IPv4, the configuration of the IPv6 address and the default route is
 not automatic; it should be configured via cloud init, as shown below:
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      disks:
-        - disk:
-          bus: virtio
-          name: cloudinitdisk
-      interfaces:
-        - name: red
-          masquerade: {} # connect using masquerade mode
-          ports:
-            - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
-  networks:
-  - name: red
-    pod: {}
-  volumes:
-  - cloudInitNoCloud:
-      networkData: |
-        version: 2
-        ethernets:
-          eth0:
-            dhcp4: true
-            addresses: [ fd10:0:2::2/120 ]
-            gateway6: fd10:0:2::1
-      userData: |-
-        #!/bin/bash
-        echo "fedora" |passwd fedora --stdin
+  template:
+    spec:
+      domain:
+        devices:
+          disks:
+            - disk:
+              bus: virtio
+              name: cloudinitdisk
+          interfaces:
+            - name: red
+              masquerade: {} # connect using masquerade mode
+              ports:
+                - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+      networks:
+      - name: red
+        pod: {}
+      volumes:
+      - cloudInitNoCloud:
+          networkData: |
+            version: 2
+            ethernets:
+              eth0:
+                dhcp4: true
+                addresses: [ fd10:0:2::2/120 ]
+                gateway6: fd10:0:2::1
+          userData: |-
+            #!/bin/bash
+            echo "fedora" |passwd fedora --stdin
 ```
 
 > **Note:** The IPv6 address for the VM and default gateway **must** be the ones
@@ -765,11 +785,15 @@ multi-queue functionality, increasing the number of vhost queue, for
 interfaces configured with a `virtio` model.
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      networkInterfaceMultiqueue: true
+  template:
+    spec:
+      domain:
+        devices:
+          networkInterfaceMultiqueue: true
 ```
 
 Users of a Virtual Machine with multiple vCPUs may benefit of increased
