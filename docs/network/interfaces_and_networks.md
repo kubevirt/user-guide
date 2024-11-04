@@ -199,12 +199,12 @@ spec:
 
 Network interfaces are configured in `spec.domain.devices.interfaces`.
 They describe properties of virtual interfaces as "seen" inside guest
-instances. The same network backend may be connected to a virtual
+instances. The same `network` may be connected to a virtual
 machine in multiple different ways, each with their own connectivity
 guarantees and characteristics.
 
-Each interface should declare its type by defining on of the following
-fields:
+The mandatory interface configuration includes a `name`, 
+which references a network name and either a type from the table below, or a reference to a [network binding plugin](https://kubevirt.io/user-guide/network/network_binding_plugins/).
 
 <table>
 <colgroup>
@@ -223,16 +223,12 @@ fields:
 <td><p>Connect using a linux bridge</p></td>
 </tr>
 <tr class="even">
-<td><p><code>slirp</code></p></td>
-<td><p>Connect using QEMU user networking mode</p></td>
-</tr>
-<tr class="odd">
 <td><p><code>sriov</code></p></td>
 <td><p>Pass through a SR-IOV PCI device via <code>vfio</code></p></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><p><code>masquerade</code></p></td>
-<td><p>Connect using Iptables rules to nat the traffic</p></td>
+<td><p>Connect using nftables rules to NAT the traffic<br>both egress and ingress</p></td>
 </tr>
 </tbody>
 </table>
@@ -272,7 +268,7 @@ properties "seen" inside guest instances, as listed below:
 <td><p>ports</p></td>
 <td></td>
 <td><p>empty</p></td>
-<td><p>List of ports to be forwarded to the virtual machine.</p></td>
+<td><p>Allow-list of ports to be forwarded to the virtual machine.</p></td>
 </tr>
 <tr class="even">
 <td><p>pciAddress</p></td>
@@ -294,7 +290,7 @@ spec:
           masquerade: {} # connect through a masquerade
           ports:
            - name: http
-             port: 80
+             port: 80 # allow only http traffic ingress
   networks:
   - name: default
     pod: {}
@@ -302,7 +298,7 @@ spec:
 
 > **Note:** For secondary interfaces, when a MAC address is specified for a
 > virtual machine interface, it is passed to the underlying CNI plugin which is,
-> in turn, expected to configure the backend to allow for this particular MAC.
+> in turn, expected to configure the network provider to allow for this particular MAC.
 > Not every plugin has native support for custom MAC addresses.
 
 > **Note:** For some CNI plugins without native support for custom MAC
@@ -770,155 +766,10 @@ spec:
 > **Note:** Placement on dedicated CPUs can only be achieved if the Kubernetes CPU manager is running on the SR-IOV capable workers.
 > For further details please refer to the [dedicated cpu resources documentation](../compute/dedicated-cpu_resources.md/).
 
-### Macvtap
+### passt and macvtap
 
-> **Note**: The core binding will be deprecated soon.
-> As an alternative, the same functionality is introduced and available as a
-> [binding plugin](../network/net_binding_plugins/macvtap.md).
-
-In `macvtap` mode, virtual machines are directly exposed to the Kubernetes
-nodes L2 network. This is achieved by 'extending' an existing network interface
-with a virtual device that has its own MAC address.
-
-Macvtap interfaces are feature gated; to enable the feature, follow
-[these](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
-instructions, in order to activate the `Macvtap` feature gate (case sensitive).
-
-> **Note:** On [KinD](https://github.com/kubernetes-sigs/kind) clusters, the user needs to
-> [adjust the cluster configuration](https://github.com/kubevirt/macvtap-cni/issues/39#issuecomment-1242765996),
-> mounting `dev` of the running host onto the KinD nodes, because of a
-> [known issue](https://github.com/kubevirt/macvtap-cni/issues/39).
-
-#### Limitations
-
-- Live migration is not seamless, see [issue #5912](https://github.com/kubevirt/kubevirt/issues/5912#issuecomment-888938920)
-
-#### How to expose host interface to the macvtap device plugin
-To simplify the procedure, please use the
-[Cluster Network Addons Operator](https://github.com/kubevirt/cluster-network-addons-operator)
-to deploy and configure the macvtap components in your cluster.
-
-The aforementioned operator effectively deploys the
-[macvtap-cni](https://github.com/kubevirt/macvtap-cni) cni / device plugin
-combo.
-
-There are two different alternatives to configure which host interfaces get
-exposed to the user, enabling them to create macvtap interfaces on top of:
-
-- select the host interfaces: indicates which host interfaces are exposed.
-- expose all interfaces: all interfaces of all hosts are exposed.
-
-Both options are configured via the `macvtap-deviceplugin-config` ConfigMap,
-and more information on how to configure it can be found in the
-[macvtap-cni](https://github.com/kubevirt/macvtap-cni#deployment) repo.
-
-You can find a minimal example, in which the `eth0` interface of the Kubernetes
-nodes is exposed, via the `lowerDevice` attribute.
-```yaml
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: macvtap-deviceplugin-config
-data:
-  DP_MACVTAP_CONF: |
-    [
-        {
-            "name"       : "dataplane",
-            "lowerDevice": "eth0",
-            "mode"       : "bridge",
-            "capacity"   : 50
-        }
-    ]
-```
-
-This step can be omitted, since the default configuration of the aforementioned
-`ConfigMap` is to expose all host interfaces (which is represented by the
-following configuration):
-```yaml
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: macvtap-deviceplugin-config
-data:
-  DP_MACVTAP_CONF: '[]'
-```
-
-#### Start a VM with macvtap interfaces
-
-Once the macvtap components are deployed, it is needed to indicate how to
-configure the macvtap network. Refer to the following
-`NetworkAttachmentDefinition` for a simple example:
-
-```yaml
----
-kind: NetworkAttachmentDefinition
-apiVersion: k8s.cni.cncf.io/v1
-metadata:
-  name: macvtapnetwork
-  annotations:
-    k8s.v1.cni.cncf.io/resourceName: macvtap.network.kubevirt.io/eth0
-spec:
-  config: '{
-      "cniVersion": "0.3.1",
-      "name": "macvtapnetwork",
-      "type": "macvtap",
-      "mtu": 1500
-    }'
-```
-The requested `k8s.v1.cni.cncf.io/resourceName` annotation must point to an
-exposed host interface (via the `lowerDevice` attribute, on the
-`macvtap-deviceplugin-config` `ConfigMap`).
-
-Finally, to create a VM that will attach to the aforementioned Network, refer
-to the following VMI spec:
-
-```yaml
----
-apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
-metadata:
-  labels:
-    special: vmi-host-network
-  name: vmi-host-network
-spec:
-  domain:
-    devices:
-      disks:
-      - disk:
-          bus: virtio
-        name: containerdisk
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-      interfaces:
-      - macvtap: {}
-        name: hostnetwork
-      rng: {}
-    machine:
-      type: ""
-    resources:
-      requests:
-        memory: 1024M
-  networks:
-  - multus:
-      networkName: macvtapnetwork
-    name: hostnetwork
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - containerDisk:
-      image: docker.io/kubevirt/fedora-cloud-container-disk-demo:devel
-    name: containerdisk
-  - cloudInitNoCloud:
-      userData: |-
-        #!/bin/bash
-        echo "fedora" |passwd fedora --stdin
-    name: cloudinitdisk
-```
-The requested `multus` `networkName` - i.e. `macvtapnetwork` - must match the
-name of the provisioned `NetworkAttachmentDefinition`.
-
-> **Note:** VMIs with macvtap interfaces can be migrated, but their MAC
-> addresses **must** be statically set.
+The core bindings have been removed and replaced with network [binding plugins](../network/net_binding_plugins/)
+see [passt plugin](../network/net_binding_plugins/passt.md) and see [macvtap plugin](../network/net_binding_plugins/macvtap.md)
 
 ## Security
 
