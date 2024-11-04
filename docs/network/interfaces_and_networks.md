@@ -563,17 +563,16 @@ Tracking issue - https://github.com/kubevirt/kubevirt/issues/7184
 
 ### sriov
 
-In `sriov` mode, virtual machines are directly exposed to an SR-IOV PCI
-device, usually allocated by [Intel SR-IOV device
-plugin](https://github.com/intel/sriov-network-device-plugin). The
-device is passed through into the guest operating system as a host
-device, using the
+In `sriov` mode, SR-IOV Virtual Functions' PCI devices are directly exposed to virtual machines.
+[SR-IOV device
+plugin](https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin) and [CNI](https://github.com/k8snetworkplumbingwg/sriov-cni) can be used to manage SR-IOV devices in kubernetes, making them available for kubevirt to consume.
+The device is passed through into the guest operating system as a [host
+device](https://libvirt.org/drvnodedev.html), using the
 [vfio](https://www.kernel.org/doc/Documentation/vfio.txt) userspace
 interface, to maintain high networking performance.
 
 #### How to expose SR-IOV VFs to KubeVirt
-To simplify procedure, please use [SR-IOV network
-operator](https://github.com/k8snetworkplumbingwg/sriov-network-operator) to deploy
+To simplify procedure, use the [SR-IOV network operator](https://github.com/k8snetworkplumbingwg/sriov-network-operator) to deploy
 and configure SR-IOV components in your cluster. On how to use the
 operator, please refer to [their respective
 documentation](https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/master/doc/quickstart.md).
@@ -583,55 +582,10 @@ documentation](https://github.com/k8snetworkplumbingwg/sriov-network-operator/bl
 > policies, make sure you define a pool of VF resources that uses
 > `deviceType: vfio-pci`.
 
-Once the operator is deployed, an [SriovNetworkNodePolicy
-](https://github.com/k8snetworkplumbingwg/sriov-network-operator#sriovnetworknodepolicy)
-must be provisioned, in which the list of SR-IOV devices to expose (with
-respective configurations) is defined.
-
-Please refer to the following `SriovNetworkNodePolicy` for an example:
-
-```yaml
-apiVersion: sriovnetwork.openshift.io/v1
-kind: SriovNetworkNodePolicy
-metadata:
-  name: policy-1
-  namespace: sriov-network-operator
-spec:
-  deviceType: vfio-pci
-  mtu: 9000
-  nicSelector:
-    pfNames:
-    - ens1f0
-  nodeSelector:
-    sriov: "true"
-  numVfs: 8
-  priority: 90
-  resourceName: sriov-nic
-```
-
-The policy above will configure the `SR-IOV` device plugin, allowing the
-PF named `ens1f0` to be exposed in the SRIOV capable nodes as a resource named
-`sriov-nic`.
 
 #### Start an SR-IOV VM
 
-Once all the SR-IOV components are deployed, it is needed to indicate how to
-configure the SR-IOV network. Refer to the following
-`SriovNetwork` for an example:
-
-```yaml
-apiVersion: sriovnetwork.openshift.io/v1
-kind: SriovNetwork
-metadata:
-  name: sriov-net
-  namespace: sriov-network-operator
-spec:
-  ipam: |
-    {}
-  networkNamespace: default
-  resourceName: sriov-nic
-  spoofChk: "off"
-```
+Once all the SR-IOV components are deployed, and a network named `sriov-net` is deployed with a network-attachment-definition 
 
 Finally, to create a VM that will attach to the aforementioned Network, refer
 to the following VMI spec:
@@ -665,8 +619,8 @@ spec:
           bus: virtio
         name: cloudinitdisk
       interfaces:
-      - masquerade: {}
-        name: default
+      - name: default
+        masquerade: {}
       - name: sriov-net
         sriov: {}
       rng: {}
