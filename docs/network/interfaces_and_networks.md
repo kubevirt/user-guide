@@ -29,29 +29,10 @@ device the network relates to.
 Each network should declare its type by defining one of the following
 fields:
 
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><code>pod</code></p></td>
-<td><p>Default Kubernetes network</p></td>
-</tr>
-<tr class="even">
-<td><p><code>multus</code></p></td>
-<td><p>Secondary network provided using Multus<br>
-or Primary network when Multus is defined as default</p></td>
-</tr>
-</tbody>
-</table>
+| Type     | Description                                                                                  |
+|----------|----------------------------------------------------------------------------------------------|
+| `pod`    | Default Kubernetes network                                                                   |
+| `multus` | Secondary network provided using Multus or Primary network when Multus is defined as default |
 
 ### pod
 
@@ -206,78 +187,22 @@ guarantees and characteristics.
 The mandatory interface configuration includes a `name`, 
 which references a network name and either a type from the table below, or a reference to a [network binding plugin](https://kubevirt.io/user-guide/network/network_binding_plugins/).
 
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><code>bridge</code></p></td>
-<td><p>Connect using a linux bridge</p></td>
-</tr>
-<tr class="even">
-<td><p><code>sriov</code></p></td>
-<td><p>Pass through a SR-IOV PCI device via <code>vfio</code></p></td>
-</tr>
-<tr class="odd">
-<td><p><code>masquerade</code></p></td>
-<td><p>Connect using nftables rules to NAT the traffic<br>both egress and ingress</p></td>
-</tr>
-</tbody>
-</table>
+| Type         | Description                                                               |
+|--------------|---------------------------------------------------------------------------|
+| `bridge`     | Connect using a linux bridge                                              |
+| `sriov`      | Pass through a SR-IOV PCI device via vfio                                 |
+| `masquerade` | Connect using `nftables` rules to NAT the traffic both egress and ingress |
 
 Each interface may also have additional configuration fields that modify
 properties "seen" inside guest instances, as listed below:
 
-<table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Format</th>
-<th>Default value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><code>model</code></p></td>
-<td><p>One of: <code>e1000</code>, <code>e1000e</code>, <code>ne2k_pci</code>, <code>pcnet</code>, <code>rtl8139</code>, <code>virtio</code></p></td>
-<td><p><code>virtio</code></p></td>
-<td><p>NIC type</p></td>
-</tr>
-<tr class="even">
-<td><p>macAddress</p></td>
-<td><p><code>ff:ff:ff:ff:ff:ff</code> or <code>FF-FF-FF-FF-FF-FF</code></p></td>
-<td></td>
-<td><p>MAC address as seen inside the guest system, for example: <code>de:ad:00:00:be:af</code></p></td>
-</tr>
-<tr class="odd">
-<td><p>ports</p></td>
-<td></td>
-<td><p>empty</p></td>
-<td><p>Allow-list of ports to be forwarded to the virtual machine.</p></td>
-</tr>
-<tr class="even">
-<td><p>pciAddress</p></td>
-<td><p><code>0000:81:00.1</code></p></td>
-<td></td>
-<td><p>Set network interface PCI address, for example: <code>0000:81:00.1</code></p></td>
-</tr>
-</tbody>
-</table>
+| Name       | Format                                                              | Default value | Description                                                                   |
+|------------|---------------------------------------------------------------------|---------------|-------------------------------------------------------------------------------|
+| model      | One of: `e1000`, `e1000e`, `ne2k_pci`, `pcnet`, `rtl8139`, `virtio` | `virtio`      | NIC type                                                                      |
+| macAddress | `ff:ff:ff:ff:ff:ff` or `FF-FF-FF-FF-FF-FF`                          |               | MAC address as seen inside the guest system, for example: `de:ad:00:00:be:af` |
+| ports      |                                                                     | empty         | Allow-list of ports to be forwarded to the virtual machine                    |
+| pciAddress | `0000:81:00.1`                                                      |               | Set network interface PCI address, for example: `0000:81:00.1`                |
+
 
 ```yaml
 # partial example - kept short for brevity 
@@ -351,42 +276,12 @@ Declare ports listen by the virtual machine
 > **Note:** When using the slirp interface only the configured ports
 > will be forwarded to the virtual machine.
 
-<table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Format</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><code>name</code></p></td>
-<td></td>
-<td><p>no</p></td>
-<td><p>Name</p></td>
-</tr>
-<tr class="even">
-<td><p><code>port</code></p></td>
-<td><p>1 - 65535</p></td>
-<td><p>yes</p></td>
-<td><p>Port to expose</p></td>
-</tr>
-<tr class="odd">
-<td><p><code>protocol</code></p></td>
-<td><p>TCP,UDP</p></td>
-<td><p>no</p></td>
-<td><p>Connection protocol</p></td>
-</tr>
-</tbody>
-</table>
+| Name       | 	Format   | 	Required | Description         |
+|------------|-----------|-----------|---------------------|
+| `name`     |           | no        | Name                |
+| `port`     | 1 - 65535 | yes       | Port to expose      |
+| `protocol` | TCP,UDP   | no        | Connection protocol |
+
 
 > **Tip:** Use `e1000` model if your guest image doesn't ship with
 > virtio drivers.
@@ -770,10 +665,10 @@ since the Windows DHCP client doesn't request/read the MTU.
 
 The table below is summarizing the MTU propagation to the guest.
 
-|     | masquerade     | bridge with CNI IP | bridge with no CNI IP | Windows |
-|-----|----------------|--------------------|-----------------------|---------|
-| virtio    | DHCP & libvirt | DHCP & libvirt     | libvirt               | libvirt |
-| non-virtio    | DHCP           | DHCP               | X                     | X       |
+|            | masquerade     | bridge with CNI IP | bridge with no CNI IP | Windows |
+|------------|----------------|--------------------|-----------------------|---------|
+| virtio     | DHCP & libvirt | DHCP & libvirt     | libvirt               | libvirt |
+| non-virtio | DHCP           | DHCP               | X                     | X       |
 
 * bridge with CNI IP - means the CNI gives IP to the pod interface and bridge binding is used
   to bind the pod interface to the guest.
