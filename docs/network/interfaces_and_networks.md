@@ -62,12 +62,12 @@ spec:
 Secondary networks in Kubernetes allow pods to connect to additional networks beyond the default network, 
 enabling more complex network topologies. These secondary networks are supported by meta-plugins like 
 [Multus](https://github.com/k8snetworkplumbingwg/multus-cni), which let each pod attach to multiple network interfaces.
-Kubevirt support the connection of VMIs to secondary networks using Multus.
+Kubevirt support the connection of VMs to secondary networks using Multus.
 This assumes that multus is installed across your cluster and a corresponding
 `NetworkAttachmentDefinition` CRD was created.
 
 The following example defines a secondary network which uses the [bridge CNI
-plugin](https://www.cni.dev/plugins/current/main/bridge/), which will connect the VMI
+plugin](https://www.cni.dev/plugins/current/main/bridge/), which will connect the VM
 to Linux bridge `br10`. Other CNI plugins such as
 ptp, bridge-cni or sriov-cni might be used as well. For their
 installation and usage refer to the respective project documentation.
@@ -100,7 +100,7 @@ spec:
     }'
 ```
 
-With following definition, the VMI will be connected to the default pod
+With following definition, the VM will be connected to the default pod
 network and to the secondary bridge network, referencing the `NetworkAttachmentDefinition` 
 shown above(in the same namespace)
 
@@ -154,7 +154,7 @@ spec:
     }'
 ```
 
-Define a VMI with a `multus` network as the default.
+Define a VM with a `multus` network as the default.
 
 ```yaml
 # partial example - kept short for brevity 
@@ -373,7 +373,7 @@ In `masquerade` mode, KubeVirt allocates internal IP addresses to
 virtual machines and hides them behind NAT. All the traffic exiting
 virtual machines is "source NAT'ed" using pod IP addresses; thus, cluster
 workloads should use the pod's IP address to contact the VM over this interface.
-This IP address is reported in the VMI's `spec.status.interface`. A guest
+This IP address is reported in the VMI's `status.interfaces`. A guest
 operating system should be configured to use DHCP to acquire IPv4 addresses.
 
 To allow the VM to live-migrate or hard restart (both cause the VM to run on a
@@ -493,7 +493,7 @@ operator, please refer to [their respective
 documentation](https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/master/doc/quickstart.md).
 
 > **Note:** KubeVirt relies on VFIO userspace driver to pass PCI devices
-> into VMI guest. Because of that, when configuring SR-IOV operator
+> into VM guest. Because of that, when configuring SR-IOV operator
 > policies, make sure you define a pool of VF resources that uses
 > `deviceType: vfio-pci`.
 
@@ -503,61 +503,64 @@ documentation](https://github.com/k8snetworkplumbingwg/sriov-network-operator/bl
 Once all the SR-IOV components are deployed, and a network named `sriov-net` is deployed with a network-attachment-definition 
 
 Finally, to create a VM that will attach to the aforementioned Network, refer
-to the following VMI spec:
+to the following VM spec:
 
 ```yaml
 ---
 apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
+kind: VirtualMachine
 metadata:
   labels:
-    special: vmi-perf
-  name: vmi-perf
+    special: vm-perf
+  name: vm-perf
 spec:
-  domain:
-    cpu:
-      sockets: 2
-      cores: 1
-      threads: 1
-      dedicatedCpuPlacement: true
-    resources:
-      requests:
-        memory: "4Gi"
-      limits:
-        memory: "4Gi"
-    devices:
-      disks:
-      - disk:
-          bus: virtio
-        name: containerdisk
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-      interfaces:
+  runStrategy: Halted
+  template:
+    spec:
+      domain:
+        cpu:
+          sockets: 2
+          cores: 1
+          threads: 1
+          dedicatedCpuPlacement: true
+        resources:
+          requests:
+            memory: "4Gi"
+          limits:
+            memory: "4Gi"
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+          interfaces:
+          - name: default
+            masquerade: {}
+          - name: sriov-net
+            sriov: {}
+          rng: {}
+        machine:
+          type: ""
+      networks:
       - name: default
-        masquerade: {}
-      - name: sriov-net
-        sriov: {}
-      rng: {}
-    machine:
-      type: ""
-  networks:
-  - name: default
-    pod: {}
-  - multus:
-      networkName: default/sriov-net
-    name: sriov-net
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - containerDisk:
-      image: docker.io/kubevirt/fedora-cloud-container-disk-demo:latest
-    name: containerdisk
-  - cloudInitNoCloud:
-      userData: |
-        #!/bin/bash
-        echo "centos" |passwd centos --stdin
-        dhclient eth1
-    name: cloudinitdisk
+        pod: {}
+      - multus:
+          networkName: default/sriov-net
+        name: sriov-net
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - containerDisk:
+          image: docker.io/kubevirt/fedora-cloud-container-disk-demo:latest
+        name: containerdisk
+      - cloudInitNoCloud:
+          userData: |
+            #!/bin/bash
+            echo "centos" |passwd centos --stdin
+            dhclient eth1
+        name: cloudinitdisk
 ```
 
 > **Note:** for some NICs (e.g. Mellanox), the kernel module needs to be
@@ -614,7 +617,7 @@ spec:
         }'
 ```
 
-On the VMI, the network section should point to this
+On the VM, the network section should point to this
 NetworkAttachmentDefinition by name:
 ```yaml
 networks:
