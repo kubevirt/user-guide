@@ -7,10 +7,9 @@ the networks are added to the VM by specifying them in
 
 Each interface must have a corresponding network with the same name.
 
-An `interface` defines a virtual network interface of a virtual machine
-(also called a frontend). A `network` specifies the backend of an
+An `interface` defines a virtual network interface of a virtual machine. A `network` specifies the backend of an
 `interface` and declares which logical or physical device it is
-connected to (also called as backend).
+connected to.
 
 There are multiple ways of configuring an `interface` as well as a
 `network`.
@@ -23,8 +22,7 @@ Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_network
 ## Networks
 
 Networks are configured in VMs `spec.template.spec.networks`. A network must have
-a unique name. Additional fields declare which logical or physical
-device the network relates to.
+a unique name. 
 
 Each network should declare its type by defining one of the following
 fields:
@@ -36,7 +34,7 @@ fields:
 
 ### pod
 
-Represents the default pod interface (typically `eth0`) configured
+Represents the default (aka primary) pod interface (typically `eth0`) configured
 by cluster network solution that is present in each pod.
 The main advantage of this network type is that it is native to Kubernetes, 
 allowing VMs to benefit from all network services provided by Kubernetes.
@@ -90,10 +88,6 @@ spec:
           "type": "bridge",
           "bridge": "br10",
           "disableContainerInterface": true,
-          "ipam": {
-            "type": "whereabouts",
-            "range": "10.1.1.0/24"
-          },
           "macspoofchk": true
         }
       ]
@@ -183,25 +177,27 @@ They describe properties of virtual interfaces as "seen" inside guest
 instances. The same `network` may be connected to a virtual
 machine in multiple different ways, each with their own connectivity
 guarantees and characteristics.
+> **Note** networks and interfaces must have a one-to-one relationship   
 
-The mandatory interface configuration includes a `name`, 
-which references a network name and either a type from the table below, or a reference to a [network binding plugin](https://kubevirt.io/user-guide/network/network_binding_plugins/).
+The mandatory interface configuration includes:
+- A `name`, which references a network name 
+- The name of supported network core binding from the table below, or a reference to a [network binding plugin](https://kubevirt.io/user-guide/network/network_binding_plugins/).
 
 | Type         | Description                                                               |
 |--------------|---------------------------------------------------------------------------|
 | `bridge`     | Connect using a linux bridge                                              |
-| `sriov`      | Pass through a SR-IOV PCI device via vfio                                 |
+| `sriov`      | Connect using a passthrough SR-IOV VF via vfio                            |
 | `masquerade` | Connect using `nftables` rules to NAT the traffic both egress and ingress |
 
 Each interface may also have additional configuration fields that modify
 properties "seen" inside guest instances, as listed below:
 
-| Name       | Format                                                              | Default value | Description                                                                   |
-|------------|---------------------------------------------------------------------|---------------|-------------------------------------------------------------------------------|
-| model      | One of: `e1000`, `e1000e`, `ne2k_pci`, `pcnet`, `rtl8139`, `virtio` | `virtio`      | NIC type                                                                      |
-| macAddress | `ff:ff:ff:ff:ff:ff` or `FF-FF-FF-FF-FF-FF`                          |               | MAC address as seen inside the guest system, for example: `de:ad:00:00:be:af` |
-| ports      |                                                                     | empty         | Allow-list of ports to be forwarded to the virtual machine                    |
-| pciAddress | `0000:81:00.1`                                                      |               | Set network interface PCI address, for example: `0000:81:00.1`                |
+| Name       | Format                                                             | Default value          | Description                                                                                |
+|------------|--------------------------------------------------------------------|------------------------|--------------------------------------------------------------------------------------------|
+| model      | One of: `e1000`, `e1000e`, `ne2k_pci`, `pcnet`, `rtl8139`, `virtio`| `virtio`               | NIC type. **Note:** Use `e1000` model if your guest image doesn't ship with virtio drivers |
+| macAddress | `ff:ff:ff:ff:ff:ff` or `FF-FF-FF-FF-FF-FF`                         |                        | MAC address as seen inside the guest system, for example: `de:ad:00:00:be:af`              |
+| ports      |                                                                    | empty (i.e. all ports) | Allow-list of ports to be forwarded to the virtual machine                                 |
+| pciAddress | `0000:81:00.1`                                                     |                        | Set network interface PCI address, for example: `0000:81:00.1`                             |
 
 
 ```yaml
@@ -273,18 +269,11 @@ spec:
 
 Declare ports listen by the virtual machine
 
-> **Note:** When using the slirp interface only the configured ports
-> will be forwarded to the virtual machine.
-
 | Name       | 	Format   | 	Required | Description         |
 |------------|-----------|-----------|---------------------|
 | `name`     |           | no        | Name                |
 | `port`     | 1 - 65535 | yes       | Port to expose      |
 | `protocol` | TCP,UDP   | no        | Connection protocol |
-
-
-> **Tip:** Use `e1000` model if your guest image doesn't ship with
-> virtio drivers.
 
 If `spec.domain.devices.interfaces` is omitted, the virtual machine is
 connected using the default pod network interface of `bridge` type. If
@@ -430,10 +419,6 @@ spec:
     spec:
       domain:
         devices:
-          disks:
-            - disk:
-              bus: virtio
-              name: cloudinitdisk
           interfaces:
             - name: red
               masquerade: {} # connect using masquerade mode
@@ -442,18 +427,6 @@ spec:
       networks:
       - name: red
         pod: {}
-      volumes:
-      - cloudInitNoCloud:
-          networkData: |
-            version: 2
-            ethernets:
-              eth0:
-                dhcp4: true
-                addresses: [ fd10:0:2::2/120 ]
-                gateway6: fd10:0:2::1
-          userData: |-
-            #!/bin/bash
-            echo "fedora" |passwd fedora --stdin
 ```
 
 > **Note:** The IPv6 address for the VM and default gateway **must** be the ones
@@ -478,7 +451,7 @@ Tracking issue - https://github.com/kubevirt/kubevirt/issues/7184
 
 ### sriov
 
-In `sriov` mode, SR-IOV Virtual Functions' PCI devices are directly exposed to virtual machines.
+In `sriov` core network binding, SR-IOV Virtual Functions' PCI devices are directly exposed to virtual machines.
 [SR-IOV device
 plugin](https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin) and [CNI](https://github.com/k8snetworkplumbingwg/sriov-cni) can be used to manage SR-IOV devices in kubernetes, making them available for kubevirt to consume.
 The device is passed through into the guest operating system as a [host
@@ -487,7 +460,7 @@ device](https://libvirt.org/drvnodedev.html), using the
 interface, to maintain high networking performance.
 
 #### How to expose SR-IOV VFs to KubeVirt
-To simplify procedure, use the [SR-IOV network operator](https://github.com/k8snetworkplumbingwg/sriov-network-operator) to deploy
+To simplify procedure, use the [SR-IOV network operator](https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/v1.4.0/doc/quickstart.md) to deploy
 and configure SR-IOV components in your cluster. On how to use the
 operator, please refer to [their respective
 documentation](https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/master/doc/quickstart.md).
@@ -500,67 +473,34 @@ documentation](https://github.com/k8snetworkplumbingwg/sriov-network-operator/bl
 
 #### Start an SR-IOV VM
 
-Once all the SR-IOV components are deployed, and a network named `sriov-net` is deployed with a network-attachment-definition 
+Assuming that  `sriov-device-plugin`and `sriov-cni` are deployed on the cluster nodes,
+create a network-attachment-definition CR [as shown here](https://github.com/k8snetworkplumbingwg/sriov-cni?tab=readme-ov-file#usage).
+The name of the CR should correspond with the reference in the VM networks spec (see example below)
 
 Finally, to create a VM that will attach to the aforementioned Network, refer
 to the following VM spec:
 
 ```yaml
 ---
+# partial example - kept short for brevity 
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
-metadata:
-  labels:
-    special: vm-perf
-  name: vm-perf
 spec:
-  runStrategy: Halted
   template:
     spec:
       domain:
-        cpu:
-          sockets: 2
-          cores: 1
-          threads: 1
-          dedicatedCpuPlacement: true
-        resources:
-          requests:
-            memory: "4Gi"
-          limits:
-            memory: "4Gi"
         devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
           interfaces:
           - name: default
             masquerade: {}
           - name: sriov-net
             sriov: {}
-          rng: {}
-        machine:
-          type: ""
       networks:
       - name: default
         pod: {}
       - multus:
           networkName: default/sriov-net
         name: sriov-net
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - containerDisk:
-          image: docker.io/kubevirt/fedora-cloud-container-disk-demo:latest
-        name: containerdisk
-      - cloudInitNoCloud:
-          userData: |
-            #!/bin/bash
-            echo "centos" |passwd centos --stdin
-            dhclient eth1
-        name: cloudinitdisk
 ```
 
 > **Note:** for some NICs (e.g. Mellanox), the kernel module needs to be
@@ -568,11 +508,6 @@ spec:
 
 > **Note:** Placement on dedicated CPUs can only be achieved if the Kubernetes CPU manager is running on the SR-IOV capable workers.
 > For further details please refer to the [dedicated cpu resources documentation](../compute/dedicated-cpu_resources.md/).
-
-### passt and macvtap
-
-The core bindings have been removed and replaced with network [binding plugins](../network/net_binding_plugins/)
-see [passt plugin](../network/net_binding_plugins/passt.md) and see [macvtap plugin](../network/net_binding_plugins/macvtap.md)
 
 ## Security
 
