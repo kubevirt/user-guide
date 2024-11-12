@@ -7,10 +7,9 @@ the networks are added to the VM by specifying them in
 
 Each interface must have a corresponding network with the same name.
 
-An `interface` defines a virtual network interface of a virtual machine
-(also called a frontend). A `network` specifies the backend of an
+An `interface` defines a virtual network interface of a virtual machine. A `network` specifies the backend of an
 `interface` and declares which logical or physical device it is
-connected to (also called as backend).
+connected to.
 
 There are multiple ways of configuring an `interface` as well as a
 `network`.
@@ -22,65 +21,53 @@ Reference](https://kubevirt.io/api-reference/master/definitions.html#_v1_network
 
 ## Networks
 
-Network backends are configured in `spec.networks`. A network must have
-a unique name. Additional fields declare which logical or physical
-device the network relates to.
+Networks are configured in VMs `spec.template.spec.networks`. A network must have
+a unique name. 
 
 Each network should declare its type by defining one of the following
 fields:
 
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><code>pod</code></p></td>
-<td><p>Default Kubernetes network</p></td>
-</tr>
-<tr class="even">
-<td><p><code>multus</code></p></td>
-<td><p>Secondary network provided using Multus</p></td>
-</tr>
-</tbody>
-</table>
+| Type     | Description                                                                                  |
+|----------|----------------------------------------------------------------------------------------------|
+| `pod`    | Default Kubernetes network                                                                   |
+| `multus` | Secondary network provided using Multus or Primary network when Multus is defined as default |
 
 ### pod
 
-A `pod` network represents the default pod `eth0` interface configured
+Represents the default (aka primary) pod interface (typically `eth0`) configured
 by cluster network solution that is present in each pod.
+The main advantage of this network type is that it is native to Kubernetes, 
+allowing VMs to benefit from all network services provided by Kubernetes.
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: default
-          masquerade: {}
-  networks:
-  - name: default
-    pod: {} # Stock pod network
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: default
+              masquerade: {}
+      networks:
+      - name: default
+        pod: {} # Stock pod network
 ```
 
 ### multus
-
-It is also possible to connect VMIs to secondary networks using
-[Multus](https://github.com/intel/multus-cni). This assumes that multus
-is installed across your cluster and a corresponding
+Secondary networks in Kubernetes allow pods to connect to additional networks beyond the default network, 
+enabling more complex network topologies. These secondary networks are supported by meta-plugins like 
+[Multus](https://github.com/k8snetworkplumbingwg/multus-cni), which let each pod attach to multiple network interfaces.
+Kubevirt support the connection of VMs to secondary networks using Multus.
+This assumes that multus is installed across your cluster and a corresponding
 `NetworkAttachmentDefinition` CRD was created.
 
-The following example defines a network which uses the [bridge CNI
-plugin](https://www.cni.dev/plugins/current/main/bridge/), which will connect the VMI
-to Linux bridge `br1`. Other CNI plugins such as
-ptp, ovs-cni, or Flannel might be used as well. For their
+The following example defines a secondary network which uses the [bridge CNI
+plugin](https://www.cni.dev/plugins/current/main/bridge/), which will connect the VM
+to Linux bridge `br10`. Other CNI plugins such as
+ptp, bridge-cni or sriov-cni might be used as well. For their
 installation and usage refer to the respective project documentation.
 
 First the `NetworkAttachmentDefinition` needs to be created. That is
@@ -91,61 +78,57 @@ definition.
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: bridge-test
+  name: linux-bridge-net-ipam
 spec:
   config: '{
       "cniVersion": "0.3.1",
-      "name": "bridge-test",
-      "type": "bridge",
-      "bridge": "br1",
-      "disableContainerInterface": true
+      "name": "mynet",
+      "plugins": [
+        {
+          "type": "bridge",
+          "bridge": "br10",
+          "disableContainerInterface": true,
+          "macspoofchk": true
+        }
+      ]
     }'
 ```
 
-With following definition, the VMI will be connected to the default pod
-network and to the secondary Open vSwitch network.
+With following definition, the VM will be connected to the default pod
+network and to the secondary bridge network, referencing the `NetworkAttachmentDefinition` 
+shown above(in the same namespace)
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: default
-          masquerade: {}
-          bootOrder: 1   # attempt to boot from an external tftp server
-          dhcpOptions:
-            bootFileName: default_image.bin
-            tftpServerName: tftp.example.com
-        - name: ovs-net
-          bridge: {}
-          bootOrder: 2   # if first attempt failed, try to PXE-boot from this L2 networks
-  networks:
-  - name: default
-    pod: {} # Stock pod network
-  - name: ovs-net
-    multus: # Secondary multus network
-      networkName: ovs-vlan-100
+  template:
+    spec:
+       domain:
+         devices:
+           interfaces:
+           - name: default
+             masquerade: {}
+           - name: bridge-net
+             bridge: {}
+       networks:
+       - name: default
+         pod: {} # Stock pod network
+       - name: bridge-net
+         multus: # Secondary multus network
+           networkName: linux-bridge-net-ipam #ref to NAD name
 ```
-
+#### Multus as primary network provider
 It is also possible to define a multus network as the default pod
-network with [Multus](https://github.com/intel/multus-cni). A version of
-multus after this [Pull
-Request](https://github.com/intel/multus-cni/pull/174) is required
-(currently master).
+network by indicating the VM's `spec.template.spec.networks.multus.default=true`.
+See [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) documentation for further information
+>**Note:** that a multus `default` network and a `pod` network type are mutually exclusive
 
-**Note the following:**
+>The multus delegate chosen as default **must** return at least one IP address.
 
--   A multus default network and a pod network type are mutually
-    exclusive.
 
--   The virt-launcher pod that starts the VMI will **not** have the pod
-    network configured.
-
--   The multus delegate chosen as default **must** return at least one
-    IP address.
-
-Create a `NetworkAttachmentDefinition` with IPAM.
+Example: a `NetworkAttachmentDefinition` with IPAM.
 
 ```yaml
 apiVersion: "k8s.cni.cncf.io/v1"
@@ -165,22 +148,25 @@ spec:
     }'
 ```
 
-Define a VMI with a [Multus](https://github.com/intel/multus-cni)
-network as the default.
+Define a VM with a `multus` network as the default.
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: test1
-          bridge: {}
-  networks:
-  - name: test1
-    multus: # Multus network as default
-      default: true
-      networkName: bridge-test
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: test1
+              bridge: {}
+      networks:
+      - name: test1
+        multus: # Multus network as default
+          default: true
+          networkName: bridge-test
 ```
 
 
@@ -188,110 +174,56 @@ spec:
 
 Network interfaces are configured in `spec.domain.devices.interfaces`.
 They describe properties of virtual interfaces as "seen" inside guest
-instances. The same network backend may be connected to a virtual
+instances. The same `network` may be connected to a virtual
 machine in multiple different ways, each with their own connectivity
 guarantees and characteristics.
+> **Note** networks and interfaces must have a one-to-one relationship   
 
-Each interface should declare its type by defining on of the following
-fields:
+The mandatory interface configuration includes:
+- A `name`, which references a network name 
+- The name of supported network core binding from the table below, or a reference to a [network binding plugin](https://kubevirt.io/user-guide/network/network_binding_plugins/).
 
-<table>
-<colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><code>bridge</code></p></td>
-<td><p>Connect using a linux bridge</p></td>
-</tr>
-<tr class="even">
-<td><p><code>slirp</code></p></td>
-<td><p>Connect using QEMU user networking mode</p></td>
-</tr>
-<tr class="odd">
-<td><p><code>sriov</code></p></td>
-<td><p>Pass through a SR-IOV PCI device via <code>vfio</code></p></td>
-</tr>
-<tr class="even">
-<td><p><code>masquerade</code></p></td>
-<td><p>Connect using Iptables rules to nat the traffic</p></td>
-</tr>
-</tbody>
-</table>
+| Type         | Description                                                               |
+|--------------|---------------------------------------------------------------------------|
+| `bridge`     | Connect using a linux bridge                                              |
+| `sriov`      | Connect using a passthrough SR-IOV VF via vfio                            |
+| `masquerade` | Connect using `nftables` rules to NAT the traffic both egress and ingress |
 
 Each interface may also have additional configuration fields that modify
 properties "seen" inside guest instances, as listed below:
 
-<table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Format</th>
-<th>Default value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><code>model</code></p></td>
-<td><p>One of: <code>e1000</code>, <code>e1000e</code>, <code>ne2k_pci</code>, <code>pcnet</code>, <code>rtl8139</code>, <code>virtio</code></p></td>
-<td><p><code>virtio</code></p></td>
-<td><p>NIC type</p></td>
-</tr>
-<tr class="even">
-<td><p>macAddress</p></td>
-<td><p><code>ff:ff:ff:ff:ff:ff</code> or <code>FF-FF-FF-FF-FF-FF</code></p></td>
-<td></td>
-<td><p>MAC address as seen inside the guest system, for example: <code>de:ad:00:00:be:af</code></p></td>
-</tr>
-<tr class="odd">
-<td><p>ports</p></td>
-<td></td>
-<td><p>empty</p></td>
-<td><p>List of ports to be forwarded to the virtual machine.</p></td>
-</tr>
-<tr class="even">
-<td><p>pciAddress</p></td>
-<td><p><code>0000:81:00.1</code></p></td>
-<td></td>
-<td><p>Set network interface PCI address, for example: <code>0000:81:00.1</code></p></td>
-</tr>
-</tbody>
-</table>
+| Name       | Format                                                             | Default value          | Description                                                                                |
+|------------|--------------------------------------------------------------------|------------------------|--------------------------------------------------------------------------------------------|
+| model      | One of: `e1000`, `e1000e`, `ne2k_pci`, `pcnet`, `rtl8139`, `virtio`| `virtio`               | NIC type. **Note:** Use `e1000` model if your guest image doesn't ship with virtio drivers |
+| macAddress | `ff:ff:ff:ff:ff:ff` or `FF-FF-FF-FF-FF-FF`                         |                        | MAC address as seen inside the guest system, for example: `de:ad:00:00:be:af`              |
+| ports      |                                                                    | empty (i.e. all ports) | Allow-list of ports to be forwarded to the virtual machine                                 |
+| pciAddress | `0000:81:00.1`                                                     |                        | Set network interface PCI address, for example: `0000:81:00.1`                             |
+
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: default
-          model: e1000 # expose e1000 NIC to the guest
-          masquerade: {} # connect through a masquerade
-          ports:
-           - name: http
-             port: 80
-  networks:
-  - name: default
-    pod: {}
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: default
+              model: e1000 # expose e1000 NIC to the guest
+              masquerade: {} # connect through a masquerade
+              ports:
+               - name: http
+                 port: 80 # allow only http traffic ingress
+      networks:
+      - name: default
+        pod: {}
 ```
 
 > **Note:** For secondary interfaces, when a MAC address is specified for a
 > virtual machine interface, it is passed to the underlying CNI plugin which is,
-> in turn, expected to configure the backend to allow for this particular MAC.
+> in turn, expected to configure the network provider to allow for this particular MAC.
 > Not every plugin has native support for custom MAC addresses.
 
 > **Note:** For some CNI plugins without native support for custom MAC
@@ -337,48 +269,11 @@ spec:
 
 Declare ports listen by the virtual machine
 
-> **Note:** When using the slirp interface only the configured ports
-> will be forwarded to the virtual machine.
-
-<table>
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Format</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><code>name</code></p></td>
-<td></td>
-<td><p>no</p></td>
-<td><p>Name</p></td>
-</tr>
-<tr class="even">
-<td><p><code>port</code></p></td>
-<td><p>1 - 65535</p></td>
-<td><p>yes</p></td>
-<td><p>Port to expose</p></td>
-</tr>
-<tr class="odd">
-<td><p><code>protocol</code></p></td>
-<td><p>TCP,UDP</p></td>
-<td><p>no</p></td>
-<td><p>Connection protocol</p></td>
-</tr>
-</tbody>
-</table>
-
-> **Tip:** Use `e1000` model if your guest image doesn't ship with
-> virtio drivers.
+| Name       | 	Format   | 	Required | Description         |
+|------------|-----------|-----------|---------------------|
+| `name`     |           | no        | Name                |
+| `port`     | 1 - 65535 | yes       | Port to expose      |
+| `protocol` | TCP,UDP   | no        | Connection protocol |
 
 If `spec.domain.devices.interfaces` is omitted, the virtual machine is
 connected using the default pod network interface of `bridge` type. If
@@ -386,11 +281,15 @@ you'd like to have a virtual machine instance without any network
 connectivity, you can use the `autoattachPodInterface` field as follows:
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      autoattachPodInterface: false
+  template:
+    spec:
+      domain:
+        devices:
+          autoattachPodInterface: false
 ```
 
 
@@ -406,17 +305,21 @@ to use DHCP to acquire IPv4 addresses.
 > is delegated to the virtual machine.
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: red
-          bridge: {} # connect through a bridge
-  networks:
-  - name: red
-    multus:
-      networkName: red
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: red
+              bridge: {} # connect through a bridge
+      networks:
+      - name: red
+        multus:
+          networkName: red
 ```
 
 At this time, `bridge` mode doesn't support additional configuration
@@ -459,7 +362,7 @@ In `masquerade` mode, KubeVirt allocates internal IP addresses to
 virtual machines and hides them behind NAT. All the traffic exiting
 virtual machines is "source NAT'ed" using pod IP addresses; thus, cluster
 workloads should use the pod's IP address to contact the VM over this interface.
-This IP address is reported in the VMI's `spec.status.interface`. A guest
+This IP address is reported in the VMI's `status.interfaces`. A guest
 operating system should be configured to use DHCP to acquire IPv4 addresses.
 
 To allow the VM to live-migrate or hard restart (both cause the VM to run on a
@@ -471,18 +374,22 @@ the interface should be configured as follows. If the `ports` section is missing
 all ports forwarded into the VM.
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      interfaces:
-        - name: red
-          masquerade: {} # connect using masquerade mode
-          ports:
-            - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
-  networks:
-  - name: red
-    pod: {}
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: red
+              masquerade: {} # connect using masquerade mode
+              ports:
+                - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+      networks:
+      - name: red
+        pod: {}
 ```
 
 > **Note:** Masquerade is only allowed to connect to the pod network.
@@ -504,34 +411,22 @@ Unlike in IPv4, the configuration of the IPv6 address and the default route is
 not automatic; it should be configured via cloud init, as shown below:
 
 ```yaml
-kind: VM
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
 spec:
-  domain:
-    devices:
-      disks:
-        - disk:
-          bus: virtio
-          name: cloudinitdisk
-      interfaces:
-        - name: red
-          masquerade: {} # connect using masquerade mode
-          ports:
-            - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
-  networks:
-  - name: red
-    pod: {}
-  volumes:
-  - cloudInitNoCloud:
-      networkData: |
-        version: 2
-        ethernets:
-          eth0:
-            dhcp4: true
-            addresses: [ fd10:0:2::2/120 ]
-            gateway6: fd10:0:2::1
-      userData: |-
-        #!/bin/bash
-        echo "fedora" |passwd fedora --stdin
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: red
+              masquerade: {} # connect using masquerade mode
+              ports:
+                - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+      networks:
+      - name: red
+        pod: {}
 ```
 
 > **Note:** The IPv6 address for the VM and default gateway **must** be the ones
@@ -554,247 +449,58 @@ has no DHCP server at all. Therefore, the VM won't have the search domains infor
 reaching a destination using its FQDN is not possible.
 Tracking issue - https://github.com/kubevirt/kubevirt/issues/7184
 
-### passt
-
-> **Warning**: The core binding is being deprecated and targeted for removal
-> in v1.3 .
-> As an alternative, the same functionality is introduced and available as a
-> [binding plugin](../network/net_binding_plugins/passt.md).
-
-`passt` is a new approach for user-mode networking which can be used as a simple replacement for Slirp (which is practically dead).
-
-`passt` is a universal tool which implements a translation layer between a Layer-2 network interface and native
-Layer -4 sockets (TCP, UDP, ICMP/ICMPv6 echo) on a host.<br/>
-
-Its main benefits are:
-- doesn't require extra network capabilities as CAP_NET_RAW and CAP_NET_ADMIN.
-- allows integration with service meshes (which expect applications to run locally) out of the box.
-- supports IPv6 out of the box (in contrast to the existing bindings which require configuring IPv6
-manually).
-
-|                                                                | Masquerade                                                                                             | Bridge                                                                    | Passt                                                                                                   |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Supports migration                                             | Yes                                                                                                    | No                                                                        | No<br/>(will be supported in the future)                                                                |
-| VM uses Pod IP                                                 | No                                                                                                     | Yes                                                                       | Yes<br/>(in the future it will be possible to configure the VM IP. Currently the default is the pod IP) |
-| Service Mesh out of the box                                    | No<br/>(only ISTIO is supported, adjustmets on both ISTIO and kubevirt had to be done to make it work) | No                                                                        | Yes                                                                                                     |
-| Doesn’t require extra capabilities on the virt-launcher pod    | Yes<br/>(multiple workarounds had to be added to kubevirt to make it work)                             | No<br/>(Multiple workarounds had to be added to kubevirt to make it work) | Yes                                                                                                     |
-| Doesn't require extra network devices on the virt-launcher pod | No<br/>(bridge and tap device are created)                                                             | No<br/>(bridge and tap device are created)                                | Yes                                                                                                     |
-| Supports IPv6                                                  | Yes<br/>(requires manual configuration on the VM)                                                      | No                                                                        | Yes                                                                                                     |
-
-```yaml
-kind: VM
-spec:
-  domain:
-    devices:
-      interfaces:
-        - name: red
-          passt: {} # connect using passt mode
-          ports:
-            - port: 8080 # allow incoming traffic on port 8080 to get into the virtual machine
-  networks:
-    - name: red
-      pod: {}
-```
-
-#### Requirements/Recommendations:
-1. To get better performance the node should be configured with:
-```
-sysctl -w net.core.rmem_max = 33554432
-sysctl -w net.core.wmem_max = 33554432
-```
-2. To run multiple passt VMs with no explicit ports, the node's `fs.file-max` should be increased
-   (for a VM forwards all IPv4 and IPv6 ports, for TCP and UDP, passt needs to create ~2^18 sockets):
-```
-sysctl -w fs.file-max = 9223372036854775807
-```
-
-*NOTE*: To achieve optimal memory consumption with Passt binding, specify ports required for your workload.
-When no ports are explicitly specified, all ports are forwarded, leading to memory overhead of up to 800 Mi.
-
-#### Temporary restrictions: 
-1. `passt` currently only supported as primary network and doesn't allow extra multus networks to be configured on the VM.
-
-passt interfaces are feature gated; to enable the feature, follow
-[these](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
-instructions, in order to activate the `Passt` feature gate (case sensitive).
-
-More information about passt mode can be found in [passt
-Wiki](https://passt.top/passt/about/).
-
-### virtio-net multiqueue
-
-Setting the `networkInterfaceMultiqueue` to `true` will enable the
-multi-queue functionality, increasing the number of vhost queue, for
-interfaces configured with a `virtio` model.
-
-```yaml
-kind: VM
-spec:
-  domain:
-    devices:
-      networkInterfaceMultiqueue: true
-```
-
-Users of a Virtual Machine with multiple vCPUs may benefit of increased
-network throughput and performance.
-
-Currently, the number of queues is being determined by the number of
-vCPUs of a VM. This is because multi-queue support optimizes RX
-interrupt affinity and TX queue selection in order to make a specific
-queue private to a specific vCPU.
-
-Without enabling the feature, network performance does not scale as the
-number of vCPUs increases. Guests cannot transmit or retrieve packets in
-parallel, as virtio-net has only one TX and RX queue.
-
-Virtio interfaces advertise on their status.interfaces.interface entry a field named queueCount.  
-The queueCount field indicates how many queues were assigned to the interface.  
-Queue count value is derived from the domain XML.  
-In case the number of queues can't be determined (i.e interface that is reported by quest-agent only),
-it will be omitted.
-
-
-*NOTE*: Although the virtio-net multiqueue feature provides a
-performance benefit, it has some limitations and therefore should not be
-unconditionally enabled
-
-
-
-*NOTE*: Virtio-net multiqueue should be enabled in the guest OS
-manually, using ethtool. For example:
-`ethtool -L <NIC> combined #num_of_queues`
-
-More information please refer to [KVM/QEMU
-MultiQueue](http://www.linux-kvm.org/page/Multiqueue).
-
 ### sriov
 
-In `sriov` mode, virtual machines are directly exposed to an SR-IOV PCI
-device, usually allocated by [Intel SR-IOV device
-plugin](https://github.com/intel/sriov-network-device-plugin). The
-device is passed through into the guest operating system as a host
-device, using the
+In `sriov` core network binding, SR-IOV Virtual Functions' PCI devices are directly exposed to virtual machines.
+[SR-IOV device
+plugin](https://github.com/k8snetworkplumbingwg/sriov-network-device-plugin) and [CNI](https://github.com/k8snetworkplumbingwg/sriov-cni) can be used to manage SR-IOV devices in kubernetes, making them available for kubevirt to consume.
+The device is passed through into the guest operating system as a [host
+device](https://libvirt.org/drvnodedev.html), using the
 [vfio](https://www.kernel.org/doc/Documentation/vfio.txt) userspace
 interface, to maintain high networking performance.
 
 #### How to expose SR-IOV VFs to KubeVirt
-To simplify procedure, please use [SR-IOV network
-operator](https://github.com/k8snetworkplumbingwg/sriov-network-operator) to deploy
+To simplify procedure, use the [SR-IOV network operator](https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/v1.4.0/doc/quickstart.md) to deploy
 and configure SR-IOV components in your cluster. On how to use the
 operator, please refer to [their respective
 documentation](https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/master/doc/quickstart.md).
 
 > **Note:** KubeVirt relies on VFIO userspace driver to pass PCI devices
-> into VMI guest. Because of that, when configuring SR-IOV operator
+> into VM guest. Because of that, when configuring SR-IOV operator
 > policies, make sure you define a pool of VF resources that uses
 > `deviceType: vfio-pci`.
 
-Once the operator is deployed, an [SriovNetworkNodePolicy
-](https://github.com/k8snetworkplumbingwg/sriov-network-operator#sriovnetworknodepolicy)
-must be provisioned, in which the list of SR-IOV devices to expose (with
-respective configurations) is defined.
-
-Please refer to the following `SriovNetworkNodePolicy` for an example:
-
-```yaml
-apiVersion: sriovnetwork.openshift.io/v1
-kind: SriovNetworkNodePolicy
-metadata:
-  name: policy-1
-  namespace: sriov-network-operator
-spec:
-  deviceType: vfio-pci
-  mtu: 9000
-  nicSelector:
-    pfNames:
-    - ens1f0
-  nodeSelector:
-    sriov: "true"
-  numVfs: 8
-  priority: 90
-  resourceName: sriov-nic
-```
-
-The policy above will configure the `SR-IOV` device plugin, allowing the
-PF named `ens1f0` to be exposed in the SRIOV capable nodes as a resource named
-`sriov-nic`.
 
 #### Start an SR-IOV VM
 
-Once all the SR-IOV components are deployed, it is needed to indicate how to
-configure the SR-IOV network. Refer to the following
-`SriovNetwork` for an example:
-
-```yaml
-apiVersion: sriovnetwork.openshift.io/v1
-kind: SriovNetwork
-metadata:
-  name: sriov-net
-  namespace: sriov-network-operator
-spec:
-  ipam: |
-    {}
-  networkNamespace: default
-  resourceName: sriov-nic
-  spoofChk: "off"
-```
+Assuming that  `sriov-device-plugin`and `sriov-cni` are deployed on the cluster nodes,
+create a network-attachment-definition CR [as shown here](https://github.com/k8snetworkplumbingwg/sriov-cni?tab=readme-ov-file#usage).
+The name of the CR should correspond with the reference in the VM networks spec (see example below)
 
 Finally, to create a VM that will attach to the aforementioned Network, refer
-to the following VMI spec:
+to the following VM spec:
 
 ```yaml
 ---
+# partial example - kept short for brevity 
 apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
-metadata:
-  labels:
-    special: vmi-perf
-  name: vmi-perf
+kind: VirtualMachine
 spec:
-  domain:
-    cpu:
-      sockets: 2
-      cores: 1
-      threads: 1
-      dedicatedCpuPlacement: true
-    resources:
-      requests:
-        memory: "4Gi"
-      limits:
-        memory: "4Gi"
-    devices:
-      disks:
-      - disk:
-          bus: virtio
-        name: containerdisk
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-      interfaces:
-      - masquerade: {}
-        name: default
-      - name: sriov-net
-        sriov: {}
-      rng: {}
-    machine:
-      type: ""
-  networks:
-  - name: default
-    pod: {}
-  - multus:
-      networkName: default/sriov-net
-    name: sriov-net
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - containerDisk:
-      image: docker.io/kubevirt/fedora-cloud-container-disk-demo:latest
-    name: containerdisk
-  - cloudInitNoCloud:
-      userData: |
-        #!/bin/bash
-        echo "centos" |passwd centos --stdin
-        dhclient eth1
-    name: cloudinitdisk
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+          - name: default
+            masquerade: {}
+          - name: sriov-net
+            sriov: {}
+      networks:
+      - name: default
+        pod: {}
+      - multus:
+          networkName: default/sriov-net
+        name: sriov-net
 ```
 
 > **Note:** for some NICs (e.g. Mellanox), the kernel module needs to be
@@ -802,156 +508,6 @@ spec:
 
 > **Note:** Placement on dedicated CPUs can only be achieved if the Kubernetes CPU manager is running on the SR-IOV capable workers.
 > For further details please refer to the [dedicated cpu resources documentation](../compute/dedicated-cpu_resources.md/).
-
-### Macvtap
-
-> **Note**: The core binding will be deprecated soon.
-> As an alternative, the same functionality is introduced and available as a
-> [binding plugin](../network/net_binding_plugins/macvtap.md).
-
-In `macvtap` mode, virtual machines are directly exposed to the Kubernetes
-nodes L2 network. This is achieved by 'extending' an existing network interface
-with a virtual device that has its own MAC address.
-
-Macvtap interfaces are feature gated; to enable the feature, follow
-[these](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
-instructions, in order to activate the `Macvtap` feature gate (case sensitive).
-
-> **Note:** On [KinD](https://github.com/kubernetes-sigs/kind) clusters, the user needs to
-> [adjust the cluster configuration](https://github.com/kubevirt/macvtap-cni/issues/39#issuecomment-1242765996),
-> mounting `dev` of the running host onto the KinD nodes, because of a
-> [known issue](https://github.com/kubevirt/macvtap-cni/issues/39).
-
-#### Limitations
-
-- Live migration is not seamless, see [issue #5912](https://github.com/kubevirt/kubevirt/issues/5912#issuecomment-888938920)
-
-#### How to expose host interface to the macvtap device plugin
-To simplify the procedure, please use the
-[Cluster Network Addons Operator](https://github.com/kubevirt/cluster-network-addons-operator)
-to deploy and configure the macvtap components in your cluster.
-
-The aforementioned operator effectively deploys the
-[macvtap-cni](https://github.com/kubevirt/macvtap-cni) cni / device plugin
-combo.
-
-There are two different alternatives to configure which host interfaces get
-exposed to the user, enabling them to create macvtap interfaces on top of:
-
-- select the host interfaces: indicates which host interfaces are exposed.
-- expose all interfaces: all interfaces of all hosts are exposed.
-
-Both options are configured via the `macvtap-deviceplugin-config` ConfigMap,
-and more information on how to configure it can be found in the
-[macvtap-cni](https://github.com/kubevirt/macvtap-cni#deployment) repo.
-
-You can find a minimal example, in which the `eth0` interface of the Kubernetes
-nodes is exposed, via the `lowerDevice` attribute.
-```yaml
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: macvtap-deviceplugin-config
-data:
-  DP_MACVTAP_CONF: |
-    [
-        {
-            "name"       : "dataplane",
-            "lowerDevice": "eth0",
-            "mode"       : "bridge",
-            "capacity"   : 50
-        }
-    ]
-```
-
-This step can be omitted, since the default configuration of the aforementioned
-`ConfigMap` is to expose all host interfaces (which is represented by the
-following configuration):
-```yaml
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: macvtap-deviceplugin-config
-data:
-  DP_MACVTAP_CONF: '[]'
-```
-
-#### Start a VM with macvtap interfaces
-
-Once the macvtap components are deployed, it is needed to indicate how to
-configure the macvtap network. Refer to the following
-`NetworkAttachmentDefinition` for a simple example:
-
-```yaml
----
-kind: NetworkAttachmentDefinition
-apiVersion: k8s.cni.cncf.io/v1
-metadata:
-  name: macvtapnetwork
-  annotations:
-    k8s.v1.cni.cncf.io/resourceName: macvtap.network.kubevirt.io/eth0
-spec:
-  config: '{
-      "cniVersion": "0.3.1",
-      "name": "macvtapnetwork",
-      "type": "macvtap",
-      "mtu": 1500
-    }'
-```
-The requested `k8s.v1.cni.cncf.io/resourceName` annotation must point to an
-exposed host interface (via the `lowerDevice` attribute, on the
-`macvtap-deviceplugin-config` `ConfigMap`).
-
-Finally, to create a VM that will attach to the aforementioned Network, refer
-to the following VMI spec:
-
-```yaml
----
-apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
-metadata:
-  labels:
-    special: vmi-host-network
-  name: vmi-host-network
-spec:
-  domain:
-    devices:
-      disks:
-      - disk:
-          bus: virtio
-        name: containerdisk
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-      interfaces:
-      - macvtap: {}
-        name: hostnetwork
-      rng: {}
-    machine:
-      type: ""
-    resources:
-      requests:
-        memory: 1024M
-  networks:
-  - multus:
-      networkName: macvtapnetwork
-    name: hostnetwork
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - containerDisk:
-      image: docker.io/kubevirt/fedora-cloud-container-disk-demo:devel
-    name: containerdisk
-  - cloudInitNoCloud:
-      userData: |-
-        #!/bin/bash
-        echo "fedora" |passwd fedora --stdin
-    name: cloudinitdisk
-```
-The requested `multus` `networkName` - i.e. `macvtapnetwork` - must match the
-name of the provisioned `NetworkAttachmentDefinition`.
-
-> **Note:** VMIs with macvtap interfaces can be migrated, but their MAC
-> addresses **must** be statically set.
 
 ## Security
 
@@ -996,7 +552,7 @@ spec:
         }'
 ```
 
-On the VMI, the network section should point to this
+On the VM, the network section should point to this
 NetworkAttachmentDefinition by name:
 ```yaml
 networks:
@@ -1032,7 +588,71 @@ these plugins as valid options on our ecosystem.
 - The `bridge` CNI supports mac-spoof-check through nftables, therefore
 the node must support nftables and have the `nft` binary deployed.
 
-### Passt known limitations
+
+
+## Additional Notes
+### MTU
+There are two methods for the MTU to be propagated to the guest interface.
+
+* Libvirt - for this the guest machine needs new enough virtio network driver that understands
+  the data passed into the guest via a PCI config register in the emulated device.
+* DHCP - for this the guest DHCP client should be able to read the MTU from the DHCP server response.
+
+On **Windows** guest non virtio interfaces, MTU has to be set manually using `netsh` or other tool
+since the Windows DHCP client doesn't request/read the MTU.
+
+The table below is summarizing the MTU propagation to the guest.
+
+|            | masquerade     | bridge with CNI IP | bridge with no CNI IP | Windows |
+|------------|----------------|--------------------|-----------------------|---------|
+| virtio     | DHCP & libvirt | DHCP & libvirt     | libvirt               | libvirt |
+| non-virtio | DHCP           | DHCP               | X                     | X       |
+
+* bridge with CNI IP - means the CNI gives IP to the pod interface and bridge binding is used
+  to bind the pod interface to the guest.
+
+### virtio-net multiqueue
+
+Setting the `networkInterfaceMultiqueue` to `true` will enable the
+multi-queue functionality, increasing the number of vhost queue, for
+interfaces configured with a `virtio` model.
+
+```yaml
+# partial example - kept short for brevity 
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+spec:
+  template:
+    spec:
+      domain:
+        devices:
+          networkInterfaceMultiqueue: true
+```
+
+Users of a Virtual Machine with multiple vCPUs may benefit of increased
+network throughput and performance.
+
+Currently, the number of queues is being determined by the number of
+vCPUs of a VM. This is because multi-queue support optimizes RX
+interrupt affinity and TX queue selection in order to make a specific
+queue private to a specific vCPU.
+
+Without enabling the feature, network performance does not scale as the
+number of vCPUs increases. Guests cannot transmit or retrieve packets in
+parallel, as virtio-net has only one TX and RX queue.
+
+Virtio interfaces advertise on their status.interfaces.interface entry a field named queueCount.  
+The queueCount field indicates how many queues were assigned to the interface.  
+Queue count value is derived from the domain XML.  
+In case the number of queues can't be determined (i.e interface that is reported by quest-agent only),
+it will be omitted.
+
+
+>*NOTE*: Although the virtio-net multiqueue feature provides a
+performance benefit, it has some limitations and therefore should not be
+unconditionally enabled
+
+#### Some known limitations
 
 -   Guest OS is limited to ~200 MSI vectors. Each NIC queue requires a
     MSI vector, as well as any virtio device or assigned PCI device.
@@ -1063,23 +683,9 @@ the node must support nftables and have the `nft` binary deployed.
 -   Each virtio-net queue consumes 64 KiB of kernel memory for the vhost
     driver.
 
-## Additional Notes
-### MTU
-There are two methods for the MTU to be propagated to the guest interface.
+>*NOTE*: Virtio-net multiqueue should be enabled in the guest OS
+manually, using ethtool. For example:
+`ethtool -L <NIC> combined #num_of_queues`
 
-* Libvirt - for this the guest machine needs new enough virtio network driver that understands
-  the data passed into the guest via a PCI config register in the emulated device.
-* DHCP - for this the guest DHCP client should be able to read the MTU from the DHCP server response.
-
-On **Windows** guest non virtio interfaces, MTU has to be set manually using `netsh` or other tool
-since the Windows DHCP client doesn't request/read the MTU.
-
-The table below is summarizing the MTU propagation to the guest.
-
-|     | masquerade     | bridge with CNI IP | bridge with no CNI IP | Windows |
-|-----|----------------|--------------------|-----------------------|---------|
-| virtio    | DHCP & libvirt | DHCP & libvirt     | libvirt               | libvirt |
-| non-virtio    | DHCP           | DHCP               | X                     | X       |
-
-* bridge with CNI IP - means the CNI gives IP to the pod interface and bridge binding is used
-  to bind the pod interface to the guest.
+More information please refer to [KVM/QEMU
+MultiQueue](http://www.linux-kvm.org/page/Multiqueue).
