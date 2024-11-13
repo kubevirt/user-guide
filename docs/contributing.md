@@ -5,7 +5,7 @@ hide:
 
 # Contributing
 
-Welcome!! And thank you for taking the first step to contributing to the KubeVirt project. On this page you should be able to find all the information required to get started on your contirbution journey, as well as information on how to become a community member and grow into roles of responsibility. 
+Welcome!! And thank you for taking the first step to contributing to the KubeVirt project. On this page you should be able to find all the information required to get started on your contribution journey, as well as information on how to become a community member and grow into roles of responsibility. 
 
 If you think something might be missing from this page, please help us by [raising a bug](https://github.com/kubevirt/user-guide/issues)!
 
