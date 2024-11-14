@@ -3317,7 +3317,7 @@ instance type and preference with specified volumes:</p>
 <p>Create a manifest for a VirtualMachine with a cloned PVC:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-import<span class="o">=</span>type:pvc,src:my-ns/my-pvc
 </code></pre></div>
-<p>Create a manifest for a VirtualMachine with a directly used PVC:</p>
+<p>Create a manifest for a VirtualMachine using a PVC without cloning it:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-pvc<span class="o">=</span>src:my-pvc
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a clone DataSource and a blank
