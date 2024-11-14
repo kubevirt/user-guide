@@ -343,7 +343,7 @@ Create a manifest for a VirtualMachine with a cloned PVC:
 virtctl create vm --volume-import=type:pvc,src:my-ns/my-pvc
 ```
 
-Create a manifest for a VirtualMachine with a directly used PVC:
+Create a manifest for a VirtualMachine using a PVC without cloning it:
 
 ```shell
 virtctl create vm --volume-pvc=src:my-pvc
