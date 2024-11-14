@@ -453,7 +453,7 @@ applied to the VirtualMachineInstance. The video device is `vga`
 compatible and comes with a memory size of 16 MB. This device allows
 connecting to the OS via `vnc`.
 
-It is possible not attach it by setting
+It is possible to not attach the video device by setting
 `spec.domain.devices.autoattachGraphicsDevice` to `false`:
 
     metadata:
