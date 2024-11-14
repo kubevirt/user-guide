@@ -16,7 +16,7 @@
         <link rel="prev" href="../basic_use/">
       
       
-        <link rel="next" href="../virtctl_client_tool/">
+        <link rel="next" href="../creating_it_pref/">
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Creating VirtualMachines - KubeVirt user guide</title>
+        <title>Creating VirtualMachines by using virtctl - KubeVirt user guide</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#creating-virtualmachines" class="md-skip">
+        <a href="#creating-virtualmachines-by-using-virtctl" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Creating VirtualMachines
+              Creating VirtualMachines by using virtctl
             
           </span>
         </div>
@@ -1091,7 +1091,7 @@
           
   
   <span class="md-ellipsis">
-    Creating VirtualMachines
+    Creating VirtualMachines by using virtctl
   </span>
   
 
@@ -1102,7 +1102,7 @@
         
   
   <span class="md-ellipsis">
-    Creating VirtualMachines
+    Creating VirtualMachines by using virtctl
   </span>
   
 
@@ -1132,10 +1132,208 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#using-instance-types-and-preferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using instance types and preferences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using instance types and preferences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inference-of-instance-type-andor-preference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inference of instance type and/or preference
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boot-order-of-added-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boot order of added volumes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generating-cloud-init-user-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generating cloud-init user data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generating cloud-init user data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-user-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      --user flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-password-file-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      --password-file flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-ssh-key-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      --ssh-key flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-ga-manage-ssh-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      --ga-manage-ssh flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#specifying-custom-cloud-init-user-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specifying custom cloud-init user data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-access-credentials-to-a-virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding access credentials to a virtual machine
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding access credentials to a virtual machine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-sysprep-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a sysprep volume
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#short-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Short examples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complex-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complex examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complex examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      First example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#second-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Second example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../creating_it_pref/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating Instance Types and Preferences by using virtctl
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1268,10 +1466,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_10" >
         
           
-          <label class="md-nav__link" for="__nav_5_9" id="__nav_5_9_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_10" id="__nav_5_10_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1282,8 +1480,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_9_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_9">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_10">
             <span class="md-nav__icon md-icon"></span>
             Monitoring
           </label>
@@ -1403,10 +1601,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_10" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_11" >
         
           
-          <label class="md-nav__link" for="__nav_5_10" id="__nav_5_10_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1417,8 +1615,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_10">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_11">
             <span class="md-nav__icon md-icon"></span>
             Workloads
           </label>
@@ -2668,6 +2866,183 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#using-instance-types-and-preferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using instance types and preferences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using instance types and preferences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inference-of-instance-type-andor-preference" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inference of instance type and/or preference
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boot-order-of-added-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boot order of added volumes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generating-cloud-init-user-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generating cloud-init user data
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generating cloud-init user data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-user-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      --user flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-password-file-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      --password-file flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-ssh-key-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      --ssh-key flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-ga-manage-ssh-flag" class="md-nav__link">
+    <span class="md-ellipsis">
+      --ga-manage-ssh flag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#specifying-custom-cloud-init-user-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Specifying custom cloud-init user data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-access-credentials-to-a-virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding access credentials to a virtual machine
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding access credentials to a virtual machine">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-sysprep-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding a sysprep volume
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#short-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Short examples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complex-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complex examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complex examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      First example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#second-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Second example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2699,13 +3074,13 @@
   
 
 
-<h1 id="creating-virtualmachines">Creating VirtualMachines<a class="headerlink" href="#creating-virtualmachines" title="Permanent link">&para;</a></h1>
+<h1 id="creating-virtualmachines-by-using-virtctl">Creating VirtualMachines by using virtctl<a class="headerlink" href="#creating-virtualmachines-by-using-virtctl" title="Permanent link">&para;</a></h1>
 <p>The virtctl sub command <code>create vm</code> allows easy creation of VirtualMachine
 manifests from the command line. It leverages
-<a href="../instancetypes/">instance types and preferences</a> and inference by
-default (see
-<a href="#specifying-or-inferring-instance-types-and-preferences">Specifying or inferring instance types and preferences</a>)
-and provides several flags to control details of the created virtual machine.</p>
+<a href="../instancetypes/">instance types and preferences</a> and
+inference by default (see
+<a href="#using-instance-types-and-preferences">Using instance types and preferences</a>)
+and it provides several flags to control details of the created virtual machine.</p>
 <p>For example there are flags to specify the name or run strategy of a
 virtual machine or flags to add volumes to a virtual machine. Instance types
 and preferences can either be specified directly or it is possible to let
@@ -2714,187 +3089,332 @@ KubeVirt infer those from the volume used to boot the virtual machine.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>-h
 </code></pre></div>
 <h2 id="creating-virtualmachines-on-a-cluster">Creating VirtualMachines on a cluster<a class="headerlink" href="#creating-virtualmachines-on-a-cluster" title="Permanent link">&para;</a></h2>
-<p>The output of virtctl <code>create vm</code> can be piped into <code>kubectl</code> to directly
+<p>The output of <code>virtctl create vm</code> can be piped directly into <code>kubectl</code> to
 create a VirtualMachine on a cluster, e.g.:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Create a VM with name my-vm on the cluster</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--name<span class="w"> </span>my-vm<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>-
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>virtualmachine.kubevirt.io/my-vm<span class="w"> </span>created
 </code></pre></div>
-<h1 id="creating-instance-types">Creating Instance Types<a class="headerlink" href="#creating-instance-types" title="Permanent link">&para;</a></h1>
-<p>The virtctl subcommand <code>create instancetype</code> allows easy creation of an instance type
-manifest from the command line. The command also provides several flags that can be used
-to create your desired manifest.</p>
-<p>There are two required flags that need to be specified: the number of vCPUs and the amount of
-memory to be requested. Additionally, there are several optional flags that can be used, such as specifying
-a list of GPUs for passthrough, choosing the desired IOThreadsPolicy, or simply providing
-the name of our instance type.</p>
-<p>By default, the command creates the cluster-wide resource. If the user wants to create the namespaced version,
-they need to provide the namespaced flag. The namespace name can be specified by using the namespace flag.</p>
-<p>For a complete list of flags and their descriptions, use the following command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>instancetype<span class="w"> </span>-h
-</code></pre></div>
-<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
-<p>Create a manifest for a VirtualMachineClusterInstancetype with the required --cpu and --memory flags
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>instancetype<span class="w"> </span>--cpu<span class="w"> </span><span class="m">2</span><span class="w"> </span>--memory<span class="w"> </span>256Mi
-</code></pre></div></p>
-<p>Create a manifest for a VirtualMachineInstancetype with a specified namespace
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>instancetype<span class="w"> </span>--cpu<span class="w"> </span><span class="m">2</span><span class="w"> </span>--memory<span class="w"> </span>256Mi<span class="w"> </span>--namespace<span class="w"> </span>my-namespace
-</code></pre></div></p>
-<p>Create a manifest for a VirtualMachineInstancetype without a specified namespace name
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>instancetype<span class="w"> </span>--cpu<span class="w"> </span><span class="m">2</span><span class="w"> </span>--memory<span class="w"> </span>256Mi<span class="w"> </span>--namespaced
-</code></pre></div></p>
-<h1 id="creating-preferences">Creating Preferences<a class="headerlink" href="#creating-preferences" title="Permanent link">&para;</a></h1>
-<p>The virtctl subcommand <code>create preference</code> allows easy creation of a preference
-manifest from the command line. This command serves as a starting point to create
-the basic structure of a manifest, as it does not allow specifying all of the options that
-are supported in preferences.</p>
-<p>The current set of flags allows us, for example, to specify the preferred CPU topology, machine type
-or a storage class.</p>
-<p>By default, the command creates the cluster-wide resource. If the user wants to create the namespaced version,
-they need to provide the namespaced flag. The namespace name can be specified by using the namespace flag.</p>
-<p>For a complete list of flags and their descriptions, use the following command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>preference<span class="w"> </span>-h
-</code></pre></div>
-<h2 id="examples_1">Examples<a class="headerlink" href="#examples_1" title="Permanent link">&para;</a></h2>
-<p>Create a manifest for a VirtualMachineClusterPreference with a preferred cpu topology
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>preference<span class="w"> </span>--cpu-topology<span class="w"> </span>preferSockets
-</code></pre></div></p>
-<p>Create a manifest for a VirtualMachinePreference with a specified namespace
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>preference<span class="w"> </span>--namespace<span class="w"> </span>my-namespace
-</code></pre></div></p>
-<p>Create a manifest for a VirtualMachinePreference with the preferred storage class
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>preference<span class="w"> </span>--namespaced<span class="w"> </span>--volume-storage-class<span class="w"> </span>my-storage
-</code></pre></div></p>
-<h2 id="specifying-or-inferring-instance-types-and-preferences">Specifying or inferring instance types and preferences<a class="headerlink" href="#specifying-or-inferring-instance-types-and-preferences" title="Permanent link">&para;</a></h2>
-<p>Instance types and preference can be specified with the appropriate flags, e.g.:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="w"> </span>my-instancetype<span class="w"> </span>--preference<span class="w"> </span>my-preference
+<h2 id="using-instance-types-and-preferences">Using instance types and preferences<a class="headerlink" href="#using-instance-types-and-preferences" title="Permanent link">&para;</a></h2>
+<p>Instance types and preferences can be used with the appropriate flags. If
+they are not otherwise specified, instance types and preferences are inferred
+from the boot volume of a virtual machine by default. For more information
+about inference, see <a href="#inference-of-instance-type-andor-preference">below</a>.</p>
+<p>The following example creates a VM specifying an instance type and preference by
+using the appropriate flags:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="w"> </span>my-instancetype<span class="w"> </span>--preference<span class="w"> </span>my-preference
 </code></pre></div>
 <p>The type of the instance type or preference (namespaced or cluster scope)
-can be
-controlled by prefixing the instance type or preference name with the
+can be controlled by prefixing the instance type or preference name with the
 corresponding CRD name, e.g.:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Using a cluster scoped instancetype and a namespaced preference</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span>--instancetype<span class="w"> </span>virtualmachineclusterinstancetype/my-instancetype<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span>--preference<span class="w"> </span>virtualmachinepreference/my-preference
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Using a cluster scoped instance type and a namespaced preference</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>--instancetype<span class="w"> </span>virtualmachineclusterinstancetype/my-instancetype<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span>--preference<span class="w"> </span>virtualmachinepreference/my-preference
 </code></pre></div>
 <p>If a prefix was not supplied the cluster scoped resources will be used by
 default.</p>
+<h3 id="inference-of-instance-type-andor-preference">Inference of instance type and/or preference<a class="headerlink" href="#inference-of-instance-type-andor-preference" title="Permanent link">&para;</a></h3>
 <p>To explicitly
 infer <a href="../instancetypes/#inferFromVolume">instance types and/or preferences</a>
 from the volume used to boot the virtual machine add the following flags:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--infer-instancetype<span class="w"> </span>--infer-preference
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--infer-instancetype<span class="w"> </span>--infer-preference
 </code></pre></div>
-<p>The implicit default is to always try inferring an instancetype and
+<p>The implicit default is to always try to infer an instance type and
 preference from the boot volume. This feature makes use of the
 <code>IgnoreInferFromVolumeFailure</code> policy, which suppresses failures on inference
-of instancetypes and preferences. If one of the above switches was provided
-explicitly, then the <code>RejectInferFromVolumeFailure</code> policy is used instead.
-This way users are made aware of potential issues during the virtual machine
-creation.</p>
-<p>To infer an instancetype or preference from another volume than the volume used
+of instance types and preferences. If one of the above switches has been
+explicitly specified, the <code>RejectInferFromVolumeFailure</code> policy is used
+instead. This way users are made aware of potential issues during the
+virtual machine creation.</p>
+<p>To infer an instance type or preference from another volume than the volume used
 to boot the virtual machine, use the <code>--infer-instancetype-from</code> and
 <code>--infer-preference-from</code> flags to specify any of the virtual machine's volumes.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># This virtual machine will boot from volume-a, but the instancetype and</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="c1"># preference are inferred from volume-b.</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:pvc,src:my-ns/my-pvc-a,name:volume-a<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:pvc,src:my-ns/my-pvc-b,name:volume-b<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span>--infer-instancetype-from<span class="w"> </span>volume-b<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span>--infer-preference-from<span class="w"> </span>volume-b
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># This virtual machine will boot from volume-a, but the instance type and</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># preference are inferred from volume-b.</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:pvc,src:my-ns/my-pvc-a,name:volume-a<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:pvc,src:my-ns/my-pvc-b,name:volume-b<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span>--infer-instancetype-from<span class="w"> </span>volume-b<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span>--infer-preference-from<span class="w"> </span>volume-b
 </code></pre></div>
 <h2 id="boot-order-of-added-volumes">Boot order of added volumes<a class="headerlink" href="#boot-order-of-added-volumes" title="Permanent link">&para;</a></h2>
 <p>Please note that volumes of different kinds currently have the following fixed
 boot order regardless of the order their flags were specified on the
 command line:</p>
 <ol>
-<li>ContainerDisk</li>
-<li>DataSource</li>
-<li>Cloned PVC</li>
-<li>Directly used PVC</li>
+<li>Containerdisks</li>
+<li>Directly used PVCs</li>
+<li>DataSources</li>
+<li>Cloned PVCs</li>
+<li>Blank volumes</li>
+<li>Imported volumes (through the <code>--volume-import</code> flag)</li>
 </ol>
 <p>If multiple volumes of the same kind were specified their order is
 determined by the order in which their flags were specified.</p>
-<h2 id="specifying-cloud-init-user-data">Specifying cloud-init user data<a class="headerlink" href="#specifying-cloud-init-user-data" title="Permanent link">&para;</a></h2>
-<p>To pass cloud-init user data to virtctl it needs to be encoded into a base64
-string. Here is an example how to do it:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Put your cloud-init user data into a file.</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># This will add an authorized key to the default user.</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># To get the default username read the documentation for the cloud image</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>$<span class="w"> </span>cat<span class="w"> </span>cloud-init.txt
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1">#cloud-config</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>ssh_authorized_keys:
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span>-<span class="w"> </span>ssh-rsa<span class="w"> </span>AAAA...
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
-<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="c1"># Base64 encode the contents of the file without line wraps and store it in a variable</span>
-<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>$<span class="w"> </span><span class="nv">CLOUD_INIT_USERDATA</span><span class="o">=</span><span class="k">$(</span>base64<span class="w"> </span>-w<span class="w"> </span><span class="m">0</span><span class="w"> </span>cloud-init.txt<span class="k">)</span>
-<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>
-<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="c1"># Show the contents of the variable</span>
-<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$CLOUD_INIT_USERDATA</span><span class="w"> </span><span class="nv">I2Nsb3VkLWNvbmZpZwpzc2hfYXV0aG9yaXplZF9rZXlzOgogIC0gc3NoLXJzYSBBQUFBLi4uCg</span><span class="o">==</span>
+<h2 id="generating-cloud-init-user-data">Generating cloud-init user data<a class="headerlink" href="#generating-cloud-init-user-data" title="Permanent link">&para;</a></h2>
+<p>To generate cloud-init user data with <code>virtctl create vm</code> the following
+flags can be used.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Generating cloud-init user data is mutually exclusive with <a href="#specifying-custom-cloud-init-user-data">specifying custom cloud-init user data</a>, as explained below.</p>
+</div>
+<h3 id="-user-flag"><code>--user</code> flag<a class="headerlink" href="#-user-flag" title="Permanent link">&para;</a></h3>
+<p>Specify the main user of the virtual machine that is created by cloud-init. It
+sets the <code>user</code> parameter in the generated cloud-init user data.</p>
+<h3 id="-password-file-flag"><code>--password-file</code> flag<a class="headerlink" href="#-password-file-flag" title="Permanent link">&para;</a></h3>
+<p>Specify a file to read the password for the virtual machine's main user from.
+In the generated cloud-init user data, it sets the value of the <code>password</code>
+parameter to the read in value and the value of the <code>chpasswd</code> parameter to
+<code>{ expire: False }</code>.</p>
+<h3 id="-ssh-key-flag"><code>--ssh-key</code> flag<a class="headerlink" href="#-ssh-key-flag" title="Permanent link">&para;</a></h3>
+<p>Specify one or more SSH authorized keys for the virtual machine's main user.
+It sets the <code>ssh_authorized_keys</code> parameter in the generated cloud-init user
+data.</p>
+<h3 id="-ga-manage-ssh-flag"><code>--ga-manage-ssh</code> flag<a class="headerlink" href="#-ga-manage-ssh-flag" title="Permanent link">&para;</a></h3>
+<p>When this flag is set, a command enabling the <code>qemu-guest-agent</code> to manage SSH
+authorized keys is added to the generated cloud-init user data. The command
+is added to the <code>runcmd</code> parameter which is required on SELinux enabled
+distributions that would otherwise not allow the <code>qemu-guest-agent</code> to manage
+SSH authorized keys in the home directories of users.</p>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--user<span class="w"> </span>myuser<span class="w"> </span>--access-cred<span class="o">=</span>src:my-keys<span class="w"> </span>--ga-manage-ssh
+</code></pre></div>
+<p>This command will generate the following cloud-init user data:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cloudInitNoCloud</span><span class="p">:</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">      </span><span class="nt">userData</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">        </span><span class="no">#cloud-config</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">        </span><span class="no">user: myuser</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span><span class="no">runcmd:</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">          </span><span class="no">- [ setsebool, -P, &#39;virt_qemu_ga_manage_ssh&#39;, &#39;on&#39; ]</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
+</code></pre></div>
+<p>By passing the <code>--ga-manage-ssh</code> flag explicitly, the <code>qemu-guest-agent</code> is
+able to manage the credentials read from the Secret <code>my-keys</code> specified as
+source parameter to the <code>--access-cred</code> flag. Note that if <code>--ga-manage-ssh</code>
+was not explicitly set to <code>false</code>, this is also the default behavior.</p>
+<h2 id="specifying-custom-cloud-init-user-data">Specifying custom cloud-init user data<a class="headerlink" href="#specifying-custom-cloud-init-user-data" title="Permanent link">&para;</a></h2>
+<p>To pass custom cloud-init user data to virtctl it needs to be encoded into a
+base64 string.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Specifying custom cloud-init user data is mutually exclusive with <a href="#generating-cloud-init-user-data">generating cloud-init user data</a>, as explained above.</p>
+</div>
+<p>Here is an example how to do it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Put your cloud-init user data into a file.</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1"># This will add an authorized key to the default user.</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># To get the default username read the documentation for the cloud image</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>$<span class="w"> </span>cat<span class="w"> </span>cloud-init.txt
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1">#cloud-config</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>ssh_authorized_keys:
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span>-<span class="w"> </span>ssh-rsa<span class="w"> </span>AAAA...
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="c1"># Base64 encode the contents of the file without line wraps and store it in a variable</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>$<span class="w"> </span><span class="nv">CLOUD_INIT_USERDATA</span><span class="o">=</span><span class="k">$(</span>base64<span class="w"> </span>-w<span class="w"> </span><span class="m">0</span><span class="w"> </span>cloud-init.txt<span class="k">)</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="c1"># Show the contents of the variable</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$CLOUD_INIT_USERDATA</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="nv">I2Nsb3VkLWNvbmZpZwpzc2hfYXV0aG9yaXplZF9rZXlzOgogIC0gc3NoLXJzYSBBQUFBLi4uCg</span><span class="o">==</span>
 </code></pre></div>
 <p>You can now use this variable as an argument to the <code>--cloud-init-user-data</code>
 flag:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--cloud-init-user-data<span class="w"> </span><span class="nv">$CLOUD_INIT_USERDATA</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--cloud-init-user-data<span class="w"> </span><span class="nv">$CLOUD_INIT_USERDATA</span>
 </code></pre></div>
-<h2 id="examples_2">Examples<a class="headerlink" href="#examples_2" title="Permanent link">&para;</a></h2>
+<h2 id="adding-access-credentials-to-a-virtual-machine">Adding access credentials to a virtual machine<a class="headerlink" href="#adding-access-credentials-to-a-virtual-machine" title="Permanent link">&para;</a></h2>
+<p>By using the <code>--access-cred</code> flag, the <code>virtctl create vm</code> command can configure
+<a href="../accessing_virtual_machines/#dynamic-ssh-public-key-injection-via-qemu-guest-agent">access credentials</a>
+in a created virtual machine. It supports SSH authorized key and password
+access credentials and can configure them to be injected either through the
+<code>qemu-guest-agent</code> or through cloud-init metadata. The supported parameters of
+the flag depend on the chosen <code>type</code> and <code>method</code>. The flag can be passed
+multiple times to configure more than one access credential.</p>
+<p>This flag interacts with the flags used to
+<a href="#generating-cloud-init-user-data">generate cloud-init user data</a>, namely it
+inherits the same <code>--user</code> for SSH key injection, and it enables
+<code>qemu-guest-agent</code> to manage SSH authorized keys (<code>--ga-manage-ssh</code>), if it
+is not explicitly disabled by the user.</p>
+<h3 id="example_1">Example<a class="headerlink" href="#example_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--user<span class="w"> </span>myuser<span class="w"> </span>--access-cred<span class="o">=</span>src:my-keys
+</code></pre></div>
+<p>This command will generate the following access credentials and cloud-init user
+data:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>[...]
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>accessCredentials:
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  - sshPublicKey:
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>      propagationMethod:
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>        qemuGuestAgent:
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>          users:
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>            - myuser
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>      source:
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>        secret:
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>          secretName: my-keys
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>volumes:
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>  - cloudInitNoCloud:
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>      userData: |-
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>        #cloud-config
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>        user: myuser
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>        runcmd:
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>          - [ setsebool, -P, &#39;virt_qemu_ga_manage_ssh&#39;, &#39;on&#39; ]
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>    name: cloudinitdisk
+</code></pre></div>
+<h2 id="adding-a-sysprep-volume">Adding a sysprep volume<a class="headerlink" href="#adding-a-sysprep-volume" title="Permanent link">&para;</a></h2>
+<p>A <a href="../startup_scripts/#sysprep-examples">sysprep volume</a> can be added to
+created virtual machines by passing the <code>--volume-sysprep</code> flag to the <code>virtctl
+create vm</code> command.</p>
+<p>The flag supports adding a sysprep volume from both a <code>ConfigMap</code> or a
+<code>Secret</code>.</p>
+<p>See the examples on how to do it.</p>
+<h2 id="short-examples">Short examples<a class="headerlink" href="#short-examples" title="Permanent link">&para;</a></h2>
 <p>Create a manifest for a VirtualMachine with a random name:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a specified name and RunStrategy
-Always</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--name<span class="o">=</span>my-vm<span class="w"> </span>--run-strategy<span class="o">=</span>Always
+Always:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--name<span class="o">=</span>my-vm<span class="w"> </span>--run-strategy<span class="o">=</span>Always
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a specified
-VirtualMachineClusterInstancetype</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype
+VirtualMachineClusterInstancetype:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a specified
-VirtualMachineInstancetype (namespaced)</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>virtualmachineinstancetype/my-instancetype
+VirtualMachineInstancetype (namespaced):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>virtualmachineinstancetype/my-instancetype
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a specified
-VirtualMachineClusterPreference</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--preference<span class="o">=</span>my-preference
+VirtualMachineClusterPreference:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--preference<span class="o">=</span>my-preference
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a specified
-VirtualMachinePreference (namespaced)</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--preference<span class="o">=</span>virtualmachinepreference/my-preference
+VirtualMachinePreference (namespaced):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--preference<span class="o">=</span>virtualmachinepreference/my-preference
 </code></pre></div>
-<p>Create a manifest for a VirtualMachine with an ephemeral containerdisk volume</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-containerdisk<span class="o">=</span>src:my.registry/my-image:my-tag
+<p>Create a manifest for a VirtualMachine with specified memory and an ephemeral
+containerdisk volume:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--memory<span class="o">=</span>1Gi<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span>--volume-containerdisk<span class="o">=</span>src:my.registry/my-image:my-tag
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a cloned DataSource in namespace and
-specified size</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-ns/my-ds,size:50Gi
+specified size:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-import<span class="o">=</span>type:ds,src:my-ns/my-ds,size:50Gi
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a cloned DataSource and inferred
-instancetype and preference</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-annotated-ds<span class="w"> </span>--infer-instancetype<span class="w"> </span>--infer-preference
+instance type and preference:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-import<span class="o">=</span>type:ds,src:my-annotated-ds<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span>--infer-instancetype<span class="w"> </span>--infer-preference
 </code></pre></div>
-<p>Create a manifest for a VirtualMachine with a specified
-VirtualMachineCluster{Instancetype,Preference} and cloned PVC</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-clone-pvc<span class="o">=</span>my-ns/my-pvc
+<p>Create a manifest for a VirtualMachine with multiple volumes and specified boot
+order:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-containerdisk<span class="o">=</span>src:my.registry/my-image:my-tag<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:ds,src:my-ds,bootorder:1
 </code></pre></div>
-<p>Create a manifest for a VirtualMachine with a specified
-VirtualMachineCluster{Instancetype,Preference} and directly used PVC</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-pvc<span class="o">=</span>my-pvc
+<p>Create a manifest for a VirtualMachine with multiple volumes and inferred
+instance type and preference with specified volumes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-import<span class="o">=</span>type:ds,src:my-annotated-ds<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span>--volume-pvc<span class="o">=</span>my-annotated-pvc<span class="w"> </span>--infer-instancetype<span class="o">=</span>my-annotated-ds<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span>--infer-preference<span class="o">=</span>my-annotated-pvc
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a cloned PVC:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-import<span class="o">=</span>type:pvc,src:my-ns/my-pvc
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a directly used PVC:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-pvc<span class="o">=</span>src:my-pvc
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a clone DataSource and a blank
-volume</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-ns/my-ds<span class="w"> </span>--volume-blank<span class="o">=</span>size:50Gi
+volume:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--volume-import<span class="o">=</span>type:ds,src:my-ns/my-ds<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:blank,size:50Gi
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a specified
-VirtualMachineCluster{Instancetype,Preference} and cloned DataSource</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype<span class="w"> </span>--preference<span class="o">=</span>my-preference<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-ds
+VirtualMachineCluster{Instancetype,Preference} and cloned DataSource:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype<span class="w"> </span>--preference<span class="o">=</span>my-preference<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:ds,src:my-ds
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a specified
 VirtualMachineCluster{Instancetype,Preference} and two cloned DataSources (flag
-can be provided multiple times)</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype<span class="w"> </span>--preference<span class="o">=</span>my-preference<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-ds1<span class="w"> </span>--volume-datasource<span class="o">=</span>src:my-ds2
+can be provided multiple times):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype<span class="w"> </span>--preference<span class="o">=</span>my-preference<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:ds,src:my-ds1<span class="w"> </span>--volume-import<span class="o">=</span>type:ds,src:my-ds2
 </code></pre></div>
 <p>Create a manifest for a VirtualMachine with a specified
-VirtualMachineCluster{Instancetype,Preference} and directly used PVC</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype<span class="w"> </span>--preference<span class="o">=</span>my-preference<span class="w"> </span>--volume-pvc<span class="o">=</span>my-pvc
+VirtualMachineCluster{Instancetype,Preference} and directly used PVC:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--instancetype<span class="o">=</span>my-instancetype<span class="w"> </span>--preference<span class="o">=</span>my-preference<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">  </span>--volume-pvc<span class="o">=</span>my-pvc
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a specified DataVolumeTemplate:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:pvc,name:my-pvc,namespace:default,size:256Mi
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a generated cloud-init config
+setting the user and adding an ssh authorized key:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--user<span class="o">=</span>cloud-user<span class="w"> </span>--ssh-key<span class="o">=</span><span class="s2">&quot;ssh-ed25519 AAAA....&quot;</span>
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a generated cloud-init config
+setting the user and setting the password from a file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--user<span class="o">=</span>cloud-user<span class="w"> </span>--password-file<span class="o">=</span>/path/to/file
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with SSH public keys injected into the VM
+from a secret called my-keys to the user also specified in the cloud-init
+config:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--user<span class="o">=</span>cloud-user<span class="w"> </span>--access-cred<span class="o">=</span>type:ssh,src:my-keys
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with SSH public keys injected into the VM
+from a secret called my-keys to a user specified as param:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--access-cred<span class="o">=</span>type:ssh,src:my-keys,user:myuser
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with password injected into the VM from a
+secret called my-pws:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--access-cred<span class="o">=</span>type:password,src:my-pws
+</code></pre></div>
+<p>Create a manifest for a VirtualMachine with a Containerdisk and a Sysprep
+volume (source ConfigMap needs to exist):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--memory<span class="o">=</span>1Gi<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span>--volume-containerdisk<span class="o">=</span>src:my.registry/my-image:my-tag<span class="w"> </span>--sysprep<span class="o">=</span>src:my-cm
+</code></pre></div>
+<h2 id="complex-examples">Complex examples<a class="headerlink" href="#complex-examples" title="Permanent link">&para;</a></h2>
+<p>These examples show how <code>virtctl create vm</code> can be used in more complex
+scenarios.</p>
+<h3 id="first-example">First example<a class="headerlink" href="#first-example" title="Permanent link">&para;</a></h3>
+<p>Creating a VirtualMachine with the following settings:</p>
+<ul>
+<li>Run strategy: <code>Manual</code></li>
+<li>Termination grace period: <code>123</code> seconds</li>
+<li>Instancetype: <code>u1.small</code></li>
+<li>Prefernce: <code>fedora</code></li>
+<li>Using the <code>quay.io/containerdisks/fedora</code> containerdisk as first volume</li>
+<li>Adding a second blank volume with a size of <code>1Gi</code></li>
+<li>The main user is named <code>myuser</code></li>
+<li>Logins with the main user are possible with the specified authorized key</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--run-strategy<span class="o">=</span>Manual<span class="w"> </span>--termination-grace-period<span class="o">=</span><span class="m">123</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">  </span>--instancetype<span class="o">=</span>u1.small<span class="w"> </span>--preference<span class="o">=</span>fedora<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">  </span>--volume-containerdisk<span class="o">=</span>src:quay.io/containerdisks/fedora<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:blank,size:1Gi<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">  </span>--user<span class="o">=</span>myuser<span class="w"> </span>--ssh-key<span class="o">=</span><span class="s1">&#39;ssh-ed25519 AAAA...&#39;</span>
+</code></pre></div>
+<h3 id="second-example">Second example<a class="headerlink" href="#second-example" title="Permanent link">&para;</a></h3>
+<p>Creating a VirtualMachine with the following settings and using a secret
+for configuring access credentials:</p>
+<ul>
+<li>Instancetype: <code>u1.small</code></li>
+<li>Prefernce: <code>fedora</code></li>
+<li>Using the <code>quay.io/containerdisks/fedora</code> containerdisk as first volume</li>
+<li>Adding a second blank volume with a size of <code>1Gi</code></li>
+<li>The main user is named <code>myuser</code></li>
+<li>Logins with the main user are possible with the specified authorized key
+  in the access credentials</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="c1"># First create the secret with the public key:</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>my-keys<span class="w"> </span>--from-file<span class="o">=</span><span class="nv">$HOME</span>/.ssh/id_ed25519.pub
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="c1"># Then create the VM on the cluster</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--name<span class="w"> </span>my-vm<span class="w"> </span>--instancetype<span class="o">=</span>u1.small<span class="w"> </span>--preference<span class="o">=</span>fedora<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w">  </span>--volume-containerdisk<span class="o">=</span>src:quay.io/containerdisks/fedora<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="w">  </span>--volume-import<span class="o">=</span>type:blank,size:1Gi<span class="w"> </span>--user<span class="o">=</span>myuser<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="w">  </span>--access-cred<span class="o">=</span>src:my-keys<span class="w"> </span><span class="p">|</span><span class="w"> </span>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>-
+<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a>
+<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="c1"># Login via SSH once the VM is ready</span>
+<a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a>virtctl<span class="w"> </span>ssh<span class="w"> </span>-i<span class="w"> </span><span class="nv">$HOME</span>/.ssh/id_ed25519<span class="w"> </span>myuser@my-vm
 </code></pre></div>
 
 
@@ -2942,13 +3462,13 @@ VirtualMachineCluster{Instancetype,Preference} and directly used PVC</p>
         
         
           
-          <a href="../virtctl_client_tool/" class="md-footer__link md-footer__link--next" aria-label="Next: Download and Install the virtctl Command Line Interface">
+          <a href="../creating_it_pref/" class="md-footer__link md-footer__link--next" aria-label="Next: Creating Instance Types and Preferences by using virtctl">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Download and Install the virtctl Command Line Interface
+                Creating Instance Types and Preferences by using virtctl
               </div>
             </div>
             <div class="md-footer__button md-icon">

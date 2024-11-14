@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/cluster_admin/migration_policies/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/user_workloads/creating_it_pref/">
       
       
-        <link rel="prev" href="../ksm/">
+        <link rel="prev" href="../creating_vms/">
       
       
-        <link rel="next" href="../node_maintenance/">
+        <link rel="next" href="../virtctl_client_tool/">
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Migration Policies - KubeVirt user guide</title>
+        <title>Creating Instance Types and Preferences by using virtctl - KubeVirt user guide</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#migration-policies" class="md-skip">
+        <a href="#creating-instance-types-and-preferences-by-using-virtctl" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Migration Policies
+              Creating Instance Types and Preferences by using virtctl
             
           </span>
         </div>
@@ -251,13 +251,11 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../installation/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../cluster_admin/installation/" class="md-tabs__link">
           
   
   Cluster Administration
@@ -271,11 +269,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../user_workloads/lifecycle/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../lifecycle/" class="md-tabs__link">
           
   
   User Workloads
@@ -494,30 +494,25 @@
       
   
   
-    
   
   
-  
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -528,7 +523,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Cluster Administration
@@ -542,7 +537,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/" class="md-nav__link">
+      <a href="../../cluster_admin/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -563,7 +558,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../updating_and_deletion/" class="md-nav__link">
+      <a href="../../cluster_admin/updating_and_deletion/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -584,7 +579,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../activating_feature_gates/" class="md-nav__link">
+      <a href="../../cluster_admin/activating_feature_gates/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -605,7 +600,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../annotations_and_labels/" class="md-nav__link">
+      <a href="../../cluster_admin/annotations_and_labels/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -626,7 +621,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api_validation/" class="md-nav__link">
+      <a href="../../cluster_admin/api_validation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -647,7 +642,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../authorization/" class="md-nav__link">
+      <a href="../../cluster_admin/authorization/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -668,7 +663,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../confidential_computing/" class="md-nav__link">
+      <a href="../../cluster_admin/confidential_computing/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -689,7 +684,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../customize_components/" class="md-nav__link">
+      <a href="../../cluster_admin/customize_components/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -710,7 +705,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../gitops/" class="md-nav__link">
+      <a href="../../cluster_admin/gitops/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -731,7 +726,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ksm/" class="md-nav__link">
+      <a href="../../cluster_admin/ksm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -749,30 +744,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Migration Policies
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../cluster_admin/migration_policies/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -781,101 +756,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      API Examples
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="API Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#migration-configurations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration Configurations
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#matching-policies-to-vms" class="md-nav__link">
-    <span class="md-ellipsis">
-      Matching Policies to VMs
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#full-manifest" class="md-nav__link">
-    <span class="md-ellipsis">
-      Full Manifest:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#policies-precedence" class="md-nav__link">
-    <span class="md-ellipsis">
-      Policies' Precedence
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Policies' Precedence">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -888,7 +768,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../node_maintenance/" class="md-nav__link">
+      <a href="../../cluster_admin/node_maintenance/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -909,7 +789,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scheduler/" class="md-nav__link">
+      <a href="../../cluster_admin/scheduler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -930,7 +810,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tekton_tasks/" class="md-nav__link">
+      <a href="../../cluster_admin/tekton_tasks/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -951,7 +831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../unresponsive_nodes/" class="md-nav__link">
+      <a href="../../cluster_admin/unresponsive_nodes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -977,20 +857,17 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_16" >
         
           
-          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="">
+          <label class="md-nav__link" for="__nav_4_16" id="__nav_4_16_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -1015,7 +892,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../device_status_on_Arm64/" class="md-nav__link">
+      <a href="../../cluster_admin/device_status_on_Arm64/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1036,7 +913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../feature_gate_status_on_Arm64/" class="md-nav__link">
+      <a href="../../cluster_admin/feature_gate_status_on_Arm64/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1057,7 +934,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../operations_on_Arm64/" class="md-nav__link">
+      <a href="../../cluster_admin/operations_on_Arm64/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1078,7 +955,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../virtual_machines_on_Arm64/" class="md-nav__link">
+      <a href="../../cluster_admin/virtual_machines_on_Arm64/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1111,25 +988,30 @@
       
   
   
+    
   
   
+  
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1140,7 +1022,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             User Workloads
@@ -1154,7 +1036,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/lifecycle/" class="md-nav__link">
+      <a href="../lifecycle/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1175,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/basic_use/" class="md-nav__link">
+      <a href="../basic_use/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1196,7 +1078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/creating_vms/" class="md-nav__link">
+      <a href="../creating_vms/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1214,10 +1096,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../user_workloads/creating_it_pref/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Creating Instance Types and Preferences by using virtctl
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1226,6 +1128,74 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-instance-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Instance Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating Instance Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-preferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Preferences
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating Preferences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Examples
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1238,7 +1208,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/virtctl_client_tool/" class="md-nav__link">
+      <a href="../virtctl_client_tool/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1259,7 +1229,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/accessing_virtual_machines/" class="md-nav__link">
+      <a href="../accessing_virtual_machines/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1280,7 +1250,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/boot_from_external_source/" class="md-nav__link">
+      <a href="../boot_from_external_source/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1301,7 +1271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/startup_scripts/" class="md-nav__link">
+      <a href="../startup_scripts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1322,7 +1292,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/windows_virtio_drivers/" class="md-nav__link">
+      <a href="../windows_virtio_drivers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1348,17 +1318,20 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_10" >
         
           
-          <label class="md-nav__link" for="__nav_5_10" id="__nav_5_10_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_10" id="__nav_5_10_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1383,7 +1356,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/component_monitoring/" class="md-nav__link">
+      <a href="../component_monitoring/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1404,7 +1377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/guest_agent_information/" class="md-nav__link">
+      <a href="../guest_agent_information/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1425,7 +1398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/guest_operating_system_information/" class="md-nav__link">
+      <a href="../guest_operating_system_information/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1446,7 +1419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/liveness_and_readiness_probes/" class="md-nav__link">
+      <a href="../liveness_and_readiness_probes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1480,17 +1453,20 @@
       
       
         
+          
+          
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_11" >
         
           
-          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -1515,7 +1491,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/instancetypes/" class="md-nav__link">
+      <a href="../instancetypes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1536,7 +1512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/deploy_common_instancetypes/" class="md-nav__link">
+      <a href="../deploy_common_instancetypes/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1557,7 +1533,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/hook-sidecar/" class="md-nav__link">
+      <a href="../hook-sidecar/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1578,7 +1554,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/presets/" class="md-nav__link">
+      <a href="../presets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1599,7 +1575,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/templates/" class="md-nav__link">
+      <a href="../templates/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1620,7 +1596,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/pool/" class="md-nav__link">
+      <a href="../pool/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1641,7 +1617,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/replicaset/" class="md-nav__link">
+      <a href="../replicaset/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1662,7 +1638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/virtual_machine_instances/" class="md-nav__link">
+      <a href="../virtual_machine_instances/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1683,7 +1659,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../user_workloads/vm_rollout_strategies/" class="md-nav__link">
+      <a href="../vm_rollout_strategies/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2744,46 +2720,19 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#creating-instance-types" class="md-nav__link">
     <span class="md-ellipsis">
-      Overview
+      Creating Instance Types
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#api-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      API Examples
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="API Examples">
+    <nav class="md-nav" aria-label="Creating Instance Types">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#migration-configurations" class="md-nav__link">
+  <a href="#examples" class="md-nav__link">
     <span class="md-ellipsis">
-      Migration Configurations
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#matching-policies-to-vms" class="md-nav__link">
-    <span class="md-ellipsis">
-      Matching Policies to VMs
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#full-manifest" class="md-nav__link">
-    <span class="md-ellipsis">
-      Full Manifest:
+      Examples
     </span>
   </a>
   
@@ -2795,19 +2744,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#policies-precedence" class="md-nav__link">
+  <a href="#creating-preferences" class="md-nav__link">
     <span class="md-ellipsis">
-      Policies' Precedence
+      Creating Preferences
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Policies' Precedence">
+    <nav class="md-nav" aria-label="Creating Preferences">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
+  <a href="#examples_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Example
+      Examples
     </span>
   </a>
   
@@ -2833,7 +2782,7 @@
                   
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/cluster_admin/migration_policies.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/user_workloads/creating_it_pref.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -2842,166 +2791,71 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/cluster_admin/migration_policies.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/user_workloads/creating_it_pref.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="migration-policies">Migration Policies<a class="headerlink" href="#migration-policies" title="Permanent link">&para;</a></h1>
-<p>Migration policies provides a new way of applying migration configurations to Virtual Machines. The policies
-can refine Kubevirt CR's <code>MigrationConfiguration</code> that sets the cluster-wide migration configurations. This way,
-the cluster-wide settings serve as a default that can be refined (i.e. changed, removed or added) by the migration
-policy.</p>
-<p>Please bear in mind that migration policies are in version <code>v1alpha1</code>. This means that this API is not fully stable
-yet and that APIs may change in the future.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>KubeVirt supports <a href="../../compute/live_migration/">Live Migrations</a> of Virtual Machine workloads.
-Before migration policies were introduced, migration settings could be configurable only on the cluster-wide
-scope by editing <a href="https://kubevirt.io/api-reference/master/definitions.html#_v1_kubevirtspec">KubevirtCR's spec</a>
-or more specifically <a href="https://kubevirt.io/api-reference/master/definitions.html#_v1_migrationconfiguration">MigrationConfiguration</a>
-CRD.</p>
-<p>Several aspects (although not all) of migration behaviour that can be customized are:
-- Bandwidth
-- Auto-convergence
-- Post/Pre-copy
-- Max number of parallel migrations
-- Timeout</p>
-<p>Migration policies generalize the concept of defining migration configurations, so it would be
-possible to apply different configurations to specific groups of VMs.</p>
-<p>Such capability can be useful for a lot of different use cases on which there is a need to differentiate
-between different workloads. Differentiation of different configurations could be needed because different
-workloads are considered to be in different priorities, security segregation, workloads with different
-requirements, help to converge workloads which aren't migration-friendly, and many other reasons.</p>
-<h2 id="api-examples">API Examples<a class="headerlink" href="#api-examples" title="Permanent link">&para;</a></h2>
-<h4 id="migration-configurations">Migration Configurations<a class="headerlink" href="#migration-configurations" title="Permanent link">&para;</a></h4>
-<p>Currently the MigrationPolicy spec will only include the following configurations from KubevirtCR's
-MigrationConfiguration (in the future more configurations that aren't part of Kubevirt CR are intended to be added):
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migrations.kubevirt.io/v1alpha1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MigrationPolicy</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">allowAutoConverge</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">bandwidthPerMigration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">217Ki</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">completionTimeoutPerGiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">allowPostCopy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</code></pre></div></p>
-<p>All above fields are optional. When omitted, the configuration will be applied as defined in
-KubevirtCR's MigrationConfiguration. This way, KubevirtCR will serve as a configurable set of defaults for both
-VMs that are not bound to any MigrationPolicy and VMs that are bound to a MigrationPolicy that does not
-define all fields of the configurations.</p>
-<h4 id="matching-policies-to-vms">Matching Policies to VMs<a class="headerlink" href="#matching-policies-to-vms" title="Permanent link">&para;</a></h4>
-<p>Next in the spec are the selectors that define the group of VMs on which to apply the policy. The options to do so
-are the following.</p>
-<p><strong>This policy applies to the VMs in namespaces that have all the required labels:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migrations.kubevirt.io/v1alpha1</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MigrationPolicy</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">selectors</span><span class="p">:</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">namespaceSelector</span><span class="p">:</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="nt">hpc-workloads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">       </span><span class="c1"># Matches a key and a value </span>
-</code></pre></div></p>
-<p><strong>This policy applies for the VMs that have all the required labels:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migrations.kubevirt.io/v1alpha1</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MigrationPolicy</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">selectors</span><span class="p">:</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">virtualMachineInstanceSelector</span><span class="p">:</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">workload-type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db</span><span class="w">       </span><span class="c1"># Matches a key and a value </span>
-</code></pre></div></p>
-<p><strong>It is also possible to combine the previous two:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migrations.kubevirt.io/v1alpha1</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MigrationPolicy</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">selectors</span><span class="p">:</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">namespaceSelector</span><span class="p">:</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">hpc-workloads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">virtualMachineInstanceSelector</span><span class="p">:</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">      </span><span class="nt">workload-type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db</span>
-</code></pre></div></p>
-<h4 id="full-manifest">Full Manifest:<a class="headerlink" href="#full-manifest" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migrations.kubevirt.io/v1alpha1</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MigrationPolicy</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-awesome-policy</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="c1"># Migration Configuration</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">allowAutoConverge</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="nt">bandwidthPerMigration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">217Ki</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="nt">completionTimeoutPerGiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="nt">allowPostCopy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="c1"># Matching to VMs</span>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">  </span><span class="nt">selectors</span><span class="p">:</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="nt">namespaceSelector</span><span class="p">:</span>
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">      </span><span class="nt">hpc-workloads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">    </span><span class="nt">virtualMachineInstanceSelector</span><span class="p">:</span>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">      </span><span class="nt">workload-type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db</span>
+<h1 id="creating-instance-types-and-preferences-by-using-virtctl">Creating Instance Types and Preferences by using virtctl<a class="headerlink" href="#creating-instance-types-and-preferences-by-using-virtctl" title="Permanent link">&para;</a></h1>
+<p>As of KubeVirt v1.0, you can use virtctl subcommands to create instance
+types and preferences.</p>
+<h2 id="creating-instance-types">Creating Instance Types<a class="headerlink" href="#creating-instance-types" title="Permanent link">&para;</a></h2>
+<p>The virtctl subcommand <code>create instancetype</code> allows easy creation of an instance
+type manifest from the command line. The command also provides several flags
+that can be used to create your desired manifest.</p>
+<p>There are two required flags that need to be specified:</p>
+<ol>
+<li><code>--cpu</code>: the number of vCPUs to be requested</li>
+<li><code>--memory</code>: the amount of memory to be requested</li>
+</ol>
+<p>Additionally, there are several optional flags that can be used, such as
+specifying a list of GPUs for passthrough, choosing the desired IOThreadsPolicy,
+or simply providing the name of our instance type.</p>
+<p>By default, the command creates cluster-wide instance types. If the user
+wants to create the namespaced version, they need to provide the namespaced
+flag. The namespace name can be specified by using the <code>--namespace</code> flag.</p>
+<p>For a complete list of flags and their descriptions, use the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>instancetype<span class="w"> </span>-h
 </code></pre></div>
-<h2 id="policies-precedence">Policies' Precedence<a class="headerlink" href="#policies-precedence" title="Permanent link">&para;</a></h2>
-<p>It is possible that multiple policies apply to the same VMI. In such cases, the precedence is in the
-same order as the bullets above (VMI labels first, then namespace labels). It is not allowed to define
-two policies with the exact same selectors.</p>
-<p>If multiple policies apply to the same VMI:
-* The most detailed policy will be applied, that is, the policy with the highest number of matching labels</p>
-<ul>
-<li>If multiple policies match to a VMI with the same number of matching labels, the policies will be sorted by the
-lexicographic order of the matching labels keys. The first one in this order will be applied.</li>
-</ul>
-<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
-<p>For example, let's imagine a VMI with the following labels:</p>
-<ul>
-<li>
-<p>size: small</p>
-</li>
-<li>
-<p>os: fedora</p>
-</li>
-<li>
-<p>gpu: nvidia</p>
-</li>
-</ul>
-<p>And let's say the namespace to which the VMI belongs contains the following labels:</p>
-<ul>
-<li>
-<p>priority: high</p>
-</li>
-<li>
-<p>bandwidth: medium</p>
-</li>
-<li>
-<p>hpc-workload: true</p>
-</li>
-</ul>
-<p>The following policies are listed by their precedence (high to low):</p>
-<p>1) VMI labels: <code>{size: small, gpu: nvidia}</code>, Namespace labels: <code>{priority:high, bandwidth: medium}</code></p>
-<ul>
-<li>Matching labels: 4, First key in lexicographic order: <code>bandwidth</code>.</li>
-</ul>
-<p>2) VMI labels: <code>{size: small, gpu: nvidia}</code>, Namespace labels: <code>{priority:high, hpc-workload:true}</code></p>
-<ul>
-<li>Matching labels: 4, First key in lexicographic order: <code>gpu</code>.</li>
-</ul>
-<p>3) VMI labels: <code>{size: small, gpu: nvidia}</code>, Namespace labels: <code>{priority:high}</code></p>
-<ul>
-<li>Matching labels: 3, First key in lexicographic order: <code>gpu</code>.</li>
-</ul>
-<p>4) VMI labels: <code>{size: small}</code>, Namespace labels: <code>{priority:high, hpc-workload:true}</code></p>
-<ul>
-<li>Matching labels: 3, First key in lexicographic order: <code>hpc-workload</code>.</li>
-</ul>
-<p>5) VMI labels: <code>{gpu: nvidia}</code>, Namespace labels: <code>{priority:high}</code></p>
-<ul>
-<li>Matching labels: 2, First key in lexicographic order: <code>gpu</code>.</li>
-</ul>
-<p>6) VMI labels: <code>{gpu: nvidia}</code>, Namespace labels: <code>{}</code></p>
-<ul>
-<li>Matching labels: 1, First key in lexicographic order: <code>gpu</code>.</li>
-</ul>
-<p>7) VMI labels: <code>{gpu: intel}</code>, Namespace labels: <code>{priority:high}</code></p>
-<ul>
-<li>VMI label does not match - policy cannot be applied.</li>
-</ul>
+<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
+<p>Create a manifest for a VirtualMachineClusterInstancetype with the required
+<code>--cpu</code> and <code>--memory</code> flags:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>instancetype<span class="w"> </span>--cpu<span class="w"> </span><span class="m">2</span><span class="w"> </span>--memory<span class="w"> </span>256Mi
+</code></pre></div>
+<p>Create a manifest for a VirtualMachineInstancetype with a specified namespace:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>instancetype<span class="w"> </span>--cpu<span class="w"> </span><span class="m">2</span><span class="w"> </span>--memory<span class="w"> </span>256Mi<span class="w"> </span>--namespace<span class="w"> </span>my-namespace
+</code></pre></div>
+<p>Create a manifest for a VirtualMachineInstancetype without a specified
+namespace name:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>instancetype<span class="w"> </span>--cpu<span class="w"> </span><span class="m">2</span><span class="w"> </span>--memory<span class="w"> </span>256Mi<span class="w"> </span>--namespaced
+</code></pre></div>
+<h2 id="creating-preferences">Creating Preferences<a class="headerlink" href="#creating-preferences" title="Permanent link">&para;</a></h2>
+<p>The virtctl subcommand <code>create preference</code> allows easy creation of a preference
+manifest from the command line. This command serves as a starting point to
+create the basic structure of a preference manifest, as it does not allow
+specifying all the options that are supported in preferences.</p>
+<p>The current set of flags allows us, for example, to specify the preferred CPU
+topology, machine type or a storage class.</p>
+<p>By default, the command creates cluster-wide preferences. If the user wants to
+create the namespaced version, they need to provide the namespaced flag. The
+namespace name can be specified by using the <code>--namespace</code> flag.</p>
+<p>For a complete list of flags and their descriptions, use the following command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>preference<span class="w"> </span>-h
+</code></pre></div>
+<h3 id="examples_1">Examples<a class="headerlink" href="#examples_1" title="Permanent link">&para;</a></h3>
+<p>Create a manifest for a VirtualMachineClusterPreference with a preferred CPU
+topology:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>preference<span class="w"> </span>--cpu-topology<span class="w"> </span>preferSockets
+</code></pre></div>
+<p>Create a manifest for a VirtualMachinePreference with a specified namespace:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>preference<span class="w"> </span>--namespace<span class="w"> </span>my-namespace
+</code></pre></div>
+<p>Create a manifest for a VirtualMachinePreference with the preferred storage
+class:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>preference<span class="w"> </span>--namespaced<span class="w"> </span>--volume-storage-class<span class="w"> </span>my-storage
+</code></pre></div>
 
 
 
@@ -3031,7 +2885,7 @@ lexicographic order of the matching labels keys. The first one in this order wil
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../ksm/" class="md-footer__link md-footer__link--prev" aria-label="Previous: KSM Management">
+          <a href="../creating_vms/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Creating VirtualMachines by using virtctl">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3041,20 +2895,20 @@ lexicographic order of the matching labels keys. The first one in this order wil
                 Previous
               </span>
               <div class="md-ellipsis">
-                KSM Management
+                Creating VirtualMachines by using virtctl
               </div>
             </div>
           </a>
         
         
           
-          <a href="../node_maintenance/" class="md-footer__link md-footer__link--next" aria-label="Next: Node maintenance">
+          <a href="../virtctl_client_tool/" class="md-footer__link md-footer__link--next" aria-label="Next: Download and Install the virtctl Command Line Interface">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Node maintenance
+                Download and Install the virtctl Command Line Interface
               </div>
             </div>
             <div class="md-footer__button md-icon">
