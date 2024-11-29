@@ -8,9 +8,7 @@ As of v1.0.0, KubeVirt supports using a PVC to persist those files. KubeVirt usu
 
 ## Backend storage
 
-KubeVirt automatically creates backend storage PVCs for VMs that need it. However, to persist TPM and UEFI state, the admin must first enable the `VMPersistentState` feature gate.
-
-If [live migration](live_migration.md) is required, then the `vmStateStorageClass` configuration parameter should be set, and must reference a storage class that supports read-write-many (RWX) in filesystem mode (FS).
+KubeVirt automatically creates backend storage PVCs for VMs that need it. However, to persist TPM and UEFI state, the admin must first enable the `VMPersistentState` feature gate. `vmStateStorageClass` may be used to manually specify a storage class, otherwise the default storage class will be used.
 
 Here's an example of KubeVirt CR that sets both:
 ```yaml
@@ -25,8 +23,6 @@ spec:
 ```
 
 ### Notes:
-- If no storage class is specified, the default storage class will be used
-- If the storage class has a storage profile that indicates it only supports read-write-once (RWO) then a RWO PVC will be created and the VMI will be marked as non-migratable.
 - Backend storage is currently incompatible with VM snapshot. It is planned to add snapshot support in the future.
 
 ## TPM with persistent state
