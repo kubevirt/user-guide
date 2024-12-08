@@ -388,7 +388,7 @@ spec:
     developerConfiguration:
       featureGates:
         - "LiveMigration"
-    migrationConfiguration:
+    migrations:
       disableTLS: true
 ```
 
