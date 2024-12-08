@@ -52,14 +52,14 @@ Live migration can also be initiated using virtctl
 ### Condition and migration method
 
 When starting a virtual machine instance, it has also been calculated
-whether the machine is live migratable. The result is being stored in
+whether the machine is live migratable. The result is stored in
 the VMI `VMI.status.conditions`. The calculation can be based on
 multiple parameters of the VMI, however, at the moment, the calculation
 is largely based on the `Access Mode` of the VMI volumes. Live migration
 is only permitted when the volume access mode is set to `ReadWriteMany`.
 Requests to migrate a non-LiveMigratable VMI will be rejected.
 
-The reported `Migration Method` is also being calculated during VMI
+The reported `Migration Method` is also calculated during VMI
 start. `BlockMigration` indicates that some of the VMI disks require
 copying from the source to the destination. `LiveMigration` means that
 only the instance memory will be copied.
@@ -74,7 +74,7 @@ Status:
 
 ### Migration Status
 
-The migration progress status is being reported in the VMI `VMI.status`.
+The migration progress status is reported in the VMI `VMI.status`.
 Most importantly, it indicates whether the migration has been
 `Completed` or if it `Failed`.
 
@@ -195,7 +195,7 @@ The way it works is as following:
   2. The source starts sending chunks of VM state (mostly memory) to the target. This continues until
   all of the state has been transferred to the target.
   3. The guest starts executing on the target VM.
-  4. The source VM is being removed.
+  4. The source VM is removed.
 
 Pre-copy is the safest and fastest strategy for most cases. Furthermore, it can be easily cancelled,
 can utilize multithreading, and more. If there is no real reason to use another strategy, this is
@@ -211,19 +211,19 @@ alternative strategies below.
 The way post-copy migrations work is as following:
 
   1. The target VM is created.
-  2. The guest is being run on the **target VM**.
+  2. The guest is run on the **target VM**.
   3. The source starts sending chunks of VM state (mostly memory) to the target.
   4. When the guest, running on the target VM, would access memory:
     1. If the memory exists on the target VM, the guest can access it.
     2. Otherwise, the target VM asks for a chunk of memory from the source VM.
-  5. Once all of the memory state is updated at the target VM, the source VM is being removed.
+  5. Once all of the memory state is updated at the target VM, the source VM is removed.
 
 The main idea here is that the guest starts to run immediately on the target VM. This approach
 has advantages and disadvantages:
 
 <u>advantages</u>:
 
-* The same memory chunk is never being transferred twice. This is possible due to the fact that
+* The same memory chunk is never transferred twice. This is possible due to the fact that
 with post-copy it doesn't matter that a page had been dirtied since the guest is already running
 on the target VM.
   * This means that a high dirty-rate has much less effect.
@@ -339,7 +339,7 @@ export KUBEVIRT_WITH_CNAO=true
 
 Depending on the type, the live migration process will copy virtual
 machine memory pages and disk blocks to the destination. During this
-process non-locked pages and blocks are being copied and become free for
+process non-locked pages and blocks are copied and become free for
 the instance to use again. To achieve a successful migration, it is
 assumed that the instance will write to the free pages and blocks
 (pollute the pages) at a lower rate than these are being copied.
