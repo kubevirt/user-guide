@@ -1,7 +1,11 @@
 # Clone API
 
-The `clone.kubevirt.io` API Group defines resources for cloning KubeVirt objects. Currently, the only supported cloning
-type is `VirtualMachine`, but more types are planned to be supported in the future (see future roadmap below).
+The `clone.kubevirt.io` API Group defines resources for cloning KubeVirt objects.
+
+This API has two main use-cases:
+* Cloning a Virtual Machine.
+* Creating "golden snapshots" that would be used as a template for creating new VMs
+(see [Using clones as a "golden VM image"](#using-clones-as-a-golden-vm-image) below).
 
 Please bear in mind that the clone API is in version `v1alpha1`. This means that this API is not fully stable
 yet and that APIs may change in the future.
@@ -11,7 +15,7 @@ yet and that APIs may change in the future.
 ### Snapshot / Restore
 
 Under the hood, the clone API relies upon Snapshot & Restore APIs. Therefore, in order to be able to use the clone API,
-please see [Snapshot & Restore prerequisites](../storage//snapshot_restore_api.md#prerequisites).
+please see [Snapshot & Restore prerequisites](../storage/snapshot_restore_api.md#prerequisites).
 
 ### Snapshot Feature Gate
 
@@ -74,7 +78,6 @@ The source and target indicate the source/target API group, kind and name. A few
 
 * Currently, the only supported kinds are `VirtualMachine` (of `kubevirt.io` api group) and `VirtualMachineSnapshot` (
 of `snapshot.kubevirt.io` api group), but more types are expected to be supported in the future.
-See "future roadmap" below for more info.
 
 * The target name is **optional**. If unspecified, the clone controller will generate a name for the target automatically.
 
@@ -155,36 +158,24 @@ After the clone is finished, the target can be inspected:
 kubectl get vm vm-clone-target -o yaml
 ```
 
-## Future roadmap
-
-The clone API is in an early alpha version and may change dramatically. There are many improvements and features
-that are expected to be added, the most significant goals are:
-
-* Add more supported source types like `VirtualMachineInstace` in the future.
-* Add a cross-namespace clone support. This needs to be supported for snapshots / restores first.
-
 ### Using clones as a "golden VM image"
 
 One of the great things that could be accomplished with the clone API when the source is of kind `VirtualMachineSnapshot`
 is to create "golden VM images" (a.k.a. Templates / Bookmark VMs / etc). In other words, the following
-workflow would be available:
+workflow is available:
 
 **Create a golden image**
 
 * Create a VM
 
-* Prepare a "golden VM" environment
-
-  * This can mean different things in different contexts. For example, write files, install applications, apply configurations,
-    or anything else.
+* Prepare a "golden VM" environment. This can mean different things in different contexts.
+For example, add certain users, install a database, configure it in a certain way, etc.
 
 * Snapshot the VM
 
-* Delete the VM
+* Optional: Delete the VM
 
 Then, this "golden image" can be duplicated as many times as needed. To instantiate a VM from the snapshot:
 
 * Create a Clone object where the source would point to the previously taken snapshot
 * Create as many VMs you need
-
-This feature is still under discussions and may be implemented differently then explained here.
