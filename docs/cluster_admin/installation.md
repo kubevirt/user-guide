@@ -137,8 +137,8 @@ Add the following to the `kubevirt.yaml` file
 spec:
     ...
     configuration:
-    developerConfiguration:
-        useEmulation: true
+        developerConfiguration:
+            useEmulation: true
 ```
 
 > Note: Prior to release v0.20.0 the condition for the `kubectl wait`
