@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.48">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.0253249f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -3210,13 +3210,13 @@ process for a virtual machine instance <code>vmi-fedora</code></p>
 <h2 id="migration-status-reporting">Migration Status Reporting<a class="headerlink" href="#migration-status-reporting" title="Permanent link">&para;</a></h2>
 <h3 id="condition-and-migration-method">Condition and migration method<a class="headerlink" href="#condition-and-migration-method" title="Permanent link">&para;</a></h3>
 <p>When starting a virtual machine instance, it has also been calculated
-whether the machine is live migratable. The result is being stored in
+whether the machine is live migratable. The result is stored in
 the VMI <code>VMI.status.conditions</code>. The calculation can be based on
 multiple parameters of the VMI, however, at the moment, the calculation
 is largely based on the <code>Access Mode</code> of the VMI volumes. Live migration
 is only permitted when the volume access mode is set to <code>ReadWriteMany</code>.
 Requests to migrate a non-LiveMigratable VMI will be rejected.</p>
-<p>The reported <code>Migration Method</code> is also being calculated during VMI
+<p>The reported <code>Migration Method</code> is also calculated during VMI
 start. <code>BlockMigration</code> indicates that some of the VMI disks require
 copying from the source to the destination. <code>LiveMigration</code> means that
 only the instance memory will be copied.</p>
@@ -3227,7 +3227,7 @@ only the instance memory will be copied.</p>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">Migration Method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BlockMigration</span>
 </code></pre></div>
 <h3 id="migration-status">Migration Status<a class="headerlink" href="#migration-status" title="Permanent link">&para;</a></h3>
-<p>The migration progress status is being reported in the VMI <code>VMI.status</code>.
+<p>The migration progress status is reported in the VMI <code>VMI.status</code>.
 Most importantly, it indicates whether the migration has been
 <code>Completed</code> or if it <code>Failed</code>.</p>
 <p>Below is an example of a successful migration.</p>
@@ -3328,7 +3328,7 @@ strategies.</p>
 <li>The source starts sending chunks of VM state (mostly memory) to the target. This continues until
   all of the state has been transferred to the target.</li>
 <li>The guest starts executing on the target VM.</li>
-<li>The source VM is being removed.</li>
+<li>The source VM is removed.</li>
 </ol>
 <p>Pre-copy is the safest and fastest strategy for most cases. Furthermore, it can be easily cancelled,
 can utilize multithreading, and more. If there is no real reason to use another strategy, this is
@@ -3342,20 +3342,20 @@ alternative strategies below.</p>
 <p>The way post-copy migrations work is as following:</p>
 <ol>
 <li>The target VM is created.</li>
-<li>The guest is being run on the <strong>target VM</strong>.</li>
+<li>The guest is run on the <strong>target VM</strong>.</li>
 <li>The source starts sending chunks of VM state (mostly memory) to the target.</li>
 <li>When the guest, running on the target VM, would access memory:<ol>
 <li>If the memory exists on the target VM, the guest can access it.</li>
 <li>Otherwise, the target VM asks for a chunk of memory from the source VM.</li>
 </ol>
 </li>
-<li>Once all of the memory state is updated at the target VM, the source VM is being removed.</li>
+<li>Once all of the memory state is updated at the target VM, the source VM is removed.</li>
 </ol>
 <p>The main idea here is that the guest starts to run immediately on the target VM. This approach
 has advantages and disadvantages:</p>
 <p><u>advantages</u>:</p>
 <ul>
-<li>The same memory chunk is never being transferred twice. This is possible due to the fact that
+<li>The same memory chunk is never transferred twice. This is possible due to the fact that
 with post-copy it doesn't matter that a page had been dirtied since the guest is already running
 on the target VM.</li>
 <li>This means that a high dirty-rate has much less effect.</li>
@@ -3450,7 +3450,7 @@ running <code>make cluster-up</code>:
 <h2 id="migration-timeouts">Migration timeouts<a class="headerlink" href="#migration-timeouts" title="Permanent link">&para;</a></h2>
 <p>Depending on the type, the live migration process will copy virtual
 machine memory pages and disk blocks to the destination. During this
-process non-locked pages and blocks are being copied and become free for
+process non-locked pages and blocks are copied and become free for
 the instance to use again. To achieve a successful migration, it is
 assumed that the instance will write to the free pages and blocks
 (pollute the pages) at a lower rate than these are being copied.</p>
@@ -3488,7 +3488,7 @@ improve performance. Use <code>disableTLS</code> to do that:</p>
 <a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
 <a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
 <a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;LiveMigration&quot;</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="nt">migrationConfiguration</span><span class="p">:</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
 <a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><strong>Note:</strong> While this increases performance it may allow MITM attacks. Be careful.</p>
