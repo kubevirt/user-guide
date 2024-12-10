@@ -2396,21 +2396,6 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#future-roadmap" class="md-nav__link">
-    <span class="md-ellipsis">
-      Future roadmap
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Future roadmap">
-      <ul class="md-nav__list">
-        
           <li class="md-nav__item">
   <a href="#using-clones-as-a-golden-vm-image" class="md-nav__link">
     <span class="md-ellipsis">
@@ -2918,21 +2903,6 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#future-roadmap" class="md-nav__link">
-    <span class="md-ellipsis">
-      Future roadmap
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Future roadmap">
-      <ul class="md-nav__list">
-        
           <li class="md-nav__item">
   <a href="#using-clones-as-a-golden-vm-image" class="md-nav__link">
     <span class="md-ellipsis">
@@ -2979,8 +2949,11 @@
 
 
 <h1 id="clone-api">Clone API<a class="headerlink" href="#clone-api" title="Permanent link">&para;</a></h1>
-<p>The <code>clone.kubevirt.io</code> API Group defines resources for cloning KubeVirt objects. Currently, the only supported cloning
-type is <code>VirtualMachine</code>, but more types are planned to be supported in the future (see future roadmap below).</p>
+<p>The <code>clone.kubevirt.io</code> API Group defines resources for cloning KubeVirt objects.</p>
+<p>This API has two main use-cases:
+* Cloning a Virtual Machine.
+* Creating "golden snapshots" that would be used as a template for creating new VMs
+(see <a href="#using-clones-as-a-golden-vm-image">Using clones as a "golden VM image"</a> below).</p>
 <p>Please bear in mind that the clone API is in version <code>v1alpha1</code>. This means that this API is not fully stable
 yet and that APIs may change in the future.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
@@ -3039,8 +3012,7 @@ for such an object is:
 <ul>
 <li>
 <p>Currently, the only supported kinds are <code>VirtualMachine</code> (of <code>kubevirt.io</code> api group) and <code>VirtualMachineSnapshot</code> (
-of <code>snapshot.kubevirt.io</code> api group), but more types are expected to be supported in the future.
-See "future roadmap" below for more info.</p>
+of <code>snapshot.kubevirt.io</code> api group), but more types are expected to be supported in the future.</p>
 </li>
 <li>
 <p>The target name is <strong>optional</strong>. If unspecified, the clone controller will generate a name for the target automatically.</p>
@@ -3121,34 +3093,24 @@ deployed in the cluster which would automatically assign the target with a fresh
 <p>After the clone is finished, the target can be inspected:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>vm<span class="w"> </span>vm-clone-target<span class="w"> </span>-o<span class="w"> </span>yaml
 </code></pre></div></p>
-<h2 id="future-roadmap">Future roadmap<a class="headerlink" href="#future-roadmap" title="Permanent link">&para;</a></h2>
-<p>The clone API is in an early alpha version and may change dramatically. There are many improvements and features
-that are expected to be added, the most significant goals are:</p>
-<ul>
-<li>Add more supported source types like <code>VirtualMachineInstace</code> in the future.</li>
-<li>Add a cross-namespace clone support. This needs to be supported for snapshots / restores first.</li>
-</ul>
 <h3 id="using-clones-as-a-golden-vm-image">Using clones as a "golden VM image"<a class="headerlink" href="#using-clones-as-a-golden-vm-image" title="Permanent link">&para;</a></h3>
 <p>One of the great things that could be accomplished with the clone API when the source is of kind <code>VirtualMachineSnapshot</code>
 is to create "golden VM images" (a.k.a. Templates / Bookmark VMs / etc). In other words, the following
-workflow would be available:</p>
+workflow is available:</p>
 <p><strong>Create a golden image</strong></p>
 <ul>
 <li>
 <p>Create a VM</p>
 </li>
 <li>
-<p>Prepare a "golden VM" environment</p>
-</li>
-<li>
-<p>This can mean different things in different contexts. For example, write files, install applications, apply configurations,
-    or anything else.</p>
+<p>Prepare a "golden VM" environment. This can mean different things in different contexts.
+For example, add certain users, install a database, configure it in a certain way, etc.</p>
 </li>
 <li>
 <p>Snapshot the VM</p>
 </li>
 <li>
-<p>Delete the VM</p>
+<p>Optional: Delete the VM</p>
 </li>
 </ul>
 <p>Then, this "golden image" can be duplicated as many times as needed. To instantiate a VM from the snapshot:</p>
@@ -3156,7 +3118,6 @@ workflow would be available:</p>
 <li>Create a Clone object where the source would point to the previously taken snapshot</li>
 <li>Create as many VMs you need</li>
 </ul>
-<p>This feature is still under discussions and may be implemented differently then explained here.</p>
 
 
 
