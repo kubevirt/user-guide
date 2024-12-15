@@ -7,7 +7,7 @@ This API has two main use-cases:
 * Creating "golden snapshots" that would be used as a template for creating new VMs
 (see [Using clones as a "golden VM image"](#using-clones-as-a-golden-vm-image) below).
 
-Please bear in mind that the clone API is in version `v1alpha1`. This means that this API is not fully stable
+Please bear in mind that the clone API is in version `v1beta1`. This means that this API is not fully stable
 yet and that APIs may change in the future.
 
 ## Prerequisites
@@ -34,7 +34,7 @@ In order to initiate cloning, a `VirtualMachineClone` object (CRD) needs to be c
 for such an object is:
 ```yaml
 kind: VirtualMachineClone
-apiVersion: "clone.kubevirt.io/v1alpha1"
+apiVersion: "clone.kubevirt.io/v1beta1"
 metadata:
   name: testclone
 
