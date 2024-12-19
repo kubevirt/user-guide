@@ -144,9 +144,7 @@ kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "pat
                 "passt": {
                     "networkAttachmentDefinition": "default/netbindingpasst",
                     "sidecarImage": "quay.io/kubevirt/network-passt-binding:20231205_29a16d5c9",
-                    "migration": {
-                        "method": "link-refresh"
-                    },
+                    "migration": {},
                     "computeResourceOverhead": {
                       "requests": {
                         "memory": "500Mi",
@@ -162,6 +160,21 @@ names used in the previous sections, [here](#passt-networkattachmentdefinition)
 and [here](#passt-sidecar-image).
 
 When using the plugin, additional memory overhead of `500Mi` will be requested for the compute container in the virt-launcher pod.
+
+When the VM boots for the first time, Passt's internal DHCP server assigns an IP address to the guest with an "infinite" lease duration.
+
+**Note**:
+> During a live migration:
+> - The target pod is assigned a new IP address from the pod network, which is reflected in the VMI interfaces status.
+> - The guest OS retains the original IP address until it explicitly requests an address from Passt's internal DHCP server.
+> 
+> Connectivity Considerations
+> Passt automatically applies Network Address Translation (NAT) when passing traffic to/from the guest.
+> This enables the following behavior:
+> - The pod's new IP address is used for connectivity
+> - Despite the discrepancy between the pod IP and the guest IP, connectivity to/from the guest remains unaffected. 
+> 
+> It is possible to synchronize the guest and pod's IP addresses by initiating a DHCP request from the guest OS.
 
 ### VM Passt Network Interface
 Set the VM network interface binding name to reference the one defined in the
