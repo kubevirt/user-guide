@@ -39,7 +39,7 @@ MigrationConfiguration (in the future more configurations that aren't part of Ku
 ```yaml
 apiVersion: migrations.kubevirt.io/v1alpha1
 kind: MigrationPolicy
-  spec:
+spec:
     allowAutoConverge: true
     bandwidthPerMigration: 217Ki
     completionTimeoutPerGiB: 23
@@ -60,7 +60,7 @@ are the following.
 ```yaml
 apiVersion: migrations.kubevirt.io/v1alpha1
 kind: MigrationPolicy
-  spec:
+spec:
   selectors:
     namespaceSelector:
       hpc-workloads: true       # Matches a key and a value 
@@ -70,7 +70,7 @@ kind: MigrationPolicy
 ```yaml
 apiVersion: migrations.kubevirt.io/v1alpha1
 kind: MigrationPolicy
-  spec:
+spec:
   selectors:
     virtualMachineInstanceSelector:
       workload-type: db       # Matches a key and a value 
@@ -80,7 +80,7 @@ kind: MigrationPolicy
 ```yaml
 apiVersion: migrations.kubevirt.io/v1alpha1
 kind: MigrationPolicy
-  spec:
+spec:
   selectors:
     namespaceSelector:
       hpc-workloads: true
