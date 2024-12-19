@@ -337,10 +337,10 @@ default user (fedora in this case) of a [Fedora Atomic](https://www.projectatomi
           disks:
           - name: containerdisk
             disk:
-              dev: vda
+              bus: virtio
           - name: cloudinitdisk
             disk:
-              dev: vdb
+              bus: virtio
       volumes:
         - name: containerdisk
           containerDisk:
@@ -392,10 +392,10 @@ user using a script instead of cloud-config.
           disks:
           - name: containerdisk
             disk:
-              dev: vda
+              bus: virtio
           - name: cloudinitdisk
             disk:
-              dev: vdb
+              bus: virtio
       volumes:
         - name: containerdisk
           containerDisk:
