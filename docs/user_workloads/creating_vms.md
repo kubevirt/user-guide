@@ -430,7 +430,8 @@ volume (source ConfigMap needs to exist):
 
 ```shell
 virtctl create vm --memory=1Gi \
-  --volume-containerdisk=src:my.registry/my-image:my-tag --sysprep=src:my-cm
+  --volume-containerdisk=src:my.registry/my-image:my-tag \
+  --volume-sysprep=src:my-cm
 ```
 
 ## Complex examples
