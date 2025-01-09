@@ -3369,7 +3369,8 @@ secret called my-pws:</p>
 <p>Create a manifest for a VirtualMachine with a Containerdisk and a Sysprep
 volume (source ConfigMap needs to exist):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>virtctl<span class="w"> </span>create<span class="w"> </span>vm<span class="w"> </span>--memory<span class="o">=</span>1Gi<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span>--volume-containerdisk<span class="o">=</span>src:my.registry/my-image:my-tag<span class="w"> </span>--sysprep<span class="o">=</span>src:my-cm
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">  </span>--volume-containerdisk<span class="o">=</span>src:my.registry/my-image:my-tag<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">  </span>--volume-sysprep<span class="o">=</span>src:my-cm
 </code></pre></div>
 <h2 id="complex-examples">Complex examples<a class="headerlink" href="#complex-examples" title="Permanent link">&para;</a></h2>
 <p>These examples show how <code>virtctl create vm</code> can be used in more complex
