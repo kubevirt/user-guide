@@ -8,7 +8,7 @@ As of v1.0.0, KubeVirt supports using a PVC to persist those files. KubeVirt usu
 
 ## Backend storage
 
-KubeVirt automatically creates backend storage PVCs for VMs that need it. However, to persist TPM and UEFI state, the admin must first enable the `VMPersistentState` feature gate. `vmStateStorageClass` may be used to manually specify a storage class, otherwise the default storage class will be used.
+KubeVirt automatically creates backend storage PVCs for VMs that need it. However, to persist TPM and UEFI state, the admin must first enable the `VMPersistentState` feature gate. The KubeVirt CR configuration option `vmStateStorageClass` may be used to manually specify a storage class, otherwise the default storage class will be used.
 
 Here's an example of KubeVirt CR that sets both:
 ```yaml
