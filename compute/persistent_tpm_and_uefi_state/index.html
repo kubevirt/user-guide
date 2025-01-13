@@ -1928,9 +1928,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#limitations" class="md-nav__link">
+  <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
-      Limitations
+      Notes:
     </span>
   </a>
   
@@ -1961,7 +1961,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#notes" class="md-nav__link">
+  <a href="#notes_1" class="md-nav__link">
     <span class="md-ellipsis">
       Notes
     </span>
@@ -1994,7 +1994,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#notes_1" class="md-nav__link">
+  <a href="#notes_2" class="md-nav__link">
     <span class="md-ellipsis">
       Notes
     </span>
@@ -2766,9 +2766,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#limitations" class="md-nav__link">
+  <a href="#notes" class="md-nav__link">
     <span class="md-ellipsis">
-      Limitations
+      Notes:
     </span>
   </a>
   
@@ -2799,7 +2799,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#notes" class="md-nav__link">
+  <a href="#notes_1" class="md-nav__link">
     <span class="md-ellipsis">
       Notes
     </span>
@@ -2832,7 +2832,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#notes_1" class="md-nav__link">
+  <a href="#notes_2" class="md-nav__link">
     <span class="md-ellipsis">
       Notes
     </span>
@@ -2882,9 +2882,8 @@
 In KubeVirt, the virtualization host is the virt-launcher pod, which is ephemeral (created on VM start and destroyed on VM stop).<br />
 As of v1.0.0, KubeVirt supports using a PVC to persist those files. KubeVirt usually refers to that storage area as "backend storage".</p>
 <h2 id="backend-storage">Backend storage<a class="headerlink" href="#backend-storage" title="Permanent link">&para;</a></h2>
-<p>KubeVirt automatically creates backend storage PVCs for VMs that need it. However, the admin must first enable the <code>VMPersistentState</code> feature gate, and tell KubeVirt which storage class to use by setting the <code>vmStateStorageClass</code> configuration parameter in the KubeVirt Custom Resource (CR).<br />
-The storage class must support read-write-many (RWX) in filesystem mode (FS).<br />
-Here's an example of KubeVirt CR that sets both:
+<p>KubeVirt automatically creates backend storage PVCs for VMs that need it. However, to persist TPM and UEFI state, the admin must first enable the <code>VMPersistentState</code> feature gate. The KubeVirt CR configuration option <code>vmStateStorageClass</code> may be used to manually specify a storage class, otherwise the default storage class will be used.</p>
+<p>Here's an example of KubeVirt CR that sets both:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">spec</span><span class="p">:</span>
@@ -2894,9 +2893,8 @@ Here's an example of KubeVirt CR that sets both:
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMPersistentState</span>
 </code></pre></div></p>
-<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
+<h3 id="notes">Notes:<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h3>
 <ul>
-<li>As mentioned above, the backend storage PVC can only be created using a storage class that supports RWX FS. There is ongoing work to support block storage in future versions of KubeVirt.</li>
 <li>Backend storage is currently incompatible with VM snapshot. It is planned to add snapshot support in the future.</li>
 </ul>
 <h2 id="tpm-with-persistent-state">TPM with persistent state<a class="headerlink" href="#tpm-with-persistent-state" title="Permanent link">&para;</a></h2>
@@ -2921,7 +2919,7 @@ Here's a portion of a VM definition that includes a persistent TPM:
 <li>The Microsoft Windows 11 installer requires the presence of a TPM device, even though it doesn't use this. Persistence is not required in this case however.</li>
 <li>Some disk encryption software have optional/mandatory TPM support. For example, Bitlocker requires a persistent TPM device.</li>
 </ul>
-<h3 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h3>
+<h3 id="notes_1">Notes<a class="headerlink" href="#notes_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>The TPM device exposed to the virtual machine is fully emulated (vTPM). The worker nodes do not need to have a TPM device.</li>
 <li>When TPM persistence is enabled, the <code>tpm-crb</code> model is used (instead of <code>tpm-tis</code> for non-persistent vTPMs)</li>
@@ -2950,7 +2948,7 @@ Here's a portion of a VM definition that includes a persistent EFI:
 <li>Preserving user-created Secure Boot certificates.</li>
 <li>Preserving EFI firmware settings, like language or display resolution.</li>
 </ul>
-<h3 id="notes_1">Notes<a class="headerlink" href="#notes_1" title="Permanent link">&para;</a></h3>
+<h3 id="notes_2">Notes<a class="headerlink" href="#notes_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li>The boot entries/order can, and most likely will, get overriden by libvirt. This is to satisfy the VM specfications. Do not expect manual boot setting changes to persist.</li>
 </ul>
