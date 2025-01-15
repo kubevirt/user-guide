@@ -1472,9 +1472,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#enable-automatic-deployment-of-common-instancetypes" class="md-nav__link">
+  <a href="#feature-state" class="md-nav__link">
     <span class="md-ellipsis">
-      Enable automatic deployment of common-instancetypes
+      FEATURE STATE:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-deployment-of-common-instancetypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Control deployment of common-instancetypes
     </span>
   </a>
   
@@ -2692,9 +2701,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#enable-automatic-deployment-of-common-instancetypes" class="md-nav__link">
+  <a href="#feature-state" class="md-nav__link">
     <span class="md-ellipsis">
-      Enable automatic deployment of common-instancetypes
+      FEATURE STATE:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control-deployment-of-common-instancetypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Control deployment of common-instancetypes
     </span>
   </a>
   
@@ -2744,17 +2762,25 @@
 <p>The <a href="https://github.com/kubevirt/common-instancetypes"><code>kubevirt/common-instancetypes</code></a> provide a set of <a href="../instancetypes/">instancetypes and preferences</a> to help create KubeVirt <a href="http://kubevirt.io/api-reference/main/definitions.html#_v1_virtualmachine"><code>VirtualMachines</code></a>.</p>
 <p>Beginning with the 1.1 release of KubeVirt, cluster wide resources can be deployed directly through KubeVirt, without another operator.
 This allows deployment of a set of default instancetypes and preferences along side KubeVirt.</p>
-<h2 id="enable-automatic-deployment-of-common-instancetypes">Enable automatic deployment of common-instancetypes<a class="headerlink" href="#enable-automatic-deployment-of-common-instancetypes" title="Permanent link">&para;</a></h2>
-<p>To enable the deployment of cluster-wide common-instancetypes through the KubeVirt <code>virt-operator</code>, the <code>CommonInstancetypesDeploymentGate</code> feature gate needs to be enabled.</p>
-<p>See <a href="../../cluster_admin/activating_feature_gates/">Activating feature gates</a> on how to enable it.</p>
+<p>With the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.4.0"><code>v1.4.0</code></a> release of KubeVirt, common-instancetypes are now deployed by default.</p>
+<h2 id="feature-state"><strong>FEATURE STATE:</strong><a class="headerlink" href="#feature-state" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Alpha - <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.1.0"><code>v1.1.0</code></a></li>
+<li>Beta - <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.2.0"><code>v1.2.0</code></a></li>
+<li>GA - <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.4.0"><code>v1.4.0</code></a> (Enabled by default)</li>
+</ul>
+<h2 id="control-deployment-of-common-instancetypes">Control deployment of common-instancetypes<a class="headerlink" href="#control-deployment-of-common-instancetypes" title="Permanent link">&para;</a></h2>
+<p>To explictly enable or disable the deployment of cluster-wide common-instancetypes through the KubeVirt <code>virt-operator</code> use the <code>spec.configuration.commonInstancetypesDeployment.enable</code> configurable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>patch<span class="w"> </span>-n<span class="w"> </span>kubevirt<span class="w"> </span>kv/kubevirt<span class="w"> </span>--type<span class="w"> </span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;configuration&quot;:{&quot;commonInstancetypesDeployment&quot;:{&quot;enable&quot;: false}}}}&#39;</span>
+</code></pre></div>
 <h2 id="deploy-common-instancetypes-manually">Deploy common-instancetypes manually<a class="headerlink" href="#deploy-common-instancetypes-manually" title="Permanent link">&para;</a></h2>
 <p>For customization purposes or to install namespaced resources, common-instancetypes can also be deployed by hand.</p>
 <p>To install all resources provided by the <a href="https://github.com/kubevirt/common-instancetypes"><code>kubevirt/common-instancetypes</code></a> project without further customizations, simply apply with <a href="https://kustomize.io/"><code>kustomize</code></a> enabled (-k flag):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl apply -k https://github.com/kubevirt/common-instancetypes.git</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl apply -k https://github.com/kubevirt/common-instancetypes.git</span>
 </code></pre></div>
 <p>Alternatively, targets for each of the available custom resource types (e.g. namespaced instancetypes) are available.</p>
 <p>For example, to deploy <code>VirtualMachineInstancetypes</code> run the following command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl apply -k https://github.com/kubevirt/common-instancetypes.git/VirtualMachineInstancetypes</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl apply -k https://github.com/kubevirt/common-instancetypes.git/VirtualMachineInstancetypes</span>
 </code></pre></div>
 
 
