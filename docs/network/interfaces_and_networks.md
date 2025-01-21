@@ -509,6 +509,79 @@ spec:
 > **Note:** Placement on dedicated CPUs can only be achieved if the Kubernetes CPU manager is running on the SR-IOV capable workers.
 > For further details please refer to the [dedicated cpu resources documentation](../compute/dedicated-cpu_resources.md/).
 
+### Link State Management
+
+From KubeVirt v1.5.0, you can set the desired interface's link state using the interface's `state` field.
+The allowed values are: 
+
+- `up` - Equivalent to an active network connection. This is the default if no value is specified.
+- `down` - Equivalent to having the network cable disconnected from the vNIC.
+- `absent` - Only relevant for NIC hotunplug.
+
+> **Note:** The desired link state can be specified for network interfaces using all bindings other than `sriov`, as the virtualization
+> stack used by KubeVirt does not allow setting it for SR-IOV devices.
+
+Example of specifying an interface in the `down` state:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: my-vm
+spec:
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: default
+              state: down
+              masquerade: { }
+      networks:
+        - name: default
+          pod: { }
+```
+
+The desired link state specification can be specified:
+
+1. On VM creation.
+2. When the VM is running.
+3. When the VM is not running.
+4. When a new network interface is hotplugged.
+
+> **WARNING:** When [HTTP / TCP readiness and/or liveness probes](../user_workloads/liveness_and_readiness_probes.md) are specified 
+> on the VM, setting the primary interface's link state to `down` will cause the VM:
+> 
+> 1. To be marked as not ready (readiness probe)
+> 2. To be restarted, as the kubelet will kill the virt-launcher pod (liveness probe)
+
+### Current Link State Status
+
+The current link state of network interfaces is reported in the VirtualMachineInstance status section:
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: my-vm
+spec:
+  domain:
+    devices:
+      interfaces:
+      - name: default
+        state: down
+        masquerade: { }
+  networks:
+  - name: default
+    pod: { }
+status:
+  interfaces:
+    - name: default
+      linkState: down
+```
+
+> **Note:** KubeVirt does not report the current link state of SR-IOV devices, as it cannot track external changes made
+> to them.
+
 ## Security
 
 ### MAC spoof check
