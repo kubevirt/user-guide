@@ -174,7 +174,6 @@ Further information about `virtiofs` can be found at the [Official Virtiofs Site
 Compared with `disk`, `filesystems` allow changes in the source to be dynamically reflected in the volumes inside the VM.
 For instance, if a given `configMap` is shared with `filesystems` any change made on it will be reflected in the
 VMs.
-However, it is important to note that `filesystems` **do not allow live migration**.
 
 Additionally, `filesystem` devices must be mounted inside the VM.
 This can be done through [cloudInitNoCloud](#cloudinitnocloud) or manually connecting to the VM shell and targeting the same
@@ -929,11 +928,8 @@ status: {}
 A `configMap` is a reference to a
 [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
 in Kubernetes. 
-A `configMap` can be presented to the VM as disks or as a filesystem. Each method is described in the following
-sections and both have some advantages and disadvantages, e.g. `disk` does not support dynamic change propagation and
-`filesystem` does not support live migration.
-Therefore, depending on the use-case, one or the other may be more suitable.
- 
+A `configMap` can be presented to the VM as `disks` or as a `filesystem`. Each method is described in the following
+sections.
 
 #### As a disk
 By using disk, an extra `iso` disk will be allocated which has to be
@@ -1005,8 +1001,8 @@ status: {}
 By using filesystem, `configMaps` are shared through `virtiofs`. In contrast with using disk for sharing `configMaps`,
 `filesystem` allows you to dynamically propagate changes on `configMaps` to VMIs (i.e. the VM does not need to be rebooted).
 
-> **Note:** Currently, VMIs can not be live migrated since `virtiofs` does not support live migration.
- 
+> **Note:** You need to enable the feature gate `EnableVirtioFsConfigVolumes` for sharing `configMaps` with `virtiofs`.
+
 To share a given `configMap`, the following VM definition could be used:
 
 ```yaml
@@ -1059,9 +1055,7 @@ A `secret` is a reference to a
 [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) in
 Kubernetes.
 A `secret` can be presented to the VM as disks or as a filesystem. Each method is described in the following
-sections and both have some advantages and disadvantages, e.g. `disk` does not support dynamic change propagation and
-`filesystem` does not support live migration.
-Therefore, depending on the use-case, one or the other may be more suitable.
+sections.
 
 #### As a disk
 By using disk, an extra `iso` disk will be allocated which has to be
@@ -1133,7 +1127,7 @@ status: {}
 By using filesystem, `secrets` are shared through `virtiofs`. In contrast with using disk for sharing `secrets`,
 `filesystem` allows you to dynamically propagate changes on `secrets` to VMIs (i.e. the VM does not need to be rebooted).
 
-> **Note:** Currently, VMIs can not be live migrated since `virtiofs` does not support live migration.
+> **Note:** You need to enable the feature gate `EnableVirtioFsConfigVolumes` for sharing `secrets` with `virtiofs`.
  
 To share a given `secret`, the following VM definition could be used:
 
@@ -1186,9 +1180,7 @@ spec:
 A `serviceAccount` volume references a Kubernetes
 [`ServiceAccount`](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/).
 A `serviceAccount` can be presented to the VM as disks or as a filesystem. Each method is described in the following
-sections and both have some advantages and disadvantages, e.g. `disk` does not support dynamic change propagation and
-`filesystem` does not support live migration.
-Therefore, depending on the use-case, one or the other may be more suitable.
+sections.
 
 #### As a disk
 By using disk, a new `iso` disk will be allocated with the content of the service
@@ -1236,7 +1228,7 @@ spec:
 By using filesystem, `serviceAccounts` are shared through `virtiofs`. In contrast with using disk for sharing `serviceAccounts`,
 `filesystem` allows you to dynamically propagate changes on `serviceAccounts` to VMIs (i.e. the VM does not need to be rebooted).
 
-> **Note:** Currently, VMIs can not be live migrated since `virtiofs` does not support live migration.
+> **Note:** You need to enable the feature gate `EnableVirtioFsConfigVolumes` for sharing `serviceAccounts` with `virtiofs`.
  
 To share a given `serviceAccount`, the following VM definition could be used:
 
@@ -1902,12 +1894,8 @@ If you are using local devices or RWO PVCs, setting the affinity on the VMs that
 `Virtiofs` is a shared file system that lets VMs access a directory tree on the host.
 Further details can be found at [Official Virtiofs Site](https://virtio-fs.gitlab.io/).
 
-### Non-Privileged and Privileged Sharing Modes
-
-KubeVirt supports two PVC sharing modes: non-privileged and privileged.
-
-The **non-privileged mode** is enabled by default. This mode has the advantage of not requiring any
-administrative privileges for creating the VM. However, it has some limitations:
+KubeVirt only supports to share PVCs using a non-privileged virtiofs daemon. Because the lack of privileges, it has some
+limitations:
 
 - The virtiofsd daemon (the daemon in charge of sharing the PVC with the VM) will run with the QEMU UID/GID (107),
   and cannot switch between different UIDs/GIDs.
@@ -1915,10 +1903,9 @@ administrative privileges for creating the VM. However, it has some limitations:
   Additionally, when creating new files they will always be created with QEMU's UID/GID regardless of the UID/GID of the
   process within the guest.
 - Extended attributes are not supported. 
- 
-To switch to the **privileged mode**, the feature gate **ExperimentalVirtiofsSupport** has to be enabled. Take into account
-that this mode requires privileges to run rootful containers. 
 
+> **Note:** You need to enable the feature gate `EnableVirtioFsStorageVolumes` for sharing `PVCs` with `virtiofs`.
+ 
 ### Sharing Persistent Volume Claims
 #### Cluster Configuration
 
