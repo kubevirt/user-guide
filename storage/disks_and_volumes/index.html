@@ -2978,15 +2978,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#non-privileged-and-privileged-sharing-modes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Non-Privileged and Privileged Sharing Modes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#sharing-persistent-volume-claims" class="md-nav__link">
     <span class="md-ellipsis">
       Sharing Persistent Volume Claims
@@ -3999,15 +3990,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#non-privileged-and-privileged-sharing-modes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Non-Privileged and Privileged Sharing Modes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#sharing-persistent-volume-claims" class="md-nav__link">
     <span class="md-ellipsis">
       Sharing Persistent Volume Claims
@@ -4280,8 +4262,7 @@ as a <code>cdrom</code> device to the VM:</p>
 Further information about <code>virtiofs</code> can be found at the <a href="https://virtio-fs.gitlab.io/">Official Virtiofs Site</a>.</p>
 <p>Compared with <code>disk</code>, <code>filesystems</code> allow changes in the source to be dynamically reflected in the volumes inside the VM.
 For instance, if a given <code>configMap</code> is shared with <code>filesystems</code> any change made on it will be reflected in the
-VMs.
-However, it is important to note that <code>filesystems</code> <strong>do not allow live migration</strong>.</p>
+VMs.</p>
 <p>Additionally, <code>filesystem</code> devices must be mounted inside the VM.
 This can be done through <a href="#cloudinitnocloud">cloudInitNoCloud</a> or manually connecting to the VM shell and targeting the same
 command.
@@ -4951,10 +4932,8 @@ to a VM.</p>
 <p>A <code>configMap</code> is a reference to a
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/">ConfigMap</a>
 in Kubernetes. 
-A <code>configMap</code> can be presented to the VM as disks or as a filesystem. Each method is described in the following
-sections and both have some advantages and disadvantages, e.g. <code>disk</code> does not support dynamic change propagation and
-<code>filesystem</code> does not support live migration.
-Therefore, depending on the use-case, one or the other may be more suitable.</p>
+A <code>configMap</code> can be presented to the VM as <code>disks</code> or as a <code>filesystem</code>. Each method is described in the following
+sections.</p>
 <h4 id="as-a-disk">As a disk<a class="headerlink" href="#as-a-disk" title="Permanent link">&para;</a></h4>
 <p>By using disk, an extra <code>iso</code> disk will be allocated which has to be
 mounted on a VM. To mount the <code>configMap</code> users can use <code>cloudInit</code> and
@@ -5020,7 +4999,7 @@ projected.</p>
 <p>By using filesystem, <code>configMaps</code> are shared through <code>virtiofs</code>. In contrast with using disk for sharing <code>configMaps</code>,
 <code>filesystem</code> allows you to dynamically propagate changes on <code>configMaps</code> to VMIs (i.e. the VM does not need to be rebooted).</p>
 <blockquote>
-<p><strong>Note:</strong> Currently, VMIs can not be live migrated since <code>virtiofs</code> does not support live migration.</p>
+<p><strong>Note:</strong> You need to enable the feature gate <code>EnableVirtioFsConfigVolumes</code> for sharing <code>configMaps</code> with <code>virtiofs</code>.</p>
 </blockquote>
 <p>To share a given <code>configMap</code>, the following VM definition could be used:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
@@ -5070,9 +5049,7 @@ projected.</p>
 <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Secret</a> in
 Kubernetes.
 A <code>secret</code> can be presented to the VM as disks or as a filesystem. Each method is described in the following
-sections and both have some advantages and disadvantages, e.g. <code>disk</code> does not support dynamic change propagation and
-<code>filesystem</code> does not support live migration.
-Therefore, depending on the use-case, one or the other may be more suitable.</p>
+sections.</p>
 <h4 id="as-a-disk_1">As a disk<a class="headerlink" href="#as-a-disk_1" title="Permanent link">&para;</a></h4>
 <p>By using disk, an extra <code>iso</code> disk will be allocated which has to be
 mounted on a VM. To mount the <code>secret</code> users can use <code>cloudInit</code> and the
@@ -5138,7 +5115,7 @@ projected.</p>
 <p>By using filesystem, <code>secrets</code> are shared through <code>virtiofs</code>. In contrast with using disk for sharing <code>secrets</code>,
 <code>filesystem</code> allows you to dynamically propagate changes on <code>secrets</code> to VMIs (i.e. the VM does not need to be rebooted).</p>
 <blockquote>
-<p><strong>Note:</strong> Currently, VMIs can not be live migrated since <code>virtiofs</code> does not support live migration.</p>
+<p><strong>Note:</strong> You need to enable the feature gate <code>EnableVirtioFsConfigVolumes</code> for sharing <code>secrets</code> with <code>virtiofs</code>.</p>
 </blockquote>
 <p>To share a given <code>secret</code>, the following VM definition could be used:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
@@ -5187,9 +5164,7 @@ projected.</p>
 <p>A <code>serviceAccount</code> volume references a Kubernetes
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/"><code>ServiceAccount</code></a>.
 A <code>serviceAccount</code> can be presented to the VM as disks or as a filesystem. Each method is described in the following
-sections and both have some advantages and disadvantages, e.g. <code>disk</code> does not support dynamic change propagation and
-<code>filesystem</code> does not support live migration.
-Therefore, depending on the use-case, one or the other may be more suitable.</p>
+sections.</p>
 <h4 id="as-a-disk_2">As a disk<a class="headerlink" href="#as-a-disk_2" title="Permanent link">&para;</a></h4>
 <p>By using disk, a new <code>iso</code> disk will be allocated with the content of the service
 account (<code>namespace</code>, <code>token</code> and <code>ca.crt</code>), which needs to be mounted
@@ -5233,7 +5208,7 @@ VMIs.</p>
 <p>By using filesystem, <code>serviceAccounts</code> are shared through <code>virtiofs</code>. In contrast with using disk for sharing <code>serviceAccounts</code>,
 <code>filesystem</code> allows you to dynamically propagate changes on <code>serviceAccounts</code> to VMIs (i.e. the VM does not need to be rebooted).</p>
 <blockquote>
-<p><strong>Note:</strong> Currently, VMIs can not be live migrated since <code>virtiofs</code> does not support live migration.</p>
+<p><strong>Note:</strong> You need to enable the feature gate <code>EnableVirtioFsConfigVolumes</code> for sharing <code>serviceAccounts</code> with <code>virtiofs</code>.</p>
 </blockquote>
 <p>To share a given <code>serviceAccount</code>, the following VM definition could be used:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
@@ -5834,10 +5809,8 @@ We can now attempt to write a string from the first guest and then read the stri
 <p><code>Virtiofs</code> allows to make visible external filesystems to <code>KubeVirt</code> VMs.
 <code>Virtiofs</code> is a shared file system that lets VMs access a directory tree on the host.
 Further details can be found at <a href="https://virtio-fs.gitlab.io/">Official Virtiofs Site</a>.</p>
-<h3 id="non-privileged-and-privileged-sharing-modes">Non-Privileged and Privileged Sharing Modes<a class="headerlink" href="#non-privileged-and-privileged-sharing-modes" title="Permanent link">&para;</a></h3>
-<p>KubeVirt supports two PVC sharing modes: non-privileged and privileged.</p>
-<p>The <strong>non-privileged mode</strong> is enabled by default. This mode has the advantage of not requiring any
-administrative privileges for creating the VM. However, it has some limitations:</p>
+<p>KubeVirt only supports to share PVCs using a non-privileged virtiofs daemon. Because the lack of privileges, it has some
+limitations:</p>
 <ul>
 <li>The virtiofsd daemon (the daemon in charge of sharing the PVC with the VM) will run with the QEMU UID/GID (107),
   and cannot switch between different UIDs/GIDs.
@@ -5846,8 +5819,9 @@ administrative privileges for creating the VM. However, it has some limitations:
   process within the guest.</li>
 <li>Extended attributes are not supported. </li>
 </ul>
-<p>To switch to the <strong>privileged mode</strong>, the feature gate <strong>ExperimentalVirtiofsSupport</strong> has to be enabled. Take into account
-that this mode requires privileges to run rootful containers. </p>
+<blockquote>
+<p><strong>Note:</strong> You need to enable the feature gate <code>EnableVirtioFsStorageVolumes</code> for sharing <code>PVCs</code> with <code>virtiofs</code>.</p>
+</blockquote>
 <h3 id="sharing-persistent-volume-claims">Sharing Persistent Volume Claims<a class="headerlink" href="#sharing-persistent-volume-claims" title="Permanent link">&para;</a></h3>
 <h4 id="cluster-configuration">Cluster Configuration<a class="headerlink" href="#cluster-configuration" title="Permanent link">&para;</a></h4>
 <p>We need to create a new VM definition including the <code>spec.devices.disk.filesystems.virtiofs</code> and a PVC.
