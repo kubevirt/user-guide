@@ -15,7 +15,7 @@ the VirtualMachineInstance.
 
 To allow for greater variation of user states, the `RunStrategy` field
 has been introduced. This is mutually exclusive with `Running` as they
-have somewhat overlapping conditions. There are currently four
+have somewhat overlapping conditions. There are currently five
 RunStrategies defined:
 
 -   Always: The system is tasked with keeping the VM in a running
