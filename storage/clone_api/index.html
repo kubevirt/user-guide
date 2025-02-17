@@ -3048,7 +3048,7 @@
 * Cloning a Virtual Machine.
 * Creating "golden snapshots" that would be used as a template for creating new VMs
 (see <a href="#using-clones-as-a-golden-vm-image">Using clones as a "golden VM image"</a> below).</p>
-<p>Please bear in mind that the clone API is in version <code>v1alpha1</code>. This means that this API is not fully stable
+<p>Please bear in mind that the clone API is in version <code>v1beta1</code>. This means that this API is not fully stable
 yet and that APIs may change in the future.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <h3 id="snapshot-restore">Snapshot / Restore<a class="headerlink" href="#snapshot-restore" title="Permanent link">&para;</a></h3>
@@ -3065,7 +3065,7 @@ to look at <a href="../snapshot_restore_api/">Snapshot &amp; Restore</a> user-gu
 <p>In order to initiate cloning, a <code>VirtualMachineClone</code> object (CRD) needs to be created on the cluster. An example
 for such an object is:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineClone</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;clone.kubevirt.io/v1alpha1&quot;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;clone.kubevirt.io/v1beta1&quot;</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">testclone</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
