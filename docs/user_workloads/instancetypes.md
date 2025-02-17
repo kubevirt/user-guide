@@ -503,6 +503,22 @@ null
 null
 ```
 
+## Hotplug
+
+Support for instance type based vCPU and memory hotplug was introduced in KubeVirt 1.3 and is built on existing [vCPU](../compute/cpu_hotplug.md) hotplug, [memory](../compute/memory_hotplug.md) hotplug and [LiveUpdate](./vm_rollout_strategies.md) support.
+
+All requirements and limitations of these features apply when hot plugging a new instance type into a running `VirtualMachine`.
+
+To invoke an instance type based vCPU and/or memory hotplug users should update the `name` of the referenced instance type while also clearing the `revisionName`, for example:
+
+```shell
+$ kubectl patch vm/my-vm --type merge -p '{"spec":{"instancetype":{"name": "new-instancetype", "revisionName":""}}}'
+```
+
+This will trigger the same vCPU and memory hot plug logic as a vanilla VirtualMachine assuming that the aforementioned requirements are met.
+
+Otherwise a `RestartRequired` condition will be applied to the `VirtualMachine` to indicate that a reboot is needed for all changes to be made.
+
 ## common-instancetypes
 
 The [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instancetypes) provide a set of [instancetypes and preferences](../user_workloads/instancetypes.md) to help create KubeVirt [`VirtualMachines`](http://kubevirt.io/api-reference/main/definitions.html#_v1alpha1_virtualmachine).
