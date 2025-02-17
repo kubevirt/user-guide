@@ -264,9 +264,9 @@ means if you specify a secret in a `CloudInitNoCloud` volume, that every VM inst
 from the VirtualMachinePool with this volume will get the exact same secret used for their cloud-init
 user data.
 
-This default behavior can be modified by setting the `AppendPostfixToSecretReferences` and
-`AppendPostfixToConfigMapReferences` booleans to true on the VMPool spec. When these booleans
-are enabled, references to secret and configMap names will have the VM's sequential postfix
+This default behavior can be modified by setting both the `AppendIndexToSecretRefs` and
+`AppendIndexToConfigMapRefs` booleans to `true` within `spec.NameGeneration` of the VMPool definition.
+When these booleans are enabled, references to secret and configMap names will have the VM's sequential index
 appended to the secret and configmap name. This allows someone to pre-generate unique per VM
 `secret` and `configMap` data for a VirtualMachinePool ahead of time in a way that will be predictably
 assigned to VMs within the VirtualMachinePool.
