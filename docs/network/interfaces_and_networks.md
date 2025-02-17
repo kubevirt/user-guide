@@ -509,6 +509,78 @@ spec:
 > **Note:** Placement on dedicated CPUs can only be achieved if the Kubernetes CPU manager is running on the SR-IOV capable workers.
 > For further details please refer to the [dedicated cpu resources documentation](../compute/dedicated-cpu_resources.md/).
 
+### Link State Management
+
+Starting v1.5.0, KubeVirt enables setting the desired interface's link state using the interface's `state` field.
+The allowed values are: `up`, `down`. Unspecified value is considered as `up`.
+
+> [!NOTE]  
+> The interface.State field has an additional allowed value `absent`, which is relevant for NIC hotunplug. 
+
+When the desired link state is set to `down`, it is equivalent to having the network cable disconnected from the virtual NIC.
+
+For example:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: my-vm
+spec:
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+            - name: default
+              state: down
+              masquerade: { }
+      networks:
+        - name: default
+          pod: { }
+```
+
+The desired link state specification can be specified:
+1. On VM creation.
+2. When the VM is running.
+3. When the VM is turned off.
+4. When a new network interface is hot-plugged.
+
+> [!NOTE]  
+> The desired link state can be specified for network interfaces using all bindings other than `sriov`, as the virtualization
+> stack used by KubeVirt does not allow setting it for SR-IOV devices.
+
+> [!WARNING]  
+> When HTTP / TCP readiness and/or liveness probes are specified on the VM, setting the primary interface's link state to `down` will
+> cause the VM:
+> 1. To be marked as not ready (readiness probe)
+> 2. To be restarted, as the kubelet will kill the virt-launcher pod (liveness probe)
+
+The current link state of network interfaces is reported in the VirtualMachineInstance status section:
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: my-vm
+spec:
+  domain:
+    devices:
+      interfaces:
+      - name: default
+        state: down
+        masquerade: { }
+  networks:
+  - name: default
+    pod: { }
+status:
+  interfaces:
+    - name: default
+      linkState: down
+```
+
+> [!NOTE]  
+> The current link state report is not reported for SR-IOV devices, as KubeVirt is not aware to all changes made to it.
+
 ## Security
 
 ### MAC spoof check
