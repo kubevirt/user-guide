@@ -138,7 +138,7 @@ of a VMI which is currently being migrated
     virtctl migrate-cancel vmi-fedora
 ```
 
-## Changing Cluster Wide Migration Limits
+## Changing Cluster Wide Migration Configuration
 
 KubeVirt puts some limits in place, so that migrations don't overwhelm
 the cluster. By default, it is configured to only run `5` migrations in
@@ -168,6 +168,61 @@ spec:
       allowPostCopy: false
       unsafeMigrationOverride: false
 ```
+
+### Configuring Acceptable Levels of Workload Disruption
+
+The **AllowWorkloadDisruption** parameter enables administrators to define the
+acceptable level of workload disruption during a migration, specifically when it
+fails to converge within the specified `AcceptableCompletionTime`. This option
+provides a balance between ensuring migration completion and mitigating risks
+associated with different migration strategies.
+
+#### Understanding the AllowWorkloadDisruption
+
+The behavior dictated by `AllowWorkloadDisruption` depends on its configuration:
+
+- **When disabled**:
+  - Workloads are not disrupted during migration.
+  - If the migration does not converge within the `AcceptableCompletionTime`, it will be canceled and may need to be restarted.
+  - This approach minimizes workload disruption, however, "busy" workloads may not migrate in time, which increases the risk of repeated migration.
+
+- **When enabled**:
+  - The migration controller is allowed to disrupt the workload associated with long-running migrations to facilitate migration completion.
+  - When `AcceptableCompletionTime` threshold is reached, the migration controller will switch the migration into a post-copy
+    mode. If post-copy is not permitted, the migration controller will instead pause the corresponding Virtual Machine Instance to ensure migration
+    completion.
+
+#### Configuration
+
+To configure `AllowWorkloadDisruption`:
+
+1. **Disabling Workload Disruption**:
+   - Leave `AllowWorkloadDisruption` unset or explicitly set it to `false`.
+   - Example:
+     ```yaml
+    spec:
+      configuration:
+        migrations:
+         allowWorkloadDisruption: false
+     ```
+
+2. **Enabling Workload Disruption**:
+   - Set `AllowWorkloadDisruption` to `true` to allow the migration controller to act after the `AcceptableCompletionTime` threshold.
+   - To enable post-copy, set `AllowPostCopy` to `true`. Otherwise, if paused mode is prefered, unset `AllowPostCopy` or explicitly set it to `false`:
+     ```yaml
+    spec:
+      configuration:
+        migrations:
+         allowWorkloadDisruption: true
+         allowPostCopy: true
+     ```
+
+#### Key Considerations
+
+- `AllowWorkloadDisruption` determines whether the migration controller can prioritize completing the migration over avoiding workload disruption.
+- Post-copy migrations, when enabled, poses some risk of data loss if a failure occurs during the post-copy phase.
+- Pausing the workload facilitates migration completion with no risk of data loss but may result in a temporary workload inactivity.
+
 
 Bear in mind that most of these configuration can be overridden and fine-tuned to
 a specified group of VMs. For more information, please see [Migration Policies](../cluster_admin/migration_policies.md).
@@ -250,6 +305,9 @@ the guest's CPU would not be throttled or throttled negligibly. But, if the migr
 not converge fast enough, the CPU would be throttled more and more as time goes.
 
 This technique dramatically increases the probability of the migration converging eventually.
+
+
+
 
 ## Using a different network for migrations
 
