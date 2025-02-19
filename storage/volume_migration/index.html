@@ -2735,6 +2735,54 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#cancellation-of-the-volume-update-with-the-migration-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cancellation of the volume update with the migration strategy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Failures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Failures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Recovery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual Recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#destination-volumes-restoration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Destination volumes restoration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2959,6 +3007,43 @@ Additionally, volume migration is forbidden if the disk is:
 * filesystem, since virtiofs doesn't currently support live-migration
 * lun, originally the disk might support SCSI protocol but the destination PVC class does not. This case isn't currently supported.</p>
 <p>Currently, KubeVirt only enables live migration between separate nodes. Volume migration relies on live migration; hence, live migrating storage on the same node is also not possible. Volume migration is possible between local storage, like between 2 PVCs with RWO access mode, but they need to be located on two different host.</p>
+<h2 id="cancellation-of-the-volume-update-with-the-migration-strategy">Cancellation of the volume update with the migration strategy<a class="headerlink" href="#cancellation-of-the-volume-update-with-the-migration-strategy" title="Permanent link">&para;</a></h2>
+<p>During volume migration, users can cancel the update by restoring the old set of volumes. For example, using the original VM definition.</p>
+<p>If the volume set does not exactly match the original set, the update will be treated as a new modification, and the current migration will not be cancelled.</p>
+<h2 id="failures">Failures<a class="headerlink" href="#failures" title="Permanent link">&para;</a></h2>
+<p>Volume migration might fail for a variety of reasons. The migration will be performed numerous times with an incremental timeout in order to potentially resolve temporary errors, such as connectivity problems.</p>
+<p>If the failures persist and users want to stop the retries, they must cancel the volume update.</p>
+<h3 id="manual-recovery">Manual Recovery<a class="headerlink" href="#manual-recovery" title="Permanent link">&para;</a></h3>
+<p>If something goes wrong during the migration and the VM no longer runs, the 'ManualRecoveryRequired' condition is applied to the VM. For example, if the VM was mistakenly turned off during the migration or the VMI disappeared.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">status</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">conditions</span><span class="p">:</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="p p-Indicator">[</span><span class="nv">..</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">lastProbeTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">lastTransitionTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">reason</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMI was removed during the volume migration</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;True&quot;</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ManualRecoveryRequired</span>
+</code></pre></div>
+<p>This condition prohibits the VM from being started while it is present because the VM volumes are inconsistent due to the unsuccessful copy during the update.</p>
+<p>The modified volumes remain in the VM definition, and users must manually restore the original volumes by canceling the update before starting the VM, and eventually retrying the update.</p>
+<h4 id="destination-volumes-restoration">Destination volumes restoration<a class="headerlink" href="#destination-volumes-restoration" title="Permanent link">&para;</a></h4>
+<p>There is a particular race condition that can occur during the migration which needs to be carefully verified before cancelling the update.</p>
+<p>In certain cases, the copy could have been completed but the migration is marked as failed. This case occurs when:</p>
+<ol>
+<li>The VirtualMachineInstanceMigration is in <code>Failed</code> state:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>vmims<span class="w"> </span>-l<span class="w"> </span>kubevirt.io/volume-update-migration<span class="o">=</span>vm
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>NAME<span class="w">                             </span>PHASE<span class="w">    </span>VMI
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>kubevirt-workload-update-qzfb5<span class="w">   </span>Failed<span class="w">   </span>vm
+</code></pre></div></li>
+<li>Libvirt reported the domain from paused to running in the target virt-launcher pod and KubeVirt sets the times when the domain started on the target:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>vmi<span class="w"> </span>vmi-migratable<span class="w"> </span>-ojsonpath<span class="o">=</span><span class="s1">&#39;{.status.migrationState.targetNodeDomainReadyTimestamp}&#39;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="m">2025</span>-01-14T08:29:07Z
+</code></pre></div>
+If the conditions described above are met, then the users must preserve the destination volumes and remove the <code>ManualRecoveryCondition</code> from the VM by patching the VM and removing the <code>updateVolumeStrategy</code> field. In this way the change will be interpreted as a remplacement of the volumes.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>patch<span class="w"> </span>vm<span class="w"> </span>vm-dv<span class="w"> </span>--type<span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="w"> </span>-p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;remove&quot;, &quot;path&quot;: &quot;/spec/updateVolumesStrategy&quot;}]&#39;</span>
+</code></pre></div>
+Otherwise, the users needs to restore the source volumes, and eventually retry the migration.</li>
+</ol>
 
 
 
