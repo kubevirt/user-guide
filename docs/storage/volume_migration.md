@@ -212,3 +212,58 @@ Additionally, volume migration is forbidden if the disk is:
 * lun, originally the disk might support SCSI protocol but the destination PVC class does not. This case isn't currently supported.
 
 Currently, KubeVirt only enables live migration between separate nodes. Volume migration relies on live migration; hence, live migrating storage on the same node is also not possible. Volume migration is possible between local storage, like between 2 PVCs with RWO access mode, but they need to be located on two different host.
+
+## Cancellation of the volume update with the migration strategy
+
+During volume migration, users can cancel the update by restoring the old set of volumes. For example, using the original VM definition.
+
+If the volume set does not exactly match the original set, the update will be treated as a new modification, and the current migration will not be cancelled.
+
+## Failures
+
+Volume migration might fail for a variety of reasons. The migration will be performed numerous times with an incremental timeout in order to potentially resolve temporary errors, such as connectivity problems.
+
+If the failures persist and users want to stop the retries, they must cancel the volume update.
+
+### Manual Recovery
+
+If something goes wrong during the migration and the VM no longer runs, the 'ManualRecoveryRequired' condition is applied to the VM. For example, if the VM was mistakenly turned off during the migration or the VMI disappeared.
+
+```yaml
+status:
+  conditions:
+  [..]
+  - lastProbeTime: null
+    lastTransitionTime: null
+    reason: VMI was removed during the volume migration
+    status: "True"
+    type: ManualRecoveryRequired
+```
+
+
+This condition prohibits the VM from being started while it is present because the VM volumes are inconsistent due to the unsuccessful copy during the update.
+
+The modified volumes remain in the VM definition, and users must manually restore the original volumes by canceling the update before starting the VM, and eventually retrying the update.
+
+#### Destination volumes restoration
+
+There is a particular race condition that can occur during the migration which needs to be carefully verified before cancelling the update.
+
+In certain cases, the copy could have been completed but the migration is marked as failed. This case occurs when:
+
+  1. The VirtualMachineInstanceMigration is in `Failed` state:
+```sh
+$ kubectl get vmims -l kubevirt.io/volume-update-migration=vm
+NAME                             PHASE    VMI
+kubevirt-workload-update-qzfb5   Failed   vm
+```
+  2. Libvirt reported the domain from paused to running in the target virt-launcher pod and KubeVirt sets the times when the domain started on the target:
+```bash
+$ kubectl get vmi vmi-migratable -ojsonpath='{.status.migrationState.targetNodeDomainReadyTimestamp}'
+2025-01-14T08:29:07Z
+```
+If the conditions described above are met, then the users must preserve the destination volumes and remove the `ManualRecoveryCondition` from the VM by patching the VM and removing the `updateVolumeStrategy` field. In this way the change will be interpreted as a remplacement of the volumes.
+```bash
+$ kubectl patch vm vm-dv --type='json' -p='[{"op": "remove", "path": "/spec/updateVolumesStrategy"}]'
+```
+Otherwise, the users needs to restore the source volumes, and eventually retry the migration.
