@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.5">
     
     
       
@@ -1948,11 +1948,59 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#changing-cluster-wide-migration-limits" class="md-nav__link">
+  <a href="#changing-cluster-wide-migration-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Changing Cluster Wide Migration Limits
+      Changing Cluster Wide Migration Configuration
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Changing Cluster Wide Migration Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuring-acceptable-levels-of-workload-disruption" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring Acceptable Levels of Workload Disruption
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring Acceptable Levels of Workload Disruption">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-allowworkloaddisruption" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the AllowWorkloadDisruption
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3092,11 +3140,59 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#changing-cluster-wide-migration-limits" class="md-nav__link">
+  <a href="#changing-cluster-wide-migration-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      Changing Cluster Wide Migration Limits
+      Changing Cluster Wide Migration Configuration
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Changing Cluster Wide Migration Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuring-acceptable-levels-of-workload-disruption" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring Acceptable Levels of Workload Disruption
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring Acceptable Levels of Workload Disruption">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-allowworkloaddisruption" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the AllowWorkloadDisruption
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3375,7 +3471,7 @@ and <code>Failed</code>.</p>
 of a VMI which is currently being migrated
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">    virtctl migrate-cancel vmi-fedora</span>
 </code></pre></div></p>
-<h2 id="changing-cluster-wide-migration-limits">Changing Cluster Wide Migration Limits<a class="headerlink" href="#changing-cluster-wide-migration-limits" title="Permanent link">&para;</a></h2>
+<h2 id="changing-cluster-wide-migration-configuration">Changing Cluster Wide Migration Configuration<a class="headerlink" href="#changing-cluster-wide-migration-configuration" title="Permanent link">&para;</a></h2>
 <p>KubeVirt puts some limits in place, so that migrations don't overwhelm
 the cluster. By default, it is configured to only run <code>5</code> migrations in
 parallel with an additional limit of a maximum of <code>2</code> outbound
@@ -3401,6 +3497,62 @@ of <code>64MiB/s</code>.</p>
 <a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">      </span><span class="nt">allowPostCopy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">      </span><span class="nt">unsafeMigrationOverride</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
+<h3 id="configuring-acceptable-levels-of-workload-disruption">Configuring Acceptable Levels of Workload Disruption<a class="headerlink" href="#configuring-acceptable-levels-of-workload-disruption" title="Permanent link">&para;</a></h3>
+<p>The <strong>AllowWorkloadDisruption</strong> parameter enables administrators to define the
+acceptable level of workload disruption during a migration, specifically when it
+fails to converge within the specified <code>AcceptableCompletionTime</code>, which is determined by the <code>completionTimeoutPerGiB</code> configuration and the VM "size". This option
+provides a balance between ensuring migration completion and mitigating risks
+associated with different migration strategies.</p>
+<h4 id="understanding-the-allowworkloaddisruption">Understanding the AllowWorkloadDisruption<a class="headerlink" href="#understanding-the-allowworkloaddisruption" title="Permanent link">&para;</a></h4>
+<p>The behavior dictated by <code>AllowWorkloadDisruption</code> depends on its configuration:</p>
+<ul>
+<li><strong>When disabled</strong>:</li>
+<li>Workloads are not disrupted during migration.</li>
+<li>If the migration does not converge within the <code>AcceptableCompletionTime</code>, it will be canceled and may need to be restarted.</li>
+<li>
+<p>This approach minimizes workload disruption, however, "busy" workloads may not migrate in time, which increases the risk of repeated migration.</p>
+</li>
+<li>
+<p><strong>When enabled</strong>:</p>
+</li>
+<li>The migration controller is allowed to disrupt the workload associated with long-running migrations to facilitate migration completion.</li>
+<li>When <code>AcceptableCompletionTime</code> threshold is reached, the migration controller will switch the migration into a post-copy
+    mode. If post-copy is not permitted, the migration controller will instead pause the corresponding Virtual Machine Instance to ensure migration
+    completion.</li>
+</ul>
+<h4 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h4>
+<p>To configure <code>AllowWorkloadDisruption</code>:</p>
+<ol>
+<li><strong>Disabling Workload Disruption</strong>:</li>
+<li>Leave <code>AllowWorkloadDisruption</code> unset or explicitly set it to <code>false</code>.</li>
+<li>
+<p>Example:</p>
+<p><code>yaml
+spec:
+  configuration:
+    migrations:
+     allowWorkloadDisruption: false</code></p>
+</li>
+<li>
+<p><strong>Enabling Workload Disruption</strong>:</p>
+</li>
+<li>Set <code>AllowWorkloadDisruption</code> to <code>true</code> to allow the migration controller to act after the <code>AcceptableCompletionTime</code> threshold.</li>
+<li>
+<p>To enable post-copy, set <code>AllowPostCopy</code> to <code>true</code>. Otherwise, if paused mode is preferred, unset <code>AllowPostCopy</code> or explicitly set it to <code>false</code>:</p>
+<p><code>yaml
+spec:
+  configuration:
+    migrations:
+     allowWorkloadDisruption: true
+     allowPostCopy: true</code></p>
+</li>
+</ol>
+<h4 id="key-considerations">Key Considerations<a class="headerlink" href="#key-considerations" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>AllowWorkloadDisruption</code> determines whether the migration controller can prioritize completing the migration over avoiding workload disruption.</li>
+<li>Post-copy migration, when enabled, poses some risk of data loss if a failure occurs during the post-copy phase.</li>
+<li>Pausing the workload facilitates completion of the migration without risk of data loss but may result in temporary workload inactivity.</li>
+</ul>
 <p>Bear in mind that most of these configuration can be overridden and fine-tuned to
 a specified group of VMs. For more information, please see <a href="../../cluster_admin/migration_policies/">Migration Policies</a>.</p>
 <h2 id="understanding-different-migration-strategies">Understanding different migration strategies<a class="headerlink" href="#understanding-different-migration-strategies" title="Permanent link">&para;</a></h2>
