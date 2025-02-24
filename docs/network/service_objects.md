@@ -84,6 +84,15 @@ port inside the cluster network:
 
 ## Expose VirtualMachineInstance as a NodePort Service
 
+To expose a VirtualMachineInstance via a NodePort service, you must ensure that the VirtualMachine (VM) resource includes the proper labels in the template section. This is crucial to allow the service to correctly associate with the VM's underlying pod.
+
+```yaml
+template:
+  metadata:
+    labels:
+      kubevirt.io/domain: "VM_NAME"
+      vmName: "VM_NAME"
+```
 Expose the SSH port (22) of a VirtualMachineInstance running on KubeVirt
 by creating a `NodePort` service:
 
@@ -101,7 +110,7 @@ spec:
     protocol: TCP
     targetPort: 22
   selector:
-    special: key
+    vmName: "VM_NAME"
   type: NodePort
 ```
 
