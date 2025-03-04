@@ -18,19 +18,15 @@ Note: dedicated CPUs (and isolated emulator thread) are ignored here as they hav
 - Manually setting CPU limits on the VM(I) will override all of the above and be the CPU limits for the container
 
 ### Auto CPU limits
-KubeVirt provides two ways to automatically set CPU limits on VM(I)s:
-
-- Enable the `AutoResourceLimitsGate` feature gate.
-- Add the namespaceLabelSelector in the KubeVirt CR.
-
-In both cases, the VM(I) created will have a CPU limit of 1 per vCPU.
-
-#### AutoResourceLimitsGate feature gate
-By enabling this feature gate, cpu limits will be added to the vmi if all the following conditions are true:
+KubeVirt automatically set CPU limits on VM(I)s if all the following conditions are true:
 
 - The namespace where the VMI will be created has a ResourceQuota containing cpu limits.
 - The VMI has no manually set cpu limits.
 - The VMI is not requesting dedicated CPU.
+
+Additionally, you can add the namespaceLabelSelector in the KubeVirt CR, forcing CPU limits to be set.
+
+In both cases, the VM(I) created will have a CPU limit of 1 per vCPU.
 
 #### autoCPULimitNamespaceLabelSelector configuration
 Cluster admins can define a label selector in the KubeVirt CR.  
@@ -78,8 +74,7 @@ metadata:
 
 
 ### Auto memory limits
-KubeVirt provides a feature gate(`AutoResourceLimitsGate`) to automatically set memory limits on VM(I)s.
-By enabling this feature gate, memory limits will be added to the vmi if all the following conditions are true:
+KubeVirt automatically set memory limits on VM(I)s if all the following conditions are true:
 
 - The namespace where the VMI will be created has a ResourceQuota containing memory limits.
 - The VMI has no manually set memory limits.
