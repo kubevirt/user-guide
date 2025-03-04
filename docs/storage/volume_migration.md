@@ -1,4 +1,4 @@
-# Migration update volume strategy and volume migration
+# Update volume strategy and volume migration
 
 Storage migration is possible while the VM is running by using the update volume strategy. Storage migration can be useful in the cases where the users need to change the underlying storage, for example, if the storage class has been deprecated, or there is a new more performant driver available.
 
@@ -198,6 +198,31 @@ spec:
       - name: default
         pod: {}
 ```
+
+## Volume migration cancellation
+
+The users could, for various reasons, wish to stop and cancel the ongoing volume migration.
+Migration cancellations are also handled declaratively, thus users must restore the previous set of volumes, which will be read as a cancellation for the volume update and migration.
+
+A possible way to cancel the migration is to apply the old version of the VM declaration.
+
+## Volume migration failure and recovery
+
+If a volume migration fails, KubeVirt will continue to try to migrate until the volume update is cancelled. As a result, if the original failure was temporary, a subsequent migration could succeed; otherwise, KubeVirt continues to generate new migrations with exponential backoff time.
+
+To recover from a persistent failure, users must revert the volume set to its original state, indicating the cancellation of the volume migration.
+
+### Manual recovery required
+
+If for any reasons the VMI disappears, then the volume migration is not retried anymore. This might happen if the users inadvertently shutdown the VM or the VMI is accidentally deleted.
+
+However, in these situations, the VM spec is in an inconsistent state because the volume set contains the destination volumes but the copy was not successful, and users could fail to boot correctly the VM. For this reason the VM is marked with the condition `ManualRecoveryRequired` and KubeVirt will refuse to start a VM which has this condition.
+
+In order to recover the VM spec, the users need to revert the volume set in the VM spec as it is the case for the volume migration cancellation.
+
+The volume migration information is stored in the VM status as well, and the users can see the full list of the migrated volumes which contain the source and destination names as well as the corresponding volume name.
+
+Users can find the whole list of migrated volumes in the VM status, which includes the source and destination names together with the associated volume name.
 
 ## Limitations
 
