@@ -6,21 +6,6 @@ In other words, it defines when and how changes to a VM object get propagated to
 There are currently 2 rollout strategies: `LiveUpdate` and `Stage`.
 Only 1 can be specified and the default is `Stage`.
 
-## Feature Gate
-
-As long as the `VMLiveUpdateFeatures` is not enabled, the VM Rollout Strategy is ignored and defaults to "Stage".
-The feature gate is set in the KubeVirt custom resource (CR) like that:
-
-```yaml
-apiVersion: kubevirt.io/v1
-kind: KubeVirt
-spec:
-  configuration:
-    developerConfiguration:
-      featureGates:
-        - VMLiveUpdateFeatures
-```
-
 ## LiveUpdate
 
 The `LiveUpdate` VM rollout strategy tries to propagate VM object changes to running VMIs as soon as possible.  
