@@ -104,7 +104,7 @@ by updating the VM:
 The destination volume may be of a different type or size than the source. It is possible to migrate from and to a block volume as well as a filesystem volume.
 The destination volume should be equal to or larger than the source volume. However, the additional difference in the size of the destination volume is not instantly visible within the VM and must be manually resized because the guest is unaware of the migration.
 
-The volume migration depends on the `VolumeMigration` and `VolumesUpdateStrategy` feature gates and the `LiveMigrate` workloadUpdateStrategy. To fully enable the feature, add the following to the KubeVirt CR:
+The volume migration depends on the `LiveMigrate` workloadUpdateStrategy. To fully enable the feature, add the following to the KubeVirt CR:
 ```yaml
 apiVersion: kubevirt.io/v1
 kind: KubeVirt
@@ -113,8 +113,6 @@ spec:
     developerConfiguration:
       featureGates:
         - VMLiveUpdateFeatures
-        - VolumesUpdateStrategy
-        - VolumeMigration
     vmRolloutStrategy: LiveUpdate
   workloadUpdateStrategy:
     workloadUpdateMethods:
