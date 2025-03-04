@@ -85,36 +85,18 @@ $ virtctl addvolume vmi-fedora --volume-name=example-lun-hotplug --disk-type=lun
 ```
 
 ### Retain hotplugged volumes after restart
-In many cases it is desirable to keep hotplugged volumes after a VM restart. It may also be desirable to be able to unplug these volumes after the restart. The `persist` option makes it impossible to unplug the disks after a restart. If you don't specify `persist` the default behaviour is to retain hotplugged volumes as hotplugged volumes after a VM restart. This makes the `persist` flag mostly obsolete unless you want to make a volume permanent on restart.
+In many cases it is desirable to keep hotplugged volumes after a VM restart. It may also be desirable to be able to unplug these volumes after the restart. The `persist` option makes it possible to unplug the disks after a restart. If you don't specify `persist`, the volume is only ever hotplugged on the VMI (instance) level.
 
 ### Persist
-In some cases you want a hotplugged volume to become part of the standard disks after a restart of the VM.
-For instance if you added some permanent storage to the VM. We also assume that the running VMI has a matching VM that defines it specification.
-You can call the addvolume command with the --persist flag. This will update the VM domain disks section in addition to updating the VMI domain disks.
-This means that when you restart the VM, the disk is already defined in the VM, and thus in the new VMI.
+In some cases you want a hotplugged volume to stay hotplugged after a restart of the VM.
+In that case, you can call the addvolume command with the --persist flag.
+This means that when you restart the VM, the disk is already defined in the VM (as hotplugged), and thus is hotplugged to the new VMI.
 
 ```bash
 $ virtctl addvolume vm-fedora --volume-name=example-volume-hotplug --persist
 ```
 
-In the VM spec this will now show as a new disk
-```yaml
-spec:
-domain:
-    devices:
-        disks:
-        - disk:
-            bus: virtio
-            name: containerdisk
-        - disk:
-            bus: virtio
-            name: cloudinitdisk
-        - disk:
-            bus: scsi
-            name: example-volume-hotplug
-    machine:
-      type: ""
-```
+> *NOTE* The persist flag could also be used with removevolume to unplug in the same manner
 
 ### Removevolume
 In addition to hotplug plugging the volume, you can also unplug it by using the 'removevolume' command available with virtctl
