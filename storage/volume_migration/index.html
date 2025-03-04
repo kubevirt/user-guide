@@ -16,7 +16,7 @@
         <link rel="prev" href="../snapshot_restore_api/">
       
       
-        <link rel="next" href="../../user_workloads/accessing_virtual_machines/">
+        <link rel="next" href="../../release_notes/">
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Migration update volume strategy and volume migration - KubeVirt user guide</title>
+        <title>Update volume strategy and volume migration - KubeVirt user guide</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#migration-update-volume-strategy-and-volume-migration" class="md-skip">
+        <a href="#update-volume-strategy-and-volume-migration" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Migration update volume strategy and volume migration
+              Update volume strategy and volume migration
             
           </span>
         </div>
@@ -2462,6 +2462,168 @@
 
               
             
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Update volume strategy and volume migration
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Update volume strategy and volume migration
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#datavolume-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datavolume template
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volume-migration-cancellation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Volume migration cancellation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volume-migration-failure-and-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Volume migration failure and recovery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Volume migration failure and recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-recovery-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual recovery required
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cancellation-of-the-volume-update-with-the-migration-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cancellation of the volume update with the migration strategy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#failures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Failures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Failures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Recovery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manual Recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#destination-volumes-restoration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Destination volumes restoration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2727,6 +2889,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#volume-migration-cancellation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Volume migration cancellation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volume-migration-failure-and-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Volume migration failure and recovery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Volume migration failure and recovery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manual-recovery-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual recovery required
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#limitations" class="md-nav__link">
     <span class="md-ellipsis">
       Limitations
@@ -2815,7 +3010,7 @@
   
 
 
-<h1 id="migration-update-volume-strategy-and-volume-migration">Migration update volume strategy and volume migration<a class="headerlink" href="#migration-update-volume-strategy-and-volume-migration" title="Permanent link">&para;</a></h1>
+<h1 id="update-volume-strategy-and-volume-migration">Update volume strategy and volume migration<a class="headerlink" href="#update-volume-strategy-and-volume-migration" title="Permanent link">&para;</a></h1>
 <p>Storage migration is possible while the VM is running by using the update volume strategy. Storage migration can be useful in the cases where the users need to change the underlying storage, for example, if the storage class has been deprecated, or there is a new more performant driver available.</p>
 <p>This feature doesn't handle the volume creation or cover migration between storage classes, but rather implements a basic API which can be used by overlaying tools to perform more advanced migration planning.</p>
 <p>If <code>Migration</code> is specified as <code>updateVolumesStrategy</code>, KubeVirt will try to migrate the storage from the old volume set to the new one when the VirtualMachine spec is updated. The migration considers the changed volumes present into a single update. A single update may contain modifications to more than one volume, but sequential changes to the volume set will be handled as separate migrations.</p>
@@ -2996,6 +3191,19 @@ The destination volume should be equal to or larger than the source volume. Howe
 <a id="__codelineno-5-64" name="__codelineno-5-64" href="#__codelineno-5-64"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 <a id="__codelineno-5-65" name="__codelineno-5-65" href="#__codelineno-5-65"></a><span class="w">        </span><span class="nt">pod</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 </code></pre></div></p>
+<h2 id="volume-migration-cancellation">Volume migration cancellation<a class="headerlink" href="#volume-migration-cancellation" title="Permanent link">&para;</a></h2>
+<p>The users could, for various reasons, wish to stop and cancel the ongoing volume migration.
+Migration cancellations are also handled declaratively, thus users must restore the previous set of volumes, which will be read as a cancellation for the volume update and migration.</p>
+<p>A possible way to cancel the migration is to apply the old version of the VM declaration.</p>
+<h2 id="volume-migration-failure-and-recovery">Volume migration failure and recovery<a class="headerlink" href="#volume-migration-failure-and-recovery" title="Permanent link">&para;</a></h2>
+<p>If a volume migration fails, KubeVirt will continue to try to migrate until the volume update is cancelled. As a result, if the original failure was temporary, a subsequent migration could succeed; otherwise, KubeVirt continues to generate new migrations with exponential backoff time.</p>
+<p>To recover from a persistent failure, users must revert the volume set to its original state, indicating the cancellation of the volume migration.</p>
+<h3 id="manual-recovery-required">Manual recovery required<a class="headerlink" href="#manual-recovery-required" title="Permanent link">&para;</a></h3>
+<p>If for any reasons the VMI disappears, then the volume migration is not retried anymore. This might happen if the users inadvertently shutdown the VM or the VMI is accidentally deleted.</p>
+<p>However, in these situations, the VM spec is in an inconsistent state because the volume set contains the destination volumes but the copy was not successful, and users could fail to boot correctly the VM. For this reason the VM is marked with the condition <code>ManualRecoveryRequired</code> and KubeVirt will refuse to start a VM which has this condition.</p>
+<p>In order to recover the VM spec, the users need to revert the volume set in the VM spec as it is the case for the volume migration cancellation.</p>
+<p>The volume migration information is stored in the VM status as well, and the users can see the full list of the migrated volumes which contain the source and destination names as well as the corresponding volume name.</p>
+<p>Users can find the whole list of migrated volumes in the VM status, which includes the source and destination names together with the associated volume name.</p>
 <h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
 <p>Only certain types of disks and volumes are supported to be migrated. For an invalid type of volume the RestartRequired condition is set and volumes will be replaced upon VM restart.
 Currently, the volume migration is supported between PersistentVolumeClaims and Datavolumes.
@@ -3088,13 +3296,13 @@ Otherwise, the users needs to restore the source volumes, and eventually retry t
         
         
           
-          <a href="../../user_workloads/accessing_virtual_machines/" class="md-footer__link md-footer__link--next" aria-label="Next: Accessing Virtual Machines">
+          <a href="../../release_notes/" class="md-footer__link md-footer__link--next" aria-label="Next: Release Notes">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Accessing Virtual Machines
+                Release Notes
               </div>
             </div>
             <div class="md-footer__button md-icon">
