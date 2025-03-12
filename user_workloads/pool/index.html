@@ -3235,9 +3235,9 @@ Volume section will be used directly as is, without any modification to the nami
 means if you specify a secret in a <code>CloudInitNoCloud</code> volume, that every VM instance spawned
 from the VirtualMachinePool with this volume will get the exact same secret used for their cloud-init
 user data.</p>
-<p>This default behavior can be modified by setting the <code>AppendPostfixToSecretReferences</code> and
-<code>AppendPostfixToConfigMapReferences</code> booleans to true on the VMPool spec. When these booleans
-are enabled, references to secret and configMap names will have the VM's sequential postfix
+<p>This default behavior can be modified by setting both the <code>AppendIndexToSecretRefs</code> and
+<code>AppendIndexToConfigMapRefs</code> booleans to <code>true</code> within <code>spec.NameGeneration</code> of the VMPool definition.
+When these booleans are enabled, references to secret and configMap names will have the VM's sequential index
 appended to the secret and configmap name. This allows someone to pre-generate unique per VM
 <code>secret</code> and <code>configMap</code> data for a VirtualMachinePool ahead of time in a way that will be predictably
 assigned to VMs within the VirtualMachinePool.</p>
