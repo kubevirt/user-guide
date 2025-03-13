@@ -1,5 +1,9 @@
 # Accessing Virtual Machines
 
+There are various methods to access `VirtualMachines`, as illustrated below.
+
+To clarify: Consider a `VirtualMachineInstance` as a running `VirtualMachine`.
+
 ## Graphical and Serial Console Access
 
 Once a virtual machine is started you are able to connect to the consoles it
@@ -242,17 +246,19 @@ spec:
 EOF
 ```
 
-### Accessing the VMI using virtctl
+### Accessing a VM or VMI using virtctl
 
-The user can create a websocket backed network tunnel to a port inside the
-instance by using the `virtualmachineinstances/portforward` subresource of the
-`VirtualMachineInstance`.
+The user can create a websocket backed network tunnel to a port inside a VMI
+by using the `virtualmachineinstances/portforward` subresource of a
+`VirtualMachineInstance` or the `virtualmachines/portfoward` subresource of a
+`VirtualMachine`.
 
-One use-case for this subresource is to forward SSH traffic into
-the `VirtualMachineInstance` either from the CLI or a web-UI.
+One use case for these subresources is to forward SSH traffic into
+a `VirtualMachineInstance` either from the CLI or a web-UI. The `VirtualMachine`
+subresource will automatically look up the corresponding `VirtualMachineInstance`.
 
 To connect to a `VirtualMachineInstance` from your local machine, `virtctl`
-provides a lightweight SSH client with the `ssh` command, that uses port
+provides an SSH client with the `ssh` command, that uses port
 forwarding. Refer to the command's help for more details.
 
 ```shell
@@ -260,8 +266,8 @@ virtctl ssh
 ```
 
 To transfer files from or to a `VirtualMachineInstance` `virtctl` also
-provides a lightweight SCP client with the `scp` command. Its usage is
-similar to the `ssh` command. Refer to the command's help for more details.
+provides an SCP client with the `scp` command. Its usage is similar to the `ssh` command.
+Refer to the command's help for more details.
 
 ```shell
 virtctl scp
@@ -269,17 +275,18 @@ virtctl scp
 
 #### Using virtctl as proxy
 
-If you prefer to use your local OpenSSH client, there are two ways of doing
-that in combination with virtctl.
+The preferred way of connecting to VMs and VMIs is to use `virtctl` to wrap
+local OpenSSH clients. If you prefer to use your local OpenSSH client directly
+instead, there are two ways of doing that in combination with `virtctl`.
 
 > Note: Most of this applies to the `virtctl scp` command too.
 
-1. The `virtctl ssh` command has a `--local-ssh` option. With this option
-   `virtctl` wraps the local OpenSSH client transparently to the user. The
-   executed SSH command can be viewed by increasing the verbosity (`-v 3`).
+1. The `virtctl ssh` command has a `--local-ssh` option, which is set to `true` by
+   default. With this option, `virtctl` wraps the local OpenSSH client transparently
+   to the user. The executed SSH command can be viewed by increasing the verbosity (`-v 3`).
 
 ```shell
-virtctl ssh --local-ssh -v 3 testvm
+virtctl ssh --local-ssh -v 3 vm/testvm/mynamespace
 ```
 
 2. The `virtctl port-forward` command provides an option to tunnel a single
@@ -287,7 +294,7 @@ virtctl ssh --local-ssh -v 3 testvm
    combination with the OpenSSH client's `ProxyCommand` option.
 
 ```shell
-ssh -o 'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22' fedora@testvm.mynamespace
+ssh -o 'ProxyCommand=virtctl port-forward --stdio=true vm/testvm/mynamespace 22' fedora@vm/testvm/mynamespace
 ```
 
 To provide easier access to arbitrary virtual machines you can add the following
@@ -300,8 +307,8 @@ Host vm/*
    ProxyCommand virtctl port-forward --stdio=true %h %p
 ```
 
-This allows you to simply call `ssh user@vmi/testvmi.mynamespace` and your
-SSH config and virtctl will do the rest. Using this method it becomes easy
+This allows you to simply call `ssh user@vm/testvm/mynamespace` and your
+SSH `config` and `virtctl` will do the rest. Using this method, it becomes easy
 to set up different identities for different namespaces inside your SSH
 `config`.
 
@@ -327,28 +334,31 @@ and traffic consider using a dedicated Kubernetes `Service` instead.
 2. SSH into virtual machine
 
 ```shell
-# Add --local-ssh to transparently use local OpenSSH client
-virtctl ssh -i id_rsa fedora@testvm
+virtctl ssh -i id_rsa fedora@vm/testvm/mynamespace
 ```
 
 or
 
 ```shell
-ssh -o 'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22' -i id_rsa fedora@vmi/testvm.mynamespace
+ssh -o 'ProxyCommand=virtctl port-forward --stdio=true vm/testvm/mynamespace 22' -i id_rsa fedora@vm/testvm/mynamespace
 ```
 
-4. SCP file to the virtual machine
+3. SCP file to the virtual machine
 
 ```shell
-# Add --local-ssh to transparently use local OpenSSH client
-virtctl scp -i id_rsa testfile fedora@testvm:/tmp
+virtctl scp -i id_rsa testfile fedora@vm/testvm/mynamespace:/tmp
 ```
 
 or
 
 ```shell
-scp -o 'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22' -i id_rsa testfile fedora@testvm.mynamespace:/tmp
+scp -o 'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm/mynamespace 22' -i id_rsa testfile fedora@vm.testvm.mynamespace:/tmp
 ```
+
+!!! Note
+    Local `scp` does not support slashes in hostnames. Therefore the example
+    uses dots to separate the type, name and namespace like `virtctl` does when
+    wrapping the local SCP client.
 
 #### RBAC permissions for Console/VNC/SSH access
 
