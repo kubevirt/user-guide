@@ -1289,13 +1289,13 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#accessing-the-vmi-using-virtctl" class="md-nav__link">
+  <a href="#accessing-a-vm-or-vmi-using-virtctl" class="md-nav__link">
     <span class="md-ellipsis">
-      Accessing the VMI using virtctl
+      Accessing a VM or VMI using virtctl
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Accessing the VMI using virtctl">
+    <nav class="md-nav" aria-label="Accessing a VM or VMI using virtctl">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2998,13 +2998,13 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#accessing-the-vmi-using-virtctl" class="md-nav__link">
+  <a href="#accessing-a-vm-or-vmi-using-virtctl" class="md-nav__link">
     <span class="md-ellipsis">
-      Accessing the VMI using virtctl
+      Accessing a VM or VMI using virtctl
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Accessing the VMI using virtctl">
+    <nav class="md-nav" aria-label="Accessing a VM or VMI using virtctl">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -3101,6 +3101,8 @@
 
 
 <h1 id="accessing-virtual-machines">Accessing Virtual Machines<a class="headerlink" href="#accessing-virtual-machines" title="Permanent link">&para;</a></h1>
+<p>There are various methods to access <code>VirtualMachines</code>, as illustrated below.</p>
+<p>To clarify: Consider a <code>VirtualMachineInstance</code> as a running <code>VirtualMachine</code>.</p>
 <h2 id="graphical-and-serial-console-access">Graphical and Serial Console Access<a class="headerlink" href="#graphical-and-serial-console-access" title="Permanent link">&para;</a></h2>
 <p>Once a virtual machine is started you are able to connect to the consoles it
 exposes. Usually there are two types of consoles:</p>
@@ -3302,41 +3304,44 @@ credentials API using
 <a id="__codelineno-7-50" name="__codelineno-7-50" href="#__codelineno-7-50"></a><span class="s">        name: cloudinitdisk</span>
 <a id="__codelineno-7-51" name="__codelineno-7-51" href="#__codelineno-7-51"></a><span class="s">EOF</span>
 </code></pre></div>
-<h3 id="accessing-the-vmi-using-virtctl">Accessing the VMI using virtctl<a class="headerlink" href="#accessing-the-vmi-using-virtctl" title="Permanent link">&para;</a></h3>
-<p>The user can create a websocket backed network tunnel to a port inside the
-instance by using the <code>virtualmachineinstances/portforward</code> subresource of the
-<code>VirtualMachineInstance</code>.</p>
-<p>One use-case for this subresource is to forward SSH traffic into
-the <code>VirtualMachineInstance</code> either from the CLI or a web-UI.</p>
+<h3 id="accessing-a-vm-or-vmi-using-virtctl">Accessing a VM or VMI using virtctl<a class="headerlink" href="#accessing-a-vm-or-vmi-using-virtctl" title="Permanent link">&para;</a></h3>
+<p>The user can create a websocket backed network tunnel to a port inside a VMI
+by using the <code>virtualmachineinstances/portforward</code> subresource of a
+<code>VirtualMachineInstance</code> or the <code>virtualmachines/portfoward</code> subresource of a
+<code>VirtualMachine</code>.</p>
+<p>One use case for these subresources is to forward SSH traffic into
+a <code>VirtualMachineInstance</code> either from the CLI or a web-UI. The <code>VirtualMachine</code>
+subresource will automatically look up the corresponding <code>VirtualMachineInstance</code>.</p>
 <p>To connect to a <code>VirtualMachineInstance</code> from your local machine, <code>virtctl</code>
-provides a lightweight SSH client with the <code>ssh</code> command, that uses port
+provides an SSH client with the <code>ssh</code> command, that uses port
 forwarding. Refer to the command's help for more details.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>virtctl<span class="w"> </span>ssh
 </code></pre></div>
 <p>To transfer files from or to a <code>VirtualMachineInstance</code> <code>virtctl</code> also
-provides a lightweight SCP client with the <code>scp</code> command. Its usage is
-similar to the <code>ssh</code> command. Refer to the command's help for more details.</p>
+provides an SCP client with the <code>scp</code> command. Its usage is similar to the <code>ssh</code> command.
+Refer to the command's help for more details.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>virtctl<span class="w"> </span>scp
 </code></pre></div>
 <h4 id="using-virtctl-as-proxy">Using virtctl as proxy<a class="headerlink" href="#using-virtctl-as-proxy" title="Permanent link">&para;</a></h4>
-<p>If you prefer to use your local OpenSSH client, there are two ways of doing
-that in combination with virtctl.</p>
+<p>The preferred way of connecting to VMs and VMIs is to use <code>virtctl</code> to wrap
+local OpenSSH clients. If you prefer to use your local OpenSSH client directly
+instead, there are two ways of doing that in combination with <code>virtctl</code>.</p>
 <blockquote>
 <p>Note: Most of this applies to the <code>virtctl scp</code> command too.</p>
 </blockquote>
 <ol>
-<li>The <code>virtctl ssh</code> command has a <code>--local-ssh</code> option. With this option
-   <code>virtctl</code> wraps the local OpenSSH client transparently to the user. The
-   executed SSH command can be viewed by increasing the verbosity (<code>-v 3</code>).</li>
+<li>The <code>virtctl ssh</code> command has a <code>--local-ssh</code> option, which is set to <code>true</code> by
+   default. With this option, <code>virtctl</code> wraps the local OpenSSH client transparently
+   to the user. The executed SSH command can be viewed by increasing the verbosity (<code>-v 3</code>).</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>virtctl<span class="w"> </span>ssh<span class="w"> </span>--local-ssh<span class="w"> </span>-v<span class="w"> </span><span class="m">3</span><span class="w"> </span>testvm
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>virtctl<span class="w"> </span>ssh<span class="w"> </span>--local-ssh<span class="w"> </span>-v<span class="w"> </span><span class="m">3</span><span class="w"> </span>vm/testvm/mynamespace
 </code></pre></div>
 <ol>
 <li>The <code>virtctl port-forward</code> command provides an option to tunnel a single
    port to your local stdout/stdin. This allows the command to be used in
    combination with the OpenSSH client's <code>ProxyCommand</code> option.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22&#39;</span><span class="w"> </span>fedora@testvm.mynamespace
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vm/testvm/mynamespace 22&#39;</span><span class="w"> </span>fedora@vm/testvm/mynamespace
 </code></pre></div>
 <p>To provide easier access to arbitrary virtual machines you can add the following
 lines to your SSH <code>config</code>:</p>
@@ -3345,8 +3350,8 @@ lines to your SSH <code>config</code>:</p>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Host vm/*
 <a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>   ProxyCommand virtctl port-forward --stdio=true %h %p
 </code></pre></div>
-<p>This allows you to simply call <code>ssh user@vmi/testvmi.mynamespace</code> and your
-SSH config and virtctl will do the rest. Using this method it becomes easy
+<p>This allows you to simply call <code>ssh user@vm/testvm/mynamespace</code> and your
+SSH <code>config</code> and <code>virtctl</code> will do the rest. Using this method, it becomes easy
 to set up different identities for different namespaces inside your SSH
 <code>config</code>.</p>
 <p>This feature can also be used with Ansible to automate configuration of virtual
@@ -3369,21 +3374,25 @@ and traffic consider using a dedicated Kubernetes <code>Service</code> instead.<
 <p>SSH into virtual machine</p>
 </li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Add --local-ssh to transparently use local OpenSSH client</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>virtctl<span class="w"> </span>ssh<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>fedora@testvm
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>virtctl<span class="w"> </span>ssh<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>fedora@vm/testvm/mynamespace
 </code></pre></div>
 <p>or</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22&#39;</span><span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>fedora@vmi/testvm.mynamespace
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vm/testvm/mynamespace 22&#39;</span><span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>fedora@vm/testvm/mynamespace
 </code></pre></div>
 <ol>
 <li>SCP file to the virtual machine</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Add --local-ssh to transparently use local OpenSSH client</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>virtctl<span class="w"> </span>scp<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>testfile<span class="w"> </span>fedora@testvm:/tmp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>virtctl<span class="w"> </span>scp<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>testfile<span class="w"> </span>fedora@vm/testvm/mynamespace:/tmp
 </code></pre></div>
 <p>or</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>scp<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vmi/testvm.mynamespace 22&#39;</span><span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>testfile<span class="w"> </span>fedora@testvm.mynamespace:/tmp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>scp<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vmi/testvm/mynamespace 22&#39;</span><span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>testfile<span class="w"> </span>fedora@vm.testvm.mynamespace:/tmp
 </code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Local <code>scp</code> does not support slashes in hostnames. Therefore the example
+uses dots to separate the type, name and namespace like <code>virtctl</code> does when
+wrapping the local SCP client.</p>
+</div>
 <h4 id="rbac-permissions-for-consolevncssh-access">RBAC permissions for Console/VNC/SSH access<a class="headerlink" href="#rbac-permissions-for-consolevncssh-access" title="Permanent link">&para;</a></h4>
 <h5 id="using-default-rbac-cluster-roles">Using default RBAC cluster roles<a class="headerlink" href="#using-default-rbac-cluster-roles" title="Permanent link">&para;</a></h5>
 <p>Every KubeVirt installation starting with version v0.5.1 ships a set of default
