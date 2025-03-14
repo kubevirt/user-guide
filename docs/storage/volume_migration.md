@@ -110,9 +110,6 @@ apiVersion: kubevirt.io/v1
 kind: KubeVirt
 spec:
   configuration:
-    developerConfiguration:
-      featureGates:
-        - VMLiveUpdateFeatures
     vmRolloutStrategy: LiveUpdate
   workloadUpdateStrategy:
     workloadUpdateMethods:
