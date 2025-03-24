@@ -1,6 +1,6 @@
 # Instance types and preferences
 
-**FEATURE STATE:** 
+**FEATURE STATE:**
 
 * `instancetype.kubevirt.io/v1alpha1` (Experimental) as of the [`v0.56.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.56.0) KubeVirt release
 * `instancetype.kubevirt.io/v1alpha2` (Experimental) as of the [`v0.58.0`](https://github.com/kubevirt/kubevirt/releases/tag/v0.58.0) KubeVirt release
@@ -231,7 +231,6 @@ Versioning of these resources is required to ensure the eventual `VirtualMachine
 
 This is currently achieved by using `ControllerRevision` to retain a copy of the `VirtualMachineInstancetype` or `VirtualMachinePreference` at the time the `VirtualMachine` is created. A reference to these `ControllerRevisions` are then retained in the [`InstancetypeMatcher`](https://kubevirt.io/api-reference/main/definitions.html#_v1_instancetypematcher) and [`PreferenceMatcher`](https://kubevirt.io/api-reference/main/definitions.html#_v1_preferencematcher) within the `VirtualMachine` for future use.
 
-
 ```yaml
 $ kubectl apply -f examples/csmall.yaml -f examples/vm-cirros-csmall.yaml
 virtualmachineinstancetype.instancetype.kubevirt.io/csmall created
@@ -357,6 +356,61 @@ $ kubectl get vmi/vm-cirros-csmall -o json | jq .spec.domain.cpu
   "sockets": 2,
   "threads": 1
 }
+```
+
+### InstancetypeReferencePolicy
+
+**FEATURE STATE:**
+
+* Alpha (Experimental) as of the [v1.4.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.4.0) KubeVirt release
+* Beta as of the [v1.5.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.5.0) KubeVirt release
+
+The versioning and referencing behaviour of instance types and preferences is configurable with the following policies supported:
+
+* `reference` (default) - As described above, a copy of the associated instance type or preference is stored in a ControllerRevision and referenced by the VirtualMachine
+* `expand` - Any instance type or preference referenced by a newly created VirtualMachine is expanded directly into the spec of the VirtualMachine
+* `expandAll` - Any instance type or preference referenced by any VirtualMachine in the cluster is expanded directly into the spec of the VirtualMachine
+
+With KubeVirt <= v1.5.0 the `InstancetypeReferencePolicy` feature gate must be enabled before the feature is usable:
+
+```sh
+kubectl patch -n kubevirt kv/kubevirt --type merge -p '{"spec":{"configuration":{"developerConfiguration":{"featureGates":["InstancetypeReferencePolicy"]}}}}'
+```
+
+The `spec.configuration.instancetype.referencePolicy` tunable can then be used to configure one of the above policies:
+
+```sh
+kubectl patch -n kubevirt kv/kubevirt --type merge -p '{"spec":{"configuration":{"instancetype":{"referencePolicy": "expand"}}}}'
+```
+
+As outlined above, the `expand` policy results in any instance type or preference referenced by the VirtualMachine being expanded in the created object:
+
+```
+ $ virtctl create vm --instancetype u1.medium --name test | kubectl apply -f -
+virtualmachine.kubevirt.io/test created
+
+$ kubectl get vm/test -o json | jq .spec.instancetype
+null
+```
+
+While the `expandAll` policy applies to any pre-existing VirtualMachines:
+
+```
+$ kubectl patch -n kubevirt kv/kubevirt --type merge -p '{"spec":{"configuration":{"instancetype":{"referencePolicy": "reference"}}}}'
+
+$ virtctl create vm --instancetype u1.medium --name test | kubectl apply -f -
+virtualmachine.kubevirt.io/test created
+
+$ kubectl get vm/test -o json | jq .spec.instancetype
+{
+  "kind": "virtualmachineclusterinstancetype",
+  "name": "u1.medium"
+}
+
+$ kubectl patch -n kubevirt kv/kubevirt --type merge -p '{"spec":{"configuration":{"instancetype":{"referencePolicy": "expandAll"}}}}'
+
+$ kubectl get vm/test -o json | jq .spec.instancetype
+null
 ```
 
 ## inferFromVolume
@@ -585,6 +639,7 @@ EOF
 * This version captured complete `VirtualMachine{Instancetype,ClusterInstancetype,Preference,ClusterPreference}` objects within the created `ControllerRevisions`
 
 * This version is backwardly compatible with `instancetype.kubevirt.io/v1alpha1`.
+
 ### `instancetype.kubevirt.io/v1beta1`
 
 * The following instance type attribute has been added:
