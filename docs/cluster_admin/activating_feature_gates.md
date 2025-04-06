@@ -48,5 +48,5 @@ Change the namespace to suite your installation.
 
 ## List of feature gates
 The list of feature gates (which evolve in time) can be checked directly from
-the [source code](https://github.com/kubevirt/kubevirt/blob/main/pkg/virt-config/featuregate/active.go#L22) (use the const string values in the yaml configuration).
+the [source code](https://github.com/kubevirt/kubevirt/blob/main/pkg/virt-config/featuregate/active.go) (use the const string values in the yaml configuration).
 
