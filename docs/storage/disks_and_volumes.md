@@ -2121,7 +2121,7 @@ The following strategies are supported:
     found in the [volume migration documentation](../storage/volume_migration.md).
 
 The update volume migration depends on the feature gate `VolumesUpdateStrategy`
-which depends on the VMLiveUpdateFeatures feature gate and configuration.
+which depends on the workloadUpdateStrategy configuration.
 
 KubeVirt CR:
 ```yaml
@@ -2131,7 +2131,6 @@ spec:
   configuration:
     developerConfiguration:
       featureGates:
-        - VMLiveUpdateFeatures
         - VolumesUpdateStrategy
   workloadUpdateStrategy:
     workloadUpdateMethods:
