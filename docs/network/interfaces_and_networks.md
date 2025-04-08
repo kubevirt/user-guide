@@ -196,7 +196,7 @@ properties "seen" inside guest instances, as listed below:
 |------------|--------------------------------------------------------------------|------------------------|--------------------------------------------------------------------------------------------|
 | model      | One of: `e1000`, `e1000e`, `ne2k_pci`, `pcnet`, `rtl8139`, `virtio`| `virtio`               | NIC type. **Note:** Use `e1000` model if your guest image doesn't ship with virtio drivers |
 | macAddress | `ff:ff:ff:ff:ff:ff` or `FF-FF-FF-FF-FF-FF`                         |                        | MAC address as seen inside the guest system, for example: `de:ad:00:00:be:af`              |
-| ports      |                                                                    | empty (i.e. all ports) | Allow-list of ports to be forwarded to the virtual machine                                 |
+| ports      |                                                                    | empty (i.e. all ports) | A list of ports to forward to the VM guest.                                                |
 | pciAddress | `0000:81:00.1`                                                     |                        | Set network interface PCI address, for example: `0000:81:00.1`                             |
 
 
@@ -215,7 +215,7 @@ spec:
               masquerade: {} # connect through a masquerade
               ports:
                - name: http
-                 port: 80 # allow only http traffic ingress
+                 port: 80 # forward only http traffic
       networks:
       - name: default
         pod: {}
@@ -267,13 +267,18 @@ spec:
 >
 ### Ports
 
-Declare ports listen by the virtual machine
+Declare ports to forward to the virtual machine guest.
 
 | Name       | 	Format   | 	Required | Description         |
 |------------|-----------|-----------|---------------------|
 | `name`     |           | no        | Name                |
 | `port`     | 1 - 65535 | yes       | Port to expose      |
 | `protocol` | TCP,UDP   | no        | Connection protocol |
+
+> **Note:**  
+> The `ports` attribute is only evaluated by specific network bindings, namely the masquerade core network binding.  
+> In the bridge network binding, it has no effect. For network binding plugins, its behavior depends on the plugin implementation.  
+> See the network binding plugin [documentation](https://kubevirt.io/user-guide/network/network_binding_plugins/) for details.
 
 If `spec.domain.devices.interfaces` is omitted, the virtual machine is
 connected using the default pod network interface of `bridge` type. If
@@ -386,7 +391,7 @@ spec:
             - name: red
               masquerade: {} # connect using masquerade mode
               ports:
-                - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+                - port: 80 # forward traffic on port 80 to the virtual machine guest
       networks:
       - name: red
         pod: {}
