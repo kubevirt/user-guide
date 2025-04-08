@@ -426,12 +426,19 @@ spec:
         devices:
           interfaces:
             - name: red
-              masquerade: {} # connect using masquerade mode
-              ports:
-                - port: 80 # allow incoming traffic on port 80 to get into the virtual machine
+              masquerade: {} 
       networks:
       - name: red
         pod: {}
+    volumes:
+      - cloudInitNoCloud:
+          networkData: |
+            version: 2
+            ethernets:
+              eth0:
+                dhcp4: true
+                addresses: [ fd10:0:2::2/120 ]
+                gateway6: fd10:0:2::1
 ```
 
 > **Note:** The IPv6 address for the VM and default gateway **must** be the ones
