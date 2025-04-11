@@ -3014,17 +3014,17 @@ This allows deployment of a set of default instancetypes and preferences along s
 <li>GA - <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.4.0"><code>v1.4.0</code></a> (Enabled by default)</li>
 </ul>
 <h2 id="control-deployment-of-common-instancetypes">Control deployment of common-instancetypes<a class="headerlink" href="#control-deployment-of-common-instancetypes" title="Permanent link">&para;</a></h2>
-<p>To explictly enable or disable the deployment of cluster-wide common-instancetypes through the KubeVirt <code>virt-operator</code> use the <code>spec.configuration.commonInstancetypesDeployment.enable</code> configurable.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>patch<span class="w"> </span>-n<span class="w"> </span>kubevirt<span class="w"> </span>kv/kubevirt<span class="w"> </span>--type<span class="w"> </span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;configuration&quot;:{&quot;commonInstancetypesDeployment&quot;:{&quot;enable&quot;: false}}}}&#39;</span>
+<p>To explicitly enable or disable the deployment of cluster-wide common-instancetypes through the KubeVirt <code>virt-operator</code> use the <code>spec.configuration.commonInstancetypesDeployment.enabled</code> configurable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>-n<span class="w"> </span>kubevirt<span class="w"> </span>kv/kubevirt<span class="w"> </span>--type<span class="w"> </span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;configuration&quot;:{&quot;commonInstancetypesDeployment&quot;:{&quot;enabled&quot;: false}}}}&#39;</span>
 </code></pre></div>
 <h2 id="deploy-common-instancetypes-manually">Deploy common-instancetypes manually<a class="headerlink" href="#deploy-common-instancetypes-manually" title="Permanent link">&para;</a></h2>
 <p>For customization purposes or to install namespaced resources, common-instancetypes can also be deployed by hand.</p>
 <p>To install all resources provided by the <a href="https://github.com/kubevirt/common-instancetypes"><code>kubevirt/common-instancetypes</code></a> project without further customizations, simply apply with <a href="https://kustomize.io/"><code>kustomize</code></a> enabled (-k flag):</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl apply -k https://github.com/kubevirt/common-instancetypes.git</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>https://github.com/kubevirt/common-instancetypes.git
 </code></pre></div>
 <p>Alternatively, targets for each of the available custom resource types (e.g. namespaced instancetypes) are available.</p>
 <p>For example, to deploy <code>VirtualMachineInstancetypes</code> run the following command:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="l l-Scalar l-Scalar-Plain">$ kubectl apply -k https://github.com/kubevirt/common-instancetypes.git/VirtualMachineInstancetypes</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-k<span class="w"> </span>https://github.com/kubevirt/common-instancetypes.git/VirtualMachineInstancetypes
 </code></pre></div>
 
 
