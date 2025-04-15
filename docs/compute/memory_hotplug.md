@@ -12,20 +12,6 @@ Memory hotplug was introduced in KubeVirt version 1.1, enabling the dynamic resi
 
 # Configuration
 
-### Enable feature-gate
-
-To use memory hotplug we need to add the `VMLiveUpdateFeatures` feature gate in the KubeVirt CR:
-
-```yaml
-apiVersion: kubevirt.io/v1
-kind: KubeVirt
-spec:
-  configuration:
-    developerConfiguration:
-      featureGates:
-        - VMLiveUpdateFeatures
-```
-
 ### Configure the Workload Update Strategy
 
 Configure `LiveMigrate` as `workloadUpdateStrategy` in the KubeVirt CR, since the current implementation of the hotplug process requires the VM to live-migrate.
@@ -73,10 +59,9 @@ The VM-level configuration will take precedence over the cluster-wide one.
 
 ## Memory Hotplug in Action
 
-First we enable the `VMLiveUpdateFeatures` feature gate, set the rollout strategy to `LiveUpdate` and set `LiveMigrate` as `workloadUpdateStrategy` in the KubeVirt CR.
+First we set the rollout strategy to `LiveUpdate` and `LiveMigrate` as `workloadUpdateStrategy` in the KubeVirt CR.
 
 ```sh
-$ kubectl --namespace kubevirt patch kv kubevirt -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates", "value": ["VMLiveUpdateFeatures"]}]' --type='json'
 $ kubectl --namespace kubevirt patch kv kubevirt -p='[{"op": "add", "path": "/spec/configuration/vmRolloutStrategy", "value": "LiveUpdate"}]' --type='json'
 $ kubectl --namespace kubevirt patch kv kubevirt -p='[{"op": "add", "path": "/spec/workloadUpdateStrategy/workloadUpdateMethods", "value": ["LiveMigrate"]}]' --type='json'
 ```

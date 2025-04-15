@@ -12,19 +12,6 @@ Per each new socket that is hot-plugged, the amount of new vCPUs that would be s
 
 ## Configuration
 
-### Enable feature-gate
-In order to enable CPU hotplug we need to add the `VMLiveUpdateFeatures` feature gate in Kubevirt CR:
-
-```yaml
-apiVersion: kubevirt.io/v1
-kind: KubeVirt
-spec:
-  configuration:
-    developerConfiguration:
-      featureGates:
-        - VMLiveUpdateFeatures
-```
-
 ### Configure the workload update strategy
 Current implementation of the hotplug process requires the VM to live-migrate.
 The migration will be triggered automatically by the workload updater. The workload update strategy in the KubeVirt CR must be configured with `LiveMigrate`, as follows:
