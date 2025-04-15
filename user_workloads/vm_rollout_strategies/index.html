@@ -1749,15 +1749,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#feature-gate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Feature Gate
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#liveupdate" class="md-nav__link">
     <span class="md-ellipsis">
       LiveUpdate
@@ -2962,15 +2953,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#feature-gate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Feature Gate
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#liveupdate" class="md-nav__link">
     <span class="md-ellipsis">
       LiveUpdate
@@ -3043,34 +3025,23 @@
 In other words, it defines when and how changes to a VM object get propagated to its corresponding VMI object.</p>
 <p>There are currently 2 rollout strategies: <code>LiveUpdate</code> and <code>Stage</code>.
 Only 1 can be specified and the default is <code>Stage</code>.</p>
-<h2 id="feature-gate">Feature Gate<a class="headerlink" href="#feature-gate" title="Permanent link">&para;</a></h2>
-<p>As long as the <code>VMLiveUpdateFeatures</code> is not enabled, the VM Rollout Strategy is ignored and defaults to "Stage".
-The feature gate is set in the KubeVirt custom resource (CR) like that:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMLiveUpdateFeatures</span>
-</code></pre></div>
 <h2 id="liveupdate">LiveUpdate<a class="headerlink" href="#liveupdate" title="Permanent link">&para;</a></h2>
 <p>The <code>LiveUpdate</code> VM rollout strategy tries to propagate VM object changes to running VMIs as soon as possible.<br />
 For example, changing the number of CPU sockets will trigger a <a href="../../compute/cpu_hotplug/">CPU hotplug</a>.</p>
 <p>Enable the <code>LiveUpdate</code> VM rollout strategy in the KubeVirt CR:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">vmRolloutStrategy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;LiveUpdate&quot;</span>
+</code></pre></div>
+<h2 id="stage">Stage<a class="headerlink" href="#stage" title="Permanent link">&para;</a></h2>
+<p>The <code>Stage</code> VM rollout strategy stages every change made to the VM object until its next reboot.  </p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">vmRolloutStrategy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;LiveUpdate&quot;</span>
-</code></pre></div>
-<h2 id="stage">Stage<a class="headerlink" href="#stage" title="Permanent link">&para;</a></h2>
-<p>The <code>Stage</code> VM rollout strategy stages every change made to the VM object until its next reboot.  </p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">vmRolloutStrategy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Stage&quot;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">vmRolloutStrategy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Stage&quot;</span>
 </code></pre></div>
 <h2 id="restartrequired-condition">RestartRequired condition<a class="headerlink" href="#restartrequired-condition" title="Permanent link">&para;</a></h2>
 <p>Any change made to a VM object when the rollout strategy is <code>Stage</code> will trigger the <code>RestartRequired</code> VM condition.<br />

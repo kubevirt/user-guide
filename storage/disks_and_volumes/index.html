@@ -6160,7 +6160,7 @@ The following strategies are supported:
     the old volumes to the new ones. More details about volume migration can be
     found in the <a href="../volume_migration/">volume migration documentation</a>.</p>
 <p>The update volume migration depends on the feature gate <code>VolumesUpdateStrategy</code>
-which depends on the VMLiveUpdateFeatures feature gate and configuration.</p>
+which depends on the workloadUpdateStrategy configuration.</p>
 <p>KubeVirt CR:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
@@ -6168,11 +6168,10 @@ which depends on the VMLiveUpdateFeatures feature gate and configuration.</p>
 <a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
 <a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
 <a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMLiveUpdateFeatures</span>
-<a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VolumesUpdateStrategy</span>
-<a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="w">  </span><span class="nt">workloadUpdateStrategy</span><span class="p">:</span>
-<a id="__codelineno-48-10" name="__codelineno-48-10" href="#__codelineno-48-10"></a><span class="w">    </span><span class="nt">workloadUpdateMethods</span><span class="p">:</span>
-<a id="__codelineno-48-11" name="__codelineno-48-11" href="#__codelineno-48-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigrate</span>
+<a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VolumesUpdateStrategy</span>
+<a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a><span class="w">  </span><span class="nt">workloadUpdateStrategy</span><span class="p">:</span>
+<a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a><span class="w">    </span><span class="nt">workloadUpdateMethods</span><span class="p">:</span>
+<a id="__codelineno-48-10" name="__codelineno-48-10" href="#__codelineno-48-10"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigrate</span>
 </code></pre></div></p>
 
 
