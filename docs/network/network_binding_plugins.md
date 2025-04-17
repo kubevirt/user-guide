@@ -69,7 +69,6 @@ A network binding plugin configuration consist of the following steps:
   - Binding CNI plugin.
   - Binding NetworkAttachmentDefinition manifest.
   - Access to the sidecar image.
-  - Enable `NetworkBindingPlugins` Feature Gate (FG).
 
 - Register network binding.
 - Assign VM network interface binding.
@@ -137,17 +136,6 @@ spec:
   The image can be built from source and pushed to an accessible registry
   or used from a given registry that already contains it.
 
-- Feature Gate
-  The network binding plugin is currently (v1.1.0) in Alpha stage, protected
-  by a feature gate (FG) named `NetworkBindingPlugins`.
-
-  It is therefore necessary to set the FG in the Kubevirt CR.
-
-  Example (valid when the FG subtree is already defined):
-```
-kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-",   "value": "NetworkBindingPlugins"}]'
-```
-
 ### Register
 In order to use a network binding plugin, the cluster admin needs to register
 the binding.
@@ -189,6 +177,10 @@ Supported types:
 
 - `tap` (from v1.1.1): The domain configuration is set to use an existing
   tap device. It also supports existing `macvtap` devices.
+- `managedTap`: (From 1.4) The domain configuration is set to use a tap device. 
+  The tap device is wired to the pod interface through a bridge
+  (similar to the core bridge binding) and all are created per need. 
+  No IPAM support is provided with this type.
 
 When both the `domainAttachmentType` and `sidecarImage` are specified,
 the domain will first be configured according to the `domainAttachmentType`
