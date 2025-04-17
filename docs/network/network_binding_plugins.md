@@ -177,6 +177,10 @@ Supported types:
 
 - `tap` (from v1.1.1): The domain configuration is set to use an existing
   tap device. It also supports existing `macvtap` devices.
+- `managedTap`: (From 1.4) The domain configuration is set to use a tap device. 
+  The tap device is wired to the pod interface through a bridge
+  (similar to the core bridge binding) and all are created per need. 
+  No IPAM support is provided with this type.
 
 When both the `domainAttachmentType` and `sidecarImage` are specified,
 the domain will first be configured according to the `domainAttachmentType`
