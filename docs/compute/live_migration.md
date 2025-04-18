@@ -416,9 +416,9 @@ if it is running for a long period of time.
 The timeout is calculated based on the size of
 the VMI, its memory and the ephemeral disks that are needed to be
 copied. The configurable parameter `completionTimeoutPerGiB`, which
-defaults to 800s, is the maximum amount of time per GiB of data allowed before the migration
+defaults to 150s, is the maximum amount of time per GiB of data allowed before the migration
 gets aborted / switched to post-copy mode.
-For example, with the default value, a VMI with 8GiB of memory will time-out after 6400 seconds.
+For example, with the default value, a VMI with 8GiB of memory will time-out after 1200 seconds.
 
 ### Progress timeout
 
