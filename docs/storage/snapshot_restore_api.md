@@ -106,6 +106,41 @@ To wait for a restore to complete, execute:
 kubectl wait vmrestore restore-larry --for condition=Ready
 ```
 
+## Target readiness policies
+
+When restoring a `VirtualMachineSnapshot` on an already existing target (like the parent VM of the snapshot), a readiness policy can be specified to adjust how the restore happens if the target VM is not ready. The target VM is considered ready when it is fully stopped. The policy is controlled by setting `targetReadinessPolicy` to one of the available types.
+
+The following policies are available:
+- **WaitGracePeriod** (default policy): Wait 5 minutes for the target VM to be ready. If not ready in time, the restore will fail.
+- **StopTarget**: Stop the target VM so that the restore can continue immediately.
+- **FailImmediate**: Don't wait for the target to be ready before trying to restore. If it is not ready, the restore fails immediately.
+- **WaitEventually**: Kubevirt keeps the `VirtualMachineRestore` around until the target is ready. The restore is started as soon as the target is ready.
+
+## JSON patches
+
+It is sometimes necessary to modify the specs of VMs before restoring them (e.g modifying or adding annotations for CNIs).
+
+JSON patches can be applied to the `specs` and `labels/annotations` of restored VMs using the `patches` parameter:
+
+```yaml
+apiVersion: snapshot.kubevirt.io/v1beta1
+kind: VirtualMachineRestore
+metadata:
+  name: restore-larry
+spec:
+  target:
+    apiGroup: kubevirt.io
+    kind: VirtualMachine
+    name: larry
+  virtualMachineSnapshotName: snap-larry
+  patches:
+    - "{\"op\": \"replace\", \"path\": \"/spec/template/metadata/labels/example\", \"value\": \"replaced-value\"}" # Replace the content of a labels
+```
+
+Patches are only applied if the target is not an already existing VM.
+
+**Keep in mind that patches must be carefully applied.** Some fields might be used to reference other resources, or be used as targets by other resources.
+
 ## Cleanup
 
 Keep `VirtualMachineSnapshots` (and their corresponding `VirtualMachineSnapshotContents`) around as long as you may want to restore from them again.
