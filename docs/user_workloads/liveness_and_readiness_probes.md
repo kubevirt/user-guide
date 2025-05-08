@@ -267,7 +267,7 @@ as `/dev/watchdog`. This device can then be used by the `watchdog`
 binary. For example, if root executes this command inside the VM:
 
 ```bash
-echo > /dev/watchdog
+sudo busybox watchdog -t 2000ms -T 4000ms /dev/watchdog
 ```
 
 The watchdog will send a heartbeat every two seconds to `/dev/watchdog` and
