@@ -248,14 +248,16 @@ spec:
       volumes:
       - name: containerdisk
         containerDisk:
-          image: quay.io/containerdisks/centos-stream:9
+          image: quay.io/containerdisks/fedora:latest
       - name: cloudinit
         cloudInitNoCloud:
           userData: |-
             #cloud-config
-            password: centos
-            user: centos
+            password: fedora
+            user: fedora
             chpasswd: { expire: False }
+            packages:
+                busybox
 ```
 
 The example above configures it with the `poweroff` action. It defines what will
