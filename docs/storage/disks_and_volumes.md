@@ -1629,6 +1629,13 @@ Disks will be assigned to IOThreads like this:
     emptydisk5:   2
     emptydisk6:   1
 
+**Note:** `dedicatedIOThreads` isn't currently supported for disks using `scsi` as bus type.
+If the field is set, then the webhook will complain with this error message:
+`IOThreads are not supported for disks on a %s bus`. The reason for this limitation
+consists that KubeVirt supports a single scsi controller for all the disks using the
+`scsi` bus, and QEMU does not support assigning each IOThreads to each scsi disks,
+instead they can only be assigned at the controller level.
+
 ### Virtio Block Multi-Queue
 
 Block Multi-Queue is a framework for the Linux block layer that maps
