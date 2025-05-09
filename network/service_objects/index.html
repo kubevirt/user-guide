@@ -3064,6 +3064,8 @@ port inside the cluster network:</p>
 <div class="highlight"><pre><span></span><code>$ ssh cirros@172.30.3.149 -p 27017
 </code></pre></div>
 <h2 id="expose-virtualmachineinstance-as-a-nodeport-service">Expose VirtualMachineInstance as a NodePort Service<a class="headerlink" href="#expose-virtualmachineinstance-as-a-nodeport-service" title="Permanent link">&para;</a></h2>
+<p>To expose a VirtualMachineInstance (VMI) via a Kubernetes service (e.g., NodePort, ClusterIP, LoadBalancer), ensure the associated VirtualMachine (VM) template includes the appropriate labels. These labels are inherited by the underlying pod created by the VMI, allowing the service to target the correct pod via its selector.</p>
+<p>For further details, refer to Kubernetes documentation on <a href="https://kubernetes.io/docs/concepts/services-networking/service/#services-with-selectors">Services and Selectors</a>.</p>
 <p>Expose the SSH port (22) of a VirtualMachineInstance running on KubeVirt
 by creating a <code>NodePort</code> service:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
