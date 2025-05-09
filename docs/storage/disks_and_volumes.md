@@ -1408,7 +1408,7 @@ Additionally, each `Disk` device exposes a `dedicatedIOThread` setting.
 This is a boolean that indicates the specified disk should be allocated
 an exclusive IOThread that will never be shared with other disks.
 
-Currently valid policies are `shared` and `auto`. If `ioThreadsPolicy`
+Currently valid policies are `shared`, `auto` and `supplementalPool`. If `ioThreadsPolicy`
 is omitted entirely, use of IOThreads will be disabled. However, if any
 disk requests a dedicated IOThread, `ioThreadsPolicy` will be enabled
 and default to `shared`.
@@ -1446,6 +1446,36 @@ There is always guaranteed to be at least one thread for disks that will
 use the shared IOThreads pool. Thus if a sufficiently large number of
 disks have dedicated IOThreads assigned, `auto` and `shared` policies
 would essentially result in the same layout.
+
+#### SupplementalPool
+
+`supplementalPool` IOthreads enables users to set the number of IOthreads
+and adds the corresponding extra CPUs to the pod.
+
+The number of IOThreads can be specified under the field `ioThreads`:
+```yaml
+spec:
+  domain:
+    iothreadsPolicy: supplementalPool
+    ioThreads:
+      count: 4
+```
+
+In the case the dedicatedCpuPlacement is set to `true`, then the pod uses
+dedicated CPUs and each iothread is pinned to each additional cpu.
+In this way, vCPUs and IOThreads are scheduled each on separate pCPUs
+and they do not interfere with each other. If dedicatedCpuPlacement is false,
+then the iothreads aren't pinned, and the vcpu threads and iothreads float
+on the entire set of cpus.
+
+This policy consumes extra CPUs resources, therefore, it needs to be set carefully
+when the workload requires high parallelization of IO.
+Under the hood, it uses the virtqueue mapping from QEMU, and from the heuristics, the
+ideal number of IOThreads is among 4-8, depending on the type of workload.
+This number depends on multiple factors, and needs to be determined by running
+some performance measurements. More details on the feature can be found
+[at this blog](https://developers.redhat.com/articles/2024/09/05/scaling-virtio-blk-disk-io-iothread-virtqueue-mapping#how_iothread_virtqueue_mapping_works).
+
 
 #### IOThreads with Dedicated (pinned) CPUs
 
