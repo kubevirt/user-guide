@@ -29,172 +29,161 @@ operator and forwarded to the guest.
 
 ## Define a HTTP Liveness Probe
 
-The following VirtualMachineInstance configures a HTTP Liveness Probe
-via `spec.livenessProbe.httpGet`, which will query port 1500 of the
-VirtualMachineInstance, after an initial delay of 120 seconds. The
-VirtualMachineInstance itself installs and runs a minimal HTTP server on
+The following VirtualMachine configures a HTTP Liveness Probe
+via `spec.template.spec.livenessProbe.httpGet`, which will query port 1500 of the
+VirtualMachine, after an initial delay of 120 seconds. The
+VirtualMachine itself installs and runs a minimal HTTP server on
 port 1500 via cloud-init.
 
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
+kind: VirtualMachine
 metadata:
-  labels:
-    kubevirt.io/vm: vmi-fedora-vmi
-  name: vmi-fedora
+  name: example-http-liveness-probe
 spec:
+  runStrategy: Always
   template:
-    metadata:
-      labels:
-        kubevirt.io/domain: vmi-fedora
-        kubevirt.io/vm: vmi-fedora
-  domain:
-    devices:
-      disks:
-      - disk:
-          bus: virtio
-        name: containerdisk
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-      rng: {}
-    resources:
-      requests:
-        memory: 1024M
-  livenessProbe:
-    initialDelaySeconds: 120
-    periodSeconds: 20
-    httpGet:
-      port: 1500
-    timeoutSeconds: 10
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - name: containerdisk
-    containerDisk:
-      image: quay.io/containerdisks/fedora:latest
-  - cloudInitNoCloud:
-      userData: |-
-        #cloud-config
-        password: fedora
-        user: fedora
-        chpasswd: { expire: False }
-        bootcmd:
-          - ["sudo", "dnf", "install", "-y", "nmap-ncat"]
-          - ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
-    name: cloudinitdisk
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinit
+          rng: {}
+        resources:
+          requests:
+            memory: 1Gi
+      livenessProbe:
+        initialDelaySeconds: 120
+        periodSeconds: 20
+        httpGet:
+          port: 1500
+        timeoutSeconds: 10
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: containerdisk
+        containerDisk:
+          image: quay.io/containerdisks/centos-stream:9
+      - name: cloudinit
+        cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            password: centos
+            user: centos
+            chpasswd: { expire: False }
+            bootcmd:
+              - ["sudo", "dnf", "install", "-y", "nmap-ncat"]
+              - ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
 ```
+
 ## Define a TCP Liveness Probe
 
-The following VirtualMachineInstance configures a TCP Liveness Probe via
-`spec.livenessProbe.tcpSocket`, which will query port 1500 of the
-VirtualMachineInstance, after an initial delay of 120 seconds. The
-VirtualMachineInstance itself installs and runs a minimal HTTP server on
+The following VirtualMachine configures a TCP Liveness Probe via
+`spec.template.spec.livenessProbe.tcpSocket`, which will query port 1500 of the
+VirtualMachine, after an initial delay of 120 seconds. The
+VirtualMachine itself installs and runs a minimal HTTP server on
 port 1500 via cloud-init.
 
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
+kind: VirtualMachine
 metadata:
-  labels:
-    kubevirt.io/vm: vmi-fedora-vmi
-  name: vmi-fedora
+  name: example-tcp-liveness-probe
 spec:
+  runStrategy: Always
   template:
-    metadata:
-      labels:
-        kubevirt.io/domain: vmi-fedora
-        kubevirt.io/vm: vmi-fedora
-  domain:
-    devices:
-      disks:
-      - disk:
-          bus: virtio
-        name: containerdisk
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-      rng: {}
-    resources:
-      requests:
-        memory: 1024M
-  livenessProbe:
-    initialDelaySeconds: 120
-    periodSeconds: 20
-    tcpSocket:
-      port: 1500
-    timeoutSeconds: 10
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - name: containerdisk
-    containerDisk:
-      image: quay.io/containerdisks/fedora:latest
-  - cloudInitNoCloud:
-      userData: |-
-        #cloud-config
-        password: fedora
-        user: fedora
-        chpasswd: { expire: False }
-        bootcmd:
-          - ["sudo", "dnf", "install", "-y", "nmap-ncat"]
-          - ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
-    name: cloudinitdisk
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinit
+          rng: {}
+        resources:
+          requests:
+            memory: 1Gi
+      livenessProbe:
+        initialDelaySeconds: 120
+        periodSeconds: 20
+        tcpSocket:
+          port: 1501
+        timeoutSeconds: 10
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: containerdisk
+        containerDisk:
+          image: quay.io/containerdisks/centos-stream:9
+      - name: cloudinit
+        cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            password: centos
+            user: centos
+            chpasswd: { expire: False }
+            bootcmd:
+              - ["sudo", "dnf", "install", "-y", "nmap-ncat"]
+              - ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
 ```
 
 ## Define Readiness Probes
 
 Readiness Probes are configured in a similar way like liveness probes.
-Instead of `spec.livenessProbe`, `spec.readinessProbe` needs to be
-filled:
+Instead of `spec.template.spec.livenessProbe`, `spec.template.spec.readinessProbe` 
+needs to be filled:
 
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
+kind: VirtualMachine
 metadata:
-  labels:
-    kubevirt.io/vm: vmi-fedora-vmi
-  name: vmi-fedora
+  name: example-readiness-probe
 spec:
+  runStrategy: Always
   template:
-    metadata:
-      labels:
-        kubevirt.io/domain: vmi-fedora
-        kubevirt.io/vm: vmi-fedora
-  domain:
-    devices:
-      disks:
-      - disk:
-          bus: virtio
-        name: containerdisk
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-      rng: {}
-    resources:
-      requests:
-        memory: 1024M
-  readinessProbe:
-    initialDelaySeconds: 120
-    periodSeconds: 20
-    timeoutSeconds: 10
-    failureThreshold: 3
-    successThreshold: 3
-    httpGet:
-      port: 1500
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - name: containerdisk
-    containerDisk:
-      image: quay.io/containerdisks/fedora:latest
-  - cloudInitNoCloud:
-      userData: |-
-        #cloud-config
-        password: fedora
-        user: fedora
-        chpasswd: { expire: False }
-        bootcmd:
-          - ["sudo", "dnf", "install", "-y", "nmap-ncat"]
-          - ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
-    name: cloudinitdisk
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinit
+          rng: {}
+        resources:
+          requests:
+            memory: 1Gi
+      readinessProbe:
+        initialDelaySeconds: 120
+        periodSeconds: 20
+        timeoutSeconds: 10
+        failureThreshold: 3
+        successThreshold: 3
+        httpGet:
+          port: 1500
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: containerdisk
+        containerDisk:
+          image: quay.io/containerdisks/centos-stream:9
+      - name: cloudinit
+        cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            password: centos
+            user: centos
+            chpasswd: { expire: False }
+            bootcmd:
+              - ["sudo", "dnf", "install", "-y", "nmap-ncat"]
+              - ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']
 ```
 
 Note that in the case of Readiness Probes, it is also possible to set a
@@ -231,44 +220,44 @@ device:
 
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
+kind: VirtualMachine
 metadata:
-  labels:
-    special: vmi-with-watchdog
-  name: vmi-with-watchdog
+  name: example-watchdog
 spec:
-  domain:
-    devices:
-      watchdog:
-        name: mywatchdog
-        i6300esb:
-          action: "poweroff"
-      disks:
-      - disk:
-          bus: virtio
-        name: containerdisk
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-    machine:
-      type: ""
-    resources:
-      requests:
-        memory: 1024M
-  terminationGracePeriodSeconds: 0
-  volumes:
-  - containerDisk:
-      image: quay.io/containerdisks/fedora:latest
-    name: containerdisk
-  - cloudInitNoCloud:
-      userData: |-
-        #cloud-config
-        password: fedora
-        user: fedora
-        chpasswd: { expire: False }
-        bootcmd:
-          - ["sudo", "dnf", "install", "-y", "busybox"]
-    name: cloudinitdisk
+  runStrategy: Always
+  template:
+    spec:
+      domain:
+        devices:
+          watchdog:
+            name: mywatchdog
+            i6300esb:
+              action: "poweroff"
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+          - disk:
+              bus: virtio
+            name: cloudinit
+          rng: {}
+        resources:
+          requests:
+            memory: 1Gi
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: containerdisk
+        containerDisk:
+          image: quay.io/containerdisks/fedora:latest
+      - name: cloudinit
+        cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            password: fedora
+            user: fedora
+            chpasswd: { expire: False }
+            packages:
+                busybox
 ```
 
 The example above configures it with the `poweroff` action. It defines what will
@@ -281,7 +270,7 @@ binary. For example, if root executes this command inside the VM:
 sudo busybox watchdog -t 2000ms -T 4000ms /dev/watchdog
 ```
 
-the watchdog will send a heartbeat every two seconds to `/dev/watchdog` and
+The watchdog will send a heartbeat every two seconds to `/dev/watchdog` and
 after four seconds without a heartbeat the defined action will be executed. In
 this case a hard `poweroff`.
 
@@ -313,71 +302,68 @@ cloud-init assigns the proper SELinux context, i.e. virt_qemu_ga_exec_t, to the
 
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: VirtualMachineInstance
+kind: VirtualMachine
 metadata:
-  labels:
-    kubevirt.io/vm: vmi-guest-probe-vmi
-  name: vmi-fedora
+  name: example-agent-readiness-probe
 spec:
+  runStrategy: Always
   template:
-    metadata:
-      labels:
-        kubevirt.io/domain: vmi-guest-probe
-        kubevirt.io/vm: vmi-guest-probe
-  domain:
-    devices:
-      disks:
-      - disk:
-          bus: virtio
-        name: containerdisk
-      - disk:
-          bus: virtio
-        name: cloudinitdisk
-      rng: {}
-    resources:
-      requests:
-        memory: 1024M
-  readinessProbe:
-    exec:
-      command: ["cat", "/tmp/healthy.txt"]
-    failureThreshold: 10
-    initialDelaySeconds: 20
-    periodSeconds: 10
-    timeoutSeconds: 5
-  terminationGracePeriodSeconds: 180
-  volumes:
-  - name: containerdisk
-    containerDisk:
-      image: quay.io/containerdisks/fedora
-  - cloudInitNoCloud:
-      userData: |-
-        #cloud-config
-        password: fedora
-        user: fedora
-        chpasswd: { expire: False }
-        packages:
-          qemu-guest-agent
-        runcmd:
-          - ["touch", "/tmp/healthy.txt"]
-          - ["sudo", "chcon", "-t", "virt_qemu_ga_exec_t", "/tmp/healthy.txt"]
-          - ["sudo", "systemctl", "enable", "--now", "qemu-guest-agent"]
-    name: cloudinitdisk
+    spec:
+      domain:
+        devices:
+          disks:
+            - name: containerdisk
+              disk:
+                bus: virtio
+            - name: cloudinitdisk
+              disk:
+                bus: virtio
+          rng: {}
+        resources:
+          requests:
+            memory: 1Gi
+      readinessProbe:
+        exec:
+          command: ["cat", "/tmp/healthy.txt"]
+        failureThreshold: 10
+        initialDelaySeconds: 120
+        periodSeconds: 10
+        timeoutSeconds: 5
+      terminationGracePeriodSeconds: 180
+      volumes:
+        - name: containerdisk
+          containerDisk:
+            image: quay.io/containerdisks/fedora
+        - name: cloudinitdisk
+          cloudInitNoCloud:
+            userData: |
+              #cloud-config
+              chpasswd:
+                expire: false
+              password: password
+              user: fedora
+              packages:
+                qemu-guest-agent
+              runcmd:
+                - ["touch", "/tmp/healthy.txt"]
+                - ["sudo", "chcon", "--type", "virt_qemu_ga_exec_t", "/tmp/healthy.txt"]
+                - ["sudo", "systemctl", "enable", "--now", "qemu-guest-agent"]
 ```
 
 Note that, in the above example if SELinux is not installed in your container
-disk image, the command `chcon` should be removed from the VM manifest shown
-below. Otherwise, the `chcon`  command will fail.
+disk image, the command `chcon` should be removed from the VM manifest shown. 
+Otherwise, the `chcon`  command will fail.
 
 The `.status.ready` field will switch to `true` indicating that probes are
 returning successfully:
 
-```sh 
+```sh
 kubectl wait vmis/vmi-guest-probe --for=condition=Ready --timeout=5m
 ```
 
 Additionally, the following command can be used inside the VM to watch the
 incoming qemu-ga commands:
 
-```sh 
-journalctl _COMM=qemu-ga --follow 
+```sh
+journalctl _COMM=qemu-ga --follow
 ```
