@@ -127,6 +127,35 @@ This field is used to explicitly set an SMBios serial for the target.
 
 This field is optional. By default, the target would have an auto-generated serial that's based on the VM name.
 
+### JSON patches
+
+It is sometimes necessary to modify the specs of VMs further than filtering before cloning them (e.g modifying or adding annotations for CNIs).
+
+JSON patches can be applied to the `specs` and `labels/annotations` of cloned VMs using the `patches` parameter:
+
+```yaml
+apiVersion: snapshot.kubevirt.io/v1beta1
+kind: VirtualMachineClone
+metadata:
+  name: cone
+spec:
+  source:
+    apiGroup: kubevirt.io
+    kind: VirtualMachine
+    name: vm-cirros
+  target:
+    apiGroup: kubevirt.io
+    kind: VirtualMachine
+    name: vm-clone-target
+  patches:
+    - '{"op": "add", "path": "/metadata/labels/test", "value": "something"}'
+    - '{"op": "replace", "path": "/spec/template/metadata/labels/example", "value": "replaced-value"}'
+```
+
+**Keep in mind that patches must be carefully applied.** Some fields might be used to reference other resources, or be used as targets by other resources.
+
+Patches are cumulative (and have precedence) with modifications done using template label/annotation filters and MAC address/SMBIOS fields.
+
 ### Creating a VirtualMachineClone object
 
 After the clone manifest is ready, we can create it:
