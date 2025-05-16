@@ -98,6 +98,12 @@ the runStrategy of the VirtualMachine as below:
 <td><p><code>-</code></p></td>
 <td><p><code>-</code></p></td>
 </tr>
+<tr class="odd">
+<td><p><strong>Once</strong></p></td>
+<td><p><code>-</code></p></td>
+<td><p><code>Haled</code></p></td>
+<td><p><code>-</code></p></td>
+</tr>
 </tbody>
 </table>
 
