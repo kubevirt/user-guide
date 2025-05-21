@@ -2686,6 +2686,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#target-readiness-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Target readiness policies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cleanup" class="md-nav__link">
     <span class="md-ellipsis">
       Cleanup
@@ -3043,6 +3052,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#target-readiness-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Target readiness policies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cleanup" class="md-nav__link">
     <span class="md-ellipsis">
       Cleanup
@@ -3157,6 +3175,13 @@ field in the KubeVirt CR must be expanded by adding the <code>Snapshot</code> to
 <p>To wait for a restore to complete, execute:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>vmrestore<span class="w"> </span>restore-larry<span class="w"> </span>--for<span class="w"> </span><span class="nv">condition</span><span class="o">=</span>Ready
 </code></pre></div>
+<h2 id="target-readiness-policies">Target readiness policies<a class="headerlink" href="#target-readiness-policies" title="Permanent link">&para;</a></h2>
+<p>When restoring a <code>VirtualMachineSnapshot</code> on an already existing target (like the parent VM of the snapshot), a readiness policy can be specified to adjust how the restore happens if the target VM is not ready. The target VM is considered ready when it is fully stopped. The policy is controlled by setting <code>targetReadinessPolicy</code> to one of the available types.</p>
+<p>The following policies are available:
+- <strong>WaitGracePeriod</strong> (default policy): Wait 5 minutes for the target VM to be ready. If not ready in time, the restore will fail.
+- <strong>StopTarget</strong>: Stop the target VM so that the restore can continue immediately.
+- <strong>FailImmediate</strong>: Don't wait for the target to be ready before trying to restore. If it is not ready, the restore fails immediately.
+- <strong>WaitEventually</strong>: Kubevirt keeps the <code>VirtualMachineRestore</code> around until the target is ready. The restore is started as soon as the target is ready.</p>
 <h2 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h2>
 <p>Keep <code>VirtualMachineSnapshots</code> (and their corresponding <code>VirtualMachineSnapshotContents</code>) around as long as you may want to restore from them again.</p>
 <p>Feel free to delete <code>restore-larry</code> as it is not needed once the restore is complete.</p>
