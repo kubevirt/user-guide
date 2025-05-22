@@ -193,3 +193,14 @@ kubevirt-workload-update-cgdgd   Succeeded   vm-cirros
 * VPCU hotplug is currently not supported by ARM64 architecture.
 * Current hotplug implementation involves live-migration of the VM workload.
 
+### With NetworkInterfaceMultiQueue
+
+When a VM has VM.spec.template.spec.domain.devices.networkInterfaceMultiQueue set to `true`: 
+
+- On a CPU hotplug scenario, the VM owner will certainly gain the benefit of the additional vCPUs.
+However, any network interfaces that were already present before the CPU hotplug will retain their initial queue count.
+This is a characteristic of the underlying virtualization technology.
+- If the VM owner would like the network interface queue count to align with the new vCPU configuration to maximize performance, a restart of the VM will be required. Of course, this decision is entirely up to the VM owner.
+- Any new virtio network interfaces hotplugged after the CPU hotplug - will automatically have their queue count configured to match the updated vCPU configuration.
+
+> **Note:** This scenario is blocked in release-1.3 and release-1.2.
