@@ -27,7 +27,7 @@ determines how the disk will be presented to the guest operating system.
 ### lun
 
 A `lun` disk will expose the volume as a LUN device to the VM. This
-allows the VM to execute arbitrary iSCSI command passthrough.
+allows the VM to execute arbitrary SCSI command passthrough.
 
 A minimal example which attaches a `PersistentVolumeClaim` named `mypvc`
 as a `lun` device to the VM:
