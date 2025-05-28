@@ -158,6 +158,8 @@ and
 [Multus Dynamic Networks controller](https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller), 
 it's possible to hotplug an interface by migrating the VM.
 
+> ⚠️ **Note**: As of KubeVirt v1.5 ([kubevirt/kubevirt#13497](https://github.com/kubevirt/kubevirt/issues/13497)), namespace administrators are **not allowed to create VMIMs** (VirtualMachineInstanceMigrations) by default. Migration-based hotplug requires this permission. A cluster-admin must explicitly grant it.
+
 The actual attachment won't take place immediately, and the new interface will be available in the guest once the migration is completed.
 
 ### Add new interface
