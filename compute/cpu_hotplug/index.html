@@ -1934,6 +1934,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#with-networkinterfacemultiqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      With NetworkInterfaceMultiQueue
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -3067,6 +3082,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#with-networkinterfacemultiqueue" class="md-nav__link">
+    <span class="md-ellipsis">
+      With NetworkInterfaceMultiQueue
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -3264,6 +3294,18 @@ is marked as successful.</p>
 <li>VPCU hotplug is currently not supported by ARM64 architecture.</li>
 <li>Current hotplug implementation involves live-migration of the VM workload.</li>
 </ul>
+<h3 id="with-networkinterfacemultiqueue">With NetworkInterfaceMultiQueue<a class="headerlink" href="#with-networkinterfacemultiqueue" title="Permanent link">&para;</a></h3>
+<p>When a VM has VM.spec.template.spec.domain.devices.networkInterfaceMultiQueue set to <code>true</code>: </p>
+<ul>
+<li>On a CPU hotplug scenario, the VM owner will certainly gain the benefit of the additional vCPUs.
+However, any network interfaces that were already present before the CPU hotplug will retain their initial queue count.
+This is a characteristic of the underlying virtualization technology.</li>
+<li>If the VM owner would like the network interface queue count to align with the new vCPU configuration to maximize performance, a restart of the VM will be required. Of course, this decision is entirely up to the VM owner.</li>
+<li>Any new virtio network interfaces hotplugged after the CPU hotplug - will automatically have their queue count configured to match the updated vCPU configuration.</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> This scenario is blocked in release-1.3 and release-1.2.</p>
+</blockquote>
 
 
 
