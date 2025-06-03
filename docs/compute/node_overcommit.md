@@ -205,7 +205,7 @@ since KSM merges identical pages over time. Swap allows the VMIs to
 successfully allocate memory which will then effectively never be used
 because of the later de-duplication done by KSM.
 
-# Node CPU allocation ratio
+## Node CPU allocation ratio
 
 KubeVirt runs Virtual Machines in a Kubernetes Pod. This pod requests a certain
 amount of CPU time from the host. On the other hand, the Virtual Machine is
