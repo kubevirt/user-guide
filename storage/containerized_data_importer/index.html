@@ -3171,6 +3171,11 @@ The three main CDI use cases are:</p>
 <p>This document deals with the third use case. So you should have CDI
 installed in your cluster, a VM disk that you'd like to upload, and
 virtctl in your path.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You will likely need to configure the Container Runtime Interface (CRI) to handle device ownership through the security context.
+See the <a href="https://github.com/kubevirt/containerized-data-importer/blob/main/doc/block_cri_ownership_config.md">CDI docs</a> for more information.</p>
+</div>
 <h2 id="install-cdi">Install CDI<a class="headerlink" href="#install-cdi" title="Permanent link">&para;</a></h2>
 <p>Install the latest CDI release
 <a href="https://github.com/kubevirt/containerized-data-importer/releases">here</a></p>
@@ -3277,7 +3282,7 @@ For example, trying to upload to the IP address 192.168.39.32 at port 31001 woul
   --image-path Fedora-Cloud-Base-33-1.2.x86_64.raw.xz \
   --uploadproxy-url https://192.168.39.32:31001
 
-PVC default/f33 not found 
+PVC default/f33 not found
 DataVolume default/f33 created
 Waiting for PVC f33 upload pod to be ready...
 Pod now ready
@@ -3298,7 +3303,7 @@ Use the <code>openssl</code> command to view the names of the cdi-uploadproxy se
      | sed -n -e &#39;/Subject.*CN/p&#39; -e &#39;/Subject Alternative/{N;p}&#39;
 
     Subject: CN = cdi-uploadproxy
-        X509v3 Subject Alternative Name: 
+        X509v3 Subject Alternative Name:
             DNS:cdi-uploadproxy, DNS:cdi-uploadproxy.cdi, DNS:cdi-uploadproxy.cdi.svc
 </code></pre></div>
 <p>Adding the following entry to the /etc/hosts file, if it provides name resolution, should fix this issue.
@@ -3311,7 +3316,7 @@ Any service that provides name resolution for the system could be used.</p>
   --image-path Fedora-Cloud-Base-33-1.2.x86_64.raw.xz \
   --uploadproxy-url https://cdi-uploadproxy:31001
 
-PVC default/f33 not found 
+PVC default/f33 not found
 DataVolume default/f33 created
 Waiting for PVC f33 upload pod to be ready...
 Pod now ready
@@ -3330,7 +3335,7 @@ Uploading Fedora-Cloud-Base-33-1.2.x86_64.raw.xz completed successfully
   --image-path Fedora-Cloud-Base-33-1.2.x86_64.raw.xz \
   --uploadproxy-url https://cdi-uploadproxy:31001
 
-PVC default/f33 not found 
+PVC default/f33 not found
 DataVolume default/f33 created
 Waiting for PVC f33 upload pod to be ready...
 Pod now ready
@@ -3357,7 +3362,7 @@ sudo update-ca-trust
   --image-path Fedora-Cloud-Base-33-1.2.x86_64.raw.xz \
   --uploadproxy-url https://cdi-uploadproxy:31001
 
-PVC default/f33 not found 
+PVC default/f33 not found
 DataVolume default/f33 created
 Waiting for PVC f33 upload pod to be ready...
 Pod now ready
