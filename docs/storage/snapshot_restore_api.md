@@ -111,10 +111,90 @@ kubectl wait vmrestore restore-larry --for condition=Ready
 When restoring a `VirtualMachineSnapshot` on an already existing target (like the parent VM of the snapshot), a readiness policy can be specified to adjust how the restore happens if the target VM is not ready. The target VM is considered ready when it is fully stopped. The policy is controlled by setting `targetReadinessPolicy` to one of the available types.
 
 The following policies are available:
+
 - **WaitGracePeriod** (default policy): Wait 5 minutes for the target VM to be ready. If not ready in time, the restore will fail.
 - **StopTarget**: Stop the target VM so that the restore can continue immediately.
 - **FailImmediate**: Don't wait for the target to be ready before trying to restore. If it is not ready, the restore fails immediately.
 - **WaitEventually**: Kubevirt keeps the `VirtualMachineRestore` around until the target is ready. The restore is started as soon as the target is ready.
+
+## Volume restore policies
+
+When restoring a `VirtualMachineSnapshot`, one of the steps is restoring the volumes of that snapshot. The `volumeRestorePolicy` setting gives the user some control on how that restore process is done.
+
+The following policies are available:
+
+- **RandomizeNames** (default policy): The names of restored PVCs are randomly generated using the UID of the restore job. This policy guarantees there's no collisions, but it may be a problem when using GitOps, as the IDs are not predictable.
+- **InPlace**: This policy overwrites the original volumes with the restored ones. If the source PVCs still exist, they are **deleted before creating the restored PVCs**. It is useful when restoring over the original VM while wanting to keep the same volume names.
+
+## Volume restore overrides
+
+When restoring a `VirtualMachineSnapshot`, the user might want to modify the volumes as they are being restored. This is possible using the `volumeRestoreOverrides`. Overrides are provided in a list, where each element targets a volume within the snapshot and applies changes to it.
+
+The syntax for a volume restore override is the following:
+
+```yaml
+volumeRestoreOverrides:
+  - volumeName: "original-volume" # Required - the original name of the volume within the snapshot
+    # Optional - the new name of the restored volume
+    # If combined with volumeRestorePolicy "InPlace", the PVC that has that name will be deleted before the volume is restored
+    restoreName:
+    # Optional - used to add or modify labels 
+    labels:
+      newLabel: "value"
+      oldLabel: "newValue"
+    # Optional - used to add or modify annotations
+    annotations:
+      newAnnotation: "value"
+      oldAnnotation: "newValue"
+```
+
+## Restoring in a GitOps friendly way
+
+Restoring VMs in KubeVirt may not be completely compatible with a GitOps workflow unless some adjustements are made.
+
+The problem when restoring a VM "in place" (as in overwriting it with the content of the snapshot) is that the original VM gets modified with new information. For example, any volume mounted as a `DataVolume` is replaced by a PVC, and the names of all the volumes are changed with randomly generated UIDs.
+
+This means that GitOps tools such as **ArgoCD** will report the original VM as *out of sync* and prompt the user the resynchronize it. If the VM is resynchronized, the restored volumes will end up unmounted and the VM will go back to its original state, which is usually not the intended effect.
+
+To restore VMs while not causing desynchronization between the content of the Git and the cluster, it is recommended to apply the following changes to `VirtualMachineRestores`:
+
+- Use `volumeRestorePolicy` **InPlace** so that volumes have a predictable name identical to the original volume
+- Use `volumeRestoreOverrides` if you want to change the name of the restored volume
+- Avoid using `dataVolumeTemplates` within VMs, as they get edited when the restored DataVolume is created (if not using `volumeRestorePolicy` InPlace)
+- If using `DataVolumes`, mount them as `PersistentVolumeClaims` (DataVolumes create PVCs that have the same name as themselves, making both mount types compatible) 
+ 
+```yaml
+# This DataVolume can be mounted on the VM as a persistentVolumeClaim or as a dataVolume.
+# It doesn't really change anything, as both mount types are compatible, but one is GitOps safe and the other is not.
+
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: volume
+spec:
+  ...
+
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: example
+spec:
+  template:
+    spec:
+      ...
+      volumes:
+      # This is not going to be overwritten by the VMRestore if volumeRestorePolicy is InPlace. It is GitOps-safe.
+      - name: volume 
+        persistentVolumeClaim:
+          claimName: datavol
+      # This will be transformed into the same volume mount as the one above, using a persistentVolumeName.
+      # It will cause a desynchronization between the Git and the cluster. Avoid using this syntax.
+      - name: volume
+        dataVolume:
+          name: datavol
+```
 
 ## Cleanup
 
