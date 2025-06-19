@@ -57,4 +57,78 @@ arguments will be passed to the default kernel the VM boots from.
 
 - if `imagePullPolicy` is `Always` and the container image is updated then the VM will be booted
   into the new kernel when VM restarts
-  
+
+
+Booting the kernel with a root file system can be done by specifying the root file system as a
+[disk](https://kubevirt.io/user-guide/storage/disks_and_volumes/) (e.g. containerDisk):
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: ext-kernel-boot-vm
+spec:
+  runStrategy: Manual
+  instancetype:
+    name: u1.medium
+  preference:
+    name: fedora
+  template:
+    spec:
+      domain:
+        devices:
+          disks:
+            - name: kernel-modules
+              cdrom:
+                bus: sata
+        firmware:
+          kernelBoot:
+            container:
+              image: custom-containerdisk:latest
+              initrdPath: /boot/initramfs
+              kernelPath: /boot/vmlinuz
+              imagePullPolicy: Always
+            kernelArgs: "no_timer_check console=tty1 console=ttyS0,115200n8 systemd=off root=/dev/vda4 rootflags=subvol=root"
+      volumes:
+        - name: root-filesystem
+          containerDisk:
+            image: custom-containerdisk:latest
+            imagePullPolicy: Always
+        - name: kernel-modules
+          containerDisk:
+            image: custom-containerdisk:latest
+            path: /boot/kernel-modules.isofs
+            imagePullPolicy: Always
+        - name: cloudinitdisk
+          cloudInitNoCloud:
+            userData: |-
+              #cloud-config
+              chpasswd:
+                expire: false
+              password: fedora
+              user: fedora
+              runcmd:
+                - "sudo mkdir /mnt/kernel-modules-disk"
+                - "sudo mount /dev/sr0 /mnt/kernel-modules-disk"
+                - "sudo tar -xvf /mnt/kernel-modules-disk/kernel_m.tgz --directory /usr/lib/modules/"
+```
+
+Notes:
+
+- It is not necessary to package the root file system into the same `containerDisk` as the kernel. The file system
+  could also be pulled in via something like a `dataVolumeDisk`.
+
+- If the custom kernel was configured to build modules, we need to install these in the root file system. For this
+  example the kernel modules were bundled into a tarball and packaged into an isofs. This isofs is then added to
+  the `containerDisk` and unpacked into the root file system with the cloudinit runcmd.
+
+- Following the [containerDisk Workflow Example](https://kubevirt.io/user-guide/storage/disks_and_volumes/#containerdisk-workflow-example),
+  we need to add the initramfs, kernel, root file system and kernel modules isofs to our custom-containerdisk:
+  ```dockerfile
+  FROM scratch
+  ADD --chown=107:107 initramfs /boot/
+  ADD --chown=107:107 vmlinuz /boot/
+  ADD --chown=107:107 https://download.fedoraproject.org/pub/fedora/linux/releases/42/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-42-1.1.x86_64.qcow2 /disk/
+  ADD --chown=107:107 kernel-modules.isofs /boot/
+  ```
+- The `kernelArgs` must specify the correct root device. In this case, the arguments were simply copied from the cloud
+  image's `/proc/cmdline`.
