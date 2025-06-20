@@ -227,6 +227,8 @@ It is possible to streamline the creation of instance types, preferences, and vi
 
 ## Versioning
 
+### KubeVirt <= v1.4.0
+
 Versioning of these resources is required to ensure the eventual `VirtualMachineInstance` created when starting a `VirtualMachine` does not change between restarts if any referenced instance type or set of preferences are updated during the lifetime of the `VirtualMachine`.
 
 This is currently achieved by using `ControllerRevision` to retain a copy of the `VirtualMachineInstancetype` or `VirtualMachinePreference` at the time the `VirtualMachine` is created. A reference to these `ControllerRevisions` are then retained in the [`InstancetypeMatcher`](https://kubevirt.io/api-reference/main/definitions.html#_v1_instancetypematcher) and [`PreferenceMatcher`](https://kubevirt.io/api-reference/main/definitions.html#_v1_preferencematcher) within the `VirtualMachine` for future use.
@@ -358,12 +360,51 @@ $ kubectl get vmi/vm-cirros-csmall -o json | jq .spec.domain.cpu
 }
 ```
 
+### KubeVirt >= v1.5.0
+
+With the release of v1.5.0 the method for tracking references to these ControllerRevisions changed in order to avoid mutating the core spec of a `VirtualMachine` after submission. These references are now stored under the status of the `VirtualMachine`:
+
+```shell
+$ virtctl create vm --preference fedora --instancetype u1.medium --name example | kubectl apply -f -
+virtualmachine.kubevirt.io/example created
+
+$ kubectl get vms/example -o json | jq .spec.instancetype,.spec.preference,.status.instancetypeRef,.status.preferenceRef
+{
+  "kind": "virtualmachineclusterinstancetype",
+  "name": "u1.medium"
+}
+{
+  "kind": "virtualmachineclusterpreference",
+  "name": "fedora"
+}
+{
+  "controllerRevisionRef": {
+    "name": "example-u1.medium-v1beta1-0444161e-f8d6-4461-808d-5481dc4f3348-1"
+  },
+  "kind": "virtualmachineclusterinstancetype",
+  "name": "u1.medium"
+}
+{
+  "controllerRevisionRef": {
+    "name": "example-fedora-v1beta1-1f7b1ffb-7311-4331-b663-4f7769d96816-1"
+  },
+  "kind": "virtualmachineclusterpreference",
+  "name": "fedora"
+}
+```
+
+> NOTE: Users are still able to explicitly reference a given ControllerRevision
+> through the original `revisionName` field and this value will be copied into
+> the status of the `VirtualMachine` and used. This approach is also used when
+> restoring from a snapshot or cloning a `VirtualMachine`.
+
 ### InstancetypeReferencePolicy
 
 **FEATURE STATE:**
 
 * Alpha (Experimental) as of the [v1.4.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.4.0) KubeVirt release
 * Beta as of the [v1.5.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.5.0) KubeVirt release
+* GA as of the [v1.6.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.6.0) KubeVirt release
 
 The versioning and referencing behaviour of instance types and preferences is configurable with the following policies supported:
 
@@ -556,6 +597,28 @@ kubectl get vms/cirros -o json | jq '.spec.instancetype, .spec.preference'
 null
 null
 ```
+
+## Hotplug
+
+Support for instance-type-based vCPU and memory hotplug was introduced in KubeVirt 1.3 and is built on existing [vCPU](../compute/cpu_hotplug.md) hotplug, [memory](../compute/memory_hotplug.md) hotplug and [LiveUpdate](./vm_rollout_strategies.md) support.
+
+All requirements and limitations of these features apply when hotplugging a new instance type into a running `VirtualMachine`.
+
+With KubeVirt >= v1.5.0 to invoke an instance-type-based vCPU and/or memory hotplug users should update the `name` of the referenced instance type, for example:
+
+```shell
+kubectl patch vm/my-vm --type merge -p '{"spec":{"instancetype":{"name": "new-instancetype"}}'
+```
+
+For KubeVirt <= v1.4.0 to invoke an instance-type-based vCPU and/or memory hotplug users should update the name and clear the revisionName of the referenced instance type, for example:
+
+```shell
+kubectl patch vm/my-vm --type merge -p '{"spec":{"instancetype":{"name": "new-instancetype", revisionName: ""}}'
+```
+
+This will trigger the same vCPU and memory hotplug logic as a vanilla VirtualMachine assuming that the aforementioned requirements are met.
+
+Otherwise a `RestartRequired` condition will be applied to the `VirtualMachine` to indicate that a reboot is needed for all changes to be made.
 
 ## common-instancetypes
 
