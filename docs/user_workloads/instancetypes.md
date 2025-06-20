@@ -404,6 +404,7 @@ $ kubectl get vms/example -o json | jq .spec.instancetype,.spec.preference,.stat
 
 * Alpha (Experimental) as of the [v1.4.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.4.0) KubeVirt release
 * Beta as of the [v1.5.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.5.0) KubeVirt release
+* GA as of the [v1.6.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.6.0) KubeVirt release
 
 The versioning and referencing behaviour of instance types and preferences is configurable with the following policies supported:
 
