@@ -3357,6 +3357,9 @@ The interface in the corresponding VMI object will be set with state 'absent' as
 and 
 <a href="https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller">Multus Dynamic Networks controller</a>, 
 it's possible to hotplug an interface by migrating the VM.</p>
+<blockquote>
+<p>⚠️ <strong>Note</strong>: As of KubeVirt v1.5 (<a href="https://github.com/kubevirt/kubevirt/issues/13497">kubevirt/kubevirt#13497</a>), namespace administrators are <strong>not allowed to create VMIMs</strong> (VirtualMachineInstanceMigrations) by default. Migration-based hotplug requires this permission. A cluster-admin must explicitly grant it.</p>
+</blockquote>
 <p>The actual attachment won't take place immediately, and the new interface will be available in the guest once the migration is completed.</p>
 <h3 id="add-new-interface">Add new interface<a class="headerlink" href="#add-new-interface" title="Permanent link">&para;</a></h3>
 <p>Add the desired interface and network to the VM spec template:
