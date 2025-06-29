@@ -136,18 +136,18 @@ spec:
         claimName: myclaim
 ```
 
-#### Labeling nodes with cpu models and cpu features
+#### Labeling nodes with cpu models, cpu features and machine types
 
-KubeVirt can create node selectors based on VM cpu models and features. With
-these node selectors, VMs will be scheduled on the nodes that support the matching
-VM cpu model and features.
+KubeVirt can create node selectors based on VM cpu models, features, and
+machine types. With these node selectors, VMs will be scheduled on the
+nodes that support the matching VM cpu model, features, and machine type.
 
 To properly label the node, user can use Kubevirt Node-labeller, which creates all 
 necessary labels or create node labels by himself.
 
-Kubevirt node-labeller creates 3 types of labels: cpu models, cpu features and kvm info.
+Kubevirt node-labeller creates 4 types of labels: cpu models, cpu features, kvm info and machine types.
 It uses libvirt to get all supported cpu models and cpu
-features on host and then Node-labeller creates labels from cpu models. 
+features on host and then Node-labeller creates labels from cpu models and machine types.
 
 Node-labeller supports obsolete list of cpu models and minimal baseline
 cpu model for features. Both features can be set via KubeVirt CR:
