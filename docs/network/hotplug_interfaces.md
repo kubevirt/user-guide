@@ -162,6 +162,11 @@ it's possible to hotplug an interface by migrating the VM.
 
 The actual attachment won't take place immediately, and the new interface will be available in the guest once the migration is completed.
 
+> **Note**: Starting with KubeVirt v1.6, virtual machines (VMs) will now automatically migrate following network interface card (NIC) 
+> hotplug or hot-unplug operations, provided the [LiveUpdate roll-out strategy](../user_workloads/vm_rollout_strategies.md#liveupdate) is configured on the KubeVirt Custom Resource (CR).
+> 
+> Manually migrating the VM in these scenarios is no longer required.
+
 ### Add new interface
 Add the desired interface and network to the VM spec template:
 ```yaml
