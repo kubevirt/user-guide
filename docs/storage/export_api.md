@@ -367,18 +367,41 @@ Examples:
 	# Download a volume from an already existing VirtualMachineExport (--volume is optional when only one volume is available)
 	virtctl vmexport download vm1-export --volume=volume1 --output=disk.img.gz
 
+	# Download a volume as before but through local port 5410
+	virtctl vmexport download vm1-export --volume=volume1 --output=disk.img.gz --port-forward --local-port=5410
+
 	# Create a VirtualMachineExport and download the requested volume from it
 	virtctl vmexport download vm1-export --vm=vm1 --volume=volume1 --output=disk.img.gz
 
+	# Create a VirtualMachineExport and get the VirtualMachine manifest in Yaml format
+	virtctl vmexport download vm1-export --vm=vm1 --manifest
+
+	# Get the VirtualMachine manifest in Yaml format from an existing VirtualMachineExport including CDI header secret
+	virtctl vmexport download existing-export --include-secret --manifest
+
 Flags:
   -h, --help              help for vmexport
+      --annotations       Specify custom annotations to VM export object and its associated pod.
+      --delete-vme        When used with the 'download' option, specifies that the vmexport object should always be deleted after the download finishes.
+      --export-manifest   Instead of downloading a volume, retrieve the VM manifest.
+      --format            Used to specify the format of the downloaded image. Valid options are: gzip (default) and raw.
+      --include-secret    When used with manifest and set to true, include a secret that contains proper headers for CDI to import using the manifest.
       --insecure          When used with the 'download' option, specifies that the http request should be insecure.
-      --keep-vme          When used with the 'download' option, specifies that the vmexport object should not be deleted after the download finishes.
-      --output string     Specifies the output path of the volume to be downloaded.
-      --pvc string        Sets PersistentVolumeClaim as vmexport kind and specifies the PVC name.
-      --snapshot string   Sets VirtualMachineSnapshot as vmexport kind and specifies the snapshot name.
-      --vm string         Sets VirtualMachine as vmexport kind and specifies the vm name.
-      --volume string     Specifies the volume to be downloaded.
+      --keep-vme          When used with the 'download' option, specifies that the vmexport object should always be retained after the download finishes.
+      --labels            Specify custom labels to VM export object and its associated pod.
+      --local-port        Defines the specific port to be used in port-forward. Default is "0" (random).
+      --manifest-output-format
+                          Manifest output format. Valid options are yaml (default) or json.
+      --output            Specifies the output path of the volume to be downloaded.
+      --port-forward      Configures port-forwarding on a random port. Useful to download without proper ingress/route configuration.
+      --pvc               Sets PersistentVolumeClaim as vmexport kind and specifies the PVC name.
+      --readiness-timeout Specify maximum wait time for the VM export object to be ready.
+      --retry             When export server returns a transient error, retry this number of times before giving up.
+      --service-url       Specify service URL to use in the returned manifest, instead of the external URL in the VM export status.
+      --snapshot          Sets VirtualMachineSnapshot as vmexport kind and specifies the snapshot name.
+      --ttl               The time after the export was created that it is eligible to be automatically deleted. Defaults to 2 hours if not specified.
+      --vm                Sets VirtualMachine as vmexport kind and specifies the VM name.
+      --volume            Specifies the volume to be downloaded.
 
 Use "virtctl options" for a list of global command-line options (applies to all commands).
 ```
