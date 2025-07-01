@@ -2695,6 +2695,33 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#volume-restore-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Volume restore policies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volume-restore-overrides" class="md-nav__link">
+    <span class="md-ellipsis">
+      Volume restore overrides
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restoring-in-a-gitops-friendly-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restoring in a GitOps friendly way
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cleanup" class="md-nav__link">
     <span class="md-ellipsis">
       Cleanup
@@ -3061,6 +3088,33 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#volume-restore-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Volume restore policies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#volume-restore-overrides" class="md-nav__link">
+    <span class="md-ellipsis">
+      Volume restore overrides
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restoring-in-a-gitops-friendly-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      Restoring in a GitOps friendly way
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cleanup" class="md-nav__link">
     <span class="md-ellipsis">
       Cleanup
@@ -3177,11 +3231,79 @@ field in the KubeVirt CR must be expanded by adding the <code>Snapshot</code> to
 </code></pre></div>
 <h2 id="target-readiness-policies">Target readiness policies<a class="headerlink" href="#target-readiness-policies" title="Permanent link">&para;</a></h2>
 <p>When restoring a <code>VirtualMachineSnapshot</code> on an already existing target (like the parent VM of the snapshot), a readiness policy can be specified to adjust how the restore happens if the target VM is not ready. The target VM is considered ready when it is fully stopped. The policy is controlled by setting <code>targetReadinessPolicy</code> to one of the available types.</p>
-<p>The following policies are available:
-- <strong>WaitGracePeriod</strong> (default policy): Wait 5 minutes for the target VM to be ready. If not ready in time, the restore will fail.
-- <strong>StopTarget</strong>: Stop the target VM so that the restore can continue immediately.
-- <strong>FailImmediate</strong>: Don't wait for the target to be ready before trying to restore. If it is not ready, the restore fails immediately.
-- <strong>WaitEventually</strong>: Kubevirt keeps the <code>VirtualMachineRestore</code> around until the target is ready. The restore is started as soon as the target is ready.</p>
+<p>The following policies are available:</p>
+<ul>
+<li><strong>WaitGracePeriod</strong> (default policy): Wait 5 minutes for the target VM to be ready. If not ready in time, the restore will fail.</li>
+<li><strong>StopTarget</strong>: Stop the target VM so that the restore can continue immediately.</li>
+<li><strong>FailImmediate</strong>: Don't wait for the target to be ready before trying to restore. If it is not ready, the restore fails immediately.</li>
+<li><strong>WaitEventually</strong>: Kubevirt keeps the <code>VirtualMachineRestore</code> around until the target is ready. The restore is started as soon as the target is ready.</li>
+</ul>
+<h2 id="volume-restore-policies">Volume restore policies<a class="headerlink" href="#volume-restore-policies" title="Permanent link">&para;</a></h2>
+<p>When restoring a <code>VirtualMachineSnapshot</code>, one of the steps is restoring the volumes of that snapshot. The <code>volumeRestorePolicy</code> setting gives the user some control on how that restore process is done.</p>
+<p>The following policies are available:</p>
+<ul>
+<li><strong>RandomizeNames</strong> (default policy): The names of restored PVCs are randomly generated using the UID of the restore job. This policy guarantees there's no collisions, but it may be a problem when using GitOps, as the IDs are not predictable.</li>
+<li><strong>InPlace</strong>: This policy overwrites the original volumes with the restored ones. If the source PVCs still exist, they are <strong>deleted before creating the restored PVCs</strong>. It is useful when restoring over the original VM while wanting to keep the same volume names.</li>
+</ul>
+<h2 id="volume-restore-overrides">Volume restore overrides<a class="headerlink" href="#volume-restore-overrides" title="Permanent link">&para;</a></h2>
+<p>When restoring a <code>VirtualMachineSnapshot</code>, the user might want to modify the volumes as they are being restored. This is possible using the <code>volumeRestoreOverrides</code>. Overrides are provided in a list, where each element targets a volume within the snapshot and applies changes to it.</p>
+<p>The syntax for a volume restore override is the following:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">volumeRestoreOverrides</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">volumeName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;original-volume&quot;</span><span class="w"> </span><span class="c1"># Required - the original name of the volume within the snapshot</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="c1"># Optional - the new name of the restored volume</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="c1"># If combined with volumeRestorePolicy &quot;InPlace&quot;, the PVC that has that name will be deleted before the volume is restored</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">restoreName</span><span class="p">:</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="c1"># Optional - used to add or modify labels </span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">      </span><span class="nt">newLabel</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;value&quot;</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">      </span><span class="nt">oldLabel</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;newValue&quot;</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="c1"># Optional - used to add or modify annotations</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">newAnnotation</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;value&quot;</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">      </span><span class="nt">oldAnnotation</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;newValue&quot;</span>
+</code></pre></div>
+<h2 id="restoring-in-a-gitops-friendly-way">Restoring in a GitOps friendly way<a class="headerlink" href="#restoring-in-a-gitops-friendly-way" title="Permanent link">&para;</a></h2>
+<p>Restoring VMs in KubeVirt may not be completely compatible with a GitOps workflow unless some adjustements are made.</p>
+<p>The problem when restoring a VM "in place" (as in overwriting it with the content of the snapshot) is that the original VM gets modified with new information. For example, any volume mounted as a <code>DataVolume</code> is replaced by a PVC, and the names of all the volumes are changed with randomly generated UIDs.</p>
+<p>This means that GitOps tools such as <strong>ArgoCD</strong> will report the original VM as <em>out of sync</em> and prompt the user the resynchronize it. If the VM is resynchronized, the restored volumes will end up unmounted and the VM will go back to its original state, which is usually not the intended effect.</p>
+<p>To restore VMs while not causing desynchronization between the content of the Git and the cluster, it is recommended to apply the following changes to <code>VirtualMachineRestores</code>:</p>
+<ul>
+<li>Use <code>volumeRestorePolicy</code> <strong>InPlace</strong> so that volumes have a predictable name identical to the original volume</li>
+<li>Use <code>volumeRestoreOverrides</code> if you want to change the name of the restored volume</li>
+<li>Avoid using <code>dataVolumeTemplates</code> within VMs, as they get edited when the restored DataVolume is created (if not using <code>volumeRestorePolicy</code> InPlace)</li>
+<li>If using <code>DataVolumes</code>, mount them as <code>PersistentVolumeClaims</code> (DataVolumes create PVCs that have the same name as themselves, making both mount types compatible) </li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># This DataVolume can be mounted on the VM as a persistentVolumeClaim or as a dataVolume.</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># It doesn&#39;t really change anything, as both mount types are compatible, but one is GitOps safe and the other is not.</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nn">---</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cdi.kubevirt.io/v1beta1</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DataVolume</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">volume</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="nn">---</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">      </span><span class="c1"># This is not going to be overwritten by the VMRestore if volumeRestorePolicy is InPlace. It is GitOps-safe.</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">volume</span><span class="w"> </span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">          </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">datavol</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">      </span><span class="c1"># This will be transformed into the same volume mount as the one above, using a persistentVolumeName.</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="w">      </span><span class="c1"># It will cause a desynchronization between the Git and the cluster. Avoid using this syntax.</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">volume</span>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="w">        </span><span class="nt">dataVolume</span><span class="p">:</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">datavol</span>
+</code></pre></div>
 <h2 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h2>
 <p>Keep <code>VirtualMachineSnapshots</code> (and their corresponding <code>VirtualMachineSnapshotContents</code>) around as long as you may want to restore from them again.</p>
 <p>Feel free to delete <code>restore-larry</code> as it is not needed once the restore is complete.</p>
