@@ -1,150 +1,239 @@
 # Hotplug Volumes
 
-KubeVirt now supports hotplugging volumes into a running Virtual Machine Instance (VMI). The volume must be either a block volume or contain a disk image. When a VM that has hotplugged volumes is rebooted, the hotplugged volumes will be attached to the restarted VM. If the volumes are persisted they will become part of the VM spec, and will not be considered hotplugged. If they are not persisted, the volumes will be reattached as hotplugged volumes
+KubeVirt supports hotplugging persistent volumes into running Virtual Machines. The volumes may be represented as disks, LUNs, or CD-ROMs.
 
 ## Enabling hotplug volume support
 
 Hotplug volume support must be enabled in the feature gates to be supported. The
 [feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
-field in the KubeVirt CR must be expanded by adding the `HotplugVolumes` to it.
+field in the KubeVirt CR must be expanded by adding the `DeclarativeHotplugVolumes` to it.
 
-## Virtctl support
+> **_NOTE:_**  `DeclarativeHotplugVolumes` is incompatible with the the deprecated `HotplugVolumes` feature gate. If both are declared, `HotplugVolumes` will have precedence until the time that `HotplugVolumes` is retired.
 
-In order to hotplug a volume, you must first prepare a volume. This can be done by using a DataVolume (DV). In the example we will use a blank DV in order to add some extra storage to a running VMI
+## Supported disk busses
+
+|       |  sata  | virtio |  scsi  |
+|-------|--------|--------|--------|
+| cdrom |    X   |        |        |
+| disk  |        |    X   |    X   |
+| lun   |        |        |    X   |
+
+The scsi bus should be used if a large number of disks will be hotplugged concurrently. There are a limited number of VirtIO ports available. The scsi bus is [very close in performance](https://mpolednik.github.io/2017/01/23/virtio-blk-vs-virtio-scsi/) to virtio.
+
+## Available VirtIO Ports
+
+The following table lists the minimum number of VirtIO ports that will be available for hotplug disks.
+
+| Memory | Ports |
+|:------:|:-----:|
+|  <= 2G |   3   |
+|  > 2G  |   6   |
+
+> **_NOTE:_**  available VirtIO ports are reduced for each [hotplug network interface](../network/hotplug_interfaces.md)
+
+## Declarative API
+
+Hotplug [DataVolume](./disks_and_volumes.md/#persistentvolumeclaim) and [PersistentVolumeClaim](./disks_and_volumes.md/#persistentvolumeclaim) volumes may be may be defined for VirtualMachines in a declarative, GitOps compatible way.
+
+### Virtual Machine Definition
+
+The following VirtualMachine has no persistent disks and an empty CD-ROM.
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: testvm
+spec:
+  runStrategy: Always
+  template:
+    spec:
+      domain:
+        devices:
+          disks:
+          - cdrom:
+              bus: sata
+            name: cdrom
+          - disk:
+              bus: virtio
+            name: disk0
+        resources:
+          requests:
+            memory: 128Mi
+      volumes:
+      - containerDisk:
+          image: quay.io/kubevirt/alpine-container-disk-demo:v1.6.0
+        name: disk0
+```
+
+### Test Volume
+
+The following yaml will create volume containing a copy of VirtualMachine's root disk
 
 ```yaml
 apiVersion: cdi.kubevirt.io/v1beta1
 kind: DataVolume
 metadata:
-  name: example-volume-hotplug
+  name: hotplug-disk
 spec:
   source:
-    blank: {}
+    registry:
+      url: "docker://quay.io/kubevirt/alpine-container-disk-demo:v1.6.0"
   storage:
     resources:
       requests:
-        storage: 5Gi
-```
-In this example we are using `ReadWriteOnce` accessMode, and the default FileSystem volume mode. Volume hotplugging supports all combinations of block volume mode and `ReadWriteMany`/`ReadWriteOnce`/`ReadOnlyMany` accessModes, if your storage supports the combination.
-
-### Addvolume
-
-Now lets assume we have started a VMI like the [Fedora VMI in examples](https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-fedora.yaml) and the name of the VMI is 'vmi-fedora'. We can add the above blank volume to this running VMI by using the 'addvolume' command  available with virtctl
-
-```bash
-$ virtctl addvolume vmi-fedora --volume-name=example-volume-hotplug
+        storage: 300Mi
 ```
 
-This will hotplug the volume into the running VMI, and set the serial of the disk to the volume name. In this example it is set to example-hotplug-volume.
+### Inject CD-ROM
 
-#### Why virtio-scsi
-The bus of hotplug disk is specified as a `scsi` disk. Why is it not specified as `virtio` instead, like regular disks? The reason is a limitation of `virtio` disks that each disk uses a pcie slot in the virtual machine and there is a maximum of 32 slots. This means there is a low limit on the maximum number of disks you can hotplug especially given that other things will also need pcie slots. Another issue is these slots need to be reserved ahead of time. So if the number of hotplugged disks is not known ahead of time, it is impossible to properly reserve the required number of slots. To work around this issue, each VM has a virtio-scsi controller, which allows the use of a `scsi` bus for hotplugged disks. This controller allows for hotplugging of over 4 million disks. `virtio-scsi` is [very close in performance](https://mpolednik.github.io/2017/01/23/virtio-blk-vs-virtio-scsi/) to `virtio`
+To inject a CD-ROM into a running VirtualMachine, a `cdrom` type disk must be declared on the VM when it is started. Then at any time later, a hotplug volume may be added to the `spec.template.spec.volumes` section of the VirtualMachine.
 
-#### Serial
-You can change the serial of the disk by specifying the --serial parameter, for example:
-```bash
-$ virtctl addvolume vmi-fedora --volume-name=example-volume-hotplug --serial=1234567890
-```
-
-The serial will be used in the guest so you can identify the disk inside the guest by the serial. For instance in Fedora the disk by id will contain the serial.
-```bash
-$ virtctl console vmi-fedora
-
-Fedora 32 (Cloud Edition)
-Kernel 5.6.6-300.fc32.x86_64 on an x86_64 (ttyS0)
-
-SSH host key: SHA256:c8ik1A9F4E7AxVrd6eE3vMNOcMcp6qBxsf8K30oC/C8 (ECDSA)
-SSH host key: SHA256:fOAKptNAH2NWGo2XhkaEtFHvOMfypv2t6KIPANev090 (ED25519)
-eth0: 10.244.196.144 fe80::d8b7:51ff:fec4:7099
-vmi-fedora login:fedora
-Password:fedora
-[fedora@vmi-fedora ~]$ ls /dev/disk/by-id
-scsi-0QEMU_QEMU_HARDDISK_1234567890
-[fedora@vmi-fedora ~]$ 
-```
-As you can see the serial is part of the disk name, so you can uniquely identify it.
-
-The format and length of serials are specified according to the libvirt documentation:
-```
-    If present, this specify serial number of virtual hard drive. For example, it may look like <serial>WD-WMAP9A966149</serial>. Not supported for scsi-block devices, that is those using disk type 'block' using device 'lun' on bus 'scsi'. Since 0.7.1
-
-    Note that depending on hypervisor and device type the serial number may be truncated silently. IDE/SATA devices are commonly limited to 20 characters. SCSI devices depending on hypervisor version are limited to 20, 36 or 247 characters.
-
-    Hypervisors may also start rejecting overly long serials instead of truncating them in the future so it's advised to avoid the implicit truncation by testing the desired serial length range with the desired device and hypervisor combination.
-
-```
-
-#### Supported Disk types
-Kubevirt supports hotplugging disk devices of type [disk](../storage/disks_and_volumes.md/#disk) and [lun](../storage/disks_and_volumes.md/#lun). As with other volumes, using type `disk` will expose the hotplugged volume as a regular disk, while using `lun` allows additional functionalities like the execution of iSCSI commands.
-
-You can specify the desired type by using the --disk-type parameter, for example:
-
-```bash
-# Allowed values are lun and disk. If no option is specified, we use disk by default.
-$ virtctl addvolume vmi-fedora --volume-name=example-lun-hotplug --disk-type=lun
-```
-
-### Retain hotplugged volumes after restart
-In many cases it is desirable to keep hotplugged volumes after a VM restart. It may also be desirable to be able to unplug these volumes after the restart. The `persist` option makes it impossible to unplug the disks after a restart. If you don't specify `persist` the default behaviour is to retain hotplugged volumes as hotplugged volumes after a VM restart. This makes the `persist` flag mostly obsolete unless you want to make a volume permanent on restart.
-
-### Persist
-In some cases you want a hotplugged volume to become part of the standard disks after a restart of the VM.
-For instance if you added some permanent storage to the VM. We also assume that the running VMI has a matching VM that defines it specification.
-You can call the addvolume command with the --persist flag. This will update the VM domain disks section in addition to updating the VMI domain disks.
-This means that when you restart the VM, the disk is already defined in the VM, and thus in the new VMI.
-
-```bash
-$ virtctl addvolume vm-fedora --volume-name=example-volume-hotplug --persist
-```
-
-In the VM spec this will now show as a new disk
 ```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: testvm
 spec:
-domain:
-    devices:
-        disks:
-        - disk:
-            bus: virtio
-            name: containerdisk
-        - disk:
-            bus: virtio
-            name: cloudinitdisk
-        - disk:
-            bus: scsi
-            name: example-volume-hotplug
-    machine:
-      type: ""
+  runStrategy: Always
+  template:
+    spec:
+      domain:
+        devices:
+          disks:
+          - cdrom:
+              bus: sata
+            name: cdrom
+          - disk:
+              bus: virtio
+            name: disk0
+        resources:
+          requests:
+            memory: 128Mi
+      volumes:
+      - containerDisk:
+          image: quay.io/kubevirt/alpine-container-disk-demo:v1.6.0
+        name: disk0
+      - dataVolume:
+          name: hotplug-disk
+          hotpluggable: true
+        name: cdrom
 ```
 
-### Removevolume
-In addition to hotplug plugging the volume, you can also unplug it by using the 'removevolume' command available with virtctl
+### Eject CD-ROM
+
+Remove the `cdrom` volume from the `spec.template.spec.volumes` section of the VirtualMachine.
+
+### Hotplug Disk/LUN
+
+To hotplug a disk/LUN into a running VirtualMachine, a new disk/LUN must be added to the `spec.template.spec.domain.devices.disks` section of the VM as well as a new volume in `spec.template.spec.volumes`.
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: testvm
+spec:
+  runStrategy: Always
+  template:
+    spec:
+      domain:
+        devices:
+          disks:
+          - cdrom:
+              bus: sata
+            name: cdrom
+          - disk:
+              bus: virtio
+            name: disk0
+          - disk:
+              bus: virtio
+            name: disk1
+        resources:
+          requests:
+            memory: 128Mi
+      volumes:
+      - containerDisk:
+          image: quay.io/kubevirt/alpine-container-disk-demo:v1.6.0
+        name: disk0
+      - dataVolume:
+          name: hotplug-disk
+          hotpluggable: true
+        name: disk1
+```
+
+### Unplug Disk/LUN
+
+Remove `disk1` from the `spec.template.spec.domain.devices.disks` section of the VirtualMachine and remove `disk1` from `spec.template.spec.volumes`
+
+## Virtctl support
+
+Volumes may also be added to VirtualMachines with virtctl. Virtctl is also the only way to hotplug a volume directly into a VirtualMachineInstance. Virtctl does not support CD-ROM inject/eject.
+
+### Add a disk to a VirtualMachine
+
 ```bash
-$ virtctl removevolume vmi-fedora --volume-name=example-volume-hotplug
+$ virtctl addvolume testvm --volume-name=hotplug-disk --persist
 ```
 
-> *NOTE* You can only unplug volumes that were dynamically added with addvolume, or using the API.
+### Add a disk to a VirtualMachineInstance
+
+You can only hotplug a disk to a VirtualMachineInstance (VMI) if it was created independent of a higher level resource. For instance, this operation will fail if the VMI is owned by a VirtualMachine.
+
+```bash
+$ virtctl addvolume testvmi --volume-name=hotplug-disk
+```
+
+### Add a LUN to a VirtualMachine
+
+```bash
+$ virtctl addvolume testvm --volume-name=hotplug-disk --persist --disk-type=lun
+```
+
+### Additional `addvolume` args
+
+`--bus <bus type>` to specify the disk/LUN bus
+
+`--cache <cache type>` to specify the disk cache type (default|none|writethrough|writeback|directsync)
+
+`--serial <serial>` to specify the disk serial number (canonical way to identify a particular disk in the guest)
+
+### Unplug a disk/LUN from a VirtualMachine
+
+```bash
+$ virtctl removevolume testvm --volume-name=hotplug-disk --persist
+```
 
 ### VolumeStatus
-VMI objects have a new `status.VolumeStatus` field. This is an array containing each disk, hotplugged or not. For example, after hotplugging the volume in the addvolume example, the VMI status will contain this:
+
+VMI objects have a `status.VolumeStatus` field. This is an array containing each disk, hotplugged or not. For example:
+
 ```yaml
 volumeStatus:
-- name: cloudinitdisk
-  target: vdb
-- name: containerdisk
+- containerDiskVolume:
+    checksum: 538764798
+  name: disk0
   target: vda
 - hotplugVolume:
-    attachPodName: hp-volume-7fmz4
-    attachPodUID: 62a7f6bf-474c-4e25-8db5-1db9725f0ed2
-  message: Successfully attach hotplugged volume volume-hotplug to VM
-  name: example-volume-hotplug
+    attachPodName: hp-volume-phzmq
+    attachPodUID: 3eea974f-85ad-4a58-97a2-46c463f9b639
+  message: Successfully attach hotplugged volume blank-disk to VM
+  name: blank-disk
+  persistentVolumeClaimInfo:
+    accessModes:
+    - ReadWriteMany
+    capacity:
+      storage: 300Mi
+    claimName: blank-disk
+    filesystemOverhead: "0"
+    requests:
+      storage: "314572800"
+    volumeMode: Block
   phase: Ready
   reason: VolumeReady
   target: sda
 ```
-Vda is the container disk that contains the Fedora OS, vdb is the cloudinit disk. As you can see those just contain the name and target used when assigning them to the VM. The target is the value passed to QEMU when specifying the disks. The value is unique for the VM and does *NOT* represent the naming inside the guest. For instance for a Windows Guest OS the target has no meaning. The same will be true for hotplugged volumes. The target is just a unique identifier meant for QEMU, inside the guest the disk can be assigned a different name.
 
-The hotplugVolume has some extra information that regular volume statuses do not have. The attachPodName is the name of the pod that was used to attach the volume to the node the VMI is running on. If this pod is deleted it will also stop the VMI as we cannot guarantee the volume will remain attached to the node. The other fields are similar to conditions and indicate the status of the hot plug process. Once a Volume is ready it can be used by the VM.
+In this example, `vda` is the container disk that contains the OS. As you can see it just contains the name and target used when assigning them to the VM. The target is the value passed to QEMU when specifying the disks. The target value is unique for the VM and does *NOT* represent the naming inside the guest. For instance for a Windows Guest OS the target has no meaning. The same will be true for hotplugged volumes. The target is just a unique identifier meant for QEMU, inside the guest the disk can be assigned a different name.
 
-## Live Migration
-Currently Live Migration is enabled for any VMI that has volumes hotplugged into it. 
-> *NOTE* However there is a known issue that the migration may fail for VMIs with hotplugged block volumes if the target node uses CPU manager with static policy and `runc` prior to version `v1.0.0`.
+The `hotplugVolume` has some extra information that regular volume statuses do not have. The `attachPodName` is the name of the pod that was used to attach the volume to the node that the VMI is running on. If this pod is deleted it will also stop the VMI as we cannot guarantee that the volume will remain attached to the node. The other fields are similar to conditions and indicate the status of the hotplug process. Once a Volume is ready, it can be used by the VM.
