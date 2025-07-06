@@ -82,3 +82,9 @@ If no `spec.hostname` is set, then we fall back to the
 VirtualMachineInstance name itself. The resulting DNS A-record looks
 like this then:
 `<vmi.metadata.name>.<vmi.spec.subdomain>.<vmi.metadata.namespace>.svc.cluster.local`.
+
+Note:
+To resolve short names like `myvmi.mysubdomain` using search domains, 
+the guest's `/etc/resolv.conf` must include `options ndots:2` or higher.
+If the `options ndots` line is missing, the system defaults to `ndots:1`, 
+meaning search domains will not be applied to names containing a dot.
