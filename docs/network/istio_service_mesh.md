@@ -15,7 +15,7 @@ Kubevirt supports running VMs as a part of Istio service mesh.
 
 - This guide assumes that Istio is already deployed and uses Istio CNI Plugin. See [Istio documentation](https://istio.io/latest/docs/) for more information.
 
-- Optionally, `istioctl` binary for troubleshooting. See Istio [installation inctructions](https://istio.io/latest/docs/setup/getting-started/).
+- Optionally, `istioctl` binary for troubleshooting. See Istio [installation instructions](https://istio.io/latest/docs/setup/getting-started/).
 
 - The target namespace where the VM is created must be labelled with `istio-injection=enabled` label.
 
@@ -29,15 +29,14 @@ metadata:
 
 ## Create a VirtualMachineInstance with enabled Istio proxy injecton
 
-The example below specifies a VMI with masquerade network interface and `sidecar.istio.io/inject` annotation to register the VM to the service mesh. 
+The example below specifies a VMI with masquerade network interface and `sidecar.istio.io/inject` label to register the VM to the service mesh. 
 
 ```yaml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
-  annotations:
-    sidecar.istio.io/inject: "true"
   labels:
+    sidecar.istio.io/inject: "true"
     app: vmi-istio
   name: vmi-istio
 spec:
@@ -79,7 +78,10 @@ spec:
       protocol: TCP
 ```
 
-**Note:** Each Istio enabled VMI must feature the `sidecar.istio.io/inject` annotation instructing KubeVirt to perform necessary network configuration.
+**Note:** Each Istio enabled VMI must feature the `sidecar.istio.io/inject` label instructing KubeVirt to perform necessary network configuration.
+
+**Note:** The `sidecar.istio.io/inject` VM/VMI annotation is deprecated in KubeVirt 1.7. in favor of a label of the same name.
+
 
 ## Verification
 
