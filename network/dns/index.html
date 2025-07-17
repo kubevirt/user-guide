@@ -3001,6 +3001,11 @@ If no <code>spec.hostname</code> is set, then we fall back to the
 VirtualMachineInstance name itself. The resulting DNS A-record looks
 like this then:
 <code>&lt;vmi.metadata.name&gt;.&lt;vmi.spec.subdomain&gt;.&lt;vmi.metadata.namespace&gt;.svc.cluster.local</code>.</p>
+<blockquote>
+<p><strong>Note</strong> To resolve short names like <code>myvmi.mysubdomain</code> using search domains, the guest's <code>/etc/resolv.conf</code> must include <code>options ndots:2</code> or higher.
+In a Linux guest if <code>options ndots</code> is not specified, the system defaults to <code>ndots:1</code> as indicated in  resolver spec](https://man7.org/linux/man-pages/man5/resolv.conf.5.html).
+KubeVirt does not configure the guest system resolver. It can either be pre-configured in the VM image or configured at runtime using cloud-init.</p>
+</blockquote>
 
 
 
