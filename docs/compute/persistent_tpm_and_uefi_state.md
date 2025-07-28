@@ -45,6 +45,18 @@ spec:
             persistent: true
 ```
 
+
+In order for the persistent tpm volume to be created successfully you must ensure your storage classes and [storage profiles](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/storageprofile.md) are configured correctly.  
+The persistent tpm volume will be created with the below access mode if one of the constraints for the access mode is true.
+
+* RWX (ReadWriteMany):
+    * the respective storage profile has any claim property set with Filesystem volume mode and RWX access mode.
+    * the kubevirt cluster config has `VMStateStorageClass` set and the storage profile does not exist or the storage profile exists but has no claim property sets.
+
+* RWO (ReadWriteOnce):
+    * the respective storage profile has claim property sets with Filesystem volume mode and RWO access mode but not RWX.
+    * the kubevirt cluster config has `VMStateStorageClass` **unset** and the storage profile does not exist or the storage profile exists but has no claim property sets.
+
 ### Uses
 - The Microsoft Windows 11 installer requires the presence of a TPM device, even though it doesn't use this. Persistence is not required in this case however.
 - Some disk encryption software have optional/mandatory TPM support. For example, Bitlocker requires a persistent TPM device.
