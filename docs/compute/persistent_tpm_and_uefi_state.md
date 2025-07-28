@@ -45,6 +45,16 @@ spec:
             persistent: true
 ```
 
+For the persistent tpm volume to be created successfully you must ensure your storage classes and storage profiles are configured correctly.
+The persistent tpm volume will be created with the below access mode if one of the containts for the access mode is true.  
+RWX:  
+- the respective storage profile has any claim property set with RWX access mode
+- the kubevirt cluster config has `VMStateStorageClass` set and the storage profile does not exist or the storage profile exists but has no claim property sets
+
+RWO:  
+- the respective storage profile has only claim property sets with RWO access mode
+- the kubevirt cluster config has `VMStateStorageClass` unset and the storage profile does not exist or the storage profile exists but has no claim property sets
+
 ### Uses
 - The Microsoft Windows 11 installer requires the presence of a TPM device, even though it doesn't use this. Persistence is not required in this case however.
 - Some disk encryption software have optional/mandatory TPM support. For example, Bitlocker requires a persistent TPM device.
