@@ -50,12 +50,14 @@ In order for the persistent tpm volume to be created successfully you must ensur
 The persistent tpm volume will be created with the below access mode if one of the constraints for the access mode is true.
 
 * RWX (ReadWriteMany):
-    * the respective storage profile has any claim property set with Filesystem volume mode and RWX access mode.
-    * the kubevirt cluster config has `VMStateStorageClass` set and the storage profile does not exist or the storage profile exists but has no claim property sets.
+    * the respective storage profile has any `claimPropertySet` in `claimPropertySets` with Filesystem volume mode and RWX access mode.
+    * the kubevirt cluster config has `VMStateStorageClass` set and the storage profile does not exist.
+    * the kubevirt cluster config has `VMStateStorageClass` set and the storage profile exists but `claimPropertySets` is an empty list.
 
 * RWO (ReadWriteOnce):
-    * the respective storage profile has claim property sets with Filesystem volume mode and RWO access mode but not RWX.
-    * the kubevirt cluster config has `VMStateStorageClass` **unset** and the storage profile does not exist or the storage profile exists but has no claim property sets.
+    * the respective storage profile has `claimPropertySets` where all `claimPropertySet` in `claimPropertySets` have Filesystem volume mode and RWO access mode but not RWX.
+    * the kubevirt cluster config has `VMStateStorageClass` **unset** and the storage profile does not exist.
+    * the kubevirt cluster config has `VMStateStorageClass` **unset** and the storage profile exists but `claimPropertySets` is an empty list.
 
 ### Uses
 - The Microsoft Windows 11 installer requires the presence of a TPM device, even though it doesn't use this. Persistence is not required in this case however.
