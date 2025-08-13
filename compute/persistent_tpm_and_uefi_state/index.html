@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
     
     
       
@@ -28,7 +28,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -3181,6 +3181,26 @@ Here's a portion of a VM definition that includes a persistent TPM:
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">          </span><span class="nt">tpm</span><span class="p">:</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">            </span><span class="nt">persistent</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div></p>
+<p>In order for the persistent tpm volume to be created successfully you must ensure your storage classes and <a href="https://github.com/kubevirt/containerized-data-importer/blob/main/doc/storageprofile.md">storage profiles</a> are configured correctly.<br />
+The persistent tpm volume will be created with the below access mode if one of the constraints for the access mode is true.</p>
+<ul>
+<li>
+<p>RWX (ReadWriteMany):</p>
+<ul>
+<li>the respective storage profile has any <code>claimPropertySet</code> in <code>claimPropertySets</code> with Filesystem volume mode and RWX access mode.</li>
+<li>the kubevirt cluster config has <code>VMStateStorageClass</code> set and the storage profile does not exist.</li>
+<li>the kubevirt cluster config has <code>VMStateStorageClass</code> set and the storage profile exists but <code>claimPropertySets</code> is an empty list.</li>
+</ul>
+</li>
+<li>
+<p>RWO (ReadWriteOnce):</p>
+<ul>
+<li>the respective storage profile has <code>claimPropertySets</code> where all <code>claimPropertySet</code> in <code>claimPropertySets</code> have Filesystem volume mode and RWO access mode but not RWX.</li>
+<li>the kubevirt cluster config has <code>VMStateStorageClass</code> <strong>unset</strong> and the storage profile does not exist.</li>
+<li>the kubevirt cluster config has <code>VMStateStorageClass</code> <strong>unset</strong> and the storage profile exists but <code>claimPropertySets</code> is an empty list.</li>
+</ul>
+</li>
+</ul>
 <h3 id="uses">Uses<a class="headerlink" href="#uses" title="Permanent link">&para;</a></h3>
 <ul>
 <li>The Microsoft Windows 11 installer requires the presence of a TPM device, even though it doesn't use this. Persistence is not required in this case however.</li>
@@ -3310,7 +3330,7 @@ Here's a portion of a VM definition that includes a persistent EFI:
       <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
       
     
   </body>
