@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
     
     
       
@@ -2214,9 +2214,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#labeling-nodes-with-cpu-models-and-cpu-features" class="md-nav__link">
+  <a href="#labeling-nodes-with-cpu-models-cpu-features-and-machine-types" class="md-nav__link">
     <span class="md-ellipsis">
-      Labeling nodes with cpu models and cpu features
+      Labeling nodes with cpu models, cpu features and machine types
     </span>
   </a>
   
@@ -3234,9 +3234,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#labeling-nodes-with-cpu-models-and-cpu-features" class="md-nav__link">
+  <a href="#labeling-nodes-with-cpu-models-cpu-features-and-machine-types" class="md-nav__link">
     <span class="md-ellipsis">
-      Labeling nodes with cpu models and cpu features
+      Labeling nodes with cpu models, cpu features and machine types
     </span>
   </a>
   
@@ -3587,15 +3587,15 @@ The following VM will have a CPU with <code>3</code> cores:</p>
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myclaim</span>
 </code></pre></div>
-<h4 id="labeling-nodes-with-cpu-models-and-cpu-features">Labeling nodes with cpu models and cpu features<a class="headerlink" href="#labeling-nodes-with-cpu-models-and-cpu-features" title="Permanent link">&para;</a></h4>
-<p>KubeVirt can create node selectors based on VM cpu models and features. With
-these node selectors, VMs will be scheduled on the nodes that support the matching
-VM cpu model and features.</p>
+<h4 id="labeling-nodes-with-cpu-models-cpu-features-and-machine-types">Labeling nodes with cpu models, cpu features and machine types<a class="headerlink" href="#labeling-nodes-with-cpu-models-cpu-features-and-machine-types" title="Permanent link">&para;</a></h4>
+<p>KubeVirt can create node selectors based on VM cpu models, features, and
+machine types. With these node selectors, VMs will be scheduled on the
+nodes that support the matching VM cpu model, features, and machine type.</p>
 <p>To properly label the node, user can use Kubevirt Node-labeller, which creates all 
 necessary labels or create node labels by himself.</p>
-<p>Kubevirt node-labeller creates 3 types of labels: cpu models, cpu features and kvm info.
+<p>Kubevirt node-labeller creates 4 types of labels: cpu models, cpu features, kvm info and machine types.
 It uses libvirt to get all supported cpu models and cpu
-features on host and then Node-labeller creates labels from cpu models. </p>
+features on host and then Node-labeller creates labels from cpu models and machine types.</p>
 <p>Node-labeller supports obsolete list of cpu models and minimal baseline
 cpu model for features. Both features can be set via KubeVirt CR:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
@@ -4125,10 +4125,10 @@ can be empty. In that case, <code>usb</code> will be selected.</p>
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
       
     
   </body>
