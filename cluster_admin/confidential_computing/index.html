@@ -805,6 +805,57 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ibm-secure-execution-for-linux-secure-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      IBM Secure Execution for Linux (Secure Execution)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IBM Secure Execution for Linux (Secure Execution)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preparing-the-hosts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preparing the host(s)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-a-secure-execution-guest-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running a Secure Execution Guest VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3018,6 +3069,57 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#ibm-secure-execution-for-linux-secure-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      IBM Secure Execution for Linux (Secure Execution)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IBM Secure Execution for Linux (Secure Execution)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preparing-the-hosts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preparing the host(s)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-a-secure-execution-guest-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running a Secure Execution Guest VM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3108,6 +3210,79 @@
 <li>Live Migration is not supported</li>
 <li>The VMs are not attested</li>
 </ul>
+<h2 id="ibm-secure-execution-for-linux-secure-execution">IBM Secure Execution for Linux (Secure Execution)<a class="headerlink" href="#ibm-secure-execution-for-linux-secure-execution" title="Permanent link">&para;</a></h2>
+<p><strong>FEATURE STATE:</strong> KubeVirt v1.6.0 (experimental support)</p>
+<p>IBM Secure Execution for Linux is a s390x security technology that is introduced with IBM z15 and LinuxONE III. It protects data of workloads that run in a KVM guest from being inspected or modified by the server environment.</p>
+<p>In particular, no hardware administrator, no KVM code, and no KVM administrator can access the data in a guest that was started as an IBM Secure Execution guest.</p>
+<p>For more details please read the <a href="https://www.ibm.com/docs/en/linux-on-systems?topic=execution-introduction">official documentation</a>.</p>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<ul>
+<li>IBM z15/LinuxONE III or newer</li>
+<li>Kubernetes Cluster with LPAR worker nodes (No nested virtualization)</li>
+<li>Kubevirt and CDI deployed on the Cluster</li>
+<li><code>SecureExecution</code> <a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a> must be enabled.</li>
+<li>Secure Execution prepared guest. See the <a href="https://www.ibm.com/docs/en/linux-on-systems?topic=execution-workload-owner-tasks">official docs</a>.</li>
+</ul>
+<h3 id="preparing-the-hosts">Preparing the host(s)<a class="headerlink" href="#preparing-the-hosts" title="Permanent link">&para;</a></h3>
+<p>On all LPAR worker nodes that should run Secure Execution VMs, the following steps need to be taken to enable them to host the workloads:</p>
+<ol>
+<li>SSH to the node</li>
+<li>Add <code>prot_virt=1</code> to the kernel cmdline:</li>
+<li>Edit <code>zipl.conf</code>:
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a># vi zipl.conf
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>...
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>parameters=&quot; ...prot_virt=1&quot;
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>...
+</code></pre></div></li>
+<li>Run <code>zipl</code> to ensure the change is picked up during the next reboot</li>
+<li>Reboot the node</li>
+<li>Verify that Secure Execution is now enabled:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$ cat /sys/firmware/uv/prot_virt_host
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>1
+</code></pre></div></li>
+</ol>
+<h3 id="running-a-secure-execution-guest-vm">Running a Secure Execution Guest VM<a class="headerlink" href="#running-a-secure-execution-guest-vm" title="Permanent link">&para;</a></h3>
+<p>Ensure that your workload is <a href="../../storage/containerized_data_importer/#virtctl-image-upload">uploaded to a data volume using CDI</a>.</p>
+<p>Memory Protection via Secure Execution can be requested by setting <code>spec.domain.launchSecurity</code> element in the VMI definition.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>apiVersion: kubevirt.io/v1
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>kind: VirtualMachine
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>metadata:
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  labels:
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    kubevirt.io/vm: secure-execution-vm
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  name: secure-execution-vm
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>spec:
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  runStrategy: Always
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  template:
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    metadata:
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>      labels:
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        kubevirt.io/vm: secure-execution-vm
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    spec:
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>      domain:
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>        launchSecurity: {}
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>        devices:
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>          disks:
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>          - disk:
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>              bus: virtio
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>            name: rootfs
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>        resources:
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>          requests:
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>            memory: 4Gi
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>      terminationGracePeriodSeconds: 0
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>      volumes:
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>        - name: rootfs
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>          dataVolume:
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>            name: secure-execution-dv
+</code></pre></div></p>
+<h3 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h3>
+<p>As the host is not permitted to access the guest memory, certain features do not work with Secure Execution VMs
+- live migration
+  - VMs need to be moved offline instead
+  - If moving between different machines, VMs need to be encrypted with hostkeys of both machines
+- Saving and restoring VM from disk
+- Memory dump
+- Huge Pages
+- Pass-through of host devices, for example PCI and CCW.
+- Memory ballooning through a virtio-balloon device.</p>
 
 
 
