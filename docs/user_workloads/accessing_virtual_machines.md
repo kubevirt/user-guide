@@ -258,8 +258,8 @@ a `VirtualMachineInstance` either from the CLI or a web-UI. The `VirtualMachine`
 subresource will automatically look up the corresponding `VirtualMachineInstance`.
 
 To connect to a `VirtualMachineInstance` from your local machine, `virtctl`
-provides an SSH client with the `ssh` command, that uses port
-forwarding. Refer to the command's help for more details.
+wraps the local SSH client with the `ssh` command and transparently uses port
+forwarding as described above. Refer to the command's help for more details.
 
 ```shell
 virtctl ssh
@@ -277,12 +277,11 @@ virtctl scp
 
 The preferred way of connecting to VMs and VMIs is to use `virtctl` to wrap
 local OpenSSH clients. If you prefer to use your local OpenSSH client directly
-instead, there are two ways of doing that in combination with `virtctl`.
+instead, there is also a way of doing that in combination with `virtctl`.
 
 > Note: Most of this applies to the `virtctl scp` command too.
 
-1. The `virtctl ssh` command has a `--local-ssh` option, which is set to `true` by
-   default. With this option, `virtctl` wraps the local OpenSSH client transparently
+1. By default `virtctl` wraps the local OpenSSH client transparently
    to the user. The executed SSH command can be viewed by increasing the verbosity (`-v 3`).
 
 ```shell
