@@ -62,16 +62,74 @@ the passt plugin needs to:
 And in detail:
 
 ### Passt CNI deployment on nodes
-The CNI plugin binary can be retrieved directly from the kubevirt release
-assets (on GitHub) or to be built from its
+
+#### v1.6.0 and above
+Kubevirt releases a container image `quay.io/kubevirt/network-passt-binding-cni:v1.6.0`,
+which can be used via daemonSet to copy the CNI binary to the nodes.
+
+Create the following DaemonSet:
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: passt-binding-cni
+  namespace: kubevirt
+  labels:
+    tier: node
+    app: passt-binding-cni
+spec:
+  selector:
+    matchLabels:
+      name: passt-binding-cni
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 10%
+  template:
+    metadata:
+      labels:
+        name: passt-binding-cni
+        tier: node
+        app: passt-binding-cni
+      annotations:
+        description: passt-binding-cni installs 'passt binding' CNI on cluster nodes
+    spec:
+      priorityClassName: system-cluster-critical
+      containers:
+      - name: installer
+        image: quay.io/kubevirt/network-passt-binding-cni:v1.6.0
+        command: [ "/bin/sh", "-ce" ]
+        args:
+        - |
+          ls -la "/cni/kubevirt-passt-binding"
+          cp -f "/cni/kubevirt-passt-binding" "/opt/cni/bin"
+          echo "passt binding CNI plugin installation complete..sleep infinity"
+          sleep 2147483647
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "15Mi"
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: cnibin
+          mountPath: /opt/cni/bin
+      volumes:
+      - name: cnibin
+        hostPath:
+          path: /opt/cni/bin
+```
+
+#### prior to v1.6.0
+The CNI binary can be retrieved directly from the kubevirt release assets (on GitHub) or to be built from its
 [sources](https://github.com/kubevirt/kubevirt/tree/release-1.1/cmd/cniplugins/passt-binding).
 
 > **Note**: The kubevirt project uses Bazel to build the binaries and container images.
 > For more information in how to build the whole project, visit the developer
 > [getting started guide](https://github.com/kubevirt/kubevirt/blob/release-1.1/docs/getting-started.md).
 
-Once the binary is ready, you may rename it to a meaningful name
-(e.g. `kubevirt-passt-binding`).
+Once the binary is ready, you may rename it to a meaningful name (e.g. `kubevirt-passt-binding`).
 This name is used in the NetworkAttachmentDefinition configuration.
 
 Copy the binary to each node in your cluster.
@@ -114,11 +172,11 @@ specified in the Kubevirt CR when registering the network binding plugin.
 ### Feature Gate
 For KubeVirt versions prior to v1.5, make sure to enable the `NetworkBindingPlugins` FG.
 ```
-kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-",   "value": "NetworkBindingPlugins"}]'
+kubectl patch kubevirt -n kubevirt kubevirt --type=merge -p='{"spec":{"configuration":{"developerConfiguration":{"featureGates":["NetworkBindingPlugins"]}}}}'
 ```
 
-> **Note**: The specific passt plugin has no FG by its own. It is up to the cluster
-> admin to decide if the plugin is to be available in the cluster.
+**Note**:
+> It is up to the cluster admin to decide if the plugin is to be available in the cluster.
 > The passt binding is still in evaluation, use it with care.
 
 ### Passt Registration
@@ -131,7 +189,7 @@ kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "pat
             "binding": {
                 "passt": {
                     "networkAttachmentDefinition": "default/netbindingpasst",
-                    "sidecarImage": "quay.io/kubevirt/network-passt-binding:20231205_29a16d5c9",
+                    "sidecarImage": "quay.io/kubevirt/network-passt-binding:v1.6.0",
                     "migration": {},
                     "computeResourceOverhead": {
                       "requests": {
@@ -210,7 +268,7 @@ spec:
       terminationGracePeriodSeconds: 0
       volumes:
       - containerDisk:
-          image: quay.io/kubevirt/fedora-with-test-tooling-container-disk:v1.1.0
+          image: quay.io/kubevirt/fedora-with-test-tooling-container-disk:v1.6.0
         name: containerdisk
       - cloudInitNoCloud:
           networkData: |
