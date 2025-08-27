@@ -4449,7 +4449,7 @@ as a <code>cdrom</code> device to the VM:</p>
 </code></pre></div>
 <h3 id="filesystems">filesystems<a class="headerlink" href="#filesystems" title="Permanent link">&para;</a></h3>
 <p>A <code>filesystem</code> device will expose the volume as a filesystem to the VM.
-<code>filesystems</code> rely on <code>virtiofs</code> to make visible external filesystems to <code>KubeVirt</code> VMs. 
+<code>filesystems</code> rely on <code>virtiofs</code> to make visible external filesystems to <code>KubeVirt</code> VMs.
 Further information about <code>virtiofs</code> can be found at the <a href="https://virtio-fs.gitlab.io/">Official Virtiofs Site</a>.</p>
 <p>Compared with <code>disk</code>, <code>filesystems</code> allow changes in the source to be dynamically reflected in the volumes inside the VM.
 For instance, if a given <code>configMap</code> is shared with <code>filesystems</code> any change made on it will be reflected in the
@@ -4457,7 +4457,7 @@ VMs.</p>
 <p>Additionally, <code>filesystem</code> devices must be mounted inside the VM.
 This can be done through <a href="#cloudinitnocloud">cloudInitNoCloud</a> or manually connecting to the VM shell and targeting the same
 command.
-The main challenge is to understand how the device tag used to identify the new filesystem and mount it with the 
+The main challenge is to understand how the device tag used to identify the new filesystem and mount it with the
 <code>mount -t virtiofs [device tag] [path]</code> command.
 For that purpose, the tag is assigned to the filesystem in the VM spec <code>spec.domain.devices.filesystems.name</code>.
 For instance, if in a given VM spec is <code>spec.domain.devices.filesystems.name: foo</code>, the required command inside the VM
@@ -4482,7 +4482,7 @@ to mount the filesystem in the <code>/tmp/foo</code> path will be <code>mount -t
 <a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
 <a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerDisk</span><span class="p">:</span>
 <a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/containerdisks/fedora:latest</span>
-<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span><span class="w"> </span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
 <a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cloudInitNoCloud</span><span class="p">:</span>
 <a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">            </span><span class="nt">userData</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span>
 <a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">              </span><span class="no">#cloud-config</span>
@@ -4498,11 +4498,11 @@ to mount the filesystem in the <code>/tmp/foo</code> path will be <code>mount -t
 <a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">foo</span>
 </code></pre></div>
 <blockquote>
-<p><strong>Note:</strong> As stated, <code>filesystems</code> rely on <code>virtiofs</code>. Moreover, <code>virtiofs</code> requires kernel linux support to work in 
+<p><strong>Note:</strong> As stated, <code>filesystems</code> rely on <code>virtiofs</code>. Moreover, <code>virtiofs</code> requires kernel linux support to work in
 the VM.
 To check if the linux image of the VM has the required support, you can address the following command: <code>modprobe virtiofs</code>.
 If the command output is <code>modprobe: FATAL: Module virtiofs not found</code>, <strong>the linux image of the VM does not support virtiofs</strong>.
-Also, you can check if the kernel version is up to 5.4 in any linux distribution or up to 4.18 in centos/rhel. 
+Also, you can check if the kernel version is up to 5.4 in any linux distribution or up to 4.18 in centos/rhel.
 To check this, you can target the following command: <code>uname -r</code>.</p>
 </blockquote>
 <p>Refer to section <a href="#sharing-directories-with-vms">Sharing Directories with VMs</a> for usage examples of <code>filesystems</code>.</p>
@@ -5122,7 +5122,7 @@ to a VM.</p>
 <h3 id="configmap">configMap<a class="headerlink" href="#configmap" title="Permanent link">&para;</a></h3>
 <p>A <code>configMap</code> is a reference to a
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/">ConfigMap</a>
-in Kubernetes. 
+in Kubernetes.
 A <code>configMap</code> can be presented to the VM as <code>disks</code> or as a <code>filesystem</code>. Each method is described in the following
 sections.</p>
 <h4 id="as-a-disk">As a disk<a class="headerlink" href="#as-a-disk" title="Permanent link">&para;</a></h4>
@@ -5230,7 +5230,7 @@ projected.</p>
 <a id="__codelineno-24-35" name="__codelineno-24-35" href="#__codelineno-24-35"></a><span class="w">          </span><span class="no"># mount the ConfigMap</span>
 <a id="__codelineno-24-36" name="__codelineno-24-36" href="#__codelineno-24-36"></a><span class="w">          </span><span class="no">- &quot;sudo mkdir /mnt/app-config&quot;</span>
 <a id="__codelineno-24-37" name="__codelineno-24-37" href="#__codelineno-24-37"></a><span class="w">          </span><span class="no">- &quot;sudo mount -t virtiofs config-fs /mnt/app-config&quot;</span>
-<a id="__codelineno-24-38" name="__codelineno-24-38" href="#__codelineno-24-38"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span><span class="w">      </span>
+<a id="__codelineno-24-38" name="__codelineno-24-38" href="#__codelineno-24-38"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
 <a id="__codelineno-24-39" name="__codelineno-24-39" href="#__codelineno-24-39"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">configMap</span><span class="p">:</span>
 <a id="__codelineno-24-40" name="__codelineno-24-40" href="#__codelineno-24-40"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app-config</span>
 <a id="__codelineno-24-41" name="__codelineno-24-41" href="#__codelineno-24-41"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config-fs</span>
@@ -5457,7 +5457,7 @@ example is SAP HANA.</p>
 to use the metrics. Available starting with KubeVirt v0.42.0.</p>
 </blockquote>
 <h4 id="disk_1">Disk<a class="headerlink" href="#disk_1" title="Permanent link">&para;</a></h4>
-<p>A volume is created, and it is exposed to the guest as a raw block volume. 
+<p>A volume is created, and it is exposed to the guest as a raw block volume.
 KubeVirt will update it periodically (by default, every 5 seconds).</p>
 <p>Example:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
@@ -5542,7 +5542,7 @@ information.</p>
 <a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a><span class="w">  </span><span class="nt">&lt;/metric&gt;</span>
 <a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a><span class="nt">&lt;/metrics&gt;</span>
 </code></pre></div>
-<p><code>vm-dump-metrics</code> is useful as a standalone tool to verify the serial port is working and to inspect the metrics. 
+<p><code>vm-dump-metrics</code> is useful as a standalone tool to verify the serial port is working and to inspect the metrics.
 However, applications that consume metrics will usually connect to the virtio-serial port themselves.</p>
 <blockquote>
 <p><strong>Note:</strong> The tool <code>vm-dump-metrics</code> provides the option <code>--virtio</code> in case the virtio-serial port is used.
@@ -6009,7 +6009,7 @@ Then, we can declare 2 VMs and set the <code>shareable</code> option to true for
 <a id="__codelineno-40-98" name="__codelineno-40-98" href="#__codelineno-40-98"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span>
 <a id="__codelineno-40-99" name="__codelineno-40-99" href="#__codelineno-40-99"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block-disk</span>
 <a id="__codelineno-40-100" name="__codelineno-40-100" href="#__codelineno-40-100"></a><span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
-<a id="__codelineno-40-101" name="__codelineno-40-101" href="#__codelineno-40-101"></a><span class="w">          </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block-pvc</span><span class="w">                                        </span>
+<a id="__codelineno-40-101" name="__codelineno-40-101" href="#__codelineno-40-101"></a><span class="w">          </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">block-pvc</span>
 </code></pre></div>
 We can now attempt to write a string from the first guest and then read the string from the second guest to test that the sharing is working.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>console<span class="w"> </span>vm-block-1
@@ -6037,7 +6037,7 @@ limitations:</p>
   Therefore, it will only have access to directories and files that UID/GID 107 has permission to.
   Additionally, when creating new files they will always be created with QEMU's UID/GID regardless of the UID/GID of the
   process within the guest.</li>
-<li>Extended attributes are not supported. </li>
+<li>Extended attributes are not supported.</li>
 </ul>
 <blockquote>
 <p><strong>Note:</strong> You need to enable the feature gate <code>EnableVirtioFsStorageVolumes</code> for sharing <code>PVCs</code> with <code>virtiofs</code>.</p>
@@ -6081,9 +6081,9 @@ Example:</p>
 <a id="__codelineno-42-33" name="__codelineno-42-33" href="#__codelineno-42-33"></a><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mypvc</span>
 </code></pre></div>
 <h4 id="configuration-inside-the-vm">Configuration Inside the VM<a class="headerlink" href="#configuration-inside-the-vm" title="Permanent link">&para;</a></h4>
-<p>The following configuration can be done in using startup script. See <a href="#cloudinitnocloud">cloudInitNoCloud</a> section for 
-more details. 
-However, we can do it manually by logging in to the VM and mounting it. 
+<p>The following configuration can be done in using startup script. See <a href="#cloudinitnocloud">cloudInitNoCloud</a> section for
+more details.
+However, we can do it manually by logging in to the VM and mounting it.
 Here are examples of how to mount it in a linux and windows VMs:</p>
 <ul>
 <li>Linux Example</li>
@@ -6110,7 +6110,7 @@ skip the <code>mkdir</code> command):</p>
 </code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> If you are attempting to share an existing directory, you must first check the SELinux context label with the
-command <code>ls -Z &lt;directory&gt;</code>. In the case that the label is not present or is not <code>container_file_t</code> you need to label 
+command <code>ls -Z &lt;directory&gt;</code>. In the case that the label is not present or is not <code>container_file_t</code> you need to label
 it with the <code>chcon</code>  command.</p>
 </blockquote>
 <h4 id="cluster-configuration_1">Cluster Configuration<a class="headerlink" href="#cluster-configuration_1" title="Permanent link">&para;</a></h4>
@@ -6144,7 +6144,7 @@ it with the <code>chcon</code>  command.</p>
 <a id="__codelineno-46-18" name="__codelineno-46-18" href="#__codelineno-46-18"></a><span class="w">          </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">In</span>
 <a id="__codelineno-46-19" name="__codelineno-46-19" href="#__codelineno-46-19"></a><span class="w">          </span><span class="nt">values</span><span class="p">:</span>
 <a id="__codelineno-46-20" name="__codelineno-46-20" href="#__codelineno-46-20"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node01</span>
-<a id="__codelineno-46-21" name="__codelineno-46-21" href="#__codelineno-46-21"></a><span class="nn">---</span><span class="w">  </span>
+<a id="__codelineno-46-21" name="__codelineno-46-21" href="#__codelineno-46-21"></a><span class="nn">---</span>
 <a id="__codelineno-46-22" name="__codelineno-46-22" href="#__codelineno-46-22"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
 <a id="__codelineno-46-23" name="__codelineno-46-23" href="#__codelineno-46-23"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PersistentVolumeClaim</span>
 <a id="__codelineno-46-24" name="__codelineno-46-24" href="#__codelineno-46-24"></a><span class="nt">metadata</span><span class="p">:</span>
