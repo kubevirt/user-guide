@@ -3191,28 +3191,40 @@ field in the KubeVirt CR must be expanded by adding the <code>Snapshot</code> to
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">larry</span>
 </code></pre></div>
-<p>To wait for a snapshot to complete, execute:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>vmsnapshot<span class="w"> </span>snap-larry<span class="w"> </span>--for<span class="w"> </span><span class="nv">condition</span><span class="o">=</span>Ready
-</code></pre></div>
 <p>You can check the vmSnapshot phase in the vmSnapshot status. It can be one of the following:</p>
 <ul>
 <li>InProgress</li>
 <li>Succeeded</li>
 <li>Failed.</li>
 </ul>
-<p>The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not succeessfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a <a href="https://pkg.go.dev/time#ParseDuration">duration</a> string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m"</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot.kubevirt.io/v1beta1</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineSnapshot</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snap-larry</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">larry</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="nt">failureDeadline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1m</span>
+<p>The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not successfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a <a href="https://pkg.go.dev/time#ParseDuration">duration</a> string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m"</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot.kubevirt.io/v1beta1</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineSnapshot</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snap-larry</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">apiGroup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">larry</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="nt">failureDeadline</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1m</span>
 </code></pre></div>
 <p>In order to set an infinite deadline you can set it to 0 (not recommended).</p>
+<p>To wait for a snapshot to complete, execute:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>vmsnapshot<span class="w"> </span>snap-larry<span class="w"> </span>--for<span class="w"> </span><span class="nv">condition</span><span class="o">=</span>Ready
+</code></pre></div>
+<p>You can verify your snapshot's state and composition by examining the following fields in the <code>snapshot.status</code>:</p>
+<ul>
+<li><code>readyToUse</code> - indicates whether you can restore from the snapshot. It is possible that after the snapshot completed something happened to the volumeSnapshot (like someone deleted it by accident) making the snapshot unrestorable.</li>
+<li><code>includedVolumes/excludedVolumes</code> - list of the volumes that were included or excluded in the snapshot, user should verify all the expected volumes are there.</li>
+<li><code>indications</code> - array of indications that represents how the snapshot was taken:<br><ul>
+<li><code>Online</code> indicates the snapshot was taken while the VM was running.</li>
+<li><code>GuestAgent</code> indicates the QEMU guest agent was active and successfully froze (quiesced) the guest filesystem for the online snapshot. This delivers an application-consistent snapshot, ensuring high data integrity as if applications gracefully shut down before the snapshot.</li>
+<li><code>NoGuestAgent</code> indicates the QEMU guest agent was not installed, or not ready to quiesce the filesystem during the online snapshot. This results in a crash-consistent snapshot, capturing the VM's state like an abrupt power-off. There's no guarantee of application consistency, risking data issues for critical apps. Installing and running the guest agent, or retrying the snapshot, is highly recommended for better reliability.</li>
+<li><code>QuiesceFailed</code> indicates an attempt to freeze the filesystem failed during the online snapshot process. Even though the snapshot completed, it's not necessarily application-consistent. Retrying the snapshot is generally advisable to achieve proper consistency.</li>
+</ul>
+</li>
+</ul>
 <h2 id="restoring-a-virtualmachine">Restoring a VirtualMachine<a class="headerlink" href="#restoring-a-virtualmachine" title="Permanent link">&para;</a></h2>
 <p>To restore the <code>VirtualMachine</code> <code>larry</code> from <code>VirtualMachineSnapshot</code> <code>snap-larry</code>, Stop the VM, wait for it to be stopped and then apply the following yaml.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">snapshot.kubevirt.io/v1beta1</span>
