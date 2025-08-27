@@ -54,19 +54,13 @@ spec:
     name: larry
 ```
 
-To wait for a snapshot to complete, execute:
-
-```bash
-kubectl wait vmsnapshot snap-larry --for condition=Ready
-```
-
 You can check the vmSnapshot phase in the vmSnapshot status. It can be one of the following:
 
 - InProgress
 - Succeeded
 - Failed.
 
-The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not succeessfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a [duration](https://pkg.go.dev/time#ParseDuration) string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m"
+The vmSnapshot has a default deadline of 5 minutes. If the vmSnapshot has not successfully completed before the deadline, it will be marked as Failed. The VM will be unfrozen and the created snapshot content will be cleaned up if necessary. The vmSnapshot object will remain in Failed state until deleted by the user. To change the default deadline add 'FailureDeadline' to the VirtualMachineSnapshot spec with a new value. The allowed format is a [duration](https://pkg.go.dev/time#ParseDuration) string which is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m"
 
 ```yaml
 apiVersion: snapshot.kubevirt.io/v1beta1
@@ -82,6 +76,22 @@ spec:
 ```
 
 In order to set an infinite deadline you can set it to 0 (not recommended).
+
+To wait for a snapshot to complete, execute:
+
+```bash
+kubectl wait vmsnapshot snap-larry --for condition=Ready
+```
+
+You can verify your snapshot's state and composition by examining the following fields in the `snapshot.status`:
+
+- `readyToUse` - indicates whether you can restore from the snapshot. It is possible that after the snapshot completed something happened to the volumeSnapshot (like someone deleted it by accident) making the snapshot unrestorable.
+- `includedVolumes/excludedVolumes` - list of the volumes that were included or excluded in the snapshot, user should verify all the expected volumes are there.
+- `indications` - array of indications that represents how the snapshot was taken:<br>
+    - `Online` indicates the snapshot was taken while the VM was running.
+    - `GuestAgent` indicates the QEMU guest agent was active and successfully froze (quiesced) the guest filesystem for the online snapshot. This delivers an application-consistent snapshot, ensuring high data integrity as if applications gracefully shut down before the snapshot.
+    - `NoGuestAgent` indicates the QEMU guest agent was not installed, or not ready to quiesce the filesystem during the online snapshot. This results in a crash-consistent snapshot, capturing the VM's state like an abrupt power-off. There's no guarantee of application consistency, risking data issues for critical apps. Installing and running the guest agent, or retrying the snapshot, is highly recommended for better reliability.
+    - `QuiesceFailed` indicates an attempt to freeze the filesystem failed during the online snapshot process. Even though the snapshot completed, it's not necessarily application-consistent. Retrying the snapshot is generally advisable to achieve proper consistency.
 
 ## Restoring a VirtualMachine
 
