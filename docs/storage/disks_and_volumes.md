@@ -168,7 +168,7 @@ spec:
 
 ### filesystems
 A `filesystem` device will expose the volume as a filesystem to the VM.
-`filesystems` rely on `virtiofs` to make visible external filesystems to `KubeVirt` VMs. 
+`filesystems` rely on `virtiofs` to make visible external filesystems to `KubeVirt` VMs.
 Further information about `virtiofs` can be found at the [Official Virtiofs Site](https://virtio-fs.gitlab.io/).
 
 Compared with `disk`, `filesystems` allow changes in the source to be dynamically reflected in the volumes inside the VM.
@@ -178,7 +178,7 @@ VMs.
 Additionally, `filesystem` devices must be mounted inside the VM.
 This can be done through [cloudInitNoCloud](#cloudinitnocloud) or manually connecting to the VM shell and targeting the same
 command.
-The main challenge is to understand how the device tag used to identify the new filesystem and mount it with the 
+The main challenge is to understand how the device tag used to identify the new filesystem and mount it with the
 `mount -t virtiofs [device tag] [path]` command.
 For that purpose, the tag is assigned to the filesystem in the VM spec `spec.domain.devices.filesystems.name`.
 For instance, if in a given VM spec is `spec.domain.devices.filesystems.name: foo`, the required command inside the VM
@@ -205,7 +205,7 @@ spec:
     volumes:
       - containerDisk:
           image: quay.io/containerdisks/fedora:latest
-        name: containerdisk 
+        name: containerdisk
       - cloudInitNoCloud:
             userData: |-
               #cloud-config
@@ -220,11 +220,11 @@ spec:
           claimName: mypvc
         name: foo
 ```
-> **Note:** As stated, `filesystems` rely on `virtiofs`. Moreover, `virtiofs` requires kernel linux support to work in 
+> **Note:** As stated, `filesystems` rely on `virtiofs`. Moreover, `virtiofs` requires kernel linux support to work in
 > the VM.
 > To check if the linux image of the VM has the required support, you can address the following command: `modprobe virtiofs`.
 > If the command output is `modprobe: FATAL: Module virtiofs not found`, **the linux image of the VM does not support virtiofs**.
-> Also, you can check if the kernel version is up to 5.4 in any linux distribution or up to 4.18 in centos/rhel. 
+> Also, you can check if the kernel version is up to 5.4 in any linux distribution or up to 4.18 in centos/rhel.
 > To check this, you can target the following command: `uname -r`.
 
 Refer to section [Sharing Directories with VMs](#sharing-directories-with-vms) for usage examples of `filesystems`.
@@ -927,7 +927,7 @@ status: {}
 ### configMap
 A `configMap` is a reference to a
 [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
-in Kubernetes. 
+in Kubernetes.
 A `configMap` can be presented to the VM as `disks` or as a `filesystem`. Each method is described in the following
 sections.
 
@@ -1043,7 +1043,7 @@ spec:
           # mount the ConfigMap
           - "sudo mkdir /mnt/app-config"
           - "sudo mount -t virtiofs config-fs /mnt/app-config"
-    name: cloudinitdisk      
+    name: cloudinitdisk
   - configMap:
       name: app-config
     name: config-fs
@@ -1128,7 +1128,7 @@ By using filesystem, `secrets` are shared through `virtiofs`. In contrast with u
 `filesystem` allows you to dynamically propagate changes on `secrets` to VMIs (i.e. the VM does not need to be rebooted).
 
 > **Note:** You need to enable the feature gate `EnableVirtioFsConfigVolumes` for sharing `secrets` with `virtiofs`.
- 
+
 To share a given `secret`, the following VM definition could be used:
 
 ```yaml
@@ -1229,7 +1229,7 @@ By using filesystem, `serviceAccounts` are shared through `virtiofs`. In contras
 `filesystem` allows you to dynamically propagate changes on `serviceAccounts` to VMIs (i.e. the VM does not need to be rebooted).
 
 > **Note:** You need to enable the feature gate `EnableVirtioFsConfigVolumes` for sharing `serviceAccounts` with `virtiofs`.
- 
+
 To share a given `serviceAccount`, the following VM definition could be used:
 
 ```yaml
@@ -1290,10 +1290,10 @@ In order to expose `downwardMetrics` to VMs, the methods `disk` and `virtio-seri
 > **Note:** The **DownwardMetrics** feature gate
 > [must be enabled](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
 > to use the metrics. Available starting with KubeVirt v0.42.0.
- 
+
 #### Disk
 
-A volume is created, and it is exposed to the guest as a raw block volume. 
+A volume is created, and it is exposed to the guest as a raw block volume.
 KubeVirt will update it periodically (by default, every 5 seconds).
 
 Example:
@@ -1390,7 +1390,7 @@ $ sudo vm-dump-metrics
 </metrics>
 ```
 
-`vm-dump-metrics` is useful as a standalone tool to verify the serial port is working and to inspect the metrics. 
+`vm-dump-metrics` is useful as a standalone tool to verify the serial port is working and to inspect the metrics.
 However, applications that consume metrics will usually connect to the virtio-serial port themselves.
 
 > **Note:** The tool `vm-dump-metrics` provides the option `--virtio` in case the virtio-serial port is used.
@@ -1740,7 +1740,7 @@ KubeVirt supports `none`, `writeback`, and `writethrough` KVM/QEMU cache modes.
 
 -   `writethrough` I/O from the guest is cached on the host but must be written
     through to the physical medium before the write operation completes.
-    
+
 > **Important:** `none` cache mode is set as default if the file system
 > supports direct I/O, otherwise, `writethrough` is used.
 
@@ -1906,7 +1906,7 @@ spec:
         name: cloudinitdisk
       - name: block-disk
         persistentVolumeClaim:
-          claimName: block-pvc                                        
+          claimName: block-pvc
 ```
 We can now attempt to write a string from the first guest and then read the string from the second guest to test that the sharing is working.
 ```bash
@@ -1939,10 +1939,10 @@ limitations:
   Therefore, it will only have access to directories and files that UID/GID 107 has permission to.
   Additionally, when creating new files they will always be created with QEMU's UID/GID regardless of the UID/GID of the
   process within the guest.
-- Extended attributes are not supported. 
+- Extended attributes are not supported.
 
 > **Note:** You need to enable the feature gate `EnableVirtioFsStorageVolumes` for sharing `PVCs` with `virtiofs`.
- 
+
 ### Sharing Persistent Volume Claims
 #### Cluster Configuration
 
@@ -1986,9 +1986,9 @@ spec:
 ```
 
 #### Configuration Inside the VM
-The following configuration can be done in using startup script. See [cloudInitNoCloud](#cloudinitnocloud) section for 
-more details. 
-However, we can do it manually by logging in to the VM and mounting it. 
+The following configuration can be done in using startup script. See [cloudInitNoCloud](#cloudinitnocloud) section for
+more details.
+However, we can do it manually by logging in to the VM and mounting it.
 Here are examples of how to mount it in a linux and windows VMs:
 
 - Linux Example
@@ -2023,7 +2023,7 @@ $ sudo chcon -t container_file_t /tmp/data
 ```
 
 > **Note:** If you are attempting to share an existing directory, you must first check the SELinux context label with the
-> command `ls -Z <directory>`. In the case that the label is not present or is not `container_file_t` you need to label 
+> command `ls -Z <directory>`. In the case that the label is not present or is not `container_file_t` you need to label
 > it with the `chcon`  command.
 
 #### Cluster Configuration
@@ -2063,7 +2063,7 @@ spec:
           operator: In
           values:
           - node01
----  
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
