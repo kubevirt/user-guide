@@ -3464,8 +3464,8 @@ by using the <code>virtualmachineinstances/portforward</code> subresource of a
 a <code>VirtualMachineInstance</code> either from the CLI or a web-UI. The <code>VirtualMachine</code>
 subresource will automatically look up the corresponding <code>VirtualMachineInstance</code>.</p>
 <p>To connect to a <code>VirtualMachineInstance</code> from your local machine, <code>virtctl</code>
-provides an SSH client with the <code>ssh</code> command, that uses port
-forwarding. Refer to the command's help for more details.</p>
+wraps the local SSH client with the <code>ssh</code> command and transparently uses port
+forwarding as described above. Refer to the command's help for more details.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>virtctl<span class="w"> </span>ssh
 </code></pre></div>
 <p>To transfer files from or to a <code>VirtualMachineInstance</code> <code>virtctl</code> also
@@ -3476,13 +3476,12 @@ Refer to the command's help for more details.</p>
 <h4 id="using-virtctl-as-proxy">Using virtctl as proxy<a class="headerlink" href="#using-virtctl-as-proxy" title="Permanent link">&para;</a></h4>
 <p>The preferred way of connecting to VMs and VMIs is to use <code>virtctl</code> to wrap
 local OpenSSH clients. If you prefer to use your local OpenSSH client directly
-instead, there are two ways of doing that in combination with <code>virtctl</code>.</p>
+instead, there is also a way of doing that in combination with <code>virtctl</code>.</p>
 <blockquote>
 <p>Note: Most of this applies to the <code>virtctl scp</code> command too.</p>
 </blockquote>
 <ol>
-<li>The <code>virtctl ssh</code> command has a <code>--local-ssh</code> option, which is set to <code>true</code> by
-   default. With this option, <code>virtctl</code> wraps the local OpenSSH client transparently
+<li>By default <code>virtctl</code> wraps the local OpenSSH client transparently
    to the user. The executed SSH command can be viewed by increasing the verbosity (<code>-v 3</code>).</li>
 </ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>virtctl<span class="w"> </span>ssh<span class="w"> </span>--local-ssh<span class="w"> </span>-v<span class="w"> </span><span class="m">3</span><span class="w"> </span>vm/testvm/mynamespace
