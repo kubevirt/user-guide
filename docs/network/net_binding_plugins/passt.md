@@ -47,14 +47,10 @@ sysctl -w fs.file-max = 9223372036854775807
 > leading to memory overhead of up to 800 Mi.
 
 ## Passt network binding plugin
-[v1.1.0]
 
 The binding plugin replaces the experimental core passt binding implementation
 (including its API).
 
-> **Note**: The network binding plugin infrastructure and the passt plugin
-> specifically are in Alpha stage. Please use them with care, preferably
-> on a non-production deployment.
 
 The passt binding plugin consists of the following components:
 
@@ -67,7 +63,6 @@ the passt plugin needs to:
 - Deploy the CNI plugin binary on the nodes.
 - Define a NetworkAttachmentDefinition that points to the CNI plugin.
 - Assure access to the sidecar image.
-- Enable the network binding plugin framework FG.
 - Register the binding plugin on the Kubevirt CR.
 - Reference the network binding by name from the VM spec interface.
 
@@ -124,14 +119,8 @@ The relevant sidecar image needs to be accessible by the cluster and
 specified in the Kubevirt CR when registering the network binding plugin.
 
 ### Feature Gate
-If not already set, add the `NetworkBindingPlugins` FG.
-```
-kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-",   "value": "NetworkBindingPlugins"}]'
-```
-
-> **Note**: The specific passt plugin has no FG by its own. It is up to the cluster
-> admin to decide if the plugin is to be available in the cluster.
-> The passt binding is still in evaluation, use it with care.
+As of v1.5.0, the Network Binding Plugin feature enabled by default and has no feature gate.
+The passt plugin similarly has no feature gate of its own, but the plugin needs to be made available in the cluster by [registering it](./#passt-registration).
 
 ### Passt Registration
 As described in the [registration section](../../network/network_binding_plugins.md#register), passt binding plugin
