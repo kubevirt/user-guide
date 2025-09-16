@@ -121,14 +121,9 @@ exposed host interface (via the `lowerDevice` attribute, on the
 `macvtap-deviceplugin-config` `ConfigMap`).
 
 ## Macvtap network binding plugin
-[v1.1.1]
 
-The binding plugin replaces the experimental core macvtap binding implementation
-(including its API).
-
-> **Note**: The network binding plugin infrastructure and the macvtap plugin
-> specifically are in Alpha stage. Please use them with care, preferably
-> on a non-production deployment.
+> **Note**: The experimental core macvtap binding was deprecated in v1.2.0 and removed in v1.3.0. 
+> This documentation covers the **network binding plugin** implementation of macvtap.
 
 The macvtap binding plugin consists of the following components:
 
@@ -140,6 +135,10 @@ The plugin needs to:
 - Reference the network binding by name from the VM spec interface.
 
 And in detail:
+
+### Feature Gate
+As of v1.5.0, the Network Binding Plugin feature enabled by default and has no feature gate.
+The macvtap plugin similarly has no feature gate of its own, but the plugin needs to be made available in the cluster by [registering it](./#macvtap-registration).
 
 ### Macvtap Registration
 The macvtap binding plugin configuration needs to be added to the kubevirt CR
