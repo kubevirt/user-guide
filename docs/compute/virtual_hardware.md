@@ -450,7 +450,7 @@ the `virtio` RNG device to be present to boot to login.
 
 By default a minimal Video and Graphics device configuration will be
 applied to the VirtualMachineInstance. The video device is `vga`
-compatible and comes with a memory size of 16 MB. This device allows
+compatible and comes with a memory size of 32 MB. This device allows
 connecting to the OS via `vnc`.
 
 It is possible to not attach the video device by setting
@@ -475,6 +475,160 @@ VMIs without graphics and video devices are very often referenced as
 
 If using a huge amount of small VMs this can be helpful to increase the
 VMI density per node, since no memory needs to be reserved for video.
+
+#### Custom Video Device Types
+
+With the `VideoConfig` feature gate enabled, it is possible to configure
+custom video device types to override the default video configuration.
+This allows you to specify video device types such as `virtio`, `vga`, or
+`bochs` depending on your guest operating system requirements and
+performance needs.
+
+**Note**: The `VideoConfig` feature gate is currently in **alpha** status
+and is **disabled by default**. As an alpha feature:
+- It must be explicitly enabled to use custom video device configuration
+
+##### Enabling VideoConfig Feature Gate
+
+To enable custom video device configuration, the `VideoConfig` feature
+gate must be activated in the KubeVirt CR:
+
+```bash
+kubectl patch kubevirt kubevirt -n kubevirt --type=json \
+  -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "VideoConfig"}]'
+```
+
+Alternatively, you can edit the kubevirt CR directly:
+
+```bash
+kubectl edit kubevirt kubevirt -n kubevirt
+```
+
+```yaml
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - "VideoConfig"
+```
+
+##### Configuring Video Device Types
+
+Once the feature gate is enabled, you can specify the video device type
+in the VM template specification under
+`spec.template.spec.domain.devices.video`:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: my-vm-with-virtio-gpu
+spec:
+  template:
+    spec:
+      domain:
+        devices:
+          video:
+            type: virtio
+        resources:
+          requests:
+            memory: 2Gi
+```
+
+**Supported video device types:**
+
+- **`virtio`**: Provides better performance and is recommended for modern
+  guest operating systems that support virtio drivers
+- **`vga`**: Standard VGA-compatible device (default on AMD/x86_64)
+- **`bochs`**: Simple framebuffer device
+- **`cirrus`**: Legacy Cirrus Logic device
+- **`ramfb`**: Simple framebuffer device, useful for UEFI environments
+  and ARM architectures
+
+##### Architecture-Specific Behavior
+
+The VideoConfig feature gate allows overriding default video device
+types that vary by architecture:
+
+| Architecture | Boot Mode | Default Type | Supported Types                             |
+|--------------|-----------|--------------|---------------------------------------------|
+| AMD/x86_64   | BIOS      | `vga`        | `virtio`, `vga`, `bochs`, `cirrus`, `ramfb` |
+| AMD/x86_64   | EFI       | `bochs`      | `virtio`, `vga`, `bochs`, `cirrus`, `ramfb` |
+| ARM64        | BIOS/EFI  | `virtio`     | `virtio`, `ramfb`                           |
+| s390x        | BIOS/EFI  | `virtio`     | `virtio`                                    |
+
+##### Benefits of Custom Video Device Configuration
+
+Using custom video device types provides several advantages:
+
+- **Performance**: `virtio` video devices offer better performance compared 
+  to legacy VGA emulation
+- **Resolution flexibility**: With `virtio` you can set custom display
+  resolutions that aren't limited by VGA constraints
+- **Memory efficiency**: Some video types like `ramfb` are more memory 
+  efficient for headless or console-only operations
+
+Example for ARM64 with explicit virtio configuration:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: arm64-vm-custom-video
+spec:
+  template:
+    spec:
+      domain:
+        devices:
+          video:
+            type: virtio
+        resources:
+          requests:
+            memory: 4Gi
+```
+
+Example for AMD/x86_64 overriding the default VGA video type to virtio:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: amd64-vm-virtio-video
+spec:
+  template:
+    spec:
+      domain:
+        devices:
+          video:
+            type: virtio
+        resources:
+          requests:
+            memory: 2Gi
+```
+
+Similarly, you can override to other supported types like `bochs`,
+`cirrus`, or `ramfb`:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: amd64-vm-bochs-video
+spec:
+  template:
+    spec:
+      domain:
+        devices:
+          video:
+            type: bochs
+        resources:
+          requests:
+            memory: 2Gi
+```
+
+**Note**: When using custom video device types, ensure that your guest
+operating system has the appropriate drivers installed. For virtio-gpu
+devices, virtio graphics drivers are required for optimal performance.
 
 ### Features
 
@@ -569,6 +723,9 @@ supplementary system software, consume additional memory from the Node,
 beyond the requested memory intended for the guest OS consumption. In
 order to provide a better estimate for the scheduler, this memory
 overhead will be calculated and added to the requested memory.
+
+The default memory overhead has been set to 32Mi to account for these
+additional system resources.
 
 Please see [how Pods with resource requests are
 scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled)
