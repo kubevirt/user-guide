@@ -226,10 +226,10 @@ Users can find the whole list of migrated volumes in the VM status, which includ
 Only certain types of disks and volumes are supported to be migrated. For an invalid type of volume the RestartRequired condition is set and volumes will be replaced upon VM restart.
 Currently, the volume migration is supported between PersistentVolumeClaims and Datavolumes.
 Additionally, volume migration is forbidden if the disk is:
+
 * shareable, since it cannot guarantee the data consistency with multiple writers
-* hotpluggable, this case isn't currently supported
-* filesystem, since virtiofs doesn't currently support live-migration
-* lun, originally the disk might support SCSI protocol but the destination PVC class does not. This case isn't currently supported.
+* hotpluggable, this case is not currently supported
+* lun, originally the disk might support SCSI protocol but the destination PVC class does not. This case is not currently supported.
 
 Currently, KubeVirt only enables live migration between separate nodes. Volume migration relies on live migration; hence, live migrating storage on the same node is also not possible. Volume migration is possible between local storage, like between 2 PVCs with RWO access mode, but they need to be located on two different host.
 
