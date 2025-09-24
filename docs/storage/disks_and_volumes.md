@@ -1456,7 +1456,7 @@ The number of IOThreads can be specified under the field `ioThreads`:
 ```yaml
 spec:
   domain:
-    iothreadsPolicy: supplementalPool
+    ioThreadsPolicy: supplementalPool
     ioThreads:
       count: 4
 ```
