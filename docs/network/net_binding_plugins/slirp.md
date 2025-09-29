@@ -9,13 +9,13 @@ network connectivity.
 > UDP. ICMP is *not* supported.
 
 ## Slirp network binding plugin
-[v1.1.0]
+
+> **Important**: The core SLIRP binding was deprecated and removed in v1.3.0. 
+> This documentation covers the **network binding plugin** implementation of SLIRP.
 
 The binding plugin replaces the [core `slirp` binding](../../network/interfaces_and_networks.md#slirp)
 API.
 
-> **Note**: The network binding plugin infrastructure is in Alpha stage.
-> Please use them with care.
 
 The slirp binding plugin consists of the following components:
 
@@ -25,21 +25,16 @@ As described in the [definition & flow](../../network/network_binding_plugins.md
 the slirp plugin needs to:
 
 - Assure access to the sidecar image.
-- Enable the network binding plugin framework FG.
 - Register the binding plugin on the Kubevirt CR.
 - Reference the network binding by name from the VM spec interface.
 
-> **Note**: In order for the core slirp binding to use the network binding plugin
-> the registered name for this binding should be `slirp`.
+> **Note**: The registered name for this binding should be `slirp` to maintain
+> compatibility with existing VM specifications that reference the slirp binding.
 
 ### Feature Gate
-If not already set, add the `NetworkBindingPlugins` FG.
-```
-kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-",   "value": "NetworkBindingPlugins"}]'
-```
+As of v1.5.0, the Network Binding Plugin feature enabled by default and has no feature gate.
 
-> **Note**: The specific slirp plugin has no FG by its own. It is up to the cluster
-> admin to decide if the plugin is to be available in the cluster.
+The slirp plugin similarly has no feature gate of its own, but the plugin needs to be made available in the cluster by [registering it](./#slirp-registration).
 
 ### Slirp Registration
 As described in the [registration section](../../network/network_binding_plugins.md#register), slirp binding plugin

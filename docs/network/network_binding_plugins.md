@@ -1,5 +1,4 @@
 # Network Binding Plugins
-[v1.4.0, Beta feature]
 
 A modular plugin which integrates with Kubevirt to implement a
 network binding.
@@ -57,9 +56,9 @@ and integrate it into Kubevirt in a modular manner.
 Kubevirt is providing several network binding plugins as references.
 The following plugins are available:
 
-- [passt](../network/net_binding_plugins/passt.md) [v1.1.0]
-- [macvtap](../network/net_binding_plugins/macvtap.md) [v1.1.1]
-- [slirp](../network/net_binding_plugins/slirp.md) [v1.1.0]
+- [passt](../network/net_binding_plugins/passt.md)
+- [macvtap](../network/net_binding_plugins/macvtap.md)
+- [slirp](../network/net_binding_plugins/slirp.md)
 
 ## Definition & Flow
 A network binding plugin configuration consist of the following steps:
