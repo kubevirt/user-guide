@@ -111,7 +111,7 @@ spec:
 
 You just need to create this `NodePort` service by using `kubectl`:
 
-    $ kubectl -f nodeport.yaml
+    $ kubectl create -f nodeport.yaml
 
 Alternatively, the VirtualMachineInstance could be exposed using the
 `virtctl` command:
@@ -157,7 +157,7 @@ spec:
 
 You could create this `LoadBalancer` service by using `kubectl`:
 
-    $ kubectl -f lbsvc.yaml
+    $ kubectl create -f lbsvc.yaml
 
 Alternatively, the VirtualMachineInstance could be exposed using the
 `virtctl` command:
