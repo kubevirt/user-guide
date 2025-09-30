@@ -33,7 +33,7 @@ The following table lists the minimum number of VirtIO ports that will be availa
 
 ## Declarative API
 
-Hotplug [DataVolume](./disks_and_volumes.md/#persistentvolumeclaim) and [PersistentVolumeClaim](./disks_and_volumes.md/#persistentvolumeclaim) volumes may be may be defined for VirtualMachines in a declarative, GitOps compatible way.
+Hotplug [DataVolume](./disks_and_volumes.md/#persistentvolumeclaim) and [PersistentVolumeClaim](./disks_and_volumes.md/#persistentvolumeclaim) volumes may be defined for VirtualMachines in a declarative, GitOps compatible way.
 
 ### Virtual Machine Definition
 
