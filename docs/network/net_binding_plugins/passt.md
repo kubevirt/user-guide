@@ -28,23 +28,11 @@ Its main benefits are:
 | Primary network (pod network)                  | Yes     |
 | Secondary network                              | No      |
 
-### Node optimization requirements/recommendations:
-
-1. To get better performance the node should be configured with:
-```
-sysctl -w net.core.rmem_max = 33554432
-sysctl -w net.core.wmem_max = 33554432
-```
-2. To run multiple passt VMs with no explicit ports, the node's `fs.file-max` should be increased
-   (for a VM forwards all IPv4 and IPv6 ports, for TCP and UDP, passt needs to create ~2^18 sockets):
-```
-sysctl -w fs.file-max = 9223372036854775807
-```
 
 > **NOTE**: To achieve optimal memory consumption with Passt binding,
 > specify ports required for your workload.
 > When no ports are explicitly specified, all ports are forwarded,
-> leading to memory overhead of up to 800 Mi.
+> leading to memory overhead of up to 250 Mi.
 
 ## Passt network binding plugin
 [v1.1.0]
@@ -124,7 +112,7 @@ The relevant sidecar image needs to be accessible by the cluster and
 specified in the Kubevirt CR when registering the network binding plugin.
 
 ### Feature Gate
-If not already set, add the `NetworkBindingPlugins` FG.
+For KubeVirt versions prior to v1.5, make sure to enable the `NetworkBindingPlugins` FG.
 ```
 kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-",   "value": "NetworkBindingPlugins"}]'
 ```
@@ -147,7 +135,7 @@ kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "pat
                     "migration": {},
                     "computeResourceOverhead": {
                       "requests": {
-                        "memory": "500Mi",
+                        "memory": "250Mi",
                       }
                     }
                 }
@@ -159,7 +147,7 @@ The NetworkAttachmentDefinition and sidecarImage values should correspond with t
 names used in the previous sections, [here](#passt-networkattachmentdefinition)
 and [here](#passt-sidecar-image).
 
-When using the plugin, additional memory overhead of `500Mi` will be requested for the compute container in the virt-launcher pod.
+When using the plugin, additional memory overhead of `250Mi` will be requested for the compute container in the virt-launcher pod.
 
 When the VM boots for the first time, Passt's internal DHCP server assigns an IP address to the guest with an "infinite" lease duration.
 
