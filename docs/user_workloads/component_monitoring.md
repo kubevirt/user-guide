@@ -21,31 +21,36 @@ The above labels and port informations are collected by a `Service`
 called `kubevirt-prometheus-metrics`. Kubernetes automatically creates a
 corresponding `Endpoint` with an equal name:
 
-    $ kubectl get endpoints -n kubevirt kubevirt-prometheus-metrics -o yaml
-    apiVersion: v1
-    kind: Endpoints
-    metadata:
-      labels:
-        kubevirt.io: ""
-        prometheus.kubevirt.io: ""
-      name: kubevirt-prometheus-metrics
+```bash
+kubectl get endpoints -n kubevirt kubevirt-prometheus-metrics -o yaml
+```
+
+```yaml
+apiVersion: v1
+kind: Endpoints
+metadata:
+  labels:
+    kubevirt.io: ""
+    prometheus.kubevirt.io: ""
+  name: kubevirt-prometheus-metrics
+  namespace: kubevirt
+subsets:
+- addresses:
+  - ip: 10.244.0.5
+    nodeName: node01
+    targetRef:
+      kind: Pod
+      name: virt-handler-cjzg6
       namespace: kubevirt
-    subsets:
-    - addresses:
-      - ip: 10.244.0.5
-        nodeName: node01
-        targetRef:
-          kind: Pod
-          name: virt-handler-cjzg6
-          namespace: kubevirt
-          resourceVersion: "4891"
-          uid: c67331f9-bfcf-11e8-bc54-525500d15501
-      - ip: 10.244.0.6
-      [...]
-      ports:
-      - name: metrics
-        port: 8443
-        protocol: TCP
+      resourceVersion: "4891"
+      uid: c67331f9-bfcf-11e8-bc54-525500d15501
+  - ip: 10.244.0.6
+  [...]
+  ports:
+  - name: metrics
+    port: 8443
+    protocol: TCP
+```
 
 By watching this endpoint for added and removed IPs to
 `subsets.addresses` and appending the `metrics` port from

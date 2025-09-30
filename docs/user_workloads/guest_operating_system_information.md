@@ -3,10 +3,12 @@
 Guest operating system identity for the VirtualMachineInstance will be
 provided by the label `kubevirt.io/os` :
 
-    metadata:
-      name: myvmi
-      labels:
-        kubevirt.io/os: win2k12r2
+```yaml
+metadata:
+  name: myvmi
+  labels:
+    kubevirt.io/os: win2k12r2
+```
 
 The `kubevirt.io/os` label is based on the short OS identifier from
 [libosinfo](https://libosinfo.org/) database. The following Short IDs
@@ -105,10 +107,12 @@ spec:
     - name: server2012r2
       persistentVolumeClaim:
         claimName: my-windows-image
+```
 
 Once the `VirtualMachineInstancePreset` is applied to the
 `VirtualMachineInstance`, the resulting resource would look like this:
 
+```yaml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
@@ -193,7 +197,9 @@ spec:
 
 Alternatively, users can edit an existing kubevirt CR:
 
-`kubectl edit kubevirt kubevirt -n kubevirt`
+```bash
+kubectl edit kubevirt kubevirt -n kubevirt
+```
 
 ```yaml
 ...
@@ -203,4 +209,4 @@ spec:
       featureGates:
         - "HypervStrictCheck"
         - "CPUManager"
-```      
+```

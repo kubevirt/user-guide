@@ -12,13 +12,14 @@ The condition tells that the GA is connected and can be used.
 
 GA condition on VirtualMachineInstance
 
-    status:
-      conditions:
-      - lastProbeTime: "2020-02-28T10:22:59Z"
-        lastTransitionTime: null
-        status: "True"
-        type: AgentConnected
-
+```yaml
+status:
+  conditions:
+  - lastProbeTime: "2020-02-28T10:22:59Z"
+    lastTransitionTime: null
+    status: "True"
+    type: AgentConnected
+```
 
 When the GA is connected, additional OS information is shown in the status.
 This information comprises:
@@ -30,24 +31,26 @@ Below is the example of the information shown in the VirtualMachineInstance stat
 
 GA info with merged into status
 
-    status:
-      guestOSInfo:
-        id: fedora
-        kernelRelease: 4.18.16-300.fc29.x86_64
-        kernelVersion: '#1 SMP Sat Oct 20 23:24:08 UTC 2018'
-        name: Fedora
-        prettyName: Fedora 29 (Cloud Edition)
-        version: "29"
-        versionId: "29"
-      interfaces:
-      - infoSource: domain, guest-agent
-        interfaceName: eth0
-        ipAddress: 10.244.0.23/24
-        ipAddresses:
-        - 10.244.0.23/24
-        - fe80::858:aff:fef4:17/64
-        mac: 0a:58:0a:f4:00:17
-        name: default
+```yaml
+status:
+  guestOSInfo:
+    id: fedora
+    kernelRelease: 4.18.16-300.fc29.x86_64
+    kernelVersion: '#1 SMP Sat Oct 20 23:24:08 UTC 2018'
+    name: Fedora
+    prettyName: Fedora 29 (Cloud Edition)
+    version: "29"
+    versionId: "29"
+  interfaces:
+  - infoSource: domain, guest-agent
+    interfaceName: eth0
+    ipAddress: 10.244.0.23/24
+    ipAddresses:
+    - 10.244.0.23/24
+    - fe80::858:aff:fef4:17/64
+    mac: 0a:58:0a:f4:00:17
+    name: default
+```
 
 When the Guest Agent is not present in the Virtual Machine, the Guest Agent information is not shown. No error is reported because the Guest Agent is an optional component.
 
@@ -76,74 +79,77 @@ The whole GA data is returned via `guestosinfo` subresource available behind the
 
 GuestOSInfo sample data:
 
-    {
-        "fsInfo": {
-            "disks": [
-                {
-                    "diskName": "vda1",
-                    "fileSystemType": "ext4",
-                    "mountPoint": "/",
-                    "totalBytes": 0,
-                    "usedBytes": 0
-                }
-            ]
-        },
-        "guestAgentVersion": "2.11.2",
-        "hostname": "testvmi6m5krnhdlggc9mxfsrnhlxqckgv5kqrwcwpgr5mdpv76grrk",
-        "metadata": {
-            "creationTimestamp": null
-        },
-        "os": {
-            "id": "fedora",
-            "kernelRelease": "4.18.16-300.fc29.x86_64",
-            "kernelVersion": "#1 SMP Sat Oct 20 23:24:08 UTC 2018",
-            "machine": "x86_64",
-            "name": "Fedora",
-            "prettyName": "Fedora 29 (Cloud Edition)",
-            "version": "29 (Cloud Edition)",
-            "versionId": "29"
-        },
-        "timezone": "UTC, 0"
-    }
+```json
+{
+    "fsInfo": {
+        "disks": [
+            {
+                "diskName": "vda1",
+                "fileSystemType": "ext4",
+                "mountPoint": "/",
+                "totalBytes": 0,
+                "usedBytes": 0
+            }
+        ]
+    },
+    "guestAgentVersion": "2.11.2",
+    "hostname": "testvmi6m5krnhdlggc9mxfsrnhlxqckgv5kqrwcwpgr5mdpv76grrk",
+    "metadata": {
+        "creationTimestamp": null
+    },
+    "os": {
+        "id": "fedora",
+        "kernelRelease": "4.18.16-300.fc29.x86_64",
+        "kernelVersion": "#1 SMP Sat Oct 20 23:24:08 UTC 2018",
+        "machine": "x86_64",
+        "name": "Fedora",
+        "prettyName": "Fedora 29 (Cloud Edition)",
+        "version": "29 (Cloud Edition)",
+        "versionId": "29"
+    },
+    "timezone": "UTC, 0"
+}
+```
 
 Items FSInfo and UserList are capped to the max capacity of 10 items, as a precaution for VMs with thousands of users.
 
 Full list of Filesystems is available through the subresource `filesystemlist` which is available as endpoint.
 
-
     /apis/subresources.kubevirt.io/v1/namespaces/{namespace}/virtualmachineinstances/{name}/filesystemlist
 
 Filesystem sample data:
 
-    {
-        "items": [
-            {
-                "diskName": "vda1",
-                "fileSystemType": "ext4",
-                "mountPoint": "/",
-                "totalBytes": 3927900160,
-                "usedBytes": 1029201920
-            }
-        ],
-        "metadata": {}
-    }
+```json
+{
+    "items": [
+        {
+            "diskName": "vda1",
+            "fileSystemType": "ext4",
+            "mountPoint": "/",
+            "totalBytes": 3927900160,
+            "usedBytes": 1029201920
+        }
+    ],
+    "metadata": {}
+}
+```
 
 Full list of the Users is available through the subresource `userlist` which is available as endpoint.
 
     /apis/subresources.kubevirt.io/v1/namespaces/{namespace}/virtualmachineinstances/{name}/userlist
 
-
-
 Userlist sample data:
 
-    {
-        "items": [
-            {
-                "loginTime": 1580467675.876078,
-                "userName": "fedora"
-            }
-        ],
-        "metadata": {}
-    }
+```json
+{
+    "items": [
+        {
+            "loginTime": 1580467675.876078,
+            "userName": "fedora"
+        }
+    ],
+    "metadata": {}
+}
+```
 
 User LoginTime is in fractional seconds since epoch time. It is left for the consumer to convert to the desired format.
