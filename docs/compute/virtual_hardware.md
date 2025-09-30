@@ -43,7 +43,10 @@ wiki](https://wiki.qemu.org/Features/Q35).
 All virtual machines use BIOS by default for booting.
 
 It is possible to utilize UEFI/OVMF by setting a value via
-`spec.firmware.bootloader`:
+`spec.firmware.bootloader`.
+
+!!! Note
+    If you are using VirtualMachinePreferences to configure EFI settings, see the [Instance types and preferences](../user_workloads/instancetypes.md#deprecated-fields) documentation for information about the deprecated `PreferredUseEFi` and `PreferredUseSecureBoot` fields and their replacement with `PreferredEfi`.
 
 ```yaml
 apiVersion: kubevirt.io/v1
