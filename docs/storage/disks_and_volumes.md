@@ -1001,8 +1001,6 @@ status: {}
 By using filesystem, `configMaps` are shared through `virtiofs`. In contrast with using disk for sharing `configMaps`,
 `filesystem` allows you to dynamically propagate changes on `configMaps` to VMIs (i.e. the VM does not need to be rebooted).
 
-> **Note:** You need to enable the feature gate `EnableVirtioFsConfigVolumes` for sharing `configMaps` with `virtiofs`.
-
 To share a given `configMap`, the following VM definition could be used:
 
 ```yaml
@@ -1127,8 +1125,6 @@ status: {}
 By using filesystem, `secrets` are shared through `virtiofs`. In contrast with using disk for sharing `secrets`,
 `filesystem` allows you to dynamically propagate changes on `secrets` to VMIs (i.e. the VM does not need to be rebooted).
 
-> **Note:** You need to enable the feature gate `EnableVirtioFsConfigVolumes` for sharing `secrets` with `virtiofs`.
-
 To share a given `secret`, the following VM definition could be used:
 
 ```yaml
@@ -1227,8 +1223,6 @@ spec:
 
 By using filesystem, `serviceAccounts` are shared through `virtiofs`. In contrast with using disk for sharing `serviceAccounts`,
 `filesystem` allows you to dynamically propagate changes on `serviceAccounts` to VMIs (i.e. the VM does not need to be rebooted).
-
-> **Note:** You need to enable the feature gate `EnableVirtioFsConfigVolumes` for sharing `serviceAccounts` with `virtiofs`.
 
 To share a given `serviceAccount`, the following VM definition could be used:
 
