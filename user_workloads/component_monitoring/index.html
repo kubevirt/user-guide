@@ -3107,31 +3107,32 @@ release-manifests, the default <code>metrics</code> port is <code>8443</code>.</
 <p>The above labels and port informations are collected by a <code>Service</code>
 called <code>kubevirt-prometheus-metrics</code>. Kubernetes automatically creates a
 corresponding <code>Endpoint</code> with an equal name:</p>
-<div class="highlight"><pre><span></span><code>$ kubectl get endpoints -n kubevirt kubevirt-prometheus-metrics -o yaml
-apiVersion: v1
-kind: Endpoints
-metadata:
-  labels:
-    kubevirt.io: &quot;&quot;
-    prometheus.kubevirt.io: &quot;&quot;
-  name: kubevirt-prometheus-metrics
-  namespace: kubevirt
-subsets:
-- addresses:
-  - ip: 10.244.0.5
-    nodeName: node01
-    targetRef:
-      kind: Pod
-      name: virt-handler-cjzg6
-      namespace: kubevirt
-      resourceVersion: &quot;4891&quot;
-      uid: c67331f9-bfcf-11e8-bc54-525500d15501
-  - ip: 10.244.0.6
-  [...]
-  ports:
-  - name: metrics
-    port: 8443
-    protocol: TCP
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>endpoints<span class="w"> </span>-n<span class="w"> </span>kubevirt<span class="w"> </span>kubevirt-prometheus-metrics<span class="w"> </span>-o<span class="w"> </span>yaml
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Endpoints</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">kubevirt.io</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">prometheus.kubevirt.io</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt-prometheus-metrics</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nt">subsets</span><span class="p">:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">addresses</span><span class="p">:</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.244.0.5</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nt">nodeName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node01</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="nt">targetRef</span><span class="p">:</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virt-handler-cjzg6</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">      </span><span class="nt">resourceVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4891&quot;</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span><span class="nt">uid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">c67331f9-bfcf-11e8-bc54-525500d15501</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.244.0.6</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">metrics</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8443</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
 </code></pre></div>
 <p>By watching this endpoint for added and removed IPs to
 <code>subsets.addresses</code> and appending the <code>metrics</code> port from
@@ -3168,13 +3169,13 @@ Prometheus spec.</p>
 <p>If the prometheus-operator for a given deployment uses these defaults,
 then these values can be omitted.</p>
 <p>An example of the KubeVirt resource depicting these default values:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">monitorNamespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openshift-monitoring</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">monitorAccount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus-k8s</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">monitorNamespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openshift-monitoring</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">monitorAccount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus-k8s</span>
 </code></pre></div>
 <h2 id="integrating-with-the-okd-cluster-monitoring-operator">Integrating with the OKD cluster-monitoring-operator<a class="headerlink" href="#integrating-with-the-okd-cluster-monitoring-operator" title="Permanent link">&para;</a></h2>
 <p>After the
@@ -3191,10 +3192,10 @@ Virtual Machines. All the relevant metrics are prefixed with
 refer to. At minimum, the labels will expose <code>node</code>, <code>name</code> and
 <code>namespace</code> of the related VMI object.</p>
 <p>For example, reported metrics could look like</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubevirt_vmi_memory_resident_bytes{domain=&quot;default_vm-test-01&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;} 2.5595904e+07
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;rx&quot;} 8431
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;tx&quot;} 1835
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>kubevirt_vmi_vcpu_seconds_total{domain=&quot;default_vm-test-01&quot;,id=&quot;0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,state=&quot;1&quot;} 19
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubevirt_vmi_memory_resident_bytes{domain=&quot;default_vm-test-01&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;} 2.5595904e+07
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;rx&quot;} 8431
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;tx&quot;} 1835
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>kubevirt_vmi_vcpu_seconds_total{domain=&quot;default_vm-test-01&quot;,id=&quot;0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,state=&quot;1&quot;} 19
 </code></pre></div>
 <p>Please note the <code>domain</code> label in the above example. This label is
 deprecated and it will be removed in a future release. You should

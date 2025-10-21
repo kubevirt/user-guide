@@ -3015,12 +3015,12 @@ More technical detail about available GA commands is available <a href="https://
 <p>GA presence in the Virtual Machine is signaled with a condition in the VirtualMachineInstance status.
 The condition tells that the GA is connected and can be used.</p>
 <p>GA condition on VirtualMachineInstance</p>
-<div class="highlight"><pre><span></span><code>status:
-  conditions:
-  - lastProbeTime: &quot;2020-02-28T10:22:59Z&quot;
-    lastTransitionTime: null
-    status: &quot;True&quot;
-    type: AgentConnected
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">status</span><span class="p">:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">conditions</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">lastProbeTime</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2020-02-28T10:22:59Z&quot;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">lastTransitionTime</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">status</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;True&quot;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AgentConnected</span>
 </code></pre></div>
 <p>When the GA is connected, additional OS information is shown in the status.
 This information comprises:</p>
@@ -3030,24 +3030,24 @@ This information comprises:</p>
 </ul>
 <p>Below is the example of the information shown in the VirtualMachineInstance status.</p>
 <p>GA info with merged into status</p>
-<div class="highlight"><pre><span></span><code>status:
-  guestOSInfo:
-    id: fedora
-    kernelRelease: 4.18.16-300.fc29.x86_64
-    kernelVersion: &#39;#1 SMP Sat Oct 20 23:24:08 UTC 2018&#39;
-    name: Fedora
-    prettyName: Fedora 29 (Cloud Edition)
-    version: &quot;29&quot;
-    versionId: &quot;29&quot;
-  interfaces:
-  - infoSource: domain, guest-agent
-    interfaceName: eth0
-    ipAddress: 10.244.0.23/24
-    ipAddresses:
-    - 10.244.0.23/24
-    - fe80::858:aff:fef4:17/64
-    mac: 0a:58:0a:f4:00:17
-    name: default
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">status</span><span class="p">:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">guestOSInfo</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fedora</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">kernelRelease</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4.18.16-300.fc29.x86_64</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">kernelVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#1</span><span class="nv"> </span><span class="s">SMP</span><span class="nv"> </span><span class="s">Sat</span><span class="nv"> </span><span class="s">Oct</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">23:24:08</span><span class="nv"> </span><span class="s">UTC</span><span class="nv"> </span><span class="s">2018&#39;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Fedora</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nt">prettyName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Fedora 29 (Cloud Edition)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;29&quot;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">versionId</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;29&quot;</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="nt">interfaces</span><span class="p">:</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">infoSource</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">domain, guest-agent</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nt">interfaceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eth0</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="nt">ipAddress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.244.0.23/24</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">    </span><span class="nt">ipAddresses</span><span class="p">:</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.244.0.23/24</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fe80::858:aff:fef4:17/64</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="nt">mac</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0a:58:0a:f4:00:17</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
 </code></pre></div>
 <p>When the Guest Agent is not present in the Virtual Machine, the Guest Agent information is not shown. No error is reported because the Guest Agent is an optional component.</p>
 <p>The infoSource field indicates where the info is gathered from. Valid values:</p>
@@ -3068,67 +3068,67 @@ The rest of the data is available via the REST API exposed in the Kubernetes <co
 <div class="highlight"><pre><span></span><code>/apis/subresources.kubevirt.io/v1/namespaces/{namespace}/virtualmachineinstances/{name}/guestosinfo
 </code></pre></div>
 <p>GuestOSInfo sample data:</p>
-<div class="highlight"><pre><span></span><code>{
-    &quot;fsInfo&quot;: {
-        &quot;disks&quot;: [
-            {
-                &quot;diskName&quot;: &quot;vda1&quot;,
-                &quot;fileSystemType&quot;: &quot;ext4&quot;,
-                &quot;mountPoint&quot;: &quot;/&quot;,
-                &quot;totalBytes&quot;: 0,
-                &quot;usedBytes&quot;: 0
-            }
-        ]
-    },
-    &quot;guestAgentVersion&quot;: &quot;2.11.2&quot;,
-    &quot;hostname&quot;: &quot;testvmi6m5krnhdlggc9mxfsrnhlxqckgv5kqrwcwpgr5mdpv76grrk&quot;,
-    &quot;metadata&quot;: {
-        &quot;creationTimestamp&quot;: null
-    },
-    &quot;os&quot;: {
-        &quot;id&quot;: &quot;fedora&quot;,
-        &quot;kernelRelease&quot;: &quot;4.18.16-300.fc29.x86_64&quot;,
-        &quot;kernelVersion&quot;: &quot;#1 SMP Sat Oct 20 23:24:08 UTC 2018&quot;,
-        &quot;machine&quot;: &quot;x86_64&quot;,
-        &quot;name&quot;: &quot;Fedora&quot;,
-        &quot;prettyName&quot;: &quot;Fedora 29 (Cloud Edition)&quot;,
-        &quot;version&quot;: &quot;29 (Cloud Edition)&quot;,
-        &quot;versionId&quot;: &quot;29&quot;
-    },
-    &quot;timezone&quot;: &quot;UTC, 0&quot;
-}
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nt">&quot;fsInfo&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">        </span><span class="nt">&quot;disks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">            </span><span class="p">{</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">                </span><span class="nt">&quot;diskName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vda1&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">                </span><span class="nt">&quot;fileSystemType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ext4&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">                </span><span class="nt">&quot;mountPoint&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">                </span><span class="nt">&quot;totalBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">                </span><span class="nt">&quot;usedBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">        </span><span class="p">]</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="nt">&quot;guestAgentVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2.11.2&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="nt">&quot;hostname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;testvmi6m5krnhdlggc9mxfsrnhlxqckgv5kqrwcwpgr5mdpv76grrk&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">        </span><span class="nt">&quot;creationTimestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="nt">&quot;os&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fedora&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">        </span><span class="nt">&quot;kernelRelease&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4.18.16-300.fc29.x86_64&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">        </span><span class="nt">&quot;kernelVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#1 SMP Sat Oct 20 23:24:08 UTC 2018&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span><span class="nt">&quot;machine&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x86_64&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fedora&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">        </span><span class="nt">&quot;prettyName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Fedora 29 (Cloud Edition)&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">        </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;29 (Cloud Edition)&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">        </span><span class="nt">&quot;versionId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;29&quot;</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">    </span><span class="nt">&quot;timezone&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UTC, 0&quot;</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="p">}</span>
 </code></pre></div>
 <p>Items FSInfo and UserList are capped to the max capacity of 10 items, as a precaution for VMs with thousands of users.</p>
 <p>Full list of Filesystems is available through the subresource <code>filesystemlist</code> which is available as endpoint.</p>
 <div class="highlight"><pre><span></span><code>/apis/subresources.kubevirt.io/v1/namespaces/{namespace}/virtualmachineinstances/{name}/filesystemlist
 </code></pre></div>
 <p>Filesystem sample data:</p>
-<div class="highlight"><pre><span></span><code>{
-    &quot;items&quot;: [
-        {
-            &quot;diskName&quot;: &quot;vda1&quot;,
-            &quot;fileSystemType&quot;: &quot;ext4&quot;,
-            &quot;mountPoint&quot;: &quot;/&quot;,
-            &quot;totalBytes&quot;: 3927900160,
-            &quot;usedBytes&quot;: 1029201920
-        }
-    ],
-    &quot;metadata&quot;: {}
-}
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">            </span><span class="nt">&quot;diskName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vda1&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">            </span><span class="nt">&quot;fileSystemType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ext4&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">            </span><span class="nt">&quot;mountPoint&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">            </span><span class="nt">&quot;totalBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3927900160</span><span class="p">,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">            </span><span class="nt">&quot;usedBytes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1029201920</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="p">],</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">}</span>
 </code></pre></div>
 <p>Full list of the Users is available through the subresource <code>userlist</code> which is available as endpoint.</p>
 <div class="highlight"><pre><span></span><code>/apis/subresources.kubevirt.io/v1/namespaces/{namespace}/virtualmachineinstances/{name}/userlist
 </code></pre></div>
 <p>Userlist sample data:</p>
-<div class="highlight"><pre><span></span><code>{
-    &quot;items&quot;: [
-        {
-            &quot;loginTime&quot;: 1580467675.876078,
-            &quot;userName&quot;: &quot;fedora&quot;
-        }
-    ],
-    &quot;metadata&quot;: {}
-}
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="nt">&quot;items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">            </span><span class="nt">&quot;loginTime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1580467675.876078</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">            </span><span class="nt">&quot;userName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fedora&quot;</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="p">],</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">}</span>
 </code></pre></div>
 <p>User LoginTime is in fractional seconds since epoch time. It is left for the consumer to convert to the desired format.</p>
 
