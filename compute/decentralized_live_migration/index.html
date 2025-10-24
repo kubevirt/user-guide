@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/compute/live_migration/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/compute/decentralized_live_migration/">
       
       
-        <link rel="prev" href="../hugepages/">
+        <link rel="prev" href="../live_migration/">
       
       
-        <link rel="next" href="../decentralized_live_migration/">
+        <link rel="next" href="../mediated_devices_configuration/">
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Live Migration - KubeVirt user guide</title>
+        <title>Decentralized live migration - KubeVirt user guide</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#live-migration" class="md-skip">
+        <a href="#decentralized-live-migration" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Live Migration
+              Decentralized live migration
             
           </span>
         </div>
@@ -1907,6 +1907,29 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../live_migration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Live Migration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1924,7 +1947,7 @@
   
   
   <span class="md-ellipsis">
-    Live Migration
+    Decentralized live migration
     
   </span>
   
@@ -1937,7 +1960,7 @@
   
   
   <span class="md-ellipsis">
-    Live Migration
+    Decentralized live migration
     
   </span>
   
@@ -1960,9 +1983,96 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#enabling-the-live-migration-support" class="md-nav__link">
+  <a href="#decentralized-live-migration-feature-gate" class="md-nav__link">
     <span class="md-ellipsis">
-      Enabling the live-migration support
+      Decentralized live migration Feature Gate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required resources
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target-virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Target virtual machine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#target-migration-resource" class="md-nav__link">
+    <span class="md-ellipsis">
+      Target migration resource
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-migration-resource" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source migration resource
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-kubevirt-ca-with-cross-cluster-live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring KubeVirt CA with cross cluster live migration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cancelling-decentralized-live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cancelling decentralized live migration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration failure
     </span>
   </a>
   
@@ -1977,297 +2087,10 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#initiate-live-migration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Initiate live migration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Initiate live migration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#using-virtctl-to-initiate-live-migration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using virtctl to initiate live migration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#migration-status-reporting" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration Status Reporting
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Migration Status Reporting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#condition-and-migration-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      Condition and migration method
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#migration-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration Status
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#canceling-a-live-migration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Canceling a live migration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Canceling a live migration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#using-virtctl-to-cancel-a-live-migration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using virtctl to cancel a live migration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#changing-cluster-wide-migration-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Changing Cluster Wide Migration Configuration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Changing Cluster Wide Migration Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuring-acceptable-levels-of-workload-disruption" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuring Acceptable Levels of Workload Disruption
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuring Acceptable Levels of Workload Disruption">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#understanding-the-allowworkloaddisruption" class="md-nav__link">
-    <span class="md-ellipsis">
-      Understanding the AllowWorkloadDisruption
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuration
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#key-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Considerations
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#understanding-different-migration-strategies" class="md-nav__link">
-    <span class="md-ellipsis">
-      Understanding different migration strategies
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Understanding different migration strategies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pre-copy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pre-copy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#post-copy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Post-copy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#auto-converge" class="md-nav__link">
-    <span class="md-ellipsis">
-      Auto-converge
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-a-different-network-for-migrations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using a different network for migrations
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Using a different network for migrations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#creating-a-migration-network-on-a-cluster" class="md-nav__link">
-    <span class="md-ellipsis">
-      Creating a migration network on a cluster
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configuring-kubevirt-to-migrate-vmis-over-that-network" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuring KubeVirt to migrate VMIs over that network
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configuring-kubevirtci-for-testing-migration-networks" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuring KubeVirtCI for testing migration networks
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#migration-timeouts" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration timeouts
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Migration timeouts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#completion-time" class="md-nav__link">
-    <span class="md-ellipsis">
-      Completion time
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#progress-timeout" class="md-nav__link">
-    <span class="md-ellipsis">
-      Progress timeout
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#disabling-secure-migrations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Disabling secure migrations
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../decentralized_live_migration/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Decentralized live migration
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -3237,9 +3060,96 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#enabling-the-live-migration-support" class="md-nav__link">
+  <a href="#decentralized-live-migration-feature-gate" class="md-nav__link">
     <span class="md-ellipsis">
-      Enabling the live-migration support
+      Decentralized live migration Feature Gate
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#required-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required resources
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#target-virtual-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Target virtual machine
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration resources
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Migration resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#target-migration-resource" class="md-nav__link">
+    <span class="md-ellipsis">
+      Target migration resource
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#source-migration-resource" class="md-nav__link">
+    <span class="md-ellipsis">
+      Source migration resource
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-kubevirt-ca-with-cross-cluster-live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring KubeVirt CA with cross cluster live migration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cancelling-decentralized-live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cancelling decentralized live migration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#migration-failure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Migration failure
     </span>
   </a>
   
@@ -3249,270 +3159,6 @@
   <a href="#limitations" class="md-nav__link">
     <span class="md-ellipsis">
       Limitations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#initiate-live-migration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Initiate live migration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Initiate live migration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#using-virtctl-to-initiate-live-migration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using virtctl to initiate live migration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#migration-status-reporting" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration Status Reporting
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Migration Status Reporting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#condition-and-migration-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      Condition and migration method
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#migration-status" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration Status
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#canceling-a-live-migration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Canceling a live migration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Canceling a live migration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#using-virtctl-to-cancel-a-live-migration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using virtctl to cancel a live migration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#changing-cluster-wide-migration-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Changing Cluster Wide Migration Configuration
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Changing Cluster Wide Migration Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuring-acceptable-levels-of-workload-disruption" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuring Acceptable Levels of Workload Disruption
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuring Acceptable Levels of Workload Disruption">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#understanding-the-allowworkloaddisruption" class="md-nav__link">
-    <span class="md-ellipsis">
-      Understanding the AllowWorkloadDisruption
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuration
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#key-considerations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Considerations
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#understanding-different-migration-strategies" class="md-nav__link">
-    <span class="md-ellipsis">
-      Understanding different migration strategies
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Understanding different migration strategies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pre-copy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Pre-copy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#post-copy" class="md-nav__link">
-    <span class="md-ellipsis">
-      Post-copy
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#auto-converge" class="md-nav__link">
-    <span class="md-ellipsis">
-      Auto-converge
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-a-different-network-for-migrations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using a different network for migrations
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Using a different network for migrations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#creating-a-migration-network-on-a-cluster" class="md-nav__link">
-    <span class="md-ellipsis">
-      Creating a migration network on a cluster
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configuring-kubevirt-to-migrate-vmis-over-that-network" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuring KubeVirt to migrate VMIs over that network
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configuring-kubevirtci-for-testing-migration-networks" class="md-nav__link">
-    <span class="md-ellipsis">
-      Configuring KubeVirtCI for testing migration networks
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#migration-timeouts" class="md-nav__link">
-    <span class="md-ellipsis">
-      Migration timeouts
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Migration timeouts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#completion-time" class="md-nav__link">
-    <span class="md-ellipsis">
-      Completion time
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#progress-timeout" class="md-nav__link">
-    <span class="md-ellipsis">
-      Progress timeout
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#disabling-secure-migrations" class="md-nav__link">
-    <span class="md-ellipsis">
-      Disabling secure migrations
     </span>
   </a>
   
@@ -3534,7 +3180,7 @@
 
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/compute/live_migration.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/compute/decentralized_live_migration.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -3543,397 +3189,207 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/compute/live_migration.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/compute/decentralized_live_migration.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="live-migration">Live Migration<a class="headerlink" href="#live-migration" title="Permanent link">&para;</a></h1>
-<p>Live migration is a process during which a running Virtual Machine
-Instance moves to another compute node while the guest workload
-continues to run and remain accessible.</p>
-<h2 id="enabling-the-live-migration-support">Enabling the live-migration support<a class="headerlink" href="#enabling-the-live-migration-support" title="Permanent link">&para;</a></h2>
-<p>Live migration is enabled by default in recent versions of KubeVirt. Versions
-prior to v0.56, it must be enabled in the feature gates. The
-<a href="../../cluster_admin/activating_feature_gates/#how-to-activate-a-feature-gate">feature gates</a>
-field in the KubeVirt CR must be expanded by adding the <code>LiveMigration</code> to it.</p>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
-<ul>
-<li>
-<p>Virtual machines using a PersistentVolumeClaim (PVC) must have a
-  shared ReadWriteMany (RWX) access mode to be live migrated.</p>
-</li>
-<li>
-<p>Live migration is not allowed with a pod network binding of bridge
-  interface type
-  (&lt;/#/creation/interfaces-and-networks&gt;)</p>
-</li>
-<li>
-<p>Live migration requires ports <code>49152, 49153</code> to be available in the virt-launcher pod.
-  If these ports are explicitly specified in <a href="../../network/interfaces_and_networks/#masquerade">masquarade interface</a>, live migration will not function.</p>
-</li>
-<li>
-<p>Live migration requires the virt-launcher pod's primary network interface to have the same name on both source and target pods.</p>
-</li>
-</ul>
-<h2 id="initiate-live-migration">Initiate live migration<a class="headerlink" href="#initiate-live-migration" title="Permanent link">&para;</a></h2>
-<p>Live migration is initiated by posting a VirtualMachineInstanceMigration
-(VMIM) object to the cluster. The example below starts a migration
-process for a virtual machine instance <code>vmi-fedora</code></p>
+<h1 id="decentralized-live-migration">Decentralized live migration<a class="headerlink" href="#decentralized-live-migration" title="Permanent link">&para;</a></h1>
+<p>Decentralized live migration is a variation of <a href="../../storage/volume_migration/">storage live migration</a> that allows you to migrate virtual machines between namespaces or even between different Kubernetes clusters. This can be useful for a variety of reasons including:</p>
+<ol>
+<li><strong>Balancing Workload:</strong> Distributing virtual machines between clusters helps optimize resource utilization. If one cluster is heavily loaded while another is idle, rebalancing can significantly improve operational efficiency.  </li>
+<li><strong>Facilitating Maintenance:</strong> For environments with multiple clusters, virtual machine migration allows for seamless maintenance. You can move virtual machines off a cluster slated for upgrades or shutdown, ensuring zero downtime for your services.</li>
+<li><strong>Expediting Restores:</strong> Instant restore capabilities from backup vendors, particularly when coupled with namespace migration, can drastically speed up recovery times. virtual machines can be quickly restored to a temporary location and then migrated to their original namespace and storage.</li>
+</ol>
+<p>This document assumes the presence of an orchestrator for managing resource creation and removal. While future KubeVirt versions will incorporate an orchestrator for decentralized live migrations, the examples provided here detail the underlying steps an orchestrator would perform rather than utilizing one directly.</p>
+<h3 id="decentralized-live-migration-feature-gate">Decentralized live migration Feature Gate<a class="headerlink" href="#decentralized-live-migration-feature-gate" title="Permanent link">&para;</a></h3>
+<p>Decentralized live migration support must be enabled in the feature gates to be available. The <a href="../../cluster_admin/activating_feature_gates/#how-to-activate-a-feature-gate">feature gates</a>
+field in the KubeVirt CR must be expanded by adding the <code>DecentralizedLiveMigration</code> to it.</p>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<p><strong>Compute live migrations</strong></p>
+<p>Compute live migrations are characterized by a single <code>VirtualMachineInstance</code> resource and a single <code>VirtualMachineInstanceMigrations</code> resource. A migration is initiated by creating a <code>VirtualMachineInstanceMigration</code> resource, with coordination occurring via the VirtualMachineInstance's status, as shown in Figure 1.</p>
+<p>Figure 1:
+<img alt="Figure 1" src="../live-migration.png" /></p>
+<p><strong>Storage live migrations</strong></p>
+<p>Storage live migrations, a variation of compute live migrations, involve copying the virtual machine's state and disk contents over the migration network. More information on initiating a storage live migration can be found in this <a href="https://kubevirt.io/user-guide/storage/volume_migration/">document</a>.</p>
+<p><strong>Decentralized live migrations</strong></p>
+<p>Decentralized live migrations are a variation of storage live migrations. They involve two <code>VirtualMachineInstances</code> and two <code>VirtualMachineInstanceMigrations</code>. Similar to storage live migrations, disk contents are copied over the network to the receiving virtual machine. However, the key difference is that the receiving virtual machine has a completely separate <code>VirtualMachineInstance</code>. In order to coordinate the migration, the status of the source and target 'VirtualMachineInstances` have to be synchronized, as illustrated in Figure 2.</p>
+<p>Figure 2:
+<img alt="Figure 2" src="../decentralized-live-migration.png" /></p>
+<p>A dedicated synchronization controller facilitates communication between the source and target <code>VirtualMachineInstances</code>, as depicted in Figure 2. This design enables the reuse of most existing live migration mechanisms developed for <code>compute</code> migrations.</p>
+<h2 id="required-resources">Required resources<a class="headerlink" href="#required-resources" title="Permanent link">&para;</a></h2>
+<p>To migrate a virtual machine between namespaces or clusters, you must create both a target <code>VirtualMachine</code> resource and a target <code>VirtualMachineInstanceMigration</code> resource. A decentralized live migration cannot be achieved using only a <code>VirtualMachineInstance</code> resource.</p>
+<p>The target cluster/namespace must possess all necessary resources for the virtual machine to operate. Some resources may not be an exact match on the target. For example, the storage class available on the target might differ from the source. Since decentralized live migration is a type of storage live migration, it is possible to change the storage class on the target and successfully complete the migration. The same applies to networking, though connectivity may be disrupted depending on the network configuration.</p>
+<p>Additionally, auxiliary resources, such as a <code>Secret</code> containing an SSH key or a <code>ConfigMap</code> with configuration data, must also be copied and made available on the target cluster.</p>
+<h2 id="target-virtual-machine">Target virtual machine<a class="headerlink" href="#target-virtual-machine" title="Permanent link">&para;</a></h2>
+<p>In order to construct the target <code>VirtualMachine</code> resource, it makes sense to take the bulk of the source <code>VirtualMachine</code> resource fields, but replace the network and disk(s) to match what is available on the target cluster/namespace. The <code>runStrategy</code> must be set to <code>WaitAsReceiver</code>, signaling to KubeVirt that this is a special target virtual machine and that standard virtual machine commands (start/stop) will not function until the migration is completed. Consider the following source virtual machine running on Cluster 1.</p>
+<p>Source Virtual Machine:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstanceMigration</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migration-job</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-decentralized-lm-vm</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">vmiName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vmi-fedora</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">runStrategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">      </span><span class="nt">architecture</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amd64</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">            </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">            </span><span class="nt">autoattachGraphicsDevice</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="w w-Error">    </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">             </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">disk0</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">          </span><span class="nt">interfaces</span><span class="p">:</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">masquerade</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">          </span><span class="nt">machine</span><span class="p">:</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">q35</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">             </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128Mi</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">      </span><span class="nt">pod</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">dataVolume</span><span class="p">:</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-decentralized-lm-vm-dv</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">        </span><span class="w w-Error">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">disk0</span>
 </code></pre></div>
-<h3 id="using-virtctl-to-initiate-live-migration">Using virtctl to initiate live migration<a class="headerlink" href="#using-virtctl-to-initiate-live-migration" title="Permanent link">&para;</a></h3>
-<p>Live migration can also be initiated using virtctl
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">    virtctl migrate vmi-fedora</span>
-</code></pre></div></p>
-<h2 id="migration-status-reporting">Migration Status Reporting<a class="headerlink" href="#migration-status-reporting" title="Permanent link">&para;</a></h2>
-<h3 id="condition-and-migration-method">Condition and migration method<a class="headerlink" href="#condition-and-migration-method" title="Permanent link">&para;</a></h3>
-<p>When starting a virtual machine instance, it has also been calculated
-whether the machine is live migratable. The result is stored in
-the VMI <code>VMI.status.conditions</code>. The calculation can be based on
-multiple parameters of the VMI, however, at the moment, the calculation
-is largely based on the <code>Access Mode</code> of the VMI volumes. Live migration
-is only permitted when the volume access mode is set to <code>ReadWriteMany</code>.
-Requests to migrate a non-LiveMigratable VMI will be rejected.</p>
-<p>The reported <code>Migration Method</code> is also calculated during VMI
-start. <code>BlockMigration</code> indicates that some of the VMI disks require
-copying from the source to the destination. <code>LiveMigration</code> means that
-only the instance memory will be copied.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">Status</span><span class="p">:</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">Conditions</span><span class="p">:</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">Status</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">Type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigratable</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">Migration Method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BlockMigration</span>
+<p>A <code>VirtualMachine</code> named 'example-decentralized-lm-vm' is created, utilizing a <code>DataVolume</code> named 'example-decentralized-lm-vm-dv'. This <code>DataVolume</code> can contain any kind of disk image, for example fedora. Due to the <code>runStrategy</code> being set to <code>Always</code>, the virtual machine will always start once the YAML is applied to the cluster.</p>
+<p>Within the target cluster, all necessary resources must be available to deploy the target virtual machine. To hold the contents of the source disk, a blank <code>DataVolume</code> is created. While not mandatory, it is advisable to retain the original name.</p>
+<p>Target DataVolume:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cdi.kubevirt.io/v1beta1</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DataVolume</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">cdi.kubevirt.io/storage.usePopulator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-decentralized-lm-vm-dv</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">blank</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="nt">storage</span><span class="p">:</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;other storage class&gt;</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10Gi</span>
 </code></pre></div>
-<h3 id="migration-status">Migration Status<a class="headerlink" href="#migration-status" title="Permanent link">&para;</a></h3>
-<p>The migration progress status is reported in the VMI <code>VMI.status</code>.
-Most importantly, it indicates whether the migration has been
-<code>Completed</code> or if it <code>Failed</code>.</p>
-<p>Below is an example of a successful migration.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Migration State:
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    Completed:        true
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    End Timestamp:    2019-03-29T03:37:52Z
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    Migration Config:
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>      Completion Timeout Per GiB:  800
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>      Progress Timeout:             150
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    Migration UID:                  c64d4898-51d3-11e9-b370-525500d15501
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    Source Node:                    node02
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    Start Timestamp:                2019-03-29T04:02:47Z
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    Target Direct Migration Node Ports:
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>      35001:                      0
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>      41068:                      49152
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>      38284:                      49153
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    Target Node:                  node01
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>    Target Node Address:          10.128.0.46
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    Target Node Domain Detected:  true
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>    Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
+<p>Target Virtual Machine:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">kubevirt.io/restore-run-strategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-decentralized-lm-vm</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="nt">runStrategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WaitAsReceiver</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="nt">creationTimestamp</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">      </span><span class="nt">architecture</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amd64</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">            </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">            </span><span class="nt">autoattachGraphicsDevice</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">      </span><span class="w w-Error">    </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">             </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">disk0</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">          </span><span class="nt">interfaces</span><span class="p">:</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">masquerade</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">          </span><span class="nt">machine</span><span class="p">:</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">q35</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">            </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">             </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128Mi</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">      </span><span class="nt">pod</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">dataVolume</span><span class="p">:</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-decentralized-lm-vm-dv</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">        </span><span class="w w-Error">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">disk0</span>
 </code></pre></div>
-<h2 id="canceling-a-live-migration">Canceling a live migration<a class="headerlink" href="#canceling-a-live-migration" title="Permanent link">&para;</a></h2>
-<p>Live migration can also be canceled by simply deleting the migration
-object. A successfully aborted migration will indicate that the abort
-has been requested <code>Abort Requested</code>, and that it succeeded:
-<code>Abort Status: Succeeded</code>. The migration in this case will be <code>Completed</code>
-and <code>Failed</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Migration State:
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    Abort Requested:  true
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    Abort Status:     Succeeded
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    Completed:        true
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    End Timestamp:    2019-03-29T04:02:49Z
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    Failed:           true
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    Migration Config:
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>      Completion Timeout Per GiB:  800
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>      Progress Timeout:             150
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    Migration UID:                  57a693d6-51d7-11e9-b370-525500d15501
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    Source Node:                    node02
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    Start Timestamp:                2019-03-29T04:02:47Z
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    Target Direct Migration Node Ports:
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>      39445:                      0
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>      43345:                      49152
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>      44222:                      49153
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    Target Node:                  node01
-<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    Target Node Address:          10.128.0.46
-<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    Target Node Domain Detected:  true
-<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
-</code></pre></div>
-<h3 id="using-virtctl-to-cancel-a-live-migration">Using virtctl to cancel a live migration<a class="headerlink" href="#using-virtctl-to-cancel-a-live-migration" title="Permanent link">&para;</a></h3>
-<p>Live migration can also be canceled using virtctl, by specifying the name
-of a VMI which is currently being migrated
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">    virtctl migrate-cancel vmi-fedora</span>
-</code></pre></div></p>
-<h2 id="changing-cluster-wide-migration-configuration">Changing Cluster Wide Migration Configuration<a class="headerlink" href="#changing-cluster-wide-migration-configuration" title="Permanent link">&para;</a></h2>
-<p>KubeVirt puts some limits in place, so that migrations don't overwhelm
-the cluster. By default, it is configured to only run <code>5</code> migrations in
-parallel with an additional limit of a maximum of <code>2</code> outbound
-migrations per node. Finally, every migration is limited to a bandwidth
-of <code>64MiB/s</code>.</p>
-<p>These values can be changed in the <code>kubevirt</code> CR:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">      </span><span class="nt">parallelMigrationsPerCluster</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">      </span><span class="nt">parallelOutboundMigrationsPerNode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">      </span><span class="nt">bandwidthPerMigration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">64Mi</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">completionTimeoutPerGiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">800</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">      </span><span class="nt">progressTimeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150</span>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="nt">nodeDrainTaintKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kubevirt.io/drain&quot;</span>
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">      </span><span class="nt">allowAutoConverge</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">      </span><span class="nt">allowPostCopy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">      </span><span class="nt">unsafeMigrationOverride</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-</code></pre></div>
-<h3 id="configuring-acceptable-levels-of-workload-disruption">Configuring Acceptable Levels of Workload Disruption<a class="headerlink" href="#configuring-acceptable-levels-of-workload-disruption" title="Permanent link">&para;</a></h3>
-<p>The <strong>AllowWorkloadDisruption</strong> parameter enables administrators to define the
-acceptable level of workload disruption during a migration, specifically when it
-fails to converge within the specified <code>AcceptableCompletionTime</code>, which is determined by the <code>completionTimeoutPerGiB</code> configuration and the VM "size". This option
-provides a balance between ensuring migration completion and mitigating risks
-associated with different migration strategies.</p>
-<h4 id="understanding-the-allowworkloaddisruption">Understanding the AllowWorkloadDisruption<a class="headerlink" href="#understanding-the-allowworkloaddisruption" title="Permanent link">&para;</a></h4>
-<p>The behavior dictated by <code>AllowWorkloadDisruption</code> depends on its configuration:</p>
+<p>The source and target virtual machine definitions differ in two key aspects:</p>
 <ul>
-<li><strong>When disabled</strong>:</li>
-<li>Workloads are not disrupted during migration.</li>
-<li>If the migration does not converge within the <code>AcceptableCompletionTime</code>, it will be canceled and may need to be restarted.</li>
-<li>
-<p>This approach minimizes workload disruption, however, "busy" workloads may not migrate in time, which increases the risk of repeated migration.</p>
-</li>
-<li>
-<p><strong>When enabled</strong>:</p>
-</li>
-<li>The migration controller is allowed to disrupt the workload associated with long-running migrations to facilitate migration completion.</li>
-<li>When <code>AcceptableCompletionTime</code> threshold is reached, the migration controller will switch the migration into a post-copy
-    mode. If post-copy is not permitted, the migration controller will instead pause the corresponding Virtual Machine Instance to ensure migration
-    completion.</li>
+<li>The target's <code>runStrategy</code> is set to <code>WaitAsReceiver</code>.</li>
+<li>The target virtual machine includes an annotation specifying the <code>runStrategy</code> after migration, which should be the same as the source, in this case it is <code>Always</code>.</li>
 </ul>
-<h4 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h4>
-<p>To configure <code>AllowWorkloadDisruption</code>:</p>
+<p>Any additional resources beyond the virtual machine disk, such as <code>Secret</code>s or <code>Configmap</code>s, must also be created on the target cluster. Upon creation of the <code>VirtualMachine</code> resource, KubeVirt will generate a corresponding receiving <code>VirtualMachineInstace</code>, which can then be referenced in the target migration resource.</p>
+<h2 id="migration-resources">Migration resources<a class="headerlink" href="#migration-resources" title="Permanent link">&para;</a></h2>
+<p>Once the target virtual machine has been created, in order to start the migration you need to create a 'source' and a 'target' <code>VirtualMachineInstanceMigration</code>. After both the source and target migration resources have been created the migration will commence.</p>
+<h3 id="target-migration-resource">Target migration resource<a class="headerlink" href="#target-migration-resource" title="Permanent link">&para;</a></h3>
+<p>A target migration resource closely resembles a standard <code>VirtualMachineInstanceMigration</code> resource, with the addition of fields that designate it as a receiving decentralized live migration resource.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstanceMigration</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-target-migration</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;same namespace as target vm&gt;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">receive</span><span class="p">:</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">migrationID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;unique identifier&gt;</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="nt">vmiName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;name of the vmi that is created from target vm&gt;</span>
+</code></pre></div>
+<p>The <code>receive</code> field designates this as a target resource for decentralized migration. The <code>migrationID</code> string, uniquely identifies the 'source' and 'target' <code>VirtualMachineInstanceMigrations</code>. The <code>vmiName</code> then maps the <code>migrationID</code> to the appropriate <code>VirtualMachineInstance</code></p>
+<h3 id="source-migration-resource">Source migration resource<a class="headerlink" href="#source-migration-resource" title="Permanent link">&para;</a></h3>
+<p>The source migration resource now includes an additional field with two sub-fields:</p>
 <ol>
-<li><strong>Disabling Workload Disruption</strong>:</li>
-<li>Leave <code>AllowWorkloadDisruption</code> unset or explicitly set it to <code>false</code>.</li>
-<li>
-<p>Example:</p>
-<p><code>yaml
-spec:
-  configuration:
-    migrations:
-     allowWorkloadDisruption: false</code></p>
-</li>
-<li>
-<p><strong>Enabling Workload Disruption</strong>:</p>
-</li>
-<li>Set <code>AllowWorkloadDisruption</code> to <code>true</code> to allow the migration controller to act after the <code>AcceptableCompletionTime</code> threshold.</li>
-<li>
-<p>To enable post-copy, set <code>AllowPostCopy</code> to <code>true</code>. Otherwise, if paused mode is preferred, unset <code>AllowPostCopy</code> or explicitly set it to <code>false</code>:</p>
-<p><code>yaml
-spec:
-  configuration:
-    migrations:
-     allowWorkloadDisruption: true
-     allowPostCopy: true</code></p>
-</li>
+<li><code>migrationID</code> (identical to the target migration resource) </li>
+<li><code>connectURL</code>. This connection URL is used to connect to the synchronization controller on the target cluster. </li>
 </ol>
-<h4 id="key-considerations">Key Considerations<a class="headerlink" href="#key-considerations" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>AllowWorkloadDisruption</code> determines whether the migration controller can prioritize completing the migration over avoiding workload disruption.</li>
-<li>Post-copy migration, when enabled, poses some risk of data loss if a failure occurs during the post-copy phase.</li>
-<li>Pausing the workload facilitates completion of the migration without risk of data loss but may result in temporary workload inactivity.</li>
-</ul>
-<p>Bear in mind that most of these configuration can be overridden and fine-tuned to
-a specified group of VMs. For more information, please see <a href="../../cluster_admin/migration_policies/">Migration Policies</a>.</p>
-<h2 id="understanding-different-migration-strategies">Understanding different migration strategies<a class="headerlink" href="#understanding-different-migration-strategies" title="Permanent link">&para;</a></h2>
-<p>Live migration is a complex process. During a migration, the source VM needs to transfer its
-whole state (mainly RAM) to the target VM. If there are enough resources available, such as
-network bandwidth and CPU power, migrations should converge nicely. If this is not the scenario,
-however, the migration might get stuck without an ability to progress.</p>
-<p>The main factor that affects migrations from the guest perspective is its <code>dirty rate</code>, which is the
-rate by which the VM dirties memory. Guests with high dirty rate lead to a race during migration. On the
-one hand, memory would be transferred continuously to the target, and on the other, the same memory
-would get dirty by the guest. On such scenarios, one could consider to use more advanced migration
-strategies.</p>
-<p>Let's explain the 3 supported migration strategies as of today.</p>
-<h3 id="pre-copy">Pre-copy<a class="headerlink" href="#pre-copy" title="Permanent link">&para;</a></h3>
-<p>Pre-copy is the default strategy. It should be used for most cases.</p>
-<p>The way it works is as following:</p>
+<p>There are two methods to acquire the synchronization controller's address:</p>
 <ol>
-<li>The target VM is created, but the guest keeps running on the source VM.</li>
-<li>The source starts sending chunks of VM state (mostly memory) to the target. This continues until
-  all of the state has been transferred to the target.</li>
-<li>The guest starts executing on the target VM.</li>
-<li>The source VM is removed.</li>
+<li><strong>Accessing the KubeVirt CR on the Target Cluster:</strong> If you have access to the KubeVirt CR, a new field named <code>synchronizationAddresses</code> will provide a list of address/port combinations for the <code>connectURL</code>.  </li>
+<li><strong>After Target Migration Resource Creation:</strong> If you lack KubeVirt CR access, once the target migration resource is created, its status will contain a <code>synchronizationAddresses</code> field with the same list of address/port combinations.</li>
 </ol>
-<p>Pre-copy is the safest and fastest strategy for most cases. Furthermore, it can be easily cancelled,
-can utilize multithreading, and more. If there is no real reason to use another strategy, this is
-definitely the strategy to go with.</p>
-<p>However, on some cases migrations might not converge easily, that is, by the time the chunk of source
-VM state would be received by the target VM, it would already be mutated by the source VM (which is
-the VM the guest executes on). There are many reasons for migrations to fail converging, such as a
-high dirty-rate or low resources like network bandwidth and CPU. On such scenarios, see the following
-alternative strategies below.</p>
-<h3 id="post-copy">Post-copy<a class="headerlink" href="#post-copy" title="Permanent link">&para;</a></h3>
-<p>The way post-copy migrations work is as following:</p>
-<ol>
-<li>The target VM is created.</li>
-<li>The guest is run on the <strong>target VM</strong>.</li>
-<li>The source starts sending chunks of VM state (mostly memory) to the target.</li>
-<li>When the guest, running on the target VM, would access memory:<ol>
-<li>If the memory exists on the target VM, the guest can access it.</li>
-<li>Otherwise, the target VM asks for a chunk of memory from the source VM.</li>
-</ol>
-</li>
-<li>Once all of the memory state is updated at the target VM, the source VM is removed.</li>
-</ol>
-<p>The main idea here is that the guest starts to run immediately on the target VM. This approach
-has advantages and disadvantages:</p>
-<p><u>advantages</u>:</p>
-<ul>
-<li>The same memory chunk is never transferred twice. This is possible due to the fact that
-with post-copy it doesn't matter that a page had been dirtied since the guest is already running
-on the target VM.</li>
-<li>This means that a high dirty-rate has much less effect.</li>
-<li>Consumes less network bandwidth.</li>
-</ul>
-<p><u>disadvantages</u>:</p>
-<ul>
-<li>When using post-copy, the VM state has no one source of truth. When the guest (running on the
-target VM) writes to memory, this memory is one part of the guest's state, but some other parts of
-it may still be updated only at the source VM. This situation is generally dangerous, since, for 
-example, if either the target or guest VMs crash the state cannot be recovered.</li>
-<li>Slow warmup: when the guest starts executing, no memory is present at the target VM. Therefore,
-the guest would have to wait for a lot of memory in a short period of time.</li>
-<li>Slower than pre-copy on most cases.</li>
-<li>Harder to cancel a migration.</li>
-</ul>
-<h3 id="auto-converge">Auto-converge<a class="headerlink" href="#auto-converge" title="Permanent link">&para;</a></h3>
-<p>Auto-converge is a technique to help pre-copy migrations converge faster without changing the core
-algorithm of how the migration works.</p>
-<p>Since a high dirty-rate is usually the most significant factor for migrations to not converge,
-auto-converge simply throttles the guest's CPU. If the migration would converge fast enough,
-the guest's CPU would not be throttled or throttled negligibly. But, if the migration would
-not converge fast enough, the CPU would be throttled more and more as time goes.</p>
-<p>This technique dramatically increases the probability of the migration converging eventually.</p>
-<h2 id="using-a-different-network-for-migrations">Using a different network for migrations<a class="headerlink" href="#using-a-different-network-for-migrations" title="Permanent link">&para;</a></h2>
-<p>Live migrations can be configured to happen on a different network than
-the one Kubernetes is configured to use.
-That potentially allows for more determinism, control and/or bandwidth,
-depending on use-cases.</p>
-<h3 id="creating-a-migration-network-on-a-cluster">Creating a migration network on a cluster<a class="headerlink" href="#creating-a-migration-network-on-a-cluster" title="Permanent link">&para;</a></h3>
-<p>A separate physical network is required, meaning that every node on the
-cluster has to have at least 2 NICs, and the NICs that will be used for
-migrations need to be interconnected, i.e. all plugged to the same switch.
-The examples below assume that <code>eth1</code> will be used for migrations.</p>
-<p>It is also required for the Kubernetes cluster to have
-<a href="https://github.com/k8snetworkplumbingwg/multus-cni.git">multus</a> installed.</p>
-<p>If the desired network doesn't include a DHCP server, then
-<a href="https://github.com/k8snetworkplumbingwg/whereabouts">whereabouts</a> will
-be needed as well.</p>
-<p>Finally, a NetworkAttachmentDefinition needs to be created in the
-namespace where KubeVirt is installed. Here is an example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;k8s.cni.cncf.io/v1&quot;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkAttachmentDefinition</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migration-network</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">      </span><span class="s">&quot;cniVersion&quot;:</span><span class="nv"> </span><span class="s">&quot;0.3.1&quot;,</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">      </span><span class="s">&quot;name&quot;:</span><span class="nv"> </span><span class="s">&quot;migration-bridge&quot;,</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">      </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;macvlan&quot;,</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">      </span><span class="s">&quot;master&quot;:</span><span class="nv"> </span><span class="s">&quot;eth1&quot;,</span>
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">      </span><span class="s">&quot;mode&quot;:</span><span class="nv"> </span><span class="s">&quot;bridge&quot;,</span>
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">      </span><span class="s">&quot;ipam&quot;:</span><span class="nv"> </span><span class="s">{</span>
-<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">        </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;whereabouts&quot;,</span>
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">        </span><span class="s">&quot;range&quot;:</span><span class="nv"> </span><span class="s">&quot;10.1.1.0/24&quot;</span>
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">      </span><span class="s">}</span>
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">    </span><span class="s">}&#39;</span>
-</code></pre></div></p>
-<h3 id="configuring-kubevirt-to-migrate-vmis-over-that-network">Configuring KubeVirt to migrate VMIs over that network<a class="headerlink" href="#configuring-kubevirt-to-migrate-vmis-over-that-network" title="Permanent link">&para;</a></h3>
-<p>This is just a matter of adding the name of the
-NetworkAttachmentDefinition to the KubeVirt CR, like so:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigration</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migration-network</span>
-</code></pre></div></p>
-<p>That change will trigger a restart of the virt-handler pods, as they
-get connected to that new network.</p>
-<p>From now on, migrations will happen over that network.</p>
-<h3 id="configuring-kubevirtci-for-testing-migration-networks">Configuring KubeVirtCI for testing migration networks<a class="headerlink" href="#configuring-kubevirtci-for-testing-migration-networks" title="Permanent link">&para;</a></h3>
-<p>Developers and people wanting to test the feature before deploying
-it on a real cluster might want to configure a dedicated migration
-network in KubeVirtCI.</p>
-<p>KubeVirtCI can simply be configured to include a virtual secondary
-network, as well as automatically install multus and whereabouts.
-The following environment variables just have to be declared before
-running <code>make cluster-up</code>:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>export KUBEVIRT_NUM_NODES=2;
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>export KUBEVIRT_NUM_SECONDARY_NICS=1;
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>export KUBEVIRT_DEPLOY_ISTIO=true;
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>export KUBEVIRT_WITH_CNAO=true
-</code></pre></div></p>
-<h2 id="migration-timeouts">Migration timeouts<a class="headerlink" href="#migration-timeouts" title="Permanent link">&para;</a></h2>
-<p>Depending on the type, the live migration process will copy virtual
-machine memory pages and disk blocks to the destination. During this
-process non-locked pages and blocks are copied and become free for
-the instance to use again. To achieve a successful migration, it is
-assumed that the instance will write to the free pages and blocks
-(pollute the pages) at a lower rate than these are being copied.</p>
-<h3 id="completion-time">Completion time<a class="headerlink" href="#completion-time" title="Permanent link">&para;</a></h3>
-<p>In some cases the virtual machine can have a high dirty-rate, which
-means it will write to different memory pages / disk blocks at a
-higher rate than these can be copied over.
-This situation will prevent the migration process from completing
-in a reasonable amount of time.</p>
-<p>In this case, a timeout can be defined so that live migration will
-either be aborted or switched to post-copy mode (if it's enabled)
-if it is running for a long period of time.</p>
-<p>The timeout is calculated based on the size of
-the VMI, its memory and the ephemeral disks that are needed to be
-copied. The configurable parameter <code>completionTimeoutPerGiB</code>, which
-defaults to 150s, is the maximum amount of time per GiB of data allowed before the migration
-gets aborted / switched to post-copy mode.
-For example, with the default value, a VMI with 8GiB of memory will time-out after 1200 seconds.</p>
-<h3 id="progress-timeout">Progress timeout<a class="headerlink" href="#progress-timeout" title="Permanent link">&para;</a></h3>
-<p>Live migration will also be aborted when it will be noticed that copying
-memory doesn't make any progress. The time to wait for live migration to
-make progress in transferring data is configurable by <code>progressTimeout</code>
-parameter, which defaults to 150s</p>
-<h2 id="disabling-secure-migrations">Disabling secure migrations<a class="headerlink" href="#disabling-secure-migrations" title="Permanent link">&para;</a></h2>
-<p><strong>FEATURE STATE:</strong> KubeVirt v0.43</p>
-<p>Sometimes it may be desirable to disable TLS encryption of migrations to
-improve performance. Use <code>disableTLS</code> to do that:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;LiveMigration&quot;</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<p>The key distinction between these options is that Method 1 allows you to obtain the connection URL in advance, enabling the creation of the source migration resource simultaneously with or prior to the target migration resource.</p>
+<p>Once the connection URL is acquired, its value should be placed in the <code>connectURL</code> field of the source migration resource.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstanceMigration</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example-source-migration</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">sendTo</span><span class="p">:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="nt">connectURL</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;synchronization</span><span class="nv"> </span><span class="s">address&gt;&quot;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">migrationID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;unique identifier, same as target migration resource migrationID&gt;</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="nt">vmiName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;name of the source vmi&gt;</span>
 </code></pre></div>
-<p><strong>Note:</strong> While this increases performance it may allow MITM attacks. Be careful.</p>
+<h2 id="configuring-kubevirt-ca-with-cross-cluster-live-migration">Configuring KubeVirt CA with cross cluster live migration<a class="headerlink" href="#configuring-kubevirt-ca-with-cross-cluster-live-migration" title="Permanent link">&para;</a></h2>
+<p>When migrating between two clusters, each cluster will have its own installation of KubeVirt. Each KubeVirt installation will create and use its own Certificate Authority (CA). This CA is used to secure communication between the synchronization controllers and the virt-handlers during migration. For each cluster to trust the other cluster, the public CA keys must be exchanged between the clusters.</p>
+<p>The public CA key is stored in a <code>ConfigMap</code> in the namespace where KubeVirt is installed (defaults to <code>kubevirt</code>). This <code>ConfigMap</code> is named <code>kubevirt-ca</code>. The following is an example of this <code>ConfigMap</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">data</span><span class="p">:</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">ca-bundle</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="no">-----BEGIN CERTIFICATE-----</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nn">...</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">-----END CERTIFICATE-----</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">-----BEGIN CERTIFICATE-----</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nn">...</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">-----END CERTIFICATE-----</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="l l-Scalar l-Scalar-Plain">kind</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt-ca</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+</code></pre></div>
+<p>In the same namespace, there will be another <code>ConfigMap</code> named <code>kubevirt-external-ca</code> which will have a <code>ca-bundle</code> field as part of its data. In order for Cluster1 to trust the CA from Cluster2, take the ca-bundle from Cluster2's <code>kubevirt-ca</code> <code>ConfigMap</code> and copy the <code>ca-bundle</code> into Cluster1's <code>kubevirt-external-ca</code> and vice versa. After you update the <code>kubevirt-external-ca</code>, it will automatically clear out the contents of the <code>kubevirt-external-ca</code> but copy the contents into the <code>kubevirt-ca</code> <code>ConfigMap</code>. It will remove invalid, duplicate and expired keys before doing so.</p>
+<p>Depending on how long the keys are valid you will have to do this process again once the keys expire. By default a KubeVirt CA is valid for 2 days</p>
+<h2 id="cancelling-decentralized-live-migration">Cancelling decentralized live migration<a class="headerlink" href="#cancelling-decentralized-live-migration" title="Permanent link">&para;</a></h2>
+<p>To cancel an active decentralized live migration, delete the corresponding migration resources from both the source and target cluster/namespace. This action signals KubeVirt to cancel the migration. The cancellation process for decentralized live migrations operates under the same principles as standard migration cancellations. There may be a short delay during which the migration could potentially finish, at which point cancelling has no affect.</p>
+<h2 id="migration-failure">Migration failure<a class="headerlink" href="#migration-failure" title="Permanent link">&para;</a></h2>
+<p>Unlike standard live migrations that automatically retry until completion, failed decentralized live migrations do not. When a decentralized live migration fails, the source virtual machine continues to run on the source, and the target virtual machine enters a failed state. To reattempt the migration, you must manually delete both the source and target <code>VirtualMachineInstanceMigration</code> resources, as well as the target virtual machine.</p>
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
+<p>Since decentralized live migration is a variation of storage live migration it has the same limitations:</p>
+<ul>
+<li>Shareable disks are not supported, as we cannot guarantee data consistency with multiple writers.  </li>
+<li><a href="../../storage/disks_and_volumes/#filesystems"><code>filesystem</code> devices</a> are not supported, as virtio-fs does not currently support live migration.</li>
+<li><a href="../../storage/disks_and_volumes/#lun">LUN disks</a> are not supported, as we cannot guarantee that the target is also a LUN when migrating.</li>
+<li>VM state PVC is RWX on both source and target. Due to a <a href="https://issues.redhat.com/browse/RHEL-108915">bug</a> it will not copy the vTPM device data, because it is assumed that having shared storage on both source and target is the same storage.</li>
+</ul>
 
 
 
@@ -3963,7 +3419,7 @@ improve performance. Use <code>disableTLS</code> to do that:</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../hugepages/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Hugepages support">
+          <a href="../live_migration/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Live Migration">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3973,20 +3429,20 @@ improve performance. Use <code>disableTLS</code> to do that:</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Hugepages support
+                Live Migration
               </div>
             </div>
           </a>
         
         
           
-          <a href="../decentralized_live_migration/" class="md-footer__link md-footer__link--next" aria-label="Next: Decentralized live migration">
+          <a href="../mediated_devices_configuration/" class="md-footer__link md-footer__link--next" aria-label="Next: Mediated devices and virtual GPUs">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Decentralized live migration
+                Mediated devices and virtual GPUs
               </div>
             </div>
             <div class="md-footer__button md-icon">
