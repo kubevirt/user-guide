@@ -1,40 +1,131 @@
-# Feature Gate Status on Arm64
+# Feature Gate Status on arm64
 
-This page is based on https://github.com/kubevirt/kubevirt/issues/9749
-It records the feature gate status on Arm64 platform. Here is the explanation of the status:
+This document tracks the status of KubeVirt feature gates on the arm64 architecture.
 
-- **Supported**: the feature gate support on Arm64 platform.
-- **Not supported yet**: there are some dependencies of the feature gate not support Arm64, so this feature does not support for now. We may support the dependencies in the future.
-- **Not supported**: The feature gate is not support on Arm64.
-- **Not verified**: The feature has not been verified yet.
+## Status Definitions
 
+ **SUPPORTED**: The feature gate is supported on arm64 and verified by CI
+ **PENDING**: Support for this feature gate is pending
+ **UNSUPPORTED**: The feature gate is not supported on arm64
+ **UNVERIFIED**: The feature gate is expected to work on arm64 but is not verified by CI
 
-FEATURE GATE | STATUS | NOTES
+## CI Test Coverage
+
+The arm64 CI lanes run tests labeled with `wg-arm64`. Tests are excluded if they:
+
+- Require AMD64-specific features (ACPI, specific CPU models, SEV/TDX)
+- Require multiple schedulable nodes (limited by CI infrastructure)
+- Require specialized hardware (GPU, SR-IOV)
+
+Current test lane:
+
+1. **wg-arm64**: Basic functional tests (serial execution)
+
+**Note**: The **sig-compute-migrations-wg-arm64** lane for live migration tests is defined in `automation/test.sh` but is not yet configured to run in CI. This lane would test migration features with storage and networking support.
+
+FEATURE GATE | GRADUATION | STATUS
 -- | -- | --
-ExpandDisksGate | Not supported yet| CDI is needed
-CPUManager | Supported | use taskset to do CPU pinning, do not support kvm-hint-dedicated (this is only works on x86 platform)
-NUMAFeatureGate | Not supported yet | Need to support Hugepage on Arm64
-IgnitionGate | Supported | This feature is only used for CoreOS/RhCOS
-LiveMigrationGate | Supported | Verified live migration with masquerade network
-SRIOVLiveMigrationGate | Not verified | Need two same Machine and SRIOV device
-HypervStrictCheckGate | Not supported | Hyperv does not work on Arm64
-SidecarGate | Supported |  
-GPUGate | Not verified | Need GPU device
-HostDevicesGate | Not verified | Need GPU or sound card
-SnapshotGate | Supported | Need snapshotter support https://github.com/kubernetes-csi/external-snapshotter
-VMExportGate | Partially supported | Need snapshotter support https://kubevirt.io/user-guide/operations/export_api/, support exporting pvc, not support exporting DataVolumes and MemoryDump which rely on CDI
-HotplugVolumesGate | Not supported yet | Rely on datavolume and CDI
-HostDiskGate | Supported |  
-VirtIOFSGate | Supported |  
-MacvtapGate | Not supported yet | quay.io/kubevirt/macvtap-cni not support Arm64, https://github.com/kubevirt/macvtap-cni#deployment
-PasstGate | Supported | VM have same ip with pods; start a process for network /usr/bin/passt --runas 107 -e -t 8080
-DownwardMetricsFeatureGate | need more information | It used to let guest get host information, failed on both Arm64 and x86_64. <br><br>The block is successfully attached and can see the following information:<br>  `-blockdev {"driver":"file","filename":"/var/run/kubevirt-private/downwardapi-disks/vhostmd0","node-name":"libvirt-1-storage","cache":{"direct":true,"no-flush":false},"auto-read-only":true,"discard":"unmap"}`<br><br>But unable to get information via `vm-dump-metrics`:<br><br>`LIBMETRICS: read_mdisk(): Unable to read metrics disk`<br>`LIBMETRICS: get_virtio_metrics(): Unable to export metrics: open(/dev/virtio-ports/org.github.vhostmd.1) No such file or directory`<br>`LIBMETRICS: get_virtio_metrics(): Unable to read metrics`
-NonRootDeprecated | Supported |  
-NonRoot | Supported |  
-Root | Supported |  
-ClusterProfiler | Supported |
-WorkloadEncryptionSEV | Not supported | SEV is only available on x86_64
-VSOCKGate | Supported |  
-HotplugNetworkIfacesGate | Not supported yet | Need to setup *multus-cni* and *multus-dynamic-networks-controller*: https://github.com/k8snetworkplumbingwg/multus-cni <br>`cat ./deployments/multus-daemonset-thick.yml \| kubectl apply -f -`https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller <br>`kubectl apply -f manifests/dynamic-networks-controller.yaml` <br><br>Currently, the image ghcr.io/k8snetworkplumbingwg/multus-cni:snapshot-thick does not support Arm64 server. For more information please refer to https://github.com/k8snetworkplumbingwg/multus-cni/pull/1027.
-CommonInstancetypesDeploymentGate | Not supported yet | Support of common-instancetypes instancetypes needs to be tested, common-instancetypes preferences for ARM workloads are still missing
+AlignCPUsGate | Alpha | UNVERIFIED
+AutoResourceLimitsGate | GA | UNVERIFIED
+BochsDisplayForEFIGuests | GA | UNVERIFIED
+ClusterProfiler | GA | UNVERIFIED
+CommonInstancetypesDeploymentGate | GA | UNVERIFIED
+CPUManager | Alpha | UNVERIFIED
+CPUNodeDiscoveryGate | GA | UNVERIFIED
+DecentralizedLiveMigration | Alpha | UNVERIFIED
+DeclarativeHotplugVolumesGate | Alpha | UNVERIFIED
+DisableCustomSELinuxPolicy | GA | UNVERIFIED
+DisableMediatedDevicesHandling | Alpha | UNVERIFIED
+DockerSELinuxMCSWorkaround | Deprecated | UNVERIFIED
+DownwardMetricsFeatureGate | Alpha | UNVERIFIED
+DynamicPodInterfaceNamingGate | GA | UNVERIFIED
+ExpandDisksGate | Alpha | UNVERIFIED
+GPUGate | GA | UNVERIFIED
+GPUsWithDRAGate | Alpha | UNVERIFIED
+HostDevicesGate | Alpha | UNVERIFIED
+HostDevicesWithDRAGate | Alpha | UNVERIFIED
+HostDiskGate | Alpha | SUPPORTED
+HotplugNetworkIfacesGate | GA | UNVERIFIED
+HotplugVolumesGate | Alpha | UNVERIFIED
+HypervStrictCheckGate | Alpha | UNSUPPORTED
+IgnitionGate | Alpha | UNVERIFIED
+ImageVolume | Beta | SUPPORTED
+IncrementalBackupGate | Alpha | UNVERIFIED
+InstancetypeReferencePolicy | GA | UNVERIFIED
+KubevirtSeccompProfile | Beta | UNVERIFIED
+LiveMigrationGate | GA | UNVERIFIED
+MacvtapGate | Discontinued | PENDING
+MigrationPriorityQueue | Alpha | UNVERIFIED
+MultiArchitecture | Deprecated | UNVERIFIED
+NetworkBindingPlugingsGate | GA | UNVERIFIED
+NodeRestrictionGate | Beta | UNVERIFIED
+NonRoot | GA | UNVERIFIED
+NUMAFeatureGate | GA | PENDING
+ObjectGraph | Alpha | UNVERIFIED
+PanicDevicesGate | Beta | SUPPORTED
+PasstGate | Discontinued | UNVERIFIED
+PasstIPStackMigration | Alpha | UNVERIFIED
+PersistentReservation | Alpha | UNVERIFIED
+PSA | GA | UNVERIFIED
+Root | Alpha | UNVERIFIED
+SecureExecution | Beta | UNVERIFIED
+SidecarGate | Alpha | UNVERIFIED
+SnapshotGate | Beta | UNVERIFIED
+SRIOVLiveMigrationGate | GA | UNVERIFIED
+VideoConfig | Beta | UNVERIFIED
+VirtIOFSConfigVolumesGate | Alpha | UNVERIFIED
+VirtIOFSGate | Deprecated | UNVERIFIED
+VirtIOFSStorageVolumeGate | Alpha | UNVERIFIED
+VMLiveUpdateFeaturesGate | GA | UNVERIFIED
+VMExportGate | Beta | UNVERIFIED
+VMPersistentState | GA | UNVERIFIED
+VolumeMigration | GA | UNVERIFIED
+VolumesUpdateStrategy | GA | UNVERIFIED
+VSOCKGate | Alpha | UNVERIFIED
+WorkloadEncryptionSEV | Alpha | UNSUPPORTED
+WorkloadEncryptionTDX | Alpha | UNVERIFIED
 
+## Notes
+
+### Features with CI Verification (SUPPORTED)
+
+The following features have dedicated test coverage in the active arm64 CI lane:
+
+- **HostDiskGate**: Tested in storage tests with wg-arm64 label
+- **ImageVolume**: Tested with enable/disable scenarios in container disk tests
+- **PanicDevicesGate**: Explicitly enabled and tested in VMI lifecycle tests
+
+### Features Planned for CI Verification
+
+The following features have tests defined but are not currently running in CI:
+
+- **LiveMigrationGate**: Tests defined for sig-compute-migrations-wg-arm64 lane (not yet active)
+- **VolumeMigration**: Tests defined in storage migration (requires sig-compute-migrations-wg-arm64 lane)
+
+### Architecture-Specific Limitations
+
+The following features are marked UNSUPPORTED due to architecture-specific requirements:
+
+- **HypervStrictCheckGate**: Hyper-V enlightenments are x86_64-only
+- **WorkloadEncryptionSEV**: AMD SEV is x86_64-only
+
+### CI Infrastructure Limitations
+
+Some tests are excluded from arm64 CI due to infrastructure constraints:
+
+- Tests requiring multiple schedulable nodes (limited by CI resources)
+- Tests requiring specialized hardware (GPU, SR-IOV, vGPU)
+- Tests requiring specific CPU models or ACPI features
+- Tests marked as requiring AMD64 architecture
+
+### Pending Features
+
+- **MacvtapGate**: Requires macvtap-cni support for arm64
+- **NUMAFeatureGate**: Requires hugepages support verification on arm64
+
+### Contributing
+
+To improve arm64 test coverage, add the `decorators.WgArm64` label to tests in:
+
+- `tests/` directory for the wg-arm64 lane
+- Ensure tests don't require excluded features (ACPI, multiple nodes, AMD64-specific)
