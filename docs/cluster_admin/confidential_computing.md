@@ -66,6 +66,73 @@ spec:
 - Live Migration is not supported
 - The VMs are not attested
 
+## AMD Secure Encrypted Virtualization - Secure Nested Paging (SEV-SNP)
+
+**FEATURE STATE:** KubeVirt v1.7.0 (experimental support)
+
+
+KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV-SNP support. 
+
+### Prerequisites
+
+- `WorkloadEncryptionSEV` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
+- The guest must support [UEFI boot](../compute/virtual_hardware.md#biosuefi).
+- SecureBoot must be disabled for the guest VM.
+- AMD EPYC hardware that is capable of running [SEV-SNP](https://docs.amd.com/v/u/en-US/58207-using-sev-with-amd-epyc-processors).
+
+### Deploying AMD SEV-SNP enabled VMs
+
+SEV-SNP memory encryption can be requested by setting the `spec.domain.launchSecurity.snp` element in the VMI definition:
+
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: vmi-fedora
+  name: vmi-fedora
+spec:
+  domain:
+    launchSecurity:
+      snp: {}
+    firmware:
+      bootloader:
+        efi:
+          secureBoot: false
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: containerdisk
+      - disk:
+          bus: virtio
+        name: cloudinitdisk
+      rng: {}
+    resources:
+      requests:
+        memory: 1024M
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - containerDisk:
+      image: registry:5000/kubevirt/fedora-with-test-tooling-container-disk:devel
+    name: containerdisk
+  - cloudInitNoCloud:
+      userData: |-
+        #cloud-config
+        password: fedora
+        chpasswd: { expire: False }
+    name: cloudinitdisk
+```
+
+
+### Limitations
+
+- SEV/SEV-ES are mutually exclusive from SNP, running both SEV and SNP will not run.
+- Uses default policy that QEMU uses (e.g Policy: 0x30000).
+- Live Migration is not supported.
+- The VMs are not attested.
+
 ## IBM Secure Execution for Linux (Secure Execution)
 
 **FEATURE STATE:** KubeVirt v1.6.0 (experimental support)
