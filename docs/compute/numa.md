@@ -22,7 +22,7 @@ In order to use current NUMA support, the following preconditions must be met:
   nodes.
 * The `NUMA`
   [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
-  must be enabled.
+  is GA and enabled by default.
 
 ## GuestMappingPassthrough
 
