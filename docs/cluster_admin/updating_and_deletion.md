@@ -70,7 +70,7 @@ There are two methods supported.
 **LiveMigrate:** Which results in VMIs being updated by live migrating the
 virtual machine guest into a new pod with all the updated components enabled.
 
-**Evict: ** Which results in the VMI's pod being shutdown. If the VMI is
+**Evict:** Which results in the VMI's pod being shutdown. If the VMI is
 controlled by a higher level VirtualMachine object with `runStrategy: always`,
 then a new VMI will spin up in a new pod with updated components.
 
