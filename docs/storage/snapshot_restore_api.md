@@ -136,6 +136,31 @@ The following policies are available:
 - **RandomizeNames** (default policy): The names of restored PVCs are randomly generated using the UID of the restore job. This policy guarantees there's no collisions, but it may be a problem when using GitOps, as the IDs are not predictable.
 - **InPlace**: This policy overwrites the original volumes with the restored ones. If the source PVCs still exist, they are **deleted before creating the restored PVCs**. It is useful when restoring over the original VM while wanting to keep the same volume names.
 
+## Volume ownership policies
+
+When restoring a `VirtualMachineSnapshot`, KubeVirt will try its best to find an owner for all the volumes restored.
+
+The default policy is to give ownership of the restored volumes to the VM if no other owner can be found (for example, a parent DataVolume).
+This behaviour might not be desired by the user, as deleting the restored VM will also propagate the deletion to the restored volumes.
+
+The `.volumeOwnershipPolicy` field gives the user control over ownership of the restored volumes.
+
+Policy **VM** (default policy) has the following behaviour:
+
+- Volumes restored as part of the VM's `.dataVolumeTemplate` are owned by the `DataVolumes` of the `dataVolumeTemplate`
+- Volumes that are `DataVolumes` are restored as PVCs, owned by the VM (because the original DataVolume is not kept)
+- Volumes restored with `VolumeRestorePolicy` **InPlace** as part of `DataVolumes` are restored as PVCs, owned by the DataVolume (because the original DataVolume is rebound to the PVC)
+- Volumes that are PVCs are restored as PVCs and owned by the VM
+
+**Note**: This behaviour is altered by a [bug](https://github.com/kubevirt/kubevirt/issues/12785) where this policy only applies correctly if the VM already exists, but the volumes have been deleted.
+
+Policy **None** has the following behaviour:
+
+- Volumes restored as part of the VM's `.dataVolumeTemplate` are owned by the `DataVolumes` of the `dataVolumeTemplate`
+- Volumes that are `DataVolumes` are restored as PVCs, not owned by anything
+- Volumes restored with `VolumeRestorePolicy` **InPlace** as part of `DataVolumes` are restored as PVCs, owned by the DataVolume (because the original DataVolume is rebound to the PVC)
+- Volumes that are PVCs are restored as PVCs not owned by anything
+
 ## Volume restore overrides
 
 When restoring a `VirtualMachineSnapshot`, the user might want to modify the volumes as they are being restored. This is possible using the `volumeRestoreOverrides`. Overrides are provided in a list, where each element targets a volume within the snapshot and applies changes to it.
