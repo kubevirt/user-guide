@@ -3205,6 +3205,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#volume-ownership-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Volume ownership policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#volume-restore-overrides" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3672,6 +3683,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#volume-ownership-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Volume ownership policies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#volume-restore-overrides" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3838,6 +3860,26 @@ field in the KubeVirt CR must be expanded by adding the <code>Snapshot</code> to
 <ul>
 <li><strong>RandomizeNames</strong> (default policy): The names of restored PVCs are randomly generated using the UID of the restore job. This policy guarantees there's no collisions, but it may be a problem when using GitOps, as the IDs are not predictable.</li>
 <li><strong>InPlace</strong>: This policy overwrites the original volumes with the restored ones. If the source PVCs still exist, they are <strong>deleted before creating the restored PVCs</strong>. It is useful when restoring over the original VM while wanting to keep the same volume names.</li>
+</ul>
+<h2 id="volume-ownership-policies">Volume ownership policies<a class="headerlink" href="#volume-ownership-policies" title="Permanent link">&para;</a></h2>
+<p>When restoring a <code>VirtualMachineSnapshot</code>, KubeVirt will try its best to find an owner for all the volumes restored.</p>
+<p>The default policy is to give ownership of the restored volumes to the VM if no other owner can be found (for example, a parent DataVolume).
+This behaviour might not be desired by the user, as deleting the restored VM will also propagate the deletion to the restored volumes.</p>
+<p>The <code>.volumeOwnershipPolicy</code> field gives the user control over ownership of the restored volumes.</p>
+<p>Policy <strong>VM</strong> (default policy) has the following behaviour:</p>
+<ul>
+<li>Volumes restored as part of the VM's <code>.dataVolumeTemplate</code> are owned by the <code>DataVolumes</code> of the <code>dataVolumeTemplate</code></li>
+<li>Volumes that are <code>DataVolumes</code> are restored as PVCs, owned by the VM (because the original DataVolume is not kept)</li>
+<li>Volumes restored with <code>VolumeRestorePolicy</code> <strong>InPlace</strong> as part of <code>DataVolumes</code> are restored as PVCs, owned by the DataVolume (because the original DataVolume is rebound to the PVC)</li>
+<li>Volumes that are PVCs are restored as PVCs and owned by the VM</li>
+</ul>
+<p><strong>Note</strong>: This behaviour is altered by a <a href="https://github.com/kubevirt/kubevirt/issues/12785">bug</a> where this policy only applies correctly if the VM already exists, but the volumes have been deleted.</p>
+<p>Policy <strong>None</strong> has the following behaviour:</p>
+<ul>
+<li>Volumes restored as part of the VM's <code>.dataVolumeTemplate</code> are owned by the <code>DataVolumes</code> of the <code>dataVolumeTemplate</code></li>
+<li>Volumes that are <code>DataVolumes</code> are restored as PVCs, not owned by anything</li>
+<li>Volumes restored with <code>VolumeRestorePolicy</code> <strong>InPlace</strong> as part of <code>DataVolumes</code> are restored as PVCs, owned by the DataVolume (because the original DataVolume is rebound to the PVC)</li>
+<li>Volumes that are PVCs are restored as PVCs not owned by anything</li>
 </ul>
 <h2 id="volume-restore-overrides">Volume restore overrides<a class="headerlink" href="#volume-restore-overrides" title="Permanent link">&para;</a></h2>
 <p>When restoring a <code>VirtualMachineSnapshot</code>, the user might want to modify the volumes as they are being restored. This is possible using the <code>volumeRestoreOverrides</code>. Overrides are provided in a list, where each element targets a volume within the snapshot and applies changes to it.</p>
