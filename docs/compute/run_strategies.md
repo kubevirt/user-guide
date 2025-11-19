@@ -1,4 +1,8 @@
 # Run Strategies
+#
+> **⚠️ Deprecation Notice:**
+> 
+> The `spec.running` field is **deprecated** and should no longer be used to control VirtualMachine lifecycle. Use `spec.runStrategy` instead. Defining both `runStrategy` and `running` is **not allowed** and will be rejected by the API server. Always prefer `spec.runStrategy` for new and existing VirtualMachines.
 
 ## Overview
 
@@ -51,6 +55,11 @@ RunStrategies defined:
 *Note*: `RunStrategy` and `running` are mutually exclusive, because
 they can be contradictory. The API server will reject VirtualMachine
 resources that define both.
+
+> **Best Practice:**
+> - Use `spec.runStrategy` for all new and existing VirtualMachines.
+> - Do **not** use `spec.running`—it is deprecated and will be removed in future releases.
+> - Defining both fields is invalid and will be rejected.
 
 ### Virtctl
 
