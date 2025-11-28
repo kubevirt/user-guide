@@ -4,6 +4,280 @@ hide:
 ---
 
 # KubeVirt release notes
+
+
+## v1.7.0
+
+Released on: Wednesday Nov 27 2025
+
+KubeVirt v1.7 is built for Kubernetes v1.34 and additionally supported for the previous two versions. See the [KubeVirt support matrix](https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md) for more information.
+
+To see the list of talented people who contirbuted to this release, see the [KubeVirt release tag for v1.7.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.7.0).
+
+### API change
+- [[PR #16129]](https://github.com/kubevirt/kubevirt/pull/16129)[kubevirt-bot] Add RestartRequired when detaching CD-ROMs from a running VM
+- [[PR #16097]](https://github.com/kubevirt/kubevirt/pull/16097)[kubevirt-bot] Introduce a new subresource `/evacuate/cancel` and `virtctl evacuate-cancel` command to allow users to cancel the evacuation process for a VirtualMachineInstance (VMI). This clears the `evacuationNodeName` field in the VMI's status, stopping the automatic creation of migration resources and fully aborting the eviction cycle.
+- [[PR #16033]](https://github.com/kubevirt/kubevirt/pull/16033)[noamasu] VMSnapshot: add SourceIndications status field to list snapshot indications with descriptions for clearer meaning.
+- [[PR #16051]](https://github.com/kubevirt/kubevirt/pull/16051)[kubevirt-bot] Introduce pool.kubevirt.io/v1beta1
+- [[PR #16027]](https://github.com/kubevirt/kubevirt/pull/16027)[kubevirt-bot] VMPool: Add support for auto-healing startegy
+- [[PR #15999]](https://github.com/kubevirt/kubevirt/pull/15999)[kubevirt-bot] VMpool: Add Scale-in strategy support with Proactive, opportunistic modes and statePreservation
+- [[PR #15887]](https://github.com/kubevirt/kubevirt/pull/15887)[fossedihelm] Alpha: Generalized Migration Priority in KubeVirt
+- [[PR #14575]](https://github.com/kubevirt/kubevirt/pull/14575)[zhencliu] Experimental support of Intel TDX
+- [[PR #15123]](https://github.com/kubevirt/kubevirt/pull/15123)[Sreeja1725] VMpool: Add UpdateStrategy support with Proactive, Opportunistic modes and Selection policies
+- [[PR #14845]](https://github.com/kubevirt/kubevirt/pull/14845)[alancaldelas] Experimental support for AMD SEV-SNP that is behind the `WorkloadEncruptionSEV` feature gate.
+- [[PR #15783]](https://github.com/kubevirt/kubevirt/pull/15783)[orelmisan] Specify correct label selection when creating a service via virtctl expose. The expose command on virtctl v1.7 and above will not work with older KubeVirt versions.
+- [[PR #15698]](https://github.com/kubevirt/kubevirt/pull/15698)[Acedus] It is now possible to configure discard_granularity for VM disks.
+- [[PR #15552]](https://github.com/kubevirt/kubevirt/pull/15552)[nirdothan] NONR
+- [[PR #15539]](https://github.com/kubevirt/kubevirt/pull/15539)[tiraboschi] Add VirtualMachineInstanceEvictionRequested condition for eviction tracking
+- [[PR #15798]](https://github.com/kubevirt/kubevirt/pull/15798)[lyarwood] Support for the `ioThreads` VMI configurable is added to the `instancetype.kubevirt.io/v1beta1` API allowing `supplementalPoolThreadCount` to now be provided by an instance type.
+- [[PR #15398]](https://github.com/kubevirt/kubevirt/pull/15398)[lyarwood] Preferences can now express preferred and required architecture values for use within VirtualMachines
+- [[PR #15400]](https://github.com/kubevirt/kubevirt/pull/15400)[lyarwood] The deprecated `instancetype.kubevirt.io/v1alpha{1,2}` API and CRDs have been removed
+- [[PR #15681]](https://github.com/kubevirt/kubevirt/pull/15681)[jean-edouard] Memory overcommit is now recalculated on migration.
+- [[PR #15406]](https://github.com/kubevirt/kubevirt/pull/15406)[Sreeja1725] Add VMpool finalizer to ensure proper cleanup
+- [[PR #14772]](https://github.com/kubevirt/kubevirt/pull/14772)[ShellyKa13] ChangedBlockTracking: enable add/remove of qcow2 overlay if vm matches label selector
+- [[PR #15238]](https://github.com/kubevirt/kubevirt/pull/15238)[victortoso] Does Screenshot without the usage of VNC
+- [[PR #15344]](https://github.com/kubevirt/kubevirt/pull/15344)[SkalaNetworks] Added VolumeOwnershipPolicy to decide how volumes are owned once they are restored.
+- [[PR #14976]](https://github.com/kubevirt/kubevirt/pull/14976)[dasionov] remove ppc64le architecture configuration support
+- [[PR #14983]](https://github.com/kubevirt/kubevirt/pull/14983)[sradco] This PR adds the following alerts: GuestPeakVCPUQueueHighWarning, GuestPeakVCPUQueueHighCritical
+- [[PR #15096]](https://github.com/kubevirt/kubevirt/pull/15096)[lyarwood] The `foregroundDeleteVirtualMachine` has been deprecated and replaced with the domain-qualified `kubevirt.io/foregroundDeleteVirtualMachine`.
+- [[PR #14879]](https://github.com/kubevirt/kubevirt/pull/14879)[machadovilaca] Add GuestAgentInfo info metrics
+- [[PR #15017]](https://github.com/kubevirt/kubevirt/pull/15017)[nekkunti] Added support for architecture-specific configuration of `s390x` (IBM Z) in KubeVirt cluster config.
+- [[PR #15022]](https://github.com/kubevirt/kubevirt/pull/15022)[awels] The synchronization controller migration network IP address is advertised by the KubeVirt CR
+- [[PR #15021]](https://github.com/kubevirt/kubevirt/pull/15021)[awels] Decentralized migration resource now shows the synchronization address
+- [[PR #14365]](https://github.com/kubevirt/kubevirt/pull/14365)[alaypatel07] Add support for DRA devices such as GPUs and HostDevices.
+- [[PR #14882]](https://github.com/kubevirt/kubevirt/pull/14882)[awels] Decentralized live migration is available to allow migration across namespaces and clusters
+- [[PR #14875]](https://github.com/kubevirt/kubevirt/pull/14875)[nirdothan] Support seamless TCP migration with passt (alpha)
+
+### Bug fix
+- [[PR #16198]](https://github.com/kubevirt/kubevirt/pull/16198)[kubevirt-bot] Bug fix: KubeVirt.spec.imagetag installation is working again
+- [[PR #16011]](https://github.com/kubevirt/kubevirt/pull/16011)[kubevirt-bot] BugFix: The migration limit was not accurately being used with decentralized live migrations
+- [[PR #15001]](https://github.com/kubevirt/kubevirt/pull/15001)[noamasu] bugfix: Enable vmsnapshot for paused VMs
+- [[PR #15867]](https://github.com/kubevirt/kubevirt/pull/15867)[xpivarc] Bug fix: Thousands of migrations should not cause failures of active migrations
+- [[PR #15788]](https://github.com/kubevirt/kubevirt/pull/15788)[mhenriks] Fix RestartRequired handling for hotplug volumes
+- [[PR #15676]](https://github.com/kubevirt/kubevirt/pull/15676)[xpivarc] Bug fix, virt-launcher is properly reaped
+- [[PR #15692]](https://github.com/kubevirt/kubevirt/pull/15692)[awels] BugFix: Restoring naked PVCs from a VMSnapshot are now properly owned by the VM if the restore policy is set to VM
+- [[PR #15759]](https://github.com/kubevirt/kubevirt/pull/15759)[lyarwood] Only a single `Signaled Graceful Shutdown` event is now sent to avoid spamming the event recorder during long graceful shutdown attempts
+- [[PR #13111]](https://github.com/kubevirt/kubevirt/pull/13111)[brianmcarey] build: update to bazel v6.5.0 and rules_oci
+- [[PR #15605]](https://github.com/kubevirt/kubevirt/pull/15605)[awels] BugFix: Able to cancel in flight decentralized live migrations properly
+- [[PR #15642]](https://github.com/kubevirt/kubevirt/pull/15642)[akalenyu] BugFix: Windows VM with vTPM that was previously Storage Migrated cannot live migrate
+- [[PR #15603]](https://github.com/kubevirt/kubevirt/pull/15603)[akalenyu] BugFix: Fix volume migration for VMs with long name
+- [[PR #15509]](https://github.com/kubevirt/kubevirt/pull/15509)[alromeros] Bugfix: Exclude lost+found from export server
+- [[PR #15557]](https://github.com/kubevirt/kubevirt/pull/15557)[fossedihelm] Fix: grpc client in handler rest requests are properly closed
+- [[PR #13500]](https://github.com/kubevirt/kubevirt/pull/13500)[brandboat] Fix incorrect metric name kubevirt_vmi_migration_disk_transfer_rate_bytes to kubevirt_vmi_migration_memory_transfer_rate_bytes
+- [[PR #15470]](https://github.com/kubevirt/kubevirt/pull/15470)[awels] BugFix: Unable to delete source VM on failed decentralized live migration
+- [[PR #15423]](https://github.com/kubevirt/kubevirt/pull/15423)[tiraboschi] Derive eviction-in-progress annotation from VMI eviction status
+- [[PR #15170]](https://github.com/kubevirt/kubevirt/pull/15170)[dasionov] bugfix: ensure grace period metadata cache is synced in virt-launcher
+- [[PR #15397]](https://github.com/kubevirt/kubevirt/pull/15397)[ShellyKa13] bugfix: prevent VMSnapshotContent repeated update with the same error message
+- [[PR #15167]](https://github.com/kubevirt/kubevirt/pull/15167)[Sreeja1725] Add Command line flag to disable Node Labeller service
+- [[PR #15365]](https://github.com/kubevirt/kubevirt/pull/15365)[tiraboschi] Aligning descheduler opt-out annotation name
+- [[PR #15093]](https://github.com/kubevirt/kubevirt/pull/15093)[Acedus] bugfix: volume hotplug pod is no longer evicted when associated VM can live migrate.
+- [[PR #15305]](https://github.com/kubevirt/kubevirt/pull/15305)[Acedus] bugfix: snapshot and restore now works correctly for VMs after a storage volume migration
+- [[PR #15314]](https://github.com/kubevirt/kubevirt/pull/15314)[xpivarc] Common Names are now enforce for aggregated API
+- [[PR #15182]](https://github.com/kubevirt/kubevirt/pull/15182)[akalenyu] BugFix: export fails when VMExport has dots in secret
+- [[PR #15099]](https://github.com/kubevirt/kubevirt/pull/15099)[akalenyu] BugFix: export fails when VMExport has dots in name
+- [[PR #15067]](https://github.com/kubevirt/kubevirt/pull/15067)[alromeros] Bugfix: Label upload PVCs to support CDI WebhookPvcRendering
+- [[PR #15706]](https://github.com/kubevirt/kubevirt/pull/15706)[ksimon1] fix: prioritize expired cert removal over 50-cert limit in MergeCABundle
+
+### SIG-compute
+- [[PR #16168]](https://github.com/kubevirt/kubevirt/pull/16168)[kubevirt-bot] Migration is using dedicated certificate for mTLS.
+- [[PR #16150]](https://github.com/kubevirt/kubevirt/pull/16150)[kubevirt-bot] fix: KSM is enabled in case of node pressure within 3 minutes
+- [[PR #16108]](https://github.com/kubevirt/kubevirt/pull/16108)[kubevirt-bot] Allow migration when host model changes after libvirt upgrade.
+- [[PR #16089]](https://github.com/kubevirt/kubevirt/pull/16089)[kubevirt-bot] A decentralized live migration failure is properly propagates between source and target
+- [[PR #15936]](https://github.com/kubevirt/kubevirt/pull/15936)[kubevirt-bot] Updated common-instancetypes bundles to v1.5.1
+- [[PR #15008]](https://github.com/kubevirt/kubevirt/pull/15008)[fossedihelm] Fix possible nil pointer caused by migration during kv upgrade
+- [[PR #15712]](https://github.com/kubevirt/kubevirt/pull/15712)[lyarwood] The `DefaultVirtHandler{QPS,Burst}` values are increased to ensure no bottleneck forms within `virt-handler`
+- [[PR #14902]](https://github.com/kubevirt/kubevirt/pull/14902)[tiraboschi] The list of annotations and labels synced from VM.spec.template.metadata to VMI and then to virt-launcher pods can be extended
+- [[PR #15503]](https://github.com/kubevirt/kubevirt/pull/15503)[Sreeja1725] Enhance VMPool unit tests to make use of fake client
+- [[PR #15422]](https://github.com/kubevirt/kubevirt/pull/15422)[lyarwood] The `DefaultVirtWebhookClient{QPS,Burst}` values are aligned with `DefaultVirtWebhookClient{QPS,Burst}` to help avoid saturating the webhook client with requests it is unable to serve during mass eviction events
+- [[PR #15513]](https://github.com/kubevirt/kubevirt/pull/15513)[jean-edouard] Fixed priority escalation bug in migration controller
+- [[PR #15478]](https://github.com/kubevirt/kubevirt/pull/15478)[0xFelix] virtctl: The --local-ssh flag and native ssh and scp clients are removed from virtctl. From now on the local ssh and scp clients on a host are always wrapped by virtctl ssh and scp.
+- [[PR #15267]](https://github.com/kubevirt/kubevirt/pull/15267)[victortoso] Add `preserve session` option to VNC endpoint
+- [[PR #15475]](https://github.com/kubevirt/kubevirt/pull/15475)[0xFelix] virtctl (portfoward|ssh|scp): Drop support for legacy dot syntax. In case the old dot syntax was used virtctl could ask for verification of the host key again. In some cases the known_hosts file might need to be updated manually.
+- [[PR #15253]](https://github.com/kubevirt/kubevirt/pull/15253)[0xFelix] Bumped the bundled common-instancetypes to v1.4.0 which add new preferences.
+- [[PR #15016]](https://github.com/kubevirt/kubevirt/pull/15016)[fossedihelm] Fix postcopy multifd compatibility during upgrade
+- [[PR #14685]](https://github.com/kubevirt/kubevirt/pull/14685)[seanbanko] allows virtual machine instances with an instance type to specify memory fields that do not conflict with the instance type
+- [[PR #14888]](https://github.com/kubevirt/kubevirt/pull/14888)[akalenyu] Cleanup: libvmi: add consistently named cpu/mem setters
+- [[PR #15037]](https://github.com/kubevirt/kubevirt/pull/15037)[jean-edouard] HostDisk: KubeVirt no longer performs chown/chmod to compensate for storage that doesn't support fsGroup
+
+### SIG-storage
+- [[PR #14973]](https://github.com/kubevirt/kubevirt/pull/14973)[Barakmor1] support live migration for ImageVolume with modified container disk images
+- [[PR #15651]](https://github.com/kubevirt/kubevirt/pull/15651)[dcarrier] Add WithUploadSource builder to libdv
+
+### SIG-network
+- [[PR #15669]](https://github.com/kubevirt/kubevirt/pull/15669)[HarshithaMS005] Normalise iface status to ensure test stability of hotplug and hotunplug tests
+- [[PR #15661]](https://github.com/kubevirt/kubevirt/pull/15661)[nirdothan] Support Istio versions 1.25 and above.
+
+### SIG-scale
+- [[PR #15061]](https://github.com/kubevirt/kubevirt/pull/15061)[lyarwood] Support for all `*_SHASUM` environment variables has been removed from the `virt-operator` component. Users should instead use the remaining `*_IMAGE` environment variables to request a specific image version using a tag, digest or both.
+
+### SIG-observability
+- [[PR #15504]](https://github.com/kubevirt/kubevirt/pull/15504)[sradco] Update metric kubevirt_vm_container_free_memory_bytes_based_on_rss and kubevirt_vm_container_free_memory_bytes_based_on_working_set_bytes names to kubevirt_vm_container_memory_request_margin_based_on_rss_bytes and kubevirt_vm_container_memory_request_margin_based_on_working_set_bytes so they will be clearer
+- [[PR #15181]](https://github.com/kubevirt/kubevirt/pull/15181)[avlitman] Add kubevirt_vm_labels metric which shows vm labels converted to Prometheus labels, and can be configured using config map with ignore and allow lists.
+- [[PR #15227]](https://github.com/kubevirt/kubevirt/pull/15227)[sradco] New VM alerts - VirtualMachineStuckInUnhealthyState, VirtualMachineStuckOnNode
+- [[PR #15464]](https://github.com/kubevirt/kubevirt/pull/15464)[avlitman] Added virt-launcher to kubevirt_memory_delta_from_requested_bytes metric and cnv_abnormal metrics.
+
+### Other
+- [[PR #16076]](https://github.com/kubevirt/kubevirt/pull/16076)[kubevirt-bot] NodeRestriction: Source of node update is now verified
+- [[PR #16041]](https://github.com/kubevirt/kubevirt/pull/16041)[kubevirt-bot] The KubevirtSeccompProfile feature is now in Beta
+- [[PR #16039]](https://github.com/kubevirt/kubevirt/pull/16039)[kubevirt-bot] Promote IBM Secure Execution Feature to Beta stage.
+- [[PR #16005]](https://github.com/kubevirt/kubevirt/pull/16005)[kubevirt-bot] promote ImageVolume FG to Beta
+- [[PR #15939]](https://github.com/kubevirt/kubevirt/pull/15939)[dasionov] Beta: VideoConfig
+- [[PR #15878]](https://github.com/kubevirt/kubevirt/pull/15878)[Sreeja1725] Add v1.6.0 perf and scale benchmarks data
+- [[PR #15830]](https://github.com/kubevirt/kubevirt/pull/15830)[varunrsekar] Beta: PanicDevices
+- [[PR #15615]](https://github.com/kubevirt/kubevirt/pull/15615)[alromeros] Object Graph: Include NADs and ServiceAccounts
+- [[PR #15690]](https://github.com/kubevirt/kubevirt/pull/15690)[lyarwood] Replicas of `virt-api` are now scaled depending on the number of nodes within the environment with the `kubevirt.io/schedulable=true` label.
+- [[PR #15630]](https://github.com/kubevirt/kubevirt/pull/15630)[awels] Allow decentralized live migration on L3 networks
+- [[PR #15357]](https://github.com/kubevirt/kubevirt/pull/15357)[dasionov] ensure default Firmware.Serial value on newly created vms
+- [[PR #15157]](https://github.com/kubevirt/kubevirt/pull/15157)[jean-edouard] virt-operator won't schedule on worker nodes
+- [[PR #15118]](https://github.com/kubevirt/kubevirt/pull/15118)[dankenigsberg] Drop an arbitrary limitation on VM's domain.firmaware.serial. Any string is passed verbatim to smbios. Illegal may be tweaked or ignored based on qemu/smbios version.
+- [[PR #14964]](https://github.com/kubevirt/kubevirt/pull/14964)[xpivarc] Beta: NodeRestriction
+- [[PR #14986]](https://github.com/kubevirt/kubevirt/pull/14986)[awels] Possible to trust additional CAs for verifying kubevirt infra structure components
+- [[PR #15531]](https://github.com/kubevirt/kubevirt/pull/15531)[Yu-Jack] bump prometheus operator to 0.80.1
+- [[PR #16026]](https://github.com/kubevirt/kubevirt/pull/16026)[fossedihelm] support v0.32.5 code generator
+- [[PR #15098]](https://github.com/kubevirt/kubevirt/pull/15098)[dominikholler] Update dependecy golang.org/x/oauth2 to v0.27.0
+- [[PR #15100]](https://github.com/kubevirt/kubevirt/pull/15100)[dominikholler] Update dependecy golang.org/x/net to v0.38.0
+- [[PR #15784]](https://github.com/kubevirt/kubevirt/pull/15784)[brianmcarey] Build KubeVirt with go v1.24.7
+- [[PR #15718]](https://github.com/kubevirt/kubevirt/pull/15718)[Vicente-Cheng] Bump k8s v1.33
+
+## v1.6.0
+
+Released on: Thursday Jul 31 2025
+
+KubeVirt v1.6 is built for Kubernetes v1.33 and additionally supported for the previous two versions. See the [KubeVirt support matrix](https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md) for more information.
+
+To see the list of bodacious contributors for this release, see the [KubeVirt release tag for v1.6.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.6.0).
+
+### API change
+- [[PR #15080]](https://github.com/kubevirt/kubevirt/pull/15080)[kubevirt-bot] The synchronization controller migration network IP address is advertised by the KubeVirt CR
+- [[PR #15039]](https://github.com/kubevirt/kubevirt/pull/15039)[alaypatel07] Add support for DRA devices such as GPUs and HostDevices.
+- [[PR #15014]](https://github.com/kubevirt/kubevirt/pull/15014)[kubevirt-bot] Support seamless TCP migration with passt (alpha)
+- [[PR #14935]](https://github.com/kubevirt/kubevirt/pull/14935)[alromeros] Add virtctl objectgraph command
+- [[PR #13103]](https://github.com/kubevirt/kubevirt/pull/13103)[varunrsekar] Feature: Support for defining panic devices in VirtualMachineInstances to catch crash signals from the guest.
+- [[PR #13764]](https://github.com/kubevirt/kubevirt/pull/13764)[xpivarc] KubeVirt doesn't use PDBs anymore
+- [[PR #14801]](https://github.com/kubevirt/kubevirt/pull/14801)[arsiesys] VirtualMachinePool now supports a `.ScaleInStrategy.Proactive.SelectionPolicy.BasePolicy` field to control scale-down behavior. The new `"DescendingOrder"` strategy deletes VMs by descending ordinal index, offering predictable downscale behavior. Defaults to `"random"` if not specified.
+- [[PR #14259]](https://github.com/kubevirt/kubevirt/pull/14259)[orelmisan] Integrate NIC hotplug with LiveUpdate rollout strategy
+- [[PR #14673]](https://github.com/kubevirt/kubevirt/pull/14673)[dasionov] Add Video Configuration Field for VMs to Enable Explicit Video Device Selection
+- [[PR #14681]](https://github.com/kubevirt/kubevirt/pull/14681)[victortoso] Windows offline activation with ACPI MSDM table
+- [[PR #14723]](https://github.com/kubevirt/kubevirt/pull/14723)[SkalaNetworks] Add VolumeRestorePolicies and VolumeRestoreOverrides to VMRestores
+- [[PR #14040]](https://github.com/kubevirt/kubevirt/pull/14040)[jschintag] Add support for Secure Execution VMs on IBM Z
+- [[PR #13847]](https://github.com/kubevirt/kubevirt/pull/13847)[mhenriks] Declarative Volume Hotplug with CD-ROM Inject/Eject
+- [[PR #14807]](https://github.com/kubevirt/kubevirt/pull/14807)[alromeros] Add Object Graph subresource
+- [[PR #14183]](https://github.com/kubevirt/kubevirt/pull/14183)[aqilbeig] Add maxUnavailable support to VirtualMachinePool
+- [[PR #14616]](https://github.com/kubevirt/kubevirt/pull/14616)[awels] VirtualMachineInstanceMigrations can now express that they are source or target migrations
+- [[PR #14617]](https://github.com/kubevirt/kubevirt/pull/14617)[SkalaNetworks] Added support for custom JSON patches in VirtualMachineClones.
+- [[PR #14602]](https://github.com/kubevirt/kubevirt/pull/14602)[orelmisan] The "RestartRequired" condition is not set on VM objects for live-updatable network fields
+- [[PR #14267]](https://github.com/kubevirt/kubevirt/pull/14267)[Barakmor1] Implement container disk functionality using ImageVolume, protected by the ImageVolume feature gate.
+- [[PR #14539]](https://github.com/kubevirt/kubevirt/pull/14539)[nirdothan] Enable vhost-user mode for passt network binding plugin
+- [[PR #14449]](https://github.com/kubevirt/kubevirt/pull/14449)[0xFelix] The 64-Bit PCI hole can now be disabled by adding the kubevirt.io/disablePCIHole annotation to VirtualMachineInstances. This allows legacy OSes such as Windows XP or Server 2003 to boot on KubeVirt using the Q35 machine type.
+- [[PR #14437]](https://github.com/kubevirt/kubevirt/pull/14437)[jschintag] Ensure stricter check for valid machine type when validating VMI
+- [[PR #13911]](https://github.com/kubevirt/kubevirt/pull/13911)[avlitman] VirtHandlerRESTErrorsHigh, VirtOperatorRESTErrorsHigh, VirtAPIRESTErrorsHigh and VirtControllerRESTErrorsHigh alerts removed.
+- [[PR #14277]](https://github.com/kubevirt/kubevirt/pull/14277)[HarshithaMS005] Enable Watchdog device support on s390x using the Diag288 device model.
+- [[PR #14405]](https://github.com/kubevirt/kubevirt/pull/14405)[jpeimer] supplementalPool added to the description of the ioThreadsPolicy possible values
+- [[PR #14219]](https://github.com/kubevirt/kubevirt/pull/14219)[lyarwood] A request to create a VirtualMachines that references a non-existent  instance type or preference are no longer rejected. The VirtualMachine will be created but will fail to start until the missing resources are created in the cluster.
+- [[PR #14048]](https://github.com/kubevirt/kubevirt/pull/14048)[lyarwood] The `v1alpha{1,2}` versions of the `instancetype.kubevirt.io` API group are no longer served or supported.
+- [[PR #14316]](https://github.com/kubevirt/kubevirt/pull/14316)[lyarwood] A new `Enabled` attribute has been added to the `TPM` device allowing users to explicitly disable the device regardless of any referenced preference.
+- [[PR #14050]](https://github.com/kubevirt/kubevirt/pull/14050)[lyarwood] The `InstancetypeReferencePolicy` feature has graduated to GA and no longer requires the associated feature gate to be enabled.
+- [[PR #14065]](https://github.com/kubevirt/kubevirt/pull/14065)[jean-edouard] VM Persistent State GA
+- [[PR #14096]](https://github.com/kubevirt/kubevirt/pull/14096)[ShellyKa13] VMSnapshot: add QuiesceFailed indication to snapshot if freeze failed
+- [[PR #14068]](https://github.com/kubevirt/kubevirt/pull/14068)[jean-edouard] Default VM Rollout Strategy is now LiveUpdate. Important: to preserve previous behavior, rolloutStrategy needs to be set to "Stage" in the KubeVirt CR.
+- [[PR #12725]](https://github.com/kubevirt/kubevirt/pull/12725)[tiraboschi] Support live migration to a named node
+- [[PR #13807]](https://github.com/kubevirt/kubevirt/pull/13807)[Barakmor1] virt-launcher now uses bash to retrieve disk info and verify container-disk files, requiring bash to be included in the launcher image
+- [[PR #13744]](https://github.com/kubevirt/kubevirt/pull/13744)[nirdothan] Network interfaces state can be set to `down` or `up` in order to set the link state accordingly when VM is running. Hot plugging of interface in these states is also supported.
+- [[PR #13536]](https://github.com/kubevirt/kubevirt/pull/13536)[jean-edouard] Interrupted migrations will now be reconciled on next VM start.
+- [[PR #13916]](https://github.com/kubevirt/kubevirt/pull/13916)[lyarwood] Instance type and preference runtime data is now stored under `Status.{Instancetype,Preference}Ref` and is no longer mutated into the core VirtualMachine `Spec`.
+- [[PR #13831]](https://github.com/kubevirt/kubevirt/pull/13831)[ShellyKa13] VMClone: Remove webhook that checks Snapshot Source
+- [[PR #13815]](https://github.com/kubevirt/kubevirt/pull/13815)[acardace] GA ClusterProfiler FG and add a config to enable it
+
+### Bug fix
+- [[PR #14130]](https://github.com/kubevirt/kubevirt/pull/14130)[dasionov] bug-fix: persist VM's firmware UUID for existing VMs
+- [[PR #14338]](https://github.com/kubevirt/kubevirt/pull/14338)[dasionov] Bug fix: MaxSockets is limited so maximum of vcpus doesn't go over 512.
+- [[PR #13690]](https://github.com/kubevirt/kubevirt/pull/13690)[dasionov] bug-fix: add machine type to `NodeSelector` to prevent breaking changes on unsupported nodes
+- [[PR #15114]](https://github.com/kubevirt/kubevirt/pull/15114)[kubevirt-bot] Bugfix: Label upload PVCs to support CDI WebhookPvcRendering
+- [[PR #15202]](https://github.com/kubevirt/kubevirt/pull/15202)[kubevirt-bot] BugFix: export fails when VMExport has dots in secret
+- [[PR #15171]](https://github.com/kubevirt/kubevirt/pull/15171)[kubevirt-bot] BugFix: export fails when VMExport has dots in name
+- [[PR #13898]](https://github.com/kubevirt/kubevirt/pull/13898)[brandboat] Changed the time unit conversion in the kubevirt_vmi_vcpu_seconds_total metric from microseconds to nanoseconds.
+- [[PR #14961]](https://github.com/kubevirt/kubevirt/pull/14961)[akalenyu] BugFix: Can't LiveMigrate Windows VM after Storage Migration from HPP to OCS
+- [[PR #14632]](https://github.com/kubevirt/kubevirt/pull/14632)[iholder101] virt-handler: Reduce Get() calls for KSM handling
+- [[PR #14658]](https://github.com/kubevirt/kubevirt/pull/14658)[alromeros] Bugfix: Update backend-storage logic so it works with PVCs with non-standard naming convention
+- [[PR #14695]](https://github.com/kubevirt/kubevirt/pull/14695)[alromeros] Bugfix: Fix online expansion by requeuing VMIs on PVC size change
+- [[PR #14640]](https://github.com/kubevirt/kubevirt/pull/14640)[xpivarc] ARM: CPU pinning doesn't panic now
+- [[PR #13951]](https://github.com/kubevirt/kubevirt/pull/13951)[alromeros] Bugfix: Truncate volume names in export pod
+- [[PR #14145]](https://github.com/kubevirt/kubevirt/pull/14145)[ayushpatil2122] handle nil pointer dereference in cellToCell
+- [[PR #14281]](https://github.com/kubevirt/kubevirt/pull/14281)[ShellyKa13] VMRestore: Keep VM RunStrategy as before the restore
+- [[PR #14309]](https://github.com/kubevirt/kubevirt/pull/14309)[alicefr] Fixed persistent reservation support for multipathd by improving socket access and multipath files in pr-helper
+- [[PR #14325]](https://github.com/kubevirt/kubevirt/pull/14325)[vamsikrishna-siddu] fix: disks-images-provider is pointing to wrong alpine image for s390x.
+- [[PR #14286]](https://github.com/kubevirt/kubevirt/pull/14286)[machadovilaca] Register k8s client-go latency metrics on init
+- [[PR #13870]](https://github.com/kubevirt/kubevirt/pull/13870)[dasionov] Ensure launcher pods are finalized and deleted before removing the VMI finalizer when the VMI is marked for deletion.
+- [[PR #14071]](https://github.com/kubevirt/kubevirt/pull/14071)[alicefr] Add entrypoint to the pr-helper for creating the symlink to the multipath socket
+
+### SIG-compute
+- [[PR #15256]](https://github.com/kubevirt/kubevirt/pull/15256)[kubevirt-bot] Bumped the bundled common-instancetypes to v1.4.0 which add new preferences.
+- [[PR #15214]](https://github.com/kubevirt/kubevirt/pull/15214)[dhiller] Quarantine flaky test `[sig-compute]VM state with persistent TPM VM option enabled should persist VM state of EFI across migration and restart`
+- [[PR #15178]](https://github.com/kubevirt/kubevirt/pull/15178)[kubevirt-bot] Fix postcopy multifd compatibility during upgrade
+- [[PR #14744]](https://github.com/kubevirt/kubevirt/pull/14744)[tiraboschi] A few dynamic annotations are synced from VMs template to VMIs and to virt-launcher pods
+- [[PR #14907]](https://github.com/kubevirt/kubevirt/pull/14907)[mhenriks] Allow virtio bus for hotplugged disks
+- [[PR #14754]](https://github.com/kubevirt/kubevirt/pull/14754)[mhenriks] Allocate more PCI ports for hotplug
+- [[PR #14705]](https://github.com/kubevirt/kubevirt/pull/14705)[jean-edouard] The migration controller in virt-handler has been re-architected, migrations should be more stable
+- [[PR #14793]](https://github.com/kubevirt/kubevirt/pull/14793)[jean-edouard] Failed post-copy migrations now always end in VMI failure
+- [[PR #14827]](https://github.com/kubevirt/kubevirt/pull/14827)[orelmisan] Fix network setup when emulation is enabled
+- [[PR #14768]](https://github.com/kubevirt/kubevirt/pull/14768)[oshoval] Expose CONTAINER_NAME on hook sidecars.
+- [[PR #14728]](https://github.com/kubevirt/kubevirt/pull/14728)[orelmisan] CPU hotplug with net multi-queue is now allowed
+- [[PR #14619]](https://github.com/kubevirt/kubevirt/pull/14619)[cloud-j-luna] virtctl vnc command now supports user provided VNC clients.
+- [[PR #14599]](https://github.com/kubevirt/kubevirt/pull/14599)[HarshithaMS005] Enabled watchdog validation on watchdog device models
+- [[PR #13806]](https://github.com/kubevirt/kubevirt/pull/13806)[iholder101] Dirty rate is reported as part of a new `GetDomainDirtyRateStats()` gRPC method and by a Prometheus metric: `kubevirt_vmi_dirty_rate_bytes_per_second`.
+- [[PR #14520]](https://github.com/kubevirt/kubevirt/pull/14520)[dasionov] Enable node-labeller for ARM64 clusters, supporting machine-type labels.
+- [[PR #13297]](https://github.com/kubevirt/kubevirt/pull/13297)[mhenriks] hotplug volume: Boot from hotpluggable disk
+- [[PR #13422]](https://github.com/kubevirt/kubevirt/pull/13422)[mhenriks] guest console log: make virt-tail a proper sidecar
+- [[PR #14374]](https://github.com/kubevirt/kubevirt/pull/14374)[kubevirt-bot] Updated common-instancetypes bundles to v1.3.1
+- [[PR #14288]](https://github.com/kubevirt/kubevirt/pull/14288)[qinqon] Don't expose as VMI status the implicit qemu domain pause at the end of live migration
+- [[PR #14328]](https://github.com/kubevirt/kubevirt/pull/14328)[akalenyu] Cleanup: Fix unit tests on a sane, non-host-cgroup-sharing development setup
+- [[PR #14141]](https://github.com/kubevirt/kubevirt/pull/14141)[jean-edouard] Large number of migrations should no longer lead to active migrations timing out
+- [[PR #13939]](https://github.com/kubevirt/kubevirt/pull/13939)[0xFelix] The virtctl port-forward/ssh/scp syntax was changed to type/name[/namespace]. It now supports resources with dots in their name properly.
+- [[PR #13928]](https://github.com/kubevirt/kubevirt/pull/13928)[kubevirt-bot] Updated common-instancetypes bundles to v1.3.0
+
+### SIG-storage
+- [[PR #14737]](https://github.com/kubevirt/kubevirt/pull/14737)[ShellyKa13] virt-Freeze: skip freeze if domain is not in running state
+- [[PR #14637]](https://github.com/kubevirt/kubevirt/pull/14637)[alromeros] Label backend PVC to support CDI WebhookPvcRendering
+
+### SIG-network
+- [[PR #14887]](https://github.com/kubevirt/kubevirt/pull/14887)[oshoval] Release passt CNI image, instead the CNI binary itself.
+- [[PR #14738]](https://github.com/kubevirt/kubevirt/pull/14738)[oshoval] Clean absent interfaces and their relative networks from stopped VMs.
+- [[PR #14509]](https://github.com/kubevirt/kubevirt/pull/14509)[phoracek] Network conformance tests are now marked using the `Conformance` decorator. Use `--ginkgo.label-filter '(sig-network && conformance)` to select them.
+
+### SIG-scale
+- [[PR #13888]](https://github.com/kubevirt/kubevirt/pull/13888)[Sreeja1725] Add v1.5.0 perf and scale benchmarks data
+
+### SIG-observability
+- [[PR #14805]](https://github.com/kubevirt/kubevirt/pull/14805)[machadovilaca] Replace metric labels' none values with empty values
+- [[PR #14203]](https://github.com/kubevirt/kubevirt/pull/14203)[machadovilaca] Trigger VMCannotBeEvicted only for running VMIs
+- [[PR #14327]](https://github.com/kubevirt/kubevirt/pull/14327)[machadovilaca] Handle lowercase instancetypes/preference keys in VM monitoring
+- [[PR #14426]](https://github.com/kubevirt/kubevirt/pull/14426)[avlitman] Added kubevirt_vmi_migrations_in_unset_phase, instead of including it in kubevirt_vmi_migration_failed.
+- [[PR #14108]](https://github.com/kubevirt/kubevirt/pull/14108)[machadovilaca] Add interface name label to kubevirt_vmi_status_addresses
+- [[PR #13805]](https://github.com/kubevirt/kubevirt/pull/13805)[machadovilaca] Fetch non-cluster instance type and preferences with namespace key
+
+### Other
+- [[PR #15264]](https://github.com/kubevirt/kubevirt/pull/15264)[fossedihelm] Quarantined `should live migrate a container disk vm, with an additional PVC mounted, should stay mounted after migration` test
+- [[PR #15191]](https://github.com/kubevirt/kubevirt/pull/15191)[kubevirt-bot] Drop an arbitrary limitation on VM's domain.firmaware.serial. Any string is passed verbatim to smbios. Illegal may be tweaked or ignored based on qemu/smbios version.
+- [[PR #15201]](https://github.com/kubevirt/kubevirt/pull/15201)[xpivarc] Known issue: ParallelOutboundMigrationsPerNode might be ignored because of race condition
+- [[PR #15047]](https://github.com/kubevirt/kubevirt/pull/15047)[kubevirt-bot] Beta: NodeRestriction
+- [[PR #15020]](https://github.com/kubevirt/kubevirt/pull/15020)[kubevirt-bot] Possible to trust additional CAs for verifying kubevirt infra structure components
+- [[PR #14956]](https://github.com/kubevirt/kubevirt/pull/14956)[RobertoMachorro] Added CRC to ADOPTERS document.
+- [[PR #14538]](https://github.com/kubevirt/kubevirt/pull/14538)[iholder101] Move cgroup v1 to maintenance mode
+- [[PR #14823]](https://github.com/kubevirt/kubevirt/pull/14823)[xmulligan] Adding Isovalent to Adopters
+
+- [[PR #14440]](https://github.com/kubevirt/kubevirt/pull/14440)[pstaniec-catalogicsoftware] add CloudCasa by Catalogic to integrations in the adopters.md
+- [[PR #14428]](https://github.com/kubevirt/kubevirt/pull/14428)[jean-edouard] To use nfs-csi, the env variable KUBEVIRT_NFS_DIR has to be set to a location on the host for NFS data
+- [[PR #13940]](https://github.com/kubevirt/kubevirt/pull/13940)[tiraboschi] The node-restriction Validating Admission Policy will return consistent reasons on failures
+- [[PR #14215]](https://github.com/kubevirt/kubevirt/pull/14215)[dominikholler] Update module golang.org/x/oauth2 to v0.27.0
+- [[PR #14222]](https://github.com/kubevirt/kubevirt/pull/14222)[dominikholler] Update module golang.org/x/net to v0.36.0
+- [[PR #14218]](https://github.com/kubevirt/kubevirt/pull/14218)[dominikholler] Update golang.org/x/crypto to v0.35.0
+- [[PR #14217]](https://github.com/kubevirt/kubevirt/pull/14217)[dominikholler] Update module github.com/opencontainers/runc to v1.1.14
+- [[PR #14101]](https://github.com/kubevirt/kubevirt/pull/14101)[qinqon] libvirt: 10.10.0-7, qemu: 9.1.0-15
+- [[PR #15101]](https://github.com/kubevirt/kubevirt/pull/15101)[dominikholler] Update dependecy golang.org/x/oauth2 to v0.27.0
+- [[PR #14304]](https://github.com/kubevirt/kubevirt/pull/14304)[jean-edouard] Update module github.com/containers/common to v0.60.4
+- [[PR #14664]](https://github.com/kubevirt/kubevirt/pull/14664)[brianmcarey] Build KubeVirt with go v1.23.9
+- [[PR #15102]](https://github.com/kubevirt/kubevirt/pull/15102)[dominikholler] Update dependecy golang.org/x/net to v0.38.0
+
 ## v1.5.0
 
 Released on: Wed Mar 05 2025
