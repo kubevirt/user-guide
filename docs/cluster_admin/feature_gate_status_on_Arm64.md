@@ -11,7 +11,7 @@ It records the feature gate status on Arm64 platform. Here is the explanation of
 
 FEATURE GATE | STATUS | NOTES
 -- | -- | --
-ExpandDisksGate | Not supported yet| CDI is needed
+ExpandDisksGate | supported | CDI is needed
 CPUManager | Supported | use taskset to do CPU pinning, do not support kvm-hint-dedicated (this is only works on x86 platform)
 NUMAFeatureGate | Not supported yet | Need to support Hugepage on Arm64
 IgnitionGate | Supported | This feature is only used for CoreOS/RhCOS
@@ -19,11 +19,11 @@ LiveMigrationGate | Supported | Verified live migration with masquerade network
 SRIOVLiveMigrationGate | Not verified | Need two same Machine and SRIOV device
 HypervStrictCheckGate | Not supported | Hyperv does not work on Arm64
 SidecarGate | Supported |  
-GPUGate | Not verified | Need GPU device
-HostDevicesGate | Not verified | Need GPU or sound card
+GPUGate | verified | Need GPU device
+HostDevicesGate | verified | Need GPU or sound card
 SnapshotGate | Supported | Need snapshotter support https://github.com/kubernetes-csi/external-snapshotter
 VMExportGate | Partially supported | Need snapshotter support https://kubevirt.io/user-guide/operations/export_api/, support exporting pvc, not support exporting DataVolumes and MemoryDump which rely on CDI
-HotplugVolumesGate | Not supported yet | Rely on datavolume and CDI
+HotplugVolumesGate | supported | Rely on datavolume and CDI
 HostDiskGate | Supported |  
 VirtIOFSGate | Supported |  
 MacvtapGate | Not supported yet | quay.io/kubevirt/macvtap-cni not support Arm64, https://github.com/kubevirt/macvtap-cni#deployment
