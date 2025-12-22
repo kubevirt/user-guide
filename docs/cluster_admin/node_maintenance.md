@@ -64,7 +64,7 @@ target node.
 ## Evacuate VMIs via Live Migration from a Node
 
 If the `LiveMigration`
-[feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gate](activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 is enabled, it is possible to
 specify an `evictionStrategy` on VMIs which will react with live-migrations on
 specific taints on nodes. The following snippet on a VMI or the VMI templates in

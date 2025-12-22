@@ -158,7 +158,7 @@ running on the node. This automatic identification should be viewed as a
 temporary workaround until Kubernetes will provide the required
 functionality. Therefore, this feature should be manually enabled by
 activating the `CPUManager`
-[feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gate](../cluster_admin/activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 to the KubeVirt CR.
 
 When automatic identification is disabled, cluster administrator may
@@ -175,7 +175,7 @@ running.
 
 **Note:** In order to run sidecar containers, KubeVirt requires the
 `Sidecar`
-[feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gate](../cluster_admin/activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 to be enabled in KubeVirt's CR.
 
 According to the Kubernetes CPU manager model, in order the POD would

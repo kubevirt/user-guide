@@ -10,7 +10,7 @@ The Memory dump can be used to diagnose, identify and resolve issues in the VM. 
 ### Hot plug Feature Gate
 
 The memory dump process mounts a PVC to the virt-launcher in order to get the output in that PVC, hence the hot plug volumes feature gate must be enabled. The
-[feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gates](../cluster_admin/activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `HotplugVolumes` to it.
 
 ## Virtctl support

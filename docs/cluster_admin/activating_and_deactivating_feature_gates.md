@@ -1,4 +1,4 @@
-# Activating feature gates
+# Activating and deactivating feature gates
 
 KubeVirt has a set of features that are not mature enough to be enabled by
 default. As such, they are protected by a Kubernetes concept called

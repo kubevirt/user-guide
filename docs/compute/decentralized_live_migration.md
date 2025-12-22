@@ -10,7 +10,7 @@ This document assumes the presence of an orchestrator for managing resource crea
 
 ### Decentralized live migration Feature Gate
 
-Decentralized live migration support must be enabled in the feature gates to be available. The [feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+Decentralized live migration support must be enabled in the feature gates to be available. The [feature gates](../cluster_admin/activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `DecentralizedLiveMigration` to it.
 
 ## Architecture

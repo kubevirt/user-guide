@@ -185,7 +185,7 @@ same Node.
 
 Cluster admin privilege to edit the KubeVirt CR in order to:
 
-- Enable the `HostDevices` [feature gate](../cluster_admin/activating_feature_gates.md)
+- Enable the `HostDevices` [feature gate](../cluster_admin/activating_and_deactivating_feature_gates.md)
 - Edit the `permittedHostDevices` configuration to expose node USB devices to the cluster
 
 ### Exposing USB Devices

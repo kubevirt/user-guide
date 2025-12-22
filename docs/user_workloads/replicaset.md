@@ -202,7 +202,7 @@ created, but only two are running and ready.
 ### Scaling via the Scale Subresource
 
 > **Note:** This requires the `CustomResourceSubresources`
-> [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+> [feature gate](../cluster_admin/activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 > to be enabled for clusters prior to 1.11.
 
 The `VirtualMachineInstanceReplicaSet` supports the `scale` subresource.
