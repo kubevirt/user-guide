@@ -25,21 +25,12 @@ As described in the [definition & flow](../../network/network_binding_plugins.md
 the slirp plugin needs to:
 
 - Assure access to the sidecar image.
-- Enable the network binding plugin framework FG.
 - Register the binding plugin on the Kubevirt CR.
 - Reference the network binding by name from the VM spec interface.
 
 > **Note**: In order for the core slirp binding to use the network binding plugin
 > the registered name for this binding should be `slirp`.
 
-### Feature Gate
-If not already set, add the `NetworkBindingPlugins` FG.
-```
-kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-",   "value": "NetworkBindingPlugins"}]'
-```
-
-> **Note**: The specific slirp plugin has no FG by its own. It is up to the cluster
-> admin to decide if the plugin is to be available in the cluster.
 
 ### Slirp Registration
 As described in the [registration section](../../network/network_binding_plugins.md#register), slirp binding plugin
