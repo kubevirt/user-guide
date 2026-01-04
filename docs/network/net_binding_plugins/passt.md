@@ -55,7 +55,6 @@ the passt plugin needs to:
 - Deploy the CNI plugin binary on the nodes.
 - Define a NetworkAttachmentDefinition that points to the CNI plugin.
 - Assure access to the sidecar image.
-- Enable the network binding plugin framework FG.
 - Register the binding plugin on the Kubevirt CR.
 - Reference the network binding by name from the VM spec interface.
 
@@ -169,15 +168,6 @@ The sidecar sources can be found
 The relevant sidecar image needs to be accessible by the cluster and
 specified in the Kubevirt CR when registering the network binding plugin.
 
-### Feature Gate
-For KubeVirt versions prior to v1.5, make sure to enable the `NetworkBindingPlugins` FG.
-```
-kubectl patch kubevirt -n kubevirt kubevirt --type=merge -p='{"spec":{"configuration":{"developerConfiguration":{"featureGates":["NetworkBindingPlugins"]}}}}'
-```
-
-**Note**:
-> It is up to the cluster admin to decide if the plugin is to be available in the cluster.
-> The passt binding is still in evaluation, use it with care.
 
 ### Passt Registration
 As described in the [registration section](../../network/network_binding_plugins.md#register), passt binding plugin
