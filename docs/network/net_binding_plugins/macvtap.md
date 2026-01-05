@@ -136,25 +136,10 @@ The macvtap binding plugin consists of the following components:
 
 The plugin needs to:
 
-- Enable the network binding plugin framework FG.
 - Register the binding plugin on the Kubevirt CR.
 - Reference the network binding by name from the VM spec interface.
 
 And in detail:
-
-### Feature Gate
-If not already set, add the `NetworkBindingPlugins` FG.
-```
-kubectl patch kubevirts -n kubevirt kubevirt --type=json -p='[{
-  "op": "add",
-  "path": "/spec/configuration/developerConfiguration/featureGates/-",
-  "value": "NetworkBindingPlugins"
-}]'
-```
-
-> **Note**: The specific macvtap plugin has no FG by its own. It is up to the cluster
-> admin to decide if the plugin is to be available in the cluster.
-> The macvtap binding is still in evaluation, use it with care.
 
 ### Macvtap Registration
 The macvtap binding plugin configuration needs to be added to the kubevirt CR
