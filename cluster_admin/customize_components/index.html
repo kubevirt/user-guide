@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -3585,7 +3585,7 @@
 <h2 id="customize-kubevirt-components">Customize KubeVirt Components<a class="headerlink" href="#customize-kubevirt-components" title="Permanent link">&para;</a></h2>
 <h3 id="customize-components-using-patches">Customize components using patches<a class="headerlink" href="#customize-components-using-patches" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> If the patch created is invalid KubeVirt will not be able to update or deploy the system. This is intended for special use cases and should not be used unless you know what you are doing.</p>
+<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /> If the patch created is invalid KubeVirt will not be able to update or deploy the system. This is intended for special use cases and should not be used unless you know what you are doing.</p>
 </blockquote>
 <p>Valid resource types are: Deployment, DaemonSet, Service, ValidatingWebhookConfiguraton, MutatingWebhookConfiguration, APIService, and CertificateSecret. More information can be found in the <a href="http://kubevirt.io/api-reference/master/definitions.html#_v1_customizecomponentspatch">API spec</a>.</p>
 <p>Example customization patch:
@@ -3612,7 +3612,7 @@
 <p>The above example will update the <code>virt-controller</code> deployment to have an annotation in it's metadata that says <code>patch: true</code> and will remove the livenessProbe from the container definition.</p>
 <h3 id="customize-flags">Customize Flags<a class="headerlink" href="#customize-flags" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.1.0/assets/svg/26a0.svg" title=":warning:" /> If the flags are invalid or become invalid on update the component will not be able to run</p>
+<p><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /> If the flags are invalid or become invalid on update the component will not be able to run</p>
 </blockquote>
 <p>By using the customize flag option, whichever component the flags are to be applied to, all default flags will be removed and only the flags specified will be used. The available resources to change the flags on are <code>api</code>, <code>controller</code> and <code>handler</code>. You can find our more details about the API in the <a href="http://kubevirt.io/api-reference/master/definitions.html#_v1_flags">API spec</a>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
@@ -3738,10 +3738,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
