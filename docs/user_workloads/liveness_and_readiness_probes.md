@@ -114,7 +114,7 @@ spec:
         initialDelaySeconds: 120
         periodSeconds: 20
         tcpSocket:
-          port: 1501
+          port: 1500
         timeoutSeconds: 10
       terminationGracePeriodSeconds: 0
       volumes:
