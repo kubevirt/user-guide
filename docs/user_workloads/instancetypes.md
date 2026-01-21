@@ -297,7 +297,10 @@ $ kubectl get controllerrevision/controllerrevision/vm-cirros-csmall-csmall-72c3
 Error from server (NotFound): controllerrevisions.apps "vm-cirros-csmall-csmall-72c3a35b-6e18-487d-bebf-f73c7d4f4a40-1" not found
 ```
 
-Users can opt in to moving to a newer generation of an instance type or preference by removing the referenced `revisionName` from the appropriate matcher within the `VirtualMachine` object. This will result in fresh `ControllerRevisions` being captured and used.
+!!! Note
+    As of v1.3.0, ControllerRevisions containing instance types and preferences are automatically upgraded to their latest available version when the VirtualMachine owning them is resynced by virt-controller. Manual removal of `revisionName` is no longer required for most use cases.
+    
+    For KubeVirt versions prior to v1.3.0, users can opt in to moving to a newer generation of an instance type or preference by removing the referenced `revisionName` from the appropriate matcher within the `VirtualMachine` object. This will result in fresh `ControllerRevisions` being captured and used.
 
 The following example creates a `VirtualMachine` using an initial version of the csmall instance type before increasing the number of vCPUs provided by the instance type:
 
@@ -328,7 +331,10 @@ $ kubectl patch VirtualMachineInstancetype/csmall --type merge -p '{"spec":{"cpu
 virtualmachineinstancetype.instancetype.kubevirt.io/csmall patched
 ```
 
-In order for this change to be picked up within the `VirtualMachine`, we need to stop the running `VirtualMachine` and clear the `revisionName` referenced by the `InstancetypeMatcher`:
+!!! Note
+    For KubeVirt v1.3.0+, ControllerRevisions are automatically upgraded and the manual `revisionName` clearing shown below is typically not needed.
+
+For older versions, in order for this change to be picked up within the `VirtualMachine`, we need to stop the running `VirtualMachine` and clear the `revisionName` referenced by the `InstancetypeMatcher`:
 
 ```yaml
 $ virtctl stop vm-cirros-csmall
@@ -626,6 +632,35 @@ The [`kubevirt/common-instancetypes`](https://github.com/kubevirt/common-instanc
 
 See [Deploy common-instancetypes](../user_workloads/deploy_common_instancetypes.md) on how to deploy them.
 
+## Deprecated Fields
+
+### EFI Preference Fields (Deprecated as of v1.5.0)
+
+The `PreferredUseEFi` and `PreferredUseSecureBoot` preference fields have been deprecated in favor of the more flexible `PreferredEfi` field:
+
+!!! Warning "Deprecation Notice"
+    The `PreferredUseEFi` and `PreferredUseSecureBoot` fields are deprecated as of v1.5.0 and will be removed in a future release.
+
+**Migration Guide:**
+
+Instead of using the deprecated fields:
+```yaml
+# DEPRECATED - Do not use
+firmware:
+  preferredUseEfi: true
+  preferredUseSecureBoot: true
+```
+
+Use the new `PreferredEfi` field:
+```yaml
+# RECOMMENDED - Use this instead
+firmware:
+  preferredEfi:
+    secureBoot: true
+```
+
+The `PreferredEfi` field provides the same functionality with improved flexibility for EFI configuration.
+
 ## Examples
 
 Various examples are available within the [`kubevirt`](https://github.com/kubevirt/kubevirt) repo under [`/examples`](https://github.com/kubevirt/kubevirt/tree/main/examples). The following uses an example `VirtualMachine` provided by the [`containerdisk/fedora` repo](https://quay.io/repository/containerdisks/fedora) and replaces much of the `DomainSpec` with the equivalent instance type and preferences:
@@ -656,8 +691,8 @@ spec:
     preferredAcpi: {}
     preferredSmm: {}
   firmware:
-    preferredUseEfi: true
-    preferredUseSecureBoot: true    
+    preferredEfi:
+      secureBoot: true    
 ---
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
