@@ -23,7 +23,7 @@ Even if you have no `VolumeSnapshotClasses` in your cluster, `VirtualMachineSnap
 ### Snapshot Feature Gate
 
 Snapshot/Restore support must be enabled in the feature gates to be supported. The
-[feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gates](../cluster_admin/activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `Snapshot` to it.
 
 

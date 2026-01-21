@@ -5,7 +5,7 @@ KubeVirt supports hotplugging persistent volumes into running Virtual Machines. 
 ## Enabling hotplug volume support
 
 Hotplug volume support must be enabled in the feature gates to be supported. The
-[feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gates](../cluster_admin/activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `DeclarativeHotplugVolumes` to it.
 
 > **_NOTE:_**  `DeclarativeHotplugVolumes` is incompatible with the the deprecated `HotplugVolumes` feature gate. If both are declared, `HotplugVolumes` will have precedence until the time that `HotplugVolumes` is retired.

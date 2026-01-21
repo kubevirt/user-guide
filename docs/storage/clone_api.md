@@ -20,7 +20,7 @@ please see [Snapshot & Restore prerequisites](../storage/snapshot_restore_api.md
 ### Snapshot Feature Gate
 
 Currently, clone API is guarded by Snapshot feature gate. The
-[feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gates](../cluster_admin/activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `Snapshot` to it.
 
 ## The clone object

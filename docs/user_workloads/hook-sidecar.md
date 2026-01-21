@@ -17,7 +17,7 @@ sidecar hooks:
 ## Enabling `Sidecar` feature gate
 
 `Sidecar` feature gate can be enabled by following the steps mentioned in
-[Activating feature gates](../cluster_admin/activating_feature_gates.md).
+[Activating feature gates](../cluster_admin/activating_and_deactivating_feature_gates.md).
 
 In case of a development cluster created using kubevirtci, follow the steps mentioned in the 
 [developer doc](https://github.com/kubevirt/kubevirt/blob/main/docs/getting-started.md#compile-and-run-it) to enable 

@@ -6,7 +6,7 @@ In order not to overload the kubernetes API server the data is transferred throu
 ### Export Feature Gate
 
 VMExport support must be enabled in the feature gates to be available. The
-[feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gates](../cluster_admin/activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `VMExport` to it.
 
 ### Export token

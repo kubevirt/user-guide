@@ -12,7 +12,7 @@ KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV feature
 
 In order to run an SEV guest the following condition must be met:
 
-- `WorkloadEncryptionSEV` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
+- `WorkloadEncryptionSEV` [feature gate](activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
 - The guest must support [UEFI boot](../compute/virtual_hardware.md#biosuefi)
 - SecureBoot must be disabled for the guest VM
 
@@ -75,7 +75,7 @@ KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV-SNP sup
 
 ### Prerequisites
 
-- `WorkloadEncryptionSEV` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
+- `WorkloadEncryptionSEV` [feature gate](activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
 - The guest must support [UEFI boot](../compute/virtual_hardware.md#biosuefi).
 - SecureBoot must be disabled for the guest VM.
 - AMD EPYC hardware that is capable of running [SEV-SNP](https://docs.amd.com/v/u/en-US/58207-using-sev-with-amd-epyc-processors).
@@ -148,7 +148,7 @@ For more details please read the [official documentation](https://www.ibm.com/do
 - IBM z15/LinuxONE III or newer
 - Kubernetes Cluster with LPAR worker nodes (No nested virtualization)
 - Kubevirt and CDI deployed on the Cluster
-- `SecureExecution` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
+- `SecureExecution` [feature gate](activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
 - Secure Execution prepared guest. See the [official docs](https://www.ibm.com/docs/en/linux-on-systems?topic=execution-workload-owner-tasks).
 
 ### Preparing the host(s)

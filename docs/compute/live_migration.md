@@ -8,7 +8,7 @@ continues to run and remain accessible.
 
 Live migration is enabled by default in recent versions of KubeVirt. Versions
 prior to v0.56, it must be enabled in the feature gates. The
-[feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+[feature gates](../cluster_admin/activating_and_deactivating_feature_gates.md#how-to-activate-a-feature-gate)
 field in the KubeVirt CR must be expanded by adding the `LiveMigration` to it.
 
 ## Limitations
