@@ -6,8 +6,8 @@ Administrators can use the `mediatedDevicesConfiguration` API in the KubeVirt CR
 create or remove mediated devices in a declarative way, by providing a list of the desired mediated device types that they expect to be configured in the cluster.
 
 You can also include the `nodeMediatedDeviceTypes` option to provide a more specific configuration that targets a specific node or a group of nodes directly with a node selector.
-The `nodeMediatedDeviceTypes` option must be used in combination with `mediatedDevicesTypes`
-in order to override the global configuration set in the `mediatedDevicesTypes` section.
+The `nodeMediatedDeviceTypes` option must be used in combination with `mediatedDeviceTypes`
+in order to override the global configuration set in the `mediatedDeviceTypes` section.
 
 KubeVirt will use the provided configuration to automatically create the relevant mdev/vGPU devices on nodes that can support it.
 
@@ -16,18 +16,18 @@ The maximum amount of instances of the selected mdev type will be configured per
 
 > Note: Some vendors, such as NVIDIA, require a driver to be installed on the nodes to provide mediated devices, including vGPUs.
 
-Example snippet of a KubeVirt CR configuration that includes both `nodeMediatedDeviceTypes` and `mediatedDevicesTypes`:
+Example snippet of a KubeVirt CR configuration that includes both `nodeMediatedDeviceTypes` and `mediatedDeviceTypes`:
 ```yaml
 spec:
   configuration:
     mediatedDevicesConfiguration:
-      mediatedDevicesTypes:
+      mediatedDeviceTypes:
       - nvidia-222
       - nvidia-228
       nodeMediatedDeviceTypes:
       - nodeSelector:
           kubernetes.io/hostname: nodeName
-        mediatedDevicesTypes:
+        mediatedDeviceTypes:
         - nvidia-234
 ```
 
@@ -42,7 +42,7 @@ For example, considering the following KubeVirt CR configuration:
 spec:
   configuration:
     mediatedDevicesConfiguration:
-      mediatedDevicesTypes:
+      mediatedDeviceTypes:
       - nvidia-222
       - nvidia-228
       - nvidia-105
@@ -85,15 +85,15 @@ For example, consider the following list of desired types, where nvidia-223 and 
 spec:
   configuration:
     mediatedDevicesConfiguration:
-      mediatedDevicesTypes:
+      mediatedDeviceTypes:
       - nvidia-223
       - nvidia-224
 ```
 In this case, nvidia-223 will be configured on the node because it is the first supported type in the list.
 
-## Overriding configuration on a specifc node
+## Overriding configuration on a specific node
 
-To override the global configuration set by `mediatedDevicesTypes`, include the `nodeMediatedDeviceTypes` option, specifying the node selector and the `mediatedDevicesTypes` that you want to override for that node.
+To override the global configuration set by `mediatedDeviceTypes`, include the `nodeMediatedDeviceTypes` option, specifying the node selector and the `mediatedDeviceTypes` that you want to override for that node.
 
 ### Example: Overriding the configuration for a specific node in a large cluster with multiple cards on each node
 
@@ -103,14 +103,14 @@ In this example, the KubeVirt CR includes the `nodeMediatedDeviceTypes` option t
 spec:
   configuration:
     mediatedDevicesConfiguration:
-      mediatedDevicesTypes:
+      mediatedDeviceTypes:
       - nvidia-230
       - nvidia-223
       - nvidia-224
     nodeMediatedDeviceTypes:
     - nodeSelector:
         kubernetes.io/hostname: node2  
-      mediatedDevicesTypes:
+      mediatedDeviceTypes:
       - nvidia-234
 ```
 
@@ -135,7 +135,7 @@ Node 1 has been configured in a round-robin manner based on the global configura
 
 ## Updating and Removing vGPU types
 
-Changes made to the `mediatedDevicesTypes` section of the KubeVirt CR will trigger a re-evaluation of the configured mdevs/vGPU types on the cluster nodes.
+Changes made to the `mediatedDeviceTypes` section of the KubeVirt CR will trigger a re-evaluation of the configured mdevs/vGPU types on the cluster nodes.
 
 Any change to the node labels that match the `nodeMediatedDeviceTypes` nodeSelector in the KubeVirt CR will trigger a similar re-evaluation.
 
