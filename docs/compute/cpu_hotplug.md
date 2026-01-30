@@ -6,7 +6,7 @@ to allow for adding or removing virtual CPUs while the VM is running.
 ### Abstract
 A **virtual CPU** (vCPU) is the CPU that is seen to the Guest VM OS. A VM owner can manage the amount of vCPUs from the VM spec template using the CPU topology fields (`spec.template.spec.domain.cpu`). The `cpu` object has the integers `cores,sockets,threads` so that the virtual CPU is calculated by the following formula: `cores * sockets * threads`. 
 
-Before CPU hotplug was introduced, the VM owner could change these integers in the VM template while the VM is running, and they were staged until the next boot cycle. With CPU hotplug, it is possible to patch the `sockets` integer in the VM template and the change will take effect right away. 
+Before CPU hotplug was introduced, the VM owner could not change these integers in the VM template while the VM is running, and they were staged until the next boot cycle. With CPU hotplug, it is possible to patch the `sockets` integer in the VM template and the change will take effect right away. 
 
 Per each new socket that is hot-plugged, the amount of new vCPUs that would be seen by the guest is `cores * threads`, since the overall calculation of vCPUs is `cores * sockets * threads`. 
 
