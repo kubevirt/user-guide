@@ -40,6 +40,7 @@ You should familiarize yourself with the following documents, which are critical
 * [Code of Conduct](https://github.com/kubevirt/kubevirt/blob/main/CODE_OF_CONDUCT.md): Everyone is expected to abide by the CoC to ensure an open and welcoming environment. Our CoC is based off the [CNCF Code of conduct](https://github.com/cncf/foundation/blob/main/code-of-conduct.md) which also has a variety of translations. 
 * [Our community membership policy](https://github.com/kubevirt/community/blob/main/membership_policy.md): How to become a member and grow into roles of responsibility.
 * [Project governance](https://github.com/kubevirt/community/blob/main/GOVERNANCE.md): Project Maintainer responsibilities.
+* [AI Contribution Policy](https://github.com/kubevirt/community/blob/main/ai-contribution-policy.md)
 
 ## Other ways to contribute
 
