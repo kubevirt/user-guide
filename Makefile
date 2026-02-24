@@ -114,7 +114,7 @@ build: envvar
 	@echo "${GREEN}Makefile: Build mkdocs site${RESET}"
 	$(PYTHON) -m venv /tmp/venv
 	. /tmp/venv/bin/activate
-	$(PIP) install mkdocs mkdocs-awesome-pages-plugin mkdocs-htmlproofer-plugin mkdocs-material mkdocs-redirects
+	$(PIP) install mkdocs mkdocs-awesome-nav mkdocs-htmlproofer-plugin mkdocs-material mkdocs-redirects mkdocs-statis-i18n
 	@echo
 	@echo '*** BEGIN cat mkdocs.yml ***'
 	@cat mkdocs.yml
@@ -125,6 +125,7 @@ build: envvar
 ## Build image localhost/kubevirt-user-guide
 build_img: | envvar
 	@echo "${GREEN}Makefile: Building Image ${RESET}"
+	@rm -f Gemfile.lock
 	${DEBUG}if [ ! -e "./Dockerfile" ]; then \
 	  IMAGE="`echo $${IMGTAG} | sed -e s#\'##g -e s#localhost\/## -e s#:latest##`";  \
 		echo "Downloading Dockerfile file: https://raw.githubusercontent.com/kubevirt/project-infra/main/images/kubevirt-user-guide/Dockerfile"; \
@@ -210,6 +211,24 @@ run: | envvar stop
 		--mount type=tmpfs,destination=/srv/site \
 		${IMGTAG} \
 		/bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
+	@echo
+	@echo "${AQUA}Makefile: Server now running at [http://localhost:$(LOCAL_SERVER_PORT)]${RESET}"
+	@echo
+
+
+## Run site with translation.  App available @ http://0.0.0.0:8000
+run_i18n: | envvar stop
+	@echo "${GREEN}Makefile: Run site with translations${RESET}"
+	${CONTAINER_ENGINE} run \
+		-d \
+		--name userguide \
+		-p ${LOCAL_SERVER_PORT}:8000 \
+		-v ${PWD}:/srv/source:ro${SELINUX_ENABLED} \
+		-v /dev/null:/srv/Gemfile.lock:ro \
+		--mount type=tmpfs,destination=/srv/site \
+		--mount type=tmpfs,destination=/srv/docs \
+		${IMGTAG} \
+		/bin/bash -c "cp -r /srv/source/. /srv/ && rm -rf /srv/docs/es /srv/docs/zh && mkdir -p /srv/docs/en && find /srv/docs/ -mindepth 1 -maxdepth 1 ! -name 'assets' ! -name '_redirects' ! -name 'stylesheets' ! -name 'en' ! -name '.nav.yml' -print0 | xargs -0 -r mv -t /srv/docs/en/ && cp /srv/docs/en/index.md /srv/docs/en/welcome.md && cp -r /srv/docs/.nav.yml /srv/docs/en/ && cp -r /srv/i18n/* /srv/docs/. && mkdocs build -v -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
 	@echo
 	@echo "${AQUA}Makefile: Server now running at [http://localhost:$(LOCAL_SERVER_PORT)]${RESET}"
 	@echo
