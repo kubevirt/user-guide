@@ -170,10 +170,12 @@ Remove `disk1` from the `spec.template.spec.domain.devices.disks` section of the
 
 Volumes may also be added to VirtualMachines with virtctl. Virtctl is also the only way to hotplug a volume directly into a VirtualMachineInstance. Virtctl does not support CD-ROM inject/eject.
 
+> **_NOTE:_** the `--persist` flag for `virtctl addvolume` and `virtctl removevolume` has been deprecated and will be removed in a future release. The default behavior for these commands will be to alway persist hotplug changes to both VirtualMachineInstance and owner VirtualMachine (if one exists)
+
 ### Add a disk to a VirtualMachine
 
 ```bash
-$ virtctl addvolume testvm --volume-name=hotplug-disk --persist
+$ virtctl addvolume testvm --volume-name=hotplug-disk
 ```
 
 ### Add a disk to a VirtualMachineInstance
@@ -187,7 +189,7 @@ $ virtctl addvolume testvmi --volume-name=hotplug-disk
 ### Add a LUN to a VirtualMachine
 
 ```bash
-$ virtctl addvolume testvm --volume-name=hotplug-disk --persist --disk-type=lun
+$ virtctl addvolume testvm --volume-name=hotplug-disk --disk-type=lun
 ```
 
 ### Additional `addvolume` args
@@ -201,7 +203,7 @@ $ virtctl addvolume testvm --volume-name=hotplug-disk --persist --disk-type=lun
 ### Unplug a disk/LUN from a VirtualMachine
 
 ```bash
-$ virtctl removevolume testvm --volume-name=hotplug-disk --persist
+$ virtctl removevolume testvm --volume-name=hotplug-disk
 ```
 
 ### VolumeStatus
