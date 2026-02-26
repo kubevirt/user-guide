@@ -4110,22 +4110,25 @@ field in the KubeVirt CR must be expanded by adding the <code>DeclarativeHotplug
 <p>Remove <code>disk1</code> from the <code>spec.template.spec.domain.devices.disks</code> section of the VirtualMachine and remove <code>disk1</code> from <code>spec.template.spec.volumes</code></p>
 <h2 id="virtctl-support">Virtctl support<a class="headerlink" href="#virtctl-support" title="Permanent link">&para;</a></h2>
 <p>Volumes may also be added to VirtualMachines with virtctl. Virtctl is also the only way to hotplug a volume directly into a VirtualMachineInstance. Virtctl does not support CD-ROM inject/eject.</p>
+<blockquote>
+<p><strong><em>NOTE:</em></strong> the <code>--persist</code> flag for <code>virtctl addvolume</code> and <code>virtctl removevolume</code> has been deprecated and will be removed in a future release. The default behavior for these commands will be to alway persist hotplug changes to both VirtualMachineInstance and owner VirtualMachine (if one exists)</p>
+</blockquote>
 <h3 id="add-a-disk-to-a-virtualmachine">Add a disk to a VirtualMachine<a class="headerlink" href="#add-a-disk-to-a-virtualmachine" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>addvolume<span class="w"> </span>testvm<span class="w"> </span>--volume-name<span class="o">=</span>hotplug-disk<span class="w"> </span>--persist
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>addvolume<span class="w"> </span>testvm<span class="w"> </span>--volume-name<span class="o">=</span>hotplug-disk
 </code></pre></div>
 <h3 id="add-a-disk-to-a-virtualmachineinstance">Add a disk to a VirtualMachineInstance<a class="headerlink" href="#add-a-disk-to-a-virtualmachineinstance" title="Permanent link">&para;</a></h3>
 <p>You can only hotplug a disk to a VirtualMachineInstance (VMI) if it was created independent of a higher level resource. For instance, this operation will fail if the VMI is owned by a VirtualMachine.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>addvolume<span class="w"> </span>testvmi<span class="w"> </span>--volume-name<span class="o">=</span>hotplug-disk
 </code></pre></div>
 <h3 id="add-a-lun-to-a-virtualmachine">Add a LUN to a VirtualMachine<a class="headerlink" href="#add-a-lun-to-a-virtualmachine" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>addvolume<span class="w"> </span>testvm<span class="w"> </span>--volume-name<span class="o">=</span>hotplug-disk<span class="w"> </span>--persist<span class="w"> </span>--disk-type<span class="o">=</span>lun
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>addvolume<span class="w"> </span>testvm<span class="w"> </span>--volume-name<span class="o">=</span>hotplug-disk<span class="w"> </span>--disk-type<span class="o">=</span>lun
 </code></pre></div>
 <h3 id="additional-addvolume-args">Additional <code>addvolume</code> args<a class="headerlink" href="#additional-addvolume-args" title="Permanent link">&para;</a></h3>
 <p><code>--bus &lt;bus type&gt;</code> to specify the disk/LUN bus</p>
 <p><code>--cache &lt;cache type&gt;</code> to specify the disk cache type (default|none|writethrough|writeback|directsync)</p>
 <p><code>--serial &lt;serial&gt;</code> to specify the disk serial number (canonical way to identify a particular disk in the guest)</p>
 <h3 id="unplug-a-disklun-from-a-virtualmachine">Unplug a disk/LUN from a VirtualMachine<a class="headerlink" href="#unplug-a-disklun-from-a-virtualmachine" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>removevolume<span class="w"> </span>testvm<span class="w"> </span>--volume-name<span class="o">=</span>hotplug-disk<span class="w"> </span>--persist
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>removevolume<span class="w"> </span>testvm<span class="w"> </span>--volume-name<span class="o">=</span>hotplug-disk
 </code></pre></div>
 <h3 id="volumestatus">VolumeStatus<a class="headerlink" href="#volumestatus" title="Permanent link">&para;</a></h3>
 <p>VMI objects have a <code>status.VolumeStatus</code> field. This is an array containing each disk, hotplugged or not. For example:</p>
