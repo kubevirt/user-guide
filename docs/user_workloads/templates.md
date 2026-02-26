@@ -3,6 +3,11 @@
 !!! Note
     By deploying KubeVirt on top of OpenShift the user can benefit from the [OpenShift Template](https://docs.openshift.com/container-platform/4.10/virt/vm_templates/virt-creating-vm-template.html) functionality.
 
+!!! Note
+    Starting with KubeVirt v1.8.0, the native [VirtualMachine Templates](vm_templates.md) feature
+    replaces this legacy OpenShift-based templating mechanism. New deployments should use
+    [VirtualMachine Templates](vm_templates.md) instead.
+
 ## Virtual machine templates
 
 ### What is a virtual machine template?
