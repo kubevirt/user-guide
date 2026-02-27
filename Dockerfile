@@ -15,14 +15,14 @@ RUN mkdir -p /src && cd /src && \
     npm install -g markdownlint-cli@latest yaspeller@latest && \
     cd /src && bundle install && bundle update && cd && \
     pip install --upgrade pip && \
-    pip install mkdocs mkdocs-material mkdocs-awesome-pages-plugin mkdocs-htmlproofer-plugin mkdocs-redirects mkdocs-static-i18n && \
+    pip install mkdocs mkdocs-material mkdocs-awesome-nav mkdocs-htmlproofer-plugin mkdocs-redirects mkdocs-static-i18n && \
     gem list && \
     rpm -e --nodeps libX11 libX11-common libXrender libXft && \
     dnf remove -y @development-tools gcc qt5-srpm-macros \
       xkeyboard-config qrencode-libs memstrack \
       openssl-devel ruby-devel rubygems-devel \
       nodejs-docs rubygem-rdoc glibc-all-langpacks vim-minimal tar \
-      diffutils npm pigz bzip2 xz python3-pip jq -x git -x make && \
+      diffutils npm pigz bzip2 xz python3-pip jq -x git -x make -x python3 && \
     dnf clean all && \
     rm -rf /root/{.bundle,.config,.npm,anaconda*,original-ks.cfg} /tmp/phantomjs /var/cache/dnf
 
