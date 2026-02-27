@@ -11,7 +11,6 @@ It records the feature gate status on Arm64 platform. Here is the explanation of
 
 FEATURE GATE | STATUS | NOTES
 -- | -- | --
-ExpandDisksGate | Not supported yet| CDI is needed
 CPUManager | Supported | use taskset to do CPU pinning, do not support kvm-hint-dedicated (this is only works on x86 platform)
 NUMAFeatureGate | Not supported yet | Need to support Hugepage on Arm64
 IgnitionGate | Supported | This feature is only used for CoreOS/RhCOS
