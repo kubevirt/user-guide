@@ -10,7 +10,7 @@ the [source code](https://github.com/kubevirt/kubevirt/blob/main/pkg/virt-config
 
 ## How to activate a feature gate
 You can activate a specific feature gate directly in KubeVirt's CR, by
-provisioning the following yaml, which uses the `LiveMigration` feature gate
+provisioning the following yaml, which uses the `ExperimentalFeatureToEnable` feature gate
 as an example:
 ```bash
 cat << END > enable-feature-gate.yaml
@@ -24,7 +24,7 @@ spec:
   configuration:
     developerConfiguration:
       featureGates:
-        - LiveMigration
+        - ExperimentalFeatureToEnable
 END
 
 kubectl apply -f enable-feature-gate.yaml
@@ -41,8 +41,7 @@ spec:
   configuration:
     developerConfiguration:
       featureGates:
-        - DataVolumes
-        - LiveMigration
+        - ExperimentalFeatureToEnable
 ```
 
 **Note:** the name of the feature gates is case sensitive.
@@ -69,9 +68,9 @@ spec:
   configuration:
     developerConfiguration: 
       featureGates:
-        - LiveMigration
+        - ExperimentalFeatureToEnable
       disabledFeatureGates:
-        - LiveMigration
+        - ExperimentalFeatureToDisable
 END
 
 kubectl apply -f disable-feature-gate.yaml
@@ -89,9 +88,9 @@ spec:
   configuration:
     developerConfiguration:
       featureGates:
-        - LiveMigration
+        - ExperimentalFeatureToEnable
       disabledFeatureGates:
-        - LiveMigration
+        - ExperimentalFeatureToDisable
 ```
 
 !!! warning "Important"
