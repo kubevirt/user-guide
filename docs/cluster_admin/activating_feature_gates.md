@@ -1,8 +1,12 @@
-# Activating feature gates
+# Activating and deactivating feature gates
 
 KubeVirt has a set of features that are not mature enough to be enabled by
 default. As such, they are protected by a Kubernetes concept called
 [feature gates](https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/).
+
+## List of feature gates
+The list of feature gates (which evolve in time) can be checked directly from
+the [source code](https://github.com/kubevirt/kubevirt/blob/main/pkg/virt-config/featuregate/active.go) (use the const string values in the yaml configuration).
 
 ## How to activate a feature gate
 You can activate a specific feature gate directly in KubeVirt's CR, by
@@ -18,7 +22,7 @@ metadata:
   namespace: kubevirt
 spec:
   configuration:
-    developerConfiguration: 
+    developerConfiguration:
       featureGates:
         - LiveMigration
 END
@@ -46,7 +50,51 @@ spec:
 The snippet above assumes KubeVirt is installed in the `kubevirt` namespace.
 Change the namespace to suite your installation.
 
-## List of feature gates
-The list of feature gates (which evolve in time) can be checked directly from
-the [source code](https://github.com/kubevirt/kubevirt/blob/main/pkg/virt-config/featuregate/active.go) (use the const string values in the yaml configuration).
+## How to disable a feature gate
+
+Starting from KubeVirt v1.8, you can explicitly disable feature gates using the `disabledFeatureGates` field.
+This is particularly useful when you want to disable beta features that may be enabled by default.
+
+To disable specific feature gates, add them to the `disabledFeatureGates` list:
+
+```bash
+cat << END > disable-feature-gate.yaml
+---
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    developerConfiguration: 
+      featureGates:
+        - LiveMigration
+      disabledFeatureGates:
+        - LiveMigration
+END
+
+kubectl apply -f disable-feature-gate.yaml
+```
+
+Alternatively, edit the existing KubeVirt CR:
+
+```bash
+kubectl edit kubevirt kubevirt -n kubevirt
+```
+
+```yaml
+...
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - LiveMigration
+      disabledFeatureGates:
+        - LiveMigration
+```
+
+!!! warning "Important"
+    A feature gate cannot be listed in both `featureGates` and `disabledFeatureGates` at the same time.
+    This will result in a validation error.
 
