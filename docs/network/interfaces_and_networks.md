@@ -183,12 +183,12 @@ The mandatory interface configuration includes:
 - A `name`, which references a network name 
 - The name of supported network core binding from the table below, or a reference to a [network binding plugin](https://kubevirt.io/user-guide/network/network_binding_plugins/).
 
-| Type          | Description                                                               |
-|---------------|---------------------------------------------------------------------------|
-| `bridge`      | Connect using a linux bridge                                              |
-| `sriov`       | Connect using a passthrough SR-IOV VF via vfio                            |
-| `masquerade`  | Connect using `nftables` rules to NAT the traffic both egress and ingress |
-| `passtBinding`| Connect using `passt` userspace binding                                     |
+| Type           | Description                                                               |
+|----------------|---------------------------------------------------------------------------|
+| `bridge`       | Connect using a linux bridge                                              |
+| `sriov`        | Connect using a passthrough SR-IOV VF via vfio                            |
+| `masquerade`   | Connect using `nftables` rules to NAT the traffic both egress and ingress |
+| `passtBinding` | Connect using `passt` userspace binding                                   |
 
 Each interface may also have additional configuration fields that modify
 properties "seen" inside guest instances, as listed below:
@@ -277,7 +277,7 @@ Declare ports to forward to the virtual machine guest.
 | `protocol` | TCP,UDP   | no        | Connection protocol |
 
 > **Note:**  
-> The `ports` attribute is only evaluated by specific network bindings, namely the masquerade core network binding.  
+> The `ports` attribute is only evaluated by specific network bindings, namely the masquerade and the passt core network bindings.  
 > In the bridge network binding, it has no effect. For network binding plugins, its behavior depends on the plugin implementation.  
 > See the network binding plugin [documentation](https://kubevirt.io/user-guide/network/network_binding_plugins/) for details.
 
@@ -523,14 +523,14 @@ spec:
 > For further details please refer to the [dedicated cpu resources documentation](../compute/dedicated-cpu_resources.md/).
 
 ### passtBinding
-[v1.8.0]
+[v1.8.0] - Beta
 
 [Plug A Simple Socket Transport](https://passt.top/passt/about/) is an enhanced
 alternative to [SLIRP](https://en.wikipedia.org/wiki/Slirp), providing user-space
 network connectivity.
 
 `passt` is a universal tool which implements a translation layer between
-a Layer-2 network interface and native Layer -4 sockets (TCP, UDP, ICMP/ICMPv6 echo)
+a Layer-2 network interface and native Layer-4 sockets (TCP, UDP, ICMP/ICMPv6 echo)
 on a host.
 
 Its main benefits are:
@@ -540,7 +540,7 @@ Its main benefits are:
 - Supports IPv6 out of the box (in contrast to the existing bindings which require configuring IPv6
   manually).
 
-### Functionality support
+#### Functionality support
 | Functionality                                  | Support |
 |------------------------------------------------|---------|
 | Migration support                              | Yes     |
@@ -551,77 +551,53 @@ Its main benefits are:
 | Primary network (pod network)                  | Yes     |
 | Secondary network                              | No      |
 
-> **Note**: The passt binding is in Beta stage. Please use it with care.
-
-> **Note**: Additional memory overhead of `250Mi` will be requested for the compute container in the virt-launcher pod. 
+> **Note**: Using `passtBinding` adds `250Mi` of memory to the VM's resource requirements. 
 
 When the VM boots for the first time, Passt's internal DHCP server assigns an IP address to the guest with an "infinite" lease duration.
 
-**Note**:
-> During a live migration:
-> - The target pod is assigned a new IP address from the pod network, which is reflected in the VMI interfaces status.
-> - The guest OS retains the original IP address until it explicitly requests an address from Passt's internal DHCP server.
-> 
-> Connectivity Considerations
-> Passt automatically applies Network Address Translation (NAT) when passing traffic to/from the guest.
-> This enables the following behavior:
-> - The pod's new IP address is used for connectivity
-> - Despite the discrepancy between the pod IP and the guest IP, connectivity to/from the guest remains unaffected. 
-> 
-> It is possible to synchronize the guest and pod's IP addresses by initiating a DHCP request from the guest OS.
+#### Live migration support
+During a live migration:
+ - The target pod is assigned a new IP address from the pod network, which is reflected in the VMI interfaces status.
+ - The guest OS retains the original IP address until it explicitly requests an address from Passt's internal DHCP server.
 
-### VM Passt Network Interface
-Set the VM network interface binding name to reference the one defined in the
-kubevirt CR.
+#### Connectivity considerations
 
+Passt automatically applies Network Address Translation (NAT) when passing traffic to/from the guest.
+This enables the following behavior:
+ - The pod's new IP address is used for connectivity
+ - Despite the discrepancy between the pod IP and the guest IP, connectivity to/from the guest remains unaffected.
+
+It is possible to synchronize the guest and pod's IP addresses by initiating a DHCP request from the guest OS.
+
+##### Seamless migration for TCP communication
+When using a CNI/Network Provider that supports retaining the virt-launcher pod IP address through migration, `passt` ensures that TCP connections continue without interruptions that would be noticeable to users.
+
+#### Preconditions
+
+The `PasstBinding` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
+
+#### VM passt Network Interface
 ```yaml
 ---
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  labels:
-    kubevirt.io/vm: vm-net-binding-passt
   name: vm-net-binding-passt
 spec:
-  runStrategy: Always
   template:
     spec:
       domain:
         devices:
-          disks:
-          - disk:
-              bus: virtio
-            name: containerdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
           interfaces:
           - name: passtnet
-            binding:
-              name: passtBinding{}
+            passtBinding: {}
             ports:
             - name: http
               port: 80
               protocol: TCP
-          rng: {}
-        resources:
-          requests:
-            memory: 1024M
       networks:
       - name: passtnet
         pod: {}
-      terminationGracePeriodSeconds: 0
-      volumes:
-      - containerDisk:
-          image: quay.io/kubevirt/fedora-with-test-tooling-container-disk:v1.6.0
-        name: containerdisk
-      - cloudInitNoCloud:
-          networkData: |
-            version: 2
-            ethernets:
-              eth0:
-                dhcp4: true
-        name: cloudinitdisk
 ```
 
 ### Link State Management
@@ -696,6 +672,8 @@ status:
 
 > **Note:** KubeVirt does not report the current link state of SR-IOV devices, as it cannot track external changes made
 > to them.
+
+> **Note:** `passtBinding` does not support the link state management feature.
 
 ## Security
 
