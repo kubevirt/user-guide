@@ -22,9 +22,6 @@ spec:
       - VMPersistentState
 ```
 
-### Notes:
-- Backend storage is currently incompatible with VM snapshot. It is planned to add snapshot support in the future.
-
 ## TPM with persistent state
 
 Since KubeVirt v0.53.0, a TPM device can be added to a VM (with just `tpm: {}`). However, the data stored in it does not persist across reboots.  
