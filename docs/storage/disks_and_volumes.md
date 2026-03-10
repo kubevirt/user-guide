@@ -257,6 +257,13 @@ spec:
 
 ## Volumes
 
+
+### Persistent vs Ephemeral Volumes
+
+When choosing a volume source for your virtual machines, it is crucial to understand whether your workload requires persistent or ephemeral storage:
+
+- **DataVolumes (Persistent)**: DataVolumes are built on top of PersistentVolumeClaims (PVCs). They automate the process of importing and provisioning data into PVCs during a VM's launch flow. Use DataVolumes when your VirtualMachineInstance requires its disk data to persist across VM restarts or terminations. They are designed for stateful workloads.
+- **ContainerDisks (Ephemeral)**: ContainerDisks distribute VM disks via container image registries. These are ephemeral storage devices, meaning any changes written to them are temporary and will be discarded when the VM stops or restarted. They are ideal for stateless workloads, read-only templates, or replicating a large number of identical VMs (e.g., using VirtualMachineInstanceReplicaSets) without the need to persist data.
 Supported volume sources are
 
 -   [**cloudInitNoCloud**](#cloudinitnocloud)
