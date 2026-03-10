@@ -257,13 +257,6 @@ spec:
 
 ## Volumes
 
-
-### Persistent vs Ephemeral Volumes
-
-When choosing a volume source for your virtual machines, it is crucial to understand whether your workload requires persistent or ephemeral storage:
-
-- **DataVolumes (Persistent)**: DataVolumes are built on top of PersistentVolumeClaims (PVCs). They automate the process of importing and provisioning data into PVCs during a VM's launch flow. Use DataVolumes when your VirtualMachineInstance requires its disk data to persist across VM restarts or stops, as long as the backing PVC/DataVolume is retained. When DataVolumes are created via a `VirtualMachine`'s `dataVolumeTemplates`, the backing DataVolume/PVC may be deleted when that `VirtualMachine` is deleted, depending on your configuration. They are designed for stateful workloads.
-- **ContainerDisks (Ephemeral)**: ContainerDisks distribute VM disks via container image registries. These are ephemeral storage devices, meaning any changes written to them are temporary and will be discarded when the VM stops or restarted. They are ideal for stateless workloads, read-only templates, or replicating a large number of identical VMs (e.g., using VirtualMachineInstanceReplicaSets) without the need to persist data.
 Supported volume sources are
 
 -   [**cloudInitNoCloud**](#cloudinitnocloud)
@@ -552,6 +545,8 @@ DataVolume, users have to prepare a PVC with a disk image before
 assigning it to a VM or VMI manifest. With a DataVolume, both the PVC
 creation and import is automated on behalf of the user.
 
+Use a DataVolume when the virtual machine disk must persist across VM restarts or stops. For ephemeral root disks that are recreated from a container image, see [containerDisk](#containerdisk).
+
 #### DataVolume VM Behavior
 
 DataVolumes can be defined in the VM spec directly by adding the
@@ -730,6 +725,8 @@ any number of active VirtualMachineInstances. This makes them an ideal
 tool for users who want to replicate a large number of VM workloads that
 do not require persistent data. `containerDisks` are commonly used in
 conjunction with VirtualMachineInstanceReplicaSets.
+
+If the disk must persist across VM restarts or stops, use a [dataVolume](#datavolume) instead.
 
 #### When Not to use a containerDisk
 
