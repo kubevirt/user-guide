@@ -2410,15 +2410,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#overriding-configuration-on-a-specifc-node" class="md-nav__link">
+  <a href="#overriding-configuration-on-a-specific-node" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overriding configuration on a specifc node
+        Overriding configuration on a specific node
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Overriding configuration on a specifc node">
+    <nav class="md-nav" aria-label="Overriding configuration on a specific node">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -3651,15 +3651,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#overriding-configuration-on-a-specifc-node" class="md-nav__link">
+  <a href="#overriding-configuration-on-a-specific-node" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Overriding configuration on a specifc node
+        Overriding configuration on a specific node
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Overriding configuration on a specifc node">
+    <nav class="md-nav" aria-label="Overriding configuration on a specific node">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -3739,25 +3739,25 @@
 Administrators can use the <code>mediatedDevicesConfiguration</code> API in the KubeVirt CR to
 create or remove mediated devices in a declarative way, by providing a list of the desired mediated device types that they expect to be configured in the cluster.</p>
 <p>You can also include the <code>nodeMediatedDeviceTypes</code> option to provide a more specific configuration that targets a specific node or a group of nodes directly with a node selector.
-The <code>nodeMediatedDeviceTypes</code> option must be used in combination with <code>mediatedDevicesTypes</code>
-in order to override the global configuration set in the <code>mediatedDevicesTypes</code> section.</p>
+The <code>nodeMediatedDeviceTypes</code> option must be used in combination with <code>mediatedDeviceTypes</code>
+in order to override the global configuration set in the <code>mediatedDeviceTypes</code> section.</p>
 <p>KubeVirt will use the provided configuration to automatically create the relevant mdev/vGPU devices on nodes that can support it.</p>
 <p>Currently, a single mdev type per card will be configured.
 The maximum amount of instances of the selected mdev type will be configured per card.</p>
 <blockquote>
 <p>Note: Some vendors, such as NVIDIA, require a driver to be installed on the nodes to provide mediated devices, including vGPUs.</p>
 </blockquote>
-<p>Example snippet of a KubeVirt CR configuration that includes both <code>nodeMediatedDeviceTypes</code> and <code>mediatedDevicesTypes</code>:
+<p>Example snippet of a KubeVirt CR configuration that includes both <code>nodeMediatedDeviceTypes</code> and <code>mediatedDeviceTypes</code>:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">mediatedDevicesConfiguration</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">mediatedDevicesTypes</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">      </span><span class="nt">mediatedDeviceTypes</span><span class="p">:</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-222</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-228</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="nt">nodeMediatedDeviceTypes</span><span class="p">:</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nodeSelector</span><span class="p">:</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">          </span><span class="nt">kubernetes.io/hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nodeName</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nt">mediatedDevicesTypes</span><span class="p">:</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="nt">mediatedDeviceTypes</span><span class="p">:</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-234</span>
 </code></pre></div></p>
 <h2 id="configuration-scenarios">Configuration scenarios<a class="headerlink" href="#configuration-scenarios" title="Permanent link">&para;</a></h2>
@@ -3767,7 +3767,7 @@ The maximum amount of instances of the selected mdev type will be configured per
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">mediatedDevicesConfiguration</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">mediatedDevicesTypes</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">mediatedDeviceTypes</span><span class="p">:</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-222</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-228</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-105</span>
@@ -3815,26 +3815,26 @@ The maximum amount of instances of the selected mdev type will be configured per
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">mediatedDevicesConfiguration</span><span class="p">:</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">mediatedDevicesTypes</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">mediatedDeviceTypes</span><span class="p">:</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-223</span>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-224</span>
 </code></pre></div>
 In this case, nvidia-223 will be configured on the node because it is the first supported type in the list.</p>
-<h2 id="overriding-configuration-on-a-specifc-node">Overriding configuration on a specifc node<a class="headerlink" href="#overriding-configuration-on-a-specifc-node" title="Permanent link">&para;</a></h2>
-<p>To override the global configuration set by <code>mediatedDevicesTypes</code>, include the <code>nodeMediatedDeviceTypes</code> option, specifying the node selector and the <code>mediatedDevicesTypes</code> that you want to override for that node.</p>
+<h2 id="overriding-configuration-on-a-specific-node">Overriding configuration on a specific node<a class="headerlink" href="#overriding-configuration-on-a-specific-node" title="Permanent link">&para;</a></h2>
+<p>To override the global configuration set by <code>mediatedDeviceTypes</code>, include the <code>nodeMediatedDeviceTypes</code> option, specifying the node selector and the <code>mediatedDeviceTypes</code> that you want to override for that node.</p>
 <h3 id="example-overriding-the-configuration-for-a-specific-node-in-a-large-cluster-with-multiple-cards-on-each-node">Example: Overriding the configuration for a specific node in a large cluster with multiple cards on each node<a class="headerlink" href="#example-overriding-the-configuration-for-a-specific-node-in-a-large-cluster-with-multiple-cards-on-each-node" title="Permanent link">&para;</a></h3>
 <p>In this example, the KubeVirt CR includes the <code>nodeMediatedDeviceTypes</code> option to override the global configuration specifically for node 2, which will only use the nvidia-234 type.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">mediatedDevicesConfiguration</span><span class="p">:</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">      </span><span class="nt">mediatedDevicesTypes</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">      </span><span class="nt">mediatedDeviceTypes</span><span class="p">:</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-230</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-223</span>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-224</span>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">nodeMediatedDeviceTypes</span><span class="p">:</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nodeSelector</span><span class="p">:</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">        </span><span class="nt">kubernetes.io/hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node2</span><span class="w">  </span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">      </span><span class="nt">mediatedDevicesTypes</span><span class="p">:</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">      </span><span class="nt">mediatedDeviceTypes</span><span class="p">:</span>
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-234</span>
 </code></pre></div>
 <p>The cluster has two nodes that both have 3 Tesla T4 cards.</p>
@@ -3862,7 +3862,7 @@ In this case, nvidia-223 will be configured on the node because it is the first 
 </ol>
 <p>Node 1 has been configured in a round-robin manner based on the global configuration but node 2 only uses the nvidia-234 that was specified for it.</p>
 <h2 id="updating-and-removing-vgpu-types">Updating and Removing vGPU types<a class="headerlink" href="#updating-and-removing-vgpu-types" title="Permanent link">&para;</a></h2>
-<p>Changes made to the <code>mediatedDevicesTypes</code> section of the KubeVirt CR will trigger a re-evaluation of the configured mdevs/vGPU types on the cluster nodes.</p>
+<p>Changes made to the <code>mediatedDeviceTypes</code> section of the KubeVirt CR will trigger a re-evaluation of the configured mdevs/vGPU types on the cluster nodes.</p>
 <p>Any change to the node labels that match the <code>nodeMediatedDeviceTypes</code> nodeSelector in the KubeVirt CR will trigger a similar re-evaluation.</p>
 <p>Consequently, mediated devices will be reconfigured or entirely removed based on the updated configuration.</p>
 <h2 id="assigning-vgpumdev-to-a-virtual-machine">Assigning vGPU/MDEV to a Virtual Machine<a class="headerlink" href="#assigning-vgpumdev-to-a-virtual-machine" title="Permanent link">&para;</a></h2>
