@@ -1,5 +1,8 @@
 # Passt binding
 
+!!! Warning 
+    The passt network binding plugin has been replaced in v1.8.0 with a [core binding](../../interfaces_and_networks#passtbinding).
+
 ## Overview
 
 [Plug A Simple Socket Transport](https://passt.top/passt/about/) is an enhanced
@@ -35,7 +38,7 @@ Its main benefits are:
 > leading to memory overhead of up to 250 Mi.
 
 ## Passt network binding plugin
-[v1.1.0]
+[v1.1.0-v1.8.0]
 
 The binding plugin replaces the experimental core passt binding implementation
 (including its API).
