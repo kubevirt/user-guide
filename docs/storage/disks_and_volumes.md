@@ -545,8 +545,6 @@ DataVolume, users have to prepare a PVC with a disk image before
 assigning it to a VM or VMI manifest. With a DataVolume, both the PVC
 creation and import is automated on behalf of the user.
 
-Use a DataVolume when the virtual machine disk must persist across VM restarts or stops. For ephemeral root disks that are recreated from a container image, see [containerDisk](#containerdisk).
-
 #### DataVolume VM Behavior
 
 DataVolumes can be defined in the VM spec directly by adding the
@@ -726,12 +724,12 @@ tool for users who want to replicate a large number of VM workloads that
 do not require persistent data. `containerDisks` are commonly used in
 conjunction with VirtualMachineInstanceReplicaSets.
 
-If the disk must persist across VM restarts or stops, use a [dataVolume](#datavolume) instead.
-
 #### When Not to use a containerDisk
 
 `containerDisks` are not a good solution for any workload that requires
 persistent root disks across VM restarts.
+
+If the disk must persist across VM restarts or stops, use a PVC or a [dataVolume](#datavolume) instead.
 
 #### containerDisk Workflow Example
 
