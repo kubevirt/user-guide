@@ -2818,6 +2818,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#network-resource-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Resource Injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#multus-as-primary-network-provider" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3932,6 +3943,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#network-resource-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Resource Injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#multus-as-primary-network-provider" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4439,6 +4461,38 @@ shown above(in the same namespace)</p>
 <a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">         </span><span class="nt">multus</span><span class="p">:</span><span class="w"> </span><span class="c1"># Secondary multus network</span>
 <a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">           </span><span class="nt">networkName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">linux-bridge-net-ipam</span><span class="w"> </span><span class="c1">#ref to NAD name</span>
 </code></pre></div>
+<h4 id="network-resource-injection">Network Resource Injection<a class="headerlink" href="#network-resource-injection" title="Permanent link">&para;</a></h4>
+<p>[v1.8]</p>
+<p>Some secondary network configurations use the <code>k8s.v1.cni.cncf.io/resourceName</code>
+<code>NetworkAttachmentDefinition</code> (NAD) annotation to indicate that a network device resource
+is required on the node. Common use cases include:</p>
+<ul>
+<li><strong>SR-IOV</strong> — NADs reference SR-IOV VF resources (e.g. <code>intel.com/sriov_net</code>).</li>
+<li><strong>Bridge networks with <a href="https://github.com/kubevirt/bridge-marker">bridge-marker</a></strong> — NADs reference bridge device resources.</li>
+<li><strong><a href="../net_binding_plugins/macvtap/">Macvtap</a></strong> — NADs reference macvtap device resources (e.g. <code>macvtap.network.kubevirt.io/eth0</code>).</li>
+</ul>
+<p>For these use cases, the <a href="https://github.com/k8snetworkplumbingwg/network-resources-injector">network-resources-injector</a>
+component must be deployed on the cluster. It is a mutating admission webhook that reads the resource name
+from NAD annotations and injects the corresponding resource requests and limits into VM pods,
+ensuring the Kubernetes scheduler places VMs on nodes with the required network resources.</p>
+<p>For installation instructions, refer to the
+<a href="https://github.com/k8snetworkplumbingwg/network-resources-injector#readme">network-resources-injector documentation</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Deprecation Notice</p>
+<p>Prior to v1.8, KubeVirt's virt-controller queried NAD objects directly to inject network resource
+requirements into virt-launcher pods. This behavior is deprecated and controlled by the
+<code>ExternalNetResourceInjection</code> feature gate.</p>
+<ul>
+<li><strong>v1.8</strong>: The <code>ExternalNetResourceInjection</code> feature gate is introduced, disabled by default.
+  When enabled, KubeVirt no longer queries NADs or deploys associated RBAC rules — the
+  <code>network-resources-injector</code> is expected to handle resource injection instead.</li>
+<li>In a future release, the feature gate will be enabled by default. Users will still be able to
+  disable it to fall back to the legacy behavior.</li>
+<li>In a subsequent release, the legacy NAD query code will be removed entirely.</li>
+</ul>
+<p>Cluster administrators using the affected use cases should deploy <code>network-resources-injector</code>
+before enabling the feature gate or upgrading to a release where it is enabled by default.</p>
+</div>
 <h4 id="multus-as-primary-network-provider">Multus as primary network provider<a class="headerlink" href="#multus-as-primary-network-provider" title="Permanent link">&para;</a></h4>
 <p>It is also possible to define a multus network as the default pod
 network by indicating the VM's <code>spec.template.spec.networks.multus.default=true</code>.
