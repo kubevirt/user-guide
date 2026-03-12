@@ -119,6 +119,41 @@ spec:
          multus: # Secondary multus network
            networkName: linux-bridge-net-ipam #ref to NAD name
 ```
+
+#### Network Resource Injection
+[v1.8]
+
+Some secondary network configurations use the `k8s.v1.cni.cncf.io/resourceName`
+`NetworkAttachmentDefinition` (NAD) annotation to indicate that a network device resource
+is required on the node. Common use cases include:
+
+- **SR-IOV** — NADs reference SR-IOV VF resources (e.g. `intel.com/sriov_net`).
+- **Bridge networks with [bridge-marker](https://github.com/kubevirt/bridge-marker)** — NADs reference bridge device resources.
+- **[Macvtap](../network/net_binding_plugins/macvtap.md)** — NADs reference macvtap device resources (e.g. `macvtap.network.kubevirt.io/eth0`).
+
+For these use cases, the [network-resources-injector](https://github.com/k8snetworkplumbingwg/network-resources-injector)
+component must be deployed on the cluster. It is a mutating admission webhook that reads the resource name
+from NAD annotations and injects the corresponding resource requests and limits into VM pods,
+ensuring the Kubernetes scheduler places VMs on nodes with the required network resources.
+
+For installation instructions, refer to the
+[network-resources-injector documentation](https://github.com/k8snetworkplumbingwg/network-resources-injector#readme).
+
+!!! warning "Deprecation Notice"
+    Prior to v1.8, KubeVirt's virt-controller queried NAD objects directly to inject network resource
+    requirements into virt-launcher pods. This behavior is deprecated and controlled by the
+    `ExternalNetResourceInjection` feature gate.
+
+    - **v1.8**: The `ExternalNetResourceInjection` feature gate is introduced, disabled by default.
+      When enabled, KubeVirt no longer queries NADs or deploys associated RBAC rules — the
+      `network-resources-injector` is expected to handle resource injection instead.
+    - In a future release, the feature gate will be enabled by default. Users will still be able to
+      disable it to fall back to the legacy behavior.
+    - In a subsequent release, the legacy NAD query code will be removed entirely.
+
+    Cluster administrators using the affected use cases should deploy `network-resources-injector`
+    before enabling the feature gate or upgrading to a release where it is enabled by default.
+
 #### Multus as primary network provider
 It is also possible to define a multus network as the default pod
 network by indicating the VM's `spec.template.spec.networks.multus.default=true`.
