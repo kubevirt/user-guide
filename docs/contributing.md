@@ -30,7 +30,6 @@ For code contributors:
 The following will help you decide where to start:
 
 * Check a repository's issues list and label `good-first-issue` for issues that make good entry points.
-* Open a pull request on GitHub for documentation. The tutorials found here can be helpful: https://lab.github.com/
 * Review a pull request from other community members for accuracy and language.
 
 ## Important community resources
