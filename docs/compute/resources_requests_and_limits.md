@@ -81,6 +81,6 @@ KubeVirt automatically set memory limits on VM(I)s if all the following conditio
 - The VMI is not requesting dedicated CPU.
 
 If all the previous conditions are true, the memory limits will be set to a value (`2x`) of the memory requests.
-This ratio can be adjusted, per namespace, by adding the annotation `alpha.kubevirt.io/auto-memory-limits-ratio`,
+This ratio can be adjusted, per namespace, by adding the label `alpha.kubevirt.io/auto-memory-limits-ratio`,
 with the desired custom value.
-For example, with `alpha.kubevirt.io/auto-memory-limits-ratio: 1.2`, the memory limits set will be equal to (`1.2x`) of the memory requests.
+For example, with `alpha.kubevirt.io/auto-memory-limits-ratio: "1.2"`, the memory limits set will be equal to (`1.2x`) of the memory requests.
