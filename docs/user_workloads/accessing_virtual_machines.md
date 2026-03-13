@@ -165,21 +165,24 @@ This allows for dynamic injection of SSH public keys at runtime by updating the 
 
 Please note that new Secrets cannot be attached to a running VM: You must restart the VM to attach the new Secret.
 
-> Note: This requires the qemu-guest-agent to be installed within the guest.
->
-> Note: When using qemuGuestAgent propagation,
-> the `/home/$USER/.ssh/authorized_keys` file will be owned by the guest agent.
+> **Requirement:** The qemu-guest-agent must be installed within the guest.
+
+> **Deprecation Notice:** The implementation supporting qemu-guest-agent versions older than 5.2 is deprecated
+> and will stop working in a future release.
+
+> **Important:** When using `qemuGuestAgent` propagation,
+> the `/home/$USER/.ssh/authorized_keys` file is owned by the guest agent.
 > Changes to the file not made by the guest agent will be lost.
->
-> Note: More information about the motivation behind the access credentials API
+
+> **Further Reading:** More information about the motivation behind the access credentials API
 > can be found in the
 > [pull request description](https://github.com/kubevirt/kubevirt/pull/4195)
 > that introduced the API.
 
-In the example below the `Secret` containing the SSH public key is
+In the example below, the `Secret` containing the SSH public key is
 attached to the virtual machine via the access credentials API with the
 `qemuGuestAgent` propagation method. This allows updating the contents of
-the `Secret` at any time, which will result in the changes getting applied
+the `Secret` at any time, which will result in the changes being applied
 to the running virtual machine immediately. The `Secret` may also contain
 multiple SSH public keys.
 
