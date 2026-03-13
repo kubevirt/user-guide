@@ -43,9 +43,6 @@ Its main benefits are:
 The binding plugin replaces the experimental core passt binding implementation
 (including its API).
 
-> **Note**: The network binding plugin infrastructure and the passt plugin
-> specifically are in Alpha stage. Please use them with care, preferably
-> on a non-production deployment.
 
 The passt binding plugin consists of the following components:
 
@@ -171,6 +168,9 @@ The sidecar sources can be found
 The relevant sidecar image needs to be accessible by the cluster and
 specified in the Kubevirt CR when registering the network binding plugin.
 
+### Feature Gate
+As of v1.5.0, the Network Binding Plugin feature is enabled by default and has no feature gate.
+The passt plugin similarly has no feature gate of its own, but the plugin needs to be made available in the cluster by [registering it](./#passt-registration).
 
 ### Passt Registration
 As described in the [registration section](../../network/network_binding_plugins.md#register), passt binding plugin
