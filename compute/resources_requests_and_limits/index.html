@@ -3882,9 +3882,9 @@ Once that label selector is defined, if the creation namespace matches the selec
 <li>The VMI is not requesting dedicated CPU.</li>
 </ul>
 <p>If all the previous conditions are true, the memory limits will be set to a value (<code>2x</code>) of the memory requests.
-This ratio can be adjusted, per namespace, by adding the annotation <code>alpha.kubevirt.io/auto-memory-limits-ratio</code>,
+This ratio can be adjusted, per namespace, by adding the label <code>alpha.kubevirt.io/auto-memory-limits-ratio</code>,
 with the desired custom value.
-For example, with <code>alpha.kubevirt.io/auto-memory-limits-ratio: 1.2</code>, the memory limits set will be equal to (<code>1.2x</code>) of the memory requests.</p>
+For example, with <code>alpha.kubevirt.io/auto-memory-limits-ratio: "1.2"</code>, the memory limits set will be equal to (<code>1.2x</code>) of the memory requests.</p>
 
 
 
