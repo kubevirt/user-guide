@@ -719,6 +719,8 @@ conjunction with VirtualMachineInstanceReplicaSets.
 `containerDisks` are not a good solution for any workload that requires
 persistent root disks across VM restarts.
 
+If the disk must persist across VM restarts or stops, use a PVC or a [dataVolume](#datavolume) instead.
+
 #### containerDisk Workflow Example
 
 Users can inject a VirtualMachineInstance disk into a container image in
