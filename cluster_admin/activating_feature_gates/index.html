@@ -27,7 +27,7 @@
     
     
       
-        <title>Activating feature gates - KubeVirt user guide</title>
+        <title>Activating and deactivating feature gates - KubeVirt user guide</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#activating-feature-gates" class="md-skip">
+        <a href="#activating-and-deactivating-feature-gates" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Activating feature gates
+              Activating and deactivating feature gates
             
           </span>
         </div>
@@ -674,7 +674,7 @@
   <span class="md-ellipsis">
     
   
-    Activating feature gates
+    Activating and deactivating feature gates
   
 
     
@@ -692,7 +692,7 @@
   <span class="md-ellipsis">
     
   
-    Activating feature gates
+    Activating and deactivating feature gates
   
 
     
@@ -718,6 +718,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#list-of-feature-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List of feature gates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-to-activate-a-feature-gate" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -729,10 +740,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#list-of-feature-gates" class="md-nav__link">
+  <a href="#how-to-disable-a-feature-gate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        List of feature gates
+        How to disable a feature gate
       
     </span>
   </a>
@@ -3526,6 +3537,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#list-of-feature-gates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List of feature gates
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-to-activate-a-feature-gate" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3537,10 +3559,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#list-of-feature-gates" class="md-nav__link">
+  <a href="#how-to-disable-a-feature-gate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        List of feature gates
+        How to disable a feature gate
       
     </span>
   </a>
@@ -3580,13 +3602,16 @@
   
 
 
-<h1 id="activating-feature-gates">Activating feature gates<a class="headerlink" href="#activating-feature-gates" title="Permanent link">&para;</a></h1>
+<h1 id="activating-and-deactivating-feature-gates">Activating and deactivating feature gates<a class="headerlink" href="#activating-and-deactivating-feature-gates" title="Permanent link">&para;</a></h1>
 <p>KubeVirt has a set of features that are not mature enough to be enabled by
 default. As such, they are protected by a Kubernetes concept called
 <a href="https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/">feature gates</a>.</p>
+<h2 id="list-of-feature-gates">List of feature gates<a class="headerlink" href="#list-of-feature-gates" title="Permanent link">&para;</a></h2>
+<p>The list of feature gates (which evolve in time) can be checked directly from
+the <a href="https://github.com/kubevirt/kubevirt/blob/main/pkg/virt-config/featuregate/active.go">source code</a> (use the const string values in the yaml configuration).</p>
 <h2 id="how-to-activate-a-feature-gate">How to activate a feature gate<a class="headerlink" href="#how-to-activate-a-feature-gate" title="Permanent link">&para;</a></h2>
 <p>You can activate a specific feature gate directly in KubeVirt's CR, by
-provisioning the following yaml, which uses the <code>LiveMigration</code> feature gate
+provisioning the following yaml, which uses the <code>ExperimentalFeatureToEnable</code> feature gate
 as an example:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt; END &gt; enable-feature-gate.yaml</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="s">---</span>
@@ -3597,9 +3622,9 @@ as an example:
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="s">  namespace: kubevirt</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="s">spec:</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="s">  configuration:</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="s">    developerConfiguration: </span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="s">    developerConfiguration:</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="s">      featureGates:</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="s">        - LiveMigration</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="s">        - ExperimentalFeatureToEnable</span>
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="s">END</span>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
 <a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>enable-feature-gate.yaml
@@ -3612,15 +3637,50 @@ as an example:
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DataVolumes</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigration</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExperimentalFeatureToEnable</span>
 </code></pre></div>
 <p><strong>Note:</strong> the name of the feature gates is case sensitive.</p>
 <p>The snippet above assumes KubeVirt is installed in the <code>kubevirt</code> namespace.
 Change the namespace to suite your installation.</p>
-<h2 id="list-of-feature-gates">List of feature gates<a class="headerlink" href="#list-of-feature-gates" title="Permanent link">&para;</a></h2>
-<p>The list of feature gates (which evolve in time) can be checked directly from
-the <a href="https://github.com/kubevirt/kubevirt/blob/main/pkg/virt-config/featuregate/active.go">source code</a> (use the const string values in the yaml configuration).</p>
+<h2 id="how-to-disable-a-feature-gate">How to disable a feature gate<a class="headerlink" href="#how-to-disable-a-feature-gate" title="Permanent link">&para;</a></h2>
+<p>Starting from KubeVirt v1.8, you can explicitly disable feature gates using the <code>disabledFeatureGates</code> field.
+This is particularly useful when you want to disable beta features that may be enabled by default.</p>
+<p>To disable specific feature gates, add them to the <code>disabledFeatureGates</code> list:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt; END &gt; disable-feature-gate.yaml</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="s">---</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="s">apiVersion: kubevirt.io/v1</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="s">kind: KubeVirt</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="s">metadata:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="s">  name: kubevirt</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="s">  namespace: kubevirt</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="s">spec:</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="s">  configuration:</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="s">    developerConfiguration: </span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="s">      featureGates:</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="s">        - ExperimentalFeatureToEnable</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="s">      disabledFeatureGates:</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="s">        - ExperimentalFeatureToDisable</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="s">END</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>disable-feature-gate.yaml
+</code></pre></div>
+<p>Alternatively, edit the existing KubeVirt CR:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>edit<span class="w"> </span>kubevirt<span class="w"> </span>kubevirt<span class="w"> </span>-n<span class="w"> </span>kubevirt
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nn">...</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExperimentalFeatureToEnable</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="nt">disabledFeatureGates</span><span class="p">:</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExperimentalFeatureToDisable</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p>A feature gate cannot be listed in both <code>featureGates</code> and <code>disabledFeatureGates</code> at the same time.
+This will result in a validation error.</p>
+</div>
 
 
 
