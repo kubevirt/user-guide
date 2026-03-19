@@ -23,7 +23,14 @@ spec:
 ```
 
 ### Notes:
-- Backend storage is currently incompatible with VM snapshot. It is planned to add snapshot support in the future.
+
+#### Snapshot and restore compatibility
+
+Since KubeVirt v1.4, VirtualMachines that use backend state storage support both online and offline snapshots. These snapshots can be successfully restored as long as they are restored back into the same VirtualMachine.
+
+Restoring a snapshot into a different VirtualMachine (VM Clone) is not currently supported.
+
+Support for snapshot-based VM cloning with backend storage is planned to be revisited in a future release.
 
 ## TPM with persistent state
 
