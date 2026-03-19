@@ -3477,6 +3477,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#feature-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feature Gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#slirp-registration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3545,13 +3556,12 @@ network connectivity.</p>
 UDP. ICMP is <em>not</em> supported.</p>
 </blockquote>
 <h2 id="slirp-network-binding-plugin">Slirp network binding plugin<a class="headerlink" href="#slirp-network-binding-plugin" title="Permanent link">&para;</a></h2>
-<p>[v1.1.0]</p>
+<blockquote>
+<p><strong>Important</strong>: The core SLIRP binding was deprecated and removed in v1.3.0. 
+This documentation covers the <strong>network binding plugin</strong> implementation of SLIRP.</p>
+</blockquote>
 <p>The binding plugin replaces the <a href="../../interfaces_and_networks/#slirp">core <code>slirp</code> binding</a>
 API.</p>
-<blockquote>
-<p><strong>Note</strong>: The network binding plugin infrastructure is in Alpha stage.
-Please use them with care.</p>
-</blockquote>
 <p>The slirp binding plugin consists of the following components:</p>
 <ul>
 <li>Sidecar image.</li>
@@ -3564,9 +3574,12 @@ the slirp plugin needs to:</p>
 <li>Reference the network binding by name from the VM spec interface.</li>
 </ul>
 <blockquote>
-<p><strong>Note</strong>: In order for the core slirp binding to use the network binding plugin
-the registered name for this binding should be <code>slirp</code>.</p>
+<p><strong>Note</strong>: The registered name for this binding should be <code>slirp</code> to maintain
+compatibility with existing VM specifications that reference the slirp binding.</p>
 </blockquote>
+<h3 id="feature-gate">Feature Gate<a class="headerlink" href="#feature-gate" title="Permanent link">&para;</a></h3>
+<p>As of v1.5.0, the Network Binding Plugin feature is enabled by default and has no feature gate.</p>
+<p>The slirp plugin similarly has no feature gate of its own, but the plugin needs to be made available in the cluster by <a href="./#slirp-registration">registering it</a>.</p>
 <h3 id="slirp-registration">Slirp Registration<a class="headerlink" href="#slirp-registration" title="Permanent link">&para;</a></h3>
 <p>As described in the <a href="../../network_binding_plugins/#register">registration section</a>, slirp binding plugin
 configuration needs to be added to the kubevirt CR.</p>

@@ -3555,6 +3555,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#feature-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feature Gate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#macvtap-registration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3738,13 +3749,9 @@ can access, or, in the same namespace the VMs reside in.</p>
 exposed host interface (via the <code>lowerDevice</code> attribute, on the
 <code>macvtap-deviceplugin-config</code> <code>ConfigMap</code>).</p>
 <h2 id="macvtap-network-binding-plugin">Macvtap network binding plugin<a class="headerlink" href="#macvtap-network-binding-plugin" title="Permanent link">&para;</a></h2>
-<p>[v1.1.1]</p>
-<p>The binding plugin replaces the experimental core macvtap binding implementation
-(including its API).</p>
 <blockquote>
-<p><strong>Note</strong>: The network binding plugin infrastructure and the macvtap plugin
-specifically are in Alpha stage. Please use them with care, preferably
-on a non-production deployment.</p>
+<p><strong>Note</strong>: The experimental core macvtap binding was deprecated in v1.2.0 and removed in v1.3.0. 
+This documentation covers the <strong>network binding plugin</strong> implementation of macvtap.</p>
 </blockquote>
 <p>The macvtap binding plugin consists of the following components:</p>
 <ul>
@@ -3756,6 +3763,9 @@ on a non-production deployment.</p>
 <li>Reference the network binding by name from the VM spec interface.</li>
 </ul>
 <p>And in detail:</p>
+<h3 id="feature-gate">Feature Gate<a class="headerlink" href="#feature-gate" title="Permanent link">&para;</a></h3>
+<p>As of v1.5.0, the Network Binding Plugin feature enabled by default and has no feature gate.
+The macvtap plugin similarly has no feature gate of its own, but the plugin needs to be made available in the cluster by <a href="./#macvtap-registration">registering it</a>.</p>
 <h3 id="macvtap-registration">Macvtap Registration<a class="headerlink" href="#macvtap-registration" title="Permanent link">&para;</a></h3>
 <p>The macvtap binding plugin configuration needs to be added to the kubevirt CR
 in order to be used by VMs.</p>
