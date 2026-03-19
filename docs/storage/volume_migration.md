@@ -101,6 +101,48 @@ by updating the VM:
          name: datavolumedisk1
 ```
 
+### Using a PVC as the target volume
+
+Regular PVCs (not created via DataVolumes) are fully supported for volume migration. In this case, the volumes section references the PVC using `persistentVolumeClaim` instead of `dataVolume`.
+
+First, create the destination PVC:
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dst-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Block
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: rook-ceph
+```
+
+Then update the VM to migrate from the source DataVolume to the destination PVC:
+```diff
+ apiVersion: kubevirt.io/v1
+ kind: VirtualMachine
+     kubevirt.io/vm: vm-dv
+   name: vm-dv
+ spec:
++  updateVolumesStrategy: Migration
+-  dataVolumeTemplates:
+-  - metadata:
+-      name: src-dv
+-    spec:
+-      ...
+
+       volumes:
+-      - dataVolume:
+-          name: src-dv
++      - persistentVolumeClaim:
++          claimName: dst-pvc
+         name: datavolumedisk1
+```
+
 The destination volume may be of a different type or size than the source. It is possible to migrate from and to a block volume as well as a filesystem volume.
 The destination volume should be equal to or larger than the source volume. However, the additional difference in the size of the destination volume is not instantly visible within the VM and must be manually resized because the guest is unaware of the migration.
 
