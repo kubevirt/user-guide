@@ -9,13 +9,13 @@ network connectivity.
 > UDP. ICMP is *not* supported.
 
 ## Slirp network binding plugin
-[v1.1.0]
+
+> **Important**: The core SLIRP binding was deprecated and removed in v1.3.0. 
+> This documentation covers the **network binding plugin** implementation of SLIRP.
 
 The binding plugin replaces the [core `slirp` binding](../../network/interfaces_and_networks.md#slirp)
 API.
 
-> **Note**: The network binding plugin infrastructure is in Alpha stage.
-> Please use them with care.
 
 The slirp binding plugin consists of the following components:
 
@@ -28,9 +28,13 @@ the slirp plugin needs to:
 - Register the binding plugin on the Kubevirt CR.
 - Reference the network binding by name from the VM spec interface.
 
-> **Note**: In order for the core slirp binding to use the network binding plugin
-> the registered name for this binding should be `slirp`.
+> **Note**: The registered name for this binding should be `slirp` to maintain
+> compatibility with existing VM specifications that reference the slirp binding.
 
+### Feature Gate
+As of v1.5.0, the Network Binding Plugin feature is enabled by default and has no feature gate.
+
+The slirp plugin similarly has no feature gate of its own, but the plugin needs to be made available in the cluster by [registering it](./#slirp-registration).
 
 ### Slirp Registration
 As described in the [registration section](../../network/network_binding_plugins.md#register), slirp binding plugin
