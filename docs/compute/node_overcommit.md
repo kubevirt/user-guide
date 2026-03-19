@@ -94,7 +94,16 @@ VMI in case the node gets under memory pressure.
 Implicit memory overcommit is disabled by default. This means that when
 memory request is not specified, it is set to match
 `spec.domain.memory.guest`. However, it can be enabled using
-`spec.configuration.developerConfiguration.memoryOvercommit` in the `kubevirt` CR. For example, by setting
+
+```yaml
+...
+spec:
+  configuration:
+    developerConfiguration:
+      memoryOvercommit: 150
+```
+
+in the `kubevirt` CR. For example, by setting
 `memoryOvercommit: "150"` we define that when memory request is not
 explicitly set, it will be implicitly set to achieve memory overcommit
 of 150%. For instance, when `spec.domain.memory.guest: 3072M`, memory
