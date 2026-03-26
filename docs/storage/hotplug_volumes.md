@@ -29,7 +29,7 @@ The following table lists the minimum number of VirtIO ports that will be availa
 |  <= 2G |   3   |
 |  > 2G  |   6   |
 
-> **_NOTE:_**  available VirtIO ports are reduced for each [hotplug network interface](../network/hotplug_interfaces.md)
+> **_NOTE:_**  available VirtIO ports are reduced for each [hotplug network interface](../network/hotplug/interfaces.md)
 
 ## Declarative API
 
