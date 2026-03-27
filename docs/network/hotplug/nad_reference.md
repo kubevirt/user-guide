@@ -93,11 +93,10 @@ kind: VirtualMachine
 ```
 
 This change will trigger a live migration which in turn creates a new pod connected to the new NAD.
-
-If automatic migration is not configured, a migration must be manually triggered.
 Please refer to the [Live Migration](../../compute/live_migration.md) documentation for more information.
 
 ## Limitations
+- This feature is not supported with [Multus Dynamic networks Controller](https://github.com/k8snetworkplumbingwg/multus-dynamic-networks-controller)
 - Moving to a different CNI type may fail, especially if the new CNI type requires additional configuration.
 - Switching to a new binding type/binding plugin is not supported.
 - Only migratable VMs can be updated as migration cannot be triggered on non migratable VMIs, which have `LiveMigratable`: `False` condition in their status.
