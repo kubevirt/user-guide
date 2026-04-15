@@ -2520,6 +2520,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Notes:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#snapshot-and-restore-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snapshot and restore compatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -3715,6 +3732,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Notes:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#snapshot-and-restore-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snapshot and restore compatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -3851,9 +3885,10 @@ As of v1.0.0, KubeVirt supports using a PVC to persist those files. KubeVirt usu
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMPersistentState</span>
 </code></pre></div></p>
 <h3 id="notes">Notes:<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Backend storage is currently incompatible with VM snapshot. It is planned to add snapshot support in the future.</li>
-</ul>
+<h4 id="snapshot-and-restore-compatibility">Snapshot and restore compatibility<a class="headerlink" href="#snapshot-and-restore-compatibility" title="Permanent link">&para;</a></h4>
+<p>Since KubeVirt v1.4, VirtualMachines that use backend state storage support both online and offline snapshots. These snapshots can be successfully restored as long as they are restored back into the same VirtualMachine.</p>
+<p>Restoring a snapshot into a different VirtualMachine (VM Clone) is not currently supported.</p>
+<p>Support for snapshot-based VM cloning with backend storage is planned to be revisited in a future release.</p>
 <h2 id="tpm-with-persistent-state">TPM with persistent state<a class="headerlink" href="#tpm-with-persistent-state" title="Permanent link">&para;</a></h2>
 <p>Since KubeVirt v0.53.0, a TPM device can be added to a VM (with just <code>tpm: {}</code>). However, the data stored in it does not persist across reboots.<br />
 Support for persistence was added in v1.0.0 using a simple <code>persistent</code> boolean parameter that default to false, to preserve previous behavior.<br />
