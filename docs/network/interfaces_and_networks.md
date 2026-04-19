@@ -557,6 +557,10 @@ spec:
 > **Note:** Placement on dedicated CPUs can only be achieved if the Kubernetes CPU manager is running on the SR-IOV capable workers.
 > For further details please refer to the [dedicated cpu resources documentation](../compute/dedicated-cpu_resources.md/).
 
+#### Live Migration with SR-IOV
+
+VMs using SR-IOV NICs are migratable. During live migration, SR-IOV devices are automatically hot-unplugged from the source VM before migration starts, and then hot-plugged back on the target node after migration completes. This is handled automatically — no manual intervention is needed.
+
 ### passtBinding
 [v1.8.0] - Beta
 
