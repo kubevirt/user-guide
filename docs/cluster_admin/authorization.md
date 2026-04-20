@@ -63,27 +63,171 @@ role across all namespaces.
 With a RoleBinding, users receive the permissions granted by the role
 only within a targeted namespace.
 
-## Extending Kubernetes Default Roles with KubeVirt permissions
+## RBAC Role Aggregation
 
-The aggregated ClusterRole Kubernetes feature facilitates combining
-multiple ClusterRoles into a single aggregated ClusterRole. This feature
-is commonly used to extend the default Kubernetes roles with permissions
-to access custom resources that do not exist in the Kubernetes core.
+KubeVirt uses the Kubernetes
+[aggregated ClusterRoles](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles)
+feature to automatically extend the default Kubernetes roles (`admin`,
+`edit`, `view`) with KubeVirt permissions. This means that by default,
+any user who already has one of these standard Kubernetes roles
+automatically receives the corresponding KubeVirt permissions within
+their namespace, without any additional configuration.
 
-In order to extend the default Kubernetes roles to provide permission to
-access KubeVirt resources, we need to add the following labels to the
-KubeVirt ClusterRoles.
+The mapping between KubeVirt ClusterRoles and Kubernetes default roles
+is:
 
-    kubectl label clusterrole kubevirt.io:admin rbac.authorization.k8s.io/aggregate-to-admin=true
-    kubectl label clusterrole kubevirt.io:edit rbac.authorization.k8s.io/aggregate-to-edit=true
-    kubectl label clusterrole kubevirt.io:view rbac.authorization.k8s.io/aggregate-to-view=true
+| KubeVirt ClusterRole | Aggregates to Kubernetes Role |
+|----------------------|-------------------------------|
+| `kubevirt.io:admin`  | `admin`                       |
+| `kubevirt.io:edit`   | `edit`                        |
+| `kubevirt.io:view`   | `view`                        |
 
-By adding these labels, any user with a RoleBinding or
-ClusterRoleBinding involving one of the default Kubernetes roles will
-automatically gain access to the equivalent KubeVirt roles as well.
+This aggregation is controlled by `aggregate-to-*` labels on the
+KubeVirt ClusterRoles (e.g.
+`rbac.authorization.k8s.io/aggregate-to-admin: "true"`).
 
-More information about aggregated cluster roles can be found
-[here](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles)
+### Controlling Role Aggregation Strategy
+
+> *NOTE* This feature is Alpha and requires the `OptOutRoleAggregation`
+> feature gate. It is available starting from KubeVirt v1.8.
+
+While automatic RBAC aggregation is convenient for many deployments,
+security-conscious environments may require more granular control over
+permissions. KubeVirt provides the `roleAggregationStrategy` field in
+the KubeVirt CR configuration, which allows cluster administrators to
+opt out of automatic aggregation.
+
+The `roleAggregationStrategy` field accepts two values:
+
+- **`AggregateToDefault`** (default): KubeVirt ClusterRoles are
+  aggregated to the default Kubernetes roles. Users with the standard
+  `admin`, `edit`, or `view` roles automatically receive the
+  corresponding KubeVirt permissions. This is the default behavior when
+  the field is not set.
+
+- **`Manual`**: KubeVirt ClusterRoles are **not** aggregated to the
+  default Kubernetes roles. Users must be granted KubeVirt permissions
+  explicitly through dedicated RoleBindings or ClusterRoleBindings.
+
+#### Enabling Manual Role Aggregation
+
+To use the `Manual` strategy, first enable the `OptOutRoleAggregation`
+feature gate, then set `roleAggregationStrategy` to `Manual`:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - OptOutRoleAggregation
+    roleAggregationStrategy: Manual
+```
+
+See [Activating feature gates](activating_feature_gates.md) for more
+details on enabling feature gates.
+
+> *NOTE* Setting `roleAggregationStrategy` to `Manual` without enabling
+> the `OptOutRoleAggregation` feature gate will be rejected by the
+> admission webhook. The value `AggregateToDefault` (or leaving the
+> field unset) does not require the feature gate.
+
+#### Re-enabling Aggregation
+
+To restore the default aggregation behavior, set `roleAggregationStrategy`
+to `AggregateToDefault` or remove the field entirely:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    roleAggregationStrategy: AggregateToDefault
+```
+
+The change takes effect on the next reconciliation cycle without
+requiring a KubeVirt reinstallation.
+
+#### Behavior Summary
+
+| Configuration | Fresh Install | Existing Install |
+|---------------|---------------|------------------|
+| `AggregateToDefault` or unset | ClusterRoles created with aggregate labels | Aggregate labels restored if previously removed |
+| `Manual` (with feature gate) | ClusterRoles created without aggregate labels | Aggregate labels removed from existing ClusterRoles |
+
+#### Granting Permissions with Manual Strategy
+
+When `roleAggregationStrategy` is set to `Manual`, users with the
+standard Kubernetes `admin`, `edit`, or `view` roles will **not**
+automatically receive KubeVirt permissions. Instead, cluster
+administrators must explicitly bind the KubeVirt ClusterRoles to users
+or groups.
+
+**Granting full KubeVirt admin permissions in a single namespace:**
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubevirt-admin
+  namespace: my-namespace
+subjects:
+  - kind: User
+    name: jane
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: kubevirt.io:admin
+  apiGroup: rbac.authorization.k8s.io
+```
+
+**Granting view-only access across all namespaces:**
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kubevirt-viewers
+subjects:
+  - kind: Group
+    name: vm-viewers
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: kubevirt.io:view
+  apiGroup: rbac.authorization.k8s.io
+```
+
+**Granting edit access to a group in a specific namespace:**
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubevirt-editors
+  namespace: dev-team
+subjects:
+  - kind: Group
+    name: developers
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: kubevirt.io:edit
+  apiGroup: rbac.authorization.k8s.io
+```
+
+> *NOTE* Regardless of the `roleAggregationStrategy` setting, all
+> authenticated users retain read access to the KubeVirt CR itself
+> (`get`, `list` on `kubevirts.kubevirt.io`). This is granted by the
+> **kubevirt.io:default** ClusterRole, which is bound to the
+> `system:authenticated` group and is not affected by role aggregation.
 
 ## Creating Custom RBAC Roles
 
@@ -97,7 +241,7 @@ like. A custom RBAC role can be created by reducing the permissions in
 this example role.
 
 ```yaml
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: my-custom-rbac-role
