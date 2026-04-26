@@ -27,10 +27,11 @@ a unique name.
 Each network should declare its type by defining one of the following
 fields:
 
-| Type     | Description                                                                                  |
-|----------|----------------------------------------------------------------------------------------------|
-| `pod`    | Default Kubernetes network                                                                   |
-| `multus` | Secondary network provided using Multus or Primary network when Multus is defined as default |
+| Type            | Description                                                                                  |
+|-----------------|----------------------------------------------------------------------------------------------|
+| `pod`           | Default Kubernetes network                                                                   |
+| `multus`        | Secondary network provided using Multus or Primary network when Multus is defined as default |
+| `resourceClaim` | Secondary network backed by Kubernetes DRA `ResourceClaim` APIs                              |
 
 ### pod
 
@@ -506,6 +507,8 @@ The device is passed through into the guest operating system as a [host
 device](https://libvirt.org/drvnodedev.html), using the
 [vfio](https://www.kernel.org/doc/Documentation/vfio.txt) userspace
 interface, to maintain high networking performance.
+
+For DRA-based SR-IOV configuration (alpha), see [DRA-based SR-IOV for Virtual Machines](./dra_sriov.md).
 
 #### How to expose SR-IOV VFs to KubeVirt
 To simplify procedure, use the [SR-IOV network operator](https://github.com/k8snetworkplumbingwg/sriov-network-operator/blob/v1.4.0/doc/quickstart.md) to deploy
