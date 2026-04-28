@@ -7,9 +7,23 @@ site_dir: site
 plugins:
   - search:
       separator: '[\s\-,:!=\[\]\(\)"/]+|\.(?!\d)'
+  - i18n:
+      docs_structure: folder
+      languages:
+        - locale: en
+          name: English
+          default: true
+          link: /en/
+        - locale: es
+          name: Español
+          link: /es/
+        - locale: zh
+          name: 中文
+          link: /zh/
   - awesome-nav
   - redirects:
       redirect_maps:
+         'index.md': 'welcome.md'
          'operations/customize_components.md': 'cluster_admin/customize_components.md'
          'operations/installation.md': 'cluster_admin/installation.md'
          'operations/updating_and_deletion.md': 'cluster_admin/updating_and_deletion.md'
@@ -132,3 +146,15 @@ theme:
     - navigation.tabs.sticky
     - content.action.view
     - content.action.edit
+
+extra:
+  alternate:
+    - name: English
+      link: ""
+      lang: en
+    - name: Español
+      link: /es/
+      lang: es
+    - name: 中文
+      link: /zh/
+      lang: zh

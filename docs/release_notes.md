@@ -1,4 +1,5 @@
 ---
+title: Release Notes
 hide:
   - navigation
 ---

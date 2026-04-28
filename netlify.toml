@@ -2,9 +2,8 @@
   publish = "./site"
   command = """
 pip install --upgrade pip;
-pip install mkdocs mkdocs-awesome-nav mkdocs-material mkdocs-redirects;
-sed -i 's|site_url: https://kubevirt.io/docs|site_url: https://kubevirt.io/|' /opt/build/repo/mkdocs.yml;
-sed -i 's/docs_dir: docs/docs_dir:/' /opt/build/repo/mkdocs.yml;
+pip install mkdocs mkdocs-awesome-nav mkdocs-material mkdocs-redirects mkdocs-static-i18n;
+bash hack/internationalize.sh /opt/build/repo --netlify;
 echo '*** BEGIN /opt/build/repo/mkdocs.yml ***';
 cat /opt/build/repo/mkdocs.yml;
 echo '*** END /opt/build/repo/mkdocs.yml ***';
