@@ -7,14 +7,27 @@ site_dir: site
 plugins:
   - search:
       separator: '[\s\-,:!=\[\]\(\)"/]+|\.(?!\d)'
-  - awesome-pages
+  - i18n:
+      docs_structure: folder
+      languages:
+        - locale: en
+          name: English
+          default: true
+          link: /en/
+        - locale: es
+          name: Español
+          link: /es/
+        - locale: zh
+          name: 中文
+          link: /zh/
+  - awesome-nav
   - redirects:
       redirect_maps:
+         'index.md': 'welcome.md'
          'operations/customize_components.md': 'cluster_admin/customize_components.md'
          'operations/installation.md': 'cluster_admin/installation.md'
          'operations/updating_and_deletion.md': 'cluster_admin/updating_and_deletion.md'
          'operations/basic_use.md': 'user_workloads/basic_use.md'
-         'operations/customize_components.md': 'cluster_admin/customize_components.md'
          'operations/deploy_common_instancetypes.md': 'user_workloads/deploy_common_instancetypes.md'
          'operations/api_validation.md': 'cluster_admin/api_validation.md'
          'operations/debug.md': 'debug_virt_stack/debug.md'
@@ -98,8 +111,8 @@ markdown_extensions:
   - pymdownx.superfences
   - attr_list
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_css:
   - stylesheets/extra.css
@@ -132,3 +145,15 @@ theme:
     - navigation.tabs.sticky
     - content.action.view
     - content.action.edit
+
+extra:
+  alternate:
+    - name: English
+      link: ""
+      lang: en
+    - name: Español
+      link: /es/
+      lang: es
+    - name: 中文
+      link: /zh/
+      lang: zh

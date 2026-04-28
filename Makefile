@@ -114,7 +114,7 @@ build: envvar
 	@echo "${GREEN}Makefile: Build mkdocs site${RESET}"
 	$(PYTHON) -m venv /tmp/venv
 	. /tmp/venv/bin/activate
-	$(PIP) install mkdocs mkdocs-awesome-pages-plugin mkdocs-htmlproofer-plugin mkdocs-material mkdocs-redirects
+	$(PIP) install mkdocs mkdocs-awesome-nav mkdocs-htmlproofer-plugin mkdocs-material mkdocs-redirects mkdocs-static-i18n
 	@echo
 	@echo '*** BEGIN cat mkdocs.yml ***'
 	@cat mkdocs.yml
@@ -210,6 +210,24 @@ run: | envvar stop
 		--mount type=tmpfs,destination=/srv/site \
 		${IMGTAG} \
 		/bin/bash -c "mkdocs build -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
+	@echo
+	@echo "${AQUA}Makefile: Server now running at [http://localhost:$(LOCAL_SERVER_PORT)]${RESET}"
+	@echo
+
+
+## Run site with translation.  App available @ http://0.0.0.0:8000
+run_i18n: | envvar stop
+	@echo "${GREEN}Makefile: Run site with translations${RESET}"
+	${CONTAINER_ENGINE} run \
+		-d \
+		--name userguide \
+		-p ${LOCAL_SERVER_PORT}:8000 \
+		-v ${PWD}:/srv/source:ro${SELINUX_ENABLED} \
+		-v /dev/null:/srv/Gemfile.lock:ro \
+		--mount type=tmpfs,destination=/srv/site \
+		--mount type=tmpfs,destination=/srv/docs \
+		${IMGTAG} \
+		/bin/bash -c "cp -r /srv/source/. /srv/ && /srv/hack/internationalize.sh /srv && mkdocs build -v -f /srv/mkdocs.yml && mkdocs serve -f /srv/mkdocs.yml -a 0.0.0.0:8000"
 	@echo
 	@echo "${AQUA}Makefile: Server now running at [http://localhost:$(LOCAL_SERVER_PORT)]${RESET}"
 	@echo

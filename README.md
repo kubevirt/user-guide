@@ -14,9 +14,9 @@ We more than welcome contributions to KubeVirt documentation. Please reach out i
 
 You can find the markdown that powers the user guide in `./docs`, most commits are to that area.
 
-We use [mkdocs](https://www.mkdocs.org/) markdown engine with [mkdocs-awesome-pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin/) plugin
+We use [mkdocs](https://www.mkdocs.org/) markdown engine with [mkdocs-awesome-nav](https://github.com/lukasgeiter/mkdocs-awesome-nav) plugin
   - mkdocs config file
-  - Each subdirectory of `./docs` contains a `.pages` file.  We use this to force the ordering of pages.  Alphabetical ordering is not ideal for technical documentation.
+  - Each subdirectory of `./docs` contains a `.nav.yml` file.  We use this to force the ordering of pages.  Alphabetical ordering is not ideal for technical documentation.
 
 #### Sign your commits
 
@@ -124,6 +124,12 @@ Targets:
 * stop: Stop container and app
 
 * stop_yaspeller: Sometimes yaspeller goes bonkers.  Stop it here.
+
+## Internationalization (i18n)
+
+The user guide supports multiple languages via the [mkdocs-static-i18n](https://github.com/ultrabug/mkdocs-static-i18n) plugin. Translations live in `i18n/<locale>/` and are built on versioned branches. Use `make run_i18n` to preview the site with translation support locally.
+
+See [I18N.md](I18N.md) for full details on the translation workflow and how to add new languages.
 
 ## Getting help
 
