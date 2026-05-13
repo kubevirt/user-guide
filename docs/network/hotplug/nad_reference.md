@@ -3,7 +3,7 @@
 Release:
 
 - v1.8.0: Beta
-- v1.9.0: GA (planned)
+- v1.9.0: GA
 
 KubeVirt supports updating the NetworkAttachmentDefinition (NAD) reference on a running Virtual Machine (VM) without requiring a reboot.
 This allows the user to change the network a VM is connected to by modifying the `networkName` field and waiting for a live migration of the VMI.
@@ -15,7 +15,7 @@ This feature is useful when a VM needs to be moved between networks (e.g., diffe
 To use this feature, the following requirements must be met:
 
 - The VM must be live-migratable
-- The `LiveUpdateNADRef` [feature-gate](https://kubevirt.io/user-guide/operations/activating_feature_gates/#how-to-activate-a-feature-gate) must be enabled (for v1.8 Beta release)
+- The `LiveUpdateNADRef` [feature-gate](https://kubevirt.io/user-guide/operations/activating_feature_gates/#how-to-activate-a-feature-gate) must be enabled (only required for v1.8)
 - The target NetworkAttachmentDefinition must exist
 
 ## Process of updating NAD Reference on a Running VM
