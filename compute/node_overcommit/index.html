@@ -4008,8 +4008,14 @@ for more details). The same eviction rules like for Pods apply to the
 VMI in case the node gets under memory pressure.</p>
 <p>Implicit memory overcommit is disabled by default. This means that when
 memory request is not specified, it is set to match
-<code>spec.domain.memory.guest</code>. However, it can be enabled using
-<code>spec.configuration.developerConfiguration.memoryOvercommit</code> in the <code>kubevirt</code> CR. For example, by setting
+<code>spec.domain.memory.guest</code>. However, it can be enabled using</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nn">...</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">memoryOvercommit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150</span>
+</code></pre></div>
+<p>in the <code>kubevirt</code> CR. For example, by setting
 <code>memoryOvercommit: "150"</code> we define that when memory request is not
 explicitly set, it will be implicitly set to achieve memory overcommit
 of 150%. For instance, when <code>spec.domain.memory.guest: 3072M</code>, memory
@@ -4131,11 +4137,11 @@ for the POD.</p>
 <a href="https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/">More Information</a></p>
 </blockquote>
 <p>Administrators can change this ratio by updating the KubeVirt CR</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nn">...</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">cpuAllocationRatio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nn">...</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="nt">cpuAllocationRatio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 </code></pre></div>
 
 
