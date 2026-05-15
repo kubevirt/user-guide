@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/network/networkpolicy/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/storage/csi_overlay/">
       
       
-        <link rel="prev" href="../network_binding_plugins/">
+        <link rel="prev" href="../containerized_data_importer/">
       
       
-        <link rel="next" href="../service_objects/">
+        <link rel="next" href="../disks_and_volumes/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>NetworkPolicy - KubeVirt user guide</title>
+        <title>CSI Overlay for VM State PVCs - KubeVirt user guide</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#networkpolicy" class="md-skip">
+        <a href="#csi-overlay-for-vm-state-pvcs" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              NetworkPolicy
+              CSI Overlay for VM State PVCs
             
           </span>
         </div>
@@ -323,13 +323,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../dns/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../network/dns/" class="md-tabs__link">
           
   
   
@@ -345,11 +343,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../storage/clone_api/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../clone_api/" class="md-tabs__link">
           
   
   
@@ -2607,31 +2607,26 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
         
           
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   
@@ -2649,7 +2644,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2667,7 +2662,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dns/" class="md-nav__link">
+      <a href="../../network/dns/" class="md-nav__link">
         
   
   
@@ -2695,7 +2690,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../interfaces_and_networks/" class="md-nav__link">
+      <a href="../../network/interfaces_and_networks/" class="md-nav__link">
         
   
   
@@ -2723,7 +2718,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../istio_service_mesh/" class="md-nav__link">
+      <a href="../../network/istio_service_mesh/" class="md-nav__link">
         
   
   
@@ -2751,7 +2746,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../network_binding_plugins/" class="md-nav__link">
+      <a href="../../network/network_binding_plugins/" class="md-nav__link">
         
   
   
@@ -2776,37 +2771,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    NetworkPolicy
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../network/networkpolicy/" class="md-nav__link">
         
   
   
@@ -2822,70 +2790,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#create-networkpolicy-to-deny-all-traffic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create NetworkPolicy to Deny All Traffic
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-networkpolicy-to-only-accept-connections-from-vmis-within-namespaces" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create NetworkPolicy to only Accept connections from vmis within namespaces
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-networkpolicy-to-only-allow-http-and-https-traffic" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create NetworkPolicy to only allow HTTP and HTTPS traffic
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-networkpolicy-to-deny-traffic-by-labels" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create NetworkPolicy to deny traffic by labels
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2898,7 +2802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../service_objects/" class="md-nav__link">
+      <a href="../../network/service_objects/" class="md-nav__link">
         
   
   
@@ -2932,20 +2836,17 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_7" >
         
           
-          <label class="md-nav__link" for="__nav_7_7" id="__nav_7_7_label" tabindex="">
+          <label class="md-nav__link" for="__nav_7_7" id="__nav_7_7_label" tabindex="0">
             
   
   
@@ -2981,7 +2882,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../hotplug/interfaces/" class="md-nav__link">
+      <a href="../../network/hotplug/interfaces/" class="md-nav__link">
         
   
   
@@ -3009,7 +2910,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../hotplug/nad_reference/" class="md-nav__link">
+      <a href="../../network/hotplug/nad_reference/" class="md-nav__link">
         
   
   
@@ -3049,26 +2950,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
             
   
   
@@ -3086,7 +2992,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             
@@ -3104,7 +3010,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/clone_api/" class="md-nav__link">
+      <a href="../clone_api/" class="md-nav__link">
         
   
   
@@ -3132,7 +3038,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/containerized_data_importer/" class="md-nav__link">
+      <a href="../containerized_data_importer/" class="md-nav__link">
         
   
   
@@ -3157,10 +3063,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../storage/csi_overlay/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CSI Overlay for VM State PVCs
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -3176,6 +3109,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-hpp-operator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploy HPP Operator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-the-hpp-custom-resource-cr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deploy the HPP Custom Resource (CR)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modify-kubevirt-cr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modify KubeVirt CR
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snapshot-restore-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snapshot / Restore support
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -3188,7 +3185,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/disks_and_volumes/" class="md-nav__link">
+      <a href="../disks_and_volumes/" class="md-nav__link">
         
   
   
@@ -3216,7 +3213,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/export_api/" class="md-nav__link">
+      <a href="../export_api/" class="md-nav__link">
         
   
   
@@ -3244,7 +3241,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/guestfs/" class="md-nav__link">
+      <a href="../guestfs/" class="md-nav__link">
         
   
   
@@ -3272,7 +3269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/hotplug_volumes/" class="md-nav__link">
+      <a href="../hotplug_volumes/" class="md-nav__link">
         
   
   
@@ -3300,7 +3297,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/migration_controller/" class="md-nav__link">
+      <a href="../migration_controller/" class="md-nav__link">
         
   
   
@@ -3328,7 +3325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/snapshot_restore_api/" class="md-nav__link">
+      <a href="../snapshot_restore_api/" class="md-nav__link">
         
   
   
@@ -3356,7 +3353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/volume_migration/" class="md-nav__link">
+      <a href="../volume_migration/" class="md-nav__link">
         
   
   
@@ -3692,10 +3689,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#create-networkpolicy-to-deny-all-traffic" class="md-nav__link">
+  <a href="#deploy-hpp-operator" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Create NetworkPolicy to Deny All Traffic
+        Deploy HPP Operator
       
     </span>
   </a>
@@ -3703,10 +3700,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-networkpolicy-to-only-accept-connections-from-vmis-within-namespaces" class="md-nav__link">
+  <a href="#deploy-the-hpp-custom-resource-cr" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Create NetworkPolicy to only Accept connections from vmis within namespaces
+        Deploy the HPP Custom Resource (CR)
       
     </span>
   </a>
@@ -3714,10 +3711,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-networkpolicy-to-only-allow-http-and-https-traffic" class="md-nav__link">
+  <a href="#modify-kubevirt-cr" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Create NetworkPolicy to only allow HTTP and HTTPS traffic
+        Modify KubeVirt CR
       
     </span>
   </a>
@@ -3725,10 +3722,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-networkpolicy-to-deny-traffic-by-labels" class="md-nav__link">
+  <a href="#snapshot-restore-support" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Create NetworkPolicy to deny traffic by labels
+        Snapshot / Restore support
       
     </span>
   </a>
@@ -3752,7 +3749,7 @@
 
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/network/networkpolicy.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/storage/csi_overlay.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -3761,81 +3758,110 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/network/networkpolicy.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/storage/csi_overlay.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="networkpolicy">NetworkPolicy<a class="headerlink" href="#networkpolicy" title="Permanent link">&para;</a></h1>
-<p>Before creating NetworkPolicy objects, make sure you are using a
-networking solution which supports NetworkPolicy. Network isolation is
-controlled entirely by NetworkPolicy objects. By default, all vmis in a
-namespace are accessible from other vmis and network endpoints. To
-isolate one or more vmis in a project, you can create NetworkPolicy
-objects in that namespace to indicate the allowed incoming connections.</p>
-<blockquote>
-<p>Note: vmis and pods are treated equally by network policies, since
-labels are passed through to the pods which contain the running vmi.
-With other words, labels on vmis can be matched by <code>spec.podSelector</code>
-on the policy.</p>
-</blockquote>
-<h2 id="create-networkpolicy-to-deny-all-traffic">Create NetworkPolicy to Deny All Traffic<a class="headerlink" href="#create-networkpolicy-to-deny-all-traffic" title="Permanent link">&para;</a></h2>
-<p>To make a project "deny by default" add a NetworkPolicy object that
-matches all vmis but accepts no traffic.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkPolicy</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deny-by-default</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">ingress</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<h1 id="csi-overlay-for-vm-state-pvcs">CSI Overlay for VM State PVCs<a class="headerlink" href="#csi-overlay-for-vm-state-pvcs" title="Permanent link">&para;</a></h1>
+<p>The VM State PVC was originally introduced to provide persistent storage for VMs that require the use of TPM or EFI devices: </p>
+<ul>
+<li><code>spec.domain.devices.tpm.persistent: true</code></li>
+<li><code>spec.domain.devices.efi.persistent: true</code></li>
+</ul>
+<p>VM State PVCs currently only need to store a small amount of data, on the order of ~10MB. However, many storage providers require a minimum size requirement for PVCs varying from 1GB up to 50GB. When this requirement is applied across all VMs in the cluster, you end up with a lot of wasted storage in these VM State PVCs which can cause you to reach your storage and platform limits much faster.</p>
+<p>The solution to this is to deploy a modified version of the Hostpath Provisioner (HPP) that will be "overlayed" atop a RWX Filesystem capable storage provider (such as NFS). </p>
+<p>We can achieve this overlay by leveraging HPP's <a href="https://github.com/kubevirt/hostpath-provisioner-operator?tab=readme-ov-file#custom-resource-with-pvctemplate-storage-pool">PVCTemplate storage pool</a>. This allows us to define a storage pool that uses a single RWX shared PVC. The underlying storage provider will create the RWX PVC at a network share location and the HPP operator will mount this volume on each node in the cluster. 
+Once the storage pool is set up, any new volumes using this setup will be provisioned by HPP and the resulting PVC will be created as a directory on top of the network share allowing it to be accessed on any node.</p>
+<p>This allows VM State PVCs to bypass the minimum PVC size requirements imposed by some storage provisioners and eliminates the need to recreate these PVCs during a VM migration.</p>
+<p>Below are the steps to deploy and configure this CSI Overlay.</p>
+<h2 id="deploy-hpp-operator">Deploy HPP Operator<a class="headerlink" href="#deploy-hpp-operator" title="Permanent link">&para;</a></h2>
+<p>The hostpath provisioner operator requires <a href="https://github.com/cert-manager/cert-manager">cert manager</a> to be installed before deploying the operator. This is because the operator has a validating webhook that verifies the contents of the CR are valid. Before deploying the operator, you need to install cert manager:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml
 </code></pre></div>
-<h2 id="create-networkpolicy-to-only-accept-connections-from-vmis-within-namespaces">Create NetworkPolicy to only Accept connections from vmis within namespaces<a class="headerlink" href="#create-networkpolicy-to-only-accept-connections-from-vmis-within-namespaces" title="Permanent link">&para;</a></h2>
-<p>To make vmis accept connections from other vmis in the same namespace,
-but reject all other connections from vmis in other namespaces:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkPolicy</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">allow-same-namespace</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">ingress</span><span class="p">:</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">from</span><span class="p">:</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<p>Ensure cert manager is fully operational
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Available<span class="w"> </span>-n<span class="w"> </span>cert-manager<span class="w"> </span>--timeout<span class="o">=</span>120s<span class="w"> </span>--all<span class="w"> </span>deployments
+</code></pre></div></p>
+<p>Next, create the hostpath provisioner namespace:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubevirt/hostpath-provisioner-operator/releases/latest/download/namespace.yaml
+</code></pre></div></p>
+<p>Now deploy the webhook
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubevirt/hostpath-provisioner-operator/releases/latest/download/webhook.yaml<span class="w"> </span>-n<span class="w"> </span>hostpath-provisioner
+</code></pre></div></p>
+<p>Then create the operator
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubevirt/hostpath-provisioner-operator/releases/latest/download/operator.yaml<span class="w"> </span>-n<span class="w"> </span>hostpath-provisioner
+</code></pre></div></p>
+<p>Wait for operator to be ready
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>-n<span class="w"> </span>hostpath-provisioner<span class="w"> </span>deployment/hostpath-provisioner-operator<span class="w"> </span>--timeout<span class="o">=</span>120s
+</code></pre></div></p>
+<h2 id="deploy-the-hpp-custom-resource-cr">Deploy the HPP Custom Resource (CR)<a class="headerlink" href="#deploy-the-hpp-custom-resource-cr" title="Permanent link">&para;</a></h2>
+<p>Now that the operator is installed, we need to deploy the hostpath provisioner CR to indicate we want to use the provisioner as a storage overlay solution.</p>
+<p>We can do so by configuring the <code>storagePool</code> to use a <code>pvcTemplate</code> which defines a RWX PVC.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The operator will only deploy and configure the overlay resources when the <code>pvcTemplate.accessModes</code> is set to <code>ReadWriteMany</code> in the <code>storagePool</code> definition </p>
+</div>
+<p>When the HPP Operator sees the storage pool configured this way, it will mount the RWX volume to each node in the cluster and will then create a new <code>StorageClass</code> that will provision new volumes from that storage pool. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can define the name of the new storage class by setting the optional <code>overlayClassName</code> field in the <code>storagePool</code> definition. If none is provided the default name will be <code>hpp-overlay</code>.</p>
+</div>
+<p>Now when any new PVCs are configured to use this new storage class, their volumes will be created as new directories within the network share. (for this example at <code>/nfs-vol</code>)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cat<span class="w"> </span><span class="s">&lt;&lt;- END | kubectl apply -n hostpath-provisioner -f -</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="s">apiVersion: hostpathprovisioner.kubevirt.io/v1beta1</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="s">kind: HostPathProvisioner</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s">metadata:</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s">  name: hostpath-provisioner</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="s">spec:</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="s">  featureGates: </span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="s">    - &quot;Snapshotting&quot;</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="s">  imagePullPolicy: IfNotPresent</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="s">  storagePools:</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="s">    - name: &quot;nfs-backend&quot;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="s">      path: &quot;/nfs-vol&quot;</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="s">      snapshotProvider: &quot;reflink&quot;</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="s">      overlayClassName: &quot;hpp-overlay&quot;</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="s">      pvcTemplate:</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="s">        accessModes:</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="s">          - ReadWriteMany</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="s">        storageClassName: &quot;nfs-csi&quot;</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="s">        resources:</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="s">          requests:</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="s">            storage: 10Gi</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="s">  workload:</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="s">    nodeSelector:</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="s">      kubernetes.io/os: linux</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="s">END</span>
 </code></pre></div>
-<h2 id="create-networkpolicy-to-only-allow-http-and-https-traffic">Create NetworkPolicy to only allow HTTP and HTTPS traffic<a class="headerlink" href="#create-networkpolicy-to-only-allow-http-and-https-traffic" title="Permanent link">&para;</a></h2>
-<p>To enable only HTTP and HTTPS access to the vmis, add a NetworkPolicy
-object similar to:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkPolicy</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">allow-http-https</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">ingress</span><span class="p">:</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8443</span>
+<p>Wait for hotpath provisioner to be available
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>hostpathprovisioners.hostpathprovisioner.kubevirt.io/hostpath-provisioner<span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Available<span class="w"> </span>--timeout<span class="o">=</span>480s
+</code></pre></div></p>
+<h2 id="modify-kubevirt-cr">Modify KubeVirt CR<a class="headerlink" href="#modify-kubevirt-cr" title="Permanent link">&para;</a></h2>
+<p>Once our modified HPP CR is deployed and our new overlay storage class is created, we need to set the <code>vmStateStorageClass</code> config variable within the KubeVirt CR to use this new overlay storage class. Now any new VMs that require a VM State PVC will employ this new overlay CSI technique.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl<span class="w"> </span>edit<span class="w"> </span>kubevirt<span class="w"> </span>-n<span class="w"> </span>kubevirt
 </code></pre></div>
-<h2 id="create-networkpolicy-to-deny-traffic-by-labels">Create NetworkPolicy to deny traffic by labels<a class="headerlink" href="#create-networkpolicy-to-deny-traffic-by-labels" title="Permanent link">&para;</a></h2>
-<p>To make one specific vmi with a label <code>type: test</code> to reject all traffic
-from other vmis, create:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkPolicy</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deny-by-label</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">podSelector</span><span class="p">:</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="nt">ingress</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VMPersistentState</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span><span class="nt">vmStateStorageClass</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hpp-overlay</span><span class="w">  </span><span class="c1"># NOTE! this name needs to match with newly created overlay storage class .</span>
 </code></pre></div>
-<p>Kubernetes NetworkPolicy Documentation can be found here: <a href="https://kubernetes.io/docs/concepts/services-networking/network-policies/">Kubernetes
-NetworkPolicy</a></p>
+<h2 id="snapshot-restore-support">Snapshot / Restore support<a class="headerlink" href="#snapshot-restore-support" title="Permanent link">&para;</a></h2>
+<p>In order to take snapshots of VMs that use this CSI Overlay for their VM State PVCs, you must deploy a <code>volumesnapshotclass</code> to your cluster.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The below snapshotclass is set up to point to storagepool named "nfs-backend" which is defined in the example CR above.</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>https://github.com/kubevirt/hostpath-provisioner-operator/releases/latest/download/volumesnapshotclass.yaml
+</code></pre></div>
 
 
 
@@ -3865,7 +3891,7 @@ NetworkPolicy</a></p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../network_binding_plugins/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Network Binding Plugins">
+          <a href="../containerized_data_importer/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Containerized Data Importer">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3875,20 +3901,20 @@ NetworkPolicy</a></p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Network Binding Plugins
+                Containerized Data Importer
               </div>
             </div>
           </a>
         
         
           
-          <a href="../service_objects/" class="md-footer__link md-footer__link--next" aria-label="Next: Service objects">
+          <a href="../disks_and_volumes/" class="md-footer__link md-footer__link--next" aria-label="Next: Filesystems, Disks and Volumes">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Service objects
+                Filesystems, Disks and Volumes
               </div>
             </div>
             <div class="md-footer__button md-icon">
