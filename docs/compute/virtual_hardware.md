@@ -740,6 +740,11 @@ overhead will be calculated and added to the requested memory.
 The default memory overhead has been set to 32Mi to account for these
 additional system resources.
 
+When the `VmiMemoryOverheadReport` feature gate is enabled, the overhead
+applied to a running VMI is reported in
+`status.memory.memoryOverhead`. See [Viewing memory
+overhead](../compute/resources_requests_and_limits.md#viewing-memory-overhead).
+
 Please see [how Pods with resource requests are
 scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled)
 for additional information on resource requests and limits.
