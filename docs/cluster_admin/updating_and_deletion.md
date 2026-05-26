@@ -6,7 +6,22 @@ Zero downtime rolling updates are supported starting with release
 `v0.17.0` onward. Updating from any release prior to the KubeVirt
 `v0.17.0` release is not supported.
 
-> Note: Updating is only supported from N-1 to N release.
+!!! note "Supported Upgrade Paths"
+    Updating is only supported from N-1 to N release:
+
+    **Upgrading between minor versions:**
+
+    - Upgrade from the latest patch version of one minor version to the latest patch version of the next minor version
+    - Example: if latest 1.7 is v1.7.6 and latest 1.6 is v1.6.4
+        - ✓ Upgrade from v1.6.4 to v1.7.6 is supported
+        - ✗ Upgrade from v1.6.2 to v1.7.6 is not supported
+        - ✗ Upgrade from v1.5.z to v1.7.6 is not supported
+
+    **Upgrading within the same minor version:**
+
+    - Example: if latest 1.6 is v1.6.4 
+        - ✓ Upgrade from v1.6.3 to v1.6.4 is supported
+        - ✗ Upgrade from v1.6.2 to v1.6.4 is not supported
 
 Updates are triggered one of two ways.
 
