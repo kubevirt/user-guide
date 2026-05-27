@@ -1,6 +1,6 @@
 # Launch QEMU with gdb and connect locally with gdb client
 
-This guide is for cases where QEMU counters very early failures and it is hard to synchronize it in a later point in time.
+This guide is for cases where QEMU encounters very early failures and it is hard to synchronize it at a later point in time.
 
 ## Image creation and PVC population
 
@@ -35,13 +35,13 @@ RUN chown 107:107 ${DIR}/wrap_qemu_gdb.sh
 RUN chown 107:107 ${DIR}/logs
 ```
 
-Then, we can create and populate the `debug-tools` PVC as with did in the [strace example](../debug_virt_stack/launch-qemu-strace.md):
+Then, we can create and populate the `debug-tools` PVC as we did in the [strace example](../debug_virt_stack/launch-qemu-strace.md):
 ```console
 $ k apply -f debug-tools-pvc.yaml
 persistentvolumeclaim/debug-tools created
 $ kubectl  apply -f populate-job-pvc.yaml
 job.batch/populate-pvc created
-$ $ kubectl  get jobs
+$ kubectl  get jobs
 NAME           COMPLETIONS   DURATION   AGE
 populate-pvc   1/1           7s         2m12s
 ```
@@ -142,7 +142,7 @@ virt-launcher-vmi-debug-tools-tfh28   4/4     Running     0          25s
 ```
 
 
-The wrapping script starts the `gdbserver` and expose in the port `1234` inside the container. In order to be able to connect remotely to the gdbserver, we can use the command `kubectl port-forward` to expose the gdb port on our machine.
+The wrapping script starts the `gdbserver` and exposes port `1234` inside the container. In order to be able to connect remotely to the gdbserver, we can use the command `kubectl port-forward` to expose the gdb port on our machine.
 
 ```console
 $ kubectl  port-forward virt-launcher-vmi-debug-tools-tfh28 1234
@@ -151,7 +151,7 @@ Forwarding from [::1]:1234 -> 1234
 
 ```
 
-Finally, we can start the gbd client in the container:
+Finally, we can start the gdb client in the container:
 ```console
 $ podman run -ti --network host gdb-client:latest
 $ gdb /usr/libexec/qemu-kvm -ex 'target remote localhost:1234'
