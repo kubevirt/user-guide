@@ -3754,7 +3754,7 @@
 
 
 <h1 id="launch-qemu-with-gdb-and-connect-locally-with-gdb-client">Launch QEMU with gdb and connect locally with gdb client<a class="headerlink" href="#launch-qemu-with-gdb-and-connect-locally-with-gdb-client" title="Permanent link">&para;</a></h1>
-<p>This guide is for cases where QEMU counters very early failures and it is hard to synchronize it in a later point in time.</p>
+<p>This guide is for cases where QEMU encounters very early failures and it is hard to synchronize it at a later point in time.</p>
 <h2 id="image-creation-and-pvc-population">Image creation and PVC population<a class="headerlink" href="#image-creation-and-pvc-population" title="Permanent link">&para;</a></h2>
 <p>This scenario is a slight variation of the <a href="../launch-qemu-strace/">guide about starting strace</a>, hence some of the details on the image build and the PVC population are simply skipped and explained in the other section.</p>
 <p>In this example, QEMU will be launched with <a href="https://man7.org/linux/man-pages/man1/gdbserver.1.html"><code>gdbserver</code></a> and later we will connect to it using a local <code>gdb</code> client.</p>
@@ -3780,12 +3780,12 @@
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">RUN</span><span class="w"> </span>chown<span class="w"> </span><span class="m">107</span>:107<span class="w"> </span><span class="si">${</span><span class="nv">DIR</span><span class="si">}</span>/wrap_qemu_gdb.sh
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="k">RUN</span><span class="w"> </span>chown<span class="w"> </span><span class="m">107</span>:107<span class="w"> </span><span class="si">${</span><span class="nv">DIR</span><span class="si">}</span>/logs
 </code></pre></div></p>
-<p>Then, we can create and populate the <code>debug-tools</code> PVC as with did in the <a href="../launch-qemu-strace/">strace example</a>:
+<p>Then, we can create and populate the <code>debug-tools</code> PVC as we did in the <a href="../launch-qemu-strace/">strace example</a>:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gp">$ </span>k<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>debug-tools-pvc.yaml
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="go">persistentvolumeclaim/debug-tools created</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="gp">$ </span>kubectl<span class="w">  </span>apply<span class="w"> </span>-f<span class="w"> </span>populate-job-pvc.yaml
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="go">job.batch/populate-pvc created</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="gp">$ </span>$<span class="w"> </span>kubectl<span class="w">  </span>get<span class="w"> </span><span class="nb">jobs</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="gp">$ </span>kubectl<span class="w">  </span>get<span class="w"> </span><span class="nb">jobs</span>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="go">NAME           COMPLETIONS   DURATION   AGE</span>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="go">populate-pvc   1/1           7s         2m12s</span>
 </code></pre></div></p>
@@ -3868,12 +3868,12 @@
 <a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="go">populate-pvc-dnxld                    0/1     Completed   0          4m17s</span>
 <a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="go">virt-launcher-vmi-debug-tools-tfh28   4/4     Running     0          25s</span>
 </code></pre></div></p>
-<p>The wrapping script starts the <code>gdbserver</code> and expose in the port <code>1234</code> inside the container. In order to be able to connect remotely to the gdbserver, we can use the command <code>kubectl port-forward</code> to expose the gdb port on our machine.</p>
+<p>The wrapping script starts the <code>gdbserver</code> and exposes port <code>1234</code> inside the container. In order to be able to connect remotely to the gdbserver, we can use the command <code>kubectl port-forward</code> to expose the gdb port on our machine.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="gp">$ </span>kubectl<span class="w">  </span>port-forward<span class="w"> </span>virt-launcher-vmi-debug-tools-tfh28<span class="w"> </span><span class="m">1234</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="go">Forwarding from 127.0.0.1:1234 -&gt; 1234</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="go">Forwarding from [::1]:1234 -&gt; 1234</span>
 </code></pre></div>
-<p>Finally, we can start the gbd client in the container:
+<p>Finally, we can start the gdb client in the container:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="gp">$ </span>podman<span class="w"> </span>run<span class="w"> </span>-ti<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>gdb-client:latest
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="gp">$ </span>gdb<span class="w"> </span>/usr/libexec/qemu-kvm<span class="w"> </span>-ex<span class="w"> </span><span class="s1">&#39;target remote localhost:1234&#39;</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="go">GNU gdb (GDB) Red Hat Enterprise Linux 10.2-12.el9</span>
