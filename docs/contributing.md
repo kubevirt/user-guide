@@ -17,9 +17,9 @@ Reviewing the following will prepare you for contributing:
 * You should be comfortable with Git. Most contributions follow the GitHub workflow of fork, branch, commit, open pull request, review changes, and merge to work effectively in the KubeVirt community.  If you're new to git, [git-scm.com](https://git-scm.com/doc) has a nice set of tutorials.
 * Familiarize yourself with the various repositories of the [KubeVirt](https://github.com/kubevirt) GitHub organization.
 * Try one of our [quick start labs](https://kubevirt.io/user-guide/) on [killercoda](https://killercoda.com/kubevirt), [minikube](https://kubevirt.io/quickstart_minikube/), or [kind](https://kubevirt.io/quickstart_kind/).
-* See the "Other ways to contribute" section below.
+* See the [Other ways to contribute](#other-ways-to-contribute) section below.
 
-For code contributors:
+Other contributor guides for code contributors:
 
 * You need to be familiar with writing code in golang.  See the [golang tour](https://tour.golang.org/welcome/1) to familiarize yourself.
 * To contribute to the core of the project, read the Developer [contribution page](https://github.com/kubevirt/kubevirt/blob/main/CONTRIBUTING.md) and the [getting started page](https://github.com/kubevirt/kubevirt/blob/main/docs/getting-started.md) in the kubevirt/kubevirt repo.
@@ -27,10 +27,30 @@ For code contributors:
 
 ## Your first contribution
 
-The following will help you decide where to start:
+Not sure where to start? Here are some open issues in suggested repos. Look for any labeled 'good-first-issue', which are triaged to help new contributors:
 
-* Check a repository's issues list and label `good-first-issue` for issues that make good entry points.
-* Review a pull request from other community members for accuracy and language.
+### Documentation and community repositories
+
+These repositories have low barriers to entry and are great for first contributions. You don't need to be a Go developer to contribute here:
+
+* **[user-guide](https://github.com/kubevirt/user-guide/issues)**: The documentation you're reading now. Fixes to typos, unclear explanations, or missing feature docs are always welcome.
+* **[kubevirt.github.io](https://github.com/kubevirt/kubevirt.github.io/issues)**: The KubeVirt website. You can contribute blog posts, case studies, or labs.
+* **[community](https://github.com/kubevirt/community/issues)**: Governance and community documents.
+
+### Code repositories
+
+These are our two largest and most popular repos. Both require Go knowledge and familiarity with Kubernetes:
+
+* **[kubevirt](https://github.com/kubevirt/kubevirt/issues)**: The core KubeVirt project.
+* **[containerized-data-importer](https://github.com/kubevirt/containerized-data-importer/issues)** (CDI): The storage management add-on.
+
+
+
+### Other ways to get started
+
+* Review an open pull request for accuracy and language : useful feedback doesn't require deep code knowledge.
+* Watch the [New Contributor session recording](https://www.youtube.com/playlist?list=PLnLpXX8KHIYw1nDm8BLpg1SyETGcH93yl) for a walkthrough of how the project works and how to make your first contribution.
+* Open an issue/bug if you see an error, typo, or area that could be improved for clarity.
 
 ## Important community resources
 
@@ -43,6 +63,6 @@ You should familiarize yourself with the following documents, which are critical
 
 ## Other ways to contribute
 
-* Visit the KubeVirt [community page](https://kubevirt.io/community/), participate on Twitter or Slack, learn about local meetups and events.
+* Visit the KubeVirt [community page](https://kubevirt.io/community/), participate on Slack or follow us on our socials (Blue Sky, Mastodon, and Twitter/X); learn about local meetups and events.
 * Visit the KubeVirt [website repository](https://github.com/kubevirt/kubevirt.github.io) and submit a blog post, case study or lab.
 * Visit the KubeVirt [user-guide repository](https://github.com/kubevirt/user-guide) and find feature documentation that could use an update.
