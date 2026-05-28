@@ -1444,7 +1444,7 @@ spec:
   domain:
     ioThreadsPolicy: supplementalPool
     ioThreads:
-      count: 4
+      supplementalPoolThreadCount: 4
 ```
 
 In the case the dedicatedCpuPlacement is set to `true`, then the pod uses
