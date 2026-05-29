@@ -264,6 +264,7 @@ the VM the guest executes on). There are many reasons for migrations to fail con
 high dirty-rate or low resources like network bandwidth and CPU. On such scenarios, see the following
 alternative strategies below.
 
+For virtual machines that explicitly set resource limits, multithreaded migration is disabled and single-threaded migration will be used instead.
 ### Post-copy
 The way post-copy migrations work is as following:
 
