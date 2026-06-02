@@ -478,56 +478,14 @@ VMI density per node, since no memory needs to be reserved for video.
 
 #### Custom Video Device Types
 
-With the `VideoConfig` feature gate enabled, it is possible to configure
-custom video device types to override the default video configuration.
-This allows you to specify video device types such as `virtio`, `vga`, or
-`bochs` depending on your guest operating system requirements and
-performance needs.
-
-**Note**: As of KubeVirt 1.6, the `VideoConfig` feature gate is currently in **alpha** status
-and is **disabled by default**. As an alpha feature:
-- It must be explicitly enabled to use custom video device configuration
-
-##### Enabling VideoConfig Feature Gate
-
-To enable custom video device configuration, the `VideoConfig` feature
-gate must be activated in the KubeVirt CR.
-
-**For HCO users**: As of version 1.15.2, HCO support for VideoConfig feature gate is not yet 
-available. It will be supported in a future release.
-
-<!-- TODO: Update with HCO support instructions once available HCO 1.16.0 -->
-<!--
-```bash
-kubectl patch hco kubevirt-hyperconverged -n openshift-cnv --type=json \
-  -p='[{"op": "add", "path": "/spec/featureGates", "value": {"VideoConfig": true}}]'
-```
--->
-
-**For direct KubeVirt configuration**:
-
-```bash
-kubectl patch kubevirt kubevirt -n kubevirt --type=json \
-  -p='[{"op": "add", "path": "/spec/configuration/developerConfiguration/featureGates/-", "value": "VideoConfig"}]'
-```
-
-Alternatively, you can edit the kubevirt CR directly:
-
-```bash
-kubectl edit kubevirt kubevirt -n kubevirt
-```
-
-```yaml
-spec:
-  configuration:
-    developerConfiguration:
-      featureGates:
-      - "VideoConfig"
-```
+It is possible to configure custom video device types to override the
+default video configuration. This allows you to specify video device
+types such as `virtio`, `vga`, or `bochs` depending on your guest
+operating system requirements and performance needs.
 
 ##### Configuring Video Device Types
 
-Once the feature gate is enabled, you can specify the video device type
+You can specify the video device type
 in the VM template specification under
 `spec.template.spec.domain.devices.video`. For example:
 
@@ -559,8 +517,8 @@ spec:
 
 ##### Architecture-Specific Behavior
 
-The VideoConfig feature gate allows overriding default video device
-types that vary by architecture:
+The default video device type varies by architecture and can be
+overridden:
 
 | Architecture | Boot Mode | Default Type | Supported Types                             |
 |--------------|-----------|--------------|---------------------------------------------|
