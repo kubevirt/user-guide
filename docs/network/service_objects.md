@@ -178,3 +178,15 @@ Use `vinagre` client to connect your VirtualMachineInstance by using the
 public IP and port.
 
 Note that here the external port here (31829) was dynamically allocated.
+
+## Service lifecycle
+
+Service objects may be created explicitly by a user or implicitly
+through the `virtctl expose` command.
+
+While creating the service explicitly, it is up to the user to explicitly
+clean up the service.
+From v1.9 the implicit service creation through `virtctl expose` adds an
+[`ownerReference`](https://kubernetes.io/docs/concepts/overview/working-with-objects/owners-dependents/) to the service object, binding the service to the VM/VMI.
+As a result, the service will be collected by the k8s garbage-collector once
+the referenced object (e.g. VMI) is deleted.
