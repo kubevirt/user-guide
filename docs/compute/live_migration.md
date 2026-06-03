@@ -25,6 +25,10 @@ field in the KubeVirt CR must be expanded by adding the `LiveMigration` to it.
 
 - Live migration requires the virt-launcher pod's primary network interface to have the same name on both source and target pods.
 
+- Post-copy live migration requires additional node-level permissions on
+  most environments. See [Node configuration for post-copy](#node-configuration-for-post-copy)
+  for details.
+
 ## Initiate live migration
 
 Live migration is initiated by posting a VirtualMachineInstanceMigration
@@ -223,6 +227,7 @@ To configure `AllowWorkloadDisruption`:
 
 - `AllowWorkloadDisruption` determines whether the migration controller can prioritize completing the migration over avoiding workload disruption.
 - Post-copy migration, when enabled, poses some risk of data loss if a failure occurs during the post-copy phase.
+- Post-copy requires additional node-level permissions on most environments. See [Node configuration for post-copy](#node-configuration-for-post-copy) for details.
 - Pausing the workload facilitates completion of the migration without risk of data loss but may result in temporary workload inactivity.
 
 
@@ -296,6 +301,68 @@ example, if either the target or guest VMs crash the state cannot be recovered.
 the guest would have to wait for a lot of memory in a short period of time.
 * Slower than pre-copy on most cases.
 * Harder to cancel a migration.
+
+#### Node configuration for post-copy
+
+Post-copy migration uses the `userfaultfd` syscall on the target node to
+fetch memory pages on demand from the source. Because the QEMU process
+runs unprivileged, additional permissions may be required depending on
+your environment.
+
+##### Kernel sysctl
+
+The following sysctl must be enabled on every node that may receive a
+post-copy migration:
+
+```
+vm.unprivileged_userfaultfd=1
+```
+
+Supported versions of OpenShift/OKD already set this sysctl via the Machine Config
+Operator, so no action is needed there. On other Kubernetes
+distributions, persist the setting by adding the line to a file such as
+`/etc/sysctl.d/99-postcopy.conf` either manually or using your cluster's node
+configuration tooling (e.g. cloud-init, Ansible, or a DaemonSet).
+
+!!! warning
+    Enabling `vm.unprivileged_userfaultfd` allows VM processes to use the
+    `userfaultfd` syscall. Some security-hardened kernels disable it by
+    default.
+
+##### Seccomp
+
+On clusters where seccomp is enforced, container runtimes such as CRI-O
+may block `userfaultfd` by default. The `KubevirtSeccompProfile`
+[feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+installs a seccomp profile that permits this syscall. This feature gate
+reached Beta in KubeVirt v1.7, but Beta feature gates are only enabled by
+default since v1.9 — on older versions it must be enabled explicitly.
+
+In addition to the feature gate, the KubeVirt CR must be configured to
+use the custom profile:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: Kubevirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    seccompConfiguration:
+      virtualMachineInstanceProfile:
+        customProfile:
+          localhostProfile: kubevirt/kubevirt.json
+```
+
+##### SELinux
+
+On nodes with SELinux enforcing, the virt-launcher process may be
+denied `userfaultfd` depending on the `container_t` policy in use.
+Nodes running `container-selinux` v2.248 or later already include the
+necessary permission (`kernel_userfaultfd_use(container_domain)`). On
+older versions, administrators may need to create a custom SELinux
+policy module to permit this syscall for the relevant context.
 
 ### Auto-converge
 Auto-converge is a technique to help pre-copy migrations converge faster without changing the core
