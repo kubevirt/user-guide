@@ -2899,6 +2899,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#service-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3713,6 +3724,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#service-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3890,6 +3912,15 @@ lbsvc     LoadBalancer   172.30.27.5      172.29.10.235,172.29.10.235   27017:31
 <p>Use <code>vinagre</code> client to connect your VirtualMachineInstance by using the
 public IP and port.</p>
 <p>Note that here the external port here (31829) was dynamically allocated.</p>
+<h2 id="service-lifecycle">Service lifecycle<a class="headerlink" href="#service-lifecycle" title="Permanent link">&para;</a></h2>
+<p>Service objects may be created explicitly by a user or implicitly
+through the <code>virtctl expose</code> command.</p>
+<p>While creating the service explicitly, it is up to the user to explicitly
+clean up the service.
+From v1.9 the implicit service creation through <code>virtctl expose</code> adds an
+<a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/owners-dependents/"><code>ownerReference</code></a> to the service object, binding the service to the VM/VMI.
+As a result, the service will be collected by the k8s garbage-collector once
+the referenced object (e.g. VMI) is deleted.</p>
 
 
 
