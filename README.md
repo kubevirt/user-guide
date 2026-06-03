@@ -14,9 +14,9 @@ We more than welcome contributions to KubeVirt documentation. Please reach out i
 
 You can find the markdown that powers the user guide in `./docs`, most commits are to that area.
 
-We use [mkdocs](https://www.mkdocs.org/) markdown engine with [mkdocs-awesome-pages](https://github.com/lukasgeiter/mkdocs-awesome-pages-plugin/) plugin
+We use [mkdocs](https://www.mkdocs.org/) markdown engine with [mkdocs-awesome-nav](https://github.com/lukasgeiter/mkdocs-awesome-nav/) plugin
   - mkdocs config file
-  - Each subdirectory of `./docs` contains a `.pages` file.  We use this to force the ordering of pages.  Alphabetical ordering is not ideal for technical documentation.
+  - Each subdirectory of `./docs` contains a `.nav.yml` file.  We use this to force the ordering of pages.  Alphabetical ordering is not ideal for technical documentation.
 
 #### Sign your commits
 
