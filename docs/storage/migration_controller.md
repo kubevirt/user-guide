@@ -146,3 +146,23 @@ spec:
   multiNamespaceVirtualMachineStorageMigrationPlanRef:
     name: multi-ns-storage-migration-plan
 ```
+
+## Canceling a migration
+
+To cancel an in-progress migration, delete the `VirtualMachineStorageMigration` resource:
+
+```shell
+kubectl delete virtualmachinestoragemigration test-migration
+```
+
+The controller will transition the migration through the `Canceling` phase, automatically revert the VM volumes back to their original source PVCs, and clean up any target DataVolumes that were created during the migration. Once complete, the migration reaches the `Canceled` phase and the resource is removed.
+
+```shell
+$ kubectl get virtualmachinestoragemigration
+NAME             PLAN        PHASE      AGE
+test-migration   test-plan   Canceled   30s
+```
+
+For multi-namespace migrations, delete the `MultiNamespaceVirtualMachineStorageMigration` resource — each child migration will be cancelled in the same way.
+
+> **Note:** This differs from KubeVirt's built-in [volume migration](volume_migration.md#volume-migration-cancellation), where cancellation requires applying the old VM spec to revert the volume set. With the migration controller, deleting the migration CR is sufficient — the controller handles the revert automatically.
