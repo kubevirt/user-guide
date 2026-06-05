@@ -4163,11 +4163,12 @@ Migration cancellations are also handled declaratively, thus users must restore 
 <h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
 <p>Only certain types of disks and volumes are supported to be migrated. For an invalid type of volume the RestartRequired condition is set and volumes will be replaced upon VM restart.
 Currently, the volume migration is supported between PersistentVolumeClaims and Datavolumes.
-Additionally, volume migration is forbidden if the disk is:
-* shareable, since it cannot guarantee the data consistency with multiple writers
-* hotpluggable, this case isn't currently supported
-* filesystem, since virtiofs doesn't currently support live-migration
-* lun, originally the disk might support SCSI protocol but the destination PVC class does not. This case isn't currently supported.</p>
+Additionally, volume migration is forbidden if the disk is:</p>
+<ul>
+<li>shareable, since it cannot guarantee the data consistency with multiple writers</li>
+<li>filesystem, since virtiofs doesn't currently support live-migration</li>
+<li>lun, originally the disk might support SCSI protocol but the destination PVC class does not. This case isn't currently supported.</li>
+</ul>
 <p>Currently, KubeVirt only enables live migration between separate nodes. Volume migration relies on live migration; hence, live migrating storage on the same node is also not possible. Volume migration is possible between local storage, like between 2 PVCs with RWO access mode, but they need to be located on two different host.</p>
 <h2 id="cancellation-of-the-volume-update-with-the-migration-strategy">Cancellation of the volume update with the migration strategy<a class="headerlink" href="#cancellation-of-the-volume-update-with-the-migration-strategy" title="Permanent link">&para;</a></h2>
 <p>During volume migration, users can cancel the update by restoring the old set of volumes. For example, using the original VM definition.</p>
