@@ -3331,6 +3331,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#canceling-a-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canceling a migration
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3776,6 +3787,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#canceling-a-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canceling a migration
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3931,6 +3953,19 @@ An example can be found here:</p>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="nt">multiNamespaceVirtualMachineStorageMigrationPlanRef</span><span class="p">:</span>
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">multi-ns-storage-migration-plan</span>
 </code></pre></div>
+<h2 id="canceling-a-migration">Canceling a migration<a class="headerlink" href="#canceling-a-migration" title="Permanent link">&para;</a></h2>
+<p>To cancel an in-progress migration, delete the <code>VirtualMachineStorageMigration</code> resource:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>virtualmachinestoragemigration<span class="w"> </span>test-migration
+</code></pre></div>
+<p>The controller will transition the migration through the <code>Canceling</code> phase, automatically revert the VM volumes back to their original source PVCs, and clean up any target DataVolumes that were created during the migration. Once complete, the migration reaches the <code>Canceled</code> phase and the resource is removed.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>virtualmachinestoragemigration
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>NAME<span class="w">             </span>PLAN<span class="w">        </span>PHASE<span class="w">      </span>AGE
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>test-migration<span class="w">   </span>test-plan<span class="w">   </span>Canceled<span class="w">   </span>30s
+</code></pre></div>
+<p>For multi-namespace migrations, delete the <code>MultiNamespaceVirtualMachineStorageMigration</code> resource — each child migration will be cancelled in the same way.</p>
+<blockquote>
+<p><strong>Note:</strong> This differs from KubeVirt's built-in <a href="../volume_migration/#volume-migration-cancellation">volume migration</a>, where cancellation requires applying the old VM spec to revert the volume set. With the migration controller, deleting the migration CR is sufficient — the controller handles the revert automatically.</p>
+</blockquote>
 
 
 
