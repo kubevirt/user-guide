@@ -69,8 +69,9 @@ When you create a VMExport based on a Virtual Machine Snapshot, the controller w
 ### Export VirtualMachineTemplate
 
 Starting with KubeVirt v1.9.0, you can export a `VirtualMachineTemplate` as an
-OCI artifact. This requires both the `VMExport` and `OCIExport` feature gates
-(see below) as well as the `Template` feature gate. For more details on
+OCI artifact. This requires the [`OCIExport`](#oci-format) and `Template`
+feature gates, and the virt-template deployment must be enabled. `Template` and
+the virt-template deployment are enabled by default. For more details on
 `VirtualMachineTemplates`, see
 [VirtualMachine Templates](../user_workloads/vm_templates.md).
 
