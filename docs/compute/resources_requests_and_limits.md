@@ -61,9 +61,24 @@ metadata:
 
 ## Memory
 ### Memory requests on the container
-- VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the [dedicated page](../compute/hugepages.md)). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container. See [Memory Overhead](../compute/virtual_hardware.md#memory-overhead) for what contributes to that overhead.
+- VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the [dedicated page](../compute/hugepages.md)). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container. See [Memory overhead](#memory-overhead) below for what contributes to that overhead.
 
-### Viewing memory overhead
+### Memory overhead
+
+Various VM resources, such as a video adapter, IOThreads, and
+supplementary system software, consume additional memory from the Node,
+beyond the requested memory intended for the guest OS consumption. In
+order to provide a better estimate for the scheduler, this memory
+overhead will be calculated and added to the requested memory.
+
+The default memory overhead has been set to 32Mi to account for these
+additional system resources.
+
+Please see [how Pods with resource requests are
+scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled)
+for additional information on resource requests and limits.
+
+#### Viewing memory overhead
 
 > Note: This feature requires the `VmiMemoryOverheadReport` feature gate to be enabled.
 
