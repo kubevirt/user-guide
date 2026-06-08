@@ -483,6 +483,11 @@ default video configuration. This allows you to specify video device
 types such as `virtio`, `vga`, or `bochs` depending on your guest
 operating system requirements and performance needs.
 
+> **Note**: On KubeVirt versions prior to 1.9, the `VideoConfig` feature
+> gate must be enabled manually. Refer to the
+> [feature gate activation guide](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
+> for instructions.
+
 ##### Configuring Video Device Types
 
 You can specify the video device type
