@@ -71,7 +71,7 @@ spec:
 **FEATURE STATE:** KubeVirt v1.7.0 (experimental support)
 
 
-KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV-SNP support. 
+KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV-SNP support.
 
 ### Prerequisites
 
@@ -135,21 +135,25 @@ spec:
 
 ## IBM Secure Execution for Linux (Secure Execution)
 
-**FEATURE STATE:** KubeVirt v1.6.0 (experimental support)
-
 IBM Secure Execution for Linux is a s390x security technology that is introduced with IBM z15 and LinuxONE III. It protects data of workloads that run in a KVM guest from being inspected or modified by the server environment.
 
 In particular, no hardware administrator, no KVM code, and no KVM administrator can access the data in a guest that was started as an IBM Secure Execution guest.
 
 For more details please read the [official documentation](https://www.ibm.com/docs/en/linux-on-systems?topic=execution-introduction).
 
+### **FEATURE STATE:**
+
+* Alpha - [`v1.6.0`](https://github.com/kubevirt/kubevirt/releases/tag/v1.6.0)
+* Beta - [`v1.7.0`](https://github.com/kubevirt/kubevirt/releases/tag/v1.7.0)
+* GA - [`v1.9.0`](https://github.com/kubevirt/kubevirt/releases/tag/v1.9.0) (Enabled by default)
+
 ### Prerequisites
 
 - IBM z15/LinuxONE III or newer
 - Kubernetes Cluster with LPAR worker nodes (No nested virtualization)
 - Kubevirt and CDI deployed on the Cluster
-- `SecureExecution` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
 - Secure Execution prepared guest. See the [official docs](https://www.ibm.com/docs/en/linux-on-systems?topic=execution-workload-owner-tasks).
+- Before kubevirt 1.9: `SecureExecution` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
 
 ### Preparing the host(s)
 
