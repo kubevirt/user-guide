@@ -942,6 +942,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#feature-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEATURE STATE:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#prerequisites_1" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3921,6 +3932,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#feature-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FEATURE STATE:
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#prerequisites_1" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4062,7 +4084,7 @@
 </ul>
 <h2 id="amd-secure-encrypted-virtualization-secure-nested-paging-sev-snp">AMD Secure Encrypted Virtualization - Secure Nested Paging (SEV-SNP)<a class="headerlink" href="#amd-secure-encrypted-virtualization-secure-nested-paging-sev-snp" title="Permanent link">&para;</a></h2>
 <p><strong>FEATURE STATE:</strong> KubeVirt v1.7.0 (experimental support)</p>
-<p>KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV-SNP support. </p>
+<p>KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV-SNP support.</p>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>WorkloadEncryptionSEV</code> <a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a> must be enabled.</li>
@@ -4118,17 +4140,22 @@
 <li>The VMs are not attested.</li>
 </ul>
 <h2 id="ibm-secure-execution-for-linux-secure-execution">IBM Secure Execution for Linux (Secure Execution)<a class="headerlink" href="#ibm-secure-execution-for-linux-secure-execution" title="Permanent link">&para;</a></h2>
-<p><strong>FEATURE STATE:</strong> KubeVirt v1.6.0 (experimental support)</p>
 <p>IBM Secure Execution for Linux is a s390x security technology that is introduced with IBM z15 and LinuxONE III. It protects data of workloads that run in a KVM guest from being inspected or modified by the server environment.</p>
 <p>In particular, no hardware administrator, no KVM code, and no KVM administrator can access the data in a guest that was started as an IBM Secure Execution guest.</p>
 <p>For more details please read the <a href="https://www.ibm.com/docs/en/linux-on-systems?topic=execution-introduction">official documentation</a>.</p>
+<h3 id="feature-state"><strong>FEATURE STATE:</strong><a class="headerlink" href="#feature-state" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Alpha - <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.6.0"><code>v1.6.0</code></a></li>
+<li>Beta - <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.7.0"><code>v1.7.0</code></a></li>
+<li>GA - <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.9.0"><code>v1.9.0</code></a> (Enabled by default)</li>
+</ul>
 <h3 id="prerequisites_1">Prerequisites<a class="headerlink" href="#prerequisites_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>IBM z15/LinuxONE III or newer</li>
 <li>Kubernetes Cluster with LPAR worker nodes (No nested virtualization)</li>
 <li>Kubevirt and CDI deployed on the Cluster</li>
-<li><code>SecureExecution</code> <a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a> must be enabled.</li>
 <li>Secure Execution prepared guest. See the <a href="https://www.ibm.com/docs/en/linux-on-systems?topic=execution-workload-owner-tasks">official docs</a>.</li>
+<li>Before kubevirt 1.9: <code>SecureExecution</code> <a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a> must be enabled.</li>
 </ul>
 <h3 id="preparing-the-hosts">Preparing the host(s)<a class="headerlink" href="#preparing-the-hosts" title="Permanent link">&para;</a></h3>
 <p>On all LPAR worker nodes that should run Secure Execution VMs, the following steps need to be taken to enable them to host the workloads:</p>
