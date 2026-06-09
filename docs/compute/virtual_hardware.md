@@ -729,21 +729,6 @@ competition for CPU resources.
 For more information please refer to [how Pods with resource limits are
 run](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-limits-are-run).
 
-### Memory Overhead
-
-Various VM resources, such as a video adapter, IOThreads, and
-supplementary system software, consume additional memory from the Node,
-beyond the requested memory intended for the guest OS consumption. In
-order to provide a better estimate for the scheduler, this memory
-overhead will be calculated and added to the requested memory.
-
-The default memory overhead has been set to 32Mi to account for these
-additional system resources.
-
-Please see [how Pods with resource requests are
-scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled)
-for additional information on resource requests and limits.
-
 ### Hugepages
 
 KubeVirt give you possibility to use hugepages as backing memory for

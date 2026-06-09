@@ -61,7 +61,60 @@ metadata:
 
 ## Memory
 ### Memory requests on the container
-- VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the [dedicated page](../compute/hugepages.md)). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container.
+- VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the [dedicated page](../compute/hugepages.md)). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container. See [Memory overhead](#memory-overhead) below for what contributes to that overhead.
+
+### Memory overhead
+
+Various VM resources, such as a video adapter, IOThreads, and
+supplementary system software, consume additional memory from the Node,
+beyond the requested memory intended for the guest OS consumption. In
+order to provide a better estimate for the scheduler, this memory
+overhead will be calculated and added to the requested memory.
+
+The default memory overhead has been set to 32Mi to account for these
+additional system resources.
+
+Please see [how Pods with resource requests are
+scheduled](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled)
+for additional information on resource requests and limits.
+
+#### Viewing memory overhead
+
+> Note: This feature requires the `VmiMemoryOverheadReport` feature gate to be enabled.
+
+When the feature gate is enabled, the calculated overhead is exposed in
+the VMI status:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: my-vmi
+status:
+  memory:
+    memoryOverhead: 512Mi
+```
+
+The `status.memory.memoryOverhead` field is populated when the VMI
+starts, and reflects the overhead calculated for the current
+virt-launcher pod.
+
+#### Memory overhead after live migration
+
+During live migration, the target node may calculate a different
+overhead value (for example, due to different hardware or configuration).
+While a migration is in progress, the target overhead is reported in
+`status.migrationState.targetMemoryOverhead`. Once the migration
+completes, `status.memory.memoryOverhead` is updated to reflect the
+new value:
+
+```yaml
+status:
+  memory:
+    memoryOverhead: 520Mi
+  migrationState:
+    targetMemoryOverhead: 520Mi
+```
 
 ### Memory limits on the container
 - By default, no memory limit is set on the container
