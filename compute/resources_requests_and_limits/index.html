@@ -2618,6 +2618,45 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#memory-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory overhead
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory overhead">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#viewing-memory-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewing memory overhead
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-overhead-after-live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory overhead after live migration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#memory-limits-on-the-container" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3869,6 +3908,45 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#memory-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory overhead
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Memory overhead">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#viewing-memory-overhead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewing memory overhead
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memory-overhead-after-live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory overhead after live migration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#memory-limits-on-the-container" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4005,8 +4083,49 @@ Once that label selector is defined, if the creation namespace matches the selec
 <h2 id="memory">Memory<a class="headerlink" href="#memory" title="Permanent link">&para;</a></h2>
 <h3 id="memory-requests-on-the-container">Memory requests on the container<a class="headerlink" href="#memory-requests-on-the-container" title="Permanent link">&para;</a></h3>
 <ul>
-<li>VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the <a href="../hugepages/">dedicated page</a>). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container.</li>
+<li>VM(I)s must specify a desired amount of memory, in either spec.domain.memory.guest or spec.domain.resources.requests.memory (ignoring hugepages, see the <a href="../hugepages/">dedicated page</a>). If both are set, the memory requests take precedence. A calculated amount of overhead will be added to it, forming the memory request value for the container. See <a href="#memory-overhead">Memory overhead</a> below for what contributes to that overhead.</li>
 </ul>
+<h3 id="memory-overhead">Memory overhead<a class="headerlink" href="#memory-overhead" title="Permanent link">&para;</a></h3>
+<p>Various VM resources, such as a video adapter, IOThreads, and
+supplementary system software, consume additional memory from the Node,
+beyond the requested memory intended for the guest OS consumption. In
+order to provide a better estimate for the scheduler, this memory
+overhead will be calculated and added to the requested memory.</p>
+<p>The default memory overhead has been set to 32Mi to account for these
+additional system resources.</p>
+<p>Please see <a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled">how Pods with resource requests are
+scheduled</a>
+for additional information on resource requests and limits.</p>
+<h4 id="viewing-memory-overhead">Viewing memory overhead<a class="headerlink" href="#viewing-memory-overhead" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Note: This feature requires the <code>VmiMemoryOverheadReport</code> feature gate to be enabled.</p>
+</blockquote>
+<p>When the feature gate is enabled, the calculated overhead is exposed in
+the VMI status:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-vmi</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">status</span><span class="p">:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">memory</span><span class="p">:</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">memoryOverhead</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">512Mi</span>
+</code></pre></div>
+<p>The <code>status.memory.memoryOverhead</code> field is populated when the VMI
+starts, and reflects the overhead calculated for the current
+virt-launcher pod.</p>
+<h4 id="memory-overhead-after-live-migration">Memory overhead after live migration<a class="headerlink" href="#memory-overhead-after-live-migration" title="Permanent link">&para;</a></h4>
+<p>During live migration, the target node may calculate a different
+overhead value (for example, due to different hardware or configuration).
+While a migration is in progress, the target overhead is reported in
+<code>status.migrationState.targetMemoryOverhead</code>. Once the migration
+completes, <code>status.memory.memoryOverhead</code> is updated to reflect the
+new value:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">status</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">memory</span><span class="p">:</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">memoryOverhead</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">520Mi</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">migrationState</span><span class="p">:</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">targetMemoryOverhead</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">520Mi</span>
+</code></pre></div>
 <h3 id="memory-limits-on-the-container">Memory limits on the container<a class="headerlink" href="#memory-limits-on-the-container" title="Permanent link">&para;</a></h3>
 <ul>
 <li>By default, no memory limit is set on the container</li>
