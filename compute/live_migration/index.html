@@ -2519,6 +2519,62 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Post-copy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#node-configuration-for-post-copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node configuration for post-copy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Node configuration for post-copy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kernel-sysctl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kernel sysctl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seccomp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seccomp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selinux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SELinux
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -4194,6 +4250,62 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Post-copy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#node-configuration-for-post-copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Node configuration for post-copy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Node configuration for post-copy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kernel-sysctl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kernel sysctl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seccomp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seccomp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selinux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SELinux
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -4372,6 +4484,11 @@ field in the KubeVirt CR must be expanded by adding the <code>LiveMigration</cod
 <li>
 <p>Live migration requires the virt-launcher pod's primary network interface to have the same name on both source and target pods.</p>
 </li>
+<li>
+<p>Post-copy live migration requires additional node-level permissions on
+  most environments. See <a href="#node-configuration-for-post-copy">Node configuration for post-copy</a>
+  for details.</p>
+</li>
 </ul>
 <h2 id="initiate-live-migration">Initiate live migration<a class="headerlink" href="#initiate-live-migration" title="Permanent link">&para;</a></h2>
 <p>Live migration is initiated by posting a VirtualMachineInstanceMigration
@@ -4542,6 +4659,7 @@ spec:
 <ul>
 <li><code>AllowWorkloadDisruption</code> determines whether the migration controller can prioritize completing the migration over avoiding workload disruption.</li>
 <li>Post-copy migration, when enabled, poses some risk of data loss if a failure occurs during the post-copy phase.</li>
+<li>Post-copy requires additional node-level permissions on most environments. See <a href="#node-configuration-for-post-copy">Node configuration for post-copy</a> for details.</li>
 <li>Pausing the workload facilitates completion of the migration without risk of data loss but may result in temporary workload inactivity.</li>
 </ul>
 <p>Bear in mind that most of these configuration can be overridden and fine-tuned to
@@ -4609,6 +4727,55 @@ the guest would have to wait for a lot of memory in a short period of time.</li>
 <li>Slower than pre-copy on most cases.</li>
 <li>Harder to cancel a migration.</li>
 </ul>
+<h4 id="node-configuration-for-post-copy">Node configuration for post-copy<a class="headerlink" href="#node-configuration-for-post-copy" title="Permanent link">&para;</a></h4>
+<p>Post-copy migration uses the <code>userfaultfd</code> syscall on the target node to
+fetch memory pages on demand from the source. Because the QEMU process
+runs unprivileged, additional permissions may be required depending on
+your environment.</p>
+<h5 id="kernel-sysctl">Kernel sysctl<a class="headerlink" href="#kernel-sysctl" title="Permanent link">&para;</a></h5>
+<p>The following sysctl must be enabled on every node that may receive a
+post-copy migration:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>vm.unprivileged_userfaultfd=1
+</code></pre></div>
+<p>Supported versions of OpenShift/OKD already set this sysctl via the Machine Config
+Operator, so no action is needed there. On other Kubernetes
+distributions, persist the setting by adding the line to a file such as
+<code>/etc/sysctl.d/99-postcopy.conf</code> either manually or using your cluster's node
+configuration tooling (e.g. cloud-init, Ansible, or a DaemonSet).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Enabling <code>vm.unprivileged_userfaultfd</code> allows VM processes to use the
+<code>userfaultfd</code> syscall. Some security-hardened kernels disable it by
+default.</p>
+</div>
+<h5 id="seccomp">Seccomp<a class="headerlink" href="#seccomp" title="Permanent link">&para;</a></h5>
+<p>On clusters where seccomp is enforced, container runtimes such as CRI-O
+may block <code>userfaultfd</code> by default. The <code>KubevirtSeccompProfile</code>
+<a href="../../cluster_admin/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
+installs a seccomp profile that permits this syscall. This feature gate
+reached Beta in KubeVirt v1.7, but Beta feature gates are only enabled by
+default since v1.9 — on older versions it must be enabled explicitly.</p>
+<p>In addition to the feature gate, the KubeVirt CR must be configured to
+use the custom profile:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">seccompConfiguration</span><span class="p">:</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">      </span><span class="nt">virtualMachineInstanceProfile</span><span class="p">:</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">        </span><span class="nt">customProfile</span><span class="p">:</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">          </span><span class="nt">localhostProfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt/kubevirt.json</span>
+</code></pre></div>
+<h5 id="selinux">SELinux<a class="headerlink" href="#selinux" title="Permanent link">&para;</a></h5>
+<p>On nodes with SELinux enforcing, the virt-launcher process may be
+denied <code>userfaultfd</code> depending on the <code>container_t</code> policy in use.
+Nodes running <code>container-selinux</code> v2.248 or later already include the
+necessary permission (<code>kernel_userfaultfd_use(container_domain)</code>). On
+older versions, administrators may need to create a custom SELinux
+policy module to permit this syscall for the relevant context.</p>
 <h3 id="auto-converge">Auto-converge<a class="headerlink" href="#auto-converge" title="Permanent link">&para;</a></h3>
 <p>Auto-converge is a technique to help pre-copy migrations converge faster without changing the core
 algorithm of how the migration works.</p>
@@ -4634,39 +4801,39 @@ The examples below assume that <code>eth1</code> will be used for migrations.</p
 be needed as well.</p>
 <p>Finally, a NetworkAttachmentDefinition needs to be created in the
 namespace where KubeVirt is installed. Here is an example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;k8s.cni.cncf.io/v1&quot;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkAttachmentDefinition</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migration-network</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">      </span><span class="s">&quot;cniVersion&quot;:</span><span class="nv"> </span><span class="s">&quot;0.3.1&quot;,</span>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">      </span><span class="s">&quot;name&quot;:</span><span class="nv"> </span><span class="s">&quot;migration-bridge&quot;,</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">      </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;macvlan&quot;,</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">      </span><span class="s">&quot;master&quot;:</span><span class="nv"> </span><span class="s">&quot;eth1&quot;,</span>
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">      </span><span class="s">&quot;mode&quot;:</span><span class="nv"> </span><span class="s">&quot;bridge&quot;,</span>
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">      </span><span class="s">&quot;ipam&quot;:</span><span class="nv"> </span><span class="s">{</span>
-<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">        </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;whereabouts&quot;,</span>
-<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">        </span><span class="s">&quot;range&quot;:</span><span class="nv"> </span><span class="s">&quot;10.1.1.0/24&quot;</span>
-<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">      </span><span class="s">}</span>
-<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">    </span><span class="s">}&#39;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;k8s.cni.cncf.io/v1&quot;</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkAttachmentDefinition</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migration-network</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">      </span><span class="s">&quot;cniVersion&quot;:</span><span class="nv"> </span><span class="s">&quot;0.3.1&quot;,</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">      </span><span class="s">&quot;name&quot;:</span><span class="nv"> </span><span class="s">&quot;migration-bridge&quot;,</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">      </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;macvlan&quot;,</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">      </span><span class="s">&quot;master&quot;:</span><span class="nv"> </span><span class="s">&quot;eth1&quot;,</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">      </span><span class="s">&quot;mode&quot;:</span><span class="nv"> </span><span class="s">&quot;bridge&quot;,</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">      </span><span class="s">&quot;ipam&quot;:</span><span class="nv"> </span><span class="s">{</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">        </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;whereabouts&quot;,</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">        </span><span class="s">&quot;range&quot;:</span><span class="nv"> </span><span class="s">&quot;10.1.1.0/24&quot;</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">      </span><span class="s">}</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">    </span><span class="s">}&#39;</span>
 </code></pre></div></p>
 <h3 id="configuring-kubevirt-to-migrate-vmis-over-that-network">Configuring KubeVirt to migrate VMIs over that network<a class="headerlink" href="#configuring-kubevirt-to-migrate-vmis-over-that-network" title="Permanent link">&para;</a></h3>
 <p>This is just a matter of adding the name of the
 NetworkAttachmentDefinition to the KubeVirt CR, like so:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigration</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migration-network</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigration</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migration-network</span>
 </code></pre></div></p>
 <p>That change will trigger a restart of the virt-handler pods, as they
 get connected to that new network.</p>
@@ -4679,10 +4846,10 @@ network in KubeVirtCI.</p>
 network, as well as automatically install multus and whereabouts.
 The following environment variables just have to be declared before
 running <code>make cluster-up</code>:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>export KUBEVIRT_NUM_NODES=2;
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>export KUBEVIRT_NUM_SECONDARY_NICS=1;
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>export KUBEVIRT_DEPLOY_ISTIO=true;
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>export KUBEVIRT_WITH_CNAO=true
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>export KUBEVIRT_NUM_NODES=2;
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>export KUBEVIRT_NUM_SECONDARY_NICS=1;
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>export KUBEVIRT_DEPLOY_ISTIO=true;
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>export KUBEVIRT_WITH_CNAO=true
 </code></pre></div></p>
 <h2 id="migration-timeouts">Migration timeouts<a class="headerlink" href="#migration-timeouts" title="Permanent link">&para;</a></h2>
 <p>Depending on the type, the live migration process will copy virtual
@@ -4715,18 +4882,18 @@ parameter, which defaults to 150s</p>
 <p><strong>FEATURE STATE:</strong> KubeVirt v0.43</p>
 <p>Sometimes it may be desirable to disable TLS encryption of migrations to
 improve performance. Use <code>disableTLS</code> to do that:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;LiveMigration&quot;</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;LiveMigration&quot;</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><strong>Note:</strong> While this increases performance it may allow MITM attacks. Be careful.</p>
 
