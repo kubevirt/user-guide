@@ -367,3 +367,46 @@ incoming qemu-ga commands:
 ```sh
 journalctl _COMM=qemu-ga --follow
 ```
+
+## Pausing Guest-Agent Ping Probes
+
+During maintenance operations such as guest OS updates (especially long Windows
+updates with multiple reboots), the guest agent may become temporarily
+unavailable. If a GuestAgentPing liveness probe is configured, this will cause
+the probe to fail and kubelet to restart the Pod, destroying the running VM.
+
+To prevent this, you can pause GuestAgentPing probes by adding an annotation
+to the VMI:
+
+```bash
+# Pause probes before maintenance
+kubectl annotate vmi my-vm kubevirt.io/pause-guest-agent-probes=true
+
+# Resume probes after maintenance
+kubectl annotate vmi my-vm kubevirt.io/pause-guest-agent-probes-
+```
+
+When the annotation is set to a truthy value (`"true"`, `"1"`, `"t"`, etc. as
+accepted by Go's `strconv.ParseBool`), virt-launcher returns immediate success
+for GuestAgentPing probes without contacting the QEMU guest agent. Removing the
+annotation (or setting it to a falsy value) resumes normal probe behavior.
+
+To verify that virt-launcher has picked up the annotation, check its logs for
+the state transition message:
+
+```bash
+kubectl logs -n <namespace> virt-launcher-my-vm-<id> -c compute | grep "probe pause state"
+```
+
+!!! important
+    - This annotation only affects GuestAgentPing probes. HTTP, TCP, and exec
+      probes are not affected.
+    - The annotation takes effect within seconds (on the next virt-launcher
+      sync cycle, triggered by virt-handler).
+    - For permanent probe disabling, remove the probe from the VMI spec instead
+      of keeping the annotation set indefinitely.
+    - Internal probe suppression for transient states (e.g., live migration,
+      VM pause) is handled automatically and independently of the annotation.
+      Setting the annotation to `"false"` or removing it will not override
+      internal suppression — probes remain suppressed during these operations
+      regardless of the annotation value.
