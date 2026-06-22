@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/user_workloads/component_monitoring/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/storage/containerpath_volumes/">
       
       
-        <link rel="prev" href="../legacy_windows/">
+        <link rel="prev" href="../containerized_data_importer/">
       
       
-        <link rel="next" href="../guest_agent_information/">
+        <link rel="next" href="../csi_overlay/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Component monitoring - KubeVirt user guide</title>
+        <title>ContainerPath Volumes - KubeVirt user guide</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#component-monitoring" class="md-skip">
+        <a href="#containerpath-volumes" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Component monitoring
+              ContainerPath Volumes
             
           </span>
         </div>
@@ -283,13 +283,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../lifecycle/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../user_workloads/lifecycle/" class="md-tabs__link">
           
   
   
@@ -345,11 +343,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../storage/clone_api/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../clone_api/" class="md-tabs__link">
           
   
   
@@ -1193,31 +1193,26 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -1235,7 +1230,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1253,7 +1248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../lifecycle/" class="md-nav__link">
+      <a href="../../user_workloads/lifecycle/" class="md-nav__link">
         
   
   
@@ -1281,7 +1276,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../basic_use/" class="md-nav__link">
+      <a href="../../user_workloads/basic_use/" class="md-nav__link">
         
   
   
@@ -1309,7 +1304,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../creating_vms/" class="md-nav__link">
+      <a href="../../user_workloads/creating_vms/" class="md-nav__link">
         
   
   
@@ -1337,7 +1332,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../creating_it_pref/" class="md-nav__link">
+      <a href="../../user_workloads/creating_it_pref/" class="md-nav__link">
         
   
   
@@ -1365,7 +1360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../virtctl_client_tool/" class="md-nav__link">
+      <a href="../../user_workloads/virtctl_client_tool/" class="md-nav__link">
         
   
   
@@ -1393,7 +1388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../accessing_virtual_machines/" class="md-nav__link">
+      <a href="../../user_workloads/accessing_virtual_machines/" class="md-nav__link">
         
   
   
@@ -1421,7 +1416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../boot_from_external_source/" class="md-nav__link">
+      <a href="../../user_workloads/boot_from_external_source/" class="md-nav__link">
         
   
   
@@ -1449,7 +1444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../startup_scripts/" class="md-nav__link">
+      <a href="../../user_workloads/startup_scripts/" class="md-nav__link">
         
   
   
@@ -1477,7 +1472,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../windows_virtio_drivers/" class="md-nav__link">
+      <a href="../../user_workloads/windows_virtio_drivers/" class="md-nav__link">
         
   
   
@@ -1505,7 +1500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../legacy_windows/" class="md-nav__link">
+      <a href="../../user_workloads/legacy_windows/" class="md-nav__link">
         
   
   
@@ -1530,31 +1525,26 @@
                 
   
   
-    
   
   
-  
     
     
     
     
       
       
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_11" >
         
           
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_11" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="0">
             
   
   
@@ -1572,7 +1562,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_11_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_11">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1587,37 +1577,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Component monitoring
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../user_workloads/component_monitoring/" class="md-nav__link">
         
   
   
@@ -1633,98 +1596,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#custom-service-discovery" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Custom Service Discovery
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#integrating-with-the-prometheus-operator" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Integrating with the prometheus-operator
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#integrating-with-the-okd-cluster-monitoring-operator" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Integrating with the OKD cluster-monitoring-operator
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#metrics-about-virtual-machines" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Metrics about Virtual Machines
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#important-queries" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Important Queries
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Important Queries">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#detecting-connection-issues-for-the-rest-client" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Detecting connection issues for the REST client
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1737,7 +1608,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guest_agent_information/" class="md-nav__link">
+      <a href="../../user_workloads/guest_agent_information/" class="md-nav__link">
         
   
   
@@ -1765,7 +1636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guest_operating_system_information/" class="md-nav__link">
+      <a href="../../user_workloads/guest_operating_system_information/" class="md-nav__link">
         
   
   
@@ -1793,7 +1664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../liveness_and_readiness_probes/" class="md-nav__link">
+      <a href="../../user_workloads/liveness_and_readiness_probes/" class="md-nav__link">
         
   
   
@@ -1835,20 +1706,17 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_12" >
         
           
-          <label class="md-nav__link" for="__nav_5_12" id="__nav_5_12_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_12" id="__nav_5_12_label" tabindex="0">
             
   
   
@@ -1884,7 +1752,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../instancetypes/" class="md-nav__link">
+      <a href="../../user_workloads/instancetypes/" class="md-nav__link">
         
   
   
@@ -1912,7 +1780,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../deploy_common_instancetypes/" class="md-nav__link">
+      <a href="../../user_workloads/deploy_common_instancetypes/" class="md-nav__link">
         
   
   
@@ -1940,7 +1808,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../hook-sidecar/" class="md-nav__link">
+      <a href="../../user_workloads/hook-sidecar/" class="md-nav__link">
         
   
   
@@ -1968,7 +1836,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../presets/" class="md-nav__link">
+      <a href="../../user_workloads/presets/" class="md-nav__link">
         
   
   
@@ -1996,7 +1864,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../vm_templates/" class="md-nav__link">
+      <a href="../../user_workloads/vm_templates/" class="md-nav__link">
         
   
   
@@ -2024,7 +1892,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../templates/" class="md-nav__link">
+      <a href="../../user_workloads/templates/" class="md-nav__link">
         
   
   
@@ -2052,7 +1920,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pool/" class="md-nav__link">
+      <a href="../../user_workloads/pool/" class="md-nav__link">
         
   
   
@@ -2080,7 +1948,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../replicaset/" class="md-nav__link">
+      <a href="../../user_workloads/replicaset/" class="md-nav__link">
         
   
   
@@ -2108,7 +1976,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../virtual_machine_instances/" class="md-nav__link">
+      <a href="../../user_workloads/virtual_machine_instances/" class="md-nav__link">
         
   
   
@@ -2136,7 +2004,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../vm_rollout_strategies/" class="md-nav__link">
+      <a href="../../user_workloads/vm_rollout_strategies/" class="md-nav__link">
         
   
   
@@ -3082,26 +2950,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
         
           
-          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
             
   
   
@@ -3119,7 +2992,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_8">
             <span class="md-nav__icon md-icon"></span>
             
@@ -3137,7 +3010,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/clone_api/" class="md-nav__link">
+      <a href="../clone_api/" class="md-nav__link">
         
   
   
@@ -3165,7 +3038,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/containerized_data_importer/" class="md-nav__link">
+      <a href="../containerized_data_importer/" class="md-nav__link">
         
   
   
@@ -3190,10 +3063,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../storage/containerpath_volumes/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ContainerPath Volumes
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -3209,6 +3109,164 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#enabling-containerpath-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enabling ContainerPath volumes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#motivation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motivation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-aws-irsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: AWS IRSA
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-azure-workload-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: Azure Workload Identity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#webhook-injected-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Webhook-injected volumes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-volume-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported volume types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Live migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security considerations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vm-has-synchronizedfalse-with-missingvirtiofscontainers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VM has Synchronized=False with MissingVirtiofsContainers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -3221,7 +3279,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/csi_overlay/" class="md-nav__link">
+      <a href="../csi_overlay/" class="md-nav__link">
         
   
   
@@ -3249,7 +3307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/disks_and_volumes/" class="md-nav__link">
+      <a href="../disks_and_volumes/" class="md-nav__link">
         
   
   
@@ -3277,7 +3335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/export_api/" class="md-nav__link">
+      <a href="../export_api/" class="md-nav__link">
         
   
   
@@ -3305,7 +3363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/guestfs/" class="md-nav__link">
+      <a href="../guestfs/" class="md-nav__link">
         
   
   
@@ -3333,7 +3391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/hotplug_volumes/" class="md-nav__link">
+      <a href="../hotplug_volumes/" class="md-nav__link">
         
   
   
@@ -3361,7 +3419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/migration_controller/" class="md-nav__link">
+      <a href="../migration_controller/" class="md-nav__link">
         
   
   
@@ -3389,7 +3447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/snapshot_restore_api/" class="md-nav__link">
+      <a href="../snapshot_restore_api/" class="md-nav__link">
         
   
   
@@ -3417,7 +3475,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../storage/volume_migration/" class="md-nav__link">
+      <a href="../volume_migration/" class="md-nav__link">
         
   
   
@@ -3753,10 +3811,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#custom-service-discovery" class="md-nav__link">
+  <a href="#enabling-containerpath-volumes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Custom Service Discovery
+        Enabling ContainerPath volumes
       
     </span>
   </a>
@@ -3764,10 +3822,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#integrating-with-the-prometheus-operator" class="md-nav__link">
+  <a href="#motivation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Integrating with the prometheus-operator
+        Motivation
       
     </span>
   </a>
@@ -3775,10 +3833,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#integrating-with-the-okd-cluster-monitoring-operator" class="md-nav__link">
+  <a href="#basic-usage" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Integrating with the OKD cluster-monitoring-operator
+        Basic usage
       
     </span>
   </a>
@@ -3786,10 +3844,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#metrics-about-virtual-machines" class="md-nav__link">
+  <a href="#example-aws-irsa" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Metrics about Virtual Machines
+        Example: AWS IRSA
       
     </span>
   </a>
@@ -3797,22 +3855,88 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#important-queries" class="md-nav__link">
+  <a href="#example-azure-workload-identity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Important Queries
+        Example: Azure Workload Identity
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Important Queries">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#webhook-injected-volumes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Webhook-injected volumes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#path-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path requirements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-volume-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported volume types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Live migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security considerations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#detecting-connection-issues-for-the-rest-client" class="md-nav__link">
+  <a href="#vm-has-synchronizedfalse-with-missingvirtiofscontainers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Detecting connection issues for the REST client
+        VM has Synchronized=False with MissingVirtiofsContainers
       
     </span>
   </a>
@@ -3841,7 +3965,7 @@
 
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/user_workloads/component_monitoring.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/storage/containerpath_volumes.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -3850,131 +3974,285 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/user_workloads/component_monitoring.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/storage/containerpath_volumes.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="component-monitoring">Component monitoring<a class="headerlink" href="#component-monitoring" title="Permanent link">&para;</a></h1>
-<p>All KubeVirt system-components expose Prometheus metrics at their
-<code>/metrics</code> REST endpoint.</p>
-<p>You can consult the complete and up-to-date metric list at <a href="https://github.com/kubevirt/monitoring/blob/main/docs/metrics.md">kubevirt/monitoring</a>.</p>
-<h2 id="custom-service-discovery">Custom Service Discovery<a class="headerlink" href="#custom-service-discovery" title="Permanent link">&para;</a></h2>
-<p>Prometheus supports service discovery based on
-<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#pod">Pods</a>
-and
-<a href="https://prometheus.io/docs/prometheus/latest/configuration/configuration/#endpoints">Endpoints</a>
-out of the box. Both can be used to discover KubeVirt services.</p>
-<p>All Pods which expose metrics are labeled with <code>prometheus.kubevirt.io</code>
-and contain a port-definition which is called <code>metrics</code>. In the KubeVirt
-release-manifests, the default <code>metrics</code> port is <code>8443</code>.</p>
-<p>The above labels and port informations are collected by a <code>Service</code>
-called <code>kubevirt-prometheus-metrics</code>. Kubernetes automatically creates a
-corresponding <code>Endpoint</code> with an equal name:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>endpoints<span class="w"> </span>-n<span class="w"> </span>kubevirt<span class="w"> </span>kubevirt-prometheus-metrics<span class="w"> </span>-o<span class="w"> </span>yaml
+<h1 id="containerpath-volumes">ContainerPath Volumes<a class="headerlink" href="#containerpath-volumes" title="Permanent link">&para;</a></h1>
+<p>ContainerPath volumes allow VirtualMachines to access files and directories from the virt-launcher pod's filesystem via virtiofs. This enables VMs to consume data that is dynamically injected into the pod by Kubernetes or platform-specific mechanisms such as cloud provider workload identity webhooks.</p>
+<h2 id="enabling-containerpath-volumes">Enabling ContainerPath volumes<a class="headerlink" href="#enabling-containerpath-volumes" title="Permanent link">&para;</a></h2>
+<p>ContainerPath volume support must be enabled via the <code>ContainerPathVolumes</code>
+<a href="../../cluster_admin/activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a>
+in the KubeVirt CR:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ContainerPathVolumes</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Endpoints</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">kubevirt.io</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">prometheus.kubevirt.io</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt-prometheus-metrics</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nt">subsets</span><span class="p">:</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">addresses</span><span class="p">:</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.244.0.5</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nt">nodeName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node01</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="nt">targetRef</span><span class="p">:</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virt-handler-cjzg6</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">      </span><span class="nt">resourceVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4891&quot;</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span><span class="nt">uid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">c67331f9-bfcf-11e8-bc54-525500d15501</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.244.0.6</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">metrics</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8443</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
-</code></pre></div>
-<p>By watching this endpoint for added and removed IPs to
-<code>subsets.addresses</code> and appending the <code>metrics</code> port from
-<code>subsets.ports</code>, it is possible to always get a complete list of
-ready-to-be-scraped Prometheus targets.</p>
-<h2 id="integrating-with-the-prometheus-operator">Integrating with the prometheus-operator<a class="headerlink" href="#integrating-with-the-prometheus-operator" title="Permanent link">&para;</a></h2>
-<p>The <a href="https://github.com/coreos/prometheus-operator">prometheus-operator</a>
-can make use of the <code>kubevirt-prometheus-metrics</code> service to
-automatically create the appropriate Prometheus config.</p>
-<p>KubeVirt's <code>virt-operator</code> checks if the <code>ServiceMonitor</code> custom
-resource exists when creating an install strategy for deployment.
-KubeVirt will automatically create a <code>ServiceMonitor</code> resource in the
-<code>monitorNamespace</code>, as well as an appropriate role and rolebinding in
-KubeVirt's namespace.</p>
-<p>Three settings are exposed in the <code>KubeVirt</code> custom resource to direct
-KubeVirt to create these resources correctly:</p>
+<h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
+<p>Kubernetes and cloud platforms provide mechanisms for injecting credentials into pods at runtime:</p>
 <ul>
-<li>
-<p><code>monitorNamespace</code>: The namespace that prometheus-operator runs in.
-    Defaults to <code>openshift-monitoring</code>.</p>
-</li>
-<li>
-<p><code>monitorAccount</code>: The serviceAccount that prometheus-operator runs
-    with. Defaults to <code>prometheus-k8s</code>.</p>
-</li>
-<li>
-<p><code>serviceMonitorNamespace</code>: The namespace that the serviceMonitor runs in.
-    Defaults to be <code>monitorNamespace</code> </p>
-</li>
+<li><strong>Projected service account tokens</strong> for workload identity (e.g., AWS IRSA, Azure Workload Identity)</li>
+<li><strong>Dynamic secrets</strong> via admission webhooks (e.g., HashiCorp Vault agent, cert-manager)</li>
+<li><strong>Confidential computing</strong> attestation tokens and runtime secrets injected by platform infrastructure</li>
 </ul>
-<p>Please note that if you decide to set <code>serviceMonitorNamespace</code> than this 
-namespace must be included in <code>serviceMonitorNamespaceSelector</code> field of 
-Prometheus spec.</p>
-<p>If the prometheus-operator for a given deployment uses these defaults,
-then these values can be omitted.</p>
-<p>An example of the KubeVirt resource depicting these default values:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">monitorNamespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openshift-monitoring</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">monitorAccount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prometheus-k8s</span>
+<p>These mechanisms inject data directly into pod containers, but VMs running inside those pods cannot natively access this injected data. ContainerPath volumes bridge this gap by exposing specific paths from the virt-launcher container to the guest VM via virtiofs.</p>
+<h2 id="basic-usage">Basic usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
+<p>A ContainerPath volume requires two things in the VM spec:</p>
+<ol>
+<li>A <strong>volume</strong> entry with a <code>containerPath</code> source specifying the path inside the virt-launcher pod</li>
+<li>A corresponding <strong>filesystem</strong> device entry referencing the volume by name</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-vm</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">runStrategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">          </span><span class="nt">filesystems</span><span class="p">:</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-data</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">            </span><span class="nt">virtiofs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">            </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/containerdisks/fedora:latest</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-data</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">        </span><span class="nt">containerPath</span><span class="p">:</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/data</span>
 </code></pre></div>
-<h2 id="integrating-with-the-okd-cluster-monitoring-operator">Integrating with the OKD cluster-monitoring-operator<a class="headerlink" href="#integrating-with-the-okd-cluster-monitoring-operator" title="Permanent link">&para;</a></h2>
-<p>After the
-<a href="https://github.com/openshift/cluster-monitoring-operator">cluster-monitoring-operator</a>
-is up and running, KubeVirt will detect the existence of the
-<code>ServiceMonitor</code> resource. Because the definition contains the
-<code>openshift.io/cluster-monitoring</code> label, it will automatically be picked
-up by the cluster monitor.</p>
-<h2 id="metrics-about-virtual-machines">Metrics about Virtual Machines<a class="headerlink" href="#metrics-about-virtual-machines" title="Permanent link">&para;</a></h2>
-<p>The endpoints report metrics related to the runtime behaviour of the
-Virtual Machines. All the relevant metrics are prefixed with
-<code>kubevirt_vmi</code>.</p>
-<p>The metrics have labels that allow to connect to the VMI objects they
-refer to. At minimum, the labels will expose <code>node</code>, <code>name</code> and
-<code>namespace</code> of the related VMI object.</p>
-<p>For example, reported metrics could look like</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubevirt_vmi_memory_resident_bytes{domain=&quot;default_vm-test-01&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;} 2.5595904e+07
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;rx&quot;} 8431
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;tx&quot;} 1835
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>kubevirt_vmi_vcpu_seconds_total{domain=&quot;default_vm-test-01&quot;,id=&quot;0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,state=&quot;1&quot;} 19
+<p>Inside the guest VM, mount the filesystem:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>mount<span class="w"> </span>-t<span class="w"> </span>virtiofs<span class="w"> </span>my-data<span class="w"> </span>/mnt/data
 </code></pre></div>
-<p>Please note the <code>domain</code> label in the above example. This label is
-deprecated and it will be removed in a future release. You should
-identify the VMI using the <code>node</code>, <code>namespace</code>, <code>name</code> labels instead.</p>
-<h2 id="important-queries">Important Queries<a class="headerlink" href="#important-queries" title="Permanent link">&para;</a></h2>
-<h3 id="detecting-connection-issues-for-the-rest-client">Detecting connection issues for the REST client<a class="headerlink" href="#detecting-connection-issues-for-the-rest-client" title="Permanent link">&para;</a></h3>
-<p>Use the following query to get a counter for all REST call which
-indicate connection issues:</p>
-<div class="highlight"><pre><span></span><code>rest_client_requests_total{code=&quot;&lt;error&gt;&quot;}
+<h2 id="example-aws-irsa">Example: AWS IRSA<a class="headerlink" href="#example-aws-irsa" title="Permanent link">&para;</a></h2>
+<p>A common use case is enabling VMs to authenticate to AWS using IAM Roles for Service Accounts (IRSA).</p>
+<p>When a pod uses a ServiceAccount with an IRSA annotation, EKS automatically injects a projected token at <code>/var/run/secrets/eks.amazonaws.com/serviceaccount/</code>. The VM can access this token via a ContainerPath volume.</p>
+<p>For AWS IRSA setup prerequisites, see the <a href="https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html">Amazon EKS IRSA documentation</a>.</p>
+<p>First, create a ServiceAccount annotated for IRSA:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-workload-sa</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nt">eks.amazonaws.com/role-arn</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;iam-role-arn&gt;&quot;</span>
 </code></pre></div>
-<p>If this counter is continuously increasing, it is an indicator that the
-corresponding KubeVirt component has general issues to connect to the
-apiserver</p>
+<p>Then create a VirtualMachine that uses that ServiceAccount and exposes the injected token via a ContainerPath volume:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-workload</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">runStrategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">          </span><span class="nt">filesystems</span><span class="p">:</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sa-volume</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">            </span><span class="nt">virtiofs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-token</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">            </span><span class="nt">virtiofs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">            </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">        </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/containerdisks/fedora:latest</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sa-volume</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="w">        </span><span class="nt">serviceAccount</span><span class="p">:</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="w">          </span><span class="nt">serviceAccountName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-workload-sa</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-token</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="w">        </span><span class="nt">containerPath</span><span class="p">:</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/run/secrets/eks.amazonaws.com/serviceaccount</span>
+</code></pre></div>
+<p><strong>Why both volumes?</strong></p>
+<ul>
+<li><code>sa-volume</code>: Ensures the virt-launcher pod uses the IRSA-annotated ServiceAccount, which triggers token injection.</li>
+<li><code>aws-token</code>: Exposes the injected EKS token path to the VM via virtiofs.</li>
+</ul>
+<p>Inside the VM:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Mount the IRSA token filesystem</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>mount<span class="w"> </span>-t<span class="w"> </span>virtiofs<span class="w"> </span>aws-token<span class="w"> </span>/mnt/aws-creds
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Configure AWS SDK to use web identity token</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_WEB_IDENTITY_TOKEN_FILE</span><span class="o">=</span>/mnt/aws-creds/token
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AWS_ROLE_ARN</span><span class="o">=</span><span class="s2">&quot;&lt;iam-role-arn&gt;&quot;</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1"># AWS CLI and SDKs will use these credentials</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>aws<span class="w"> </span>s3<span class="w"> </span>ls
+</code></pre></div>
+<h2 id="example-azure-workload-identity">Example: Azure Workload Identity<a class="headerlink" href="#example-azure-workload-identity" title="Permanent link">&para;</a></h2>
+<p>Azure Workload Identity injects a federated token into pods at <code>/var/run/secrets/azure/tokens</code>. To enable this, the pod template must include the label <code>azure.workload.identity/use: "true"</code> and use a ServiceAccount annotated with the Azure managed identity client ID.</p>
+<p>For Azure Workload Identity setup prerequisites, see the <a href="https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview">AKS workload identity documentation</a>.</p>
+<p>First, create a ServiceAccount for workload identity:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceAccount</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">azure-workload-sa</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">azure.workload.identity/client-id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;managed-identity-client-id&gt;&quot;</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="c1"># Optional if tenant is configured cluster-wide:</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="c1"># azure.workload.identity/tenant-id: &quot;&lt;tenant-id&gt;&quot;</span>
+</code></pre></div>
+<p>The Azure managed identity must also have a federated credential for this ServiceAccount subject (for example, <code>system:serviceaccount:&lt;namespace&gt;:azure-workload-sa</code>).</p>
+<p>Then create a VirtualMachine that uses this ServiceAccount and exposes the injected token path:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">azure-workload</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="nt">runStrategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">        </span><span class="nt">azure.workload.identity/use</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">      </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">        </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">          </span><span class="nt">filesystems</span><span class="p">:</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sa-volume</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">            </span><span class="nt">virtiofs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">az-token</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">            </span><span class="nt">virtiofs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">            </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2Gi</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="w">        </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/containerdisks/fedora:latest</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sa-volume</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="w">        </span><span class="nt">serviceAccount</span><span class="p">:</span>
+<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="w">          </span><span class="nt">serviceAccountName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">azure-workload-sa</span>
+<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">az-token</span>
+<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="w">        </span><span class="nt">containerPath</span><span class="p">:</span>
+<a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/run/secrets/azure/tokens</span>
+</code></pre></div>
+<p><strong>Why both volumes?</strong></p>
+<ul>
+<li><code>sa-volume</code>: Ensures the virt-launcher pod uses the workload identity ServiceAccount, which triggers token injection.</li>
+<li><code>az-token</code>: Exposes the injected Azure token path to the VM via virtiofs.</li>
+</ul>
+<p>Inside the VM:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Mount the Azure token filesystem</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>mount<span class="w"> </span>-t<span class="w"> </span>virtiofs<span class="w"> </span>az-token<span class="w"> </span>/mnt/az-creds
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Configure Azure SDK to use workload identity token</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_FEDERATED_TOKEN_FILE</span><span class="o">=</span>/mnt/az-creds/azure-identity-token
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AZURE_CLIENT_ID</span><span class="o">=</span><span class="s2">&quot;&lt;managed-identity-client-id&gt;&quot;</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1"># Azure CLI and SDKs can use these credentials</span>
+</code></pre></div>
+<h2 id="webhook-injected-volumes">Webhook-injected volumes<a class="headerlink" href="#webhook-injected-volumes" title="Permanent link">&para;</a></h2>
+<p>Admission webhooks can inject volumes into virt-launcher pods. Use ContainerPath to expose these to VMs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">injected-config</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">containerPath</span><span class="p">:</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/opt/injected-config</span>
+</code></pre></div>
+<p>A corresponding filesystem device is also required in <code>spec.domain.devices.filesystems</code>.</p>
+<h2 id="path-requirements">Path requirements<a class="headerlink" href="#path-requirements" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The specified <code>path</code> must be an absolute path that exists within the virt-launcher pod's <code>compute</code> container</li>
+<li>The path must correspond to (or be a subpath of) a volumeMount in the compute container</li>
+<li>The path should exist before VM startup, or be continuously populated by a sidecar or webhook-injected mechanism</li>
+<li>Paths containing <code>..</code> components or symlinks that would escape the volumeMount boundary are rejected</li>
+<li>Paths are read-only from the VM's perspective</li>
+<li>The path must not conflict with KubeVirt-internal mount points</li>
+</ul>
+<h2 id="supported-volume-types">Supported volume types<a class="headerlink" href="#supported-volume-types" title="Permanent link">&para;</a></h2>
+<p>ContainerPath volumes only support paths backed by the following Kubernetes volume types:</p>
+<table>
+<thead>
+<tr>
+<th>Volume Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ConfigMap</td>
+<td>Configuration data</td>
+</tr>
+<tr>
+<td>Secret</td>
+<td>Sensitive data like credentials</td>
+</tr>
+<tr>
+<td>Projected</td>
+<td>Combinations of ConfigMaps, Secrets, DownwardAPI, and ServiceAccountToken</td>
+</tr>
+<tr>
+<td>DownwardAPI</td>
+<td>Pod and container metadata</td>
+</tr>
+<tr>
+<td>EmptyDir</td>
+<td>Ephemeral pod-local storage</td>
+</tr>
+</tbody>
+</table>
+<p>Other volume types (PVC, HostPath, etc.) are not supported.</p>
+<h2 id="live-migration">Live migration<a class="headerlink" href="#live-migration" title="Permanent link">&para;</a></h2>
+<p>ContainerPath volumes do not block live migration, but whether the data remains accessible after migration depends on how the path is populated:</p>
+<p><strong>Generally works with migration:</strong></p>
+<ul>
+<li><strong>Secrets, ConfigMaps, ServiceAccount tokens</strong> — Kubernetes re-projects these on the target node</li>
+<li><strong>Sidecar-populated volumes</strong> — If a sidecar container populates the path (e.g., Vault agent), the sidecar runs on the target node and repopulates the data</li>
+</ul>
+<p><strong>Does not work with migration:</strong></p>
+<ul>
+<li><strong>EmptyDir volumes without sidecars</strong> — Data is not copied to the target node</li>
+</ul>
+<p>When using ContainerPath volumes with live migration, verify that the mechanism populating your container path will function correctly on the target node.</p>
+<h2 id="security-considerations">Security considerations<a class="headerlink" href="#security-considerations" title="Permanent link">&para;</a></h2>
+<ul>
+<li>VMs gain access to any files within the specified container path — only expose paths containing data intended for VM consumption</li>
+<li>Use RBAC and admission policies to control which service accounts and roles can be used with VMs</li>
+<li>ContainerPath volumes inherit the security context of the virt-launcher pod</li>
+<li>Only <a href="#supported-volume-types">supported volume types</a> are allowed</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="vm-has-synchronizedfalse-with-missingvirtiofscontainers">VM has Synchronized=False with MissingVirtiofsContainers<a class="headerlink" href="#vm-has-synchronizedfalse-with-missingvirtiofscontainers" title="Permanent link">&para;</a></h3>
+<p>If a VM reports <code>Synchronized=False</code> with reason <code>MissingVirtiofsContainers</code>, the specified path does not exist in the virt-launcher pod.</p>
+<p>Check the path in the compute container:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>&lt;virt-launcher-pod&gt;<span class="w"> </span>-c<span class="w"> </span>compute<span class="w"> </span>--<span class="w"> </span>ls<span class="w"> </span>-la<span class="w"> </span>/path/to/volume
+</code></pre></div>
+<p>Common causes:</p>
+<ul>
+<li>Typo in the <code>path</code> field</li>
+<li>The expected volume was not injected (check the pod spec with <code>kubectl get pod &lt;virt-launcher-pod&gt; -o yaml</code>)</li>
+<li>Timing issue: the path is populated after virtiofs initialization</li>
+<li>The <code>ContainerPathVolumes</code> feature gate is not enabled</li>
+</ul>
 
 
 
@@ -4004,7 +4282,7 @@ apiserver</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../legacy_windows/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Running legacy Windows versions">
+          <a href="../containerized_data_importer/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Containerized Data Importer">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -4014,20 +4292,20 @@ apiserver</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Running legacy Windows versions
+                Containerized Data Importer
               </div>
             </div>
           </a>
         
         
           
-          <a href="../guest_agent_information/" class="md-footer__link md-footer__link--next" aria-label="Next: Guest Agent information">
+          <a href="../csi_overlay/" class="md-footer__link md-footer__link--next" aria-label="Next: CSI Overlay for VM State PVCs">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Guest Agent information
+                CSI Overlay for VM State PVCs
               </div>
             </div>
             <div class="md-footer__button md-icon">
