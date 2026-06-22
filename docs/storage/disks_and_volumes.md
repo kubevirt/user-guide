@@ -53,9 +53,9 @@ spec:
         claimName: mypvc
 ```
 #### persistent reservation
-It is possible to reserve a LUN through the the SCSI Persistent Reserve commands.
-In order to issue privileged SCSI ioctls, the VM requires activation of the
-persistent resevation flag:
+It is possible to reserve a LUN through the SCSI Persistent Reserve commands.
+In order to issue privileged SCSI ioctls, the VM requires enabling
+persistent reservation on the disk:
 
 ```yaml
 devices:
@@ -65,13 +65,12 @@ devices:
       reservation: true
 ```
 
-This feature is enabled by the feature gate `PersistentReservation`:
+This feature requires enabling persistent reservation in the KubeVirt configuration:
 
 ```yaml
 configuration:
-  developerConfiguration:
-    featureGates:
-    -  PersistentReservation
+  persistentReservationConfiguration:
+    enabled: true
 ```
 
 > **Note:** The persistent reservation feature enables an additional privileged
