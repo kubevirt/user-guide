@@ -68,7 +68,7 @@ The following definition requests `1024MB` from the cluster but tells
 the VMI that it has `2048MB` of memory available:
 
 ```yaml
-apiVersion: kubevirt.io/v1alpha3
+apiVersion: kubevirt.io/v1
 kind: VirtualMachineInstance
 metadata:
   name: testvmi-nocloud
