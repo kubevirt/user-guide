@@ -66,6 +66,32 @@ spec:
 
 When you create a VMExport based on a Virtual Machine Snapshot, the controller will attempt to create PVCs from the volume snapshots contained in Virtual Machine Snapshot. Once all the PVCs are ready, the export server will start and you can begin the export. If the Virtual Machine Snapshot contains multiple volumes that can be exported, each volume will get its own URL links. If the Virtual Machine snapshot contains no volumes that can be exported, the VMExport will go into a `skipped` phase, and no export server is started.
 
+### Export VirtualMachineTemplate
+
+Starting with KubeVirt v1.9.0, you can export a `VirtualMachineTemplate` as an
+OCI artifact. This requires the [`OCIExport`](#oci-format) and `Template`
+feature gates, and the virt-template deployment must be enabled. `Template` and
+the virt-template deployment are enabled by default. For more details on
+`VirtualMachineTemplates`, see
+[VirtualMachine Templates](../user_workloads/vm_templates.md).
+
+```yaml
+apiVersion: export.kubevirt.io/v1beta1
+kind: VirtualMachineExport
+metadata:
+  name: example-export
+spec:
+  tokenSecretRef: example-token
+  source:
+    apiGroup: "template.kubevirt.io"
+    kind: VirtualMachineTemplate
+    name: example-template
+```
+
+The template and all associated volume data are packaged into a single OCI
+artifact. Unlike VM and snapshot exports, the per-volume download links are not
+provided.
+
 ### Export Persistent Volume Claim
 
 You can create a VMExport CR that identifies the Persistent Volume Claim (PVC) you want to export. You can create a VMExport that looks like this:
@@ -259,6 +285,33 @@ There are 4 format types that are possible:
 
 Raw and Gzip will be selected if the PVC is determined to be a KubeVirt disk. KubeVirt disks contain a single disk.img file (or are a block device). Dir will return a list of the files in the PVC, to download a specific file you can replace `/dir` in the URL with the path and file name. For instance if the PVC contains the file `/example/data.txt` you can replace `/dir` with `/example/data.txt` to download just data.txt file. Or you can use the tar.gz URL to get all the contents of the PVC in a tar file.
 
+#### OCI format
+
+Starting with KubeVirt v1.9.0, VM exports can be downloaded as OCI image layout
+TARs. This packages the VM configuration and all disk volumes into a single OCI
+artifact that can be distributed through standard container registries using
+tools like skopeo, crane, or oras.
+
+OCI export requires the `OCIExport` feature gate to be enabled in addition to
+`VMExport`. See
+[Activating feature gates](../cluster_admin/activating_feature_gates.md) for
+details.
+
+To download an export in OCI format, use the `--format=oci` flag:
+
+```shell
+$ virtctl vmexport download example-export --format=oci --output=example-vm.oci.tar
+```
+
+The resulting TAR file conforms to the
+[OCI Image Layout Specification](https://github.com/opencontainers/image-spec/blob/main/image-layout.md)
+and can be pushed to a registry:
+
+```shell
+# podman unshare allows preserving UIDs in the TAR when skopeo is
+# extracting it
+$ podman unshare skopeo copy oci-archive:example-vm.oci.tar docker://registry.example.com/vms/example-vm:latest
+```
 
 #### Internal link certificates
 The export server certificate is valid for 7 days after which it is rotated by deleting the export server pod and associated secret and generating a new one. If for whatever reason the export server pod dies, the associated secret is also automatically deleted and a new pod and secret are generated. The VirtualMachineExport object status will be automatically updated to reflect the new certificate.
@@ -303,6 +356,7 @@ These three **functions** are:
 # --pvc, to specify the name of the pvc to export.
 # --snapshot, to specify the name of the VM snapshot to export.
 # --vm, to specify the name of the Virtual Machine to export.
+# --vmtemplate, to specify the name of the VirtualMachineTemplate to export (OCI only).
 
 $ virtctl vmexport create name [flags]
 ```
@@ -401,6 +455,7 @@ Flags:
       --snapshot          Sets VirtualMachineSnapshot as vmexport kind and specifies the snapshot name.
       --ttl               The time after the export was created that it is eligible to be automatically deleted. Defaults to 2 hours if not specified.
       --vm                Sets VirtualMachine as vmexport kind and specifies the VM name.
+      --vmtemplate        Sets VirtualMachineTemplate as vmexport kind and specifies the template name (OCI only).
       --volume            Specifies the volume to be downloaded.
 
 Use "virtctl options" for a list of global command-line options (applies to all commands).
