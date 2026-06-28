@@ -6,7 +6,7 @@ Plugins allow extending KubeVirt with out-of-tree functionality. A Plugin is a
 cluster-scoped Custom Resource that defines domain hooks, node hooks, and
 admission references.
 
-The Plugins feature is currently in Alpha and requires the `Plugins` feature gate.
+The Plugins feature is currently in Alpha (introduced in v1.9) and requires the `Plugins` feature gate.
 
 ## Enabling the feature gate
 
@@ -15,7 +15,7 @@ Enable the `Plugins` feature gate by following the steps in
 
 ## Domain Hooks
 
-Domain hooks modify the libvirt domain XML before a VM is created. There are
+Domain hooks modify the libvirt domain XML before it is applied. There are
 two types: CEL hooks for pure domain mutation, and sidecar hooks for cases
 that require reading external state (files, APIs, license servers) to feed
 into domain XML mutation.
@@ -129,6 +129,10 @@ These are listed in the Plugin CR to provide a central place to understand all p
 - **`failureStrategy`**: `Fail` (default) blocks the operation on error. `Ignore` logs the error and continues. Can be set at plugin level as the default for all hooks, and overridden per hook.
 - **`condition`**: A CEL expression that filters which VMIs the plugin applies to. Can be set at plugin level and per hook. Per-hook conditions further narrow the plugin-level filter.
 - **`timeout`**: Per-hook maximum wait duration. Defaults to 30s.
+
+This example targets live migration: the plugin-level condition restricts hooks
+to VMIs that are already running (i.e. migration targets), and the hook-level
+condition further narrows to VMIs that are live-migratable.
 
 ```yaml
 apiVersion: plugin.kubevirt.io/v1alpha1
