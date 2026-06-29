@@ -4721,6 +4721,7 @@ VM state would be received by the target VM, it would already be mutated by the 
 the VM the guest executes on). There are many reasons for migrations to fail converging, such as a
 high dirty-rate or low resources like network bandwidth and CPU. On such scenarios, see the following
 alternative strategies below.</p>
+<p>For virtual machines that explicitly set CPU resource limits, multithreaded migration is disabled and single-threaded migration will be used instead.</p>
 <h3 id="post-copy">Post-copy<a class="headerlink" href="#post-copy" title="Permanent link">&para;</a></h3>
 <p>The way post-copy migrations work is as following:</p>
 <ol>
