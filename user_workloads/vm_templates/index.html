@@ -1984,6 +1984,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Enabling the feature">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disabling-virt-template-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disabling virt-template deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2248,13 +2265,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#limitations" class="md-nav__link">
+  <a href="#oci-export" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Limitations
+        OCI export
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="OCI export">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exporting-a-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exporting a template
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importing-a-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Importing a template
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4050,6 +4095,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Enabling the feature">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#disabling-virt-template-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disabling virt-template deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -4314,13 +4376,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#limitations" class="md-nav__link">
+  <a href="#oci-export" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Limitations
+        OCI export
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="OCI export">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exporting-a-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exporting a template
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importing-a-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Importing a template
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4363,6 +4453,7 @@
 <li><code>template.kubevirt.io/v1alpha1</code> (Alpha) as of the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.8.0">
   <code>v1.8.0</code></a> KubeVirt
   release</li>
+<li><code>template.kubevirt.io/v1beta1</code> (Beta) as of the <code>v1.9.0</code> KubeVirt release</li>
 </ul>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
 <p><code>VirtualMachineTemplates</code> provide native, in-cluster VM templating for KubeVirt.
@@ -4395,13 +4486,20 @@ which instancetypes and preferences cannot cover.</p>
   (golden image workflow)</li>
 </ul>
 <h2 id="enabling-the-feature">Enabling the feature<a class="headerlink" href="#enabling-the-feature" title="Permanent link">&para;</a></h2>
-<p>The Template feature is an Alpha feature gate and must be explicitly enabled in
-the <code>KubeVirt</code> CR. This requires KubeVirt v1.8.0 or later. The <code>Snapshot</code>
-feature gate is also required as a dependency.</p>
-<p>Enable both feature gates by patching the <code>KubeVirt</code> CR:</p>
+<p>Starting with KubeVirt v1.9.0, the Template feature gate is Beta and enabled by
+default. No action is required to enable it.</p>
+<p>On KubeVirt v1.8.x, the Template feature gate is Alpha and must be explicitly
+enabled along with the <code>Snapshot</code> dependency:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span>patch<span class="w"> </span>kubevirt<span class="w"> </span>kubevirt<span class="w"> </span>-n<span class="w"> </span>kubevirt<span class="w"> </span>--type<span class="w"> </span>merge<span class="w"> </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;spec&quot;:{&quot;configuration&quot;:{&quot;developerConfiguration&quot;:{&quot;featureGates&quot;:[&quot;Snapshot&quot;,&quot;Template&quot;]}}}}&#39;</span>
 </code></pre></div>
-<p>Or add them to your <code>KubeVirt</code> CR YAML:</p>
+<p>Once enabled, KubeVirt automatically deploys the required components for native
+<code>VirtualMachineTemplates</code>.</p>
+<p>For more details on feature gates, see
+<a href="../../cluster_admin/activating_feature_gates/">Activating feature gates</a>.</p>
+<h3 id="disabling-virt-template-deployment">Disabling virt-template deployment<a class="headerlink" href="#disabling-virt-template-deployment" title="Permanent link">&para;</a></h3>
+<p>To disable the deployment of virt-template components while keeping the Template
+feature gate enabled, set <code>virtTemplateDeployment.enabled</code> to <code>false</code> in the
+<code>KubeVirt</code> CR:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -4409,15 +4507,9 @@ feature gate is also required as a dependency.</p>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Snapshot</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Template</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">virtTemplateDeployment</span><span class="p">:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
-<p>Once enabled, KubeVirt automatically deploys the required components for native
-<code>VirtualMachineTemplates</code>.</p>
-<p>For more details on feature gates, see
-<a href="../../cluster_admin/activating_feature_gates/">Activating feature gates</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <code>virtctl template</code> subcommands require virtctl v1.8.0 or later.</p>
@@ -4425,7 +4517,7 @@ feature gate is also required as a dependency.</p>
 <h2 id="virtualmachinetemplate">VirtualMachineTemplate<a class="headerlink" href="#virtualmachinetemplate" title="Permanent link">&para;</a></h2>
 <h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>
 <p>A <code>VirtualMachineTemplate</code> is a namespaced resource in the
-<code>template.kubevirt.io/v1alpha1</code> API group.</p>
+<code>template.kubevirt.io/v1beta1</code> API group.</p>
 <p>It consists of:</p>
 <ul>
 <li><strong><code>spec.parameters</code></strong>: a list of parameters that can be substituted when
@@ -4548,7 +4640,7 @@ volumes, and <code>DataVolume</code> sources. See
 <a href="../instancetypes/">Instance types and preferences</a> for more details.</p>
 <p>The following example defines a Fedora VM template with a generated name, a
 default instancetype and preference, and a required password parameter:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">template.kubevirt.io/v1alpha1</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">template.kubevirt.io/v1beta1</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineTemplate</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fedora-template</span>
@@ -4642,7 +4734,7 @@ configure a VM to your needs and then convert it into a reusable template.</p>
 templates in a shared or "catalog" namespace from a VM running in a user's
 private namespace.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>$<span class="w"> </span>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="s">apiVersion: template.kubevirt.io/v1alpha1</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="s">apiVersion: template.kubevirt.io/v1beta1</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="s">kind: VirtualMachineTemplateRequest</span>
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="s">metadata:</span>
 <a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="s">  name: promote-to-golden</span>
@@ -4669,7 +4761,7 @@ before distributing the template.</p>
 <h3 id="example-persistent-storage-with-datavolumetemplates">Example: Persistent storage with <code>DataVolumeTemplates</code><a class="headerlink" href="#example-persistent-storage-with-datavolumetemplates" title="Permanent link">&para;</a></h3>
 <p>While <code>containerDisk</code> is useful for testing, production templates often use
 <code>dataVolumeTemplates</code> to clone persistent storage from a golden image PVC.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">template.kubevirt.io/v1alpha1</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">template.kubevirt.io/v1beta1</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineTemplate</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fedora-pvc-template</span>
@@ -4774,16 +4866,27 @@ templates, not freeform. To achieve this:</p>
 </ol>
 <p>This ensures that all VMs are created from approved templates, giving
 administrators control over the VM configurations allowed in the cluster.</p>
-<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The Template API (<code>template.kubevirt.io/v1alpha1</code>) is an Alpha feature and may
-change in future releases.</p>
-</div>
-<ul>
-<li>The API is Alpha and subject to breaking changes</li>
-<li>Import/export functionality (OVA/OVF) is planned for v1.9.0</li>
-</ul>
+<h2 id="oci-export">OCI export<a class="headerlink" href="#oci-export" title="Permanent link">&para;</a></h2>
+<p>Starting with KubeVirt v1.9.0, <code>VirtualMachineTemplates</code> can be exported as OCI
+artifacts using the <a href="../../storage/export_api/">Export API</a>. This allows you to
+distribute templates as container images through standard registries. The
+<code>OCIExport</code> and <code>Template</code> feature gates are required, and the
+<a href="#disabling-virt-template-deployment">virt-template deployment</a> must be enabled.
+<code>Template</code> and the virt-template deployment are enabled by default.</p>
+<p>For full details on OCI export, feature gate setup, and pushing to registries,
+see the <a href="../../storage/export_api/#oci-format">Export API - OCI format</a>
+documentation.</p>
+<h3 id="exporting-a-template">Exporting a template<a class="headerlink" href="#exporting-a-template" title="Permanent link">&para;</a></h3>
+<p>Create a VMExport for a <code>VirtualMachineTemplate</code> and download it in OCI format:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$<span class="w"> </span>virtctl<span class="w"> </span>vmexport<span class="w"> </span>create<span class="w"> </span>my-export<span class="w"> </span>--vmtemplate<span class="o">=</span>fedora-template
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>$<span class="w"> </span>virtctl<span class="w"> </span>vmexport<span class="w"> </span>download<span class="w"> </span>my-export<span class="w"> </span>--format<span class="o">=</span>oci<span class="w"> </span>--output<span class="o">=</span>fedora-template.oci.tar
+</code></pre></div>
+<p>The OCI artifact contains the template spec and all associated volume data.</p>
+<h3 id="importing-a-template">Importing a template<a class="headerlink" href="#importing-a-template" title="Permanent link">&para;</a></h3>
+<p>Native OCI import is planned for a future release (&gt;= v1.10.0). In the
+meantime, the
+<a href="https://github.com/kubevirt/kubevirt/blob/main/hack/oci-import.sh"><code>hack/oci-import.sh</code></a>
+script can be used to import an exported template.</p>
 
 
 
