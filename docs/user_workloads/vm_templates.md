@@ -5,6 +5,7 @@
 * `template.kubevirt.io/v1alpha1` (Alpha) as of the [
   `v1.8.0`](https://github.com/kubevirt/kubevirt/releases/tag/v1.8.0) KubeVirt
   release
+* `template.kubevirt.io/v1beta1` (Beta) as of the `v1.9.0` KubeVirt release
 
 ## Introduction
 
@@ -44,17 +45,27 @@ The feature introduces two Custom Resource Definitions:
 
 ## Enabling the feature
 
-The Template feature is an Alpha feature gate and must be explicitly enabled in
-the `KubeVirt` CR. This requires KubeVirt v1.8.0 or later. The `Snapshot`
-feature gate is also required as a dependency.
+Starting with KubeVirt v1.9.0, the Template feature gate is Beta and enabled by
+default. No action is required to enable it.
 
-Enable both feature gates by patching the `KubeVirt` CR:
+On KubeVirt v1.8.x, the Template feature gate is Alpha and must be explicitly
+enabled along with the `Snapshot` dependency:
 
 ```shell
 $ kubectl patch kubevirt kubevirt -n kubevirt --type merge -p '{"spec":{"configuration":{"developerConfiguration":{"featureGates":["Snapshot","Template"]}}}}'
 ```
 
-Or add them to your `KubeVirt` CR YAML:
+Once enabled, KubeVirt automatically deploys the required components for native
+`VirtualMachineTemplates`.
+
+For more details on feature gates, see
+[Activating feature gates](../cluster_admin/activating_feature_gates.md).
+
+### Disabling virt-template deployment
+
+To disable the deployment of virt-template components while keeping the Template
+feature gate enabled, set `virtTemplateDeployment.enabled` to `false` in the
+`KubeVirt` CR:
 
 ```yaml
 apiVersion: kubevirt.io/v1
@@ -64,17 +75,9 @@ metadata:
   namespace: kubevirt
 spec:
   configuration:
-    developerConfiguration:
-      featureGates:
-        - Snapshot
-        - Template
+    virtTemplateDeployment:
+      enabled: false
 ```
-
-Once enabled, KubeVirt automatically deploys the required components for native
-`VirtualMachineTemplates`.
-
-For more details on feature gates, see
-[Activating feature gates](../cluster_admin/activating_feature_gates.md).
 
 !!! Note
     The `virtctl template` subcommands require virtctl v1.8.0 or later.
@@ -84,7 +87,7 @@ For more details on feature gates, see
 ### Overview
 
 A `VirtualMachineTemplate` is a namespaced resource in the
-`template.kubevirt.io/v1alpha1` API group.
+`template.kubevirt.io/v1beta1` API group.
 
 It consists of:
 
@@ -167,7 +170,7 @@ The following example defines a Fedora VM template with a generated name, a
 default instancetype and preference, and a required password parameter:
 
 ```yaml
-apiVersion: template.kubevirt.io/v1alpha1
+apiVersion: template.kubevirt.io/v1beta1
 kind: VirtualMachineTemplate
 metadata:
   name: fedora-template
@@ -290,7 +293,7 @@ private namespace.
 
 ```shell
 $ cat <<EOF | kubectl apply -f -
-apiVersion: template.kubevirt.io/v1alpha1
+apiVersion: template.kubevirt.io/v1beta1
 kind: VirtualMachineTemplateRequest
 metadata:
   name: promote-to-golden
@@ -321,7 +324,7 @@ While `containerDisk` is useful for testing, production templates often use
 `dataVolumeTemplates` to clone persistent storage from a golden image PVC.
 
 ```yaml
-apiVersion: template.kubevirt.io/v1alpha1
+apiVersion: template.kubevirt.io/v1beta1
 kind: VirtualMachineTemplate
 metadata:
   name: fedora-pvc-template
@@ -421,11 +424,34 @@ templates, not freeform. To achieve this:
 This ensures that all VMs are created from approved templates, giving
 administrators control over the VM configurations allowed in the cluster.
 
-## Limitations
+## OCI export
 
-!!! Warning
-    The Template API (`template.kubevirt.io/v1alpha1`) is an Alpha feature and may
-    change in future releases.
+Starting with KubeVirt v1.9.0, `VirtualMachineTemplates` can be exported as OCI
+artifacts using the [Export API](../storage/export_api.md). This allows you to
+distribute templates as container images through standard registries. The
+`OCIExport` and `Template` feature gates are required, and the
+[virt-template deployment](#disabling-virt-template-deployment) must be enabled.
+`Template` and the virt-template deployment are enabled by default.
 
-- The API is Alpha and subject to breaking changes
-- Import/export functionality (OVA/OVF) is planned for v1.9.0
+For full details on OCI export, feature gate setup, and pushing to registries,
+see the [Export API - OCI format](../storage/export_api.md#oci-format)
+documentation.
+
+### Exporting a template
+
+Create a VMExport for a `VirtualMachineTemplate` and download it in OCI format:
+
+```shell
+$ virtctl vmexport create my-export --vmtemplate=fedora-template
+$ virtctl vmexport download my-export --format=oci --output=fedora-template.oci.tar
+```
+
+The OCI artifact contains the template spec and all associated volume data.
+
+### Importing a template
+
+Native OCI import is planned for a future release (>= v1.10.0). In the
+meantime, the
+[`hack/oci-import.sh`](https://github.com/kubevirt/kubevirt/blob/main/hack/oci-import.sh)
+script can be used to import an exported template.
+
