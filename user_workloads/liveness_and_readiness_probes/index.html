@@ -1799,6 +1799,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#pausing-guest-agent-ping-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pausing Guest-Agent Ping Probes
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3812,6 +3823,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#pausing-guest-agent-ping-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pausing Guest-Agent Ping Probes
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4170,6 +4192,43 @@ returning successfully:</p>
 incoming qemu-ga commands:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>journalctl<span class="w"> </span><span class="nv">_COMM</span><span class="o">=</span>qemu-ga<span class="w"> </span>--follow
 </code></pre></div>
+<h2 id="pausing-guest-agent-ping-probes">Pausing Guest-Agent Ping Probes<a class="headerlink" href="#pausing-guest-agent-ping-probes" title="Permanent link">&para;</a></h2>
+<p>During maintenance operations such as guest OS updates (especially long Windows
+updates with multiple reboots), the guest agent may become temporarily
+unavailable. If a GuestAgentPing liveness probe is configured, this will cause
+the probe to fail and kubelet to restart the Pod, destroying the running VM.</p>
+<p>To prevent this, you can pause GuestAgentPing probes by adding an annotation
+to the VMI:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Pause probes before maintenance</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>kubectl<span class="w"> </span>annotate<span class="w"> </span>vmi<span class="w"> </span>my-vm<span class="w"> </span>kubevirt.io/pause-guest-agent-probes<span class="o">=</span><span class="nb">true</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Resume probes after maintenance</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>kubectl<span class="w"> </span>annotate<span class="w"> </span>vmi<span class="w"> </span>my-vm<span class="w"> </span>kubevirt.io/pause-guest-agent-probes-
+</code></pre></div>
+<p>When the annotation is set to a truthy value (<code>"true"</code>, <code>"1"</code>, <code>"t"</code>, etc. as
+accepted by Go's <code>strconv.ParseBool</code>), virt-launcher returns immediate success
+for GuestAgentPing probes without contacting the QEMU guest agent. Removing the
+annotation (or setting it to a falsy value) resumes normal probe behavior.</p>
+<p>To verify that virt-launcher has picked up the annotation, check its logs for
+the state transition message:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>virt-launcher-my-vm-&lt;id&gt;<span class="w"> </span>-c<span class="w"> </span>compute<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;probe pause state&quot;</span>
+</code></pre></div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul>
+<li>This annotation only affects GuestAgentPing probes. HTTP, TCP, and exec
+  probes are not affected.</li>
+<li>The annotation takes effect within seconds (on the next virt-launcher
+  sync cycle, triggered by virt-handler).</li>
+<li>For permanent probe disabling, remove the probe from the VMI spec instead
+  of keeping the annotation set indefinitely.</li>
+<li>Internal probe suppression for transient states (e.g., live migration,
+  VM pause) is handled automatically and independently of the annotation.
+  Setting the annotation to <code>"false"</code> or removing it will not override
+  internal suppression — probes remain suppressed during these operations
+  regardless of the annotation value.</li>
+</ul>
+</div>
 
 
 
