@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/user_workloads/hook-sidecar/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/compute/dra_gpu/">
       
       
-        <link rel="prev" href="../deploy_common_instancetypes/">
+        <link rel="prev" href="../host-devices/">
       
       
-        <link rel="next" href="../presets/">
+        <link rel="next" href="../hugepages/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Hook Sidecar Container - KubeVirt user guide</title>
+        <title>Assigning GPUs with Dynamic Resource Allocation (DRA) - KubeVirt user guide</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#hook-sidecar-container" class="md-skip">
+        <a href="#assigning-gpus-with-dynamic-resource-allocation-dra" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Hook Sidecar Container
+              Assigning GPUs with Dynamic Resource Allocation (DRA)
             
           </span>
         </div>
@@ -283,13 +283,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../lifecycle/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../user_workloads/lifecycle/" class="md-tabs__link">
           
   
   
@@ -305,11 +303,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../compute/client_passthrough/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../client_passthrough/" class="md-tabs__link">
           
   
   
@@ -1193,31 +1193,26 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -1235,7 +1230,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1253,7 +1248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../lifecycle/" class="md-nav__link">
+      <a href="../../user_workloads/lifecycle/" class="md-nav__link">
         
   
   
@@ -1281,7 +1276,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../basic_use/" class="md-nav__link">
+      <a href="../../user_workloads/basic_use/" class="md-nav__link">
         
   
   
@@ -1309,7 +1304,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../creating_vms/" class="md-nav__link">
+      <a href="../../user_workloads/creating_vms/" class="md-nav__link">
         
   
   
@@ -1337,7 +1332,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../creating_it_pref/" class="md-nav__link">
+      <a href="../../user_workloads/creating_it_pref/" class="md-nav__link">
         
   
   
@@ -1365,7 +1360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../virtctl_client_tool/" class="md-nav__link">
+      <a href="../../user_workloads/virtctl_client_tool/" class="md-nav__link">
         
   
   
@@ -1393,7 +1388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../accessing_virtual_machines/" class="md-nav__link">
+      <a href="../../user_workloads/accessing_virtual_machines/" class="md-nav__link">
         
   
   
@@ -1421,7 +1416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../boot_from_external_source/" class="md-nav__link">
+      <a href="../../user_workloads/boot_from_external_source/" class="md-nav__link">
         
   
   
@@ -1449,7 +1444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../startup_scripts/" class="md-nav__link">
+      <a href="../../user_workloads/startup_scripts/" class="md-nav__link">
         
   
   
@@ -1477,7 +1472,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../windows_virtio_drivers/" class="md-nav__link">
+      <a href="../../user_workloads/windows_virtio_drivers/" class="md-nav__link">
         
   
   
@@ -1505,7 +1500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../legacy_windows/" class="md-nav__link">
+      <a href="../../user_workloads/legacy_windows/" class="md-nav__link">
         
   
   
@@ -1539,20 +1534,17 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_11" >
         
           
-          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="0">
             
   
   
@@ -1588,7 +1580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../component_monitoring/" class="md-nav__link">
+      <a href="../../user_workloads/component_monitoring/" class="md-nav__link">
         
   
   
@@ -1616,7 +1608,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guest_agent_information/" class="md-nav__link">
+      <a href="../../user_workloads/guest_agent_information/" class="md-nav__link">
         
   
   
@@ -1644,7 +1636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guest_operating_system_information/" class="md-nav__link">
+      <a href="../../user_workloads/guest_operating_system_information/" class="md-nav__link">
         
   
   
@@ -1672,7 +1664,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../liveness_and_readiness_probes/" class="md-nav__link">
+      <a href="../../user_workloads/liveness_and_readiness_probes/" class="md-nav__link">
         
   
   
@@ -1705,31 +1697,26 @@
                 
   
   
-    
   
   
-  
     
     
     
     
       
       
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_12" >
         
           
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_12" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_5_12" id="__nav_5_12_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_12" id="__nav_5_12_label" tabindex="0">
             
   
   
@@ -1747,7 +1734,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_12_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_12_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_12">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1765,7 +1752,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../instancetypes/" class="md-nav__link">
+      <a href="../../user_workloads/instancetypes/" class="md-nav__link">
         
   
   
@@ -1793,7 +1780,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../deploy_common_instancetypes/" class="md-nav__link">
+      <a href="../../user_workloads/deploy_common_instancetypes/" class="md-nav__link">
         
   
   
@@ -1818,37 +1805,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Hook Sidecar Container
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../user_workloads/hook-sidecar/" class="md-nav__link">
         
   
   
@@ -1864,137 +1824,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Introduction
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#enabling-sidecar-feature-gate" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Enabling Sidecar feature gate
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sidecar-shim-container-image" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sidecar-shim container image
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#go-python-shell-pick-any-one" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Go, Python, Shell - pick any one
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Go, Python, Shell - pick any one">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#go-binary" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Go binary
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#shell-or-python-script" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shell or Python script
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Shell or Python script">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configmap-with-shell-script" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ConfigMap with shell script
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configmap-with-python-script" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ConfigMap with python script
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#verify-everything-works" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verify everything works
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -2007,7 +1836,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../presets/" class="md-nav__link">
+      <a href="../../user_workloads/presets/" class="md-nav__link">
         
   
   
@@ -2035,7 +1864,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../vm_templates/" class="md-nav__link">
+      <a href="../../user_workloads/vm_templates/" class="md-nav__link">
         
   
   
@@ -2063,7 +1892,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../templates/" class="md-nav__link">
+      <a href="../../user_workloads/templates/" class="md-nav__link">
         
   
   
@@ -2091,7 +1920,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pool/" class="md-nav__link">
+      <a href="../../user_workloads/pool/" class="md-nav__link">
         
   
   
@@ -2119,7 +1948,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../replicaset/" class="md-nav__link">
+      <a href="../../user_workloads/replicaset/" class="md-nav__link">
         
   
   
@@ -2147,7 +1976,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../virtual_machine_instances/" class="md-nav__link">
+      <a href="../../user_workloads/virtual_machine_instances/" class="md-nav__link">
         
   
   
@@ -2175,7 +2004,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../vm_rollout_strategies/" class="md-nav__link">
+      <a href="../../user_workloads/vm_rollout_strategies/" class="md-nav__link">
         
   
   
@@ -2215,26 +2044,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   
@@ -2252,7 +2086,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -2270,7 +2104,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/client_passthrough/" class="md-nav__link">
+      <a href="../client_passthrough/" class="md-nav__link">
         
   
   
@@ -2298,7 +2132,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/cpu_hotplug/" class="md-nav__link">
+      <a href="../cpu_hotplug/" class="md-nav__link">
         
   
   
@@ -2326,7 +2160,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/dedicated_cpu_resources/" class="md-nav__link">
+      <a href="../dedicated_cpu_resources/" class="md-nav__link">
         
   
   
@@ -2354,7 +2188,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/host-devices/" class="md-nav__link">
+      <a href="../host-devices/" class="md-nav__link">
         
   
   
@@ -2379,10 +2213,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../compute/dra_gpu/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assigning GPUs with Dynamic Resource Allocation (DRA)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -2398,6 +2259,98 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-the-dra-gpu-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installing the DRA GPU driver
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing the DRA GPU driver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dra-driver-for-nvidia-gpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DRA driver for NVIDIA GPUs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-resourceclaimtemplate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a ResourceClaimTemplate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-vmi-with-a-dra-gpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a VMI with a DRA GPU
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2410,7 +2363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/hugepages/" class="md-nav__link">
+      <a href="../hugepages/" class="md-nav__link">
         
   
   
@@ -2438,7 +2391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/live_migration/" class="md-nav__link">
+      <a href="../live_migration/" class="md-nav__link">
         
   
   
@@ -2466,7 +2419,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/decentralized_live_migration/" class="md-nav__link">
+      <a href="../decentralized_live_migration/" class="md-nav__link">
         
   
   
@@ -2494,7 +2447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/mediated_devices_configuration/" class="md-nav__link">
+      <a href="../mediated_devices_configuration/" class="md-nav__link">
         
   
   
@@ -2522,7 +2475,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/memory_hotplug/" class="md-nav__link">
+      <a href="../memory_hotplug/" class="md-nav__link">
         
   
   
@@ -2550,7 +2503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/node_assignment/" class="md-nav__link">
+      <a href="../node_assignment/" class="md-nav__link">
         
   
   
@@ -2578,7 +2531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/node_overcommit/" class="md-nav__link">
+      <a href="../node_overcommit/" class="md-nav__link">
         
   
   
@@ -2606,7 +2559,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/numa/" class="md-nav__link">
+      <a href="../numa/" class="md-nav__link">
         
   
   
@@ -2634,7 +2587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/persistent_tpm_and_uefi_state/" class="md-nav__link">
+      <a href="../persistent_tpm_and_uefi_state/" class="md-nav__link">
         
   
   
@@ -2662,7 +2615,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/resources_requests_and_limits/" class="md-nav__link">
+      <a href="../resources_requests_and_limits/" class="md-nav__link">
         
   
   
@@ -2690,7 +2643,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/run_strategies/" class="md-nav__link">
+      <a href="../run_strategies/" class="md-nav__link">
         
   
   
@@ -2718,7 +2671,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/virtual_hardware/" class="md-nav__link">
+      <a href="../virtual_hardware/" class="md-nav__link">
         
   
   
@@ -2746,7 +2699,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/memory_dump/" class="md-nav__link">
+      <a href="../memory_dump/" class="md-nav__link">
         
   
   
@@ -2774,7 +2727,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../compute/vsock/" class="md-nav__link">
+      <a href="../vsock/" class="md-nav__link">
         
   
   
@@ -3820,10 +3773,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Introduction
+        Prerequisites
       
     </span>
   </a>
@@ -3831,10 +3784,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#enabling-sidecar-feature-gate" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Enabling Sidecar feature gate
+        Overview
       
     </span>
   </a>
@@ -3842,67 +3795,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sidecar-shim-container-image" class="md-nav__link">
+  <a href="#installing-the-dra-gpu-driver" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sidecar-shim container image
+        Installing the DRA GPU driver
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#go-python-shell-pick-any-one" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Go, Python, Shell - pick any one
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Go, Python, Shell - pick any one">
+    <nav class="md-nav" aria-label="Installing the DRA GPU driver">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#go-binary" class="md-nav__link">
+  <a href="#dra-driver-for-nvidia-gpus" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Go binary
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#shell-or-python-script" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Shell or Python script
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Shell or Python script">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configmap-with-shell-script" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ConfigMap with shell script
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configmap-with-python-script" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ConfigMap with python script
+        DRA driver for NVIDIA GPUs
       
     </span>
   </a>
@@ -3913,20 +3821,26 @@
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#verify-everything-works" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-resourceclaimtemplate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Verify everything works
+        Creating a ResourceClaimTemplate
       
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-vmi-with-a-dra-gpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a VMI with a DRA GPU
+      
+    </span>
+  </a>
   
 </li>
       
@@ -3947,7 +3861,7 @@
 
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/user_workloads/hook-sidecar.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/compute/dra_gpu.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -3956,147 +3870,133 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/user_workloads/hook-sidecar.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/compute/dra_gpu.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="hook-sidecar-container">Hook Sidecar Container<a class="headerlink" href="#hook-sidecar-container" title="Permanent link">&para;</a></h1>
-<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
-<p>In KubeVirt, a Hook Sidecar container is a sidecar container (a secondary container that runs along with the main
-application container within the same Pod) used to apply customizations before the Virtual Machine is initialized. This
-ability is provided since configurable elements in the VMI specification do not cover all of the <a href="https://libvirt.org/formatdomain.html">libvirt domain
-XML</a> elements.</p>
-<p>The sidecar containers communicate with the main container over a socket with a gRPC protocol. There are two main
-sidecar hooks:</p>
+<h1 id="assigning-gpus-with-dynamic-resource-allocation-dra">Assigning GPUs with Dynamic Resource Allocation (DRA)<a class="headerlink" href="#assigning-gpus-with-dynamic-resource-allocation-dra" title="Permanent link">&para;</a></h1>
+<p><strong>FEATURE STATE:</strong> v1.9.0: Beta</p>
+<p>KubeVirt can attach GPUs to virtual machines through Kubernetes <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">Dynamic Resource Allocation (DRA)</a>.
+With DRA, a GPU is requested through the Kubernetes <code>ResourceClaim</code> API, allocated by an external GPU DRA driver, and attached to the VM through <code>spec.resourceClaims</code> and <code>spec.domain.devices.gpus</code>.</p>
+<p>This is an alternative to the device-plugin flow documented in <a href="../host-devices/">Host Devices Assignment</a>.
+With DRA, you do not need to allowlist GPUs in <code>permittedHostDevices</code>.
+Instead, the DRA driver publishes <code>ResourceSlice</code> objects and KubeVirt reads device metadata from files mounted into virt-launcher.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Throughout this guide, <strong>Container Device Interface (CDI)</strong> refers to the Kubernetes mechanism that DRA drivers use to inject device nodes into virt-launcher pods — not <a href="../../storage/containerized_data_importer/">Containerized Data Importer</a>, which KubeVirt uses for disk import workflows.</p>
+</div>
+<p><code>GPUsWithDRA</code> feature gate is in Beta and is enabled by default starting in v1.9.0.
+The only earlier release that supports it is v1.8.x, where you must enable it manually.</p>
+<p>See <a href="../../cluster_admin/activating_feature_gates/">Activating feature gates</a> to enable it on earlier releases or to disable it.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>GPU DRA driver.</strong> Install a compatible external GPU DRA driver in the cluster.</p>
+<p>This guide documents the <a href="https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu">NVIDIA k8s-dra-driver-gpu</a> for production clusters.</p>
+<p>The driver must publish <a href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/5304-dra-attributes-downward-api">DRA device metadata (KEP-5304)</a> — device attributes such as <code>resource.kubernetes.io/pciBusID</code> — in JSON files mounted into virt-launcher.
+KubeVirt reads these files to build the libvirt domain XML for the GPU.
+This is separate from the VFIO device nodes that CDI mounts at runtime: CDI delivers the <code>/dev/vfio/*</code> device nodes; the metadata file identifies which PCI device to attach.
+Driver authors can find details on publishing these attributes in <a href="https://kubernetes.io/docs/tasks/configure-pod-container/assign-resources/access-dra-device-metadata/">Access DRA device metadata</a>.</p>
+</li>
+<li>
+<p><strong>Host preparation for passthrough GPUs.</strong> For passthrough allocations, GPU nodes must meet the usual PCI passthrough requirements (IOMMU enabled, <code>vfio-pci</code> available).
+    See <a href="../host-devices/#host-preparation-for-pci-passthrough">Host Devices Assignment</a>.</p>
+</li>
+</ul>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>The high-level workflow is:</p>
 <ol>
-<li><code>onDefineDomain</code>: This hook helps to customize libvirt's XML and return the new XML over gRPC for the VM creation.</li>
-<li><code>preCloudInitIso</code>: This hook helps to customize the cloud-init configuration. It operates on and returns JSON
-   formatted cloud-init data.</li>
+<li>Install a GPU DRA driver on the cluster.</li>
+<li>Create a <code>ResourceClaimTemplate</code> that requests a GPU from the driver.</li>
+<li>Create a VMI that references the claim and maps it to <code>spec.domain.devices.gpus</code>.</li>
 </ol>
-<h2 id="enabling-sidecar-feature-gate">Enabling <code>Sidecar</code> feature gate<a class="headerlink" href="#enabling-sidecar-feature-gate" title="Permanent link">&para;</a></h2>
-<p><code>Sidecar</code> feature gate can be enabled by following the steps mentioned in
-<a href="../../cluster_admin/activating_feature_gates/">Activating feature gates</a>.</p>
-<p>In case of a development cluster created using kubevirtci, follow the steps mentioned in the 
-<a href="https://github.com/kubevirt/kubevirt/blob/main/docs/getting-started.md#compile-and-run-it">developer doc</a> to enable 
-the feature gate.</p>
-<h2 id="sidecar-shim-container-image">Sidecar-shim container image<a class="headerlink" href="#sidecar-shim-container-image" title="Permanent link">&para;</a></h2>
-<p>To run a VM with custom modifications, the <a href="https://quay.io/repository/kubevirt/sidecar-shim">sidecar-shim-image</a> 
-takes care of implementing the communication with the main container.</p>
-<p>The image contains the <code>sidecar-shim</code> binary built using
-<a href="https://github.com/kubevirt/kubevirt/blob/main/cmd/sidecars/sidecar_shim.go"><code>sidecar_shim.go</code></a> which should be kept
-as the entrypoint of the container. This binary will search in <code>$PATH</code> for binaries named after the hook names (e.g
-<code>onDefineDomain</code> and <code>preCloudInitIso</code>) and run them. Users must provide the necessary arguments as command line options
-(flags).</p>
-<p>In the case of <code>onDefineDomain</code>, the arguments will be the VMI information as JSON string, (e.g <code>--vmi vmiJSON</code>) and
-the current domain XML (e.g <code>--domain domainXML</code>). It outputs the modified domain XML on the standard output.</p>
-<p>In the case of <code>preCloudInitIso</code>, the arguments will be the VMI information as JSON string, (e.g <code>--vmi vmiJSON</code>) and
-the CloudInitData (e.g <code>--cloud-init cloudInitJSON</code>). It outputs the modified CloudInitData (as JSON) on the standard ouput.</p>
-<p>Shell or python scripts can be used as alternatives to the binary, by making them available at the expected location 
-(<code>/usr/bin/onDefineDomain</code> or <code>/usr/bin/preCloudInitIso</code> depending upon the hook).</p>
-<p>A prebuilt image named <code>sidecar-shim</code> capable of running Shell or Python scripts is shipped as part of KubeVirt releases.</p>
-<h2 id="go-python-shell-pick-any-one">Go, Python, Shell - pick any one<a class="headerlink" href="#go-python-shell-pick-any-one" title="Permanent link">&para;</a></h2>
-<p>Although a binary doesn't strictly need to be generated from Go code, and a script doesn't strictly need to be one
-among Shell or Python, for the purpose of this guide, we will use those as examples.</p>
-<h3 id="go-binary">Go binary<a class="headerlink" href="#go-binary" title="Permanent link">&para;</a></h3>
-<p>Example Go code modifiying the <a href="https://libvirt.org/formatdomain.html#smbios-system-information">SMBIOS system
-information</a> can be found in the <a href="https://github.com/kubevirt/kubevirt/tree/main/cmd/sidecars/smbios">KubeVirt
-repo</a>. Binary generated from this code, when
-available under <code>/usr/bin/ondefinedomain</code> in the sidecar-shim-image, is run right before VMI creation and the baseboard
-manufacturer value is modified to reflect what's provided in the <code>smbios.vm.kubevirt.io/baseBoardManufacturer</code>
-annotation in <a href="https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-with-sidecar-hook.yaml">VMI spec</a>.</p>
-<h3 id="shell-or-python-script">Shell or Python script<a class="headerlink" href="#shell-or-python-script" title="Permanent link">&para;</a></h3>
-<p>If you pefer writing a shell or python script instead of a Go program, create a Kubernetes ConfigMap and use
-annotations to make sure the script is run before the VMI creation. The flow would be as below:</p>
-<ol>
-<li>Create a ConfigMap containing the shell or python script you want to run</li>
-<li>Create a VMI containing the annotation <code>hooks.kubevirt.io/hookSidecars</code> and mention the ConfigMap information in it.</li>
-<li>In this case a predefined image can be used to handle the communication with the main container.</li>
-</ol>
-<h4 id="configmap-with-shell-script">ConfigMap with shell script<a class="headerlink" href="#configmap-with-shell-script" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<h2 id="installing-the-dra-gpu-driver">Installing the DRA GPU driver<a class="headerlink" href="#installing-the-dra-gpu-driver" title="Permanent link">&para;</a></h2>
+<h3 id="dra-driver-for-nvidia-gpus">DRA driver for NVIDIA GPUs<a class="headerlink" href="#dra-driver-for-nvidia-gpus" title="Permanent link">&para;</a></h3>
+<p>Install the <a href="https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu">dra-driver-nvidia-gpu</a>.</p>
+<p>For installation details, see the <a href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/install/">installation guide</a>.</p>
+<p>For enabling GPU passthrough support in the DRA driver, see the <a href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/kubevirt-vfio-gpu-passthrough/">KubeVirt VFIO GPU passthrough guide</a>.</p>
+<h2 id="creating-a-resourceclaimtemplate">Creating a ResourceClaimTemplate<a class="headerlink" href="#creating-a-resourceclaimtemplate" title="Permanent link">&para;</a></h2>
+<p>Create a <code>ResourceClaimTemplate</code> that requests a GPU from the DRA driver.
+Replace <code>vfio.gpu.nvidia.com</code> with the <code>DeviceClass</code> name published by your driver.</p>
+<p>When using the DRA driver for NVIDIA GPUs for KubeVirt passthrough, include the opaque <code>VfioDeviceConfig</code> block below.
+The NVIDIA driver does not inject the VFIO API device by default.
+See the <a href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/kubevirt-vfio-gpu-passthrough/#vfiodeviceconfig-parameters">VfioDeviceConfig</a> parameters in the driver guide for more details.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.k8s.io/v1</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResourceClaimTemplate</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-config-map</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">data</span><span class="p">:</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">my_script.sh</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="no">#!/bin/sh</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="no">tempFile=`mktemp --dry-run`</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="no">echo $4 &gt; $tempFile</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="no">sed -i &quot;s|&lt;baseBoard&gt;&lt;/baseBoard&gt;|&lt;baseBoard&gt;&lt;entry name=&#39;manufacturer&#39;&gt;Radical Edward&lt;/entry&gt;&lt;/baseBoard&gt;|&quot; $tempFile</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="no">cat $tempFile</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dra-gpu-claim-template</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="nt">config</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dra-gpu</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">          </span><span class="nt">opaque</span><span class="p">:</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">            </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu.nvidia.com</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">            </span><span class="nt">parameters</span><span class="p">:</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">              </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">              </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VfioDeviceConfig</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">              </span><span class="nt">iommu</span><span class="p">:</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">                </span><span class="nt">backendPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LegacyOnly</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">                </span><span class="nt">enableAPIDevice</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">      </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dra-gpu</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">          </span><span class="nt">exactly</span><span class="p">:</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">            </span><span class="nt">allocationMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExactCount</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">            </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">            </span><span class="nt">deviceClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vfio.gpu.nvidia.com</span>
 </code></pre></div>
-<h4 id="configmap-with-python-script">ConfigMap with python script<a class="headerlink" href="#configmap-with-python-script" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
+<h2 id="creating-a-vmi-with-a-dra-gpu">Creating a VMI with a DRA GPU<a class="headerlink" href="#creating-a-vmi-with-a-dra-gpu" title="Permanent link">&para;</a></h2>
+<p>Reference the claim template in <code>spec.resourceClaims</code>, then map the allocated GPU to <code>spec.domain.devices.gpus</code> using <code>claimName</code> and <code>requestName</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-config-map</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nt">data</span><span class="p">:</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">my_script.sh</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="no">#!/usr/bin/env python3</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="no">import xml.etree.ElementTree as ET</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="no">import sys</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="no">def main(s):</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="no"># write to a temporary file</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="no">f = open(&quot;/tmp/orig.xml&quot;, &quot;w&quot;)</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">        </span><span class="no">f.write(s)</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">        </span><span class="no">f.close()</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">        </span><span class="no"># parse xml from file</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">        </span><span class="no">xml = ET.parse(&quot;/tmp/orig.xml&quot;)</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">        </span><span class="no"># get the root element</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">        </span><span class="no">root = xml.getroot()</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">        </span><span class="no"># find the baseBoard element</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="no">baseBoard = root.find(&quot;sysinfo&quot;).find(&quot;baseBoard&quot;)</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">        </span><span class="no"># prepare new element to be inserted into the xml definition</span>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">        </span><span class="no">element = ET.Element(&quot;entry&quot;, {&quot;name&quot;: &quot;manufacturer&quot;})</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">        </span><span class="no">element.text = &quot;Radical Edward&quot;</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">        </span><span class="no"># insert the element</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">        </span><span class="no">baseBoard.insert(0, element)</span>
-<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
-<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">        </span><span class="no"># write to a new file</span>
-<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="no">xml.write(&quot;/tmp/new.xml&quot;)</span>
-<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">        </span><span class="no"># print file contents to stdout</span>
-<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">        </span><span class="no">f = open(&quot;/tmp/new.xml&quot;)</span>
-<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">        </span><span class="no">print(f.read())</span>
-<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">        </span><span class="no">f.close()</span>
-<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>
-<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">    </span><span class="no">if __name__ == &quot;__main__&quot;:</span>
-<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">        </span><span class="no">main(sys.argv[4])</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-dra-gpu</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vm-dra-gpu-test</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">resourceClaims</span><span class="p">:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dra-gpu-claim</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">      </span><span class="nt">resourceClaimTemplateName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dra-gpu-claim-template</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nt">resources</span><span class="p">:</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="nt">requests</span><span class="p">:</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128Mi</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span><span class="nt">disks</span><span class="p">:</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">          </span><span class="nt">disk</span><span class="p">:</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">            </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">      </span><span class="nt">interfaces</span><span class="p">:</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">          </span><span class="nt">masquerade</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">      </span><span class="nt">gpus</span><span class="p">:</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu0</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">          </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dra-gpu-claim</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">          </span><span class="nt">requestName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dra-gpu</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">  </span><span class="nt">networks</span><span class="p">:</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">      </span><span class="nt">pod</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">      </span><span class="nt">containerDisk</span><span class="p">:</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/kubevirt/cirros-container-disk-demo:latest</span>
 </code></pre></div>
-<p>After creating one of the above ConfigMap, create the VMI using the manifest in <a href="https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-with-sidecar-hook-configmap.yaml">this
-example</a>. Of importance
-here is the ConfigMap information stored in the annotations:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">annotations</span><span class="p">:</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">hooks.kubevirt.io/hookSidecars</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="no">[</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="no">{</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">            </span><span class="no">&quot;args&quot;: [&quot;--version&quot;, &quot;v1alpha2&quot;],</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">            </span><span class="no">&quot;configMap&quot;: {&quot;name&quot;: &quot;my-config-map&quot;, &quot;key&quot;: &quot;my_script.sh&quot;, &quot;hookPath&quot;: &quot;/usr/bin/onDefineDomain&quot;}</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="no">}</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="no">]</span>
-</code></pre></div>
-<p>The <code>name</code> field indicates the name of the ConfigMap on the cluster which contains the script you want to execute. The
-<code>key</code> field indicates the key in the ConfigMap which contains the script to be executed. Finally, <code>hookPath</code> indicates
-the path where you want the script to be mounted. It could be either of <code>/usr/bin/onDefineDomain</code> or
-<code>/usr/bin/preCloudInitIso</code> depending upon the hook you want to execute.
-An optional value can be specified with the <code>"image"</code> key if a custom image is needed, if omitted the default Sidecar-shim image built together with the other KubeVirt images will be used.
-The default Sidecar-shim image, if not override with a custom value, will also be updated as other images as for <a href="../cluster_admin/updating_and_deletion/#updating-kubevirt-workloads">Updating KubeVirt Workloads</a>.</p>
-<h3 id="verify-everything-works">Verify everything works<a class="headerlink" href="#verify-everything-works" title="Permanent link">&para;</a></h3>
-<p>Whether you used the Go binary or a Shell/Python script from the above examples, you would be able to see the newly 
-created VMI have the modified baseboard manufacturer information. After creating the VMI, verify that it is in the 
-<code>Running</code> state, and connect to its console and see if the desired changes to baseboard manufacturer get reflected:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Once the VM is ready, connect to its display and login using name and password &quot;fedora&quot;</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cluster/virtctl.sh<span class="w"> </span>vnc<span class="w"> </span>vmi-with-sidecar-hook-configmap
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Check whether the base board manufacturer value was successfully overwritten</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>sudo<span class="w"> </span>dmidecode<span class="w"> </span>-s<span class="w"> </span>baseboard-manufacturer
-</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Important</p>
+<p><strong>These fields must reference each other:</strong></p>
+<ul>
+<li><code>spec.resourceClaims[].resourceClaimTemplateName</code> must match the <code>metadata.name</code> of the <code>ResourceClaimTemplate</code> created in step 2 (<code>dra-gpu-claim-template</code> in this example).</li>
+<li><code>spec.domain.devices.gpus[].claimName</code> must match <code>spec.resourceClaims[].name</code> for the claim that backs the device   (<code>dra-gpu-claim</code> in this example).</li>
+<li><code>spec.domain.devices.gpus[].requestName</code> must match the request <code>name</code> defined in the <code>ResourceClaimTemplate</code> (<code>dra-gpu</code> in this example).</li>
+</ul>
+</div>
+<p>When the VMI starts, virt-launcher uses the metadata file for attributes such as <code>resource.kubernetes.io/pciBusID</code> and the CDI-mounted <code>/dev/vfio/*</code> device nodes to configure GPU passthrough in the libvirt domain XML.</p>
 
 
 
@@ -4126,7 +4026,7 @@ created VMI have the modified baseboard manufacturer information. After creating
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../deploy_common_instancetypes/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Deploy common-instancetypes">
+          <a href="../host-devices/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Host Devices Assignment">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -4136,20 +4036,20 @@ created VMI have the modified baseboard manufacturer information. After creating
                 Previous
               </span>
               <div class="md-ellipsis">
-                Deploy common-instancetypes
+                Host Devices Assignment
               </div>
             </div>
           </a>
         
         
           
-          <a href="../presets/" class="md-footer__link md-footer__link--next" aria-label="Next: Presets">
+          <a href="../hugepages/" class="md-footer__link md-footer__link--next" aria-label="Next: Hugepages support">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Presets
+                Hugepages support
               </div>
             </div>
             <div class="md-footer__button md-icon">
