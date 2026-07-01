@@ -1,6 +1,6 @@
 # Migration Policies
 
-Migration policies provides a new way of applying migration configurations to Virtual Machines. The policies
+Migration policies provide a new way of applying migration configurations to Virtual Machines. The policies
 can refine Kubevirt CR's `MigrationConfiguration` that sets the cluster-wide migration configurations. This way,
 the cluster-wide settings serve as a default that can be refined (i.e. changed, removed or added) by the migration
 policy.
