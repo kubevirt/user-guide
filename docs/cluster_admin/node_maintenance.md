@@ -163,3 +163,102 @@ VirtualMachineInstances on other nodes in the cluster.
 VirtualMachineInstances not backed by either a
 VirtualMachineInstanceReplicaSet or an VirtualMachine object will not be
 re-scheduled after eviction.
+
+## Custom PodDisruptionBudgets for grouped VM workloads
+
+When you define your own `PodDisruptionBudget` (PDB) to protect a group of VMs —
+for example the `virt-launcher` pods backing a `VirtualMachinePool` — use
+`spec.minAvailable`, not `spec.maxUnavailable`.
+
+### Why `maxUnavailable` does not work
+
+A `virt-launcher` pod is owned directly by a `VirtualMachineInstance` (VMI):
+
+```
+virt-launcher Pod  →  VirtualMachineInstance   (direct owner)
+                   →  VirtualMachine
+                   →  VirtualMachinePool
+```
+
+To honor `maxUnavailable`, the Kubernetes disruption controller must know the
+expected number of pods, which it obtains by calling the `/scale` subresource on
+the pod's direct owner — the `VirtualMachineInstance`. A VMI is a single,
+non-replicated instance and does not implement `/scale`, so the controller cannot
+compute the expected count:
+
+```
+Warning  CalculateExpectedPodCountFailed
+  Failed to calculate the number of expected pods:
+  virtualmachineinstances.kubevirt.io does not implement the scale subresource
+```
+
+The PDB then reports `status.expectedPods: 0`, `status.disruptionsAllowed: 0`, and
+`DisruptionAllowed: False` — which blocks **every** drain or voluntary eviction, no
+matter how many VMs are healthy.
+
+Conversely, `spec.minAvailable` does not use the `/scale` subresource; it counts
+the currently healthy matching pods directly and works correctly with KubeVirt
+workloads.
+
+!!! note
+    This limitation is tracked in
+    [kubevirt/kubevirt#18063](https://github.com/kubevirt/kubevirt/issues/18063). A
+    long-term, platform-level fix is being pursued upstream in
+    [kubernetes/kubernetes#139582](https://github.com/kubernetes/kubernetes/issues/139582)
+    (teaching the disruption controller to traverse the owner chain to a scalable
+    ancestor). Until that lands, prefer `minAvailable` as described below.
+
+### Recommended configuration
+
+Set `minAvailable` to the minimum number of instances your workload must keep
+running during a disruption — the availability floor your application needs —
+expressed as an **absolute integer**:
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: vmpool-pdb
+spec:
+  minAvailable: 3            # keep at least 3 VMs of the pool running at all times
+  selector:
+    matchLabels:
+      kubevirt.io/vmpool: my-pool   # match the virt-launcher pods of the pool
+```
+
+Choose the value from your application's real availability requirement, not as a
+mechanical `replicas - 1`. A fixed `N-1` does not track the pool as it scales:
+after an upscale it permits far more concurrent disruptions than intended, and
+after a downscale it can block evictions entirely. Pick the actual minimum
+capacity you need to preserve, and revisit it if you significantly resize the pool.
+
+!!! warning
+    Use an **absolute integer**, not a percentage. A percentage `minAvailable`
+    (e.g. `minAvailable: 75%`) makes the disruption controller resolve the total
+    replica count via the `/scale` subresource — which a `VirtualMachineInstance`
+    does not implement — so it fails the same way as `maxUnavailable`. Only an
+    integer `minAvailable` counts healthy pods directly and avoids the scale lookup.
+
+Avoid `maxUnavailable` for VirtualMachineInstance-backed pods:
+
+```yaml
+spec:
+  maxUnavailable: 1          # results in disruptionsAllowed: 0 (see above)
+```
+
+!!! note
+    You can use `spec.maxUnavailable` on the `VirtualMachinePool` object itself as
+    it is read directly by the VMPool controller. The limitation above applies only
+    to a `PodDisruptionBudget`'s `maxUnavailable` field.
+
+### Verifying
+
+```console
+$ kubectl get pdb vmpool-pdb -o wide
+NAME         MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+vmpool-pdb   1               N/A               1                     2m
+```
+
+`ALLOWED DISRUPTIONS` should be `>= 1`. If you see `0` together with a
+`CalculateExpectedPodCountFailed` event, the PDB is using `maxUnavailable` — switch
+it to `minAvailable`.
