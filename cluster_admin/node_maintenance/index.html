@@ -1063,6 +1063,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#custom-poddisruptionbudgets-for-grouped-vm-workloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom PodDisruptionBudgets for grouped VM workloads
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom PodDisruptionBudgets for grouped VM workloads">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-maxunavailable-does-not-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why maxUnavailable does not work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommended-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3891,6 +3941,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#custom-poddisruptionbudgets-for-grouped-vm-workloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom PodDisruptionBudgets for grouped VM workloads
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom PodDisruptionBudgets for grouped VM workloads">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-maxunavailable-does-not-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why maxUnavailable does not work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommended-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4065,6 +4165,85 @@ VirtualMachineInstances on other nodes in the cluster.</p>
 <p>VirtualMachineInstances not backed by either a
 VirtualMachineInstanceReplicaSet or an VirtualMachine object will not be
 re-scheduled after eviction.</p>
+<h2 id="custom-poddisruptionbudgets-for-grouped-vm-workloads">Custom PodDisruptionBudgets for grouped VM workloads<a class="headerlink" href="#custom-poddisruptionbudgets-for-grouped-vm-workloads" title="Permanent link">&para;</a></h2>
+<p>When you define your own <code>PodDisruptionBudget</code> (PDB) to protect a group of VMs —
+for example the <code>virt-launcher</code> pods backing a <code>VirtualMachinePool</code> — use
+<code>spec.minAvailable</code>, not <code>spec.maxUnavailable</code>.</p>
+<h3 id="why-maxunavailable-does-not-work">Why <code>maxUnavailable</code> does not work<a class="headerlink" href="#why-maxunavailable-does-not-work" title="Permanent link">&para;</a></h3>
+<p>A <code>virt-launcher</code> pod is owned directly by a <code>VirtualMachineInstance</code> (VMI):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>virt-launcher Pod  →  VirtualMachineInstance   (direct owner)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>                   →  VirtualMachine
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>                   →  VirtualMachinePool
+</code></pre></div>
+<p>To honor <code>maxUnavailable</code>, the Kubernetes disruption controller must know the
+expected number of pods, which it obtains by calling the <code>/scale</code> subresource on
+the pod's direct owner — the <code>VirtualMachineInstance</code>. A VMI is a single,
+non-replicated instance and does not implement <code>/scale</code>, so the controller cannot
+compute the expected count:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Warning  CalculateExpectedPodCountFailed
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  Failed to calculate the number of expected pods:
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  virtualmachineinstances.kubevirt.io does not implement the scale subresource
+</code></pre></div>
+<p>The PDB then reports <code>status.expectedPods: 0</code>, <code>status.disruptionsAllowed: 0</code>, and
+<code>DisruptionAllowed: False</code> — which blocks <strong>every</strong> drain or voluntary eviction, no
+matter how many VMs are healthy.</p>
+<p>Conversely, <code>spec.minAvailable</code> does not use the <code>/scale</code> subresource; it counts
+the currently healthy matching pods directly and works correctly with KubeVirt
+workloads.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This limitation is tracked in
+<a href="https://github.com/kubevirt/kubevirt/issues/18063">kubevirt/kubevirt#18063</a>. A
+long-term, platform-level fix is being pursued upstream in
+<a href="https://github.com/kubernetes/kubernetes/issues/139582">kubernetes/kubernetes#139582</a>
+(teaching the disruption controller to traverse the owner chain to a scalable
+ancestor). Until that lands, prefer <code>minAvailable</code> as described below.</p>
+</div>
+<h3 id="recommended-configuration">Recommended configuration<a class="headerlink" href="#recommended-configuration" title="Permanent link">&para;</a></h3>
+<p>Set <code>minAvailable</code> to the minimum number of instances your workload must keep
+running during a disruption — the availability floor your application needs —
+expressed as an <strong>absolute integer</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">policy/v1</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PodDisruptionBudget</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vmpool-pdb</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">minAvailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w">            </span><span class="c1"># keep at least 3 VMs of the pool running at all times</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">      </span><span class="nt">kubevirt.io/vmpool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-pool</span><span class="w">   </span><span class="c1"># match the virt-launcher pods of the pool</span>
+</code></pre></div>
+<p>Choose the value from your application's real availability requirement, not as a
+mechanical <code>replicas - 1</code>. A fixed <code>N-1</code> does not track the pool as it scales:
+after an upscale it permits far more concurrent disruptions than intended, and
+after a downscale it can block evictions entirely. Pick the actual minimum
+capacity you need to preserve, and revisit it if you significantly resize the pool.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Use an <strong>absolute integer</strong>, not a percentage. A percentage <code>minAvailable</code>
+(e.g. <code>minAvailable: 75%</code>) makes the disruption controller resolve the total
+replica count via the <code>/scale</code> subresource — which a <code>VirtualMachineInstance</code>
+does not implement — so it fails the same way as <code>maxUnavailable</code>. Only an
+integer <code>minAvailable</code> counts healthy pods directly and avoids the scale lookup.</p>
+</div>
+<p>Avoid <code>maxUnavailable</code> for VirtualMachineInstance-backed pods:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">          </span><span class="c1"># results in disruptionsAllowed: 0 (see above)</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can use <code>spec.maxUnavailable</code> on the <code>VirtualMachinePool</code> object itself as
+it is read directly by the VMPool controller. The limitation above applies only
+to a <code>PodDisruptionBudget</code>'s <code>maxUnavailable</code> field.</p>
+</div>
+<h3 id="verifying">Verifying<a class="headerlink" href="#verifying" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="gp">$ </span>kubectl<span class="w"> </span>get<span class="w"> </span>pdb<span class="w"> </span>vmpool-pdb<span class="w"> </span>-o<span class="w"> </span>wide
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">NAME         MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">vmpool-pdb   1               N/A               1                     2m</span>
+</code></pre></div>
+<p><code>ALLOWED DISRUPTIONS</code> should be <code>&gt;= 1</code>. If you see <code>0</code> together with a
+<code>CalculateExpectedPodCountFailed</code> event, the PDB is using <code>maxUnavailable</code> — switch
+it to <code>minAvailable</code>.</p>
 
 
 
