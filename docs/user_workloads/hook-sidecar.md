@@ -1,5 +1,10 @@
 # Hook Sidecar Container
 
+!!! warning "Deprecated since v1.9"
+    The Hook Sidecar mechanism is deprecated as of v1.9. The removal version is
+    not yet determined. Use the new [Plugins](../cluster_admin/plugins.md) mechanism
+    instead, which provides structured domain hooks, node hooks, and admission references.
+
 ## Introduction
 
 In KubeVirt, a Hook Sidecar container is a sidecar container (a secondary container that runs along with the main
