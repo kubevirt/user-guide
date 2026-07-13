@@ -157,7 +157,7 @@ spec:
 
 ## Deleting KubeVirt
 
-To delete the KubeVirt you should first to delete `KubeVirt` custom
+To delete the KubeVirt you should first delete `KubeVirt` custom
 resource and then delete the KubeVirt operator.
 
     $ export RELEASE=v0.17.0
