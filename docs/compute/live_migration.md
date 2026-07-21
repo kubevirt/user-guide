@@ -344,7 +344,7 @@ use the custom profile:
 
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: Kubevirt
+kind: KubeVirt
 metadata:
   name: kubevirt
   namespace: kubevirt
