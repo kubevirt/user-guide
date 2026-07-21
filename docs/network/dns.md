@@ -86,3 +86,22 @@ like this then:
 > **Note** To resolve short names like `myvmi.mysubdomain` using search domains, the guest's `/etc/resolv.conf` must include `options ndots:2` or higher.
 > In a Linux guest if `options ndots` is not specified, the system defaults to `ndots:1` as indicated in  resolver spec](https://man7.org/linux/man-pages/man5/resolv.conf.5.html).
 > KubeVirt does not configure the guest system resolver. It can either be pre-configured in the VM image or configured at runtime using cloud-init.
+
+Example using cloud-init to configure the guest resolver:
+
+```yaml
+- cloudInitNoCloud:
+    userData: |
+      #cloud-config
+      write_files:
+        - path: /etc/systemd/resolved.conf.d/dns.conf
+          content: |
+            [Resolve]
+            DNS=<cluster-dns-service-ip>
+            Domains=default.svc.cluster.local svc.cluster.local cluster.local
+      runcmd:
+        - systemctl restart systemd-resolved
+  name: cloudinitdisk
+```
+
+The exact DNS service IP depends on the Kubernetes cluster configuration.
