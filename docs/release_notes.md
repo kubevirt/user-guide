@@ -5,6 +5,188 @@ hide:
 
 # KubeVirt release notes
 
+## v1.9.0
+
+Released on: Wednesday Jul 22 2026
+
+KubeVirt v1.9 is built for Kubernetes v1.36 and additionally supported for the previous two versions. See the [KubeVirt support matrix](https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md) for more information.
+
+To see the many marvellous people who made this release possible, see the [KubeVirt release tag for v1.9.0](https://github.com/kubevirt/kubevirt/releases/tag/v1.9.0).
+
+### API change
+- [[PR #18331]](https://github.com/kubevirt/kubevirt/pull/18331)[kubevirt-bot] Live migration data stream can be compressed now by using .spec.experimental.compression field in MigrationPolicy applied to a set of VMs. Currently only "zstd" algorithm is supported.
+- [[PR #18095]](https://github.com/kubevirt/kubevirt/pull/18095)[fra2404] Add PortRanges support for masquerade interfaces (Alpha, guarded by PortRangesSpec feature gate)
+- [[PR #18048]](https://github.com/kubevirt/kubevirt/pull/18048)[alancaldelas] WorkloadEncryptionSEV graduated from Alpha -> Beta
+- [[PR #18101]](https://github.com/kubevirt/kubevirt/pull/18101)[dsanatar] Remove ephemeral hotplug volume metric and alert
+- [[PR #18082]](https://github.com/kubevirt/kubevirt/pull/18082)[alromeros] Expose FS freeze status early in VirtualMachineBackup
+- [[PR #18198]](https://github.com/kubevirt/kubevirt/pull/18198)[orenc1] VEP-160: Graduate OptOutRoleAggregation feature gate to Beta
+- [[PR #17199]](https://github.com/kubevirt/kubevirt/pull/17199)[lyarwood] Add CrossArchitectureVirtualization Alpha feature gate enabling cross-architecture VM execution. When enabled, VMs can run on nodes with a different architecture (e.g. ARM64 guest on AMD64 host) via QEMU TCG software emulation. The scheduler prefers native-arch nodes and falls back to cross-arch emulation when unavailable. The feature gate is designed to accommodate future hardware-accelerated backends (e.g. SAE) under the same gate.
+- [[PR #18102]](https://github.com/kubevirt/kubevirt/pull/18102)[iholder101] Plugin sidecars can now mutate the libvirt domain XML via gRPC domain hooks, enabling arbitrary domain customization through sidecar containers injected alongside virt-launcher pods.
+- [[PR #18032]](https://github.com/kubevirt/kubevirt/pull/18032)[0xFelix] Add VirtualMachineTemplate as a source kind for OCI export via VMExport.
+- [[PR #18001]](https://github.com/kubevirt/kubevirt/pull/18001)[iholder101] Add node lifecycle hooks for the plugin framework, enabling plugins to run callbacks at VM start/stop and migration phases (alpha, behind Plugins feature gate).
+- [[PR #17544]](https://github.com/kubevirt/kubevirt/pull/17544)[Aseeef] Adds a robust migration stall detection mechanism that triggers post-copy or stop-and-copy opportunistically at local minimas reducing both total migration duration and downtime.
+- [[PR #17664]](https://github.com/kubevirt/kubevirt/pull/17664)[ksimon1] feat: Add annotation-based GuestAgentPing probe pausing
+- [[PR #17910]](https://github.com/kubevirt/kubevirt/pull/17910)[jcanocan] virtctl: updated virt-template subcomands to v1beta1
+- [[PR #18090]](https://github.com/kubevirt/kubevirt/pull/18090)[Acedus] VirtualMachineBackups now consist of only 3 conditions: Progressing, Complete, and Failed, with matching reasons to replace the now removed Initializing, ExportInitiated, ExportReady, Aborting and Done.
+- [[PR #17861]](https://github.com/kubevirt/kubevirt/pull/17861)[mhenriks] VEP 250: Add serviceAccountName to VirtualMachineInstance Spec
+- [[PR #17897]](https://github.com/kubevirt/kubevirt/pull/17897)[iholder101] Added CEL-based domain hook evaluation for the structured plugin system (alpha, behind Plugins feature gate).
+- [[PR #17551]](https://github.com/kubevirt/kubevirt/pull/17551)[jschintag] Allow configuring launch security via preference.
+- [[PR #17923]](https://github.com/kubevirt/kubevirt/pull/17923)[alaypatel07] vep-10: add dra packages to lint configuration and fix linter errors
+- [[PR #17797]](https://github.com/kubevirt/kubevirt/pull/17797)[alaypatel07] vep-10: migrate away from k8sv1.PodResourceClaim to kubevirts own type
+- [[PR #17790]](https://github.com/kubevirt/kubevirt/pull/17790)[iholder101] Introduce the Plugin CRD (plugin.kubevirt.io/v1alpha1) behind the Plugins feature gate (Alpha), enabling declarative VM extension via domain hooks, node hooks, and admission references (VEP-190).
+- [[PR #17944]](https://github.com/kubevirt/kubevirt/pull/17944)[0xFelix] Add OCI artifact export support behind the OCIExport feature gate. Use `virtctl vmexport download --format=oci` to export a VM as an OCI image layout TAR.
+- [[PR #17661]](https://github.com/kubevirt/kubevirt/pull/17661)[oshoval] Add alpha support for DRA SR-IOV networks via `spec.networks[].resourceClaim` behind `NetworkDevicesWithDRA`, with webhook validation and virt-launcher hostdev generation from DRA metadata.
+- [[PR #16674]](https://github.com/kubevirt/kubevirt/pull/16674)[akalenyu] Persistent Reservation GA
+- [[PR #17550]](https://github.com/kubevirt/kubevirt/pull/17550)[machadovilaca] Add GetVMStats unified gRPC RPC for monitoring data collection
+- [[PR #17029]](https://github.com/kubevirt/kubevirt/pull/17029)[mhenriks] Fix PCI address stability across upgrades with v3 hotplug port topology
+- [[PR #17576]](https://github.com/kubevirt/kubevirt/pull/17576)[ema-aka-young] Bugfix: Added enum validation for the targetReadinessPolicy field for restore resources.
+- [[PR #17028]](https://github.com/kubevirt/kubevirt/pull/17028)[alaypatel07] VEP-10: bug fixes for DRA Devices to align kubevirt implementation to KEP-5304
+- [[PR #17235]](https://github.com/kubevirt/kubevirt/pull/17235)[tiraboschi] Fix: GuestAgentPing liveness/readiness probes no longer cause Kubernetes to restart the virt-launcher pod when the guest agent is temporarily unreachable for a non-fault reason; suppression covers live migration (both pre-copy target and post-copy source) and any intentional or transient VM pause such  as user pause, snapshot, save, or dump.
+- [[PR #16882]](https://github.com/kubevirt/kubevirt/pull/16882)[alromeros] Snapshot: Add PartialSnapshot indication for excluded volumes
+- [[PR #16730]](https://github.com/kubevirt/kubevirt/pull/16730)[alromeros] GA VMExport feature gate
+- [[PR #16675]](https://github.com/kubevirt/kubevirt/pull/16675)[csomani1] vGPU (mdev) now supports live migration (limited to one device)
+- [[PR #15298]](https://github.com/kubevirt/kubevirt/pull/15298)[Acedus] bugfix: Online snapshots now correctly include live-changes applied to a VM.
+- [[PR #16556]](https://github.com/kubevirt/kubevirt/pull/16556)[alaypatel07] VEP-10: Update DRA devices implementation to read from metadata file instead of VMI status
+- [[PR #16930]](https://github.com/kubevirt/kubevirt/pull/16930)[Acedus] Introduce incremental backup pull mode support
+- [[PR #16746]](https://github.com/kubevirt/kubevirt/pull/16746)[Barakmor1] Expose Memory Overhead on VMI Status behind VmiMemoryOverheadReport feature gate
+- [[PR #16350]](https://github.com/kubevirt/kubevirt/pull/16350)[orenc1] Add a new config option to opt-out RBAC aggregation
+- [[PR #15958]](https://github.com/kubevirt/kubevirt/pull/15958)[Aseeef] Added support for attestation on the Intel TDX Confidential Computing Platform
+- [[PR #16877]](https://github.com/kubevirt/kubevirt/pull/16877)[ShellyKa13] Handle migration during backup according to migration priority
+
+### Bug fix
+- [[PR #18466]](https://github.com/kubevirt/kubevirt/pull/18466)[kubevirt-bot] Network binding plugin sidecars can now infer their registration name using the `NETWORK_BINDING_PLUGIN_NAME` environment variable.
+- [[PR #18438]](https://github.com/kubevirt/kubevirt/pull/18438)[iholder101] Bug fix: VMs with NFS-backed storage are no longer incorrectly restarted during temporary NFS unavailability (e.g., NFS server failover).
+- [[PR #18404]](https://github.com/kubevirt/kubevirt/pull/18404)[kubevirt-bot] The `kubevirt_vmi_guest_os_panic_total` metric is now emitted
+- [[PR #18405]](https://github.com/kubevirt/kubevirt/pull/18405)[kubevirt-bot] BugFix: Importer pod rejected by ValidatingAdmissionPolicy 'kubevirt-plugin-sidecar-subpath-policy'
+- [[PR #18343]](https://github.com/kubevirt/kubevirt/pull/18343)[kubevirt-bot] Bug fix: PreferredPanicDeviceModel now creates a panic device when none exist on the VMI, instead of silently ignoring the preference.
+- [[PR #18299]](https://github.com/kubevirt/kubevirt/pull/18299)[lyarwood] Bug fix: Increase IOMMUFD socket accept timeout from 60 seconds to 15 minutes to prevent silent fallback to legacy VFIO on environments with slow container image pulls.
+- [[PR #18216]](https://github.com/kubevirt/kubevirt/pull/18216)[awels] BugFix: Fixes bug in cancelling of decentralized live migration not removing finalizer from migration resource
+- [[PR #17846]](https://github.com/kubevirt/kubevirt/pull/17846)[ksimon1] virt-api: add X-Content-Type-Options: nosniff security header
+- [[PR #18103]](https://github.com/kubevirt/kubevirt/pull/18103)[orelmisan] Fix infinite migration target pod loop caused by stale VMI MigrationState when the target pod fails after preparation.
+- [[PR #18105]](https://github.com/kubevirt/kubevirt/pull/18105)[keinsword] BugFix: fixed hotplug mount resolution when multiple attachment pods exist for volumes from the same underlying device, and prevented virt-handler from reusing one hotplug volume's source pod UID for later volumes in the same sync loop.
+- [[PR #18143]](https://github.com/kubevirt/kubevirt/pull/18143)[akalenyu] BugFix: Storage Live Migration Filesystem-to-Block fails with libvirt error Code 84 pre-creation of storage target for incremental storage migration of disk is not supported
+- [[PR #17960]](https://github.com/kubevirt/kubevirt/pull/17960)[dsanatar] Fix the virtctl image-upload command token expiry issue by refreshing the token.
+- [[PR #17993]](https://github.com/kubevirt/kubevirt/pull/17993)[Acedus] BugFix: Live migration with CBT and RWO backend storage now correctly retains checkpoints post-migration
+- [[PR #18052]](https://github.com/kubevirt/kubevirt/pull/18052)[vidit-bhat] Fixed a build failure in `pkg/hypervisor` on GOOS/GOARCH combinations outside linux/{amd64,arm64,s390x}, which previously prevented downstream packagers from cross-building virtctl on architectures such as riscv64, ppc64le, and 386. On those architectures, `common.SchedSetScheduler` now returns the new sentinel error `common.ErrUnsupportedRTScheduling`.
+- [[PR #17984]](https://github.com/kubevirt/kubevirt/pull/17984)[Acedus] Incremental backups now distinguish discarded blocks from data changes by merging base:allocation and qemu:dirty-bitmap contexts, reducing transfer size by skipping dirty extents that read as zero.
+- [[PR #17947]](https://github.com/kubevirt/kubevirt/pull/17947)[Barakmor1] Use --expand-cpu-features and --supported-cpu-features in node-labeller for
+- [[PR #17883]](https://github.com/kubevirt/kubevirt/pull/17883)[yaroslavborbat] Fixed a target-side hotplug mount leak that could remain after failed or canceled live migration.
+- [[PR #17959]](https://github.com/kubevirt/kubevirt/pull/17959)[mhenriks] Fix symlink traversal in VMExport dir handler
+- [[PR #17825]](https://github.com/kubevirt/kubevirt/pull/17825)[akalenyu] BugFix: endless cycle of attachment pod deletion/creation
+- [[PR #17272]](https://github.com/kubevirt/kubevirt/pull/17272)[ksimon1] Feat: Record K8s event on VMI when GuestAgentPing probe fails
+- [[PR #17475]](https://github.com/kubevirt/kubevirt/pull/17475)[samt-ai] Fix race condition in VM force restart where the pod could remain stuck in Terminating state for the full terminationGracePeriodSeconds instead of terminating promptly. The VMI's terminationGracePeriodSeconds is now patched before triggering the restart, ensuring the short grace period is always honored.
+- [[PR #17031]](https://github.com/kubevirt/kubevirt/pull/17031)[suPer8Hu] N/A
+- [[PR #17490]](https://github.com/kubevirt/kubevirt/pull/17490)[oshoval] Fixed virt-controller DRA claim rendering for GPU/HostDevice resources by preserving per-device claim/request tuples (including shared claim names with different requests).
+- [[PR #17527]](https://github.com/kubevirt/kubevirt/pull/17527)[mhenriks] Fix VM with PCI hostdev failing to restart after hotplug block volume
+- [[PR #17573]](https://github.com/kubevirt/kubevirt/pull/17573)[lyarwood] Bug fix: virt-operator error messages no longer dump entire resource structs via %+v, preventing the KubeVirt CR from exceeding the etcd 3MB object size limit when resource creation fails
+- [[PR #16697]](https://github.com/kubevirt/kubevirt/pull/16697)[dippydocus] Fixed DHCP failure after live migration followed by guest reboot when using bridge binding without a specified MAC address.
+- [[PR #17571]](https://github.com/kubevirt/kubevirt/pull/17571)[0xFelix] Fixed virt-api truncating deep subresources (vnc/screenshot, sev/*, evacuate/cancel) when constructing SubjectAccessReviews, causing authorization checks against incorrect subresource names.
+- [[PR #17425]](https://github.com/kubevirt/kubevirt/pull/17425)[shubham-pampattiwar] fix: VirtualMachineBackup printer columns (Type, CheckpointName) now display correctly in kubectl output
+- [[PR #17297]](https://github.com/kubevirt/kubevirt/pull/17297)[Acedus] fix: correctly handle source resolution for disks with a qcow2 overlay, preventing incorrect disk expansion and wrong cache/IO mode detection.
+- [[PR #16742]](https://github.com/kubevirt/kubevirt/pull/16742)[keinsword] Improve Unmount() cleanup by processing all entries and preserving failed paths for retry.
+- [[PR #17102]](https://github.com/kubevirt/kubevirt/pull/17102)[Barakmor1] Bug fix: sync-controller healthz server and virt-exportserver now respect TLSConfiguration from the KubeVirt CR.
+- [[PR #17251]](https://github.com/kubevirt/kubevirt/pull/17251)[iholder101] Fixed VM startup failure under software emulation when /dev/kvm is absent, caused by cgroup device rules not accounting for the emulation case.
+- [[PR #17042]](https://github.com/kubevirt/kubevirt/pull/17042)[awels] Fixed migration not reporting succeeded when doing compute migration after decentralized live migration
+- [[PR #16842]](https://github.com/kubevirt/kubevirt/pull/16842)[ksimon1] OpenApi V3 paths for subresources.kubevirt.io is present
+- [[PR #16737]](https://github.com/kubevirt/kubevirt/pull/16737)[keinsword] Fix virt-handler hotplug mount target record growth by preventing duplicate TargetFile entries.
+- [[PR #16871]](https://github.com/kubevirt/kubevirt/pull/16871)[awels] BugFix: VMs requiring enlightenment are now able to be live migrated after a decentralized live migration
+
+### Deprecation
+- [[PR #17809]](https://github.com/kubevirt/kubevirt/pull/17809)[michalskrivanek] cgroup v1 support is deprecated now, with removal planned for the next release
+- [[PR #17065]](https://github.com/kubevirt/kubevirt/pull/17065)[avlitman] multiple recording rules are deprecated in favor of new names, in order to comply with the recording rules naming conventions. kubevirt_vm_created_total recording rule and kubevirt_vm_created_by_pod_total metric are deprecated completely
+
+### SIG-compute
+- [[PR #18412]](https://github.com/kubevirt/kubevirt/pull/18412)[kubevirt-bot] Set explicit SMMUv3 address capability defaults for Grace I/O Virtualization.
+- [[PR #18356]](https://github.com/kubevirt/kubevirt/pull/18356)[kubevirt-bot] Support inferFromVolume for VolumeSnapshot-backed DataVolumes, DataVolumeTemplates, and DataSources
+- [[PR #18011]](https://github.com/kubevirt/kubevirt/pull/18011)[fanzhangio] When the alpha GraceIOVirtualization feature gate is enabled, KubeVirt now configures NVIDIA Grace GPU passthrough with SMMUv3/IOMMUFD, ACPI Generic Initiator NUMA topology, NUMA distance mapping, and automatic PCI 64-bit hole sizing.
+- [[PR #18004]](https://github.com/kubevirt/kubevirt/pull/18004)[avlitman] Add VMNonRecoverableOSPanic alert
+- [[PR #18116]](https://github.com/kubevirt/kubevirt/pull/18116)[brianmcarey] Build KubeVirt with go 1.26.4
+- [[PR #18161]](https://github.com/kubevirt/kubevirt/pull/18161)[machadovilaca] Add kubevirt_vmi_gpu_info metric to correlate GPU UUIDs with VMIs
+- [[PR #18252]](https://github.com/kubevirt/kubevirt/pull/18252)[kubevirt-bot] Updated virt-template to v0.2.2
+- [[PR #18112]](https://github.com/kubevirt/kubevirt/pull/18112)[xpivarc] SRIOV vGPU now supports display
+- [[PR #17818]](https://github.com/kubevirt/kubevirt/pull/17818)[fossedihelm] MigrationPriorityQueue feature gate has been promoted to GA.
+- [[PR #18228]](https://github.com/kubevirt/kubevirt/pull/18228)[kubevirt-bot] Updated common-instancetypes bundles to v1.7.0
+- [[PR #18220]](https://github.com/kubevirt/kubevirt/pull/18220)[0xFelix] Updated virt-template to v0.2.1
+- [[PR #18188]](https://github.com/kubevirt/kubevirt/pull/18188)[machadovilaca] Add VMStatsHandler with HTTP endpoint for VM stats collection
+- [[PR #17998]](https://github.com/kubevirt/kubevirt/pull/17998)[fanzhangio] VMIs requesting NVIDIA Grace GPU PCI passthrough resources are now validated by admission. Such VMIs require the GraceIOVirtualization, PCINUMAAwareTopology, and IOMMUFD feature gates, arm64 architecture, the virt machine type, and dedicated CPU placement; ambiguous NVIDIA wildcard PCI selectors are rejected when GraceIOVirtualization is enabled.
+- [[PR #17886]](https://github.com/kubevirt/kubevirt/pull/17886)[fanzhangio] PCI NUMA-aware placement (PCINUMAAwareTopology) now fails with an error for VMIs using numa.guestMappingPassthrough when a host device cannot be placed on a NUMA-aligned PCIe topology. Non-passthrough VMIs retain the existing fallback behavior.
+- [[PR #17505]](https://github.com/kubevirt/kubevirt/pull/17505)[alromeros] Enable live migration for VMs with SCSI persistent reservations
+- [[PR #17956]](https://github.com/kubevirt/kubevirt/pull/17956)[fossedihelm] Add IOMMUFD device plugin to virt-handler behind the IOMMUFD Alpha feature gate. When enabled, virt-controller requests devices.kubevirt.io/iommufd for every launcher pod. Nodes without /dev/iommu (kernel <6.2) will report unhealthy devices, making pods unschedulable there. This feature also emits domain-level <iommufd enabled='yes' fdgroup='iommu'/> and uses virDomainFDAssociate, which require a libvirt/QEMU stack that supports fdgroup-based IOMMUFD, currently libvirt >= 12.2. Enable this gate only on clusters where target nodes and virt-launcher images provide compatible kernel, libvirt, and QEMU support.
+- [[PR #17891]](https://github.com/kubevirt/kubevirt/pull/17891)[vladikr] Add foundation types for Grace IO Virtualization: GraceIOVirtualization feature gate, IOMMU domain XML schema, HostDevice IOMMU/ACPI extensions, and NUMACell pointer change for zero-memory cells.
+- [[PR #16990]](https://github.com/kubevirt/kubevirt/pull/16990)[lyarwood] Migrated port-forwarding and remote exec from hardcoded SPDY to WebSocket-primary with SPDY fallback, fixing intermittent stream creation failures against Kubernetes 1.31+ clusters where the PortForwardWebsockets feature gate is enabled.
+- [[PR #18076]](https://github.com/kubevirt/kubevirt/pull/18076)[jcanocan] Updated virt-template to v0.2.0
+- [[PR #17989]](https://github.com/kubevirt/kubevirt/pull/17989)[UdayYendva] Bump github.com/moby/spdystream from v0.5.0 to v0.5.1 to address CVE-2026-35469 (GHSA-pc3f-x583-g7j2).
+- [[PR #17836]](https://github.com/kubevirt/kubevirt/pull/17836)[iholder101] Add kubevirt_vmi_guest_os_panic_total Prometheus counter metric to track guest OS panic events per VMI, with labels for panic type and hyper-v bugcheck code
+- [[PR #17757]](https://github.com/kubevirt/kubevirt/pull/17757)[Acedus] Fix: Handle disks with qcow2 overlay in migration related code
+- [[PR #17798]](https://github.com/kubevirt/kubevirt/pull/17798)[SamAlber] Fixed a gRPC connection leak in virt-handler's GetLauncherClient that caused unbounded memory growth, socket accumulation, and goroutine leaks when multiple controllers raced to create connections for the same VMI.
+- [[PR #17644]](https://github.com/kubevirt/kubevirt/pull/17644)[kubevirt-bot] Updated virt-template to v0.1.8
+- [[PR #17405]](https://github.com/kubevirt/kubevirt/pull/17405)[iholder101] Enable all Beta feature gates by default. Users can opt out of individual Beta features by adding them to `spec.configuration.developerConfiguration.disabledFeatureGates` in the KubeVirt CR. A feature gate report with all non-GA feature gates will be added to each release's artifacts.
+- [[PR #17805]](https://github.com/kubevirt/kubevirt/pull/17805)[lyarwood] Fixed multi-device VFIO passthrough VMs failing to start with "cannot limit locked memory" by scaling virt-handler's memlock rlimit to account for per-device memory locking, matching libvirt's calculation introduced in v8.7.0.
+- [[PR #17496]](https://github.com/kubevirt/kubevirt/pull/17496)[fanzhangio] The --additional-launcher-annotations-sync and --additional-launcher-labels-sync flags now support prefix wildcards via a trailing '*' suffix (e.g. 'vendor.io/*'), allowing all matching labels/annotations to be propagated from VM template to VMI and virt-launcher pod without enumerating each key individually.
+- [[PR #17049]](https://github.com/kubevirt/kubevirt/pull/17049)[frenzyfriday] Graduates LiveUpdateNADRef feature gate
+- [[PR #17015]](https://github.com/kubevirt/kubevirt/pull/17015)[Ronilerr] Adding missing metrics, recording rules and alerts for virt components
+- [[PR #17557]](https://github.com/kubevirt/kubevirt/pull/17557)[dshchedr] Fixed GuestPanicked event details for non-root virt-launcher
+- [[PR #17295]](https://github.com/kubevirt/kubevirt/pull/17295)[avlitman] new metric kubevirt_vmi_sync_total added in order to track number of times a controller has synced a VMI.
+- [[PR #17398]](https://github.com/kubevirt/kubevirt/pull/17398)[dasionov] Bug-fix: virt-handler now detects when `domain-notify.sock` is deleted and automatically restarts the notify server.
+- [[PR #16890]](https://github.com/kubevirt/kubevirt/pull/16890)[xpivarc] KubeVirt's PCI device plugin now supports passing of pre-setup VF (vGPU)
+- [[PR #16853]](https://github.com/kubevirt/kubevirt/pull/16853)[dankenigsberg] VMs with backend storage volume use and report the volume name as `persistent-state-for-this-vm` rather than trying to embed the vm name in the volume name.
+- [[PR #17139]](https://github.com/kubevirt/kubevirt/pull/17139)[dsanatar] fix hotplug volume status being stuck in Detaching phase
+- [[PR #17071]](https://github.com/kubevirt/kubevirt/pull/17071)[samt-ai] Make --vnc-path optional for --vnc-type, allowing VNC viewer binary lookup from $PATH automatically
+- [[PR #17109]](https://github.com/kubevirt/kubevirt/pull/17109)[dasionov] bug-fix: restart virt-handler's domain-notify server on unexpected exit.
+- [[PR #17106]](https://github.com/kubevirt/kubevirt/pull/17106)[iholder101] Allow multifd (parallel migration threads) with post-copy migration
+- [[PR #16783]](https://github.com/kubevirt/kubevirt/pull/16783)[dasionov] Fixed SMBIOS system information not being visible inside ARM64 guest VMs
+- [[PR #16927]](https://github.com/kubevirt/kubevirt/pull/16927)[harshitgupta1337] Add MSHV backend for multi-hypervisor support interfaces.
+- [[PR #16817]](https://github.com/kubevirt/kubevirt/pull/16817)[ShellyKa13] Handle migration with CBT and backup checkpoints
+- [[PR #16632]](https://github.com/kubevirt/kubevirt/pull/16632)[mresvanis] Add PCIe NUMA-aware topology placement for GPU and host devices behind the PCINUMAAwareTopology feature gate (Alpha). When enabled, devices are automatically placed on PCIe expander buses matching their NUMA affinity for improved performance.
+- [[PR #16884]](https://github.com/kubevirt/kubevirt/pull/16884)[EdDev] 'virtctl expose' creates now services with an ownerReference pointing to the exposed resource.
+- [[PR #16412]](https://github.com/kubevirt/kubevirt/pull/16412)[frenzyfriday] Allows the user to update the NAD reference (networkName) of a network on a running VM through Live Migration.
+- [[PR #16604]](https://github.com/kubevirt/kubevirt/pull/16604)[dsanatar] Graduate ExpandDisk Feature Gate
+- [[PR #16399]](https://github.com/kubevirt/kubevirt/pull/16399)[Acedus] fix: Prevent stale VMI backup status update when reusing backup names
+- [[PR #16786]](https://github.com/kubevirt/kubevirt/pull/16786)[alromeros] Allow disabling Velero hooks in virt-launcher via Annotation
+
+### SIG-storage
+- [[PR #18065]](https://github.com/kubevirt/kubevirt/pull/18065)[0xFelix] The Template feature gate has been graduated to Beta and is now enabled by default. Virt-template components are deployed automatically unless explicitly disabled.
+- [[PR #16932]](https://github.com/kubevirt/kubevirt/pull/16932)[dsanatar] Graduate HotplugVolumes and DeclarativeHotplugVolumes to Beta
+- [[PR #17699]](https://github.com/kubevirt/kubevirt/pull/17699)[dsanatar] only populate vmexport with a vm manifest if source is not pvc
+- [[PR #17407]](https://github.com/kubevirt/kubevirt/pull/17407)[dsanatar] preserve annotation for restore pvc
+- [[PR #16846]](https://github.com/kubevirt/kubevirt/pull/16846)[Aneesh-Hegde] fix VMExport failure with long PVC names
+
+### SIG-network
+- [[PR #18433]](https://github.com/kubevirt/kubevirt/pull/18433)[kubevirt-bot] Network conformance tests can now be run with a custom network binding plugin via the `--primary-network-binding-plugin` test flag.
+- [[PR #17845]](https://github.com/kubevirt/kubevirt/pull/17845)[orelmisan] Network binding plugins can now read the interface MTU from the network-info downward API annotation.
+- [[PR #17536]](https://github.com/kubevirt/kubevirt/pull/17536)[nirdothan] Fixed VMI status reporting the pod's IPv6 address instead of the guest's when using bridge binding on a network with IPv6 IPAM.
+- [[PR #17315]](https://github.com/kubevirt/kubevirt/pull/17315)[frenzyfriday] Fixes bug in Live NAD Ref Update feature where a VM with no interfaces/networks is unable to start when LiveNADRefUpdate FG is enabled.
+- [[PR #17041]](https://github.com/kubevirt/kubevirt/pull/17041)[orelmisan] Fixed an infinite VMI status update loop between virt-controller and virt-handler that occurred when the VMI spec listed the primary network interface after a secondary one.
+
+### SIG-observability
+- [[PR #18141]](https://github.com/kubevirt/kubevirt/pull/18141)[machadovilaca] Skip PrometheusRule generation when VMStatsCollector is enabled
+- [[PR #17130]](https://github.com/kubevirt/kubevirt/pull/17130)[sradco] Fix VirtualMachineStuckOnNode and VMCannotBeEvicted alerts failing during live migration due to duplicate kubevirt_vmi_info series
+- [[PR #16806]](https://github.com/kubevirt/kubevirt/pull/16806)[machadovilaca] Use defined deployment number of replicas as base to fire low count alerts
+- [[PR #16865]](https://github.com/kubevirt/kubevirt/pull/16865)[machadovilaca] Subtract non-schedulable nodes from kubevirt_allocatable_nodes
+
+### Other
+- [[PR #18446]](https://github.com/kubevirt/kubevirt/pull/18446)[kubevirt-bot] vep-10: move GPUsWithDRA and HostDevicesWithDRA to beta
+- [[PR #18445]](https://github.com/kubevirt/kubevirt/pull/18445)[kubevirt-bot] Add E2E tests support for DRA feature.
+- [[PR #17837]](https://github.com/kubevirt/kubevirt/pull/17837)[keinsword] Nebius is listed as an adopter of KubeVirt since 2023.
+- [[PR #17540]](https://github.com/kubevirt/kubevirt/pull/17540)[orenc1] Add RBAC role aggregation upgrade e2e test
+- [[PR #17770]](https://github.com/kubevirt/kubevirt/pull/17770)[jschintag] IBM Secure Execution is now generally available
+- [[PR #18129]](https://github.com/kubevirt/kubevirt/pull/18129)[iholder101] Fixed missing RBAC rules for plugin.kubevirt.io in the kubevirt.io:view ClusterRole, restoring cluster-reader access to Plugin resources.
+- [[PR #17976]](https://github.com/kubevirt/kubevirt/pull/17976)[ethan-gallant] virt-operator: customizeComponents.Patches now apply to the install-strategy job (match it with resourceType "Job" and resourceName "virt-operator-install-strategy"). The job's generated name changed from "kubevirt-<id>-job" to "virt-operator-install-strategy-".
+- [[PR #17623]](https://github.com/kubevirt/kubevirt/pull/17623)[MarSik] The RebootPolicy feature was graduated to Beta status.
+- [[PR #17422]](https://github.com/kubevirt/kubevirt/pull/17422)[jean-edouard] Libvirt bumped to v11.10
+- [[PR #17996]](https://github.com/kubevirt/kubevirt/pull/17996)[ksimon1] virt-operator: fix DeploymentInProgress after toggling optional feature gates
+- [[PR #16599]](https://github.com/kubevirt/kubevirt/pull/16599)[dasionov] Promote `VideoConfig` FG to General Availability
+- [[PR #17548]](https://github.com/kubevirt/kubevirt/pull/17548)[Barakmor1] Add container-level SecurityContext to virt-exportproxy and virt-synchronization-controller deployments
+- [[PR #17755]](https://github.com/kubevirt/kubevirt/pull/17755)[dasionov] fix: cross-namespace live migration now works on IPv6 clusters
+- [[PR #17691]](https://github.com/kubevirt/kubevirt/pull/17691)[vishnuchalla] NA
+- [[PR #17599]](https://github.com/kubevirt/kubevirt/pull/17599)[Sreeja1725] Add release 1.8 perf-scale benchmarks data
+- [[PR #17488]](https://github.com/kubevirt/kubevirt/pull/17488)[alaypatel07] change /var/lib/kubelet mount from Bidirectional to HostToContainer
+- [[PR #17497]](https://github.com/kubevirt/kubevirt/pull/17497)[sbiradar10] Remediate CVE-2026-33186 by bumping grpc to 1.79.3
+- [[PR #17512]](https://github.com/kubevirt/kubevirt/pull/17512)[0xFelix] Remove vnc/screenshot from kubevirt.io:edit
+- [[PR #16514]](https://github.com/kubevirt/kubevirt/pull/16514)[varunrsekar] The `PanicDevices` feature has graduated to GA and no longer requires the associated feature gate to be enabled.
+- [[PR #17285]](https://github.com/kubevirt/kubevirt/pull/17285)[dhiller] Maintenance: revert bazel server network change monitoring
+- [[PR #16885]](https://github.com/kubevirt/kubevirt/pull/16885)[akalenyu] Maintenance: make the bazel server container reload on network changes
+
 ## v1.8.0
 
 Released on: Wednesday Mar 25 2026
