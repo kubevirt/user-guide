@@ -14,14 +14,15 @@ field in the KubeVirt CR must be expanded by adding the `LiveMigration` to it.
 ## Limitations
 
 - Virtual machines using a PersistentVolumeClaim (PVC) must have a
-  shared ReadWriteMany (RWX) access mode to be live migrated.
+  shared ReadWriteMany (RWX) access mode to be live migrated, unless
+  the volume is also being migrated (see [volume migration](../storage/volume_migration.md)
+  and `status.migratedVolumes`).
 
 - Live migration is not allowed with a pod network binding of bridge
-  interface type
-  (</#/creation/interfaces-and-networks>)
+  interface type ([interfaces and networks](../network/interfaces_and_networks.md#bridge))
 
 - Live migration requires ports `49152, 49153` to be available in the virt-launcher pod.
-  If these ports are explicitly specified in [masquarade interface](../network/interfaces_and_networks.md#masquerade), live migration will not function.
+  If these ports are explicitly specified in [masquerade interface](../network/interfaces_and_networks.md#masquerade), live migration will not function.
 
 - Live migration requires the virt-launcher pod's primary network interface to have the same name on both source and target pods.
 
@@ -57,11 +58,9 @@ Live migration can also be initiated using virtctl
 
 When starting a virtual machine instance, it has also been calculated
 whether the machine is live migratable. The result is stored in
-the VMI `VMI.status.conditions`. The calculation can be based on
-multiple parameters of the VMI, however, at the moment, the calculation
-is largely based on the `Access Mode` of the VMI volumes. Live migration
-is only permitted when the volume access mode is set to `ReadWriteMany`.
-Requests to migrate a non-LiveMigratable VMI will be rejected.
+the VMI `VMI.status.conditions`. The calculation is based on
+multiple parameters of the VMI. Requests to migrate a non-LiveMigratable
+VMI will be rejected.
 
 The reported `Migration Method` is also calculated during VMI
 start. `BlockMigration` indicates that some of the VMI disks require
@@ -89,10 +88,12 @@ Migration State:
     Completed:        true
     End Timestamp:    2019-03-29T03:37:52Z
     Migration Config:
-      Completion Timeout Per GiB:  800
+      Completion Timeout Per GiB:  150
       Progress Timeout:             150
     Migration UID:                  c64d4898-51d3-11e9-b370-525500d15501
+    Mode:                           PreCopy
     Source Node:                    node02
+    Source Pod:                     virt-launcher-testvmi-source
     Start Timestamp:                2019-03-29T04:02:47Z
     Target Direct Migration Node Ports:
       35001:                      0
@@ -101,6 +102,7 @@ Migration State:
     Target Node:                  node01
     Target Node Address:          10.128.0.46
     Target Node Domain Detected:  true
+    Target Node Domain Ready Timestamp:  2019-03-29T03:37:51Z
     Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
 ```
 
@@ -120,10 +122,12 @@ Migration State:
     End Timestamp:    2019-03-29T04:02:49Z
     Failed:           true
     Migration Config:
-      Completion Timeout Per GiB:  800
+      Completion Timeout Per GiB:  150
       Progress Timeout:             150
     Migration UID:                  57a693d6-51d7-11e9-b370-525500d15501
+    Mode:                           PreCopy
     Source Node:                    node02
+    Source Pod:                     virt-launcher-testvmi-source
     Start Timestamp:                2019-03-29T04:02:47Z
     Target Direct Migration Node Ports:
       39445:                      0
@@ -147,14 +151,15 @@ of a VMI which is currently being migrated
 KubeVirt puts some limits in place, so that migrations don't overwhelm
 the cluster. By default, it is configured to only run `5` migrations in
 parallel with an additional limit of a maximum of `2` outbound
-migrations per node. Finally, every migration is limited to a bandwidth
-of `64MiB/s`.
+migrations per node. Bandwidth per migration is unlimited by default
+(`0Mi`).
 
-These values can be changed in the `kubevirt` CR:
+You can override these and other migration settings in the `kubevirt` CR.
+For example:
 
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: Kubevirt
+kind: KubeVirt
 metadata:
   name: kubevirt
   namespace: kubevirt
@@ -271,18 +276,18 @@ alternative strategies below.
 
 For virtual machines that explicitly set CPU resource limits, multithreaded migration is disabled and single-threaded migration will be used instead.
 ### Post-copy
-The way post-copy migrations work is as following:
+In KubeVirt, migrations always start in pre-copy mode and may later
+switch to post-copy. Once in post-copy:
 
-  1. The target VM is created.
-  2. The guest is run on the **target VM**.
-  3. The source starts sending chunks of VM state (mostly memory) to the target.
-  4. When the guest, running on the target VM, would access memory:
+  1. The guest runs on the **target VM**.
+  2. The source continues sending chunks of VM state (mostly memory) to the target.
+  3. When the guest, running on the target VM, would access memory:
     1. If the memory exists on the target VM, the guest can access it.
     2. Otherwise, the target VM asks for a chunk of memory from the source VM.
-  5. Once all of the memory state is updated at the target VM, the source VM is removed.
+  4. Once all of the memory state is updated at the target VM, the source VM is removed.
 
-The main idea here is that the guest starts to run immediately on the target VM. This approach
-has advantages and disadvantages:
+The main idea of post-copy is that the guest runs on the target VM while
+remaining memory is fetched on demand. This approach has advantages and disadvantages:
 
 <u>advantages</u>:
 
@@ -425,15 +430,12 @@ This is just a matter of adding the name of the
 NetworkAttachmentDefinition to the KubeVirt CR, like so:
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: Kubevirt
+kind: KubeVirt
 metadata:
   name: kubevirt
   namespace: kubevirt
 spec:
   configuration:
-    developerConfiguration:
-      featureGates:
-      - LiveMigration
     migrations:
       network: migration-network
 ```
@@ -504,15 +506,12 @@ improve performance. Use `disableTLS` to do that:
 
 ```yaml
 apiVersion: kubevirt.io/v1
-kind: Kubevirt
+kind: KubeVirt
 metadata:
   name: kubevirt
   namespace: kubevirt
 spec:
   configuration:
-    developerConfiguration:
-      featureGates:
-        - "LiveMigration"
     migrations:
       disableTLS: true
 ```
