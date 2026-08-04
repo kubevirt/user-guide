@@ -62,7 +62,7 @@ kind: VirtualMachine
 metadata:
   labels:
     kubevirt.io/vm: vm-net-binding-slirp
-  name: vm-net-binding-passt
+  name: vm-net-binding-slirp
 spec:
   runStrategy: Always
   template:
