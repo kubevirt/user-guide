@@ -2,7 +2,9 @@
 
 ## AMD Secure Encrypted Virtualization (SEV)
 
-**FEATURE STATE:** KubeVirt v0.49.0 (experimental support)
+**FEATURE STATE:**
+  - Alpha - `v0.49.0` (experimental support)
+  - Beta  - `v1.9.0` (enabled by default)
 
 [Secure Encrypted Virtualization (SEV)](https://developer.amd.com/sev/) is a feature of AMD's EPYC CPUs that allows the memory of a virtual machine to be encrypted on the fly.
 
@@ -12,7 +14,7 @@ KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV feature
 
 In order to run an SEV guest the following condition must be met:
 
-- `WorkloadEncryptionSEV` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
+- Before KubeVirt v1.9: `WorkloadEncryptionSEV` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
 - The guest must support [UEFI boot](../compute/virtual_hardware.md#biosuefi)
 - SecureBoot must be disabled for the guest VM
 
@@ -68,14 +70,16 @@ spec:
 
 ## AMD Secure Encrypted Virtualization - Secure Nested Paging (SEV-SNP)
 
-**FEATURE STATE:** KubeVirt v1.7.0 (experimental support)
+**FEATURE STATE:**
+  - Alpha - `v1.7.0` (experimental support)
+  - Beta  - `v1.9.0` (enabled by default)
 
 
 KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV-SNP support.
 
 ### Prerequisites
 
-- `WorkloadEncryptionSEV` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
+- Before KubeVirt v1.9: `WorkloadEncryptionSEV` [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate) must be enabled.
 - The guest must support [UEFI boot](../compute/virtual_hardware.md#biosuefi).
 - SecureBoot must be disabled for the guest VM.
 - AMD EPYC hardware that is capable of running [SEV-SNP](https://docs.amd.com/v/u/en-US/58207-using-sev-with-amd-epyc-processors).
