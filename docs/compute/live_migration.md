@@ -490,10 +490,63 @@ For example, with the default value, a VMI with 8GiB of memory will time-out aft
 
 ### Progress timeout
 
-Live migration will also be aborted when it will be noticed that copying
-memory doesn't make any progress. The time to wait for live migration to
-make progress in transferring data is configurable by `progressTimeout`
-parameter, which defaults to 150s
+Live migrations will also abort when it notices that the "remaining bytes"
+in the migration are not making any progress. The time to wait for live migrations
+to make progress in transferring data is configurable by the `progressTimeout`
+parameter, which defaults to 150s. Since this timeout resets whenever *any*
+progress is made, this mechanism does not timeout migrations whose remaining
+bytes are fluctuating back-and-forth and is only useful for migrations that
+are completely stuck.
+
+### Stall detection
+
+**FEATURE STATE:** KubeVirt v1.9 (Alpha)
+
+Busy guests more often fail to converge because remaining bytes plateau or oscillate than because
+transfer is completely stuck. Stall detection covers that case: once remaining bytes stop making
+*net progress*, it switches the migration over near a local minimum instead of waiting for
+`completionTimeoutPerGiB`. This feature is alpha and must be enabled via the
+`MigrationStallDetection` feature gate.
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - MigrationStallDetection
+```
+
+There are two important configuration options associated with stall detection:
+
+- `maxDowntimeMs` (default 900): the maximum acceptable downtime for your workload, in milliseconds.
+  Only meaningful when `allowWorkloadDisruption` is false (the default). The stall detector will try
+  for a better downtime than this; if even this budget cannot be met, the migration aborts.
+  Configurable on the KubeVirt CR
+  ([MigrationConfiguration](https://kubevirt.io/api-reference/main/definitions.html#_v1_migrationconfiguration))
+  and on [MigrationPolicy](../cluster_admin/migration_policies.md)
+  ([MigrationPolicySpec](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha1_migrationpolicyspec)).
+- `stallProgressTimeout` (default 40): how many seconds remaining bytes may plateau before the
+  migration is considered stalled. Higher values spend more time looking for a better switchover
+  point (longer migration, usually better downtime); lower values do the opposite. In alpha this
+  lives under `MigrationPolicy.spec.experimental.stallDetector`
+  ([ExperimentalMigrationOptions](https://kubevirt.io/api-reference/main/definitions.html#_v1_experimentalmigrationoptions)).
+  At graduation it is expected to repurpose the existing `progressTimeout` field.
+
+Additional stall-detector options are also exposed under
+`MigrationPolicy.spec.experimental.stallDetector` in alpha; see
+[StallDetectorOptions](https://kubevirt.io/api-reference/main/definitions.html#_v1_stalldetectoroptions)
+for the full list. Only `stallProgressTimeout` is currently expected to graduate. The rest are
+exposed so the community can try different values if the defaults do not work well for them, and
+report whether there is a real need to keep any of those options exposed. Most of those other fields
+are technically dense and algorithm-specific; for details on what they do, see the
+[StallDetectorOptions](https://kubevirt.io/api-reference/main/definitions.html#_v1_stalldetectoroptions)
+API Reference or
+[VEP 248](https://github.com/kubevirt/enhancements/tree/main/veps/sig-compute/248-migration-convergence).
 
 ## Disabling secure migrations
 
