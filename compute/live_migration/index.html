@@ -2705,6 +2705,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#stall-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stall detection
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4464,6 +4475,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#stall-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stall detection
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4931,16 +4953,22 @@ defaults to 150s, is the maximum amount of time per GiB of data allowed before t
 gets aborted / switched to post-copy mode.
 For example, with the default value, a VMI with 8GiB of memory will time-out after 1200 seconds.</p>
 <h3 id="progress-timeout">Progress timeout<a class="headerlink" href="#progress-timeout" title="Permanent link">&para;</a></h3>
-<p>Live migration will also be aborted when it will be noticed that copying
-memory doesn't make any progress. The time to wait for live migration to
-make progress in transferring data is configurable by <code>progressTimeout</code>
-parameter, which defaults to 150s</p>
-<h2 id="disabling-secure-migrations">Disabling secure migrations<a class="headerlink" href="#disabling-secure-migrations" title="Permanent link">&para;</a></h2>
-<p><strong>FEATURE STATE:</strong> KubeVirt v0.43</p>
-<p>Sometimes it may be desirable to disable TLS encryption of migrations to
-improve performance. Use <code>disableTLS</code> to do that:</p>
+<p>Live migrations will also abort when it notices that the "remaining bytes"
+in the migration are not making any progress. The time to wait for live migrations
+to make progress in transferring data is configurable by the <code>progressTimeout</code>
+parameter, which defaults to 150s. Since this timeout resets whenever <em>any</em>
+progress is made, this mechanism does not timeout migrations whose remaining
+bytes are fluctuating back-and-forth and is only useful for migrations that
+are completely stuck.</p>
+<h3 id="stall-detection">Stall detection<a class="headerlink" href="#stall-detection" title="Permanent link">&para;</a></h3>
+<p><strong>FEATURE STATE:</strong> KubeVirt v1.9 (Alpha)</p>
+<p>Busy guests more often fail to converge because remaining bytes plateau or oscillate than because
+transfer is completely stuck. Stall detection covers that case: once remaining bytes stop making
+<em>net progress</em>, it switches the migration over near a local minimum instead of waiting for
+<code>completionTimeoutPerGiB</code>. This feature is alpha and must be enabled via the
+<code>MigrationStallDetection</code> feature gate.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
 <a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
@@ -4948,9 +4976,50 @@ improve performance. Use <code>disableTLS</code> to do that:</p>
 <a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
 <a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
 <a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;LiveMigration&quot;</span>
-<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
-<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MigrationStallDetection</span>
+</code></pre></div>
+<p>There are two important configuration options associated with stall detection:</p>
+<ul>
+<li><code>maxDowntimeMs</code> (default 900): the maximum acceptable downtime for your workload, in milliseconds.
+  Only meaningful when <code>allowWorkloadDisruption</code> is false (the default). The stall detector will try
+  for a better downtime than this; if even this budget cannot be met, the migration aborts.
+  Configurable on the KubeVirt CR
+  (<a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_migrationconfiguration">MigrationConfiguration</a>)
+  and on <a href="../../cluster_admin/migration_policies/">MigrationPolicy</a>
+  (<a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha1_migrationpolicyspec">MigrationPolicySpec</a>).</li>
+<li><code>stallProgressTimeout</code> (default 40): how many seconds remaining bytes may plateau before the
+  migration is considered stalled. Higher values spend more time looking for a better switchover
+  point (longer migration, usually better downtime); lower values do the opposite. In alpha this
+  lives under <code>MigrationPolicy.spec.experimental.stallDetector</code>
+  (<a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_experimentalmigrationoptions">ExperimentalMigrationOptions</a>).
+  At graduation it is expected to repurpose the existing <code>progressTimeout</code> field.</li>
+</ul>
+<p>Additional stall-detector options are also exposed under
+<code>MigrationPolicy.spec.experimental.stallDetector</code> in alpha; see
+<a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_stalldetectoroptions">StallDetectorOptions</a>
+for the full list. Only <code>stallProgressTimeout</code> is currently expected to graduate. The rest are
+exposed so the community can try different values if the defaults do not work well for them, and
+report whether there is a real need to keep any of those options exposed. Most of those other fields
+are technically dense and algorithm-specific; for details on what they do, see the
+<a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_stalldetectoroptions">StallDetectorOptions</a>
+API Reference or
+<a href="https://github.com/kubevirt/enhancements/tree/main/veps/sig-compute/248-migration-convergence">VEP 248</a>.</p>
+<h2 id="disabling-secure-migrations">Disabling secure migrations<a class="headerlink" href="#disabling-secure-migrations" title="Permanent link">&para;</a></h2>
+<p><strong>FEATURE STATE:</strong> KubeVirt v0.43</p>
+<p>Sometimes it may be desirable to disable TLS encryption of migrations to
+improve performance. Use <code>disableTLS</code> to do that:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;LiveMigration&quot;</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><strong>Note:</strong> While this increases performance it may allow MITM attacks. Be careful.</p>
 
