@@ -58,48 +58,12 @@ The `start`, `stop` and `restart` methods of virtctl will invoke their
 respective subresources of VirtualMachines. This can have an effect on
 the runStrategy of the VirtualMachine as below:
 
-<table style="width: 100% ; display: inline-table">
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>RunStrategy</th>
-<th>start</th>
-<th>stop</th>
-<th>restart</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><strong>Always</strong></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>Halted</code></p></td>
-<td><p><code>Always</code></p></td>
-</tr>
-<tr class="even">
-<td><p><strong>RerunOnFailure</strong></p></td>
-<td><p><code>RerunOnFailure</code></p></td>
-<td><p><code>RerunOnFailure</code></p></td>
-<td><p><code>RerunOnFailure</code></p></td>
-</tr>
-<tr class="odd">
-<td><p><strong>Manual</strong></p></td>
-<td><p><code>Manual</code></p></td>
-<td><p><code>Manual</code></p></td>
-<td><p><code>Manual</code></p></td>
-</tr>
-<tr class="even">
-<td><p><strong>Halted</strong></p></td>
-<td><p><code>Always</code></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>-</code></p></td>
-</tr>
-</tbody>
-</table>
+| RunStrategy        | start              | stop               | restart            |
+|--------------------|--------------------|--------------------|--------------------| 
+| **Always**         | `-`                | `Halted`           | `Always`           |
+| **RerunOnFailure** | `RerunOnFailure`   | `RerunOnFailure`   | `RerunOnFailure`   |
+| **Manual**         | `Manual`           | `Manual`           | `Manual`           |
+| **Halted**         | `Always`           | `-`                | `-`                |
 
 Table entries marked with `-` don't make sense, so won't have an effect
 on RunStrategy.
