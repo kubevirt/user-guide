@@ -548,6 +548,36 @@ are technically dense and algorithm-specific; for details on what they do, see t
 API Reference or
 [VEP 248](https://github.com/kubevirt/enhancements/tree/main/veps/sig-compute/248-migration-convergence).
 
+### Compression
+
+**FEATURE STATE:** KubeVirt v1.9 (Alpha)
+
+Large-memory VMs or bandwidth-constrained environments often hit migration timeouts because the guest dirty rate exceeds the available link capacity. Compression reduces the amount of data sent over the network by compressing memory pages on the migration stream. This trades modest CPU overhead on the source node for lower bandwidth use and can help migrations converge that would otherwise time out. The feature is alpha and opt-in per workload via [MigrationPolicy](../cluster_admin/migration_policies.md).
+
+Set `spec.experimental.compression` to `zstd` on a `MigrationPolicy` that matches the target VMs. Omit the field or set it to `none` to leave compression disabled (the default).
+
+```yaml
+apiVersion: migrations.kubevirt.io/v1alpha1
+kind: MigrationPolicy
+metadata:
+  name: compress-heavy-vms
+spec:
+  selectors:
+    namespaceSelector:
+      workload-type: memory-intensive
+  experimental:
+    compression: zstd
+```
+
+There is only one configuration option:
+
+- `compression` (default: `none`): when set to `zstd`, virt-launcher enables QEMU/libvirt zstd compression on the live migration data stream. In alpha this lives under `MigrationPolicy.spec.experimental`
+  ([ExperimentalMigrationOptions](https://kubevirt.io/api-reference/main/definitions.html#_v1_experimentalmigrationoptions)).
+  Only `zstd` is supported today; `none` explicitly disables compression for matched VMs.
+
+When compression is active, virt-launcher migration logs include `Migration compression enabled: method=zstd` and a `CompressionRatio` value in migration progress lines. Compression is compatible with multifd parallel channels (the default when no per-migration CPU limit is set), TLS, bandwidth limits, auto-converge, post-copy, and stall detection. For design details, see
+[VEP 246](https://github.com/kubevirt/enhancements/tree/main/veps/sig-compute/246-migration-compression).
+
 ## Disabling secure migrations
 
 **FEATURE STATE:** KubeVirt v0.43
