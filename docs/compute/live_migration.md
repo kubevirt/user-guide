@@ -29,6 +29,8 @@ field in the KubeVirt CR must be expanded by adding the `LiveMigration` to it.
   most environments. See [Node configuration for post-copy](#node-configuration-for-post-copy)
   for details.
 
+- Live migration of VMs with GPUs has limitations. See [Live migration with vGPUs](#live-migration-with-nvidia-vgpus).
+
 ## Initiate live migration
 
 Live migration is initiated by posting a VirtualMachineInstanceMigration
@@ -571,3 +573,84 @@ spec:
 ```
 
 **Note:** While this increases performance it may allow MITM attacks. Be careful.
+
+## Live migration with (NVIDIA) vGPUs
+
+**FEATURE STATE:** KubeVirt v1.9 (Alpha)
+
+KubeVirt can live migrate a VirtualMachineInstance that has a single NVIDIA vGPU exposed as a
+mediated device (mdev).
+
+### Prerequisites
+
+Before a vGPU-backed VMI can live migrate, complete all of the following:
+
+1. Install the NVIDIA Virtual GPU Manager (host driver) on every node that may run or receive
+   the VM. NVIDIA requires this driver before any mediated devices exist on the node. Install
+   it yourself or with the NVIDIA GPU Operator.
+2. Create the mediated device instances on those nodes. With the vendor driver already installed,
+   pick **one** creator so they do not conflict:
+   - KubeVirt's [mediated devices configuration](../compute/mediated_devices_configuration.md), which creates mdevs from the types the driver
+     exposes.
+   - The NVIDIA GPU Operator [vGPU Device Manager](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html), or another vendor tool that creates mdevs. If an
+     external plugin owns creation, disable KubeVirt mdev management on those nodes
+     (`spec.configuration.mediatedDevicesConfiguration.enabled: false`).
+3. Allowlist the mdev type under `permittedHostDevices.mediatedDevices` and assign it to the VM as
+   described in [Host Devices Assignment](../compute/host-devices.md#listing-permitted-devices). If the NVIDIA GPU Operator (or another plugin) advertises
+   the resource, set `externalResourceProvider: true`. PCI GPU passthrough is not migratable; the
+   device must appear as a mediated device.
+4. Enable the `VGPULiveMigration` feature gate (see below).
+
+Source and destination hosts must also satisfy [NVIDIA's vGPU migration requirements](https://docs.nvidia.com/vgpu/latest/grid-vgpu-release-notes-red-hat-el-kvm/validated-platforms.html#red-hat-el-vgpu-migration-support). In alpha,
+KubeVirt does not enforce those constraints when choosing a target.
+
+### Enabling vGPU live migration
+
+Enable the `VGPULiveMigration` feature gate in the KubeVirt CR:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - VGPULiveMigration
+```
+
+Once enabled, migrate the VMI the same way as any other live-migratable VM (for example with a
+`VirtualMachineInstanceMigration` object or `virtctl migrate`).
+
+### Limitations and requirements
+
+Alpha support is intentionally narrow. The following restrictions apply:
+
+- **Single NVIDIA mdev vGPU only.** The VMI must request exactly one GPU that is a mediated device.
+  Live migration is not supported for:
+  - PCI GPU passthrough
+  - SR-IOV vGPUs
+  - VMs with multiple vGPUs (planned for Beta)
+- **Compatible guest OS.** The operating system running on the guest VM must be running either
+  a [supported version of Windows](https://docs.nvidia.com/vgpu/latest/grid-vgpu-release-notes-red-hat-el-kvm/validated-platforms.html#red-hat-el-windows-support) or a [supported version of Linux](https://docs.nvidia.com/vgpu/latest/grid-vgpu-release-notes-red-hat-el-kvm/validated-platforms.html#red-hat-el-linux-support).
+- **Compatible guest drivers.** The NVIDIA drivers running on the guest [must be compatible](https://docs.nvidia.com/vgpu/latest/grid-vgpu-release-notes-red-hat-el-kvm/release-notes.html) with the host Virtual GPU Manager.
+- **NVIDIA guest feature limits.** Migration fails if the guest has CUDA unified memory, debuggers,
+  or profilers enabled. See the NVIDIA link in [Prerequisites](#prerequisites) for the full vendor requirements.
+- **No post-copy.** Post-copy live migration is not available for VMs with a vGPU.
+- **Convergence and downtime.** Even an idle guest with a vGPU has a baseline memory dirty rate,
+  so pre-copy usually cannot meet QEMU's default ~300 ms downtime target. In practice most vGPU
+  migrations therefore need [`allowWorkloadDisruption`](#configuring-acceptable-levels-of-workload-disruption) (for example via a [MigrationPolicy](../cluster_admin/migration_policies.md)). Because
+  post-copy is unavailable for vGPUs, disruption means pausing the guest until the migration
+  finishes.
+
+  With that default path, switchover still waits for the migration completion timeout
+  (`completionTimeoutPerGiB` and VM size), which can leave the migration running for a long time
+  before the pause.
+
+  Enabling [stall detection](#stall-detection) (also alpha) changes that behavior: once remaining bytes plateau,
+  KubeVirt can switch over earlier instead of waiting out the completion timeout. Stall detection
+  also exposes `maxDowntimeMs`, which lets you keep `allowWorkloadDisruption` false and still converge
+  by raising the downtime budget up to a maximum acceptable downtime you choose; if even that limit
+  cannot be met, the migration aborts.
