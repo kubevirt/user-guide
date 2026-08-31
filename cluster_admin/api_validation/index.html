@@ -3898,7 +3898,7 @@ be enabled on the cluster in order to be enabled.</p>
 are present in the Apiserver's <strong>--admission-control</strong> cli argument.</p>
 <p>Below is an example of the <strong>--admission-control</strong> values we use during
 development</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>--admission-control=&#39;Initializers,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>--admission-control='Initializers,NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota'
 </code></pre></div>
 <p>Note that the old --admission-control flag was deprecated in 1.10 and replaced with --enable-admission-plugins.
 <strong>MutatingAdmissionWebhook</strong> and <strong>ValidatingAdmissionWebhook</strong> are enabled by default.</p>
@@ -3908,7 +3908,7 @@ install time. The process is slightly different though. With OKD, we
 enable webhooks using an admission plugin.</p>
 <p>These admission control plugins can be configured in openshift-ansible
 by setting the following value in ansible inventory file.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>openshift_master_admission_plugin_config={&quot;ValidatingAdmissionWebhook&quot;:{&quot;configuration&quot;:{&quot;kind&quot;: &quot;DefaultAdmissionConfig&quot;,&quot;apiVersion&quot;: &quot;v1&quot;,&quot;disable&quot;: false}},&quot;MutatingAdmissionWebhook&quot;:{&quot;configuration&quot;:{&quot;kind&quot;: &quot;DefaultAdmissionConfig&quot;,&quot;apiVersion&quot;: &quot;v1&quot;,&quot;disable&quot;: false}}}
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>openshift_master_admission_plugin_config={"ValidatingAdmissionWebhook":{"configuration":{"kind": "DefaultAdmissionConfig","apiVersion": "v1","disable": false}},"MutatingAdmissionWebhook":{"configuration":{"kind": "DefaultAdmissionConfig","apiVersion": "v1","disable": false}}}
 </code></pre></div>
 
 

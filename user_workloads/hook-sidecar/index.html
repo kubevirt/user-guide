@@ -4031,7 +4031,7 @@ annotations to make sure the script is run before the VMI creation. The flow wou
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="no">#!/bin/sh</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="no">tempFile=`mktemp --dry-run`</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="no">echo $4 &gt; $tempFile</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="no">sed -i &quot;s|&lt;baseBoard&gt;&lt;/baseBoard&gt;|&lt;baseBoard&gt;&lt;entry name=&#39;manufacturer&#39;&gt;Radical Edward&lt;/entry&gt;&lt;/baseBoard&gt;|&quot; $tempFile</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="no">sed -i "s|&lt;baseBoard&gt;&lt;/baseBoard&gt;|&lt;baseBoard&gt;&lt;entry name='manufacturer'&gt;Radical Edward&lt;/entry&gt;&lt;/baseBoard&gt;|" $tempFile</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="no">cat $tempFile</span>
 </code></pre></div>
 <h4 id="configmap-with-python-script">ConfigMap with python script<a class="headerlink" href="#configmap-with-python-script" title="Permanent link">&para;</a></h4>
@@ -4048,31 +4048,31 @@ annotations to make sure the script is run before the VMI creation. The flow wou
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
 <a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="no">def main(s):</span>
 <a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="no"># write to a temporary file</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="no">f = open(&quot;/tmp/orig.xml&quot;, &quot;w&quot;)</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="no">f = open("/tmp/orig.xml", "w")</span>
 <a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">        </span><span class="no">f.write(s)</span>
 <a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">        </span><span class="no">f.close()</span>
 <a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
 <a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">        </span><span class="no"># parse xml from file</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">        </span><span class="no">xml = ET.parse(&quot;/tmp/orig.xml&quot;)</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">        </span><span class="no">xml = ET.parse("/tmp/orig.xml")</span>
 <a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">        </span><span class="no"># get the root element</span>
 <a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">        </span><span class="no">root = xml.getroot()</span>
 <a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">        </span><span class="no"># find the baseBoard element</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="no">baseBoard = root.find(&quot;sysinfo&quot;).find(&quot;baseBoard&quot;)</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="no">baseBoard = root.find("sysinfo").find("baseBoard")</span>
 <a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
 <a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">        </span><span class="no"># prepare new element to be inserted into the xml definition</span>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">        </span><span class="no">element = ET.Element(&quot;entry&quot;, {&quot;name&quot;: &quot;manufacturer&quot;})</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">        </span><span class="no">element.text = &quot;Radical Edward&quot;</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">        </span><span class="no">element = ET.Element("entry", {"name": "manufacturer"})</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">        </span><span class="no">element.text = "Radical Edward"</span>
 <a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">        </span><span class="no"># insert the element</span>
 <a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">        </span><span class="no">baseBoard.insert(0, element)</span>
 <a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>
 <a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">        </span><span class="no"># write to a new file</span>
-<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="no">xml.write(&quot;/tmp/new.xml&quot;)</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="no">xml.write("/tmp/new.xml")</span>
 <a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">        </span><span class="no"># print file contents to stdout</span>
-<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">        </span><span class="no">f = open(&quot;/tmp/new.xml&quot;)</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">        </span><span class="no">f = open("/tmp/new.xml")</span>
 <a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">        </span><span class="no">print(f.read())</span>
 <a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">        </span><span class="no">f.close()</span>
 <a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>
-<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">    </span><span class="no">if __name__ == &quot;__main__&quot;:</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">    </span><span class="no">if __name__ == "__main__":</span>
 <a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">        </span><span class="no">main(sys.argv[4])</span>
 </code></pre></div>
 <p>After creating one of the above ConfigMap, create the VMI using the manifest in <a href="https://github.com/kubevirt/kubevirt/blob/main/examples/vmi-with-sidecar-hook-configmap.yaml">this
@@ -4082,8 +4082,8 @@ here is the ConfigMap information stored in the annotations:</p>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">hooks.kubevirt.io/hookSidecars</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">&gt;</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="no">[</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="no">{</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">            </span><span class="no">&quot;args&quot;: [&quot;--version&quot;, &quot;v1alpha2&quot;],</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">            </span><span class="no">&quot;configMap&quot;: {&quot;name&quot;: &quot;my-config-map&quot;, &quot;key&quot;: &quot;my_script.sh&quot;, &quot;hookPath&quot;: &quot;/usr/bin/onDefineDomain&quot;}</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">            </span><span class="no">"args": ["--version", "v1alpha2"],</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">            </span><span class="no">"configMap": {"name": "my-config-map", "key": "my_script.sh", "hookPath": "/usr/bin/onDefineDomain"}</span>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="no">}</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="no">]</span>
 </code></pre></div>
@@ -4097,7 +4097,7 @@ The default Sidecar-shim image, if not override with a custom value, will also b
 <p>Whether you used the Go binary or a Shell/Python script from the above examples, you would be able to see the newly 
 created VMI have the modified baseboard manufacturer information. After creating the VMI, verify that it is in the 
 <code>Running</code> state, and connect to its console and see if the desired changes to baseboard manufacturer get reflected:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Once the VM is ready, connect to its display and login using name and password &quot;fedora&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Once the VM is ready, connect to its display and login using name and password "fedora"</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>cluster/virtctl.sh<span class="w"> </span>vnc<span class="w"> </span>vmi-with-sidecar-hook-configmap
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Check whether the base board manufacturer value was successfully overwritten</span>

@@ -4114,18 +4114,18 @@ This behaviour might not be desired by the user, as deleting the restored VM wil
 <p>When restoring a <code>VirtualMachineSnapshot</code>, the user might want to modify the volumes as they are being restored. This is possible using the <code>volumeRestoreOverrides</code>. Overrides are provided in a list, where each element targets a volume within the snapshot and applies changes to it.</p>
 <p>The syntax for a volume restore override is the following:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">volumeRestoreOverrides</span><span class="p">:</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">volumeName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;original-volume&quot;</span><span class="w"> </span><span class="c1"># Required - the original name of the volume within the snapshot</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">volumeName</span><span class="p">:</span><span class="w"> </span><span class="s">"original-volume"</span><span class="w"> </span><span class="c1"># Required - the original name of the volume within the snapshot</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="c1"># Optional - the new name of the restored volume</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="c1"># If combined with volumeRestorePolicy &quot;InPlace&quot;, the PVC that has that name will be deleted before the volume is restored</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="c1"># If combined with volumeRestorePolicy "InPlace", the PVC that has that name will be deleted before the volume is restored</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">restoreName</span><span class="p">:</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="c1"># Optional - used to add or modify labels </span>
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">      </span><span class="nt">newLabel</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;value&quot;</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">      </span><span class="nt">oldLabel</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;newValue&quot;</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">      </span><span class="nt">newLabel</span><span class="p">:</span><span class="w"> </span><span class="s">"value"</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">      </span><span class="nt">oldLabel</span><span class="p">:</span><span class="w"> </span><span class="s">"newValue"</span>
 <a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="c1"># Optional - used to add or modify annotations</span>
 <a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">newAnnotation</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;value&quot;</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">      </span><span class="nt">oldAnnotation</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;newValue&quot;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">newAnnotation</span><span class="p">:</span><span class="w"> </span><span class="s">"value"</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">      </span><span class="nt">oldAnnotation</span><span class="p">:</span><span class="w"> </span><span class="s">"newValue"</span>
 </code></pre></div>
 <h2 id="restoring-in-a-gitops-friendly-way">Restoring in a GitOps friendly way<a class="headerlink" href="#restoring-in-a-gitops-friendly-way" title="Permanent link">&para;</a></h2>
 <p>Restoring VMs in KubeVirt may not be completely compatible with a GitOps workflow unless some adjustements are made.</p>
@@ -4139,7 +4139,7 @@ This behaviour might not be desired by the user, as deleting the restored VM wil
 <li>If using <code>DataVolumes</code>, mount them as <code>PersistentVolumeClaims</code> (DataVolumes create PVCs that have the same name as themselves, making both mount types compatible) </li>
 </ul>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># This DataVolume can be mounted on the VM as a persistentVolumeClaim or as a dataVolume.</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># It doesn&#39;t really change anything, as both mount types are compatible, but one is GitOps safe and the other is not.</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># It doesn't really change anything, as both mount types are compatible, but one is GitOps safe and the other is not.</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nn">---</span>
 <a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cdi.kubevirt.io/v1beta1</span>

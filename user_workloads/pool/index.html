@@ -4124,7 +4124,7 @@ As a consequence it is possible to scale it via <code>kubectl</code>:</p>
 <p>In this scenario, the <code>ownerReferences</code> needs to be removed from the <code>VirtualMachine</code>.
 This can be achieved either by using <code>kubectl edit</code> or <code>kubectl patch</code>.
 Using <code>kubectl patch</code> it would look like:</p>
-<div class="highlight"><pre><span></span><code>kubectl patch vm vm-pool-cirros-0 --type merge --patch &#39;{&quot;metadata&quot;:{&quot;ownerReferences&quot;:null}}&#39;
+<div class="highlight"><pre><span></span><code>kubectl patch vm vm-pool-cirros-0 --type merge --patch '{"metadata":{"ownerReferences":null}}'
 </code></pre></div>
 <blockquote>
 <p><strong>Note:</strong> You may want to update your VirtualMachine labels as well to avoid impact on selectors.</p>

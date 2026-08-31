@@ -4010,7 +4010,7 @@ for AMD.</p>
 configuration file.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a># vi /etc/default/grub
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>...
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>GRUB_CMDLINE_LINUX=&quot;nofb splash=quiet console=tty0 ... intel_iommu=on
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>GRUB_CMDLINE_LINUX="nofb splash=quiet console=tty0 ... intel_iommu=on
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>...
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a># grub2-mkconfig -o /boot/grub2/grub.cfg
@@ -4033,7 +4033,7 @@ configuration file.</p>
 <ul>
 <li>Bind that device to the <code>vfio-pci</code> driver:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>echo 0000:65:00.0 &gt; /sys/bus/pci/drivers/nvidia/unbind
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>echo &quot;vfio-pci&quot; &gt; /sys/bus/pci/devices/0000\:65\:00.0/driver_override
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>echo "vfio-pci" &gt; /sys/bus/pci/devices/0000\:65\:00.0/driver_override
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>echo 0000:65:00.0 &gt; /sys/bus/pci/drivers/vfio-pci/bind
 </code></pre></div></li>
 </ul>
@@ -4048,14 +4048,14 @@ cluster. Permitted host devices in the cluster will need to be allowlisted in Ku
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>configuration:
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  permittedHostDevices:
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    pciHostDevices:
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    - pciVendorSelector: &quot;10DE:1EB8&quot;
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>      resourceName: &quot;nvidia.com/TU104GL_Tesla_T4&quot;
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    - pciVendorSelector: "10DE:1EB8"
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>      resourceName: "nvidia.com/TU104GL_Tesla_T4"
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>      externalResourceProvider: true
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    - pciVendorSelector: &quot;8086:6F54&quot;
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>      resourceName: &quot;intel.com/qat&quot;
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    - pciVendorSelector: "8086:6F54"
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>      resourceName: "intel.com/qat"
 <a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    mediatedDevices:
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    - mdevNameSelector: &quot;GRID T4-1Q&quot;
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>      resourceName: &quot;nvidia.com/GRID_T4-1Q&quot;
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    - mdevNameSelector: "GRID T4-1Q"
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>      resourceName: "nvidia.com/GRID_T4-1Q"
 </code></pre></div>
 <ul>
 <li>
@@ -4162,8 +4162,8 @@ a resource name. The device allowlist can be edited in KubeVirt CR under
 <a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">      </span><span class="nt">usb</span><span class="p">:</span>
 <a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/storage</span>
 <a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">          </span><span class="nt">selectors</span><span class="p">:</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;46f4&quot;</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0001&quot;</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">"46f4"</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">"0001"</span>
 </code></pre></div>
 <p>After adding the <code>usb</code> configuration under <code>permittedHostDevices</code> to the KubeVirt CR, KubeVirt's
 device-plugin will expose this resource name and you can use it in your VMI.</p>
@@ -4189,12 +4189,12 @@ resource name, so you could do:</p>
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">      </span><span class="nt">usb</span><span class="p">:</span>
 <a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/peripherals</span>
 <a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">          </span><span class="nt">selectors</span><span class="p">:</span>
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;045e&quot;</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;07a5&quot;</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;062a&quot;</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4102&quot;</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;072f&quot;</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b100&quot;</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">"045e"</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">"07a5"</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">"062a"</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">"4102"</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span><span class="s">"072f"</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">              </span><span class="nt">product</span><span class="p">:</span><span class="w"> </span><span class="s">"b100"</span>
 </code></pre></div>
 <p>Adding to the VMI configuration:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nt">spec</span><span class="p">:</span>

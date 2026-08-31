@@ -3845,10 +3845,10 @@ items:
     labels:
       beta.kubernetes.io/arch: amd64
       beta.kubernetes.io/os: linux
-      cpumanager: &quot;false&quot;
+      cpumanager: "false"
       kubernetes.io/hostname: node01
-      kubevirt.io/schedulable: &quot;true&quot;
-      node-role.kubernetes.io/control-plane: &quot;&quot;
+      kubevirt.io/schedulable: "true"
+      node-role.kubernetes.io/control-plane: ""
 </code></pre></div>
 <p>If a <code>VirtualMachineInstance</code> gets scheduled, the scheduler is only
 considering nodes where <code>kubevirt.io/schedulable</code> is <code>true</code>. This can be
@@ -3863,7 +3863,7 @@ spec:
   [...]
   nodeName: node01
   nodeSelector:
-    kubevirt.io/schedulable: &quot;true&quot;
+    kubevirt.io/schedulable: "true"
   [...]
 </code></pre></div>
 <p>In case there is a communication issue or the host goes down,

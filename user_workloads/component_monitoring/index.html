@@ -3907,8 +3907,8 @@ corresponding <code>Endpoint</code> with an equal name:</p>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Endpoints</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">kubevirt.io</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">prometheus.kubevirt.io</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">kubevirt.io</span><span class="p">:</span><span class="w"> </span><span class="s">""</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">prometheus.kubevirt.io</span><span class="p">:</span><span class="w"> </span><span class="s">""</span>
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt-prometheus-metrics</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="nt">subsets</span><span class="p">:</span>
@@ -3919,7 +3919,7 @@ corresponding <code>Endpoint</code> with an equal name:</p>
 <a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">      </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
 <a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virt-handler-cjzg6</span>
 <a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">      </span><span class="nt">resourceVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;4891&quot;</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">      </span><span class="nt">resourceVersion</span><span class="p">:</span><span class="w"> </span><span class="s">"4891"</span>
 <a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span><span class="nt">uid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">c67331f9-bfcf-11e8-bc54-525500d15501</span>
 <a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.244.0.6</span>
 <a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
@@ -3986,10 +3986,10 @@ Virtual Machines. All the relevant metrics are prefixed with
 refer to. At minimum, the labels will expose <code>node</code>, <code>name</code> and
 <code>namespace</code> of the related VMI object.</p>
 <p>For example, reported metrics could look like</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubevirt_vmi_memory_resident_bytes{domain=&quot;default_vm-test-01&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;} 2.5595904e+07
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;rx&quot;} 8431
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>kubevirt_vmi_network_traffic_bytes_total{domain=&quot;default_vm-test-01&quot;,interface=&quot;vnet0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,type=&quot;tx&quot;} 1835
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>kubevirt_vmi_vcpu_seconds_total{domain=&quot;default_vm-test-01&quot;,id=&quot;0&quot;,name=&quot;vm-test-01&quot;,namespace=&quot;default&quot;,node=&quot;node01&quot;,state=&quot;1&quot;} 19
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubevirt_vmi_memory_resident_bytes{domain="default_vm-test-01",name="vm-test-01",namespace="default",node="node01"} 2.5595904e+07
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>kubevirt_vmi_network_traffic_bytes_total{domain="default_vm-test-01",interface="vnet0",name="vm-test-01",namespace="default",node="node01",type="rx"} 8431
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>kubevirt_vmi_network_traffic_bytes_total{domain="default_vm-test-01",interface="vnet0",name="vm-test-01",namespace="default",node="node01",type="tx"} 1835
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>kubevirt_vmi_vcpu_seconds_total{domain="default_vm-test-01",id="0",name="vm-test-01",namespace="default",node="node01",state="1"} 19
 </code></pre></div>
 <p>Please note the <code>domain</code> label in the above example. This label is
 deprecated and it will be removed in a future release. You should
@@ -3998,7 +3998,7 @@ identify the VMI using the <code>node</code>, <code>namespace</code>, <code>name
 <h3 id="detecting-connection-issues-for-the-rest-client">Detecting connection issues for the REST client<a class="headerlink" href="#detecting-connection-issues-for-the-rest-client" title="Permanent link">&para;</a></h3>
 <p>Use the following query to get a counter for all REST call which
 indicate connection issues:</p>
-<div class="highlight"><pre><span></span><code>rest_client_requests_total{code=&quot;&lt;error&gt;&quot;}
+<div class="highlight"><pre><span></span><code>rest_client_requests_total{code="&lt;error&gt;"}
 </code></pre></div>
 <p>If this counter is continuously increasing, it is an indicator that the
 corresponding KubeVirt component has general issues to connect to the

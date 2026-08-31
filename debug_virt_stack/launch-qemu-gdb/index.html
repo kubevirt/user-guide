@@ -3820,7 +3820,7 @@
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$LD_LIBRARY_PATH</span>:/var/run/debug/usr/lib64<span class="w"> </span>/var/run/debug/usr/bin/gdbserver<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span>localhost:1234<span class="w"> </span><span class="se">\</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span>/usr/libexec/qemu-kvm<span class="w"> </span><span class="nv">$@</span><span class="w"> </span><span class="p">&amp;</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nb">printf</span><span class="w"> </span><span class="s2">&quot;%d&quot;</span><span class="w"> </span><span class="k">$(</span>pgrep<span class="w"> </span>gdbserver<span class="k">)</span><span class="w"> </span>&gt;<span class="w"> </span>/run/libvirt/qemu/run/default_vmi-debug-tools.pid
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nb">printf</span><span class="w"> </span><span class="s2">"%d"</span><span class="w"> </span><span class="k">$(</span>pgrep<span class="w"> </span>gdbserver<span class="k">)</span><span class="w"> </span>&gt;<span class="w"> </span>/run/libvirt/qemu/run/default_vmi-debug-tools.pid
 </code></pre></div></p>
 <p>First, we need to build and push the image with the wrapping script and the gdbserver:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">quay.io/centos/centos:stream9</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="s">build</span>
@@ -3855,7 +3855,7 @@
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="no">#!/bin/sh</span>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="no">tempFile=`mktemp --dry-run`</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="no">echo $4 &gt; $tempFile</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="no">sed -i &quot;s|&lt;emulator&gt;/usr/libexec/qemu-kvm&lt;/emulator&gt;|&lt;emulator&gt;/var/run/debug/wrap_qemu_gdb.sh&lt;/emulator&gt;|&quot; $tempFile</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="no">sed -i "s|&lt;emulator&gt;/usr/libexec/qemu-kvm&lt;/emulator&gt;|&lt;emulator&gt;/var/run/debug/wrap_qemu_gdb.sh&lt;/emulator&gt;|" $tempFile</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="no">cat $tempFile</span>
 </code></pre></div></p>
 <p>As last step, we need to create the configmaps to modify the VM XML:
@@ -3874,16 +3874,16 @@
 <ol>
 <li>
 <p>Get the registry of the images of the KubeVirt installation:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">registry</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>kubevirt<span class="w"> </span>kubevirt<span class="w"> </span>-n<span class="w"> </span>kubevirt<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.observedDeploymentConfig}&#39;</span><span class="w"> </span><span class="p">|</span>jq<span class="w"> </span><span class="s1">&#39;.registry&#39;</span><span class="p">|</span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;\&quot;&quot;</span><span class="k">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">registry</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>kubevirt<span class="w"> </span>kubevirt<span class="w"> </span>-n<span class="w"> </span>kubevirt<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.observedDeploymentConfig}'</span><span class="w"> </span><span class="p">|</span>jq<span class="w"> </span><span class="s1">'.registry'</span><span class="p">|</span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s2">"\""</span><span class="k">)</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$registry</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="go">&quot;registry:5000/kubevirt&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="go">"registry:5000/kubevirt"</span>
 </code></pre></div></p>
 </li>
 <li>
 <p>Get the shasum of the virt-launcher image:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">tag</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>kubevirt<span class="w"> </span>kubevirt<span class="w"> </span>-n<span class="w"> </span>kubevirt<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.status.observedDeploymentConfig}&#39;</span><span class="w"> </span><span class="p">|</span>jq<span class="w"> </span><span class="s1">&#39;.virtLauncherSha&#39;</span><span class="p">|</span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;\&quot;&quot;</span><span class="k">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">tag</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>kubevirt<span class="w"> </span>kubevirt<span class="w"> </span>-n<span class="w"> </span>kubevirt<span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.status.observedDeploymentConfig}'</span><span class="w"> </span><span class="p">|</span>jq<span class="w"> </span><span class="s1">'.virtLauncherSha'</span><span class="p">|</span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s2">"\""</span><span class="k">)</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="gp">$ </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$tag</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="go">&quot;sha256:6c8b85eed8e83a4c70779836b246c057d3e882eb513f3ded0a02e0a4c4bda837&quot;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="go">"sha256:6c8b85eed8e83a4c70779836b246c057d3e882eb513f3ded0a02e0a4c4bda837"</span>
 </code></pre></div></p>
 </li>
 </ol>
@@ -3911,7 +3911,7 @@
 <p>For this example, we add an annotation to keep the virt-launcher pod running even if any errors occur:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nt">kubevirt.io/keep-launcher-alive-after-failure</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nt">kubevirt.io/keep-launcher-alive-after-failure</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 </code></pre></div></p>
 <p>Then, we can launch the VM:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="gp">$ </span>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>debug-vmi.yaml
@@ -3931,29 +3931,29 @@
 </code></pre></div>
 <p>Finally, we can start the gdb client in the container:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="gp">$ </span>podman<span class="w"> </span>run<span class="w"> </span>-ti<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>gdb-client:latest
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="gp">$ </span>gdb<span class="w"> </span>/usr/libexec/qemu-kvm<span class="w"> </span>-ex<span class="w"> </span><span class="s1">&#39;target remote localhost:1234&#39;</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="gp">$ </span>gdb<span class="w"> </span>/usr/libexec/qemu-kvm<span class="w"> </span>-ex<span class="w"> </span><span class="s1">'target remote localhost:1234'</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="go">GNU gdb (GDB) Red Hat Enterprise Linux 10.2-12.el9</span>
 <a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="go">Copyright (C) 2021 Free Software Foundation, Inc.</span>
 <a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="go">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span>
 <a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="go">This is free software: you are free to change and redistribute it.</span>
 <a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="go">There is NO WARRANTY, to the extent permitted by law.</span>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="go">Type &quot;show copying&quot; and &quot;show warranty&quot; for details.</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="go">This GDB was configured as &quot;x86_64-redhat-linux-gnu&quot;.</span>
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="go">Type &quot;show configuration&quot; for configuration details.</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="go">Type "show copying" and "show warranty" for details.</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="go">This GDB was configured as "x86_64-redhat-linux-gnu".</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="go">Type "show configuration" for configuration details.</span>
 <a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="go">For bug reporting instructions, please see:</span>
 <a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="go">&lt;https://www.gnu.org/software/gdb/bugs/&gt;.</span>
 <a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="go">Find the GDB manual and other documentation resources online at:</span>
 <a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="go">    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.</span>
 <a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>
-<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="go">For help, type &quot;help&quot;.</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="go">For help, type "help".</span>
 <a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="go">--Type &lt;RET&gt; for more, q to quit, c to continue without paging--</span>
-<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="go">Type &quot;apropos word&quot; to search for commands related to &quot;word&quot;...</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="go">Type "apropos word" to search for commands related to "word"...</span>
 <a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="go">Reading symbols from /usr/libexec/qemu-kvm...</span>
 <a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>
 <a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="go">Reading symbols from /root/.cache/debuginfod_client/26221a84fabd219a68445ad0cc87283e881fda15/debuginfo...</span>
 <a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="go">Remote debugging using localhost:1234</span>
 <a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="go">Reading /lib64/ld-linux-x86-64.so.2 from remote target...</span>
-<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="go">warning: File transfers from remote targets can be slow. Use &quot;set sysroot&quot; to access files locally instead.</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="go">warning: File transfers from remote targets can be slow. Use "set sysroot" to access files locally instead.</span>
 <a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="go">Reading /lib64/ld-linux-x86-64.so.2 from remote target...</span>
 <a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="go">Reading symbols from target:/lib64/ld-linux-x86-64.so.2...</span>
 <a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="go">Downloading separate debug info for /system-supplied DSO at 0x7ffc10eff000...</span>

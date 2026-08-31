@@ -3931,7 +3931,7 @@ or <code>VirtualMachinesInstance</code> s:</p>
 $ virtctl pause vmi testvm
 </code></pre></div>
 <p>Paused VMIs have a <code>Paused</code> condition in their status:</p>
-<div class="highlight"><pre><span></span><code>$ kubectl get vmi testvm -o=jsonpath=&#39;{.status.conditions[?(@.type==&quot;Paused&quot;)].message}&#39;
+<div class="highlight"><pre><span></span><code>$ kubectl get vmi testvm -o=jsonpath='{.status.conditions[?(@.type=="Paused")].message}'
 VMI was paused by user
 </code></pre></div>
 <p>Unpausing works similar to pausing:</p>

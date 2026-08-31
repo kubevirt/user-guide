@@ -3964,8 +3964,8 @@ port 1500 via cloud-init.</p>
 <a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">            </span><span class="no">user: centos</span>
 <a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">            </span><span class="no">chpasswd: { expire: False }</span>
 <a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">            </span><span class="no">bootcmd:</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">              </span><span class="no">- [&quot;sudo&quot;, &quot;dnf&quot;, &quot;install&quot;, &quot;-y&quot;, &quot;nmap-ncat&quot;]</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">              </span><span class="no">- [&quot;sudo&quot;, &quot;systemd-run&quot;, &quot;--unit=httpserver&quot;, &quot;nc&quot;, &quot;-klp&quot;, &quot;1500&quot;, &quot;-e&quot;, &#39;/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!&#39;]</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">              </span><span class="no">- ["sudo", "dnf", "install", "-y", "nmap-ncat"]</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">              </span><span class="no">- ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']</span>
 </code></pre></div>
 <h2 id="define-a-tcp-liveness-probe">Define a TCP Liveness Probe<a class="headerlink" href="#define-a-tcp-liveness-probe" title="Permanent link">&para;</a></h2>
 <p>The following VirtualMachine configures a TCP Liveness Probe via
@@ -4013,8 +4013,8 @@ port 1500 via cloud-init.</p>
 <a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">            </span><span class="no">user: centos</span>
 <a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">            </span><span class="no">chpasswd: { expire: False }</span>
 <a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="w">            </span><span class="no">bootcmd:</span>
-<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">              </span><span class="no">- [&quot;sudo&quot;, &quot;dnf&quot;, &quot;install&quot;, &quot;-y&quot;, &quot;nmap-ncat&quot;]</span>
-<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">              </span><span class="no">- [&quot;sudo&quot;, &quot;systemd-run&quot;, &quot;--unit=httpserver&quot;, &quot;nc&quot;, &quot;-klp&quot;, &quot;1500&quot;, &quot;-e&quot;, &#39;/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!&#39;]</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">              </span><span class="no">- ["sudo", "dnf", "install", "-y", "nmap-ncat"]</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">              </span><span class="no">- ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']</span>
 </code></pre></div>
 <h2 id="define-readiness-probes">Define Readiness Probes<a class="headerlink" href="#define-readiness-probes" title="Permanent link">&para;</a></h2>
 <p>Readiness Probes are configured in a similar way like liveness probes.
@@ -4062,8 +4062,8 @@ needs to be filled:</p>
 <a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">            </span><span class="no">user: centos</span>
 <a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">            </span><span class="no">chpasswd: { expire: False }</span>
 <a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">            </span><span class="no">bootcmd:</span>
-<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="w">              </span><span class="no">- [&quot;sudo&quot;, &quot;dnf&quot;, &quot;install&quot;, &quot;-y&quot;, &quot;nmap-ncat&quot;]</span>
-<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="w">              </span><span class="no">- [&quot;sudo&quot;, &quot;systemd-run&quot;, &quot;--unit=httpserver&quot;, &quot;nc&quot;, &quot;-klp&quot;, &quot;1500&quot;, &quot;-e&quot;, &#39;/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!&#39;]</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="w">              </span><span class="no">- ["sudo", "dnf", "install", "-y", "nmap-ncat"]</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="w">              </span><span class="no">- ["sudo", "systemd-run", "--unit=httpserver", "nc", "-klp", "1500", "-e", '/usr/bin/echo -e HTTP/1.1 200 OK\\nContent-Length: 12\\n\\nHello World!']</span>
 </code></pre></div>
 <p>Note that in the case of Readiness Probes, it is also possible to set a
 <code>failureThreshold</code> and a <code>successThreashold</code> to only flip between ready
@@ -4103,7 +4103,7 @@ device:</p>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">          </span><span class="nt">watchdog</span><span class="p">:</span>
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mywatchdog</span>
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">            </span><span class="nt">i6300esb</span><span class="p">:</span>
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">              </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;poweroff&quot;</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">              </span><span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="s">"poweroff"</span>
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">          </span><span class="nt">disks</span><span class="p">:</span>
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">disk</span><span class="p">:</span>
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span>
@@ -4184,7 +4184,7 @@ cloud-init assigns the proper SELinux context, i.e. virt_qemu_ga_exec_t, to the
 <a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1Gi</span>
 <a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">      </span><span class="nt">readinessProbe</span><span class="p">:</span>
 <a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">        </span><span class="nt">exec</span><span class="p">:</span>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;cat&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;/tmp/healthy.txt&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"cat"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"/tmp/healthy.txt"</span><span class="p p-Indicator">]</span>
 <a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">        </span><span class="nt">failureThreshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 <a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="w">        </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">120</span>
 <a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">        </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
@@ -4205,9 +4205,9 @@ cloud-init assigns the proper SELinux context, i.e. virt_qemu_ga_exec_t, to the
 <a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="w">              </span><span class="no">packages:</span>
 <a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a><span class="w">                </span><span class="no">qemu-guest-agent</span>
 <a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a><span class="w">              </span><span class="no">runcmd:</span>
-<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="w">                </span><span class="no">- [&quot;touch&quot;, &quot;/tmp/healthy.txt&quot;]</span>
-<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a><span class="w">                </span><span class="no">- [&quot;sudo&quot;, &quot;chcon&quot;, &quot;--type&quot;, &quot;virt_qemu_ga_exec_t&quot;, &quot;/tmp/healthy.txt&quot;]</span>
-<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a><span class="w">                </span><span class="no">- [&quot;sudo&quot;, &quot;systemctl&quot;, &quot;enable&quot;, &quot;--now&quot;, &quot;qemu-guest-agent&quot;]</span>
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="w">                </span><span class="no">- ["touch", "/tmp/healthy.txt"]</span>
+<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a><span class="w">                </span><span class="no">- ["sudo", "chcon", "--type", "virt_qemu_ga_exec_t", "/tmp/healthy.txt"]</span>
+<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a><span class="w">                </span><span class="no">- ["sudo", "systemctl", "enable", "--now", "qemu-guest-agent"]</span>
 </code></pre></div>
 <p>Note that, in the above example if SELinux is not installed in your container
 disk image, the command <code>chcon</code> should be removed from the VM manifest shown. 
@@ -4239,7 +4239,7 @@ for GuestAgentPing probes without contacting the QEMU guest agent. Removing the
 annotation (or setting it to a falsy value) resumes normal probe behavior.</p>
 <p>To verify that virt-launcher has picked up the annotation, check its logs for
 the state transition message:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>virt-launcher-my-vm-&lt;id&gt;<span class="w"> </span>-c<span class="w"> </span>compute<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;probe pause state&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>virt-launcher-my-vm-&lt;id&gt;<span class="w"> </span>-c<span class="w"> </span>compute<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"probe pause state"</span>
 </code></pre></div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>

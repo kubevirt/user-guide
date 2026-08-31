@@ -4313,7 +4313,7 @@ instead, there is also a way of doing that in combination with <code>virtctl</co
    port to your local stdout/stdin. This allows the command to be used in
    combination with the OpenSSH client's <code>ProxyCommand</code> option.</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vm/testvm/mynamespace 22&#39;</span><span class="w"> </span>fedora@vm/testvm/mynamespace
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s1">'ProxyCommand=virtctl port-forward --stdio=true vm/testvm/mynamespace 22'</span><span class="w"> </span>fedora@vm/testvm/mynamespace
 </code></pre></div>
 <p>To provide easier access to arbitrary virtual machines you can add the following
 lines to your SSH <code>config</code>:</p>
@@ -4349,7 +4349,7 @@ and traffic consider using a dedicated Kubernetes <code>Service</code> instead.<
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>virtctl<span class="w"> </span>ssh<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>fedora@vm/testvm/mynamespace
 </code></pre></div>
 <p>or</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vm/testvm/mynamespace 22&#39;</span><span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>fedora@vm/testvm/mynamespace
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s1">'ProxyCommand=virtctl port-forward --stdio=true vm/testvm/mynamespace 22'</span><span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>fedora@vm/testvm/mynamespace
 </code></pre></div>
 <ol>
 <li>SCP file to the virtual machine</li>
@@ -4357,7 +4357,7 @@ and traffic consider using a dedicated Kubernetes <code>Service</code> instead.<
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>virtctl<span class="w"> </span>scp<span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>testfile<span class="w"> </span>fedora@vm/testvm/mynamespace:/tmp
 </code></pre></div>
 <p>or</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>scp<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;ProxyCommand=virtctl port-forward --stdio=true vmi/testvm/mynamespace 22&#39;</span><span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>testfile<span class="w"> </span>fedora@vm.testvm.mynamespace:/tmp
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>scp<span class="w"> </span>-o<span class="w"> </span><span class="s1">'ProxyCommand=virtctl port-forward --stdio=true vmi/testvm/mynamespace 22'</span><span class="w"> </span>-i<span class="w"> </span>id_rsa<span class="w"> </span>testfile<span class="w"> </span>fedora@vm.testvm.mynamespace:/tmp
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

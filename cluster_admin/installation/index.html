@@ -4118,8 +4118,8 @@ error: internal error: Failed to start QEMU binary /usr/libexec/qemu-kvm for pro
 
 $ journalctl -b | grep DEN
 ...
-May 18 16:44:20 debian audit[6316]: AVC apparmor=&quot;DENIED&quot; operation=&quot;exec&quot; profile=&quot;libvirtd&quot; name=&quot;/usr/libexec/qemu-kvm&quot; pid=6316 comm=&quot;rpc-worker&quot; requested_mask=&quot;x&quot; denied_mask=&quot;x&quot; fsuid=107 ouid=0
-May 18 16:44:20 debian kernel: audit: type=1400 audit(1652888660.539:39): apparmor=&quot;DENIED&quot; operation=&quot;exec&quot; profile=&quot;libvirtd&quot; name=&quot;/usr/libexec/qemu-kvm&quot; pid=6316 comm=&quot;rpc-worker&quot; requested_mask=&quot;x&quot; denied_mask=&quot;x&quot; fsuid=107 ouid=0
+May 18 16:44:20 debian audit[6316]: AVC apparmor="DENIED" operation="exec" profile="libvirtd" name="/usr/libexec/qemu-kvm" pid=6316 comm="rpc-worker" requested_mask="x" denied_mask="x" fsuid=107 ouid=0
+May 18 16:44:20 debian kernel: audit: type=1400 audit(1652888660.539:39): apparmor="DENIED" operation="exec" profile="libvirtd" name="/usr/libexec/qemu-kvm" pid=6316 comm="rpc-worker" requested_mask="x" denied_mask="x" fsuid=107 ouid=0
 ...
 </code></pre></div>
 <p>Here, the host AppArmor profile for <code>libvirtd</code> does not allow the
@@ -4282,10 +4282,10 @@ cluster nodes by editing the KubeVirt CR:</p>
 See the description in the <a href="http://kubevirt.io/api-reference/master/definitions.html#_v1_componentconfig">API reference</a>
 for further information about using these fields.</p>
 <p>For example, to restrict the virt-controller and virt-api pods to only run on the control-plane nodes:</p>
-<div class="highlight"><pre><span></span><code>kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch &#39;{&quot;spec&quot;: {&quot;infra&quot;: {&quot;nodePlacement&quot;: {&quot;nodeSelector&quot;: {&quot;node-role.kubernetes.io/control-plane&quot;: &quot;&quot;}}}}}&#39;
+<div class="highlight"><pre><span></span><code>kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"infra": {"nodePlacement": {"nodeSelector": {"node-role.kubernetes.io/control-plane": ""}}}}}'
 </code></pre></div>
 <p>To restrict the virt-handler pods to only run on nodes with the "region=primary" label:</p>
-<div class="highlight"><pre><span></span><code>kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch &#39;{&quot;spec&quot;: {&quot;workloads&quot;: {&quot;nodePlacement&quot;: {&quot;nodeSelector&quot;: {&quot;region&quot;: &quot;primary&quot;}}}}}&#39;
+<div class="highlight"><pre><span></span><code>kubectl patch -n kubevirt kubevirt kubevirt --type merge --patch '{"spec": {"workloads": {"nodePlacement": {"nodeSelector": {"region": "primary"}}}}}'
 </code></pre></div>
 
 

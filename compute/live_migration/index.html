@@ -2732,6 +2732,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#live-migration-with-nvidia-vgpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Live migration with (NVIDIA) vGPUs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Live migration with (NVIDIA) vGPUs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enabling-vgpu-live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enabling vGPU live migration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-and-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations and requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4502,6 +4552,56 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#live-migration-with-nvidia-vgpus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Live migration with (NVIDIA) vGPUs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Live migration with (NVIDIA) vGPUs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enabling-vgpu-live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enabling vGPU live migration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations-and-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limitations and requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -4566,6 +4666,9 @@ field in the KubeVirt CR must be expanded by adding the <code>LiveMigration</cod
 <p>Post-copy live migration requires additional node-level permissions on
   most environments. See <a href="#node-configuration-for-post-copy">Node configuration for post-copy</a>
   for details.</p>
+</li>
+<li>
+<p>Live migration of VMs with GPUs has limitations. See <a href="#live-migration-with-nvidia-vgpus">Live migration with vGPUs</a>.</p>
 </li>
 </ul>
 <h2 id="initiate-live-migration">Initiate live migration<a class="headerlink" href="#initiate-live-migration" title="Permanent link">&para;</a></h2>
@@ -4678,7 +4781,7 @@ of <code>64MiB/s</code>.</p>
 <a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">completionTimeoutPerGiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">800</span>
 <a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">      </span><span class="nt">progressTimeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150</span>
 <a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="nt">nodeDrainTaintKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;kubevirt.io/drain&quot;</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="nt">nodeDrainTaintKey</span><span class="p">:</span><span class="w"> </span><span class="s">"kubevirt.io/drain"</span>
 <a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">      </span><span class="nt">allowAutoConverge</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">      </span><span class="nt">allowPostCopy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">      </span><span class="nt">unsafeMigrationOverride</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
@@ -4880,23 +4983,23 @@ The examples below assume that <code>eth1</code> will be used for migrations.</p
 be needed as well.</p>
 <p>Finally, a NetworkAttachmentDefinition needs to be created in the
 namespace where KubeVirt is installed. Here is an example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;k8s.cni.cncf.io/v1&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="s">"k8s.cni.cncf.io/v1"</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NetworkAttachmentDefinition</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migration-network</span>
 <a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
 <a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">      </span><span class="s">&quot;cniVersion&quot;:</span><span class="nv"> </span><span class="s">&quot;0.3.1&quot;,</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">      </span><span class="s">&quot;name&quot;:</span><span class="nv"> </span><span class="s">&quot;migration-bridge&quot;,</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">      </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;macvlan&quot;,</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">      </span><span class="s">&quot;master&quot;:</span><span class="nv"> </span><span class="s">&quot;eth1&quot;,</span>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">      </span><span class="s">&quot;mode&quot;:</span><span class="nv"> </span><span class="s">&quot;bridge&quot;,</span>
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">      </span><span class="s">&quot;ipam&quot;:</span><span class="nv"> </span><span class="s">{</span>
-<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">        </span><span class="s">&quot;type&quot;:</span><span class="nv"> </span><span class="s">&quot;whereabouts&quot;,</span>
-<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">        </span><span class="s">&quot;range&quot;:</span><span class="nv"> </span><span class="s">&quot;10.1.1.0/24&quot;</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span><span class="w"> </span><span class="s">'{</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">      </span><span class="s">"cniVersion":</span><span class="nv"> </span><span class="s">"0.3.1",</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">      </span><span class="s">"name":</span><span class="nv"> </span><span class="s">"migration-bridge",</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">      </span><span class="s">"type":</span><span class="nv"> </span><span class="s">"macvlan",</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">      </span><span class="s">"master":</span><span class="nv"> </span><span class="s">"eth1",</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">      </span><span class="s">"mode":</span><span class="nv"> </span><span class="s">"bridge",</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">      </span><span class="s">"ipam":</span><span class="nv"> </span><span class="s">{</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">        </span><span class="s">"type":</span><span class="nv"> </span><span class="s">"whereabouts",</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">        </span><span class="s">"range":</span><span class="nv"> </span><span class="s">"10.1.1.0/24"</span>
 <a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">      </span><span class="s">}</span>
-<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">    </span><span class="s">}&#39;</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">    </span><span class="s">}'</span>
 </code></pre></div></p>
 <h3 id="configuring-kubevirt-to-migrate-vmis-over-that-network">Configuring KubeVirt to migrate VMIs over that network<a class="headerlink" href="#configuring-kubevirt-to-migrate-vmis-over-that-network" title="Permanent link">&para;</a></h3>
 <p>This is just a matter of adding the name of the
@@ -5017,11 +5120,79 @@ improve performance. Use <code>disableTLS</code> to do that:</p>
 <a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
 <a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
 <a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;LiveMigration&quot;</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"LiveMigration"</span>
 <a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
 <a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><strong>Note:</strong> While this increases performance it may allow MITM attacks. Be careful.</p>
+<h2 id="live-migration-with-nvidia-vgpus">Live migration with (NVIDIA) vGPUs<a class="headerlink" href="#live-migration-with-nvidia-vgpus" title="Permanent link">&para;</a></h2>
+<p><strong>FEATURE STATE:</strong> KubeVirt v1.9 (Alpha)</p>
+<p>KubeVirt can live migrate a VirtualMachineInstance that has a single NVIDIA vGPU exposed as a
+mediated device (mdev).</p>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<p>Before a vGPU-backed VMI can live migrate, complete all of the following:</p>
+<ol>
+<li>Install the NVIDIA Virtual GPU Manager (host driver) on every node that may run or receive
+   the VM. NVIDIA requires this driver before any mediated devices exist on the node. Install
+   it yourself or with the NVIDIA GPU Operator.</li>
+<li>Create the mediated device instances on those nodes. With the vendor driver already installed,
+   pick <strong>one</strong> creator so they do not conflict:</li>
+<li>KubeVirt's <a href="../mediated_devices_configuration/">mediated devices configuration</a>, which creates mdevs from the types the driver
+     exposes.</li>
+<li>The NVIDIA GPU Operator <a href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt.html">vGPU Device Manager</a>, or another vendor tool that creates mdevs. If an
+     external plugin owns creation, disable KubeVirt mdev management on those nodes
+     (<code>spec.configuration.mediatedDevicesConfiguration.enabled: false</code>).</li>
+<li>Allowlist the mdev type under <code>permittedHostDevices.mediatedDevices</code> and assign it to the VM as
+   described in <a href="../host-devices/#listing-permitted-devices">Host Devices Assignment</a>. If the NVIDIA GPU Operator (or another plugin) advertises
+   the resource, set <code>externalResourceProvider: true</code>. PCI GPU passthrough is not migratable; the
+   device must appear as a mediated device.</li>
+<li>Enable the <code>VGPULiveMigration</code> feature gate (see below).</li>
+</ol>
+<p>Source and destination hosts must also satisfy <a href="https://docs.nvidia.com/vgpu/latest/grid-vgpu-release-notes-red-hat-el-kvm/validated-platforms.html#red-hat-el-vgpu-migration-support">NVIDIA's vGPU migration requirements</a>. In alpha,
+KubeVirt does not enforce those constraints when choosing a target.</p>
+<h3 id="enabling-vgpu-live-migration">Enabling vGPU live migration<a class="headerlink" href="#enabling-vgpu-live-migration" title="Permanent link">&para;</a></h3>
+<p>Enable the <code>VGPULiveMigration</code> feature gate in the KubeVirt CR:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VGPULiveMigration</span>
+</code></pre></div>
+<p>Once enabled, migrate the VMI the same way as any other live-migratable VM (for example with a
+<code>VirtualMachineInstanceMigration</code> object or <code>virtctl migrate</code>).</p>
+<h3 id="limitations-and-requirements">Limitations and requirements<a class="headerlink" href="#limitations-and-requirements" title="Permanent link">&para;</a></h3>
+<p>Alpha support is intentionally narrow. The following restrictions apply:</p>
+<ul>
+<li><strong>Single NVIDIA mdev vGPU only.</strong> The VMI must request exactly one GPU that is a mediated device.
+  Live migration is not supported for:</li>
+<li>PCI GPU passthrough</li>
+<li>SR-IOV vGPUs</li>
+<li>VMs with multiple vGPUs (planned for Beta)</li>
+<li><strong>Compatible guest OS.</strong> The operating system running on the guest VM must be running either
+  a <a href="https://docs.nvidia.com/vgpu/latest/grid-vgpu-release-notes-red-hat-el-kvm/validated-platforms.html#red-hat-el-windows-support">supported version of Windows</a> or a <a href="https://docs.nvidia.com/vgpu/latest/grid-vgpu-release-notes-red-hat-el-kvm/validated-platforms.html#red-hat-el-linux-support">supported version of Linux</a>.</li>
+<li><strong>Compatible guest drivers.</strong> The NVIDIA drivers running on the guest <a href="https://docs.nvidia.com/vgpu/latest/grid-vgpu-release-notes-red-hat-el-kvm/release-notes.html">must be compatible</a> with the host Virtual GPU Manager.</li>
+<li><strong>NVIDIA guest feature limits.</strong> Migration fails if the guest has CUDA unified memory, debuggers,
+  or profilers enabled. See the NVIDIA link in <a href="#prerequisites">Prerequisites</a> for the full vendor requirements.</li>
+<li><strong>No post-copy.</strong> Post-copy live migration is not available for VMs with a vGPU.</li>
+<li><strong>Convergence and downtime.</strong> Even an idle guest with a vGPU has a baseline memory dirty rate,
+  so pre-copy usually cannot meet QEMU's default ~300 ms downtime target. In practice most vGPU
+  migrations therefore need <a href="#configuring-acceptable-levels-of-workload-disruption"><code>allowWorkloadDisruption</code></a> (for example via a <a href="../../cluster_admin/migration_policies/">MigrationPolicy</a>). Because
+  post-copy is unavailable for vGPUs, disruption means pausing the guest until the migration
+  finishes.</li>
+</ul>
+<p>With that default path, switchover still waits for the migration completion timeout
+  (<code>completionTimeoutPerGiB</code> and VM size), which can leave the migration running for a long time
+  before the pause.</p>
+<p>Enabling <a href="#stall-detection">stall detection</a> (also alpha) changes that behavior: once remaining bytes plateau,
+  KubeVirt can switch over earlier instead of waiting out the completion timeout. Stall detection
+  also exposes <code>maxDowntimeMs</code>, which lets you keep <code>allowWorkloadDisruption</code> false and still converge
+  by raising the downtime budget up to a maximum acceptable downtime you choose; if even that limit
+  cannot be met, the migration aborts.</p>
 
 
 

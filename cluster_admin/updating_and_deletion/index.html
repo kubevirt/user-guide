@@ -3838,7 +3838,7 @@ as patching the KubeVirt CR with the <code>imageTag: v0.17.0</code> value. From
 there the KubeVirt operator will begin the process of rolling out the
 new version of KubeVirt. Existing VM/VMIs will remain uninterrupted both
 during and after the update succeeds.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ kubectl patch kv kubevirt -n kubevirt --type=json -p &#39;[{ &quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/imageTag&quot;, &quot;value&quot;: &quot;v0.17.0&quot; }]&#39;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$ kubectl patch kv kubevirt -n kubevirt --type=json -p '[{ "op": "add", "path": "/spec/imageTag", "value": "v0.17.0" }]'
 </code></pre></div>
 </li>
 <li>
@@ -3913,7 +3913,7 @@ to distribute load.</p>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">workloadUpdateMethods</span><span class="p">:</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Evict</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">batchEvictionSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="nt">batchEvictionInterval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1m&quot;</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="nt">batchEvictionInterval</span><span class="p">:</span><span class="w"> </span><span class="s">"1m"</span>
 </code></pre></div>
 <p><strong>Example: Enabling VMI workload updates with both LiveMigrate and Evict</strong></p>
 <p>When both LiveMigrate and Evict are specified, then any workloads which are
@@ -3931,7 +3931,7 @@ are not live migratable will be evicted.</p>
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigrate</span>
 <a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Evict</span>
 <a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="nt">batchEvictionSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="nt">batchEvictionInterval</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1m&quot;</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="nt">batchEvictionInterval</span><span class="p">:</span><span class="w"> </span><span class="s">"1m"</span>
 </code></pre></div>
 <h2 id="deleting-kubevirt">Deleting KubeVirt<a class="headerlink" href="#deleting-kubevirt" title="Permanent link">&para;</a></h2>
 <p>To delete the KubeVirt you should first delete <code>KubeVirt</code> custom
@@ -3950,7 +3950,7 @@ resource will get stuck in the <code>Terminating</code> state, to fix it, delete
 manually finalizer from the resource.</p>
 <p>Note: The <code>apiservice</code> and the <code>webhookconfigurations</code> need to be
 deleted manually due to a bug.</p>
-<div class="highlight"><pre><span></span><code>$ kubectl -n kubevirt patch kv kubevirt --type=json -p &#39;[{ &quot;op&quot;: &quot;remove&quot;, &quot;path&quot;: &quot;/metadata/finalizers&quot; }]&#39;
+<div class="highlight"><pre><span></span><code>$ kubectl -n kubevirt patch kv kubevirt --type=json -p '[{ "op": "remove", "path": "/metadata/finalizers" }]'
 </code></pre></div>
 </blockquote>
 
