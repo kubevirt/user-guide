@@ -121,7 +121,10 @@ spec:
 ```
 
 #### Network Resource Injection
-[v1.8]
+Releases:
+- v1.8: Beta
+- v1.9: Beta (enabled by default)
+- v1.10: GA
 
 Some secondary network configurations use the `k8s.v1.cni.cncf.io/resourceName`
 `NetworkAttachmentDefinition` (NAD) annotation to indicate that a network device resource
@@ -141,18 +144,20 @@ For installation instructions, refer to the
 
 !!! warning "Deprecation Notice"
     Prior to v1.8, KubeVirt's virt-controller queried NAD objects directly to inject network resource
-    requirements into virt-launcher pods. This behavior is deprecated and controlled by the
-    `ExternalNetResourceInjection` feature gate.
+    requirements into virt-launcher pods. This legacy behavior is deprecated and is now controlled by
+    the `ExternalNetResourceInjection` feature gate.
 
-    - **v1.8**: The `ExternalNetResourceInjection` feature gate is introduced, disabled by default.
+    - **v1.8**: The `ExternalNetResourceInjection` feature gate was introduced, disabled by default.
       When enabled, KubeVirt no longer queries NADs or deploys associated RBAC rules — the
       `network-resources-injector` is expected to handle resource injection instead.
-    - In a future release, the feature gate will be enabled by default. Users will still be able to
-      disable it to fall back to the legacy behavior.
-    - In a subsequent release, the legacy NAD query code will be removed entirely.
+    - **v1.9**: The feature gate was enabled by default. Users can still disable it to
+      fall back to the legacy behavior.
+    - **v1.10**: The `ExternalNetResourceInjection` feature gate graduated to general availability (GA),
+      and the legacy NAD query code is removed entirely.
 
-    Cluster administrators using the affected use cases should deploy `network-resources-injector`
-    before enabling the feature gate or upgrading to a release where it is enabled by default.
+    Cluster administrators using the affected use cases must deploy `network-resources-injector`
+    before enabling the `ExternalNetResourceInjection` feature gate or upgrading to v1.9 or v1.10,
+    where it is enabled by default - on v1.10 there is no legacy fallback.
 
 #### Multus as primary network provider
 It is also possible to define a multus network as the default pod
