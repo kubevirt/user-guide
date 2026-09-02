@@ -4687,7 +4687,10 @@ shown above(in the same namespace)</p>
 <a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">           </span><span class="nt">networkName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">linux-bridge-net-ipam</span><span class="w"> </span><span class="c1">#ref to NAD name</span>
 </code></pre></div>
 <h4 id="network-resource-injection">Network Resource Injection<a class="headerlink" href="#network-resource-injection" title="Permanent link">&para;</a></h4>
-<p>[v1.8]</p>
+<p>Releases:
+- v1.8: Beta
+- v1.9: Beta (enabled by default)
+- v1.10: GA</p>
 <p>Some secondary network configurations use the <code>k8s.v1.cni.cncf.io/resourceName</code>
 <code>NetworkAttachmentDefinition</code> (NAD) annotation to indicate that a network device resource
 is required on the node. Common use cases include:</p>
@@ -4705,18 +4708,20 @@ ensuring the Kubernetes scheduler places VMs on nodes with the required network 
 <div class="admonition warning">
 <p class="admonition-title">Deprecation Notice</p>
 <p>Prior to v1.8, KubeVirt's virt-controller queried NAD objects directly to inject network resource
-requirements into virt-launcher pods. This behavior is deprecated and controlled by the
-<code>ExternalNetResourceInjection</code> feature gate.</p>
+requirements into virt-launcher pods. This legacy behavior is deprecated and is now controlled by
+the <code>ExternalNetResourceInjection</code> feature gate.</p>
 <ul>
-<li><strong>v1.8</strong>: The <code>ExternalNetResourceInjection</code> feature gate is introduced, disabled by default.
+<li><strong>v1.8</strong>: The <code>ExternalNetResourceInjection</code> feature gate was introduced, disabled by default.
   When enabled, KubeVirt no longer queries NADs or deploys associated RBAC rules — the
   <code>network-resources-injector</code> is expected to handle resource injection instead.</li>
-<li>In a future release, the feature gate will be enabled by default. Users will still be able to
-  disable it to fall back to the legacy behavior.</li>
-<li>In a subsequent release, the legacy NAD query code will be removed entirely.</li>
+<li><strong>v1.9</strong>: The feature gate was enabled by default. Users can still disable it to
+  fall back to the legacy behavior.</li>
+<li><strong>v1.10</strong>: The <code>ExternalNetResourceInjection</code> feature gate graduated to general availability (GA),
+  and the legacy NAD query code is removed entirely.</li>
 </ul>
-<p>Cluster administrators using the affected use cases should deploy <code>network-resources-injector</code>
-before enabling the feature gate or upgrading to a release where it is enabled by default.</p>
+<p>Cluster administrators using the affected use cases must deploy <code>network-resources-injector</code>
+before enabling the <code>ExternalNetResourceInjection</code> feature gate or upgrading to v1.9 or v1.10,
+where it is enabled by default - on v1.10 there is no legacy fallback.</p>
 </div>
 <h4 id="multus-as-primary-network-provider">Multus as primary network provider<a class="headerlink" href="#multus-as-primary-network-provider" title="Permanent link">&para;</a></h4>
 <p>It is also possible to define a multus network as the default pod
