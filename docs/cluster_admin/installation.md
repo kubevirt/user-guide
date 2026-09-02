@@ -103,6 +103,25 @@ virtualization workloads:
       QEMU: Checking if device /dev/net/tun exists                               : PASS
     ...
 
+### Host Kernel and Userland Compatibility
+
+The `virt-launcher` container ships an Enterprise Linux (CentOS Stream / RHEL)
+based libvirt and QEMU userland. Running this userland on a host kernel that
+diverges significantly from the one it was built against — in particular a
+newer, non-Enterprise-Linux kernel — is not recommended.
+
+The KVM and vhost interfaces exposed by the host kernel are used to negotiate
+virtual device features (for example virtio-net offloads). A host kernel that
+offers a different set of features than the bundled userland expects can lead to
+device feature-negotiation mismatches. These may only surface later, for example
+as live migration failures where the destination QEMU rejects device state that
+was negotiated on the source
+(see [kubevirt/kubevirt#16386](https://github.com/kubevirt/kubevirt/issues/16386)).
+
+For the most predictable behaviour, run your nodes on a host kernel aligned with
+the Enterprise Linux userland bundled in `virt-launcher` (for example a current
+CentOS Stream or RHEL release).
+
 ### SELinux support
 
 SELinux-enabled nodes need [Container-selinux](https://github.com/containers/container-selinux) installed. The minimum version is documented inside the kubevirt/kubevirt repository, in docs/getting-started.md, under "SELinux support".
