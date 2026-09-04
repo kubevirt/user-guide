@@ -707,6 +707,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#host-kernel-and-userland-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Kernel and Userland Compatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#selinux-support" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3915,6 +3926,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#host-kernel-and-userland-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host Kernel and Userland Compatibility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#selinux-support" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4164,6 +4186,21 @@ virtualization workloads:</p>
   QEMU: Checking if device /dev/net/tun exists                               : PASS
 ...
 </code></pre></div>
+<h3 id="host-kernel-and-userland-compatibility">Host Kernel and Userland Compatibility<a class="headerlink" href="#host-kernel-and-userland-compatibility" title="Permanent link">&para;</a></h3>
+<p>The <code>virt-launcher</code> container ships an Enterprise Linux (CentOS Stream / RHEL)
+based libvirt and QEMU userland. Running this userland on a host kernel that
+diverges significantly from the one it was built against — in particular a
+newer, non-Enterprise-Linux kernel — is not recommended.</p>
+<p>The KVM and vhost interfaces exposed by the host kernel are used to negotiate
+virtual device features (for example virtio-net offloads). A host kernel that
+offers a different set of features than the bundled userland expects can lead to
+device feature-negotiation mismatches. These may only surface later, for example
+as live migration failures where the destination QEMU rejects device state that
+was negotiated on the source
+(see <a href="https://github.com/kubevirt/kubevirt/issues/16386">kubevirt/kubevirt#16386</a>).</p>
+<p>For the most predictable behaviour, run your nodes on a host kernel aligned with
+the Enterprise Linux userland bundled in <code>virt-launcher</code> (for example a current
+CentOS Stream or RHEL release).</p>
 <h3 id="selinux-support">SELinux support<a class="headerlink" href="#selinux-support" title="Permanent link">&para;</a></h3>
 <p>SELinux-enabled nodes need <a href="https://github.com/containers/container-selinux">Container-selinux</a> installed. The minimum version is documented inside the kubevirt/kubevirt repository, in docs/getting-started.md, under "SELinux support".</p>
 <p>For (older) release branches that don't specify a container-selinux version, version 2.170.0 or newer is recommended.</p>
