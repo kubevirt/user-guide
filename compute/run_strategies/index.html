@@ -3926,15 +3926,9 @@ resources that define both.</p>
 <p>The <code>start</code>, <code>stop</code> and <code>restart</code> methods of virtctl will invoke their
 respective subresources of VirtualMachines. This can have an effect on
 the runStrategy of the VirtualMachine as below:</p>
-<table style="width: 100% ; display: inline-table">
-<colgroup>
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-</colgroup>
+<table>
 <thead>
-<tr class="header">
+<tr>
 <th>RunStrategy</th>
 <th>start</th>
 <th>stop</th>
@@ -3942,33 +3936,32 @@ the runStrategy of the VirtualMachine as below:</p>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td><p><strong>Always</strong></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>Halted</code></p></td>
-<td><p><code>Always</code></p></td>
+<tr>
+<td><strong>Always</strong></td>
+<td><code>-</code></td>
+<td><code>Halted</code></td>
+<td><code>Always</code></td>
 </tr>
-<tr class="even">
-<td><p><strong>RerunOnFailure</strong></p></td>
-<td><p><code>RerunOnFailure</code></p></td>
-<td><p><code>RerunOnFailure</code></p></td>
-<td><p><code>RerunOnFailure</code></p></td>
+<tr>
+<td><strong>RerunOnFailure</strong></td>
+<td><code>RerunOnFailure</code></td>
+<td><code>RerunOnFailure</code></td>
+<td><code>RerunOnFailure</code></td>
 </tr>
-<tr class="odd">
-<td><p><strong>Manual</strong></p></td>
-<td><p><code>Manual</code></p></td>
-<td><p><code>Manual</code></p></td>
-<td><p><code>Manual</code></p></td>
+<tr>
+<td><strong>Manual</strong></td>
+<td><code>Manual</code></td>
+<td><code>Manual</code></td>
+<td><code>Manual</code></td>
 </tr>
-<tr class="even">
-<td><p><strong>Halted</strong></p></td>
-<td><p><code>Always</code></p></td>
-<td><p><code>-</code></p></td>
-<td><p><code>-</code></p></td>
+<tr>
+<td><strong>Halted</strong></td>
+<td><code>Always</code></td>
+<td><code>-</code></td>
+<td><code>-</code></td>
 </tr>
 </tbody>
 </table>
-
 <p>Table entries marked with <code>-</code> don't make sense, so won't have an effect
 on RunStrategy.</p>
 <h2 id="runstrategy-examples">RunStrategy Examples<a class="headerlink" href="#runstrategy-examples" title="Permanent link">&para;</a></h2>
