@@ -125,6 +125,12 @@ Targets:
 
 * stop_yaspeller: Sometimes yaspeller goes bonkers.  Stop it here.
 
+## Internationalization (i18n)
+
+The user guide supports multiple languages via the [mkdocs-static-i18n](https://github.com/ultrabug/mkdocs-static-i18n) plugin. Translations live in `i18n/<locale>/` and are built on versioned branches. Use `make run_i18n` to preview the site with translation support locally.
+
+See [I18N.md](I18N.md) for full details on the translation workflow and how to add new languages.
+
 ## Getting help
 
 - File a bug: <https://github.com/kubevirt/user-guide/issues>
