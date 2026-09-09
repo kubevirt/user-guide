@@ -2,7 +2,7 @@
 
 KubeVirt provides a mechanism for assigning host devices to a virtual machine.
 This mechanism is generic and allows various types of PCI devices,
-such as accelerators (including GPUs) or any other devices attached to
+such as accelerators (including GPUs and vGPUs) or any other devices attached to
 a PCI bus, to be assigned. It also allows [Linux Mediated
 devices](https://www.kernel.org/doc/html/latest/driver-api/vfio-mediated-device.html),
 such as pre-configured virtual GPUs to be assigned using the same
@@ -38,7 +38,7 @@ GRUB_CMDLINE_LINUX="nofb splash=quiet console=tty0 ... intel_iommu=on
 
 ## Preparation of PCI devices for passthrough
 
-At this time, KubeVirt is only able to assign PCI devices that are using the `vfio-pci` driver. To prepare a specific device for device assignment, it should first be unbound from its original driver and bound to the `vfio-pci` driver.
+At this time, KubeVirt is only able to assign PCI devices that are using the `vfio-pci` driver (except for [SR-IOV vGPU](#preparation-of-vgpu-devices-with-sr-iov)). To prepare a specific device for device assignment, it should first be unbound from its original driver and bound to the `vfio-pci` driver.
 
  * Find the PCI address of the desired device:
 
@@ -61,6 +61,14 @@ KubeVirt can now facilitate the creation of the mediated devices / vGPUs on the 
 See the [Mediated devices and virtual GPUs](../compute/mediated_devices_configuration.md) to learn more about this functionality.
 
 Once the mdev is configured, KubeVirt will be able to discover and use it for device assignment.
+
+## Preparation of vGPU devices with SR-IOV
+
+In general, configuration of vGPUs with SR-IOV should be done according to the vendor directions.
+KubeVirt doesn't support creation of virtual function (VF) nor the assignment of vGPU profile to the function.
+KubeVirt only facilitates exposure of these virtual functions for the VM to consume them (through generic PCI device plugin) but doesn't have fine-grained distinctions of the profiles such as for the mdevs. Therefore it is recommended to use vendor's device plugin to expose the functions in case of heterogeneous profiles.
+
+To use a vGPU device that supports SR-IOV, follow the PCI-related notes in [Listing permitted devices](#listing-permitted-devices).
 
 ## Listing permitted devices
 
