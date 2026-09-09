@@ -550,6 +550,59 @@ are technically dense and algorithm-specific; for details on what they do, see t
 API Reference or
 [VEP 248](https://github.com/kubevirt/enhancements/tree/main/veps/sig-compute/248-migration-convergence).
 
+`experimental.stallDetector` and `experimental.downtimeTuning` cannot be used on the same policy.
+
+### Downtime tuning
+
+**FEATURE STATE:** KubeVirt v1.10 (Alpha)
+
+Busy guests with moderate dirty rates often make migration progress but never converge: QEMU's estimated switchover time hovers just above the current `max_downtime`, so the migration keeps iterating until `completionTimeoutPerGiB` fires. Downtime tuning gradually raises `max_downtime` as memory-copy iterations progress, giving QEMU more room to switch over before existing timeout logic triggers post-copy, pause, or abort.
+
+The feature is alpha, opt-in per workload via [MigrationPolicy](../cluster_admin/migration_policies.md), and must be enabled via the `MigrationDowntimeTuning` feature gate.
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - MigrationDowntimeTuning
+```
+
+Activate tuning by setting `spec.experimental.downtimeTuning` on a matching `MigrationPolicy`. An empty object enables the algorithm with built-in defaults. You must also set `maxDowntimeMs` on the same policy — it is the ceiling the ramp will not exceed. `experimental.stallDetector` and `experimental.downtimeTuning` cannot be used on the same policy.
+
+```yaml
+apiVersion: migrations.kubevirt.io/v1alpha1
+kind: MigrationPolicy
+metadata:
+  name: tune-downtime
+spec:
+  selectors:
+    namespaceSelector:
+      workload-type: memory-intensive
+  maxDowntimeMs: 1050
+  experimental:
+    downtimeTuning: {}
+```
+
+There are two important configuration options:
+
+- `maxDowntimeMs` (required when tuning is enabled): the maximum acceptable guest switchover pause in milliseconds. The algorithm ramps `max_downtime` up to this ceiling in equal steps. Configurable on the KubeVirt CR
+  ([MigrationConfiguration](https://kubevirt.io/api-reference/main/definitions.html#_v1_migrationconfiguration))
+  and on [MigrationPolicy](../cluster_admin/migration_policies.md)
+  ([MigrationPolicySpec](https://kubevirt.io/api-reference/main/definitions.html#_v1alpha1_migrationpolicyspec)).
+- `downtimeTuning` (activated by presence; defaults below): controls how aggressively `max_downtime` is raised during the migration. In alpha this lives under `MigrationPolicy.spec.experimental`
+  ([DowntimeTuningOptions](https://kubevirt.io/api-reference/main/definitions.html#_v1_downtimetuningoptions)).
+
+With `downtimeTuning: {}`, the defaults are `initialMs: 150`, `steps: 7`, `startAfterIteration: 3`, `cooldownSeconds: 10`; see [DowntimeTuningOptions](https://kubevirt.io/api-reference/main/definitions.html#_v1_downtimetuningoptions) for what each option does.
+
+For further details refer to
+[VEP 291](https://github.com/kubevirt/enhancements/tree/main/veps/sig-compute/291-dynamic-downtime-tuning).
+
 ## Disabling secure migrations
 
 **FEATURE STATE:** KubeVirt v0.43
