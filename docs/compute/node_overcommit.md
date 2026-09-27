@@ -111,6 +111,10 @@ request is set to 2048M, if omitted. Note that the actual memory request
 depends on additional configuration options like
 OvercommitGuestOverhead.
 
+The cluster-wide `memoryOvercommit` setting is not applied to VMIs with
+dedicated CPU placement (`spec.domain.cpu.dedicatedCpuPlacement: true`).
+KubeVirt skips the implicit memory-overcommit calculation for these VMIs.
+
 ## Configuring the memory pressure behavior of nodes
 
 If the node gets under memory pressure, depending on the `kubelet`
