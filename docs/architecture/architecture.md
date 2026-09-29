@@ -1,8 +1,3 @@
----
-hide:
-  - navigation
----
-
 # Architecture
 
 KubeVirt is built using a service oriented architecture and a choreography
@@ -72,11 +67,11 @@ users to speak to Kubernetes, but modify VMIs.
 The following diagram illustrates how the additional controllers and daemons
 communicate with Kubernetes and where the additional types are stored:
 
-![Architecture diagram](./assets/architecture.png "Architecture")
+![Architecture diagram](../assets/architecture.png "Architecture")
 
 And a simplified version:
 
-![Simplified architecture diagram](./assets/architecture-simple.png "Simplified architecture")
+![Simplified architecture diagram](../assets/architecture-simple.png "Simplified architecture")
 
 ## Application Layout
 
@@ -162,7 +157,7 @@ with `spec.replica` set to `1`.
 A VirtualMachine will make sure that a VirtualMachineInstance object
 with an identical name will be present in the cluster when the VirtualMachine
 is in a Running state, which is controlled via the `spec.runStrategy` field.
-For more information regarding Run Strategies, please refer to [Run Strategies](./compute/run_strategies.md)
+For more information regarding Run Strategies, please refer to [Run Strategies](../compute/run_strategies.md)
 
 ### Starting and stopping
 
@@ -187,7 +182,7 @@ the VM on or off, without the system performing any automatic actions:
     # Stop the virtual machine:
     virtctl stop vm
 
-Find more details about [a VM's life-cycle in the relevant section](./user_workloads/lifecycle.md)
+Find more details about [a VM's life-cycle in the relevant section](../user_workloads/lifecycle.md)
 
 ### Controller status
 
@@ -276,7 +271,7 @@ after the VirtualMachine was created, but before it started:
 
 All service exposure options that apply to a VirtualMachineInstance apply to a VirtualMachine.
 
-See [Service Objects](./network/service_objects.md) for more details.
+See [Service Objects](../network/service_objects.md) for more details.
 
 ## When to use a VirtualMachine
 
