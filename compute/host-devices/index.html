@@ -2281,6 +2281,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#preparation-of-vgpu-devices-with-sr-iov" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparation of vGPU devices with SR-IOV
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#listing-permitted-devices" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3861,6 +3872,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#preparation-of-vgpu-devices-with-sr-iov" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preparation of vGPU devices with SR-IOV
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#listing-permitted-devices" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3990,7 +4012,7 @@
 <h1 id="host-devices-assignment">Host Devices Assignment<a class="headerlink" href="#host-devices-assignment" title="Permanent link">&para;</a></h1>
 <p>KubeVirt provides a mechanism for assigning host devices to a virtual machine.
 This mechanism is generic and allows various types of PCI devices,
-such as accelerators (including GPUs) or any other devices attached to
+such as accelerators (including GPUs and vGPUs) or any other devices attached to
 a PCI bus, to be assigned. It also allows <a href="https://www.kernel.org/doc/html/latest/driver-api/vfio-mediated-device.html">Linux Mediated
 devices</a>,
 such as pre-configured virtual GPUs to be assigned using the same
@@ -4023,7 +4045,7 @@ configuration file.</p>
 </code></pre></div></li>
 </ul>
 <h2 id="preparation-of-pci-devices-for-passthrough">Preparation of PCI devices for passthrough<a class="headerlink" href="#preparation-of-pci-devices-for-passthrough" title="Permanent link">&para;</a></h2>
-<p>At this time, KubeVirt is only able to assign PCI devices that are using the <code>vfio-pci</code> driver. To prepare a specific device for device assignment, it should first be unbound from its original driver and bound to the <code>vfio-pci</code> driver.</p>
+<p>At this time, KubeVirt is only able to assign PCI devices that are using the <code>vfio-pci</code> driver with the exception of <a href="#preparation-of-vgpu-devices-with-sr-iov">SR-IOV vGPU</a>. To prepare a specific device for device assignment, it should first be unbound from its original driver and bound to the <code>vfio-pci</code> driver.</p>
 <ul>
 <li>Find the PCI address of the desired device:</li>
 </ul>
@@ -4042,6 +4064,11 @@ configuration file.</p>
 KubeVirt can now facilitate the creation of the mediated devices / vGPUs on the cluster nodes. This assumes that the required vendor driver is already installed on the nodes.
 See the <a href="../mediated_devices_configuration/">Mediated devices and virtual GPUs</a> to learn more about this functionality.</p>
 <p>Once the mdev is configured, KubeVirt will be able to discover and use it for device assignment.</p>
+<h2 id="preparation-of-vgpu-devices-with-sr-iov">Preparation of vGPU devices with SR-IOV<a class="headerlink" href="#preparation-of-vgpu-devices-with-sr-iov" title="Permanent link">&para;</a></h2>
+<p>In general, configuration of vGPUs with SR-IOV should be done according to the vendor directions.
+KubeVirt does not support the creation of virtual function (VF) nor the assignment of vGPU profile to the function.
+KubeVirt only facilitates exposure of these VFs for the VM to consume them (through generic PCI device plugin) but does not have fine-grained distinctions of the profiles, like those for mdevs. Therefore it is recommended to use vendor's device plugin to expose the functions in case of heterogeneous profiles.</p>
+<p>To use a vGPU device that supports SR-IOV, follow the PCI-related notes in <a href="#listing-permitted-devices">Listing permitted devices</a>.</p>
 <h2 id="listing-permitted-devices">Listing permitted devices<a class="headerlink" href="#listing-permitted-devices" title="Permanent link">&para;</a></h2>
 <p>Administrators can control which host devices are exposed and permitted to be used in the
 cluster. Permitted host devices in the cluster will need to be allowlisted in KubeVirt CR by its <code>vendor:product</code> selector for PCI devices or mediated device names.</p>
