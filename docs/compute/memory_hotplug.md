@@ -3,7 +3,7 @@
 Memory hotplug was introduced in KubeVirt version 1.1, enabling the dynamic resizing of the amount of memory available to a running VM.
 
 ## Limitations
-* Memory hotplug is currently only supported on the x86_64,arm64 architectures.
+* Memory hotplug is currently only supported on the x86_64 architecture.
 * Linux guests running at least Linux v5.8 are fully supported.
 * Windows guests support has been added to virtio-win, but it should be considered unstable.
 * Current hotplug implementation involves live-migration of the VM workload.
