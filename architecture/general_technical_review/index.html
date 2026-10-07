@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://kubevirt.io/user-guide/user_workloads/guest_operating_system_information/">
+        <link rel="canonical" href="https://kubevirt.io/user-guide/architecture/general_technical_review/">
       
       
-        <link rel="prev" href="../guest_agent_information/">
+        <link rel="prev" href="../architecture/">
       
       
-        <link rel="next" href="../liveness_and_readiness_probes/">
+        <link rel="next" href="../../quickstarts/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Guest Operating System Information - KubeVirt user guide</title>
+        <title>General Technical Review - KubeVirt user guide</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#guest-operating-system-information" class="md-skip">
+        <a href="#general-technical-review-kubevirt-incubation" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Guest Operating System Information
+              General Technical Review
             
           </span>
         </div>
@@ -225,11 +225,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../architecture/architecture/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../architecture/" class="md-tabs__link">
           
   
   
@@ -284,13 +286,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../lifecycle/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../user_workloads/lifecycle/" class="md-tabs__link">
           
   
   
@@ -489,26 +489,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -526,7 +531,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -544,7 +549,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../architecture/architecture/" class="md-nav__link">
+      <a href="../architecture/" class="md-nav__link">
         
   
   
@@ -569,10 +574,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../architecture/general_technical_review/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    General Technical Review
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -588,6 +620,253 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#day-0-planning-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 0 - Planning Phase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Day 0 - Planning Phase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usability_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-hygiene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Hygiene
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-native-threat-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Native Threat Modeling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-1-installation-and-deployment-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 1 - Installation and Deployment Phase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Day 1 - Installation and Deployment Phase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#project-installation-and-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Installation and Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-enablement-and-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Enablement and Rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollout-upgrade-and-rollback-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollout, Upgrade and Rollback Planning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-2-day-to-day-operations-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 2 - Day-to-Day Operations Phase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Day 2 - Day-to-Day Operations Phase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scalabilityreliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalability/Reliability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1282,31 +1561,26 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -1324,7 +1598,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1342,7 +1616,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../lifecycle/" class="md-nav__link">
+      <a href="../../user_workloads/lifecycle/" class="md-nav__link">
         
   
   
@@ -1370,7 +1644,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../basic_use/" class="md-nav__link">
+      <a href="../../user_workloads/basic_use/" class="md-nav__link">
         
   
   
@@ -1398,7 +1672,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../creating_vms/" class="md-nav__link">
+      <a href="../../user_workloads/creating_vms/" class="md-nav__link">
         
   
   
@@ -1426,7 +1700,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../creating_it_pref/" class="md-nav__link">
+      <a href="../../user_workloads/creating_it_pref/" class="md-nav__link">
         
   
   
@@ -1454,7 +1728,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../virtctl_client_tool/" class="md-nav__link">
+      <a href="../../user_workloads/virtctl_client_tool/" class="md-nav__link">
         
   
   
@@ -1482,7 +1756,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../accessing_virtual_machines/" class="md-nav__link">
+      <a href="../../user_workloads/accessing_virtual_machines/" class="md-nav__link">
         
   
   
@@ -1510,7 +1784,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../boot_from_external_source/" class="md-nav__link">
+      <a href="../../user_workloads/boot_from_external_source/" class="md-nav__link">
         
   
   
@@ -1538,7 +1812,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../startup_scripts/" class="md-nav__link">
+      <a href="../../user_workloads/startup_scripts/" class="md-nav__link">
         
   
   
@@ -1566,7 +1840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../windows_virtio_drivers/" class="md-nav__link">
+      <a href="../../user_workloads/windows_virtio_drivers/" class="md-nav__link">
         
   
   
@@ -1594,7 +1868,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../legacy_windows/" class="md-nav__link">
+      <a href="../../user_workloads/legacy_windows/" class="md-nav__link">
         
   
   
@@ -1619,31 +1893,26 @@
                 
   
   
-    
   
   
-  
     
     
     
     
       
       
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_11" >
         
           
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_11" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_11" id="__nav_5_11_label" tabindex="0">
             
   
   
@@ -1661,7 +1930,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_11_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_11">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1679,7 +1948,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../component_monitoring/" class="md-nav__link">
+      <a href="../../user_workloads/component_monitoring/" class="md-nav__link">
         
   
   
@@ -1707,7 +1976,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../guest_agent_information/" class="md-nav__link">
+      <a href="../../user_workloads/guest_agent_information/" class="md-nav__link">
         
   
   
@@ -1732,37 +2001,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Guest Operating System Information
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../user_workloads/guest_operating_system_information/" class="md-nav__link">
         
   
   
@@ -1778,65 +2020,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#use-with-presets" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Use with presets
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Use with presets">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#windows-server-2012r2-virtualmachineinstancepreset-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Windows Server 2012R2 VirtualMachineInstancePreset Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hyperv-optimizations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        HyperV optimizations
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1849,7 +2032,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../liveness_and_readiness_probes/" class="md-nav__link">
+      <a href="../../user_workloads/liveness_and_readiness_probes/" class="md-nav__link">
         
   
   
@@ -1891,20 +2074,17 @@
       
       
         
-          
-          
-        
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_12" >
         
           
-          <label class="md-nav__link" for="__nav_5_12" id="__nav_5_12_label" tabindex="">
+          <label class="md-nav__link" for="__nav_5_12" id="__nav_5_12_label" tabindex="0">
             
   
   
@@ -1940,7 +2120,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../instancetypes/" class="md-nav__link">
+      <a href="../../user_workloads/instancetypes/" class="md-nav__link">
         
   
   
@@ -1968,7 +2148,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../deploy_common_instancetypes/" class="md-nav__link">
+      <a href="../../user_workloads/deploy_common_instancetypes/" class="md-nav__link">
         
   
   
@@ -1996,7 +2176,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../hook-sidecar/" class="md-nav__link">
+      <a href="../../user_workloads/hook-sidecar/" class="md-nav__link">
         
   
   
@@ -2024,7 +2204,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../presets/" class="md-nav__link">
+      <a href="../../user_workloads/presets/" class="md-nav__link">
         
   
   
@@ -2052,7 +2232,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../vm_templates/" class="md-nav__link">
+      <a href="../../user_workloads/vm_templates/" class="md-nav__link">
         
   
   
@@ -2080,7 +2260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../templates/" class="md-nav__link">
+      <a href="../../user_workloads/templates/" class="md-nav__link">
         
   
   
@@ -2108,7 +2288,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pool/" class="md-nav__link">
+      <a href="../../user_workloads/pool/" class="md-nav__link">
         
   
   
@@ -2136,7 +2316,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../replicaset/" class="md-nav__link">
+      <a href="../../user_workloads/replicaset/" class="md-nav__link">
         
   
   
@@ -2164,7 +2344,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../virtual_machine_instances/" class="md-nav__link">
+      <a href="../../user_workloads/virtual_machine_instances/" class="md-nav__link">
         
   
   
@@ -2192,7 +2372,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../vm_rollout_strategies/" class="md-nav__link">
+      <a href="../../user_workloads/vm_rollout_strategies/" class="md-nav__link">
         
   
   
@@ -3837,22 +4017,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#use-with-presets" class="md-nav__link">
+  <a href="#day-0-planning-phase" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Use with presets
+        Day 0 - Planning Phase
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Use with presets">
+    <nav class="md-nav" aria-label="Day 0 - Planning Phase">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#windows-server-2012r2-virtualmachineinstancepreset-example" class="md-nav__link">
+  <a href="#scope" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Windows Server 2012R2 VirtualMachineInstancePreset Example
+        Scope
       
     </span>
   </a>
@@ -3860,10 +4040,198 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#hyperv-optimizations" class="md-nav__link">
+  <a href="#usability" class="md-nav__link">
     <span class="md-ellipsis">
       
-        HyperV optimizations
+        Usability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usability_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-hygiene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Hygiene
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-native-threat-modeling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Native Threat Modeling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-1-installation-and-deployment-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 1 - Installation and Deployment Phase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Day 1 - Installation and Deployment Phase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#project-installation-and-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Installation and Configuration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-enablement-and-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Enablement and Rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollout-upgrade-and-rollback-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollout, Upgrade and Rollback Planning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-2-day-to-day-operations-phase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 2 - Day-to-Day Operations Phase
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Day 2 - Day-to-Day Operations Phase">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scalabilityreliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scalability/Reliability
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observability-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
       
     </span>
   </a>
@@ -3892,7 +4260,7 @@
 
 
   
-    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/user_workloads/guest_operating_system_information.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/kubevirt/user-guide/edit/main/docs/architecture/general_technical_review.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -3901,200 +4269,473 @@
     
       
     
-    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/user_workloads/guest_operating_system_information.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/kubevirt/user-guide/raw/main/docs/architecture/general_technical_review.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="guest-operating-system-information">Guest Operating System Information<a class="headerlink" href="#guest-operating-system-information" title="Permanent link">&para;</a></h1>
-<p>Guest operating system identity for the VirtualMachineInstance will be
-provided by the label <code>kubevirt.io/os</code> :</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">myvmi</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">kubevirt.io/os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win2k12r2</span>
-</code></pre></div>
-<p>The <code>kubevirt.io/os</code> label is based on the short OS identifier from
-<a href="https://libosinfo.org/">libosinfo</a> database. The following Short IDs
-are currently supported:</p>
-<table>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-<col style="width: 20%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Short ID</th>
-<th>Name</th>
-<th>Version</th>
-<th>Family</th>
-<th>ID</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><p><strong>win2k12r2</strong></p></td>
-<td><p>Microsoft Windows Server 2012 R2</p></td>
-<td><p>6.3</p></td>
-<td><p>winnt</p></td>
-<td><p><a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2012-r2">https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2012-r2</a></p></td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="use-with-presets">Use with presets<a class="headerlink" href="#use-with-presets" title="Permanent link">&para;</a></h2>
-<p>A VirtualMachineInstancePreset representing an operating system with a
-<code>kubevirt.io/os</code> label could be applied on any given
-VirtualMachineInstance that have and match the <code>kubevirt.io/os</code> label.</p>
-<p>Default presets for the OS identifiers above are included in the current
-release.</p>
-<h3 id="windows-server-2012r2-virtualmachineinstancepreset-example">Windows Server 2012R2 <code>VirtualMachineInstancePreset</code> Example<a class="headerlink" href="#windows-server-2012r2-virtualmachineinstancepreset-example" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstancePreset</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows-server-2012r2</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="nt">kubevirt.io/os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win2k12r2</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nt">resources</span><span class="p">:</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="nt">requests</span><span class="p">:</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2G</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="nt">features</span><span class="p">:</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">      </span><span class="nt">acpi</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">      </span><span class="nt">apic</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span><span class="nt">hyperv</span><span class="p">:</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">        </span><span class="nt">relaxed</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">        </span><span class="nt">vapic</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">        </span><span class="nt">spinlocks</span><span class="p">:</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">          </span><span class="nt">spinlocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8191</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">    </span><span class="nt">clock</span><span class="p">:</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">      </span><span class="nt">utc</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">      </span><span class="nt">timer</span><span class="p">:</span>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">        </span><span class="nt">hpet</span><span class="p">:</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">          </span><span class="nt">present</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">        </span><span class="nt">pit</span><span class="p">:</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">          </span><span class="nt">tickPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">delay</span>
-<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">        </span><span class="nt">rtc</span><span class="p">:</span>
-<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">          </span><span class="nt">tickPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">catchup</span>
-<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="nt">hyperv</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="nn">---</span>
-<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
-<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">    </span><span class="nt">kubevirt.io/os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win2k12r2</span>
-<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows2012r2</span>
-<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">  </span><span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
-<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="w">    </span><span class="nt">firmware</span><span class="p">:</span>
-<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="w">      </span><span class="nt">uuid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5d307ca9-b3ef-428c-8861-06e72d69f223</span>
-<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
-<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">      </span><span class="nt">disks</span><span class="p">:</span>
-<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">server2012r2</span>
-<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="w">        </span><span class="nt">disk</span><span class="p">:</span>
-<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="w">          </span><span class="nt">dev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vda</span>
-<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
-<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">server2012r2</span>
-<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
-<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-windows-image</span>
-</code></pre></div>
-<p>Once the <code>VirtualMachineInstancePreset</code> is applied to the
-<code>VirtualMachineInstance</code>, the resulting resource would look like this:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachineInstance</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">presets.virtualmachineinstances.kubevirt.io/presets-applied</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">virtualmachineinstancepreset.kubevirt.io/windows-server-2012r2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">kubevirt.io/os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">win2k12r2</span>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windows2012r2</span>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="nt">terminationGracePeriodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">  </span><span class="nt">domain</span><span class="p">:</span>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="nt">resources</span><span class="p">:</span>
-<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">      </span><span class="nt">requests</span><span class="p">:</span>
-<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2G</span>
-<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="nt">features</span><span class="p">:</span>
-<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">      </span><span class="nt">acpi</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">      </span><span class="nt">apic</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">      </span><span class="nt">hyperv</span><span class="p">:</span>
-<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span><span class="nt">relaxed</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">        </span><span class="nt">vapic</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">        </span><span class="nt">spinlocks</span><span class="p">:</span>
-<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">          </span><span class="nt">spinlocks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8191</span>
-<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">    </span><span class="nt">clock</span><span class="p">:</span>
-<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">      </span><span class="nt">utc</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">      </span><span class="nt">timer</span><span class="p">:</span>
-<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">        </span><span class="nt">hpet</span><span class="p">:</span>
-<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">          </span><span class="nt">present</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">        </span><span class="nt">pit</span><span class="p">:</span>
-<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">          </span><span class="nt">tickPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">delay</span>
-<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">        </span><span class="nt">rtc</span><span class="p">:</span>
-<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">          </span><span class="nt">tickPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">catchup</span>
-<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">        </span><span class="nt">hyperv</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">    </span><span class="nt">firmware</span><span class="p">:</span>
-<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="w">      </span><span class="nt">uuid</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5d307ca9-b3ef-428c-8861-06e72d69f223</span>
-<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="w">    </span><span class="nt">devices</span><span class="p">:</span>
-<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="w">      </span><span class="nt">disks</span><span class="p">:</span>
-<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">server2012r2</span>
-<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a><span class="w">        </span><span class="nt">disk</span><span class="p">:</span>
-<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a><span class="w">          </span><span class="nt">dev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vda</span>
-<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
-<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">server2012r2</span>
-<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a><span class="w">      </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span>
-<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a><span class="w">        </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-windows-image</span>
-</code></pre></div>
-<p>For more information see <a href="../presets/">VirtualMachineInstancePresets</a></p>
-<h3 id="hyperv-optimizations">HyperV optimizations<a class="headerlink" href="#hyperv-optimizations" title="Permanent link">&para;</a></h3>
-<p>KubeVirt supports quite a lot of so-called "HyperV enlightenments",
-which are optimizations for Windows Guests. Some of these optimization
-may require an up to date host kernel support to work properly, or to
-deliver the maximum performance gains.</p>
-<p>KubeVirt can perform extra checks on the hosts before to run Hyper-V
-enabled VMs, to make sure the host has no known issues with Hyper-V
-support, properly expose all the required features and thus we can
-expect optimal performance. These checks are disabled by default for
-backward compatibility and because they depend on the
-<a href="https://github.com/kubernetes-sigs/node-feature-discovery">node-feature-discovery</a>
-and on extra configuration.</p>
-<p>To enable strict host checking, the user may expand the <code>featureGates</code>
-field in the KubeVirt CR by adding the <code>HypervStrictCheck</code> to it.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">configuration</span><span class="p p-Indicator">:</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"HypervStrictCheck"</span>
-</code></pre></div>
-<p>Alternatively, users can edit an existing kubevirt CR:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>kubectl<span class="w"> </span>edit<span class="w"> </span>kubevirt<span class="w"> </span>kubevirt<span class="w"> </span>-n<span class="w"> </span>kubevirt
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nn">...</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"HypervStrictCheck"</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"CPUManager"</span>
-</code></pre></div>
+<h1 id="general-technical-review-kubevirt-incubation">General Technical Review - KubeVirt / Incubation<a class="headerlink" href="#general-technical-review-kubevirt-incubation" title="Permanent link">&para;</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This document was created as part of a CNCF initiative and a requirement for 
+projects to move between levels. It was originally created as part of the process
+for KubeVirt to graduate. It is intended to be a living document, however it is not
+expected to be updated for every release. Similarly, the <a href="https://github.com/cncf/toc/blob/main/toc_subprojects/project-reviews-subproject/general-technical-questions.md">General Technical Review
+template</a> maintained by the CNCF is expected to evolve.</p>
+<p>Please pay attention to the <code>Date updated</code> and <code>Template version</code> metadata.</p>
+<p>If you notice disparities or inconsistencies, please feel welcome to raise an issue 
+or PR to have this corrected.</p>
+</div>
+<ul>
+<li><strong>Project: KubeVirt</strong></li>
+<li><strong>Project Version: 1.4</strong> </li>
+<li><strong>Website: kubevirt.io</strong></li>
+<li><strong>Date Updated:</strong> 2025-01-24</li>
+<li><strong>Template Version:</strong> v1.0</li>
+<li><strong>Description:</strong> KubeVirt is an open-source project that extends Kubernetes to enable the management of virtual machines (VMs) alongside containerized workloads. It provides seamless integration with Kubernetes API using a custom resource definition (CRD). Users can leverage Kubernetes capabilities for both traditional and containerized workloads in a cloud-native environment.</li>
+</ul>
+<h2 id="day-0-planning-phase">Day 0 - Planning Phase<a class="headerlink" href="#day-0-planning-phase" title="Permanent link">&para;</a></h2>
+<h3 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Describe the roadmap process, how scope is determined for mid to long term features, as well as how the roadmap maps back to current contributions and maintainer ladder?</li>
+</ul>
+<p>The roadmap of the KubeVirt project is shaped by contributions from the community. Prioritized work items are being derived from the community-submitted proposals in the kubevirt/community repo. We also document our <a href="https://github.com/kubevirt/sig-release/blob/main/upcoming-changes.md">upcoming changes</a> in our sig-release repo to show what will likely be in our next version of KubeVirt.<br />
+  The enhancement framework provides a standardized way to propose and track features via issues and community reviews.<br />
+  Approved enhancement proposals drive priorities and guide contributions and code reviews.<br />
+  The roadmap supports the maintainer ladder by giving contributors opportunities to grow through impactful work on governance, prioritized features, encouraging new contributors, and review efforts.</p>
+<ul>
+<li>Describe the target persona or user(s) for the project?</li>
+</ul>
+<p>The target audience of KubeVirt includes infrastructure owners, platform engineers, DevOps teams, and application developers who require running and orchestrating virtual machines alongside containers using Kubernetes, bridging legacy and cloud-native workloads within a unified platform.</p>
+<ul>
+<li>Explain the primary use case for the project. What additional use cases are supported by the project?</li>
+</ul>
+<p>The primary use case for KubeVirt is enabling organizations to manage and orchestrate virtual machines (VMs) alongside containerized workloads in Kubernetes clusters. This is particularly valuable for hybrid environments where legacy applications require VMs, while modern applications are containerized, allowing unified management and application integration through Kubernetes APIs and workflows.</p>
+<p><strong>Additional Use Cases:</strong></p>
+<ul>
+<li>
+<p><strong>Infrastructure Modernization:</strong><br />
+    Gradually transitioning from traditional virtualization platforms to cloud-native infrastructures without disrupting existing VM workloads.</p>
+</li>
+<li>
+<p><strong>Hybrid Application Architectures:</strong><br />
+    Supporting applications that combine VM-based components (e.g., databases) with containerized workloads.</p>
+</li>
+<li>
+<p><strong>Development and Testing Environments:</strong><br />
+    Providing developers a Kubernetes-native way to create, test, and run VM-based workloads in CI/CD pipelines.</p>
+</li>
+<li>
+<p><strong>Edge Computing:</strong><br />
+    Managing VMs on edge devices for workloads that require dedicated resources or specific operating system environments.</p>
+</li>
+<li>
+<p><strong>Isolation:</strong><br />
+    Combination of containerized workloads and VMs with a higher level of isolation.</p>
+</li>
+<li>
+<p><strong>Multi-tenancy:</strong><br />
+    VMs serving Kubernetes clusters or VMs being used as nodes in virtual Kubernetes clusters.</p>
+</li>
+<li>
+<p>Explain which use cases have been identified as unsupported by the project.</p>
+</li>
+<li>
+<p>“Delta Cloud” like abstraction. Thus having the KubeVirt APIs being a single API to different cloud platforms, such as hyperscalers.</p>
+</li>
+<li>
+<p>Supporting other than KVM hypervisors and qemu virtual machine monitor (VMM) runtimes. However, the project remains open to ideas.</p>
+</li>
+<li>
+<p>Describe the intended types of organizations who would benefit from adopting this project. (i.e., financial services, any software manufacturer, organizations providing platform engineering services)?</p>
+</li>
+</ul>
+<p>KubeVirt would benefit organizations that operate in hybrid environments or are looking to modernize their infrastructure and bridge traditional and cloud-native technologies.<br />
+  Organizations with the requirement to run internal private clouds of mixed VM and container workloads or are planning to adopt mixed workloads in the future.<br />
+  Due to the ubiquity of virtualization in IT, KubeVirt is not tied to any specific market segment.</p>
+<ul>
+<li>Please describe any completed end user research and link to any reports.</li>
+</ul>
+<p>There have been no end user studies around KubeVirt that we are aware of.</p>
+<h3 id="usability">Usability<a class="headerlink" href="#usability" title="Permanent link">&para;</a></h3>
+<h3 id="usability_1">Usability<a class="headerlink" href="#usability_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>How should the target personas interact with your project?</li>
+</ul>
+<p>VM owners and cluster admins alike - users of the project - should interact with KubeVirt primarily through Kubernetes native and KubeVirt-specific APIs and/or CLI.</p>
+<ul>
+<li>Describe the user experience (UX) and user interface (UI) of the project.</li>
+</ul>
+<p>Usability-wise, KubeVirt tries to adopt Kubernetes UX and API patterns in order to provide a “unified” user experience for users - regardless of whether or not they are working with virtual machines or containers.</p>
+<p>There is no official KubeVirt user interface. However, there are a couple of user interfaces provided by platform vendors, such as:</p>
+<ul>
+<li>SUSE Virtualization</li>
+<li>Red Hat OpenShift Virtualization</li>
+<li>Deckhouse (Virtualization)</li>
+<li>
+<p>KubeVirt Manager (community project)</p>
+</li>
+<li>
+<p>Describe how this project integrates with other projects in a production environment.</p>
+</li>
+</ul>
+<p><strong>Kubernetes</strong> - KubeVirt extends Kubernetes by introducing custom resource definitions (CRDs) like VirtualMachine and VirtualMachineInstance. These resources integrate directly into Kubernetes workflows. Users can manage VMs using Kubernetes-native APIs.</p>
+<p><strong>Prometheus</strong> - KubeVirt components expose Prometheus-compatible endpoints, Alerts, and runbooks in order to integrate well with this monitoring solution.</p>
+<p><strong>Medik8s</strong> - KubeVirt community members contributed to Medik8s in order to add high-availability support for bare-metal Kubernetes clusters, supporting KubeVirt’s use case.</p>
+<p><strong>ovn-kubernetes</strong> and <strong>kubernetes-ovn</strong> - KubeVirt contributors contributed to both projects to allow them to seamlessly integrate with KubeVirt virtual machines. Additional work is done for CNI plugins to be used with multus for better secondary network support.</p>
+<p><strong>Istio</strong> - KubeVirt contributors provided patches to Istio in order to integrate KubeVirt VMs out of the box with Istio.</p>
+<p><strong>ArgoCD</strong> - KubeVirt contributors provided patches to Argo in order to align with common Argo practices.</p>
+<p><strong>Tekton</strong> - KubeVirt maintains a set of Tekton tasks in order to easily build Tekton Pipelines around VMs.</p>
+<p><strong>Velero</strong> - KubeVirt contributors integrate Velero into KubeVirt in order to support third-party backup vendors.</p>
+<p><strong>cluster-api-kubevirt</strong> - Cluster API KubeVirt is built on KubeVirt.</p>
+<p><strong>Kubernetes descheduler</strong> - KubeVirt community members contributed several changes to the Kubernetes descheduler in order to let the descheduler work seamlessly with VMs as well.</p>
+<p><strong>kubernetes-nmstate</strong> - KubeVirt community members contributed to kubernetes-nmstate to provide a declarative approach for host network configuration—a common problem in bare-metal clusters.</p>
+<p><strong>multus</strong> - KubeVirt leverages Multus APIs in order to implement secondary networks for VMs.</p>
+<p>And others like Kubernetes itself, AAQ, CRI-O.</p>
+<h3 id="design">Design<a class="headerlink" href="#design" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Explain the design principles and best practices the project is following.  </li>
+</ul>
+<p>KubeVirt prioritizes integration with and the usability experience of Kubernetes. It takes advantage of Kubernetes native APIs, CRDs (Custom Resource Definitions), and core primitives and patterns to manage VMs as first-class citizens.  </p>
+<p>Here is more information on KubeVirt Architecture and guiding principles, especially the KubeVirt Razor:<br />
+  "If something is useful for Pods, we should not implement it for VMs only".</p>
+<ul>
+<li>Outline or link to the project’s architecture requirements? Describe how they differ for Proof of Concept, Development, Test and Production environments, as applicable.  </li>
+</ul>
+<p>KubeVirt works from single-node setup all the way up to large scale Kubernetes clusters with hundreds of nodes.<br />
+  For production workloads, the primary requirement is to provide bare metal nodes.  </p>
+<p>All the details can be found at <a href="https://kubevirt.io/user-guide/cluster_admin/installation/">KubeVirt Installation Guide</a></p>
+<ul>
+<li>Define any specific service dependencies the project relies on in the cluster.  </li>
+</ul>
+<p>KubeVirt requires Kubernetes to be present, nothing else.<br />
+  The cluster should have bare metal nodes if production workloads are planned to be run.</p>
+<ul>
+<li>Describe how the project implements Identity and Access Management.  </li>
+</ul>
+<p>KubeVirt leverages Kubernetes' native Identity and Access Management (IAM) capabilities to control access to resources and operations related to virtual machines (VMs).</p>
+<ul>
+<li>Describe how the project has addressed sovereignty.  </li>
+</ul>
+<p>KubeVirt depends on the Kubernetes community but operates an independent community outside of the Kubernetes SIGs. This includes but is not limited to its own <a href="https://github.com/kubevirt/community/blob/main/sig-list.md">SIG/Subproject/WG structure</a>.</p>
+<ul>
+<li>Describe any compliance requirements addressed by the project.  </li>
+</ul>
+<p>The project is not actively pursuing any compliance effort.<br />
+  However, some of the vendors that distribute KubeVirt do.</p>
+<ul>
+<li>Describe the project’s High Availability requirements.  </li>
+</ul>
+<p>KubeVirt implements best practices for High Availability using replication for its control-plane resources.<br />
+  It’s also supporting the project (medik8s) in order to add high availability to the Kubernetes cluster it runs and depends on.</p>
+<ul>
+<li>Describe the project’s resource requirements, including CPU, Network and Memory.  </li>
+</ul>
+<p>KubeVirt’s resource requirements depend on the end user’s scale requirements. A good estimate is around 1 CPU and 1GB of memory. The network requirements are the same for KubeVirt as Kubernetes.  </p>
+<p>In the end, the resource requirements depend on the scale of the environment. Some dimensions of the scale are node count, VM count, and disk count.<br />
+  Members of the KubeVirt community are operating KubeVirt on single-node deployments, up to clusters with hundreds of nodes.</p>
+<ul>
+<li>Describe the project’s storage requirements, including its use of ephemeral and/or persistent storage.  </li>
+</ul>
+<p>KubeVirt shares the same storage requirements as Kubernetes. The end user defines what storage is required for their workloads, and KubeVirt will use Kubernetes APIs to use what is defined.</p>
+<ul>
+<li>Please outline the project’s API Design  </li>
+</ul>
+<p>KubeVirt is a Kubernetes API extension defined by Custom Resource Definitions. KubeVirt’s philosophy is to re-use Kubernetes APIs for defining infrastructure. Then, KubeVirt will make the infrastructure resources available to Virtual Machines.</p>
+<ul>
+<li>
+<p>Describe the project’s API topology and conventions  </p>
+<p>KubeVirt’s API is RESTful and declarative, following precedents set by Kubernetes as much as possible.</p>
+</li>
+<li>
+<p>Describe the project defaults  </p>
+<p>KubeVirt provides configuration defaults, allowing users to “just” deploy KubeVirt without requiring any input.</p>
+</li>
+<li>
+<p>Outline any additional configurations from default to make reasonable use of the project  </p>
+<p>KubeVirt has one default configuration that it shares between KubeVirt components.</p>
+</li>
+<li>
+<p>Describe any new or changed API types and calls - including to cloud providers - that will result from this project being enabled and used  </p>
+<p>Most KubeVirt APIs are Kubernetes API extensions (CRDs). They are documented at <a href="http://kubevirt.io/api-reference/">KubeVirt API Reference</a></p>
+</li>
+<li>
+<p>Describe compatibility of any new or changed APIs with API servers, including the Kubernetes API server  </p>
+<p>Compatibility is provided in <a href="https://github.com/kubevirt/kubevirt/blob/main/docs/kubernetes-compatibility.md">KubeVirt Kubernetes Compatibility</a></p>
+</li>
+<li>
+<p>Describe versioning of any new or changed APIs, including how breaking changes are handled  </p>
+<p>For releases, KubeVirt follows Semantic Versioning - just like Kubernetes does.<br />
+For CRDs, KubeVirt follows Kubernetes standards for API versioning to ensure stability, compatibility, and a clear evolution of its APIs.<br />
+KubeVirt APIs are versioned with labels such as v1alpha1, v1beta1, and v1 - where alpha is considered experimental, beta is more stable with some backward compatibility, and v1 is a fully mature API with strong backward compatibility guarantees.<br />
+KubeVirt v1 APIs maintain backward compatibility, and changes that are not backward compatible are avoided in stable APIs.</p>
+</li>
+<li>
+<p>Describe the project’s release processes, including major, minor and patch releases.  </p>
+</li>
+</ul>
+<p>The release process is described in <a href="https://github.com/kubevirt/kubevirt/blob/main/docs/release.md">KubeVirt Release Guide</a></p>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Describe how the project is installed and initialized, e.g. a minimal install with a few lines of code or does it require more complex integration and configuration?  </li>
+</ul>
+<p>KubeVirt is providing an Operator for deployment and application life-cycle management. Alternatively, deployment can be manually performed by installing key components from the kubevirt and containerized-data-importer repositories.   These are all installed using <code>kubectl</code>.</p>
+<p>There are then additional optional network plugins that can be installed.</p>
+<p>Reference: https://kubevirt.io/user-guide/cluster_admin/installation/#installing-kubevirt-on-kubernetes</p>
+<ul>
+<li>How does an adopter test and validate the installation?</li>
+</ul>
+<p>An adopter can run the KubeVirt testsuite on their deployment.</p>
+<h3 id="security">Security<a class="headerlink" href="#security" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Please provide a link to the project’s cloud native <a href="https://github.com/cncf/tag-security/blob/main/community/assessments/guide/self-assessment.md">security self assessment</a>.</li>
+</ul>
+<p>The self assessment is in progress and tracked at <a href="https://github.com/kubevirt/community/issues/335">https://github.com/kubevirt/community/issues/335</a>.<br />
+  This document will be updated pointing to the self-assessment once it is completed.</p>
+<ul>
+<li>Please review the <a href="https://github.com/cncf/tag-security/blob/main/security-whitepaper/secure-defaults-cloud-native-8.md">Cloud Native Security Tenets</a> from TAG Security.</li>
+<li>
+<p>How are you satisfying the tenets of cloud native security projects?<br />
+    Currently there are no processes in place in order to enforce the tenets of cloud native security.</p>
+</li>
+<li>
+<p>Describe how each of the cloud native principles apply to your project.<br />
+    TBD<br />
+    Possible link: <a href="https://github.com/cloud-native-principles/cloud-native-principles/blob/master/cloud-native-principles.md">Cloud Native Principles</a></p>
+</li>
+<li>
+<p>How do you recommend users alter security defaults in order to "loosen" the security of the project? Please link to any documentation the project has written concerning these use cases.<br />
+<a href="https://kubevirt.io/2020/KubeVirt-Security-Fundamentals.html">KubeVirt Security Fundamentals</a></p>
+</li>
+</ul>
+<h3 id="security-hygiene">Security Hygiene<a class="headerlink" href="#security-hygiene" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Please describe the frameworks, practices, and procedures the project uses to maintain the basic health and security of the project.<br />
+  While there is no formal framework for ensuring security practices, discussing security is part of the PR review process.</p>
+</li>
+<li>
+<p>Describe how the project has evaluated which features will be a security risk to users if they are not maintained by the project?<br />
+  The KubeVirt maintainers acknowledge the risk of unmaintained code and features for end users.<br />
+  A structural change in order to address this challenge is to require every piece of code to be owned and maintained by a KubeVirt SIG.<br />
+  If a piece of code is not accepted by a SIG then it cannot land in KubeVirt, as it bears the risk of becoming unmaintained, and thus a security risk.</p>
+</li>
+</ul>
+<h3 id="cloud-native-threat-modeling">Cloud Native Threat Modeling<a class="headerlink" href="#cloud-native-threat-modeling" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Explain the least minimal privileges required by the project and reasons for additional privileges.<br />
+  By design, KubeVirt VMs are designed to work with the restricted PSL.<br />
+  There is also the design principle that a user must not gain any additional privileges or permissions when running a VM compared to any other pod the user could run.</li>
+</ul>
+<p>Special privileges are only granted to infrastructure components such as virt-handler (the node agent).</p>
+<ul>
+<li>Describe how the project is handling certificate rotation and mitigates any issues with certificates.<br />
+  “In KubeVirt both our CA and certificates are rotated on a user-defined recurring interval.<br />
+  In the event that either the CA key or a certificate is compromised, this information will eventually be rendered stale and unusable regardless of whether the compromise is known or not.<br />
+  If the compromise is known, a forced CA and certificate rotation can be invoked by the cluster admin simply by deleting the corresponding secrets in the KubeVirt install namespace.”  </li>
+<li>
+<p><a href="https://kubevirt.io/2020/KubeVirt-Security-Fundamentals.html">KubeVirt Security Fundamentals</a></p>
+</li>
+<li>
+<p>Describe how the project is following and implementing <a href="https://project.linuxfoundation.org/hubfs/CNCF_SSCP_v1.pdf">secure software supply chain best practices</a><br />
+  While there is no active work by the community to implement SSSC best practices, there are recurring discussions of how to get this on track.</p>
+</li>
+</ul>
+<h2 id="day-1-installation-and-deployment-phase">Day 1 - Installation and Deployment Phase<a class="headerlink" href="#day-1-installation-and-deployment-phase" title="Permanent link">&para;</a></h2>
+<h3 id="project-installation-and-configuration">Project Installation and Configuration<a class="headerlink" href="#project-installation-and-configuration" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Describe what project installation and configuration look like.</li>
+</ul>
+<p>This is described in 
+  https://kubevirt.io/user-guide/cluster_admin/installation/#installing-kubevirt-on-kubernetes</p>
+<h3 id="project-enablement-and-rollback">Project Enablement and Rollback<a class="headerlink" href="#project-enablement-and-rollback" title="Permanent link">&para;</a></h3>
+<ul>
+<li>How can this project be enabled or disabled in a live cluster? Please describe any downtime required of the control plane or nodes.  </li>
+</ul>
+<p>After deploying the KubeVirt operator, this is as simple as deploying the KubeVirt CR - or removing it for uninstallation.</p>
+<ul>
+<li>Describe how enabling the project changes any default behavior of the cluster or running workloads.</li>
+</ul>
+<p>KubeVirt installation adds virtualization capabilities to a Kubernetes cluster, allowing the users to manage and run virtual machines. Although the default behavior and existing workloads should not be impacted, it introduces new   resources and components to support VMs.
+  The cluster-configuration  - i.e. API server configuration - itself is not modified by KubeVirt.  </p>
+<ul>
+<li>Describe how the project tests enablement and disablement.  </li>
+</ul>
+<p>Installing and uninstalling KubeVirt is part of the KubeVirt testsuite.</p>
+<ul>
+<li>How does the project clean up any resources created, including CRDs?</li>
+</ul>
+<p>KubeVirt is using an operator for application life-cycle management. This operator is removing all KubeVirt related components.
+  KubeVirt related CRDs are deleted with <code>kubectl delete -f kubevirt.yaml</code> all associated resources will be deleted. </p>
+<p>All the details are documented in: https://kubevirt.io/user-guide/cluster_admin/updating_and_deletion/#deleting-kubevirt</p>
+<h3 id="rollout-upgrade-and-rollback-planning">Rollout, Upgrade and Rollback Planning<a class="headerlink" href="#rollout-upgrade-and-rollback-planning" title="Permanent link">&para;</a></h3>
+<ul>
+<li>How does the project intend to provide and maintain compatibility with infrastructure and orchestration management tools like Kubernetes and with what frequency?  </li>
+</ul>
+<p>KubeVirt has a defined compatibility matrix:
+  https://github.com/kubevirt/kubevirt/blob/main/docs/kubernetes-compatibility.md</p>
+<p>In addition, KubeVirt is - by itself - a cloud native application, delivered completely in containers, ensuring a strong separation from the underlying infrastructure.</p>
+<p>https://kubevirt.io/user-guide/cluster_admin/updating_and_deletion/#updating-and-deletion</p>
+<ul>
+<li>Describe how the project handles rollback procedures.  </li>
+</ul>
+<p>KubeVirt is designed to roll forward only. Feature development, bug fixes, and testing are aligned to this objective.
+  However, technically it is possible to rollback.</p>
+<ul>
+<li>How can a rollout or rollback fail? Describe any impact to already running workloads.  </li>
+</ul>
+<p>Running workloads are not immediately impacted by a failed rollout or rollback. Workloads - just like Kubernetes - will keep running for a while.
+  Depending on the failure and environment - workloads will continue to run for long, or eventually be impacted by rippled issues in the cluster.</p>
+<ul>
+<li>Describe any specific metrics that should inform a rollback.  </li>
+</ul>
+<p>The KubeVirt Operator’s “Ready” condition is staying in “false”.</p>
+<ul>
+<li>Explain how upgrades and rollbacks were tested and how the upgrade-&gt;downgrade-&gt;upgrade path was tested.</li>
+</ul>
+<p>Upgrade testing is part of pre-submit testing.
+  Rollbacks and up- → down- → upgrade testing is not covered.</p>
+<ul>
+<li>Explain how the project informs users of deprecations and removals of features and APIs.</li>
+</ul>
+<p>KubeVirt is currently using API v1 and has maintained a strict commitment to not removing existing API constructs. Any feature that has been considered for removal has been restricted by an opt-in FeatureGate. Removal of any such   feature is discussed on the KubeVirt development mailing list well in advance.</p>
+<ul>
+<li>Explain how the project permits utilization of alpha and beta capabilities as part of a rollout.</li>
+</ul>
+<p>KubeVirt’s feature lifecycle uses the Kubernetes model. Features are initially implemented using alpha version strings in the API and are feature gated. Features then graduate to beta and the feature gate is removed as part of the   release lifecycle.</p>
+<h2 id="day-2-day-to-day-operations-phase">Day 2 - Day-to-Day Operations Phase<a class="headerlink" href="#day-2-day-to-day-operations-phase" title="Permanent link">&para;</a></h2>
+<h3 id="scalabilityreliability">Scalability/Reliability<a class="headerlink" href="#scalabilityreliability" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Describe how the project increases the size or count of existing API objects.</li>
+</ul>
+<p>KubeVirt is a Kubernetes cloud native application leveraging core Kube entities at runtime.
+  While the exact numbers depend on the cluster size, it is in the ballpark of tens of pods, tens of secrets, some deployment, and a daemonset.</p>
+<p>In general KubeVirt is considered to have a small footprint compared to the cluster where it is expected to be running on.</p>
+<p>There will be some etcd load induced according to the number of running VMs.</p>
+<ul>
+<li>Describe how the project defines Service Level Objectives (SLOs) and Service Level Indicators (SLIs).  </li>
+</ul>
+<p>KubeVirt does not describe any SLO or SLI.</p>
+<ul>
+<li>Describe any operations that will increase in time covered by existing SLIs/SLOs.  </li>
+</ul>
+<p>N/A</p>
+<ul>
+<li>Describe the increase in resource usage in any components as a result of enabling this project, to include CPU, Memory, Storage, Throughput.  </li>
+</ul>
+<p>There is an increased resource usage.
+  Depending on the cluster and workload size it is recommended to maintain dedicated infra nodes, or just keep sufficient spare capacity on the cluster.</p>
+<ul>
+<li>Describe which conditions enabling / using this project would result in resource exhaustion of some node resources (PIDs, sockets, inodes, etc.)  </li>
+</ul>
+<p>Every VM is run in it’s own pod. Due to this usually all limits that relate to pods apply to VMs as well.</p>
+<ul>
+<li>Describe the load testing that has been performed on the project and the results. </li>
+</ul>
+<p>KubeVirt project is doing regular performance and load testing as part of SIG scale.</p>
+<p>Vendors like Red Hat perform regular performance and scale tests as part of their productization.</p>
+<ul>
+<li>Describe the recommended limits of users, requests, system resources, etc. and how they were obtained.</li>
+</ul>
+<p>Limits on number of VMs or number of nodes is not only determined by the project, but also by how the underlying cluster is operated.</p>
+<p>Highly optimized organizations can easily go to tens of thousands of VMs on a single cluster with hundreds of nodes.
+  Regular users are recommended to adjust their cluster size to operational models and requirements.</p>
+<p>A regular - large - KubeVirt cluster is expected to host thousands of VMs on less than 100 nodes.</p>
+<ul>
+<li>Describe which resilience pattern the project uses and how, including the circuit breaker pattern.</li>
+</ul>
+<h3 id="observability-requirements">Observability Requirements<a class="headerlink" href="#observability-requirements" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Describe the signals the project is using or producing, including logs, metrics, profiles and traces. Please include supported formats, recommended configurations and data storage.</li>
+</ul>
+<p>KubeVirt is providing metric endpoints, and shipping Prometheus alert rules including runbooks.
+  KubeVirt is also consistently using error conditions on it’s CRs.</p>
+<ul>
+<li>Describe how the project captures audit logging.</li>
+</ul>
+<p>The Kubernetes audit log can be used for KubeVirt, as all user-facing API calls go through the Kubernetes API server.</p>
+<ul>
+<li>Describe any dashboards the project uses or implements as well as any dashboard requirements.</li>
+</ul>
+<p>KubeVirt does not implement any dashboard.
+  There are some community maintained grafana dashboards available.</p>
+<ul>
+<li>Describe how the project surfaces project resource requirements for adopters to monitor cloud and infrastructure costs, e.g. FinOps  </li>
+</ul>
+<p>Adopters just need to continue to monitor their Kubernetes usage.</p>
+<ul>
+<li>Which parameters is the project covering to ensure the health of the application/service and its workloads?  </li>
+</ul>
+<p>KubeVirt allows to set health checks for the workloads.
+  The KubeVirt operator is checking the health of it’s infra components.
+  The KubeVirt Operator health (including it’s dependents) is also reported via a prometheus endpoint.</p>
+<ul>
+<li>How can an operator determine if the project is in use by workloads?  </li>
+</ul>
+<p>KubeVirt is providing the ability to run virtual machine workloads. Those run in pods. Thus the same mechanism for monitoring pods can be used for monitoring VMs.</p>
+<ul>
+<li>How can someone using this project know that it is working for their instance?  </li>
+</ul>
+<p>They can look at the KubeVirt Operator conditions. If it’s not working, then a condition will be set.</p>
+<ul>
+<li>Describe the SLOs (Service Level Objectives) for this project.</li>
+</ul>
+<p>There are no SLOs defined.</p>
+<ul>
+<li>What are the SLIs (Service Level Indicators) an operator can use to determine the health of the service?</li>
+</ul>
+<p>There are no SLIs defined.</p>
+<h3 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Describe the specific running services the project depends on in the cluster.</li>
+</ul>
+<p>KubeVirt relies on Kubernetes only, with no other mandatory dependencies. KubeVirt can optionally work in harmony with the Containerized Data Importer and nmstate projects.</p>
+<ul>
+<li>Describe the project’s dependency lifecycle policy.</li>
+</ul>
+<p>KubeVirt is written in golang and uses go.mod/go.sum to track dependencies added to the build chain. Each dependency added is vetted during the code review/submission process.</p>
+<ul>
+<li>How does the project incorporate and consider source composition analysis as part of its development and security hygiene? Describe how this source composition analysis (SCA) is tracked.</li>
+</ul>
+<p>KubeVirt uses FOSSA to ensure compliance with security and license requirements. These checks are applied to every pull request for the project.</p>
+<ul>
+<li>Describe how the project implements changes based on source composition analysis (SCA) and the timescale.</li>
+</ul>
+<p>FOSSA checks are applied to every pull request. Additionally, KubeVirt periodically leverages SonarCloud to detect commonly problematic code patterns.</p>
+<h3 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h3>
+<ul>
+<li>How does this project recover if a key component or feature becomes unavailable? e.g Kubernetes API server, etcd, database, leader node, etc.  </li>
+</ul>
+<p>If the cluster control plane is lost. The workload will remain to run. They will try to periodically reconnect with the cluster control plane.</p>
+<ul>
+<li>Describe the known failure modes.</li>
+</ul>
+<p>The cluster API goes down: Workloads continue to run. KubeVirt control plane will recover eventually.
+  The node/kubelet goes down: Workloads will go down. KubeVirt will reschedule the workloads on other nodes if possible</p>
+<h3 id="security_1">Security<a class="headerlink" href="#security_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Security Hygiene</li>
+<li>
+<p>How is the project executing access control?</p>
+<p>KubeVirt relies on Kubernetes access control and is not performing access control by itself.</p>
+</li>
+<li>
+<p>Cloud Native Threat Modeling  </p>
+</li>
+</ul>
+<p>Cloud Native Threat Modeling has not been performed yet for KubeVirt.</p>
+<ul>
+<li>
+<p>How does the project ensure its security reporting and response team is representative of its community diversity (organizational and individual)?  </p>
+<p>It’s a best effort by the KubeVirt maintainers to keep multiple organizations involved in security reporting, security response teams, and auditing efforts.</p>
+</li>
+<li>
+<p>How does the project invite and rotate security reporting team members?</p>
+<p>The project relies on vendors to perform this rotation.</p>
+</li>
+</ul>
 
 
 
@@ -4124,7 +4765,7 @@ field in the KubeVirt CR by adding the <code>HypervStrictCheck</code> to it.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../guest_agent_information/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Guest Agent information">
+          <a href="../architecture/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Architecture">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -4134,20 +4775,20 @@ field in the KubeVirt CR by adding the <code>HypervStrictCheck</code> to it.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Guest Agent information
+                Architecture
               </div>
             </div>
           </a>
         
         
           
-          <a href="../liveness_and_readiness_probes/" class="md-footer__link md-footer__link--next" aria-label="Next: Liveness and Readiness Probes">
+          <a href="../../quickstarts/" class="md-footer__link md-footer__link--next" aria-label="Next: Quickstarts">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Liveness and Readiness Probes
+                Quickstarts
               </div>
             </div>
             <div class="md-footer__button md-icon">
