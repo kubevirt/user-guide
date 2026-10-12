@@ -62,6 +62,59 @@ need to update the `virt-operator` first, and then proceed to update
 kubevirt. See [this issue for more
 details](https://github.com/kubevirt/kubevirt/issues/2533).
 
+### Rollback and Failed Updates
+
+During a zero-downtime update, control plane components (`virt-api`,
+`virt-controller`, and `virt-handler`) from the previous and target
+versions run side by side and cooperate while rolling over. To ensure
+compatibility during this transition, `virt-operator` blocks the use of
+newly introduced CRDs, API fields, and features (for example, by
+installing temporary blocking webhooks) until all components have
+successfully updated.
+
+Because new features and APIs are only enabled after the update is fully
+complete, rollback support depends on whether the update is still in
+progress or has already finished:
+
+1.  **Rolling back an incomplete or stuck update (Supported):** If an
+    update fails or gets stuck before completing, you can safely roll
+    back to the previous `N-1` version. Since no new APIs or features
+    could be used yet, reverting the update will cleanly roll the
+    already-updated components back to the previous version without
+    interrupting running VM/VMIs.
+
+    > **Note:** Do not downgrade `virt-operator` right away. The
+    > rollback must be performed on the `KubeVirt` CR first while
+    > keeping the newer `virt-operator` running. The newer version may
+    > have introduced new RBAC permissions and configuration paths that
+    > `virt-operator` requires in order to undo the changes from the
+    > incomplete update.
+
+    First, set `imageTag` on the `KubeVirt` CR to the previous release:
+
+    ```
+    $ export PREVIOUS_RELEASE=v1.6.4
+    $ kubectl patch kv kubevirt -n kubevirt --type=json -p '[{ "op": "add", "path": "/spec/imageTag", "value": "'${PREVIOUS_RELEASE}'" }]'
+    ```
+
+    Once the `KubeVirt` CR has finished rolling back to the previous
+    version, you can optionally downgrade `virt-operator` as well (and
+    remove `/spec/imageTag` if you do not pin the version in the CR):
+
+    ```
+    $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${PREVIOUS_RELEASE}/kubevirt-operator.yaml
+    ```
+
+2.  **Rolling back a completed update (Not Supported):** Once an update
+    has fully completed, new features and APIs are unlocked and existing
+    or newly created objects may rely on capabilities that the previous
+    version does not understand.
+
+    > **Note:** Rolling back to an older version after an update has
+    > completed is not supported and is discouraged, as the behavior of
+    > the older control plane with newly created or updated VMs is
+    > undefined.
+
 ## Updating KubeVirt Workloads
 
 Workload updates are supported as an opt in feature starting with `v0.39.0`
