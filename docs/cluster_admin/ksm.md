@@ -3,6 +3,13 @@
 Kernel Samepage Merging ([KSM](http://www.linux-kvm.org/page/KSM))
 allows de-duplication of memory. KSM tries to find identical Memory Pages and merge
 those to free memory.
+
+>**NOTE**
+>Merged pages are shared across VMs on the host, which can expose a side channel attack vector between co-located guests.
+>Prefer KSM for mutually trusted workloads. To keep a single VM out of page merging without turning KSM off on the node, set `kubevirt.io/mergeable-memory: "false"` on the VirtualMachine or VirtualMachineInstance (or via a preference).
+>Generally, on Linux guests, Free Page Reporting already returns unused memory to the host, so KSM often adds little density there. Windows guests do not support FPR and may still benefit from merging.
+>This annotation is a host memory-management hint, unrelated to [confidential computing](confidential_computing.md).
+
 >Further Information:  
 >- [KSM (Kernel Samepage Merging) feature](https://www.thomas-krenn.com/en/wiki/KSM_(Kernel_Samepage_Merging)_feature)  
 >- [Kernel Same-page Merging (KSM)](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/virtualization_tuning_and_optimization_guide/chap-ksm)
@@ -91,3 +98,25 @@ spec:
         kubevirt.io/ksm-enabled: "true"
       [...]
 ```
+
+## Per-VM opt-out
+
+QEMU marks guest RAM as mergeable by default so every VM on a KSM-enabled node is a candidate. Starting with KubeVirt v1.10.0, you can exclude a VM:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: sensitive-vm
+spec:
+  template:
+    metadata:
+      annotations:
+        kubevirt.io/mergeable-memory: "false"
+    spec:
+      [...]
+```
+
+[common-instancetypes](https://github.com/kubevirt/common-instancetypes) Linux preferences set `kubevirt.io/mergeable-memory: "false"` by default (see [common-instancetypes#571](https://github.com/kubevirt/common-instancetypes/pull/571)). Override with `"true"` on the VirtualMachine or VirtualMachineInstance to opt back in. Windows preferences keep the QEMU default because, without Free Page Reporting, KSM savings are generally a lot more significant than on Linux.
+
+The annotation takes effect when the VM next starts or migrates.
