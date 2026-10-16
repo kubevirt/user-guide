@@ -2,14 +2,26 @@
 
 ## Overview
 
-VirtualMachines have a `Running` setting that determines whether or not
-there should be a guest running or not. Because KubeVirt will always
-immediately restart a VirtualMachineInstance for VirtualMachines with
-`spec.running: true`, a simple boolean is not always enough to fully
-describe desired behavior. For instance, there are cases when a user
-would like the ability to shut down a guest from inside the virtual
-machine. With `spec.running: true`, KubeVirt would immediately restart
-the VirtualMachineInstance.
+VirtualMachines have a `spec.runStrategy` field that determines whether
+or not there should be a guest running, and what KubeVirt should do when
+the guest stops.
+
+Older manifests use the boolean `spec.running` field instead. Because
+KubeVirt will always immediately restart a VirtualMachineInstance for
+VirtualMachines with `spec.running: true`, a simple boolean is not always
+enough to fully describe desired behavior. For instance, there are cases
+when a user would like the ability to shut down a guest from inside the
+virtual machine. With `spec.running: true`, KubeVirt would immediately
+restart the VirtualMachineInstance.
+
+!!! warning
+    `spec.running` is deprecated since KubeVirt v1.4.0. Use
+    `spec.runStrategy` instead: `spec.running: true` corresponds to
+    `runStrategy: Always`, and `spec.running: false` corresponds to
+    `runStrategy: Halted`. The API server still accepts `spec.running`,
+    but returns the warning
+    `spec.running is deprecated, please use spec.runStrategy instead.`
+    when a VirtualMachine that sets it is created or updated.
 
 ## RunStrategy
 
@@ -44,7 +56,7 @@ RunStrategies defined:
 
 -   Halted: The system is asked to ensure that no VM is running.
     This is achieved by stopping any VirtualMachineInstance that is
-    associated ith the VM. If a guest is already running, it will be
+    associated with the VM. If a guest is already running, it will be
     stopped.
     This behavior is equal to `spec.running: false`.
 
