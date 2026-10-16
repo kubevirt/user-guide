@@ -192,9 +192,9 @@ VirtualMachineInstance exists in the cluster, `status.created` will equal
 `true`. If the VirtualMachineInstance is also ready, `status.ready` will
 equal `true` too.
 
-If a VirtualMachineInstance reaches a final state but the `spec.running`
-equals `true`, the VirtualMachine controller will set `status.ready` to
-`false` and re-create the VirtualMachineInstance.
+If a VirtualMachineInstance reaches a final state but the
+`spec.runStrategy` equals `Always`, the VirtualMachine controller will set
+`status.ready` to `false` and re-create the VirtualMachineInstance.
 
 Additionally, the `status.printableStatus` field provides high-level summary
 information about the state of the VirtualMachine. This information is also displayed
@@ -354,7 +354,7 @@ $ kubectl create -f vm.yaml
 virtualmachine "vm-cirros" created
 ```
 
-Since `spec.running` is set to `false`, no vmi will be created:
+Since `spec.runStrategy` is set to `Halted`, no vmi will be created:
 
 ```
 $ kubectl get vmis
@@ -364,7 +364,7 @@ No resources found.
 Let's start the VirtualMachine:
 
 ```
-$ virtctl start vm vm-cirros
+$ virtctl start vm-cirros
 ```
 
 As expected, a VirtualMachineInstance called `vm-cirros` got created:
@@ -385,7 +385,7 @@ Metadata:
   Self Link:           /apis/kubevirt.io/v1/namespaces/default/virtualmachines/vm-cirros
   UID:                 60043358-4c58-11e8-8653-525500d15501
 Spec:
-  Running:  true
+  Run Strategy:  Always
   Template:
     Metadata:
       Creation Timestamp:  <nil>
