@@ -31,7 +31,7 @@ field in the KubeVirt CR must be expanded by adding the `Snapshot` to it.
 
 Snapshotting a virtualMachine is supported for online and offline vms.
 
-When snapshotting a running vm the controller will check for qemu guest agent in the vm. If the agent exists it will freeze the vm filesystems before taking the snapshot and unfreeze after the snapshot. It is recommended to take online snapshots with the guest agent for a better snapshot, if not present a best effort snapshot will be taken.
+When snapshotting a running vm the controller will check for qemu guest agent in the vm. If the agent exists it will freeze the vm filesystems before taking the snapshot and unfreeze after the snapshot. It is recommended to take online snapshots with the guest agent for a better snapshot, if not present a best effort snapshot will be taken. To keep the filesystems frozen only briefly, see [External snapshot mode](#external-snapshot-mode).
 
 > *Note* To check if your vm has a qemu-guest-agent check for 'AgentConnected' in the vm status.
 
@@ -92,6 +92,176 @@ You can verify your snapshot's state and composition by examining the following 
     - `GuestAgent` indicates the QEMU guest agent was active and successfully froze (quiesced) the guest filesystem for the online snapshot. This delivers an application-consistent snapshot, ensuring high data integrity as if applications gracefully shut down before the snapshot.
     - `NoGuestAgent` indicates the QEMU guest agent was not installed, or not ready to quiesce the filesystem during the online snapshot. This results in a crash-consistent snapshot, capturing the VM's state like an abrupt power-off. There's no guarantee of application consistency, risking data issues for critical apps. Installing and running the guest agent, or retrying the snapshot, is highly recommended for better reliability.
     - `QuiesceFailed` indicates an attempt to freeze the filesystem failed during the online snapshot process. Even though the snapshot completed, it's not necessarily application-consistent. Retrying the snapshot is generally advisable to achieve proper consistency.
+
+## External snapshot mode
+
+**FEATURE STATE:** KubeVirt v1.10 (Alpha)
+
+External mode is alpha and must be enabled via the `ExternalVMSnapshot` and `UtilityVolumes` [feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate).
+
+By default the guest filesystems stay frozen until every `VolumeSnapshot` is created, which can take a while on a VM with many disks. In External mode the guest is only frozen while QEMU switches the disks onto copy-on-write overlays. The guest keeps writing to the overlays while the `VolumeSnapshots` are taken from the unchanged disks, and the overlays are committed back into the disks once every `VolumeSnapshot` is ready.
+
+External mode only applies to a running VM with a connected guest agent. A snapshot of a stopped VM is rejected, and if the filesystems cannot be frozen the snapshot fails instead of falling back to a crash-consistent snapshot.
+
+```yaml
+apiVersion: snapshot.kubevirt.io/v1beta1
+kind: VirtualMachineSnapshot
+metadata:
+  name: snap-larry
+spec:
+  snapshotMode: External
+  source:
+    apiGroup: kubevirt.io
+    kind: VirtualMachine
+    name: larry
+```
+
+The snapshot is `Succeeded` and ready to restore once every `VolumeSnapshot` is ready. The overlays are committed after that, and the VM keeps `status.snapshotInProgress` set until the commit is done and the scratch PVC is deleted. Another snapshot of the VM waits until then.
+
+### The scratch PVC
+
+The overlays are kept on a scratch PVC named `snap-scratch-<VirtualMachineSnapshotContent UID>`, created in the VM namespace with the storage class of the first VM disk and deleted after the commit. Its size covers the guest writes until the failure deadline, up to the size of the snapshotted disks plus 10%. It can be set with `overlayScratchSize`:
+
+```yaml
+spec:
+  snapshotMode: External
+  overlayScratchSize: 10Gi
+```
+
+If the scratch PVC gets 70% full, the overlays are committed early so that the guest is not paused by a full volume. The snapshot fails if its `VolumeSnapshots` were not ready by then.
+
+### While the overlays are active
+
+The VMI reports the overlays with the `OverlaySnapshotActive` condition:
+
+- `True` with reason `OverlayPreparing`, `OverlaysReady`, `OverlayCommitting` or `OverlayCommitFailed`: the disks may be on their overlays.
+- `False` with reason `OverlayCommitted` or `OverlaySnapshotFailed`: every disk is back on its own volume.
+
+While the condition is `True`:
+
+- The VMI cannot be live migrated, and volume migration is rejected.
+- Volumes cannot be hotplugged or unplugged.
+- Backups are rejected.
+- Online disk expansion waits until the overlays are committed.
+
+If the commit fails, an `OverlayCommitFailed` warning event is recorded on the `VirtualMachineSnapshotContent` and the commit is retried.
+
+Stopping the VM commits the overlays before the guest is shut down, within its `terminationGracePeriodSeconds`. If the commit does not finish in time, the VM needs [recovery](#recovering-a-vm-with-uncommitted-overlays). Deleting the VM also attempts the commit, but discards whatever is left and records a `SnapshotOverlayDataDiscarded` warning event, since PVCs that outlive the VM can then be missing the latest writes.
+
+The persistent TPM and EFI state of the VM is not put on an overlay, so it can be captured at a slightly different point in time than the disks.
+
+### Recovering a VM with uncommitted overlays
+
+If `virt-launcher` stops abruptly while the overlays are active, the latest guest writes exist only in the overlays on the scratch PVC. The VM gets the `ManualRecoveryRequired` condition with reason `UncommittedOverlays`, and KubeVirt refuses to start it. A snapshot that was not complete yet is marked as Failed.
+
+```yaml
+status:
+  conditions:
+  - message: Uncommitted writes remain on scratch PVC `snap-scratch-...`. Startup is blocked. ...
+    reason: UncommittedOverlays
+    status: "True"
+    type: ManualRecoveryRequired
+```
+
+Do not delete the scratch PVC or remove its finalizer. To recover, either:
+
+- Restore a completed snapshot of the VM, losing the writes made after that snapshot. The scratch PVC is released once the restore completes.
+- Commit the overlays into the disks manually, as described below, to keep the writes.
+
+Deleting the VM also discards the overlays.
+
+#### Committing the overlays manually
+
+The commit runs with `qemu-img` while the VM stays stopped. Keep `ManualRecoveryRequired` set until every overlay is committed.
+
+1. Make sure the old `virt-launcher` pod and its hotplug pod are gone, and find the scratch PVC:
+
+    ```bash
+    NS=default
+    VM=larry
+    SNAP=snap-larry
+
+    CONTENT=$(kubectl -n $NS get vmsnapshot $SNAP -o jsonpath='{.status.virtualMachineSnapshotContentName}')
+    SCRATCH=snap-scratch-$(kubectl -n $NS get vmsnapshotcontent $CONTENT -o jsonpath='{.metadata.uid}')
+    SCRATCH_UID=$(kubectl -n $NS get pvc $SCRATCH -o jsonpath='{.metadata.uid}')
+    ```
+
+2. Map each overlay to its disk. The overlay of volume `<volume>` is `ovl-<volume>.qcow2` at the root of the scratch PVC, and the content records the PVC of each volume:
+
+    ```bash
+    kubectl -n $NS get vmsnapshotcontent $CONTENT -o json | jq -r '.spec.volumeBackups[] |
+      [.volumeName, .persistentVolumeClaim.metadata.name, .persistentVolumeClaim.metadata.uid,
+       (.persistentVolumeClaim.spec.volumeMode // "Filesystem")] | @tsv'
+    ```
+
+    Check that each PVC still has the recorded UID. Stop if one differs.
+
+    > *Note* If the VM stopped while its overlays were being committed, some disks may have no overlay left. Those disks are already committed. `virt-launcher` keeps the guest paused from the moment a disk switches back to its volume until that overlay is deleted, so an overlay that remains never predates writes on its disk and is always safe to commit.
+
+3. For each overlay, start a pod with the scratch PVC and the matching disk PVC, using the `virt-launcher` image of the installed KubeVirt version. The example is for a `Filesystem` PVC holding `disk.img`:
+
+    ```bash
+    VOLUME=<volume>
+    BASE_PVC=<pvc of the volume>
+    IMAGE=$(kubectl get kubevirt -A -o jsonpath='{.items[0].status.observedKubeVirtRegistry}/virt-launcher:{.items[0].status.observedKubeVirtVersion}')
+
+    kubectl -n $NS apply -f - <<EOF
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: overlay-commit
+    spec:
+      restartPolicy: Never
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 107
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: commit
+        image: $IMAGE
+        command: ["sleep", "infinity"]
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+        volumeMounts:
+        - name: scratch
+          mountPath: /scratch
+        - name: base
+          mountPath: /base
+      volumes:
+      - name: scratch
+        persistentVolumeClaim:
+          claimName: $SCRATCH
+      - name: base
+        persistentVolumeClaim:
+          claimName: $BASE_PVC
+    EOF
+    kubectl -n $NS wait pod overlay-commit --for=condition=Ready --timeout=3m
+    ```
+
+    For a `Block` PVC, attach it with `volumeDevices` and `devicePath: /dev/base` instead, and use `host_device` and `/dev/base` for the backing image below.
+
+4. Commit the overlay and compare the result:
+
+    ```bash
+    CHAIN="driver=qcow2,file.driver=file,file.filename=/scratch/ovl-$VOLUME.qcow2,backing.driver=raw,backing.file.driver=file,backing.file.filename=/base/disk.img"
+
+    kubectl -n $NS exec overlay-commit -- qemu-img commit -p -d --image-opts "$CHAIN"
+    kubectl -n $NS exec overlay-commit -- qemu-img compare --image-opts "$CHAIN" "driver=raw,file.driver=file,file.filename=/base/disk.img"
+    kubectl -n $NS delete pod overlay-commit
+    ```
+
+    `--image-opts` points the overlay at the mounted disk instead of the path recorded by `virt-launcher`, and `-d` keeps the overlay intact, so the step can be repeated while the VM is stopped. `qemu-img compare` must report `Images are identical`.
+
+5. Once every overlay is committed and no pod uses the scratch PVC, mark the overlays as committed with the UID of the scratch PVC:
+
+    ```bash
+    kubectl -n $NS annotate vm $VM snapshot.kubevirt.io/overlays-committed=$SCRATCH_UID
+    ```
+
+    KubeVirt checks that the UID matches the scratch PVC of the condition, deletes the scratch PVC, and removes the annotation and the `ManualRecoveryRequired` condition. The VM then starts according to its run strategy.
 
 ## Restoring a VirtualMachine
 
