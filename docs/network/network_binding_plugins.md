@@ -33,6 +33,10 @@ These layers include:
 
 This guide focuses on the Network Binding portion.
 
+> **Note**: A binding plugin can also configure a network interface backed by
+> Kubernetes Dynamic Resource Allocation (DRA). See
+> [Connecting VMs to DRA-backed Networks](dra_networking.md).
+
 ### Network Binding
 The network binding defines how the domain (VM) network interface is wired
 in the VM pod through the domain to the guest.
