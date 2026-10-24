@@ -103,6 +103,11 @@ By default the guest filesystems stay frozen until every `VolumeSnapshot` is cre
 
 External mode only applies to a running VM with a connected guest agent. A snapshot of a stopped VM is rejected, and if the filesystems cannot be frozen the snapshot fails instead of falling back to a crash-consistent snapshot.
 
+QEMU cannot put an overlay on some disks, so External mode rejects a VM that has:
+
+- a `lun` disk
+- a writable `shareable` disk
+
 ```yaml
 apiVersion: snapshot.kubevirt.io/v1beta1
 kind: VirtualMachineSnapshot
@@ -120,7 +125,7 @@ The snapshot is `Succeeded` and ready to restore once every `VolumeSnapshot` is 
 
 ### The scratch PVC
 
-The overlays are kept on a scratch PVC named `snap-scratch-<VirtualMachineSnapshotContent UID>`, created in the VM namespace with the storage class of the first VM disk and deleted after the commit. Its size covers the guest writes until the failure deadline, up to the size of the snapshotted disks plus 10%. It can be set with `overlayScratchSize`:
+The overlays are kept on a scratch PVC named `snap-scratch-<VirtualMachineSnapshotContent UID>`, created in the VM namespace with the storage class of the first snapshotted volume and deleted after the commit. Its size covers the guest writes until the failure deadline, up to the size of the snapshotted disks plus 10%. It can be set with `overlayScratchSize`:
 
 ```yaml
 spec:
@@ -144,26 +149,36 @@ While the condition is `True`:
 - Backups are rejected.
 - Online disk expansion waits until the overlays are committed.
 
+The commit switches the disks back one at a time and pauses the guest for a few tens of milliseconds for each disk, so the VMI briefly reports `Paused` with reason `PausedByUser`. If a disk cannot catch up with the guest writes within 4 minutes, the guest is paused until that disk is committed, and the condition message reports a pause longer than 5 seconds.
+
 If the commit fails, an `OverlayCommitFailed` warning event is recorded on the `VirtualMachineSnapshotContent` and the commit is retried.
 
-Stopping the VM commits the overlays before the guest is shut down, within its `terminationGracePeriodSeconds`. If the commit does not finish in time, the VM needs [recovery](#recovering-a-vm-with-uncommitted-overlays). Deleting the VM also attempts the commit, but discards whatever is left and records a `SnapshotOverlayDataDiscarded` warning event, since PVCs that outlive the VM can then be missing the latest writes.
+As with any snapshot in progress, the VM cannot be stopped until the snapshot is done: delete the snapshot to end the overlay window sooner. Restarting the VM or deleting its VMI shuts the guest down gracefully and commits the overlays first, within its `terminationGracePeriodSeconds`. If the commit does not finish in time, or the guest is shut down from inside, the overlays are [recovered](#recovering-a-vm-with-uncommitted-overlays) when the VM starts again. Deleting the VM also attempts the commit, but discards whatever is left and records a `SnapshotOverlayDataDiscarded` warning event, since PVCs that outlive the VM can then be missing the latest writes.
 
-The persistent TPM and EFI state of the VM is not put on an overlay, so it can be captured at a slightly different point in time than the disks.
+Only disks are put on overlays. The persistent TPM and EFI state of the VM and `virtiofs` filesystems are captured while the guest keeps running, so they can be at a slightly different point in time than the disks.
 
 ### Recovering a VM with uncommitted overlays
 
-If `virt-launcher` stops abruptly while the overlays are active, the latest guest writes exist only in the overlays on the scratch PVC. The VM gets the `ManualRecoveryRequired` condition with reason `UncommittedOverlays`, and KubeVirt refuses to start it. A snapshot that was not complete yet is marked as Failed.
+If `virt-launcher` stops abruptly while the overlays are active, for example because it crashed or its node failed, the latest guest writes exist only in the overlays on the scratch PVC. The VM gets the `ManualRecoveryRequired` condition with reason `UncommittedOverlays`, and a snapshot that was not complete yet is marked as Failed.
 
 ```yaml
 status:
   conditions:
-  - message: Uncommitted writes remain on scratch PVC `snap-scratch-...`. Startup is blocked. ...
+  - message: Uncommitted writes remain on scratch PVC `snap-scratch-...`. Starting the VM recovers them. ...
     reason: UncommittedOverlays
     status: "True"
     type: ManualRecoveryRequired
 ```
 
-Do not delete the scratch PVC or remove its finalizer. To recover, either:
+When the VM starts again, by its run strategy or with `virtctl start`, KubeVirt starts it on the overlays, commits them, and then removes the condition. Do not delete the scratch PVC or remove its finalizer.
+
+KubeVirt does not recover the overlays, and records a `FailedCreate` warning event on the VM, when a disk of the VM no longer uses the PVC it was snapshotted from. The VM then stays stopped until the overlays are recovered another way. If the VMI of the VM still exists, for example as `Failed` with the `Manual` run strategy, delete it first:
+
+```bash
+kubectl delete vmi <vm>
+```
+
+Then either:
 
 - Restore a completed snapshot of the VM, losing the writes made after that snapshot. The scratch PVC is released once the restore completes.
 - Commit the overlays into the disks manually, as described below, to keep the writes.
@@ -174,7 +189,7 @@ Deleting the VM also discards the overlays.
 
 The commit runs with `qemu-img` while the VM stays stopped. Keep `ManualRecoveryRequired` set until every overlay is committed.
 
-1. Make sure the old `virt-launcher` pod and its hotplug pod are gone, and find the scratch PVC:
+1. Make sure the VMI, the old `virt-launcher` pod and its hotplug pod are gone, and find the scratch PVC:
 
     ```bash
     NS=default
