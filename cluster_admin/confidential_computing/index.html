@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4171,13 +4171,15 @@
 
 <h1 id="confidential-computing">Confidential computing<a class="headerlink" href="#confidential-computing" title="Permanent link">&para;</a></h1>
 <h2 id="amd-secure-encrypted-virtualization-sev">AMD Secure Encrypted Virtualization (SEV)<a class="headerlink" href="#amd-secure-encrypted-virtualization-sev" title="Permanent link">&para;</a></h2>
-<p><strong>FEATURE STATE:</strong> KubeVirt v0.49.0 (experimental support)</p>
+<p><strong>FEATURE STATE:</strong>
+  - Alpha - <code>v0.49.0</code> (experimental support)
+  - Beta  - <code>v1.9.0</code> (enabled by default)</p>
 <p><a href="https://developer.amd.com/sev/">Secure Encrypted Virtualization (SEV)</a> is a feature of AMD's EPYC CPUs that allows the memory of a virtual machine to be encrypted on the fly.</p>
 <p>KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV feature.</p>
 <h3 id="preconditions">Preconditions<a class="headerlink" href="#preconditions" title="Permanent link">&para;</a></h3>
 <p>In order to run an SEV guest the following condition must be met:</p>
 <ul>
-<li><code>WorkloadEncryptionSEV</code> <a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a> must be enabled.</li>
+<li>Before KubeVirt v1.9: <code>WorkloadEncryptionSEV</code> <a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a> must be enabled.</li>
 <li>The guest must support <a href="../../compute/virtual_hardware/#biosuefi">UEFI boot</a></li>
 <li>SecureBoot must be disabled for the guest VM</li>
 </ul>
@@ -4228,11 +4230,13 @@
 <li>The VMs are not attested</li>
 </ul>
 <h2 id="amd-secure-encrypted-virtualization-secure-nested-paging-sev-snp">AMD Secure Encrypted Virtualization - Secure Nested Paging (SEV-SNP)<a class="headerlink" href="#amd-secure-encrypted-virtualization-secure-nested-paging-sev-snp" title="Permanent link">&para;</a></h2>
-<p><strong>FEATURE STATE:</strong> KubeVirt v1.7.0 (experimental support)</p>
+<p><strong>FEATURE STATE:</strong>
+  - Alpha - <code>v1.7.0</code> (experimental support)
+  - Beta  - <code>v1.9.0</code> (enabled by default)</p>
 <p>KubeVirt supports running confidential VMs on AMD EPYC hardware with SEV-SNP support.</p>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>WorkloadEncryptionSEV</code> <a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a> must be enabled.</li>
+<li>Before KubeVirt v1.9: <code>WorkloadEncryptionSEV</code> <a href="../activating_feature_gates/#how-to-activate-a-feature-gate">feature gate</a> must be enabled.</li>
 <li>The guest must support <a href="../../compute/virtual_hardware/#biosuefi">UEFI boot</a>.</li>
 <li>SecureBoot must be disabled for the guest VM.</li>
 <li>AMD EPYC hardware that is capable of running <a href="https://docs.amd.com/v/u/en-US/58207-using-sev-with-amd-epyc-processors">SEV-SNP</a>.</li>
@@ -4451,10 +4455,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -3958,14 +3958,26 @@
 
 <h1 id="run-strategies">Run Strategies<a class="headerlink" href="#run-strategies" title="Permanent link">&para;</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>VirtualMachines have a <code>Running</code> setting that determines whether or not
-there should be a guest running or not. Because KubeVirt will always
-immediately restart a VirtualMachineInstance for VirtualMachines with
-<code>spec.running: true</code>, a simple boolean is not always enough to fully
-describe desired behavior. For instance, there are cases when a user
-would like the ability to shut down a guest from inside the virtual
-machine. With <code>spec.running: true</code>, KubeVirt would immediately restart
-the VirtualMachineInstance.</p>
+<p>VirtualMachines have a <code>spec.runStrategy</code> field that determines whether
+or not there should be a guest running, and what KubeVirt should do when
+the guest stops.</p>
+<p>Older manifests use the boolean <code>spec.running</code> field instead. Because
+KubeVirt will always immediately restart a VirtualMachineInstance for
+VirtualMachines with <code>spec.running: true</code>, a simple boolean is not always
+enough to fully describe desired behavior. For instance, there are cases
+when a user would like the ability to shut down a guest from inside the
+virtual machine. With <code>spec.running: true</code>, KubeVirt would immediately
+restart the VirtualMachineInstance.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code>spec.running</code> is deprecated since KubeVirt v1.4.0. Use
+<code>spec.runStrategy</code> instead: <code>spec.running: true</code> corresponds to
+<code>runStrategy: Always</code>, and <code>spec.running: false</code> corresponds to
+<code>runStrategy: Halted</code>. The API server still accepts <code>spec.running</code>,
+but returns the warning
+<code>spec.running is deprecated, please use spec.runStrategy instead.</code>
+when a VirtualMachine that sets it is created or updated.</p>
+</div>
 <h2 id="runstrategy">RunStrategy<a class="headerlink" href="#runstrategy" title="Permanent link">&para;</a></h2>
 <p>To allow for greater variation of user states, the <code>RunStrategy</code> field
 has been introduced. This is mutually exclusive with <code>Running</code> as they
@@ -4003,7 +4015,7 @@ RunStrategies defined:</p>
 <li>
 <p>Halted: The system is asked to ensure that no VM is running.
     This is achieved by stopping any VirtualMachineInstance that is
-    associated ith the VM. If a guest is already running, it will be
+    associated with the VM. If a guest is already running, it will be
     stopped.
     This behavior is equal to <code>spec.running: false</code>.</p>
 </li>
@@ -4170,10 +4182,10 @@ on RunStrategy.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>

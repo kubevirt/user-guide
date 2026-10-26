@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/favicon32x32.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
     
     
       
@@ -31,10 +31,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
       
       
 
@@ -4415,9 +4415,9 @@ virtctl stop vm
 VirtualMachineInstance exists in the cluster, <code>status.created</code> will equal
 <code>true</code>. If the VirtualMachineInstance is also ready, <code>status.ready</code> will
 equal <code>true</code> too.</p>
-<p>If a VirtualMachineInstance reaches a final state but the <code>spec.running</code>
-equals <code>true</code>, the VirtualMachine controller will set <code>status.ready</code> to
-<code>false</code> and re-create the VirtualMachineInstance.</p>
+<p>If a VirtualMachineInstance reaches a final state but the
+<code>spec.runStrategy</code> equals <code>Always</code>, the VirtualMachine controller will set
+<code>status.ready</code> to <code>false</code> and re-create the VirtualMachineInstance.</p>
 <p>Additionally, the <code>status.printableStatus</code> field provides high-level summary
 information about the state of the VirtualMachine. This information is also displayed
 when listing VirtualMachines using the CLI:</p>
@@ -4546,12 +4546,12 @@ create the controller instance:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$ kubectl create -f vm.yaml
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>virtualmachine "vm-cirros" created
 </code></pre></div>
-<p>Since <code>spec.running</code> is set to <code>false</code>, no vmi will be created:</p>
+<p>Since <code>spec.runStrategy</code> is set to <code>Halted</code>, no vmi will be created:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$ kubectl get vmis
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>No resources found.
 </code></pre></div>
 <p>Let's start the VirtualMachine:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ virtctl start vm vm-cirros
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$ virtctl start vm-cirros
 </code></pre></div>
 <p>As expected, a VirtualMachineInstance called <code>vm-cirros</code> got created:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ kubectl describe vm vm-cirros
@@ -4569,7 +4569,7 @@ create the controller instance:</p>
 <a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>  Self Link:           /apis/kubevirt.io/v1/namespaces/default/virtualmachines/vm-cirros
 <a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>  UID:                 60043358-4c58-11e8-8653-525500d15501
 <a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>Spec:
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>  Running:  true
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>  Run Strategy:  Always
 <a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>  Template:
 <a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    Metadata:
 <a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>      Creation Timestamp:  &lt;nil&gt;
@@ -4731,10 +4731,10 @@ demonstrating how to do it.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.footer", "navigation.tabs", "navigation.tabs.sticky", "content.action.view", "content.action.edit"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
       
     
   </body>
