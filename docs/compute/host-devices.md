@@ -106,6 +106,14 @@ configuration:
  * External providers:
 `externalResourceProvider` field indicates that this resource is being provided by an external device plugin. In this case, KubeVirt will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.
 
+## Who can allocate a permitted device
+
+For every `permittedHostDevices` entry that does not set `externalResourceProvider`, virt-handler registers the device plugin and a ValidatingAdmissionPolicy admits a pod requesting that resource name only when the caller is the virt-controller service account. Virtual machines receive the device on the virt-launcher pod that virt-controller creates.
+
+The policy reads the KubeVirt custom resource. While that object is missing, admission allows the pod instead of failing pod creation cluster-wide, so the restriction lasts only as long as the KubeVirt CR does.
+
+After upgrade, a non-KubeVirt pod that requests a resource listed in `permittedHostDevices` is denied. Set `externalResourceProvider: true` on that entry when another workload must keep allocating the resource directly. KubeVirt then does not register its own plugin for the name, and the admission policy does not restrict it.
+
 
 ## Starting a Virtual Machine
 
