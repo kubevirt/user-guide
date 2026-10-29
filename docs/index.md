@@ -40,6 +40,8 @@ The KubeVirt User Guide is divided into the following sections:
 
 ## Getting help
 
+- Check supported versions: <https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md>
+
 - File a bug: <https://github.com/kubevirt/kubevirt/issues>
 
 - Mailing list: <https://groups.google.com/forum/#!forum/kubevirt-dev>
