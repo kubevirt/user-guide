@@ -2420,6 +2420,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#who-can-allocate-a-permitted-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who can allocate a permitted device
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#starting-a-virtual-machine" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4011,6 +4022,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#who-can-allocate-a-permitted-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who can allocate a permitted device
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#starting-a-virtual-machine" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4221,6 +4243,10 @@ For example, if you have an NVIDIA T4 GPU on your system, and you substitute in 
 <code>externalResourceProvider</code> field indicates that this resource is being provided by an external device plugin. In this case, KubeVirt will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.</p>
 </li>
 </ul>
+<h2 id="who-can-allocate-a-permitted-device">Who can allocate a permitted device<a class="headerlink" href="#who-can-allocate-a-permitted-device" title="Permanent link">&para;</a></h2>
+<p>For every <code>permittedHostDevices</code> entry that does not set <code>externalResourceProvider</code>, virt-handler registers the device plugin and a ValidatingAdmissionPolicy admits a pod requesting that resource name only when the caller is the virt-controller service account. Virtual machines receive the device on the virt-launcher pod that virt-controller creates.</p>
+<p>The policy reads the KubeVirt custom resource. While that object is missing, admission allows the pod instead of failing pod creation cluster-wide, so the restriction lasts only as long as the KubeVirt CR does.</p>
+<p>After upgrade, a non-KubeVirt pod that requests a resource listed in <code>permittedHostDevices</code> is denied. Set <code>externalResourceProvider: true</code> on that entry when another workload must keep allocating the resource directly. KubeVirt then does not register its own plugin for the name, and the admission policy does not restrict it.</p>
 <h2 id="starting-a-virtual-machine">Starting a Virtual Machine<a class="headerlink" href="#starting-a-virtual-machine" title="Permanent link">&para;</a></h2>
 <p>Host devices can be assigned to virtual machines via the <code>gpus</code> and
 <code>hostDevices</code> fields.  The <code>deviceNames</code> can reference both PCI
