@@ -271,8 +271,9 @@ details.
 
 #### CPU model and live migration
 
-The CPU model decides which nodes a VMI can be live migrated to. KubeVirt
-adds node selectors to the migration target pod based on the model:
+The CPU model determines CPU compatibility with potential live migration
+destinations. KubeVirt adds node selectors to the migration target pod
+based on the model:
 
 | CPU model | Node selectors on the migration target pod |
 |---|---|
@@ -288,21 +289,29 @@ again, so the VMI can still move back to the node it started on.
 
 Keep the following in mind:
 
-- The `LiveMigratable` condition does not take the CPU into account. A VMI
-  can report `LiveMigratable: True` while no other node can run its CPU.
+- The `LiveMigratable` condition does not verify that another node satisfies
+  the VMI's CPU model and feature requirements. A VMI can report
+  `LiveMigratable: True` even when no other node meets those requirements.
   In that case the target pod stays `Pending` with a
-  `didn't match Pod's node affinity/selector` scheduling message, and the
-  migration fails once the target pod has been unschedulable for 5 minutes.
+  `didn't match Pod's node affinity/selector` scheduling message. For a
+  `host-model` VMI, KubeVirt also records a
+  `NoSuitableNodesForHostModelMigration` warning event on the VMI when no
+  other node has the required labels. By default, the migration fails if the
+  target pod is still unschedulable five minutes after the pod was created.
 - `host-model` is used when neither the VMI nor the cluster
   (`spec.configuration.cpuModel`) sets a model. Two nodes can report the
   same host model name and still differ in the required features. For
   example, if the source node has the label
   `host-model-required-features.node.kubevirt.io/rfds-no` and the other
   node has no `cpu-feature.node.kubevirt.io/rfds-no` label, a `host-model`
-  VMI started on the source node cannot be migrated there. Compare the
-  `host-model-cpu.node.kubevirt.io/*` and
-  `host-model-required-features.node.kubevirt.io/*` labels of your nodes to
-  see where a VMI can go.
+  VMI started on the source node cannot be migrated to that other node.
+  To identify compatible destinations, check that each candidate node has
+  labels matching the migration target pod's
+  `cpu-model-migration.node.kubevirt.io/<model>`,
+  `cpu-feature.node.kubevirt.io/<feature>`, and
+  `cpu-vendor.node.kubevirt.io/<vendor>` selectors. For a VMI that has
+  already migrated, use its current pod's CPU selectors rather than
+  deriving new requirements from its current node's host-model labels.
 - `host-passthrough` is only checked for the CPU vendor, so a migration to
   a node with a different CPU can succeed while the guest still sees CPU
   features that the new host does not have. Use `host-passthrough` only
