@@ -1398,6 +1398,14 @@ is omitted entirely, use of IOThreads will be disabled. However, if any
 disk requests a dedicated IOThread, `ioThreadsPolicy` will be enabled
 and default to `shared`.
 
+> **Note:** As of KubeVirt v1.10, the `ioThreadsPolicy` API has been extended to support
+> `virtio-scsi` disks. After enabling the `SCSIMultiIOThread`
+> [feature gate](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate),
+> disks using the `scsi` bus benefit from the same IOThread policies as virtio-blk.
+> Because a single SCSI controller manages all SCSI disks, IOThreads are mapped to the
+> controller's virtqueues rather than to individual disks. As a result,
+> `dedicatedIOThread` remains unsupported for SCSI disks.
+
 #### Shared
 
 An `ioThreadsPolicy` of `shared` indicates that KubeVirt should use one
@@ -1409,6 +1417,9 @@ Disks with `dedicatedIOThread` set to `true` will not use the shared
 thread, but will instead be allocated an exclusive thread. This is
 generally useful if a specific Disk is expected to have heavy I/O
 traffic, e.g. a database spindle.
+
+When `SCSIMultiIOThread` is enabled, the same shared thread is also
+assigned to the virtio-scsi controller.
 
 #### Auto
 
@@ -1431,6 +1442,34 @@ There is always guaranteed to be at least one thread for disks that will
 use the shared IOThreads pool. Thus if a sufficiently large number of
 disks have dedicated IOThreads assigned, `auto` and `shared` policies
 would essentially result in the same layout.
+
+Since SCSI disks cannot be assigned an individual thread, when `SCSIMultiIOThread` is enabled, the SCSI controller is allocated the entire pool of auto IOThreads (capped at the number of vCPUs to prevent over-allocation) so virtqueues can be processed in parallel. However, since auto threads scale to the total number of disks (that don't request a `dedicatedIOThread`), VMs that request a large number of CPUs can result in creating excessively large thread pools. To combat this, a maximum auto pool size of 8 is applied. Users who wish to override this maximum can opt for the `supplementalPool` policy where an explicit pool size can be set.
+
+> **Note:** The value for the auto thread pool size maximum was chosen based on the
+> results from this [performance analysis](https://developers.redhat.com/blog/2025/06/23/feature-introduction-multiple-iothreads-openshift-virtualization#feature_details).
+
+By default, virtio-blk disks under the `auto` policy continue to receive
+a single IOThread in round-robin order. However, to mirror the multi-IOThread
+pool allocation that occurs for `scsi` disks using `auto`, a new KubeVirt configuration
+has been added to toggle this new auto policy behavior for `virtio` disks.
+Once enabled, disks using the `virtio` bus type will be allocated the same pool
+of auto threads as `scsi` disks, both still subject to the same thread pool maximum previously described.
+
+> **Note:** The new `multiIOThreadAutoPolicy` configuration
+> setting has no effect unless the `SCSIMultiIOThread` feature gate is
+> also enabled.
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+spec:
+  configuration:
+    developerConfiguration:
+      featureGates:
+        - SCSIMultiIOThread
+    multiIOThreadAutoPolicy:
+      enabled: true
+```
 
 #### SupplementalPool
 
@@ -1460,6 +1499,10 @@ ideal number of IOThreads is among 4-8, depending on the type of workload.
 This number depends on multiple factors, and needs to be determined by running
 some performance measurements. More details on the feature can be found
 [at this blog](https://developers.redhat.com/articles/2024/09/05/scaling-virtio-blk-disk-io-iothread-virtqueue-mapping#how_iothread_virtqueue_mapping_works).
+
+When `SCSIMultiIOThread` is enabled, the entire supplemental pool is
+shared with the virtio-scsi controller. This is the recommended policy
+for VMs that hotplug a large number of SCSI disks.
 
 
 #### IOThreads with Dedicated (pinned) CPUs
@@ -1643,6 +1686,72 @@ Disks will be assigned to IOThreads like this:
     emptydisk4:   1
     emptydisk5:   2
     emptydisk6:   1
+
+#### Auto IOThreads with virtio-scsi
+
+With the `SCSIMultiIOThread` feature gate enabled, the same `auto`
+policy can cover both virtio-blk and virtio-scsi disks:
+
+```yaml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  labels:
+    special: test-vmi
+  name: test-vmi
+spec:
+  domain:
+    ioThreadsPolicy: auto
+    cpu:
+      cores: 2
+    devices:
+      disks:
+      - disk:
+          bus: virtio
+        name: testdisk1
+      - disk:
+          bus: virtio
+        name: testdisk2
+      - disk:
+          bus: scsi
+        name: scsi-disk
+    machine:
+      type: ""
+    resources:
+      requests:
+        memory: 64M
+  volumes:
+  - name: testdisk1
+    persistentVolumeClaim:
+      claimName: testdisk1-pvc
+  - name: testdisk2
+    persistentVolumeClaim:
+      claimName: testdisk2-pvc
+  - name: scsi-disk
+    persistentVolumeClaim:
+      claimName: scsi-disk-pvc
+```
+
+This VMI has three disks and two vCPUs. The auto pool would normally
+include three threads (one per disk), but with `SCSIMultiIOThread`
+enabled the pool is capped at the number of vCPUs, so only two threads
+are used.
+
+When `multiIOThreadAutoPolicy` is disabled (the default), virtio-blk
+disks keep the legacy single-thread round-robin assignment, while the
+SCSI controller receives the full auto pool:
+
+    testdisk1:  1
+    testdisk2:  2
+    scsi-disk:  [1, 2]
+
+When `multiIOThreadAutoPolicy` is enabled, each virtio-blk disk also
+receives the same multi-IOThread pool:
+
+    testdisk1:  [1, 2]
+    testdisk2:  [1, 2]
+    scsi-disk:  [1, 2]
+
 
 **Note:** `dedicatedIOThreads` isn't currently supported for disks using `scsi` as bus type.
 If the field is set, then the webhook will complain with this error message:
