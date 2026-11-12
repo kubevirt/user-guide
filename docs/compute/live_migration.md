@@ -433,9 +433,6 @@ metadata:
   namespace: kubevirt
 spec:
   configuration:
-    developerConfiguration:
-      featureGates:
-      - LiveMigration
     migrations:
       network: migration-network
 ```
@@ -604,9 +601,6 @@ metadata:
   namespace: kubevirt
 spec:
   configuration:
-    developerConfiguration:
-      featureGates:
-        - "LiveMigration"
     migrations:
       disableTLS: true
 ```
