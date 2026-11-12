@@ -4223,6 +4223,9 @@ of 150%. For instance, when <code>spec.domain.memory.guest: 3072M</code>, memory
 request is set to 2048M, if omitted. Note that the actual memory request
 depends on additional configuration options like
 OvercommitGuestOverhead.</p>
+<p>The cluster-wide <code>memoryOvercommit</code> setting is not applied to VMIs with
+dedicated CPU placement (<code>spec.domain.cpu.dedicatedCpuPlacement: true</code>).
+KubeVirt skips the implicit memory-overcommit calculation for these VMIs.</p>
 <h2 id="configuring-the-memory-pressure-behavior-of-nodes">Configuring the memory pressure behavior of nodes<a class="headerlink" href="#configuring-the-memory-pressure-behavior-of-nodes" title="Permanent link">&para;</a></h2>
 <p>If the node gets under memory pressure, depending on the <code>kubelet</code>
 configuration the virtual machines may get killed by the OOM handler or
