@@ -106,10 +106,30 @@ spec:
         password: fedora
         chpasswd: { expire: False }
 ```
-Behind the scenes a **PodDisruptionBudget** is created for each VMI
-which has an **evictionStrategy** defined. This ensures that evictions
-are be blocked on these VMIs and that we can guarantee that a VMI will
-be migrated instead of shut off.
+Behind the scenes, the `virt-launcher-eviction-interceptor.kubevirt.io`
+validating webhook intercepts every eviction of a `virt-launcher` pod.
+KubeVirt no longer creates a **PodDisruptionBudget** for each VMI (this
+changed in v1.6.0). For a VMI with `evictionStrategy: LiveMigrate` the
+webhook denies the eviction, so the VMI is migrated instead of shut off.
+It also records the node in the VMI's `status.evacuationNodeName`. The
+evacuation controller then creates a migration named
+`kubevirt-evacuation-<suffix>` for that VMI.
+
+`kubectl drain` retries a denied eviction every 5 seconds until the VMI
+has left the node, so it is normal to see output like this while the
+migration runs:
+
+```
+evicting pod default/virt-launcher-testvmi-nocloud-x7k2p
+error when evicting pods/"virt-launcher-testvmi-nocloud-x7k2p" -n "default" (will retry after 5s): admission webhook "virt-launcher-eviction-interceptor.kubevirt.io" denied the request: Eviction triggered evacuation of VMI "default/testvmi-nocloud"
+error when evicting pods/"virt-launcher-testvmi-nocloud-x7k2p" -n "default" (will retry after 5s): admission webhook "virt-launcher-eviction-interceptor.kubevirt.io" denied the request: Evacuation in progress: Eviction triggered evacuation of VMI "default/testvmi-nocloud"
+```
+
+If a VMI has `evictionStrategy: LiveMigrate` but is not live migratable
+(for example, it uses a `ReadWriteOnce` PVC), the eviction is denied with
+`VMI <name> is configured with an eviction strategy but is not live-migratable`
+and the drain does not finish until you stop or move that VMI yourself.
+With `LiveMigrateIfPossible`, such a VMI is evicted (shut off) instead.
 
 **Note** Prior to v0.34 the drain process with live migrations was detached from
 the `kubectl drain` itself and required in addition specifying a special taint
@@ -131,6 +151,39 @@ the following command must be run.
 or in the case of OKD.
 
 `oc adm uncordon <node name>`
+
+### Canceling an evacuation
+
+Making the node schedulable again does not stop an evacuation that has
+already started. As long as a VMI still runs on the node named in its
+`status.evacuationNodeName`, the evacuation controller keeps creating new
+`kubevirt-evacuation-<suffix>` migrations, even after a previous one
+failed. A VMI can therefore leave the node some time after you ran
+`kubectl uncordon`, for example once a workload that kept the migration
+from converging has calmed down.
+
+To check whether a VMI is still marked for evacuation:
+
+`kubectl get vmi <vmi name> -o jsonpath='{.status.evacuationNodeName}'`
+
+To cancel the evacuation, clear that field with `virtctl`:
+
+```
+virtctl evacuate-cancel vmi <vmi name>
+virtctl evacuate-cancel vm <vm name>
+```
+
+!!! note
+    Use `virtctl` v1.9.1 or later. Older clients do not send the node name,
+    and the request fails with `Internal error occurred: the server rejected
+    our request due to an error in our request`.
+
+The request is rejected while the node still carries the
+`kubevirt.io/drain` taint, so remove that taint first if you used it.
+`evacuate-cancel` only stops new evacuation migrations from being
+created. A migration that is already running continues; to stop it,
+delete it as described in
+[Canceling a live migration](../compute/live_migration.md#canceling-a-live-migration).
 
 ## Shutting down a Node after Eviction
 
