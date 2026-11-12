@@ -433,9 +433,6 @@ metadata:
   namespace: kubevirt
 spec:
   configuration:
-    developerConfiguration:
-      featureGates:
-      - LiveMigration
     migrations:
       network: migration-network
 ```
@@ -444,6 +441,45 @@ That change will trigger a restart of the virt-handler pods, as they
 get connected to that new network.
 
 From now on, migrations will happen over that network.
+
+### Falling back to the pod network
+
+By design, migrations fail when a dedicated migration network is
+configured but broken. If the `migration0` interface comes up without
+a usable IP, for example because the NetworkAttachmentDefinition was
+deleted or its IPAM pool is exhausted, virt-handler and the
+synchronization controllers refuse to start. That is the safe default
+for clusters that chose a dedicated network precisely to keep
+migration traffic off the pod network.
+
+Clusters that would rather degrade than lose virt-handler can opt into
+falling back to the pod network:
+```yaml
+apiVersion: kubevirt.io/v1
+kind: Kubevirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  configuration:
+    migrations:
+      network: migration-network
+      allowMigrationNetworkFallback: true
+```
+
+With `allowMigrationNetworkFallback` set to `true`, virt-handler logs
+a warning and uses the pod IP whenever the migration interface has no
+usable address. Migrations keep working, but they are no longer
+isolated from the pod network, so watch the virt-handler logs if you
+depend on that isolation.
+
+The option defaults to `false`. It is only read when virt-handler and
+the synchronization controllers start, so changing it triggers a
+restart of those pods, the same way changing `network` does.
+
+Note that this only covers the case where the interface exists but has
+no usable IP. If `migration0` is missing entirely, virt-handler uses
+the pod IP either way.
 
 ### Configuring KubeVirtCI for testing migration networks
 
@@ -565,9 +601,6 @@ metadata:
   namespace: kubevirt
 spec:
   configuration:
-    developerConfiguration:
-      featureGates:
-        - "LiveMigration"
     migrations:
       disableTLS: true
 ```
