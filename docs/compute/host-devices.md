@@ -43,8 +43,8 @@ At this time, KubeVirt is only able to assign PCI devices that are using the `vf
  * Find the PCI address of the desired device:
 
 ```
-$ lspci -DD|grep NVIDIA
-0000.65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)
+$ lspci -Dnn | grep NVIDIA
+0000:65:00.0 3D controller [0302]: NVIDIA Corporation TU104GL [Tesla T4] [10de:1eb8] (rev a1)
 ```
 
  * Bind that device to the `vfio-pci` driver:
@@ -80,7 +80,7 @@ configuration:
   permittedHostDevices:
     pciHostDevices:
     - pciVendorSelector: "10DE:1EB8"
-      resourceName: "nvidia.com/TU104GL_Tesla_T4"
+      resourceName: "nvidia.com/TU104GL_TESLA_T4"
       externalResourceProvider: true
     - pciVendorSelector: "8086:6F54"
       resourceName: "intel.com/qat"
@@ -105,6 +105,9 @@ configuration:
 
  * External providers:
 `externalResourceProvider` field indicates that this resource is being provided by an external device plugin. In this case, KubeVirt will only permit the usage of this device in the cluster but will leave the allocation and monitoring to an external device plugin.
+The `resourceName` must then be exactly the name that the external device plugin advertises, and resource names are case sensitive.
+For example, the [NVIDIA KubeVirt GPU device plugin](https://github.com/NVIDIA/kubevirt-gpu-device-plugin) advertises the T4 above as `nvidia.com/TU104GL_TESLA_T4`, in upper case.
+You can list the names a node advertises with `kubectl get node <node> -o jsonpath='{.status.allocatable}'`.
 
 ## Who can allocate a permitted device
 
@@ -127,7 +130,7 @@ spec:
   domain:
     devices:
       gpus:
-      - deviceName: nvidia.com/TU104GL_Tesla_T4
+      - deviceName: nvidia.com/TU104GL_TESLA_T4
         name: gpu1
       - deviceName: nvidia.com/GRID_T4-1Q
         name: gpu2
