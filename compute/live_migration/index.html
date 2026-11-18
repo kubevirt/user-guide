@@ -4793,16 +4793,17 @@ field in the KubeVirt CR must be expanded by adding the <code>LiveMigration</cod
 <ul>
 <li>
 <p>Virtual machines using a PersistentVolumeClaim (PVC) must have a
-  shared ReadWriteMany (RWX) access mode to be live migrated.</p>
+  shared ReadWriteMany (RWX) access mode to be live migrated, unless
+  the volume is also being migrated (see <a href="../../storage/volume_migration/">volume migration</a>
+  and <code>status.migratedVolumes</code>).</p>
 </li>
 <li>
 <p>Live migration is not allowed with a pod network binding of bridge
-  interface type
-  (&lt;/#/creation/interfaces-and-networks&gt;)</p>
+  interface type (<a href="../../network/interfaces_and_networks/#bridge">interfaces and networks</a>)</p>
 </li>
 <li>
 <p>Live migration requires ports <code>49152, 49153</code> to be available in the virt-launcher pod.
-  If these ports are explicitly specified in <a href="../../network/interfaces_and_networks/#masquerade">masquarade interface</a>, live migration will not function.</p>
+  If these ports are explicitly specified in <a href="../../network/interfaces_and_networks/#masquerade">masquerade interface</a>, live migration will not function.</p>
 </li>
 <li>
 <p>Live migration requires the virt-launcher pod's primary network interface to have the same name on both source and target pods.</p>
@@ -4835,11 +4836,9 @@ process for a virtual machine instance <code>vmi-fedora</code></p>
 <h3 id="condition-and-migration-method">Condition and migration method<a class="headerlink" href="#condition-and-migration-method" title="Permanent link">&para;</a></h3>
 <p>When starting a virtual machine instance, it has also been calculated
 whether the machine is live migratable. The result is stored in
-the VMI <code>VMI.status.conditions</code>. The calculation can be based on
-multiple parameters of the VMI, however, at the moment, the calculation
-is largely based on the <code>Access Mode</code> of the VMI volumes. Live migration
-is only permitted when the volume access mode is set to <code>ReadWriteMany</code>.
-Requests to migrate a non-LiveMigratable VMI will be rejected.</p>
+the VMI <code>VMI.status.conditions</code>. The calculation is based on
+multiple parameters of the VMI. Requests to migrate a non-LiveMigratable
+VMI will be rejected.</p>
 <p>The reported <code>Migration Method</code> is also calculated during VMI
 start. <code>BlockMigration</code> indicates that some of the VMI disks require
 copying from the source to the destination. <code>LiveMigration</code> means that
@@ -4856,22 +4855,25 @@ Most importantly, it indicates whether the migration has been
 <code>Completed</code> or if it <code>Failed</code>.</p>
 <p>Below is an example of a successful migration.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Migration State:
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    Completed:        true
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    End Timestamp:    2019-03-29T03:37:52Z
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    Completed:                               true
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    End Timestamp:                           2019-03-29T03:37:52Z
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    Migration Config:
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>      Completion Timeout Per GiB:  800
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>      Progress Timeout:             150
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    Migration UID:                  c64d4898-51d3-11e9-b370-525500d15501
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    Source Node:                    node02
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    Start Timestamp:                2019-03-29T04:02:47Z
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    Target Direct Migration Node Ports:
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>      35001:                      0
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>      41068:                      49152
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>      38284:                      49153
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    Target Node:                  node01
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>    Target Node Address:          10.128.0.46
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    Target Node Domain Detected:  true
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>    Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>      Completion Timeout Per GiB:            150
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>      Progress Timeout:                      150
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    Migration UID:                           c64d4898-51d3-11e9-b370-525500d15501
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    Mode:                                    PreCopy
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    Source Node:                             node02
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    Source Pod:                              virt-launcher-testvmi-source
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    Start Timestamp:                         2019-03-29T03:37:16Z
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    Target Direct Migration Node Ports:
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>      35001:                                 0
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>      41068:                                 49152
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>      38284:                                 49153
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    Target Node:                             node01
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>    Target Node Address:                     10.128.0.46
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    Target Node Domain Detected:             true
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>    Target Node Domain Ready Timestamp:      2019-03-29T03:37:51Z
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>    Target Pod:                              virt-launcher-testvmi-target
 </code></pre></div>
 <h2 id="canceling-a-live-migration">Canceling a live migration<a class="headerlink" href="#canceling-a-live-migration" title="Permanent link">&para;</a></h2>
 <p>Live migration can also be canceled by simply deleting the migration
@@ -4880,25 +4882,27 @@ has been requested <code>Abort Requested</code>, and that it succeeded:
 <code>Abort Status: Succeeded</code>. The migration in this case will be <code>Completed</code>
 and <code>Failed</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Migration State:
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    Abort Requested:  true
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    Abort Status:     Succeeded
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    Completed:        true
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    End Timestamp:    2019-03-29T04:02:49Z
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    Failed:           true
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    Abort Requested:                         true
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    Abort Status:                            Succeeded
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    Completed:                               true
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    End Timestamp:                           2019-03-29T04:02:49Z
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    Failed:                                  true
 <a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    Migration Config:
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>      Completion Timeout Per GiB:  800
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>      Progress Timeout:             150
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    Migration UID:                  57a693d6-51d7-11e9-b370-525500d15501
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    Source Node:                    node02
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    Start Timestamp:                2019-03-29T04:02:47Z
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    Target Direct Migration Node Ports:
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>      39445:                      0
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>      43345:                      49152
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>      44222:                      49153
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    Target Node:                  node01
-<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    Target Node Address:          10.128.0.46
-<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    Target Node Domain Detected:  true
-<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    Target Pod:                   virt-launcher-testvmimcbjgw6zrzcmp8wpddvztvzm7x2k6cjbdgktwv8tkq
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>      Completion Timeout Per GiB:            150
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>      Progress Timeout:                      150
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    Migration UID:                           57a693d6-51d7-11e9-b370-525500d15501
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    Mode:                                    PreCopy
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    Source Node:                             node02
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    Source Pod:                              virt-launcher-testvmi-source
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    Start Timestamp:                         2019-03-29T04:02:47Z
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    Target Direct Migration Node Ports:
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>      39445:                                 0
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>      43345:                                 49152
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>      44222:                                 49153
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    Target Node:                             node01
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    Target Node Address:                     10.128.0.46
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    Target Node Domain Detected:             true
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>    Target Pod:                              virt-launcher-testvmi-target
 </code></pre></div>
 <h3 id="using-virtctl-to-cancel-a-live-migration">Using virtctl to cancel a live migration<a class="headerlink" href="#using-virtctl-to-cancel-a-live-migration" title="Permanent link">&para;</a></h3>
 <p>Live migration can also be canceled using virtctl, by specifying the name
@@ -4909,11 +4913,12 @@ of a VMI which is currently being migrated
 <p>KubeVirt puts some limits in place, so that migrations don't overwhelm
 the cluster. By default, it is configured to only run <code>5</code> migrations in
 parallel with an additional limit of a maximum of <code>2</code> outbound
-migrations per node. Finally, every migration is limited to a bandwidth
-of <code>64MiB/s</code>.</p>
-<p>These values can be changed in the <code>kubevirt</code> CR:</p>
+migrations per node. Bandwidth per migration is unlimited by default
+(<code>0Mi</code>).</p>
+<p>You can override these and other migration settings in the <code>kubevirt</code> CR.
+The following example shows the current defaults:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
@@ -4922,8 +4927,8 @@ of <code>64MiB/s</code>.</p>
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
 <a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">      </span><span class="nt">parallelMigrationsPerCluster</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 <a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">      </span><span class="nt">parallelOutboundMigrationsPerNode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">      </span><span class="nt">bandwidthPerMigration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">64Mi</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">completionTimeoutPerGiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">800</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">      </span><span class="nt">bandwidthPerMigration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0Mi</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">completionTimeoutPerGiB</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150</span>
 <a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">      </span><span class="nt">progressTimeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150</span>
 <a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="nt">nodeDrainTaintKey</span><span class="p">:</span><span class="w"> </span><span class="s">"kubevirt.io/drain"</span>
@@ -5021,11 +5026,11 @@ high dirty-rate or low resources like network bandwidth and CPU. On such scenari
 alternative strategies below.</p>
 <p>For virtual machines that explicitly set CPU resource limits, multithreaded migration is disabled and single-threaded migration will be used instead.</p>
 <h3 id="post-copy">Post-copy<a class="headerlink" href="#post-copy" title="Permanent link">&para;</a></h3>
-<p>The way post-copy migrations work is as following:</p>
+<p>In KubeVirt, migrations always start in pre-copy mode and may later
+switch to post-copy. Once in post-copy:</p>
 <ol>
-<li>The target VM is created.</li>
-<li>The guest is run on the <strong>target VM</strong>.</li>
-<li>The source starts sending chunks of VM state (mostly memory) to the target.</li>
+<li>The guest runs on the <strong>target VM</strong>.</li>
+<li>The source continues sending chunks of VM state (mostly memory) to the target.</li>
 <li>When the guest, running on the target VM, would access memory:<ol>
 <li>If the memory exists on the target VM, the guest can access it.</li>
 <li>Otherwise, the target VM asks for a chunk of memory from the source VM.</li>
@@ -5033,8 +5038,8 @@ alternative strategies below.</p>
 </li>
 <li>Once all of the memory state is updated at the target VM, the source VM is removed.</li>
 </ol>
-<p>The main idea here is that the guest starts to run immediately on the target VM. This approach
-has advantages and disadvantages:</p>
+<p>The main idea of post-copy is that the guest runs on the target VM while
+remaining memory is fetched on demand. This approach has advantages and disadvantages:</p>
 <p><u>advantages</u>:</p>
 <ul>
 <li>The same memory chunk is never transferred twice. This is possible due to the fact that
@@ -5150,17 +5155,14 @@ namespace where KubeVirt is installed. Here is an example:
 <p>This is just a matter of adding the name of the
 NetworkAttachmentDefinition to the KubeVirt CR, like so:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
 <a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
 <a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiveMigration</span>
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migration-network</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">      </span><span class="nt">network</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migration-network</span>
 </code></pre></div></p>
 <p>That change will trigger a restart of the virt-handler pods, as they
 get connected to that new network.</p>
@@ -5257,17 +5259,14 @@ API Reference or
 <p>Sometimes it may be desirable to disable TLS encryption of migrations to
 improve performance. Use <code>disableTLS</code> to do that:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Kubevirt</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nt">metadata</span><span class="p">:</span>
 <a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
 <a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
 <a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"LiveMigration"</span>
-<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
-<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><strong>Note:</strong> While this increases performance it may allow MITM attacks. Be careful.</p>
 <h2 id="live-migration-with-nvidia-vgpus">Live migration with (NVIDIA) vGPUs<a class="headerlink" href="#live-migration-with-nvidia-vgpus" title="Permanent link">&para;</a></h2>
