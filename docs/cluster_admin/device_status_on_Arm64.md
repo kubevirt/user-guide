@@ -21,5 +21,5 @@ GPUs |   | not verified
 Filesystems | virtiofs, vhost-user-fs-pci, need to enable featuregate: ExperimentalVirtiofsSupport | supported
 ClientPassthrough | https://www.linaro.org/blog/kvm-pciemsi-passthrough-armarm64/on x86_64, iommu need to be enabled | not verified
 Sound | ich9/ ac97 | not supported
-TPM | tpm-tis-devicehttps://qemu.readthedocs.io/en/latest/specs/tpm.html | supported
+TPM | tpm-tis-devicehttps://www.qemu.org/docs/master/specs/tpm.html | supported
 Sriov | vfio-pci | not verified
