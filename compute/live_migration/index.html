@@ -2833,6 +2833,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#downtime-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Downtime tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4681,6 +4692,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#downtime-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Downtime tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5254,10 +5276,11 @@ are technically dense and algorithm-specific; for details on what they do, see t
 <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_stalldetectoroptions">StallDetectorOptions</a>
 API Reference or
 <a href="https://github.com/kubevirt/enhancements/tree/main/veps/sig-compute/248-migration-convergence">VEP 248</a>.</p>
-<h2 id="disabling-secure-migrations">Disabling secure migrations<a class="headerlink" href="#disabling-secure-migrations" title="Permanent link">&para;</a></h2>
-<p><strong>FEATURE STATE:</strong> KubeVirt v0.43</p>
-<p>Sometimes it may be desirable to disable TLS encryption of migrations to
-improve performance. Use <code>disableTLS</code> to do that:</p>
+<p><code>experimental.stallDetector</code> and <code>experimental.downtimeTuning</code> cannot be used on the same policy.</p>
+<h3 id="downtime-tuning">Downtime tuning<a class="headerlink" href="#downtime-tuning" title="Permanent link">&para;</a></h3>
+<p><strong>FEATURE STATE:</strong> KubeVirt v1.10 (Alpha)</p>
+<p>Busy guests with moderate dirty rates often make migration progress but never converge: QEMU's estimated switchover time hovers just above the current <code>max_downtime</code>, so the migration keeps iterating until <code>completionTimeoutPerGiB</code> fires. Downtime tuning gradually raises <code>max_downtime</code> as memory-copy iterations progress, giving QEMU more room to switch over before existing timeout logic triggers post-copy, pause, or abort.</p>
+<p>The feature is alpha, opt-in per workload via <a href="../../cluster_admin/migration_policies/">MigrationPolicy</a>, and must be enabled via the <code>MigrationDowntimeTuning</code> feature gate.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nt">metadata</span><span class="p">:</span>
@@ -5265,8 +5288,48 @@ improve performance. Use <code>disableTLS</code> to do that:</p>
 <a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
 <a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="nt">spec</span><span class="p">:</span>
 <a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MigrationDowntimeTuning</span>
+</code></pre></div>
+<p>Activate tuning by setting <code>spec.experimental.downtimeTuning</code> on a matching <code>MigrationPolicy</code>. An empty object enables the algorithm with built-in defaults. Optionally set <code>maxDowntimeMs</code> on the same policy as the target switchover budget the ramp aims for (default 900). <code>experimental.stallDetector</code> and <code>experimental.downtimeTuning</code> cannot be used on the same policy.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migrations.kubevirt.io/v1alpha1</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MigrationPolicy</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tune-downtime</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">  </span><span class="nt">selectors</span><span class="p">:</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="nt">namespaceSelector</span><span class="p">:</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">      </span><span class="nt">workload-type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">memory-intensive</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">  </span><span class="nt">maxDowntimeMs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">  </span><span class="nt">experimental</span><span class="p">:</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">    </span><span class="nt">downtimeTuning</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+</code></pre></div>
+<p>There are two important configuration options:</p>
+<ul>
+<li><code>maxDowntimeMs</code> (default 900): the target maximum guest switchover pause in milliseconds. The algorithm ramps QEMU's <code>max_downtime</code> toward this value in equal steps; it is a tuning target, not a hard guarantee of observed downtime. Configurable on the KubeVirt CR
+  (<a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_migrationconfiguration">MigrationConfiguration</a>)
+  and on <a href="../../cluster_admin/migration_policies/">MigrationPolicy</a>
+  (<a href="https://kubevirt.io/api-reference/main/definitions.html#_v1alpha1_migrationpolicyspec">MigrationPolicySpec</a>).</li>
+<li><code>downtimeTuning</code> (activated by presence; defaults below): controls how aggressively <code>max_downtime</code> is raised during the migration. In alpha this lives under <code>MigrationPolicy.spec.experimental</code>
+  (<a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_downtimetuningoptions">DowntimeTuningOptions</a>).</li>
+</ul>
+<p>With <code>downtimeTuning: {}</code>, the defaults are <code>initialMs: 150</code>, <code>steps: 7</code>, <code>startAfterIteration: 3</code>, <code>cooldownSeconds: 10</code>; see <a href="https://kubevirt.io/api-reference/main/definitions.html#_v1_downtimetuningoptions">DowntimeTuningOptions</a> for what each option does.</p>
+<p>For further details refer to
+<a href="https://github.com/kubevirt/enhancements/tree/main/veps/sig-compute/291-dynamic-downtime-tuning">VEP 291</a>.</p>
+<h2 id="disabling-secure-migrations">Disabling secure migrations<a class="headerlink" href="#disabling-secure-migrations" title="Permanent link">&para;</a></h2>
+<p><strong>FEATURE STATE:</strong> KubeVirt v0.43</p>
+<p>Sometimes it may be desirable to disable TLS encryption of migrations to
+improve performance. Use <code>disableTLS</code> to do that:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="nt">migrations</span><span class="p">:</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">      </span><span class="nt">disableTLS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 <p><strong>Note:</strong> While this increases performance it may allow MITM attacks. Be careful.</p>
 <h2 id="live-migration-with-nvidia-vgpus">Live migration with (NVIDIA) vGPUs<a class="headerlink" href="#live-migration-with-nvidia-vgpus" title="Permanent link">&para;</a></h2>
@@ -5296,16 +5359,16 @@ mediated device (mdev).</p>
 KubeVirt does not enforce those constraints when choosing a target.</p>
 <h3 id="enabling-vgpu-live-migration">Enabling vGPU live migration<a class="headerlink" href="#enabling-vgpu-live-migration" title="Permanent link">&para;</a></h3>
 <p>Enable the <code>VGPULiveMigration</code> feature gate in the KubeVirt CR:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">metadata</span><span class="p">:</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="nt">spec</span><span class="p">:</span>
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
-<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
-<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VGPULiveMigration</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KubeVirt</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="nt">spec</span><span class="p">:</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">  </span><span class="nt">configuration</span><span class="p">:</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VGPULiveMigration</span>
 </code></pre></div>
 <p>Once enabled, migrate the VMI the same way as any other live-migratable VM (for example with a
 <code>VirtualMachineInstanceMigration</code> object or <code>virtctl migrate</code>).</p>
