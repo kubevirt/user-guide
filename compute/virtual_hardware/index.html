@@ -2829,6 +2829,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cpu-model-and-live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU model and live migration
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4296,6 +4307,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cpu-model-and-live-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CPU model and live migration
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -4799,6 +4821,75 @@ spec:
 <p>See the <a href="https://libvirt.org/formatdomain.html#elementsCPU">CPU API
 reference</a> for more
 details.</p>
+<h4 id="cpu-model-and-live-migration">CPU model and live migration<a class="headerlink" href="#cpu-model-and-live-migration" title="Permanent link">&para;</a></h4>
+<p>The CPU model determines CPU compatibility with potential live migration
+destinations. KubeVirt adds node selectors to the migration target pod
+based on the model:</p>
+<table>
+<thead>
+<tr>
+<th>CPU model</th>
+<th>Node selectors on the migration target pod</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A named model, e.g. <code>Skylake-Client-v4</code></td>
+<td><code>cpu-model.node.kubevirt.io/&lt;model&gt;</code> and <code>cpu-vendor.node.kubevirt.io/&lt;vendor&gt;</code></td>
+</tr>
+<tr>
+<td><code>host-model</code></td>
+<td><code>cpu-model-migration.node.kubevirt.io/&lt;host model of the source node&gt;</code>, plus <code>cpu-feature.node.kubevirt.io/&lt;feature&gt;</code> for every <code>host-model-required-features.node.kubevirt.io/&lt;feature&gt;</code> label of the source node, plus the vendor</td>
+</tr>
+<tr>
+<td><code>host-passthrough</code></td>
+<td>only <code>cpu-vendor.node.kubevirt.io/&lt;vendor&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>The labels come from the node-labeller (see
+<a href="#labeling-nodes-with-cpu-models-cpu-features-and-machine-types">Labeling nodes with cpu models, cpu features and machine types</a>).
+For a <code>host-model</code> VMI that has already been migrated, KubeVirt reuses
+the CPU selectors of the current pod instead of reading the node labels
+again, so the VMI can still move back to the node it started on.</p>
+<p>Keep the following in mind:</p>
+<ul>
+<li>The <code>LiveMigratable</code> condition does not verify that another node satisfies
+  the VMI's CPU model and feature requirements. A VMI can report
+  <code>LiveMigratable: True</code> even when no other node meets those requirements.
+  In that case the target pod stays <code>Pending</code> with a
+  <code>didn't match Pod's node affinity/selector</code> scheduling message. For a
+  <code>host-model</code> VMI, KubeVirt also records a
+  <code>NoSuitableNodesForHostModelMigration</code> warning event on the VMI when no
+  other node has the required labels. By default, the migration fails if the
+  target pod is still unschedulable five minutes after the pod was created.</li>
+<li><code>host-model</code> is used when neither the VMI nor the cluster
+  (<code>spec.configuration.cpuModel</code>) sets a model. Two nodes can report the
+  same host model name and still differ in the required features. For
+  example, if the source node has the label
+  <code>host-model-required-features.node.kubevirt.io/rfds-no</code> and the other
+  node has no <code>cpu-feature.node.kubevirt.io/rfds-no</code> label, a <code>host-model</code>
+  VMI started on the source node cannot be migrated to that other node.
+  To identify compatible destinations, check that each candidate node has
+  labels matching the migration target pod's
+  <code>cpu-model-migration.node.kubevirt.io/&lt;model&gt;</code>,
+  <code>cpu-feature.node.kubevirt.io/&lt;feature&gt;</code>, and
+  <code>cpu-vendor.node.kubevirt.io/&lt;vendor&gt;</code> selectors. For a VMI that has
+  already migrated, use its current pod's CPU selectors rather than
+  deriving new requirements from its current node's host-model labels.</li>
+<li><code>host-passthrough</code> is only checked for the CPU vendor, so a migration to
+  a node with a different CPU can succeed while the guest still sees CPU
+  features that the new host does not have. Use <code>host-passthrough</code> only
+  when the source and target nodes have identical CPUs.</li>
+<li>To migrate between nodes with different CPUs, set a named model that all
+  of these nodes support (they all carry the
+  <code>cpu-model.node.kubevirt.io/&lt;model&gt;</code> label), either per VMI or as the
+  cluster default (see
+  <a href="#enabling-default-cluster-cpu-model">Enabling default cluster cpu model</a>).
+  KubeVirt does not validate the model name, so a VMI with a model that no
+  node supports stays in <code>Scheduling</code>
+  (<a href="https://github.com/kubevirt/kubevirt/issues/16854">kubevirt/kubevirt#16854</a>).</li>
+</ul>
 <h3 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h3>
 <p>Setting CPU features is possible via <code>spec.domain.cpu.features</code> and can
 contain zero or more CPU features :</p>
