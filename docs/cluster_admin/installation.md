@@ -138,9 +138,9 @@ on both x86_64 and Arm64 platforms.
     # Point at latest release
     $ export RELEASE=$(curl https://storage.googleapis.com/kubevirt-prow/release/kubevirt/kubevirt/stable.txt)
     # Deploy the KubeVirt operator
-    $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
+    $ kubectl apply --server-side -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
     # Create the KubeVirt CR (instance deployment request) which triggers the actual installation
-    $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
+    $ kubectl apply --server-side -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-cr.yaml
     # wait until all KubeVirt components are up
     $ kubectl -n kubevirt wait kv kubevirt --for condition=Available
 
@@ -227,8 +227,8 @@ when the last release happened by looking at our
 To install the latest developer build, run the following commands:
 
     $ LATEST=$(curl -L https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/latest)
-    $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator.yaml
-    $ kubectl apply -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-cr.yaml
+    $ kubectl apply --server-side -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-operator.yaml
+    $ kubectl apply --server-side -f https://storage.googleapis.com/kubevirt-prow/devel/nightly/release/kubevirt/kubevirt/${LATEST}/kubevirt-cr.yaml
 
 To find out which commit this build is based on, run:
 

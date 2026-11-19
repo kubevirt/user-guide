@@ -46,7 +46,7 @@ Updates are triggered one of two ways.
 
     ```
     $ export RELEASE=v0.26.0
-    $ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
+    $ kubectl apply --server-side -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
     ```
 
 The first way provides a fine granular approach where you have full
