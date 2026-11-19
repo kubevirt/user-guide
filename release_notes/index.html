@@ -9450,6 +9450,13 @@
 <p>Released on: Wednesday Nov 18 2026</p>
 <p>KubeVirt v1.10 is built for Kubernetes v1.37 and additionally supported for the previous two versions. See the <a href="https://github.com/kubevirt/sig-release/blob/main/releases/k8s-support-matrix.md">KubeVirt support matrix</a> for more information.</p>
 <p>To view the release assets and see the 100+ (!) wonderful people who made this release possible, see the <a href="https://github.com/kubevirt/kubevirt/releases/tag/v1.10.0">KubeVirt release tag for v1.10.0</a>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Installing the <code>kubevirt-operator.yaml</code> with client-side <code>kubectl apply -f kubevirt-operator.yaml</code>
+fails because the kubevirts.kubevirt.io CRD now exceeds the 256 KiB annotation limit. Use
+<code>kubectl apply --server-side</code> (or <code>kubectl create</code>) for <code>kubevirt-operator.yaml</code> instead.
+See <a href="https://github.com/kubevirt/kubevirt/issues/19980">#19980</a>.</p>
+</div>
 <h3 id="api-change">API change<a class="headerlink" href="#api-change" title="Permanent link">&para;</a></h3>
 <ul>
 <li><a href="https://github.com/kubevirt/kubevirt/pull/19732">[PR #19732]</a>[stu-gott] Live migrations are no longer scheduled from a node running an updated virt-handler onto a node that has not yet been updated, preventing migrations from getting stuck during a rolling upgrade.</li>

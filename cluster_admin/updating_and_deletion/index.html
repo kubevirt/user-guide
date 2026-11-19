@@ -3993,7 +3993,7 @@ that the version of KubeVirt is locked to the version of the operator.
 This means that updating the operator will result in the underlying
 KubeVirt installation being updated as well.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ export RELEASE=v0.26.0
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>$ kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>$ kubectl apply --server-side -f https://github.com/kubevirt/kubevirt/releases/download/${RELEASE}/kubevirt-operator.yaml
 </code></pre></div>
 </li>
 </ol>
