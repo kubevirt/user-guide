@@ -22,6 +22,41 @@ spec:
       - VMPersistentState
 ```
 
+### Volume mode
+
+Backend storage PVCs are always `Filesystem`. `Block` is not supported, and a
+`volumeClaimTemplate` requesting it is overridden. `Block` support has been proposed, but
+no design has been found that is reliable, race-free, and still fits in a single volume:
+libvirt persists TPM and UEFI state as regular files that the source and target
+virt-launcher pods must agree on across a live migration. Treat `Filesystem` as a hard
+requirement rather than as a gap that is about to be filled.
+
+This is rarely a real constraint. A
+[storage profile](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/storageprofile.md)
+that only advertises `Block` is usually an omission, not a limitation of the storage: CSI
+drivers that provision raw block volumes almost always serve the same pool as filesystem
+volumes, formatting and mounting the device instead of handing it to the pod raw. Adding
+the missing `Filesystem` claim property sets to the storage profile is normally all it
+takes. To confirm first, try provisioning a 10Mi `Filesystem` PVC from that storage class
+by hand: if it binds and a pod can mount it, the storage class is a valid
+`vmStateStorageClass`.
+
+### Access mode
+
+KubeVirt reads the access mode from the storage profile of the storage class, looking only
+at `claimPropertySets` entries whose volume mode is `Filesystem`. RWX is used if any such
+entry offers it, otherwise RWO. If the storage profile is missing, empty, or lists no
+`Filesystem` entry, the fallback is RWX when `vmStateStorageClass` is set, and RWO when it
+is not.
+
+RWO is enough for every backend storage feature, including live migration: when the PVC is
+not RWX, KubeVirt creates a second PVC for the migration target and hands the state over
+during the migration.
+
+This is why a missing `Filesystem` entry is the first thing to check when the backend
+storage PVC stays `Pending`: it sends KubeVirt to the RWX fallback, which storage that
+only does RWO will never satisfy.
+
 ### Notes:
 
 #### Snapshot and restore compatibility
@@ -52,19 +87,6 @@ spec:
             persistent: true
 ```
 
-
-In order for the persistent tpm volume to be created successfully you must ensure your storage classes and [storage profiles](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/storageprofile.md) are configured correctly.  
-The persistent tpm volume will be created with the below access mode if one of the constraints for the access mode is true.
-
-* RWX (ReadWriteMany):
-    * the respective storage profile has any `claimPropertySet` in `claimPropertySets` with Filesystem volume mode and RWX access mode.
-    * the kubevirt cluster config has `VMStateStorageClass` set and the storage profile does not exist.
-    * the kubevirt cluster config has `VMStateStorageClass` set and the storage profile exists but `claimPropertySets` is an empty list.
-
-* RWO (ReadWriteOnce):
-    * the respective storage profile has `claimPropertySets` where all `claimPropertySet` in `claimPropertySets` have Filesystem volume mode and RWO access mode but not RWX.
-    * the kubevirt cluster config has `VMStateStorageClass` **unset** and the storage profile does not exist.
-    * the kubevirt cluster config has `VMStateStorageClass` **unset** and the storage profile exists but `claimPropertySets` is an empty list.
 
 ### Uses
 - The Microsoft Windows 11 installer requires the presence of a TPM device, even though it doesn't use this. Persistence is not required in this case however.
