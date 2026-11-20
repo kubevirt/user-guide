@@ -41,7 +41,6 @@ The following volumes present in the VM will be exported:
 
 * PersistentVolumeClaims
 * DataVolumes
-* MemoryDump
 
 All other volume types are not exported. To avoid the export of inconsistent data, a Virtual Machine can only be exported while it is powered off. Any active VM exports will be terminated if the Virtual Machine is started. To export data from a running Virtual Machine you must first create a Virtual Machine Snapshot (see below).
 
