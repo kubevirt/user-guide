@@ -166,3 +166,35 @@ test-migration   test-plan   Canceled   30s
 For multi-namespace migrations, delete the `MultiNamespaceVirtualMachineStorageMigration` resource — each child migration will be cancelled in the same way.
 
 > **Note:** This differs from KubeVirt's built-in [volume migration](volume_migration.md#volume-migration-cancellation), where cancellation requires applying the old VM spec to revert the volume set. With the migration controller, deleting the migration CR is sufficient — the controller handles the revert automatically.
+
+## Permissions
+
+The migration controller ships two non-aggregated ClusterRoles that
+cluster admins can explicitly bind to users who need to perform storage
+migration operations:
+
+| ClusterRole | Scope |
+|-------------|-------|
+| `migrations.kubevirt.io:storagemigrate` | Single-namespace storage migration |
+| `migrations.kubevirt.io:storagemigrate-multins` | Multi-namespace storage migration (superset of single-namespace) |
+
+These roles grant `get`, `list`, `watch`, `create`, `update`, `patch`,
+`delete`, and `deletecollection` permissions on storage migration
+resources. Neither role is aggregated into the built-in `admin`/`edit`
+roles, so they must be assigned explicitly.
+
+### Granting single-namespace storage migration access
+
+```shell
+kubectl create rolebinding my-storagemigrate \
+    --clusterrole=migrations.kubevirt.io:storagemigrate \
+    --user=<user> -n <namespace>
+```
+
+### Granting cluster-wide multi-namespace storage migration access
+
+```shell
+kubectl create clusterrolebinding my-storagemigrate-multins \
+    --clusterrole=migrations.kubevirt.io:storagemigrate-multins \
+    --user=<user>
+```
