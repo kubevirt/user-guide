@@ -7,7 +7,7 @@ Kubevirt supports running VMs as a part of Istio service mesh.
 
 - Istio service mesh is only supported with a pod network masquerade or passt binding.
 
-- Istio uses a [list of ports](https://istio.io/latest/docs/ops/deployment/requirements/#ports-used-by-istio) for its own purposes, these ports must not be explicitly specified in a VMI interface.
+- Istio uses a [list of ports](https://istio.io/latest/docs/ops/deployment/application-requirements/#ports-used-by-istio) for its own purposes, these ports must not be explicitly specified in a VMI interface.
 
 - Istio only supports IPv4.
 
@@ -112,7 +112,7 @@ $ kubectl get pods virt-launcher-vmi-istio-jnw6p -o jsonpath='{.spec.containers[
 compute volumecontainerdisk
 ```
 
-**Resolution:** Make sure the `istio-injection=enabled` is added to the target namespace. If the issue persists, consult [relevant part of Istio documentation](https://istio.io/latest/docs/ops/configuration/mesh/injection-concepts/).
+**Resolution:** Make sure the `istio-injection=enabled` is added to the target namespace. If the issue persists, consult [relevant part of Istio documentation](https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/#automatic-sidecar-injection).
 
 ### Istio sidecar is not ready
 ```shell
