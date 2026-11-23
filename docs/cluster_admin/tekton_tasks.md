@@ -60,4 +60,4 @@ We prepared example Pipelines which show what can you do with the KubeVirt Tasks
     - If you define a different namespace for Pipelines and a different namespace for Tasks, you will have to create a [cluster resolver](https://tekton.dev/docs/pipelines/cluster-resolver/) object. <br />
     - By default, example Pipelines create the resulting datavolume in the `kubevirt-os-images` namespace. <br />
     - In case you would like to create resulting datavolume in different namespace (by specifying `baseDvNamespace` attribute in Pipeline), additional RBAC permissions will be required (list of all required RBAC permissions can be found [here](https://github.com/kubevirt/kubevirt-tekton-tasks/tree/main/release/tasks/modify-data-object#usage-in-different-namespaces)). <br />
-    - In case you would like to live migrate the VM while a given Pipeline is running, the following [prerequisities](../operations/live_migration.md#limitations) must be met 
+    - In case you would like to live migrate the VM while a given Pipeline is running, the following [prerequisities](../compute/live_migration.md#limitations) must be met
