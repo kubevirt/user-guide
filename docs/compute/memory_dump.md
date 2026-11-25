@@ -7,11 +7,11 @@ The Memory dump can be used to diagnose, identify and resolve issues in the VM. 
 
 ## Prerequisites
 
-### Hot plug Feature Gate
+### Utility Volumes Feature Gate
 
-The memory dump process mounts a PVC to the virt-launcher in order to get the output in that PVC, hence the hot plug volumes feature gate must be enabled. The
-[feature gates](../cluster_admin/activating_feature_gates.md#how-to-activate-a-feature-gate)
-field in the KubeVirt CR must be expanded by adding the `HotplugVolumes` to it.
+The memory dump process attaches a PVC to the virt-launcher pod as a utility volume, in order to get the output in that PVC, hence the `UtilityVolumes` feature gate must be enabled.
+
+> *Note* Before KubeVirt v1.10, memory dumps required the `HotplugVolumes` feature gate instead.
 
 ## Virtctl support
 
@@ -83,7 +83,7 @@ memoryDumpRequest:
   fileName: my-vm-my-pvc-20220329-110004
 ```
 
-During the process the volumeStatus on the VMI will be updated with the process information such as the attachment pod information and messages, if all goes well once the process is completed, the PVC is unmounted from the virt-launcher pod and the volumeStatus is deleted.
+During the process the PVC is listed in the VMI `spec.utilityVolumes` with type `MemoryDump`, and the volumeStatus on the VMI will be updated with the process information such as the attachment pod information and messages. If all goes well, once the process is completed, the PVC is unmounted from the virt-launcher pod and the volumeStatus is deleted.
 A memory dump annotation will be added to the PVC with the memory dump file name.
 
 ### Retriggering the memory dump
@@ -93,6 +93,14 @@ $ virtctl memory-dump get my-vm
 ```
 
 > *Note* Each memory-dump command will delete the previous dump in that PVC.
+
+### Live migration during a memory dump
+A live migration of the VM waits for the memory dump to finish and the PVC to be detached.
+If it is still attached after `migrations.utilityVolumesTimeout` seconds (150 by default) in the KubeVirt CR, the migration fails.
+The timeout can be overridden per migration with the `kubevirt.io/migrationUtilityVolumesTimeoutSeconds` annotation.
+
+### Stopping the VM during a memory dump
+A memory dump captures the memory of the running VM. If the VM stops or restarts before the dump completes, the memory dump request fails, and a new memory dump has to be requested.
 
 In order to get a memory dump to a different PVC you need to 'remove' the current memory-dump PVC and then do a new get with the new PVC name.
 
@@ -109,6 +117,8 @@ Once the memory dump process is completed the PVC will hold the output.
 You can manage the dump in one of the following ways:
 - Download the memory dump
 - Create a pod with troubleshooting tools that will mount the PVC and inspect it within the pod.
-- Include the memory dump in the VM Snapshot (will include both the memory dump and the disks) to save a snapshot of the VM in that point of time and inspect it when needed. (The VM Snapshot can be exported and downloaded).
+- Export the PVC with the [export API](../storage/export_api.md).
+
+> *Note* Since KubeVirt v1.10, VM snapshots and VM exports no longer include the memory dump PVC.
 
 The output of the memory dump can be inspected with memory analysis tools for example [Volatility3](https://github.com/volatilityfoundation/volatility3)
