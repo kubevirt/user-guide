@@ -35,6 +35,16 @@ Figure 2:
 
 A dedicated synchronization controller facilitates communication between the source and target `VirtualMachineInstances`, as depicted in Figure 2. This design enables the reuse of most existing live migration mechanisms developed for `compute` migrations.
 
+## Networking
+
+Synchronization controllers coordinate the source and target sides of a decentralized live migration. With the optional Proxy datapath, they can also carry migration data so that only the sync controllers need cross-cluster
+reachability.
+
+Configure the datapath (`Direct` or `Proxy`), optional Multus networks (`migrations.network` / `migrations.crossClusterNetwork`), and—when using the pod network in Proxy mode—a labeled Service, Ingress, or Route so peers can reach the sync endpoint. Those steps are documented in
+[Cross-cluster migration network](cross_cluster_migration_network.md).
+
+The address used for `sendTo.connectURL` comes from `status.synchronizationAddresses` on the KubeVirt CR (or on the target migration). Depending on configuration, that value may be a Multus interface IP or an externally discovered Route, Ingress, or Service endpoint.
+
 ## Required resources
 
 To migrate a virtual machine between namespaces or clusters, you must create both a target `VirtualMachine` resource and a target `VirtualMachineInstanceMigration` resource. A decentralized live migration cannot be achieved using only a `VirtualMachineInstance` resource.
@@ -186,7 +196,7 @@ The source migration resource now includes an additional field with two sub-fiel
 
 There are two methods to acquire the synchronization controller's address:
 
-1. **Accessing the KubeVirt CR on the Target Cluster:** If you have access to the KubeVirt CR, a new field named `synchronizationAddresses` will provide a list of address/port combinations for the `connectURL`.  
+1. **Accessing the KubeVirt CR on the Target Cluster:** If you have access to the KubeVirt CR, a new field named `synchronizationAddresses` will provide a list of address/port combinations for the `connectURL`. How that address is chosen (pod IP, Multus, or labeled Route/Ingress/Service) is described in [Cross-cluster migration network](cross_cluster_migration_network.md).
 2. **After Target Migration Resource Creation:** If you lack KubeVirt CR access, once the target migration resource is created, its status will contain a `synchronizationAddresses` field with the same list of address/port combinations.
 
 The key distinction between these options is that Method 1 allows you to obtain the connection URL in advance, enabling the creation of the source migration resource simultaneously with or prior to the target migration resource.
