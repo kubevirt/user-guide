@@ -13,7 +13,7 @@ Killercoda provides an interactive environment for exploring KubeVirt scenarios:
 
 Guides for deploying KubeVirt with different Kubernetes tools:
 
-- [KubeVirt on minikube](https://kubevirt.io/quickstart_minikube/): a local cluster on a Linux host with KVM. KubeVirt can be deployed with the minikube `kubevirt` addon, and multi-node clusters are supported.
+- [KubeVirt on minikube](https://kubevirt.io/quickstart_minikube/): a local cluster on a Linux host with KVM. KubeVirt can be deployed with the minikube `kubevirt` addon, and the guide shows how to set up a multi-node cluster to try features such as live migration.
 
 - [KubeVirt on kind](https://kubevirt.io/quickstart_kind/): a local cluster on a Linux host with KVM, whose nodes run as containers. Quick to create and delete.
 
